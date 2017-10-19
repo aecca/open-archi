@@ -2,10 +2,12 @@ package com.araguacaima.gsa.model.msa;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Table;
 
 @Entity
-@Table(schema = "Msa",
+@PersistenceContext(unitName = "gsa")
+@Table(schema = "MSA",
         name = "CapacityReliability")
 
 public class CapacityReliability extends AbstractReliability implements IVolumetricReliability {

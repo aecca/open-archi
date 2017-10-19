@@ -2,14 +2,12 @@ package com.araguacaima.gsa.model.msa;
 
 import com.araguacaima.gsa.model.common.BaseEntity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
+@PersistenceContext(unitName = "gsa")
 @Table(name = "Database",
-        schema = "Msa")
+        schema = "MSA")
 public class Database extends BaseEntity {
     public static Measurable DEFAULT_BIG = new Measurable(new Range<StorageUnit>(StorageUnit.GB, 251, 500));
     public static Measurable DEFAULT_HUGE = new Measurable(new Range<StorageUnit>(StorageUnit.GB, 501, null));

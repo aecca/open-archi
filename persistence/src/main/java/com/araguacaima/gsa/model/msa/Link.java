@@ -2,13 +2,11 @@ package com.araguacaima.gsa.model.msa;
 
 import com.araguacaima.gsa.model.common.BaseEntity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
-@Table(schema = "Msa",
+@PersistenceContext(unitName = "gsa")
+@Table(schema = "MSA",
         name = "Link")
 public class Link extends BaseEntity {
 

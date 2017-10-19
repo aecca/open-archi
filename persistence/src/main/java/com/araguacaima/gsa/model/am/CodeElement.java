@@ -1,60 +1,75 @@
 package com.araguacaima.gsa.model.am;
 
 
+import com.araguacaima.gsa.model.common.BaseEntity;
 import com.araguacaima.gsa.util.Url;
+
+import javax.persistence.*;
 
 /**
  * Represents a code element, such as a Java class or interface,
  * that is part of the implementation of a component.
  */
-public final class CodeElement {
+@Entity
+@PersistenceContext(unitName = "gsa")
+@Table(name = "CodeElement", schema = "AM")
+public class CodeElement extends BaseEntity {
 
     /**
      * the role of the code element ... Primary or Supporting
      */
+    @Column
     private CodeElementRole role = CodeElementRole.Supporting;
 
     /**
      * the name of the code element ... typically the simple class/interface name
      */
+    @Column
     private String name;
 
     /**
      * the fully qualified type of the code element
      **/
+    @Column
     private String type;
 
     /**
      * a short description of the code element
      */
+    @Column
     private String description;
 
     /**
      * a URL; e.g. a reference to the code element in source code control
      */
+    @Column
     private String url;
 
     /**
      * the programming language used to create the code element
      */
+    @Column
     private String language = "Java";
 
     /**
      * the category of code element; e.g. class, interface, etc
      */
+    @Column
     private String category;
 
     /**
      * the visibility of the code element; e.g. public, package, private
      */
+    @Column
     private String visibility;
 
     /**
      * the size of the code element; e.g. the number of lines
      */
+    @Column
     private long size;
 
-    CodeElement() {
+    public CodeElement() {
     }
 
     CodeElement(String fullyQualifiedTypeName) {

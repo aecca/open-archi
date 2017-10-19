@@ -7,7 +7,8 @@ import javax.persistence.*;
 import java.util.Collection;
 
 @Entity
-@Table(schema = "Msa",
+@PersistenceContext(unitName = "gsa")
+@Table(schema = "MSA",
         name = "ProjectMetaData")
 public class ProjectMetaData extends BaseEntity {
 
@@ -20,7 +21,7 @@ public class ProjectMetaData extends BaseEntity {
     @Column
     private String functionalInitiativeDescription;
     @OneToMany
-    @JoinTable(schema = "Msa",
+    @JoinTable(schema = "MSA",
             name = "ProjectMetaData_GlobalSolutionArchitects",
             joinColumns = {@JoinColumn(name = "Person_Id",
                     referencedColumnName = "Id")},
@@ -30,7 +31,7 @@ public class ProjectMetaData extends BaseEntity {
     @Column
     private String initiativeName;
     @OneToMany
-    @JoinTable(schema = "Msa",
+    @JoinTable(schema = "MSA",
             name = "ProjectMetaData_LocalSolutionArchitects",
             joinColumns = {@JoinColumn(name = "Person_Id",
                     referencedColumnName = "Id")},

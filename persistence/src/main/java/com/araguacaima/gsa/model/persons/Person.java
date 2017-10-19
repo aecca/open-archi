@@ -4,10 +4,12 @@ import com.araguacaima.gsa.model.common.BaseEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Table;
 
+@PersistenceContext(unitName="persons")
 @Entity
-@Table(schema = "Msa",
+@Table(schema = "PERSONS",
        name = "Person")
 public class Person extends BaseEntity {
 

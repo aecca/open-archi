@@ -4,10 +4,12 @@ import com.araguacaima.gsa.model.common.BaseEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Table;
 
 @Entity
-@Table(schema = "Msa",
+@PersistenceContext(unitName = "gsa")
+@Table(schema = "MSA",
         name = "Markdown")
 public class Markdown extends BaseEntity {
 

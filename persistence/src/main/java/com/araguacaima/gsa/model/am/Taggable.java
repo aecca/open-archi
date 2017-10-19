@@ -1,10 +1,19 @@
 package com.araguacaima.gsa.model.am;
 
+import com.araguacaima.gsa.model.common.BaseEntity;
+
+import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.PersistenceContext;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-abstract class Taggable {
+@Entity
+@PersistenceContext(unitName = "gsa")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+abstract class Taggable extends BaseEntity{
 
     private Set<String> tags = new LinkedHashSet<>();
 

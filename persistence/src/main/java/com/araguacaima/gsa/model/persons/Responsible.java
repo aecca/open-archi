@@ -6,8 +6,9 @@ import com.araguacaima.gsa.model.msa.Msa;
 
 import javax.persistence.*;
 
+@PersistenceContext(unitName="persons")
 @Entity
-@Table(schema = "Msa",
+@Table(schema = "PERSONS",
        name = "Responsible")
 public class Responsible extends BaseEntity {
 

@@ -2,6 +2,10 @@ package com.araguacaima.gsa.model.am;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Table;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -16,13 +20,17 @@ import java.util.Set;
  * See <a href="https://structurizr.com/help/model#SoftwareSystem">Model - Software System</a>
  * on the Structurizr website for more information.
  */
-public final class SoftwareSystem extends StaticStructureElement {
+@Entity
+@PersistenceContext(unitName = "gsa")
+@Table(name = "SoftwareSystem", schema = "AM")
+public class SoftwareSystem extends StaticStructureElement {
 
+    @Column
     private Location location = Location.Unspecified;
 
     private Set<Container> containers = new LinkedHashSet<>();
 
-    SoftwareSystem() {
+    public SoftwareSystem() {
     }
 
     @Override

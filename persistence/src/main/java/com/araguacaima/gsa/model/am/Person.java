@@ -2,6 +2,10 @@ package com.araguacaima.gsa.model.am;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Table;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -13,11 +17,15 @@ import java.util.Set;
  * See <a href="https://structurizr.com/help/model#Person">Model - Person</a>
  * on the Structurizr website for more information.
  */
-public final class Person extends StaticStructureElement {
+@Entity
+@PersistenceContext(unitName = "gsa")
+@Table(name = "Person", schema = "AM")
+public class Person extends StaticStructureElement {
 
+    @Column
     private Location location = Location.Unspecified;
 
-    Person() {
+    public Person() {
     }
 
     @Override

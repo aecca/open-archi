@@ -2,6 +2,7 @@ package com.araguacaima.gsa.model.am;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import javax.persistence.*;
 import java.util.*;
 
 /**
@@ -13,15 +14,22 @@ import java.util.*;
  * as how those components are packaged (e.g. one component vs many components
  * per JAR file, DLL, shared library, etc) is a separate and orthogonal concern.
  */
-public final class Component extends StaticStructureElement {
+@Entity
+@PersistenceContext(unitName = "gsa")
+@Table(name = "Component", schema = "AM")
+public class Component extends StaticStructureElement {
 
+    @OneToOne
     private Container parent;
 
+    @Column
     private String technology;
     private Set<CodeElement> codeElements = new HashSet<>();
+
+    @Column
     private long size;
 
-    Component() {
+    public Component() {
     }
 
     @Override

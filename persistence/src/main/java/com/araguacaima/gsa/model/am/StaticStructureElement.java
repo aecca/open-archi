@@ -1,9 +1,17 @@
 package com.araguacaima.gsa.model.am;
 
+import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.PersistenceContext;
+
 /**
  * This is the superclass for model elements that describe the static structure
  * of a software system, namely Person, SoftwareSystem, Container and Component.
  */
+@Entity
+@PersistenceContext(unitName = "gsa")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 abstract class StaticStructureElement extends Element {
 
     protected StaticStructureElement() {

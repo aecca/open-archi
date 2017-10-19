@@ -6,14 +6,15 @@ import javax.persistence.*;
 import java.util.Collection;
 
 @Entity
-@Table(schema = "Msa",
+@PersistenceContext(unitName = "gsa")
+@Table(schema = "MSA",
         name = "Objectives")
 public class Objectives extends BaseEntity {
 
     @OneToOne
     private Markdown currentSituation;
     @OneToMany
-    @JoinTable(schema = "Msa",
+    @JoinTable(schema = "MSA",
             name = "Objectives_Diagrams",
             joinColumns = {@JoinColumn(name = "Diagram_Id",
                     referencedColumnName = "Id")},

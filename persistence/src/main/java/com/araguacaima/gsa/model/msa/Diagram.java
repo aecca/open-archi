@@ -5,7 +5,8 @@ import com.araguacaima.gsa.model.common.BaseEntity;
 import javax.persistence.*;
 
 @Entity
-@Table(schema = "Msa",
+@PersistenceContext(unitName = "gsa")
+@Table(schema = "MSA",
         name = "Diagram")
 public class Diagram extends BaseEntity {
 

@@ -2,6 +2,7 @@ package com.araguacaima.gsa.model.am;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -21,10 +22,18 @@ import java.util.Set;
  * <li>etc</li>
  * </ul>
  */
-public final class DeploymentNode extends Element {
+@Entity
+@PersistenceContext(unitName = "gsa")
+@Table(name = "DeploymentNode", schema = "AM")
+public class DeploymentNode extends Element {
 
+    @OneToOne
     private DeploymentNode parent;
+
+    @Column
     private String technology;
+
+    @Column
     private int instances = 1;
 
     private Set<DeploymentNode> children = new HashSet<>();

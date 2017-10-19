@@ -6,14 +6,15 @@ import javax.persistence.*;
 import java.util.Collection;
 
 @Entity
-@Table(schema = "Msa",
+@PersistenceContext(unitName = "gsa")
+@Table(schema = "MSA",
         name = "IntermediateSolution")
 public class IntermediateSolution extends BaseEntity {
 
     @OneToOne
     private Markdown description;
     @OneToMany
-    @JoinTable(schema = "Msa",
+    @JoinTable(schema = "MSA",
             name = "IntermediateSolution_Functional_Diagrams",
             joinColumns = {@JoinColumn(name = "Diagram_Id",
                     referencedColumnName = "Id")},
@@ -21,7 +22,7 @@ public class IntermediateSolution extends BaseEntity {
                     referencedColumnName = "Id")})
     private Collection<Diagram> functionals;
     @OneToMany
-    @JoinTable(schema = "Msa",
+    @JoinTable(schema = "MSA",
             name = "IntermediateSolution_TechnicalDebts",
             joinColumns = {@JoinColumn(name = "TechnicalDebt_Id",
                     referencedColumnName = "Id")},

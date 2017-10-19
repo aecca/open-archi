@@ -4,11 +4,13 @@ import com.araguacaima.gsa.model.common.BaseEntity;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Table;
 
 @Entity
+@PersistenceContext(unitName = "gsa")
 @Table(name = "Concurrency",
-        schema = "Msa")
+        schema = "MSA")
 public class Concurrency extends BaseEntity {
     public static Measurable HIGH = new Measurable(new Range<ConcurrencyUnit>(ConcurrencyUnit
             .NUMBER_OF_CONCURRENT_USERS,

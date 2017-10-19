@@ -6,7 +6,8 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(schema = "Msa",
+@PersistenceContext(unitName = "gsa")
+@Table(schema = "MSA",
         name = "Status")
 public class Status extends BaseEntity {
 

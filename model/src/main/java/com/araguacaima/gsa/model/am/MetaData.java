@@ -1,7 +1,7 @@
 package com.araguacaima.gsa.model.am;
 
 import com.araguacaima.gsa.model.persons.Responsible;
-import com.araguacaima.gsa.model.persons.Version;
+import com.araguacaima.gsa.model.common.Version;
 
 import java.util.Collection;
 

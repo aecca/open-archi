@@ -2,6 +2,7 @@ package com.araguacaima.gsa.model.am;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import javax.persistence.*;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Optional;
@@ -17,14 +18,20 @@ import java.util.Set;
  * A container is essentially a context or boundary inside which some code is executed
  * or some data is stored. And each container is a separately deployable thing.
  */
-public final class Container extends StaticStructureElement {
+@Entity
+@PersistenceContext(unitName = "gsa")
+@Table(name = "Container", schema = "AM")
+public class Container extends StaticStructureElement {
 
+    @OneToOne
     private SoftwareSystem parent;
+
+    @Column
     private String technology;
 
     private Set<Component> components = new LinkedHashSet<>();
 
-    Container() {
+    public Container() {
     }
 
     @Override

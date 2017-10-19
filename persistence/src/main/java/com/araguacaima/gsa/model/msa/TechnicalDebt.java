@@ -8,7 +8,8 @@ import java.util.Collection;
 import java.util.Map;
 
 @Entity
-@Table(schema = "Msa",
+@PersistenceContext(unitName = "gsa")
+@Table(schema = "MSA",
         name = "TechnicalDebt")
 public class TechnicalDebt extends BaseEntity {
 
@@ -16,7 +17,7 @@ public class TechnicalDebt extends BaseEntity {
     private Complexity complexity;
     @OneToMany
     @CollectionTable(name = "TechnicalDebt_Descriptions",
-            schema = "Msa")
+            schema = "MSA")
     @MapKeyColumn(name = "description")
     private Map<String, Markdown> description;
     @OneToOne
@@ -24,7 +25,7 @@ public class TechnicalDebt extends BaseEntity {
     @ManyToOne
     private IntermediateSolution intermediateSolution;
     @OneToMany
-    @JoinTable(schema = "Msa",
+    @JoinTable(schema = "MSA",
             name = "TechnicalDebt_Responsibles",
             joinColumns = {@JoinColumn(name = "Responsible_Id",
                     referencedColumnName = "Id")},

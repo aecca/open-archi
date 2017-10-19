@@ -38,6 +38,12 @@
             <artifactId>model</artifactId>
             <version>${project.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${org.apache.commons-commons-lang3}</version>
+        </dependency>
         
         <!-- Testing -->
         <dependency>

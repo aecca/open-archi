@@ -4,10 +4,12 @@ import com.araguacaima.gsa.model.common.BaseEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Table;
 
 @Entity
-@Table(schema = "Msa",
+@PersistenceContext(unitName = "gsa")
+@Table(schema = "MSA",
         name = "Range")
 public class Range<T extends Enum> extends BaseEntity {
 

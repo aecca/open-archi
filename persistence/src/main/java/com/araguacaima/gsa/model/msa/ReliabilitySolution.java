@@ -2,14 +2,12 @@ package com.araguacaima.gsa.model.msa;
 
 import com.araguacaima.gsa.model.common.BaseEntity;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Table(schema = "Msa",
+@PersistenceContext(unitName = "gsa")
+@Table(schema = "MSA",
         name = "ReliabilitySolution")
 public class ReliabilitySolution extends BaseEntity {
 

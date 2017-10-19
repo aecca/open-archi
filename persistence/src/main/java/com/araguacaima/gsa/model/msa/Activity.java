@@ -4,11 +4,12 @@ import com.araguacaima.gsa.model.common.BaseEntity;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Activity",
-        schema = "Msa")
+@PersistenceContext(unitName = "gsa")
+@Table(name = "Activity", schema = "MSA")
 public class Activity extends BaseEntity {
 
     public static Measurable DEFAULT_BIG = new Measurable(new Range<Requests>(Requests.REQUESTS_PER_MONTH,

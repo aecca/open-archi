@@ -6,7 +6,8 @@ import javax.persistence.*;
 import java.util.Map;
 
 @Entity
-@Table(schema = "Msa",
+@PersistenceContext(unitName = "gsa")
+@Table(schema = "MSA",
         name = "TechnicalSolution")
 public class TechnicalSolution extends BaseEntity {
 
@@ -14,7 +15,7 @@ public class TechnicalSolution extends BaseEntity {
     private ArchitectSolutionModel architectSolutionModel;
     @OneToMany
     @CollectionTable(name = "TechnicalSolution_Impacts",
-            schema = "Msa")
+            schema = "MSA")
     @MapKeyColumn(name = "impacts")
     private Map<String, Markdown> impacts;
     @OneToOne

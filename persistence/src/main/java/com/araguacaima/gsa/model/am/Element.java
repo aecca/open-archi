@@ -3,6 +3,7 @@ package com.araguacaima.gsa.model.am;
 import com.araguacaima.gsa.util.Url;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import javax.persistence.*;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -11,15 +12,29 @@ import java.util.Set;
 /**
  * This is the superclass for all model elements.
  */
+@Entity
+@PersistenceContext(unitName = "gsa")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class Element extends Taggable {
 
     static final String CANONICAL_NAME_SEPARATOR = "/";
 
+    @OneToOne
     private Model model;
+
+    @OneToOne
     private MetaData metaData;
+
+    @Column
     private String id = "";
+
+    @Column
     private String name;
+
+    @Column
     private String description;
+
+    @Column
     private String url;
     private Map<String, String> properties = new HashMap<>();
 

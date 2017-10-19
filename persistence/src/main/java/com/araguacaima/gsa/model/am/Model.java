@@ -1,14 +1,21 @@
 package com.araguacaima.gsa.model.am;
 
+import com.araguacaima.gsa.model.common.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import javax.persistence.Entity;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Table;
 import java.util.*;
 import java.util.stream.Collectors;
 
 /**
  * A software architecture model.
  */
-public final class Model {
+@Entity
+@PersistenceContext(unitName = "gsa")
+@Table(name = "Model", schema = "AM")
+public class Model extends BaseEntity {
 
     private final Map<String, Element> elementsById = new HashMap<>();
     private final Map<String, Relationship> relationshipsById = new HashMap<>();

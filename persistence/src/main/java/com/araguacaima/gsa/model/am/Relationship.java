@@ -2,6 +2,10 @@ package com.araguacaima.gsa.model.am;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Table;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -9,19 +13,33 @@ import java.util.Set;
 /**
  * A relationship between two elements.
  */
-public final class Relationship extends Taggable {
+@Entity
+@PersistenceContext(unitName = "gsa")
+@Table(name = "Relationship", schema = "AM")
+public class Relationship extends Taggable {
 
+    @Column
     protected String id = "";
 
     private Element source;
+
+    @Column
     private String sourceId;
     private Element destination;
+
+    @Column
     private String destinationId;
+
+    @Column
     private String description;
+
+    @Column
     private String technology;
+
+    @Column
     private InteractionStyle interactionStyle = InteractionStyle.Synchronous;
 
-    Relationship() {
+    public Relationship() {
     }
 
     Relationship(Element source, Element destination, String description, String technology, InteractionStyle interactionStyle) {

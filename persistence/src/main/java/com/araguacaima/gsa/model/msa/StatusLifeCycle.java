@@ -6,12 +6,13 @@ import javax.persistence.*;
 import java.util.Collection;
 
 @Entity
-@Table(schema = "Msa",
+@PersistenceContext(unitName = "gsa")
+@Table(schema = "MSA",
         name = "StatusLifeCycle")
 public class StatusLifeCycle extends BaseEntity {
 
     @OneToMany
-    @JoinTable(schema = "Msa",
+    @JoinTable(schema = "MSA",
             name = "VolumetryStatusLifeCycle_Ancestors",
             joinColumns = {@JoinColumn(name = "Ancestors_Id",
                     referencedColumnName = "Id")},
@@ -21,7 +22,7 @@ public class StatusLifeCycle extends BaseEntity {
     @OneToOne
     private Status current;
     @OneToMany
-    @JoinTable(schema = "Msa",
+    @JoinTable(schema = "MSA",
             name = "VolumetryStatusLifeCycle_Descendants",
             joinColumns = {@JoinColumn(name = "Status_Id",
                     referencedColumnName = "Id")},

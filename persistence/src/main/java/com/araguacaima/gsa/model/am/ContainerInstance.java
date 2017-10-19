@@ -2,6 +2,7 @@ package com.araguacaima.gsa.model.am;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import javax.persistence.*;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -9,13 +10,21 @@ import java.util.Set;
 /**
  * Represents a deployment instance of a {@link Container}, which can be added to a {@link DeploymentNode}.
  */
-public final class ContainerInstance extends Element {
+@Entity
+@PersistenceContext(unitName = "gsa")
+@Table(name = "ContainerInstance", schema = "AM")
+public class ContainerInstance extends Element {
 
+    @OneToOne
     private Container container;
+
+    @Column
     private String containerId;
+
+    @Column
     private int instanceId;
 
-    ContainerInstance() {
+    public ContainerInstance() {
     }
 
     ContainerInstance(Container container, int instanceId) {

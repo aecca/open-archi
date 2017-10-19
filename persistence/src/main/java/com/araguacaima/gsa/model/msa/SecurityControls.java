@@ -4,10 +4,12 @@ import com.araguacaima.gsa.model.common.BaseEntity;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Table;
 
 @Entity
-@Table(schema = "Msa",
+@PersistenceContext(unitName = "gsa")
+@Table(schema = "MSA",
         name = "SecurityControls")
 public class SecurityControls extends BaseEntity {
 
