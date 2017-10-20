@@ -1,7 +1,7 @@
 package com.araguacaima.gsa.persistence.am;
 
 import com.araguacaima.gsa.persistence.common.BaseEntity;
-import com.araguacaima.gsa.model.common.Version;
+import com.araguacaima.gsa.persistence.common.Version;
 import com.araguacaima.gsa.persistence.persons.Responsible;
 
 import javax.persistence.*;

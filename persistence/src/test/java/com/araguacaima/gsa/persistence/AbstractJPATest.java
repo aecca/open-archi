@@ -1,5 +1,4 @@
-package com.araguacaima.gsa.model;
-
+package com.araguacaima.gsa.persistence;
 
 import org.eclipse.persistence.sessions.Session;
 import org.junit.AfterClass;

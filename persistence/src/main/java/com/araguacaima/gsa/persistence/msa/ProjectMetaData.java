@@ -1,7 +1,7 @@
 package com.araguacaima.gsa.persistence.msa;
 
-import com.araguacaima.gsa.model.common.BaseEntity;
-import com.araguacaima.gsa.model.persons.Person;
+import com.araguacaima.gsa.persistence.common.BaseEntity;
+import com.araguacaima.gsa.persistence.persons.Person;
 
 import javax.persistence.*;
 import java.util.Collection;

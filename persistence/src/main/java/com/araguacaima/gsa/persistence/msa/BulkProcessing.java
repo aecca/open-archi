@@ -1,6 +1,6 @@
 package com.araguacaima.gsa.persistence.msa;
 
-import com.araguacaima.gsa.model.common.BaseEntity;
+import com.araguacaima.gsa.persistence.common.BaseEntity;
 
 import javax.persistence.Entity;
 import javax.persistence.PersistenceContext;

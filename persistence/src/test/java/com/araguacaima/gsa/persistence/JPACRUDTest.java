@@ -1,8 +1,9 @@
-package com.araguacaima.gsa.model;
+package com.araguacaima.gsa.persistence;
 
-import com.araguacaima.gsa.model.msa.Msa;
+import com.araguacaima.gsa.persistence.msa.Msa;
 import org.junit.Test;
 
+import java.util.Calendar;
 import java.util.List;
 
 import static junit.framework.TestCase.assertNotNull;
@@ -39,7 +40,7 @@ public class JPACRUDTest extends AbstractJPATest {
     public void testPersist_success() {
         em.getTransaction().begin();
         final Msa msa = new Msa();
-        //TODO AMM: Complete
+        msa.setExpirationDate(Calendar.getInstance().getTime());
         em.persist(msa);
         em.getTransaction().commit();
 
