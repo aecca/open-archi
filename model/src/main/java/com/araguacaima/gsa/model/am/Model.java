@@ -15,7 +15,7 @@ public final class Model {
     private SequentialIntegerIdGeneratorStrategy idGenerator = new SequentialIntegerIdGeneratorStrategy();
     private Enterprise enterprise;
 
-    private Set<Person> people = new LinkedHashSet<>();
+    private Set<Consumer> people = new LinkedHashSet<>();
     private Set<SoftwareSystem> softwareSystems = new LinkedHashSet<>();
     private Set<DeploymentNode> deploymentNodes = new LinkedHashSet<>();
 
@@ -77,7 +77,7 @@ public final class Model {
      * @param description a short description of the person
      * @return the Person instance created and added to the model (or null)
      */
-    public Person addPerson(String name, String description) {
+    public Consumer addPerson(String name, String description) {
         return addPerson(Location.Unspecified, name, description);
     }
 
@@ -90,9 +90,9 @@ public final class Model {
      * @param description a short description of the person
      * @return the Person instance created and added to the model (or null)
      */
-    public Person addPerson(Location location, String name, String description) {
+    public Consumer addPerson(Location location, String name, String description) {
         if (getPersonWithName(name) == null) {
-            Person person = new Person();
+            Consumer person = new Consumer();
             person.setLocation(location);
             person.setName(name);
             person.setDescription(description);
@@ -244,7 +244,7 @@ public final class Model {
     /**
      * @return a collection containing all of the Person instances in this model.
      */
-    public Collection<Person> getPeople() {
+    public Collection<Consumer> getPeople() {
         return new LinkedHashSet<>(people);
     }
 
@@ -365,8 +365,8 @@ public final class Model {
      * @param name the name of the person
      * @return the Person instance with the specified name (or null if it doesn't exist).
      */
-    public Person getPersonWithName(String name) {
-        for (Person person : getPeople()) {
+    public Consumer getPersonWithName(String name) {
+        for (Consumer person : getPeople()) {
             if (person.getName().equals(name)) {
                 return person;
             }

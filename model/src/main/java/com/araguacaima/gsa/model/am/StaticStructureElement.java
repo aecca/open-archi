@@ -124,7 +124,7 @@ abstract class StaticStructureElement extends Element {
      * @param description a description of the relationship (e.g. "sends e-mail to")
      * @return the relationship that has just been created and added to the model
      */
-    public Relationship delivers(Person destination, String description) {
+    public Relationship delivers(Consumer destination, String description) {
         return getModel().addRelationship(this, destination, description);
     }
 
@@ -136,7 +136,7 @@ abstract class StaticStructureElement extends Element {
      * @param technology  the technology details (e.g. JSON/HTTPS)
      * @return the relationship that has just been created and added to the model
      */
-    public Relationship delivers(Person destination, String description, String technology) {
+    public Relationship delivers(Consumer destination, String description, String technology) {
         return getModel().addRelationship(this, destination, description, technology);
     }
 
@@ -149,7 +149,7 @@ abstract class StaticStructureElement extends Element {
      * @param interactionStyle the interaction style (sync vs async)
      * @return the relationship that has just been created and added to the model
      */
-    public Relationship delivers(Person destination, String description, String technology, InteractionStyle interactionStyle) {
+    public Relationship delivers(Consumer destination, String description, String technology, InteractionStyle interactionStyle) {
         return getModel().addRelationship(this, destination, description, technology, interactionStyle);
     }
 

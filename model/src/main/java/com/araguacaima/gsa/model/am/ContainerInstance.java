@@ -64,8 +64,8 @@ public final class ContainerInstance extends Element {
 
     @Override
     @JsonIgnore
-    protected Set<String> getRequiredTags() {
-        return new LinkedHashSet<>(Arrays.asList(Tags.CONTAINER_INSTANCE));
+    protected Set<Tag> getRequiredTags() {
+        return build(Tag.CONTAINER_INSTANCE);
     }
 
     @Override

@@ -2,7 +2,6 @@ package com.araguacaima.gsa.model.am;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -113,8 +112,8 @@ public final class Container extends StaticStructureElement {
     }
 
     @Override
-    protected Set<String> getRequiredTags() {
-        return new LinkedHashSet<>(Arrays.asList(Tags.ELEMENT, Tags.CONTAINER));
+    protected Set<Tag> getRequiredTags() {
+        return build(Tag.ELEMENT, Tag.CONTAINER);
     }
 
 }

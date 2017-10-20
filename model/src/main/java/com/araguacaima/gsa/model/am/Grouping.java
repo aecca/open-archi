@@ -1,8 +1,16 @@
 package com.araguacaima.gsa.model.am;
 
-import java.util.UUID;
+import com.araguacaima.gsa.model.common.BaseEntity;
 
-public class Grouping {
-    private UUID id;
+public class Grouping extends BaseEntity{
+
     private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

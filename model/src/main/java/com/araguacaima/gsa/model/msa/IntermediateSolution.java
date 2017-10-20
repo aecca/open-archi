@@ -14,8 +14,6 @@ public class IntermediateSolution extends BaseEntity {
 
     private TechnicalSolution technicals;
 
-    private Msa msa;
-
     public Markdown getDescription() {
         return description;
     }
@@ -47,13 +45,5 @@ public class IntermediateSolution extends BaseEntity {
     public void setTechnicals(TechnicalSolution technicalSolution) {
         this.technicals = technicalSolution;
 
-    }
-
-    public Msa getMsa() {
-        return msa;
-    }
-
-    public void setMsa(Msa msa) {
-        this.msa = msa;
     }
 }

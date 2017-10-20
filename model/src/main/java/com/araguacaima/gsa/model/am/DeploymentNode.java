@@ -176,7 +176,7 @@ public final class DeploymentNode extends Element {
     }
 
     @JsonIgnore
-    protected Set<String> getRequiredTags() {
+    protected Set<Tag> getRequiredTags() {
         // deployment nodes don't have any tags
         return new HashSet<>();
     }

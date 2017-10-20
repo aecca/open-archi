@@ -2,7 +2,7 @@ package com.araguacaima.gsa.model.am;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -135,17 +135,17 @@ public final class Relationship extends Taggable {
         this.interactionStyle = interactionStyle;
 
         if (interactionStyle == InteractionStyle.Synchronous) {
-            removeTag(Tags.ASYNCHRONOUS);
-            addTags(Tags.SYNCHRONOUS);
+            removeTag(Tag.ASYNCHRONOUS);
+            addTags(Tag.SYNCHRONOUS);
         } else {
-            removeTag(Tags.SYNCHRONOUS);
-            addTags(Tags.ASYNCHRONOUS);
+            removeTag(Tag.SYNCHRONOUS);
+            addTags(Tag.ASYNCHRONOUS);
         }
     }
 
     @Override
-    protected Set<String> getRequiredTags() {
-        return new LinkedHashSet<String>(Arrays.asList(Tags.RELATIONSHIP));
+    protected Set<Tag> getRequiredTags() {
+        return build(Tag.RELATIONSHIP);
     }
 
     @Override

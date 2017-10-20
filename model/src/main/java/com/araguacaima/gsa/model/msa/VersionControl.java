@@ -13,8 +13,6 @@ public class VersionControl extends BaseEntity {
 
     private Responsible responsible;
 
-    private Msa msa;
-
     private String version;
 
     public String getDescription() {
@@ -39,14 +37,6 @@ public class VersionControl extends BaseEntity {
 
     public void setResponsible(Responsible responsible) {
         this.responsible = responsible;
-    }
-
-    public Msa getMsa() {
-        return msa;
-    }
-
-    public void setMsa(Msa msa) {
-        this.msa = msa;
     }
 
     public String getVersion() {

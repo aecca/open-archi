@@ -17,4 +17,75 @@ public class MetaData {
     private Type type;
     private Collection<View> views;
 
+    public Collection<Responsible> getResponsibles() {
+        return responsibles;
+    }
+
+    public void setResponsibles(Collection<Responsible> responsibles) {
+        this.responsibles = responsibles;
+    }
+
+    public Collection<Responsible> getCollaborators() {
+        return collaborators;
+    }
+
+    public void setCollaborators(Collection<Responsible> collaborators) {
+        this.collaborators = collaborators;
+    }
+
+    public Collection<Element> getRelatedWith() {
+        return relatedWith;
+    }
+
+    public void setRelatedWith(Collection<Element> relatedWith) {
+        this.relatedWith = relatedWith;
+    }
+
+    public Collection<Element> getUsedId() {
+        return usedId;
+    }
+
+    public void setUsedId(Collection<Element> usedId) {
+        this.usedId = usedId;
+    }
+
+    public Collection<Grouping> getGroupings() {
+        return groupings;
+    }
+
+    public void setGroupings(Collection<Grouping> groupings) {
+        this.groupings = groupings;
+    }
+
+    public DeploymentStatus getDeploymentStatus() {
+        return deploymentStatus;
+    }
+
+    public void setDeploymentStatus(DeploymentStatus deploymentStatus) {
+        this.deploymentStatus = deploymentStatus;
+    }
+
+    public Version getVersion() {
+        return version;
+    }
+
+    public void setVersion(Version version) {
+        this.version = version;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
+    }
+
+    public Collection<View> getViews() {
+        return views;
+    }
+
+    public void setViews(Collection<View> views) {
+        this.views = views;
+    }
 }

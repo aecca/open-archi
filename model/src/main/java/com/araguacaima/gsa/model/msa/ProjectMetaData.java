@@ -31,8 +31,6 @@ public class ProjectMetaData extends BaseEntity {
 
     private Segment segment;
 
-    private Msa msa;
-
     public String getBusiness() {
         return business;
     }
@@ -129,11 +127,4 @@ public class ProjectMetaData extends BaseEntity {
         this.segment = segment;
     }
 
-    public Msa getMsa() {
-        return msa;
-    }
-
-    public void setMsa(Msa msa) {
-        this.msa = msa;
-    }
 }

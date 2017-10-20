@@ -6,8 +6,6 @@ public class Link extends BaseEntity {
 
     private String name;
 
-    private Msa msa;
-
     private String url;
 
     public String getName() {
@@ -16,14 +14,6 @@ public class Link extends BaseEntity {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Msa getMsa() {
-        return msa;
-    }
-
-    public void setMsa(Msa msa) {
-        this.msa = msa;
     }
 
     public String getUrl() {

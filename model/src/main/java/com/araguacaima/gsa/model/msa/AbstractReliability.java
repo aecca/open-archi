@@ -1,16 +1,16 @@
 package com.araguacaima.gsa.model.msa;
 
+import com.araguacaima.gsa.model.common.BaseEntity;
+
 import java.util.Collection;
 
-public abstract class AbstractReliability implements IReliability {
+public abstract class AbstractReliability extends BaseEntity implements IReliability {
 
     private Boolean contemplated;
 
     private Markdown description;
 
-    private Collection<String> documentationList;
-
-    private Long id;
+    private Collection<Documentation> documentationList;
 
     private ReliabilitySolution reliabilitySolution;
 
@@ -37,21 +37,13 @@ public abstract class AbstractReliability implements IReliability {
     }
 
     @Override
-    public Collection<String> getDocumentationList() {
+    public Collection<Documentation> getDocumentationList() {
         return documentationList;
     }
 
     @Override
-    public void setDocumentationList(Collection<String> documentationList) {
+    public void setDocumentationList(Collection<Documentation> documentationList) {
         this.documentationList = documentationList;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public ReliabilitySolution getReliabilitySolution() {

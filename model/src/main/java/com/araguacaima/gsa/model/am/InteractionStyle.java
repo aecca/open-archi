@@ -2,27 +2,27 @@ package com.araguacaima.gsa.model.am;
 
 /**
  * Use {@link InteractionStyle}s on {@link Relationship}s to make the difference between synchronous and asynchronous communication
- * visible. You can pass either {@link Tags#SYNCHRONOUS} or {@link Tags#ASYNCHRONOUS}
+ * visible. You can pass either {@link Tag#SYNCHRONOUS} or {@link Tag#ASYNCHRONOUS}
  * to define different styles for synchronous and asynchronous communication.
  *
- * @see Tags#SYNCHRONOUS
- * @see Tags#ASYNCHRONOUS
+ * @see Tag#SYNCHRONOUS
+ * @see Tag#ASYNCHRONOUS
  */
 public enum InteractionStyle {
 
     /**
-     * Denotes synchronous communication. The tag {@link Tags#SYNCHRONOUS} is automatically added to such {@link Relationship}s,
+     * Denotes synchronous communication. The tag {@link Tag#SYNCHRONOUS} is automatically added to such {@link Relationship}s,
      * so you might use that tag to adapt the relationship style in the diagram
      *
-     * @see Tags#SYNCHRONOUS
+     * @see Tag#SYNCHRONOUS
      */
     Synchronous,
 
     /**
-     * Denotes asynchronous communication. The tag {@link Tags#ASYNCHRONOUS} is automatically added to such {@link Relationship}s,
+     * Denotes asynchronous communication. The tag {@link Tag#ASYNCHRONOUS} is automatically added to such {@link Relationship}s,
      * so you might use that tag to adapt the relationship style in the diagram
      *
-     * @see Tags#ASYNCHRONOUS
+     * @see Tag#ASYNCHRONOUS
      */
     Asynchronous
 

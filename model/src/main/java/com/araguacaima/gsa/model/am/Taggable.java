@@ -1,14 +1,14 @@
 package com.araguacaima.gsa.model.am;
 
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import org.apache.commons.collections4.CollectionUtils;
+
+import java.util.*;
 
 abstract class Taggable {
 
-    private Set<String> tags = new LinkedHashSet<>();
+    private Set<Tag> tags = new LinkedHashSet<>();
 
-    protected abstract Set<String> getRequiredTags();
+    protected abstract Set<Tag> getRequiredTags();
 
     /**
      * Gets the comma separated list of tags.
@@ -17,7 +17,7 @@ abstract class Taggable {
      * or an empty string if there are no tags
      */
     public String getTags() {
-        Set<String> setOfTags = new LinkedHashSet<>(getRequiredTags());
+        Set<Tag> setOfTags = new LinkedHashSet<>(getRequiredTags());
         setOfTags.addAll(tags);
 
         if (setOfTags.isEmpty()) {
@@ -25,8 +25,8 @@ abstract class Taggable {
         }
 
         StringBuilder buf = new StringBuilder();
-        for (String tag : setOfTags) {
-            buf.append(tag);
+        for (Tag tag : setOfTags) {
+            buf.append(tag.getValue());
             buf.append(",");
         }
 
@@ -40,7 +40,10 @@ abstract class Taggable {
         }
 
         this.tags.clear();
-        Collections.addAll(this.tags, tags.split(","));
+        String[] split = tags.split(",");
+
+        Collection<Tag> tags_ = new ArrayList<>(build(split));
+        CollectionUtils.addAll(this.tags, tags_);
     }
 
     public void addTags(String... tags) {
@@ -48,8 +51,10 @@ abstract class Taggable {
             return;
         }
 
-        for (String tag : tags) {
-            if (tag != null) {
+        for (String tag_ : tags) {
+            if (tag_ != null) {
+                Tag tag = new Tag();
+                tag.setValue(tag_);
                 this.tags.add(tag);
             }
         }
@@ -57,11 +62,21 @@ abstract class Taggable {
 
     public void removeTag(String tag) {
         if (tag != null) {
-            this.tags.remove(tag);
+            CollectionUtils.filter(tags, tag_ -> tag_.getValue().equals(tag));
         }
     }
 
     public boolean hasTag(String tag) {
-        return this.tags.contains(tag);
+        return CollectionUtils.find(this.tags, tag_ -> tag_.getValue().equals(tag)) != null;
+    }
+
+    public static Set<Tag> build(String... tags) {
+        Set<Tag> tags_ = new LinkedHashSet<>();
+        for (String tag_ : tags) {
+            Tag tag = new Tag();
+            tag.setValue(tag_);
+            tags_.add(tag);
+        }
+        return tags_;
     }
 }

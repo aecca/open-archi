@@ -1,27 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
 
-    <persistence-unit name="gsa"  transaction-type="RESOURCE_LOCAL">
+    <persistence-unit name="gsa" transaction-type="RESOURCE_LOCAL">
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
         <properties>
-            <!--            <property name="toplink.jdbc.url"
-                                  value="jdbc:h2:file:D:\tmp/gsa/db/gsa;AUTO_SERVER=TRUE;MVCC=TRUE;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=TRUE;INIT='CREATE SCHEMA IF NOT EXISTS MSA;CREATE SCHEMA IF NOT EXISTS AM;CREATE SCHEMA IF NOT EXISTS PERSONS;'"/>
-                        <property name="toplink.jdbc.driver" value="org.h2.Driver"/>
-                        <property name="toplink.jdbc.user" value="msa"/>
-                        <property name="toplink.jdbc.password" value="msa"/>
-                        <property name="hibernate.connection.url"
-                                  value="jdbc:h2:file:D:\tmp/gsa/db/gsa;AUTO_SERVER=TRUE;MVCC=TRUE;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=TRUE;INIT='CREATE SCHEMA IF NOT EXISTS MSA;CREATE SCHEMA IF NOT EXISTS AM;CREATE SCHEMA IF NOT EXISTS PERSONS;'"/>
-                        <property name="hibernate.connection.driver_class" value="org.h2.Driver"/>
-                        <property name="hibernate.connection.username" value="msa"/>
-                        <property name="hibernate.connection.password" value="msa"/>
-                        <property name="openjpa.ConnectionURL"
-                                  value="jdbc:h2:file:D:\tmp/gsa/db/gsa;AUTO_SERVER=TRUE;MVCC=TRUE;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=TRUE;INIT='CREATE SCHEMA IF NOT EXISTS MSA;CREATE SCHEMA IF NOT EXISTS AM;CREATE SCHEMA IF NOT EXISTS PERSONS;'"/>
-                        <property name="openjpa.ConnectionDriverName" value="org.h2.Driver"/>
-                        <property name="openjpa.ConnectionUserName" value="msa"/>
-                        <property name="openjpa.ConnectionPassword" value="msa"/>-->
             <property name="javax.persistence.jdbc.url"
-                      value="jdbc:h2:file:D:\tmp/gsa/db/gsa;AUTO_SERVER=TRUE;MVCC=TRUE;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=TRUE;INIT='CREATE SCHEMA IF NOT EXISTS MSA;CREATE SCHEMA IF NOT EXISTS AM;CREATE SCHEMA IF NOT EXISTS PERSONS;'"/>
+                      value="jdbc:h2:file:D:/tmp/gsa/db/gsa;AUTO_SERVER=TRUE;MVCC=TRUE;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=TRUE;INIT=CREATE SCHEMA IF NOT EXISTS MSA\;CREATE SCHEMA IF NOT EXISTS AM\;CREATE SCHEMA IF NOT EXISTS PERSONS\;"/>
             <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
             <property name="javax.persistence.jdbc.user" value="gsa"/>
             <property name="javax.persistence.jdbc.password" value="gsa"/>

@@ -11,12 +11,16 @@ public interface IReliability {
 
     void setDescription(Markdown description);
 
-    Collection<String> getDocumentationList();
+    Collection<Documentation> getDocumentationList();
 
-    void setDocumentationList(Collection<String> documentationList);
+    void setDocumentationList(Collection<Documentation> documentationList);
 
     Boolean getStandardSolution();
 
     void setStandardSolution(Boolean standardSolution);
+
+    ReliabilitySolution getReliabilitySolution();
+
+    void setReliabilitySolution(ReliabilitySolution reliabilitySolution);
 
 }

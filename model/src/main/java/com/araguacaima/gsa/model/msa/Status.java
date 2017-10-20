@@ -16,8 +16,6 @@ public class Status extends BaseEntity {
 
     private StatusStep step;
 
-    private Msa msa;
-
     public Date getIssueDate() {
         return issueDate;
     }
@@ -48,14 +46,6 @@ public class Status extends BaseEntity {
 
     public void setStep(StatusStep statusItem) {
         this.step = statusItem;
-    }
-
-    public Msa getMsa() {
-        return msa;
-    }
-
-    public void setMsa(Msa msa) {
-        this.msa = msa;
     }
 
     public boolean isCurrent() {
