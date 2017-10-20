@@ -11,8 +11,10 @@
             <property name="javax.persistence.jdbc.user" value="gsa"/>
             <property name="javax.persistence.jdbc.password" value="gsa"/>
             <property name="eclipselink.weaving" value="static"/>
+<!--
             <property name="eclipselink.ddl-generation" value="create-or-extend-tables"/>
             <property name="eclipselink.ddl-generation.output-mode" value="database"/>
+-->
         </properties>
     </persistence-unit>
 
