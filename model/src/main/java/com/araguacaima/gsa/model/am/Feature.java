@@ -1,81 +1,63 @@
-package com.araguacaima.gsa.persistence.am;
+package com.araguacaima.gsa.model.am;
 
 
-import com.araguacaima.gsa.persistence.common.BaseEntity;
 import com.araguacaima.gsa.util.Url;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Table;
-
 /**
- * Represents a code element, such as a Java class or interface,
+ * Represents a feature, such as a Java class or interface,
  * that is part of the implementation of a component.
  */
-@Entity
-@PersistenceContext(unitName = "gsa")
-@Table(name = "CodeElement", schema = "AM")
-public class CodeElement extends BaseEntity {
+public final class Feature {
 
     /**
-     * the role of the code element ... Primary or Supporting
+     * the role of the feature ... Primary or Supporting
      */
-    @Column
-    private CodeElementRole role = CodeElementRole.Supporting;
+    private FeatureRole role = FeatureRole.Supporting;
 
     /**
-     * the name of the code element ... typically the simple class/interface name
+     * the name of the feature ... typically the simple class/interface name
      */
-    @Column
     private String name;
 
     /**
-     * the fully qualified type of the code element
+     * the fully qualified type of the feature
      **/
-    @Column
     private String type;
 
     /**
-     * a short description of the code element
+     * a short description of the feature
      */
-    @Column
     private String description;
 
     /**
-     * a URL; e.g. a reference to the code element in source code control
+     * a URL; e.g. a reference to the feature in source code control
      */
-    @Column
     private String url;
 
     /**
-     * the programming language used to create the code element
+     * the programming language used to create the feature
      */
-    @Column
-    private String language = "Java";
+    private String language;
 
     /**
-     * the category of code element; e.g. class, interface, etc
+     * the category of feature; e.g. class, interface, etc
      */
-    @Column
     private String category;
 
     /**
-     * the visibility of the code element; e.g. public, package, private
+     * the visibility of the feature; e.g. public, package, private
      */
-    @Column
     private String visibility;
 
     /**
-     * the size of the code element; e.g. the number of lines
+     * the size of the feature; e.g. the number of lines
      */
-    @Column
     private long size;
 
-    public CodeElement() {
+    Feature() {
     }
 
-    CodeElement(String fullyQualifiedTypeName) {
+    Feature(String fullyQualifiedTypeName) {
         if (fullyQualifiedTypeName == null || fullyQualifiedTypeName.trim().isEmpty()) {
             throw new IllegalArgumentException("A fully qualified name must be provided.");
         }
@@ -91,20 +73,20 @@ public class CodeElement extends BaseEntity {
     }
 
     /**
-     * Gets the role of this code element; Primary or Supporting.
+     * Gets the role of this feature; Primary or Supporting.
      *
-     * @return a CodeElementRole enum
+     * @return a FeatureRole enum
      */
-    public CodeElementRole getRole() {
+    public FeatureRole getRole() {
         return role;
     }
 
-    void setRole(CodeElementRole role) {
+    void setRole(FeatureRole role) {
         this.role = role;
     }
 
     /**
-     * Gets the name of this code element.
+     * Gets the name of this feature.
      *
      * @return the name, as a String
      */
@@ -117,7 +99,7 @@ public class CodeElement extends BaseEntity {
     }
 
     /**
-     * Gets the type (fully qualified type name) of this code element.
+     * Gets the type (fully qualified type name) of this feature.
      *
      * @return the type, as a String
      */
@@ -130,7 +112,7 @@ public class CodeElement extends BaseEntity {
     }
 
     /**
-     * Gets the description of this code element.
+     * Gets the description of this feature.
      *
      * @return the description, as a String
      */
@@ -139,7 +121,7 @@ public class CodeElement extends BaseEntity {
     }
 
     /**
-     * Sets the description of this code element.
+     * Sets the description of this feature.
      *
      * @param description the description, as a String
      */
@@ -148,7 +130,7 @@ public class CodeElement extends BaseEntity {
     }
 
     /**
-     * Gets the URL where more information about this code element can be found.
+     * Gets the URL where more information about this feature can be found.
      *
      * @return the URL as a String, or null if not set
      */
@@ -157,7 +139,7 @@ public class CodeElement extends BaseEntity {
     }
 
     /**
-     * Sets the URL where more information about this code element can be found.
+     * Sets the URL where more information about this feature can be found.
      *
      * @param url the URL as a String
      * @throws IllegalArgumentException if the URL is not a well-formed URL
@@ -173,7 +155,7 @@ public class CodeElement extends BaseEntity {
     }
 
     /**
-     * Gets the programming language of this code element.
+     * Gets the programming language of this feature.
      *
      * @return the programming language, as a String
      */
@@ -182,7 +164,7 @@ public class CodeElement extends BaseEntity {
     }
 
     /**
-     * Sets the programming language of this code element.
+     * Sets the programming language of this feature.
      *
      * @param language the programming language, as a String
      */
@@ -191,7 +173,7 @@ public class CodeElement extends BaseEntity {
     }
 
     /**
-     * Gets the category of this code element (interface, class, etc).
+     * Gets the category of this feature (interface, class, etc).
      *
      * @return the category, as a String
      */
@@ -200,7 +182,7 @@ public class CodeElement extends BaseEntity {
     }
 
     /**
-     * Sets the category of this code element.
+     * Sets the category of this feature.
      *
      * @param category the category, as a String
      */
@@ -209,7 +191,7 @@ public class CodeElement extends BaseEntity {
     }
 
     /**
-     * Gets the visibility of this code element (public, package, etc).
+     * Gets the visibility of this feature (public, package, etc).
      *
      * @return the visibility, as a String
      */
@@ -218,7 +200,7 @@ public class CodeElement extends BaseEntity {
     }
 
     /**
-     * Sets the visibility of this code element.
+     * Sets the visibility of this feature.
      *
      * @param visibility the visibility, as a String
      */
@@ -227,7 +209,7 @@ public class CodeElement extends BaseEntity {
     }
 
     /**
-     * Gets the size of this code element (e.g. the number of lines of code).
+     * Gets the size of this feature (e.g. the number of lines of code).
      *
      * @return the size, as a long
      */
@@ -236,7 +218,7 @@ public class CodeElement extends BaseEntity {
     }
 
     /**
-     * Sets the size of this code element.
+     * Sets the size of this feature.
      *
      * @param size the size, as a long
      */
@@ -249,7 +231,7 @@ public class CodeElement extends BaseEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        CodeElement that = (CodeElement) o;
+        Feature that = (Feature) o;
 
         return type.equals(that.type);
     }

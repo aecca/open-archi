@@ -33,7 +33,7 @@ public class Component extends Element {
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "CodeElement_Id",
                     referencedColumnName = "Id")})
-    private Set<CodeElement> codeElements = new HashSet<>();
+    private Set<Feature> features = new HashSet<>();
 
     @Column
     private long size;
@@ -76,16 +76,16 @@ public class Component extends Element {
     }
 
     /**
-     * Gets the set of CodeElement objects.
+     * Gets the set of Feature objects.
      *
      * @return a Set, which could be empty
      */
-    public Set<CodeElement> getCode() {
-        return new HashSet<>(codeElements);
+    public Set<Feature> getCode() {
+        return new HashSet<>(features);
     }
 
-    void setCode(Set<CodeElement> codeElements) {
-        this.codeElements = codeElements;
+    void setCode(Set<Feature> features) {
+        this.features = features;
     }
 
     /**
@@ -106,11 +106,11 @@ public class Component extends Element {
         this.size = size;
     }
 
-    public Set<CodeElement> getCodeElements() {
-        return codeElements;
+    public Set<Feature> getFeatures() {
+        return features;
     }
 
-    public void setCodeElements(Set<CodeElement> codeElements) {
-        this.codeElements = codeElements;
+    public void setFeatures(Set<Feature> features) {
+        this.features = features;
     }
 }

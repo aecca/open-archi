@@ -18,7 +18,7 @@ public final class Component extends StaticStructureElement {
     private Container parent;
 
     private String technology;
-    private Set<CodeElement> codeElements = new HashSet<>();
+    private Set<Feature> features = new HashSet<>();
     private long size;
 
     Component() {
@@ -65,7 +65,7 @@ public final class Component extends StaticStructureElement {
      */
     @JsonIgnore
     public String getType() {
-        Optional<CodeElement> optional = codeElements.stream().filter(ce -> ce.getRole() == CodeElementRole.Primary).findFirst();
+        Optional<Feature> optional = features.stream().filter(ce -> ce.getRole() == FeatureRole.Primary).findFirst();
         if (optional.isPresent()) {
             return optional.get().getType();
         } else {
@@ -77,46 +77,46 @@ public final class Component extends StaticStructureElement {
      * Sets the type of this component (e.g. a fully qualified Java interface/class name).
      *
      * @param type the fully qualified type name
-     * @return the CodeElement that was created
+     * @return the Feature that was created
      * @throws IllegalArgumentException if the specified type is null
      */
-    public CodeElement setType(String type) {
-        Optional<CodeElement> optional = codeElements.stream().filter(ce -> ce.getRole() == CodeElementRole.Primary).findFirst();
-        optional.ifPresent(codeElement -> codeElements.remove(codeElement));
+    public Feature setType(String type) {
+        Optional<Feature> optional = features.stream().filter(ce -> ce.getRole() == FeatureRole.Primary).findFirst();
+        optional.ifPresent(feature -> features.remove(feature));
 
-        CodeElement codeElement = new CodeElement(type);
-        codeElement.setRole(CodeElementRole.Primary);
-        this.codeElements.add(codeElement);
+        Feature feature = new Feature(type);
+        feature.setRole(FeatureRole.Primary);
+        this.features.add(feature);
 
-        return codeElement;
+        return feature;
     }
 
     /**
-     * Gets the set of CodeElement objects.
+     * Gets the set of Feature objects.
      *
      * @return a Set, which could be empty
      */
-    public Set<CodeElement> getCode() {
-        return new HashSet<>(codeElements);
+    public Set<Feature> getCode() {
+        return new HashSet<>(features);
     }
 
-    void setCode(Set<CodeElement> codeElements) {
-        this.codeElements = codeElements;
+    void setCode(Set<Feature> features) {
+        this.features = features;
     }
 
     /**
      * Adds a supporting type to this Component.
      *
      * @param type the fully qualified type name
-     * @return a CodeElement representing the supporting type
+     * @return a Feature representing the supporting type
      * @throws IllegalArgumentException if the specified type is null
      */
-    public CodeElement addSupportingType(String type) {
-        CodeElement codeElement = new CodeElement(type);
-        codeElement.setRole(CodeElementRole.Supporting);
-        this.codeElements.add(codeElement);
+    public Feature addSupportingType(String type) {
+        Feature feature = new Feature(type);
+        feature.setRole(FeatureRole.Supporting);
+        this.features.add(feature);
 
-        return codeElement;
+        return feature;
     }
 
     /**
@@ -138,7 +138,7 @@ public final class Component extends StaticStructureElement {
     }
 
     /**
-     * Gets the Java package of this component (i.e. the package of the primary code element).
+     * Gets the Java package of this component (i.e. the package of the primary feature).
      *
      * @return the package name, as a String
      */
