@@ -1,6 +1,6 @@
 package com.araguacaima.gsa.model.persons;
 
-import com.araguacaima.gsa.model.common.BaseEntity;
+import com.araguacaima.gsa.model.meta.BaseEntity;
 
 public class Person extends BaseEntity {
 

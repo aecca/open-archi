@@ -52,6 +52,9 @@ public abstract class Element extends Taggable {
                     referencedColumnName = "Id")})
     private Set<Relationship> relationships = new LinkedHashSet<>();
 
+    @OneToOne
+    private Point location;
+
     protected Element() {
     }
 
@@ -179,6 +182,10 @@ public abstract class Element extends Taggable {
 
     public void setMetaData(MetaData metaData) {
         this.metaData = metaData;
+    }
+
+    public void setRelationships(Set<Relationship> relationships) {
+        this.relationships = relationships;
     }
 
     @Override

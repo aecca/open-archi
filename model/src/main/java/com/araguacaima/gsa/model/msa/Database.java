@@ -1,6 +1,6 @@
 package com.araguacaima.gsa.model.msa;
 
-import com.araguacaima.gsa.model.common.BaseEntity;
+import com.araguacaima.gsa.model.meta.BaseEntity;
 
 public class Database extends BaseEntity {
     public static Measurable DEFAULT_BIG = new Measurable(new Range<StorageUnit>(StorageUnit.GB, 251, 500));

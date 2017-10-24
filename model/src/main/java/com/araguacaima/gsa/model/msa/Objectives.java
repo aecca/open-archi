@@ -1,8 +1,6 @@
 package com.araguacaima.gsa.model.msa;
 
-import com.araguacaima.gsa.model.common.BaseEntity;
-
-import java.util.Collection;
+import com.araguacaima.gsa.model.meta.BaseEntity;
 
 public class Objectives extends BaseEntity {
 

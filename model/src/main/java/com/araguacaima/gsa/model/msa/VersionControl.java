@@ -1,6 +1,6 @@
 package com.araguacaima.gsa.model.msa;
 
-import com.araguacaima.gsa.model.common.BaseEntity;
+import com.araguacaima.gsa.model.meta.BaseEntity;
 import com.araguacaima.gsa.model.persons.Responsible;
 
 import java.util.Date;

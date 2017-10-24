@@ -1,11 +1,9 @@
 package com.araguacaima.gsa.persistence.am;
 
+import com.araguacaima.gsa.model.diagrams.architectural.RelationshipType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 /**
  * A relationship between two elements.
@@ -38,6 +36,9 @@ public class Relationship extends Taggable {
 
     @Column
     private InteractionStyle interactionStyle = InteractionStyle.Synchronous;
+
+    @Column
+    private RelationshipType type;
 
     public Relationship() {
     }
@@ -151,6 +152,14 @@ public class Relationship extends Taggable {
 
     public void setInteractionStyle(InteractionStyle interactionStyle) {
         this.interactionStyle = interactionStyle;
+    }
+
+    public RelationshipType getType() {
+        return type;
+    }
+
+    public void setType(RelationshipType type) {
+        this.type = type;
     }
 
     @Override

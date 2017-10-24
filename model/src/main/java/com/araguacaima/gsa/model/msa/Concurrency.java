@@ -1,6 +1,6 @@
 package com.araguacaima.gsa.model.msa;
 
-import com.araguacaima.gsa.model.common.BaseEntity;
+import com.araguacaima.gsa.model.meta.BaseEntity;
 
 public class Concurrency extends BaseEntity {
     public static Measurable HIGH = new Measurable(new Range<ConcurrencyUnit>(ConcurrencyUnit

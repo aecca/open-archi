@@ -29,10 +29,10 @@ public class BaseEntity implements Serializable, BasicEntity, Cloneable {
             return true;
         if (obj == null)
             return false;
-        if (!(obj instanceof com.araguacaima.gsa.model.common.BaseEntity)) {
+        if (!(obj instanceof com.araguacaima.gsa.model.meta.BaseEntity)) {
             return false;
         }
-        com.araguacaima.gsa.model.common.BaseEntity other = (com.araguacaima.gsa.model.common.BaseEntity) obj;
+        com.araguacaima.gsa.model.meta.BaseEntity other = (com.araguacaima.gsa.model.meta.BaseEntity) obj;
         return getId().equals(other.getId());
     }
 

@@ -1,7 +1,7 @@
 package com.araguacaima.gsa.model.msa;
 
-import com.araguacaima.gsa.model.am.Model;
-import com.araguacaima.gsa.model.common.BaseEntity;
+import com.araguacaima.gsa.model.diagrams.architectural.Model;
+import com.araguacaima.gsa.model.meta.BaseEntity;
 
 public class Diagram extends BaseEntity {
 
