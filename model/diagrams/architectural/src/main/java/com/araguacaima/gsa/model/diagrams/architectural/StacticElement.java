@@ -1,16 +1,14 @@
 package com.araguacaima.gsa.model.diagrams.architectural;
 
-import com.araguacaima.gsa.model.diagrams.core.Element;
-import com.araguacaima.gsa.model.diagrams.core.ElementKind;
+import com.araguacaima.gsa.model.diagrams.core.*;
 import com.araguacaima.gsa.model.diagrams.core.Relationship;
-import com.araguacaima.gsa.model.diagrams.core.MetaData;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * This is the superclass for model elements that describe the static structure
  * of a software system, namely Person, SoftwareSystem, Container and Component.
  */
-public abstract class StacticElement extends Element {
+public abstract class StacticElement<T extends Item> extends Element {
 
     public static final String CANONICAL_NAME_SEPARATOR = "/";
     private Model model;
@@ -39,7 +37,7 @@ public abstract class StacticElement extends Element {
      * @return true if this element has afferent relationships, false otherwise
      */
     public boolean hasAfferentRelationships() {
-        return getModel().getRelationships().stream().filter(r -> r.getDestination() == this).count() > 0;
+        return getModel().getRelationships().stream().filter(r -> ((Relationship) r).getDestination() == this).count() > 0;
     }
 
     /**

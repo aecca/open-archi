@@ -1,6 +1,7 @@
 package com.araguacaima.gsa.model.diagrams.architectural;
 
 import com.araguacaima.gsa.model.diagrams.core.Element;
+import com.araguacaima.gsa.model.diagrams.core.Relationship;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.HashSet;
@@ -114,7 +115,7 @@ public class SoftwareSystem extends StacticElement {
 
     @Override
     protected Set<String> getRequiredTags() {
-        return build(Tag.ELEMENT, Tag.SOFTWARE_SYSTEM);
+        return build(Tags.ELEMENT, Tags.SOFTWARE_SYSTEM);
     }
 
 }

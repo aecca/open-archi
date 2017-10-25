@@ -1,5 +1,6 @@
 package com.araguacaima.gsa.model.diagrams.architectural;
 
+import com.araguacaima.gsa.model.diagrams.core.Item;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.LinkedHashSet;
@@ -16,7 +17,7 @@ import java.util.Set;
  * A container is essentially a context or boundary inside which some code is executed
  * or some data is stored. And each container is a separately deployable thing.
  */
-public class Container extends StacticElement {
+public class Container<T extends Item> extends StacticElement {
 
     private String technology;
     private Set<Component> components = new LinkedHashSet<>();
@@ -44,11 +45,11 @@ public class Container extends StacticElement {
     }
 
     public Component addComponent(String name, String description) {
-        return getModel().addComponent(this, name, description);
+        return getModel().addComponent((Container<Item<Item>>) this, name, description);
     }
 
     public Component addComponent(String name, String description, String technology) {
-        Component c = getModel().addComponent(this, name, description);
+        Component c = getModel().addComponent((Container<Item<Item>>) this, name, description);
         c.setTechnology(technology);
         return c;
     }
@@ -58,7 +59,7 @@ public class Container extends StacticElement {
     }
 
     public Component addComponent(String name, String type, String description, String technology) {
-        return getModel().addComponentOfType(this, name, type, description, technology);
+        return getModel().addComponentOfType((Container<Item<Item>>) this, name, type, description, technology);
     }
 
     void add(Component component) {
@@ -101,7 +102,7 @@ public class Container extends StacticElement {
 
     @Override
     protected Set<String> getRequiredTags() {
-        return build(Tag.ELEMENT, Tag.CONTAINER);
+        return build(Tags.ELEMENT, Tags.CONTAINER);
     }
 
 }

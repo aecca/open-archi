@@ -7,13 +7,11 @@ import java.util.Set;
 /**
  * A relationship between two elements.
  */
-public abstract class Relationship extends Taggable {
+public abstract class Relationship <T extends Item> extends Taggable {
 
-    protected String id = "";
-
-    private Element source;
+    private T source;
     private String sourceId;
-    private Element destination;
+    private T destination;
     private String destinationId;
     private String description;
     private String sourcePort;
@@ -22,7 +20,7 @@ public abstract class Relationship extends Taggable {
     public Relationship() {
     }
 
-    public Relationship(Element source, Element destination, String description) {
+    public Relationship(T source, T destination, String description) {
         this();
 
         this.source = source;
@@ -31,11 +29,11 @@ public abstract class Relationship extends Taggable {
     }
 
     @JsonIgnore
-    public Element getSource() {
+    public T getSource() {
         return source;
     }
 
-    public void setSource(Element source) {
+    public void setSource(T source) {
         this.source = source;
     }
 
@@ -86,11 +84,11 @@ public abstract class Relationship extends Taggable {
     }
 
     @JsonIgnore
-    public Element getDestination() {
+    public T getDestination() {
         return destination;
     }
 
-    public void setDestination(Element destination) {
+    public void setDestination(T destination) {
         this.destination = destination;
     }
 

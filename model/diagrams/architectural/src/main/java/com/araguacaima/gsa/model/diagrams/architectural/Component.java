@@ -1,11 +1,9 @@
 package com.araguacaima.gsa.model.diagrams.architectural;
 
 import com.araguacaima.gsa.model.diagrams.core.Feature;
-import com.araguacaima.gsa.model.diagrams.core.FeatureRole;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -26,6 +24,13 @@ public class Component extends StacticElement {
     Component() {
     }
 
+    public Set<Feature> getFeatures() {
+        return features;
+    }
+
+    public void setFeatures(Set<Feature> features) {
+        this.features = features;
+    }
 
     /**
      * Gets the technology associated with this component (e.g. "Spring Bean").
@@ -91,7 +96,7 @@ public class Component extends StacticElement {
 
     @Override
     protected Set<String> getRequiredTags() {
-        return build(Tag.ELEMENT, Tag.COMPONENT);
+        return build(Tags.ELEMENT, Tags.COMPONENT);
     }
 
 }

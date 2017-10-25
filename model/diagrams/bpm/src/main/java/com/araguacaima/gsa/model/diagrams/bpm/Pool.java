@@ -1,10 +1,15 @@
 package com.araguacaima.gsa.model.diagrams.bpm;
 
-import java.util.Collection;
+import com.araguacaima.gsa.model.diagrams.core.ElementKind;
+import com.araguacaima.gsa.model.diagrams.core.Item;
 
-public class Pool {
+import java.util.Collection;
+import java.util.Set;
+
+public class Pool extends Item {
 
     private Collection<Lane> lanes;
+    private ElementKind kind;
 
     public Collection<Lane> getLanes() {
         return lanes;
@@ -12,5 +17,24 @@ public class Pool {
 
     public void setLanes(Collection<Lane> lanes) {
         this.lanes = lanes;
+    }
+    @Override
+    protected String getCanonicalNameSeparator() {
+        return null;
+    }
+
+    @Override
+    public ElementKind getKind() {
+        return this.kind;
+    }
+
+    @Override
+    public void setKind(ElementKind kind) {
+        this.kind = kind;
+    }
+
+    @Override
+    protected Set<String> getRequiredTags() {
+        return null;
     }
 }

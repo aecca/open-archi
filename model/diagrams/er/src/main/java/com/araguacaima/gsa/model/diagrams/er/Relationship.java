@@ -1,22 +1,21 @@
 package com.araguacaima.gsa.model.diagrams.er;
 
 import com.araguacaima.gsa.model.diagrams.core.Constants;
-import com.araguacaima.gsa.model.diagrams.core.Relationship;
 import com.araguacaima.gsa.model.diagrams.core.RelationshipType;
 
 import java.util.Set;
 
 /**
- * A relationship between two classes.
+ * A relationship between two entities.
  */
-public class ERRelationship extends Relationship {
+public class Relationship extends com.araguacaima.gsa.model.diagrams.core.Relationship<Entity> {
 
     private RelationshipType type;
 
     private String sourceText;
     private String destinationText;
 
-    public ERRelationship() {
+    public Relationship() {
     }
 
     public String getSourceText() {

@@ -14,5 +14,5 @@ public enum ElementKind {
     GANTT,
     ENTITY_RELATIONSHIP,
     UML_CLASS,
-    BPM
+    FEATURE, BPM
 }

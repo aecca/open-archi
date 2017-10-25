@@ -50,7 +50,7 @@ public class Consumer extends StacticElement {
 
     @Override
     protected Set<String> getRequiredTags() {
-        return build(Tag.ELEMENT, Tag.PERSON);
+        return build(Tags.ELEMENT, Tags.PERSON);
     }
 
     @Override

@@ -1,7 +1,9 @@
 package com.araguacaima.gsa.model.diagrams.architectural;
 
-import com.araguacaima.gsa.model.diagrams.core.*;
-import com.araguacaima.gsa.model.diagrams.core.MetaData;
+import com.araguacaima.gsa.model.diagrams.core.Element;
+import com.araguacaima.gsa.model.diagrams.core.ElementKind;
+import com.araguacaima.gsa.model.diagrams.core.Item;
+import com.araguacaima.gsa.model.diagrams.core.SequentialIdGeneratorStrategy;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.*;
@@ -13,7 +15,7 @@ import java.util.stream.Collectors;
 public class Model extends Element {
 
     private final Map<String, Element> elementsById = new HashMap<>();
-    private final Map<String, Relationship> relationshipsById = new HashMap<>();
+    private final Map<String, com.araguacaima.gsa.model.diagrams.core.Relationship> relationshipsById = new HashMap<>();
     private SequentialIdGeneratorStrategy idGenerator = new SequentialIdGeneratorStrategy();
 
     private ElementKind kind = ElementKind.ARCHITECTURAL_MODEL;
@@ -124,7 +126,7 @@ public class Model extends Element {
         }
     }
 
-    Component addComponentOfType(Container parent, String name, String type, String description, String technology) {
+    Component addComponentOfType(Container<Item<Item>> parent, String name, String type, String description, String technology) {
         Component component = new Component();
         component.setName(name);
         component.addFeature(type);
@@ -141,7 +143,7 @@ public class Model extends Element {
         return component;
     }
 
-    Component addComponent(Container parent, String name, String description) {
+    Component addComponent(Container<Item<Item>> parent, String name, String description) {
         Component component = new Component();
         component.setName(name);
         component.setDescription(description);
@@ -169,7 +171,7 @@ public class Model extends Element {
 
         }
 
-        Relationship relationship = new ArchitecturalRelationship(source, destination, description, technology, interactionStyle);
+        Relationship relationship = new Relationship(source, destination, description, technology, interactionStyle);
         if (addRelationship(relationship)) {
             return relationship;
         } else {
@@ -204,7 +206,7 @@ public class Model extends Element {
         idGenerator.found(element.getId());
     }
 
-    private void addRelationshipToInternalStructures(Relationship relationship) {
+    private void addRelationshipToInternalStructures(com.araguacaima.gsa.model.diagrams.core.Relationship relationship) {
         relationshipsById.put(relationship.getId(), relationship);
         idGenerator.found(relationship.getId());
     }
@@ -231,14 +233,6 @@ public class Model extends Element {
         return elementsById.get(id);
     }
 
-    /**
-     * @return a set containing all relationships in this model.
-     */
-    @JsonIgnore
-    public Set<Relationship> getRelationships() {
-        return new HashSet<>(this.relationshipsById.values());
-    }
-
     @Override
     protected String getCanonicalNameSeparator() {
         return null;
@@ -249,7 +243,7 @@ public class Model extends Element {
      * @return the relationship in this model with the specified ID (or null if it doesn't exist).
      * @see Relationship#getId()
      */
-    public Relationship getRelationship(String id) {
+    public com.araguacaima.gsa.model.diagrams.core.Relationship getRelationship(String id) {
         return relationshipsById.get(id);
     }
 
@@ -285,7 +279,8 @@ public class Model extends Element {
                 softwareSystem.add(container);
                 addElementToInternalStructures(container);
                 container.setParent(softwareSystem);
-                for (Component component : container.getComponents()) {
+                Set<Component> components = container.getComponents();
+                for (Component component : components) {
                     component.setModel(this);
                     container.add(component);
                     addElementToInternalStructures(component);
@@ -302,7 +297,8 @@ public class Model extends Element {
             hydrateRelationships(softwareSystem);
             for (Container container : softwareSystem.getContainers()) {
                 hydrateRelationships(container);
-                for (Component component : container.getComponents()) {
+                Set<Component> components = container.getComponents();
+                for (Component component : components) {
                     hydrateRelationships(component);
                 }
             }
@@ -319,7 +315,8 @@ public class Model extends Element {
         deploymentNode.getChildren().forEach(child -> hydrateDeploymentNode(child, deploymentNode));
 
         for (ContainerInstance containerInstance : deploymentNode.getContainerInstances()) {
-            containerInstance.setContainer((Container) getElement(containerInstance.getContainerId()));
+            Element element = getElement(containerInstance.getContainerId());
+            containerInstance.setContainer((Container) element);
             containerInstance.setModel(this);
             addElementToInternalStructures(containerInstance);
         }
@@ -332,7 +329,8 @@ public class Model extends Element {
     }
 
     private void hydrateRelationships(Element element) {
-        for (Relationship relationship : element.getRelationships()) {
+        Set<com.araguacaima.gsa.model.diagrams.core.Relationship> relationships = element.getRelationships();
+        for (com.araguacaima.gsa.model.diagrams.core.Relationship relationship : relationships) {
             relationship.setSource(getElement(relationship.getSourceId()));
             relationship.setDestination(getElement(relationship.getDestinationId()));
             addRelationshipToInternalStructures(relationship);
@@ -345,7 +343,7 @@ public class Model extends Element {
      * @param element any element
      * @return true, if the element is contained in this model
      */
-    public boolean contains(Element element) {
+    public boolean contains(Element<Item<Item<Item>>> element) {
         return elementsById.values().contains(element);
     }
 
@@ -406,9 +404,10 @@ public class Model extends Element {
         String technologyKey = "T";
         Map<Element, Map<Element, Map<String, HashSet<String>>>> candidateRelationships = new HashMap<>();
 
-        for (Relationship relationship : getRelationships()) {
-            Element source = relationship.getSource();
-            Element destination = relationship.getDestination();
+        Set<com.araguacaima.gsa.model.diagrams.core.Relationship> relationships = getRelationships();
+        for (com.araguacaima.gsa.model.diagrams.core.Relationship relationship : relationships) {
+            Element source = (Element) relationship.getSource();
+            Element destination = (Element) relationship.getDestination();
 
             while (source != null) {
                 while (destination != null) {
@@ -429,17 +428,17 @@ public class Model extends Element {
                                 candidateRelationships.get(source).get(destination).get(descriptionKey).add(relationship.getDescription());
                             }
 
-                            if (((ArchitecturalRelationship) relationship).getTechnology() != null) {
-                                candidateRelationships.get(source).get(destination).get(technologyKey).add(((ArchitecturalRelationship) relationship).getTechnology());
+                            if (((Relationship) relationship).getTechnology() != null) {
+                                candidateRelationships.get(source).get(destination).get(technologyKey).add(((Relationship) relationship).getTechnology());
                             }
                         }
                     }
 
-                    destination = destination.getParent();
+                    destination = (Element) destination.getParent();
                 }
 
-                destination = relationship.getDestination();
-                source = source.getParent();
+                destination = (Element) relationship.getDestination();
+                source = (Element) source.getParent();
             }
         }
 
@@ -468,7 +467,7 @@ public class Model extends Element {
         return implicitRelationships;
     }
 
-    private boolean propagatedRelationshipIsAllowed(Element source, Element destination) {
+    private boolean propagatedRelationshipIsAllowed(Item source, Item destination) {
         if (source.equals(destination)) {
             return false;
         }
@@ -581,15 +580,17 @@ public class Model extends Element {
         for (ContainerInstance ci : containerInstances) {
             Container c = ci.getContainer();
 
-            for (Relationship relationship : container.getRelationships()) {
-                ArchitecturalRelationship relationship_ = (ArchitecturalRelationship) relationship;
+            Set<com.araguacaima.gsa.model.diagrams.core.Relationship> relationships = container.getRelationships();
+            for (com.araguacaima.gsa.model.diagrams.core.Relationship relationship : relationships) {
+                Relationship relationship_ = (Relationship) relationship;
                 if (relationship_.getDestination().equals(c)) {
                     addRelationship(containerInstance, ci, relationship_.getDescription(), relationship_.getTechnology(), relationship_.getInteractionStyle());
                 }
             }
 
-            for (Relationship relationship : c.getRelationships()) {
-                ArchitecturalRelationship relationship_ = (ArchitecturalRelationship) relationship;
+            Set<com.araguacaima.gsa.model.diagrams.core.Relationship> relationships1 = c.getRelationships();
+            for (com.araguacaima.gsa.model.diagrams.core.Relationship relationship : relationships1) {
+                Relationship relationship_ = (Relationship) relationship;
                 if (relationship.getDestination().equals(container)) {
                     addRelationship(ci, containerInstance, relationship_.getDescription(), relationship_.getTechnology(), relationship_.getInteractionStyle());
                 }

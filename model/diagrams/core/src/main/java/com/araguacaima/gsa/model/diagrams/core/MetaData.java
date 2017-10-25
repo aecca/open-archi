@@ -14,7 +14,6 @@ public class MetaData implements IMetaData {
     private Collection<Responsible> collaborators;
     private Collection<Element> relatedWith;
     private Collection<Element> usedId;
-    private Collection<Grouping> groupings;
     private Version version;
     private Type type;
     private Collection<View> views;
@@ -49,14 +48,6 @@ public class MetaData implements IMetaData {
 
     public void setUsedId(Collection<Element> usedId) {
         this.usedId = usedId;
-    }
-
-    public Collection<Grouping> getGroupings() {
-        return groupings;
-    }
-
-    public void setGroupings(Collection<Grouping> groupings) {
-        this.groupings = groupings;
     }
 
     public Version getVersion() {

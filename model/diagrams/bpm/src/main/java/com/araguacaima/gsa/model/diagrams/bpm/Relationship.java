@@ -1,7 +1,6 @@
-package com.araguacaima.gsa.model.diagrams.classes;
+package com.araguacaima.gsa.model.diagrams.bpm;
 
 import com.araguacaima.gsa.model.diagrams.core.Constants;
-import com.araguacaima.gsa.model.diagrams.core.Relationship;
 import com.araguacaima.gsa.model.diagrams.core.RelationshipType;
 
 import java.util.Set;
@@ -9,13 +8,12 @@ import java.util.Set;
 /**
  * A relationship between two classes.
  */
-public class UmlClassRelationship extends Relationship {
+public class Relationship extends com.araguacaima.gsa.model.diagrams.core.Relationship<Activity> {
 
     private RelationshipType type;
 
-    public UmlClassRelationship() {
+    public Relationship() {
     }
-
 
     @Override
     public RelationshipType getType() {

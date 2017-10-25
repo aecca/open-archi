@@ -1,18 +1,24 @@
-package com.araguacaima.gsa.model.diagrams.classes;
+package com.araguacaima.gsa.model.diagrams.er;
 
 import com.araguacaima.gsa.model.diagrams.core.Element;
 import com.araguacaima.gsa.model.diagrams.core.ElementKind;
 
+import java.util.Collection;
 import java.util.Set;
 
-/**
- * This is the superclass for all model elements.
- */
-public abstract class UmlElement extends Element {
+public class Model extends Element {
 
+    public static final String CANONICAL_NAME_SEPARATOR = "#";
+    private Collection<Entity> entities;
+    private ElementKind kind = ElementKind.BPM_MODEL;
 
-    public static final String CANONICAL_NAME_SEPARATOR = ".";
-    private ElementKind kind = ElementKind.UML_CLASS_MODEL;
+    public Collection<Entity> getEntities() {
+        return entities;
+    }
+
+    public void setEntities(Collection<Entity> entities) {
+        this.entities = entities;
+    }
 
     @Override
     protected String getCanonicalNameSeparator() {
@@ -33,4 +39,5 @@ public abstract class UmlElement extends Element {
     protected Set<String> getRequiredTags() {
         return null;
     }
+
 }

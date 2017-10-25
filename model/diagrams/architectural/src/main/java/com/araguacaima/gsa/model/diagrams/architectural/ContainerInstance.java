@@ -71,7 +71,7 @@ public class ContainerInstance extends Element {
     @Override
     @JsonIgnore
     protected Set<String> getRequiredTags() {
-        return build(Tag.CONTAINER_INSTANCE);
+        return build(Tags.CONTAINER_INSTANCE);
     }
 
     @Override
@@ -88,7 +88,7 @@ public class ContainerInstance extends Element {
     @Override
     @JsonIgnore
     public Element getParent() {
-        return container.getParent();
+        return (Element) container.getParent();
     }
 
     @Override

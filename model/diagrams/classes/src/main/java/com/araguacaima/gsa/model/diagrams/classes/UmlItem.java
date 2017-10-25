@@ -1,13 +1,18 @@
-package com.araguacaima.gsa.model.diagrams.er;
+package com.araguacaima.gsa.model.diagrams.classes;
 
 import com.araguacaima.gsa.model.diagrams.core.Element;
 import com.araguacaima.gsa.model.diagrams.core.ElementKind;
+import com.araguacaima.gsa.model.diagrams.core.Item;
 
 import java.util.Set;
 
-public class EntityRelationship extends Element {
+/**
+ * This is the superclass for all model elements.
+ */
+public abstract class UmlItem extends Item {
 
-    public static final String CANONICAL_NAME_SEPARATOR = "|";
+
+    public static final String CANONICAL_NAME_SEPARATOR = ".";
     private ElementKind kind = ElementKind.UML_CLASS_MODEL;
 
     @Override

@@ -3,7 +3,7 @@ package com.araguacaima.gsa.model.diagrams.classes;
 import java.util.HashMap;
 import java.util.Map;
 
-public class UmlClass extends UmlElement {
+public class UmlClass extends UmlItem {
 
     private Map<String, UmlField> fields = new HashMap<>();
     private Map<String, UmlMethod> methods = new HashMap<>();

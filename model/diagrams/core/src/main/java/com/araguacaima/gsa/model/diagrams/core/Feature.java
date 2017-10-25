@@ -3,11 +3,13 @@ package com.araguacaima.gsa.model.diagrams.core;
 
 import com.araguacaima.gsa.util.Url;
 
+import java.util.Set;
+
 /**
  * Represents a feature, such as a Java class or interface,
  * that is part of the implementation of a component.
  */
-public class Feature {
+public class Feature extends Item {
 
     /**
      * the role of the feature ... Primary or Supporting
@@ -15,19 +17,9 @@ public class Feature {
     private FeatureRole role = FeatureRole.Supporting;
 
     /**
-     * the name of the feature ... typically the simple class/interface name
-     */
-    private String name;
-
-    /**
      * the fully qualified type of the feature
      **/
     private String type;
-
-    /**
-     * a short description of the feature
-     */
-    private String description;
 
     /**
      * a URL; e.g. a reference to the feature in source code control
@@ -53,6 +45,7 @@ public class Feature {
      * the size of the feature; e.g. the number of lines
      */
     private long size;
+    private ElementKind kind = ElementKind.FEATURE;
 
     Feature() {
     }
@@ -64,10 +57,10 @@ public class Feature {
 
         int dot = fullyQualifiedTypeName.lastIndexOf('.');
         if (dot > -1) {
-            this.name = fullyQualifiedTypeName.substring(dot + 1, fullyQualifiedTypeName.length());
+            setName(fullyQualifiedTypeName.substring(dot + 1, fullyQualifiedTypeName.length()));
             this.type = fullyQualifiedTypeName;
         } else {
-            this.name = fullyQualifiedTypeName;
+            setName(fullyQualifiedTypeName);
             this.type = fullyQualifiedTypeName;
         }
     }
@@ -86,19 +79,6 @@ public class Feature {
     }
 
     /**
-     * Gets the name of this feature.
-     *
-     * @return the name, as a String
-     */
-    public String getName() {
-        return name;
-    }
-
-    void setName(String name) {
-        this.name = name;
-    }
-
-    /**
      * Gets the type (fully qualified type name) of this feature.
      *
      * @return the type, as a String
@@ -111,22 +91,19 @@ public class Feature {
         this.type = type;
     }
 
-    /**
-     * Gets the description of this feature.
-     *
-     * @return the description, as a String
-     */
-    public String getDescription() {
-        return description;
+    @Override
+    protected String getCanonicalNameSeparator() {
+        return null;
     }
 
-    /**
-     * Sets the description of this feature.
-     *
-     * @param description the description, as a String
-     */
-    public void setDescription(String description) {
-        this.description = description;
+    @Override
+    public ElementKind getKind() {
+        return this.kind;
+    }
+
+    @Override
+    public void setKind(ElementKind kind) {
+        this.kind = kind;
     }
 
     /**
@@ -241,4 +218,8 @@ public class Feature {
         return type.hashCode();
     }
 
+    @Override
+    protected Set<String> getRequiredTags() {
+        return null;
+    }
 }

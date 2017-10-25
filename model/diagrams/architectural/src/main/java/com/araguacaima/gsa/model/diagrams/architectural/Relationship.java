@@ -1,7 +1,7 @@
 package com.araguacaima.gsa.model.diagrams.architectural;
 
 import com.araguacaima.gsa.model.diagrams.core.Element;
-import com.araguacaima.gsa.model.diagrams.core.Relationship;
+import com.araguacaima.gsa.model.diagrams.core.Item;
 import com.araguacaima.gsa.model.diagrams.core.RelationshipType;
 
 import java.util.Set;
@@ -9,17 +9,16 @@ import java.util.Set;
 /**
  * A relationship between two architectural elements.
  */
-public class ArchitecturalRelationship extends Relationship {
-
+public class Relationship<T extends Item> extends com.araguacaima.gsa.model.diagrams.core.Relationship {
 
     private String technology;
     private InteractionStyle interactionStyle = InteractionStyle.Synchronous;
     private RelationshipType type;
 
-    public ArchitecturalRelationship() {
+    public Relationship() {
     }
 
-    public ArchitecturalRelationship(Element source, Element destination, String description, String technology, InteractionStyle interactionStyle) {
+    public Relationship(T source, T destination, String description, String technology, InteractionStyle interactionStyle) {
 
         super(source, destination, description);
         this.technology = technology;
@@ -74,7 +73,7 @@ public class ArchitecturalRelationship extends Relationship {
 
     @Override
     protected Set<String> getRequiredTags() {
-        return build(Tag.RELATIONSHIP);
+        return build(Tags.RELATIONSHIP);
     }
 
 }
