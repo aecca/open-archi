@@ -1,5 +1,6 @@
 package com.araguacaima.gsa.model.diagrams.core;
 
+import com.araguacaima.gsa.model.meta.MetaData;
 import com.araguacaima.gsa.util.Url;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

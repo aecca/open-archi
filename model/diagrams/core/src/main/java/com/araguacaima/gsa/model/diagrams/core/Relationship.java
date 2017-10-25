@@ -119,7 +119,6 @@ public abstract class Relationship extends Taggable {
         this.description = description;
     }
 
-
     public abstract RelationshipType getType();
 
     public abstract void setType(RelationshipType type);

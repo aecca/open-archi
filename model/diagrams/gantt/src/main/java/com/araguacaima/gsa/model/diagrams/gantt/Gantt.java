@@ -11,7 +11,7 @@ public class Gantt extends Element {
     private Category category;
     private int start;
     private int end;
-    private ElementKind kind = ElementKind.FLOWCHART;
+    private ElementKind kind = ElementKind.GANTT;
 
     public Category getCategory() {
         return category;
@@ -31,11 +31,6 @@ public class Gantt extends Element {
         return kind;
     }
 
-    @Override
-    public void setKind(ElementKind kind) {
-        this.kind = kind;
-    }
-
     public int getStart() {
         return start;
     }
@@ -50,6 +45,11 @@ public class Gantt extends Element {
 
     public void setEnd(int end) {
         this.end = end;
+    }
+
+    @Override
+    public void setKind(ElementKind kind) {
+        this.kind = kind;
     }
 
     @Override

@@ -2,7 +2,7 @@ package com.araguacaima.gsa.model.diagrams.architectural;
 
 import com.araguacaima.gsa.model.diagrams.core.Element;
 import com.araguacaima.gsa.model.diagrams.core.Grouping;
-import com.araguacaima.gsa.model.diagrams.core.MetaData;
+import com.araguacaima.gsa.model.meta.MetaData;
 import com.araguacaima.gsa.model.meta.Version;
 import com.araguacaima.gsa.model.persons.Responsible;
 

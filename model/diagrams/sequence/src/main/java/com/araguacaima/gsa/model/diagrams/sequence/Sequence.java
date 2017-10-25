@@ -8,7 +8,7 @@ import java.util.Set;
 public class Sequence extends Element {
 
     public static final String CANONICAL_NAME_SEPARATOR = ".";
-    private ElementKind kind = ElementKind.UML_CLASS;
+    private ElementKind kind = ElementKind.SEQUENCE;
 
     @Override
     protected String getCanonicalNameSeparator() {

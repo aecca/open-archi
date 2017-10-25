@@ -12,22 +12,22 @@ public abstract class Taggable extends BaseEntity {
 
     private Set<String> tags = new LinkedHashSet<>();
 
-    public static Set<String> build(String... tags) {
+    protected abstract Set<String> getRequiredTags();
+
+    protected Set<String> build(String... tags) {
         Set<String> tags_ = new LinkedHashSet<>();
         for (String tag_ : tags) {
             tags_.add(tag_);
         }
         return tags_;
     }
-
-    protected abstract Set<String> getRequiredTags();
-
     /**
      * Gets the comma separated list of tags.
      *
      * @return a comma separated list of tags,
      * or an empty string if there are no tags
      */
+    @Override
     public String getTags() {
         Set<String> setOfTags = new LinkedHashSet<>(getRequiredTags());
         setOfTags.addAll(tags);
@@ -54,10 +54,11 @@ public abstract class Taggable extends BaseEntity {
         this.tags.clear();
         String[] split = tags.split(",");
 
-        Collection<String> tags_ = new ArrayList<>(build(split));
+        Collection<String> tags_ = new ArrayList<String>(build(split));
         CollectionUtils.addAll(this.tags, tags_);
     }
 
+    @Override
     public void addTags(String... tags) {
         if (tags == null) {
             return;
@@ -70,12 +71,14 @@ public abstract class Taggable extends BaseEntity {
         }
     }
 
+    @Override
     public void removeTag(String tag) {
         if (tag != null) {
             CollectionUtils.filter(tags, tag_ -> tag_.equals(tag));
         }
     }
 
+    @Override
     public boolean hasTag(String tag) {
         return CollectionUtils.find(this.tags, tag_ -> tag_.equals(tag)) != null;
     }
