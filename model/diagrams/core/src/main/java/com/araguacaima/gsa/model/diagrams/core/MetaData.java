@@ -1,21 +1,20 @@
-package com.araguacaima.gsa.model.diagrams.architectural;
+package com.araguacaima.gsa.model.diagrams.core;
 
-import com.araguacaima.gsa.model.diagrams.core.Element;
-import com.araguacaima.gsa.model.diagrams.core.Grouping;
-import com.araguacaima.gsa.model.meta.MetaData;
+import com.araguacaima.gsa.model.meta.IMetaData;
+import com.araguacaima.gsa.model.meta.Type;
 import com.araguacaima.gsa.model.meta.Version;
+import com.araguacaima.gsa.model.meta.View;
 import com.araguacaima.gsa.model.persons.Responsible;
 
 import java.util.Collection;
 
-public class ArchitecturalMetaData implements MetaData {
+public class MetaData implements IMetaData {
 
     private Collection<Responsible> responsibles;
     private Collection<Responsible> collaborators;
     private Collection<Element> relatedWith;
     private Collection<Element> usedId;
     private Collection<Grouping> groupings;
-    private DeploymentStatus deploymentStatus;
     private Version version;
     private Type type;
     private Collection<View> views;
@@ -58,14 +57,6 @@ public class ArchitecturalMetaData implements MetaData {
 
     public void setGroupings(Collection<Grouping> groupings) {
         this.groupings = groupings;
-    }
-
-    public DeploymentStatus getDeploymentStatus() {
-        return deploymentStatus;
-    }
-
-    public void setDeploymentStatus(DeploymentStatus deploymentStatus) {
-        this.deploymentStatus = deploymentStatus;
     }
 
     public Version getVersion() {

@@ -20,7 +20,4 @@ public interface IBaseEntity extends Serializable, Cloneable {
 
      void setMetaInfo(MetaInfo metaInfo);
 
-    MetaData getMetaData();
-
-    void setMetaData(MetaData metaData);
 }

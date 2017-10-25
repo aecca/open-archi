@@ -1,8 +1,7 @@
 package com.araguacaima.gsa.model.diagrams.architectural;
 
-import com.araguacaima.gsa.model.diagrams.core.Element;
-import com.araguacaima.gsa.model.diagrams.core.Relationship;
-import com.araguacaima.gsa.model.diagrams.core.SequentialIdGeneratorStrategy;
+import com.araguacaima.gsa.model.diagrams.core.*;
+import com.araguacaima.gsa.model.diagrams.core.MetaData;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.*;
@@ -11,26 +10,18 @@ import java.util.stream.Collectors;
 /**
  * A software architecture model.
  */
-public class Model {
+public class Model extends Element {
 
     private final Map<String, Element> elementsById = new HashMap<>();
     private final Map<String, Relationship> relationshipsById = new HashMap<>();
     private SequentialIdGeneratorStrategy idGenerator = new SequentialIdGeneratorStrategy();
-    private Enterprise enterprise;
 
+    private ElementKind kind = ElementKind.ARCHITECTURAL_MODEL;
     private Set<Consumer> people = new LinkedHashSet<>();
     private Set<SoftwareSystem> softwareSystems = new LinkedHashSet<>();
     private Set<DeploymentNode> deploymentNodes = new LinkedHashSet<>();
 
     public Model() {
-    }
-
-    public Enterprise getEnterprise() {
-        return enterprise;
-    }
-
-    public void setEnterprise(Enterprise enterprise) {
-        this.enterprise = enterprise;
     }
 
     /**
@@ -186,7 +177,7 @@ public class Model {
         }
     }
 
-    private boolean addRelationship(Relationship relationship) {
+    public boolean addRelationship(Relationship relationship) {
         if (!relationship.getSource().has(relationship)) {
             relationship.setId(idGenerator.generateId(relationship));
             relationship.getSource().addRelationship(relationship);
@@ -196,6 +187,16 @@ public class Model {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public ElementKind getKind() {
+        return this.kind;
+    }
+
+    @Override
+    public void setKind(ElementKind kind) {
+        this.kind = kind;
     }
 
     private void addElementToInternalStructures(Element element) {
@@ -236,6 +237,11 @@ public class Model {
     @JsonIgnore
     public Set<Relationship> getRelationships() {
         return new HashSet<>(this.relationshipsById.values());
+    }
+
+    @Override
+    protected String getCanonicalNameSeparator() {
+        return null;
     }
 
     /**
@@ -614,4 +620,9 @@ public class Model {
         return null;
     }
 
-}
+    @Override
+    protected Set<String> getRequiredTags() {
+        return null;
+    }
+
+ }

@@ -12,7 +12,7 @@ public abstract class UmlElement extends Element {
 
 
     public static final String CANONICAL_NAME_SEPARATOR = ".";
-    private ElementKind kind = ElementKind.UML_CLASS;
+    private ElementKind kind = ElementKind.UML_CLASS_MODEL;
 
     @Override
     protected String getCanonicalNameSeparator() {

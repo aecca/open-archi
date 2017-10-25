@@ -11,7 +11,7 @@ public class Gantt extends Element {
     private Category category;
     private int start;
     private int end;
-    private ElementKind kind = ElementKind.GANTT;
+    private ElementKind kind = ElementKind.GANTT_MODEL;
 
     public Category getCategory() {
         return category;

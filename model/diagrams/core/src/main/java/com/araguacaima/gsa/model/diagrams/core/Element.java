@@ -1,6 +1,5 @@
 package com.araguacaima.gsa.model.diagrams.core;
 
-import com.araguacaima.gsa.model.meta.MetaData;
 import com.araguacaima.gsa.util.Url;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -11,7 +10,6 @@ import java.util.*;
  */
 public abstract class Element extends Taggable {
 
-    private MetaData metaData;
     private String id = "";
     private String name;
     private String description;
@@ -22,6 +20,7 @@ public abstract class Element extends Taggable {
     private Shape shape;
     private Set<Relationship> relationships = new LinkedHashSet<>();
     private Set<Feature> features = new LinkedHashSet<>();
+    private MetaData metaData;
 
     protected Element() {
     }
@@ -207,16 +206,8 @@ public abstract class Element extends Taggable {
         return relationships.contains(relationship);
     }
 
-    public void addRelationship(Relationship relationship) {
-        relationships.add(relationship);
-    }
-
-    public MetaData getMetaData() {
-        return metaData;
-    }
-
-    public void setMetaData(MetaData metaData) {
-        this.metaData = metaData;
+    public boolean addRelationship(Relationship relationship) {
+        return relationships.add(relationship);
     }
 
     public Point getLocation() {
@@ -330,6 +321,14 @@ public abstract class Element extends Taggable {
 
         Element element = (Element) o;
         return getCanonicalName().equals(element.getCanonicalName());
+    }
+
+    public MetaData getMetaData() {
+        return this.metaData;
+    }
+
+    public void setMetaData(MetaData metaData) {
+        this.metaData = metaData;
     }
 
 }

@@ -19,7 +19,7 @@ public class ContainerInstance extends Element {
     private int instanceId;
 
     private Model model;
-    private ElementKind kind = ElementKind.ARCHITECTURAL;
+    private ElementKind kind = ElementKind.ARCHITECTURAL_MODEL;
 
     ContainerInstance() {
     }

@@ -4,13 +4,12 @@ import java.io.Serializable;
 import java.util.UUID;
 
 
-public class BaseEntity implements Serializable, Cloneable, IBaseEntity {
+public abstract class BaseEntity implements Serializable, Cloneable, IBaseEntity {
 
     private static final long serialVersionUID = 5449758397914117108L;
 
     protected String id;
     protected MetaInfo metaInfo;
-    private MetaData metaData;
 
     public BaseEntity() {
         this.id = generateId();
@@ -26,16 +25,6 @@ public class BaseEntity implements Serializable, Cloneable, IBaseEntity {
 
     public void setMetaInfo(MetaInfo metaInfo) {
         this.metaInfo = metaInfo;
-    }
-
-    @Override
-    public MetaData getMetaData() {
-        return this.metaData;
-    }
-
-    @Override
-    public void setMetaData(MetaData metaData) {
-        this.metaData = metaData;
     }
 
     @Override

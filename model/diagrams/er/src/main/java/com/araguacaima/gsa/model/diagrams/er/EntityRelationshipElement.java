@@ -11,7 +11,7 @@ import java.util.Set;
 public abstract class EntityRelationshipElement extends Element {
 
     public static final String CANONICAL_NAME_SEPARATOR = "|";
-    private ElementKind kind = ElementKind.ENTITY_RELATIONSHIP;
+    private ElementKind kind = ElementKind.ENTITY_RELATIONSHIP_MODEL;
 
     @Override
     protected String getCanonicalNameSeparator() {

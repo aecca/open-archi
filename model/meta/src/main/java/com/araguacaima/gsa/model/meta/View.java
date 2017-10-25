@@ -1,4 +1,4 @@
-package com.araguacaima.gsa.model.diagrams.architectural;
+package com.araguacaima.gsa.model.meta;
 
 public class View {
 

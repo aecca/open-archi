@@ -3,6 +3,7 @@ package com.araguacaima.gsa.model.diagrams.architectural;
 import com.araguacaima.gsa.model.diagrams.core.Element;
 import com.araguacaima.gsa.model.diagrams.core.ElementKind;
 import com.araguacaima.gsa.model.diagrams.core.Relationship;
+import com.araguacaima.gsa.model.diagrams.core.MetaData;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
@@ -13,7 +14,7 @@ public abstract class StacticElement extends Element {
 
     public static final String CANONICAL_NAME_SEPARATOR = "/";
     private Model model;
-    private ElementKind kind = ElementKind.ARCHITECTURAL;
+    private ElementKind kind = ElementKind.ARCHITECTURAL_MODEL;
 
     protected StacticElement() {
     }
@@ -200,4 +201,5 @@ public abstract class StacticElement extends Element {
     public void setKind(ElementKind kind) {
         this.kind = kind;
     }
+
 }

@@ -9,7 +9,7 @@ public class Flowchart extends Element {
 
     public static final String CANONICAL_NAME_SEPARATOR = ".";
     private Category category;
-    private ElementKind kind = ElementKind.FLOWCHART;
+    private ElementKind kind = ElementKind.FLOWCHART_MODEL;
 
     public Category getCategory() {
         return category;

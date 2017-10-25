@@ -32,7 +32,7 @@ public class DeploymentNode extends Element {
     private DeploymentNode parent;
     private String technology;
     private int instances = 1;
-    private ElementKind kind = ElementKind.ARCHITECTURAL;
+    private ElementKind kind = ElementKind.ARCHITECTURAL_MODEL;
 
     private Set<DeploymentNode> children = new HashSet<>();
     private Set<ContainerInstance> containerInstances = new HashSet<>();
