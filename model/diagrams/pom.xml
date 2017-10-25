@@ -4,11 +4,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.araguacaima.gsa</groupId>
-    <artifactId>model</artifactId>
+    <groupId>com.araguacaima.gsa.model</groupId>
+    <artifactId>model-diagrams</artifactId>
     <version>1.0.1</version>
     <packaging>pom</packaging>
-    <name>Model</name>
+    <name>Diagrams</name>
+
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -24,9 +25,15 @@
         <org.apache.commons-commons-collections4>4.0</org.apache.commons-commons-collections4>
     </properties>
 
-
     <dependencyManagement>
         <dependencies>
+
+            <dependency>
+                <groupId>com.araguacaima.gsa.model</groupId>
+                <artifactId>model-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-annotations</artifactId>
@@ -45,16 +52,20 @@
                 <version>${org.apache.commons-commons-collections4}</version>
                 <scope>compile</scope>
             </dependency>
+
         </dependencies>
     </dependencyManagement>
 
     <modules>
-        <module>meta</module>
-        <module>msa</module>
-        <module>persons</module>
-        <module>diagrams</module>
+        <module>core</module>
+        <module>architectural</module>
+        <module>bpm</module>
+        <module>classes</module>
+        <module>er</module>
+        <module>flowchart</module>
+        <module>sequence</module>
+        <module>gantt</module>
     </modules>
-
     <build>
         <defaultGoal>clean install</defaultGoal>
         <plugins>

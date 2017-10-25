@@ -1,56 +1,33 @@
-package com.araguacaima.gsa.persistence.am;
+package com.araguacaima.gsa.model.diagrams.core;
 
-import com.araguacaima.gsa.model.diagrams.core.RelationshipType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.*;
+import java.util.Set;
 
 /**
  * A relationship between two elements.
  */
-@Entity
-@PersistenceContext(unitName = "gsa")
-@Table(name = "Relationship", schema = "AM")
-public class Relationship extends Taggable {
+public abstract class Relationship extends Taggable {
 
-    @Column
     protected String id = "";
 
-    @OneToOne
     private Element source;
-
-    @Column
     private String sourceId;
-
-    @OneToOne
     private Element destination;
-
-    @Column
     private String destinationId;
-
-    @Column
     private String description;
-
-    @Column
-    private String technology;
-
-    @Column
-    private InteractionStyle interactionStyle = InteractionStyle.Synchronous;
-
-    @Column
-    private RelationshipType type;
+    private String sourcePort;
+    private String destinationPort;
 
     public Relationship() {
     }
 
-    Relationship(Element source, Element destination, String description, String technology, InteractionStyle interactionStyle) {
+    public Relationship(Element source, Element destination, String description) {
         this();
 
         this.source = source;
         this.destination = destination;
         this.description = description;
-        this.technology = technology;
-        setInteractionStyle(interactionStyle);
     }
 
     @JsonIgnore
@@ -60,6 +37,22 @@ public class Relationship extends Taggable {
 
     public void setSource(Element source) {
         this.source = source;
+    }
+
+    public String getSourcePort() {
+        return sourcePort;
+    }
+
+    public void setSourcePort(String sourcePort) {
+        this.sourcePort = sourcePort;
+    }
+
+    public String getDestinationPort() {
+        return destinationPort;
+    }
+
+    public void setDestinationPort(String destinationPort) {
+        this.destinationPort = destinationPort;
     }
 
     /**
@@ -75,7 +68,7 @@ public class Relationship extends Taggable {
         }
     }
 
-    void setSourceId(String sourceId) {
+    public void setSourceId(String sourceId) {
         this.sourceId = sourceId;
     }
 
@@ -88,7 +81,7 @@ public class Relationship extends Taggable {
         return id;
     }
 
-    void setId(String id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -114,7 +107,7 @@ public class Relationship extends Taggable {
         }
     }
 
-    void setDestinationId(String destinationId) {
+    public void setDestinationId(String destinationId) {
         this.destinationId = destinationId;
     }
 
@@ -126,40 +119,14 @@ public class Relationship extends Taggable {
         this.description = description;
     }
 
-    /**
-     * Gets the technology associated with this relationship (e.g. HTTPS, JDBC, etc).
-     *
-     * @return the technology as a String,
-     * or null if a technology is not specified
-     */
-    public String getTechnology() {
-        return technology;
-    }
 
-    public void setTechnology(String technology) {
-        this.technology = technology;
-    }
+    public abstract RelationshipType getType();
 
-    /**
-     * Gets the interaction style (synchronous or asynchronous).
-     *
-     * @return an InteractionStyle,
-     * or null if an interaction style has not been specified
-     */
-    public InteractionStyle getInteractionStyle() {
-        return interactionStyle;
-    }
+    public abstract void setType(RelationshipType type);
 
-    public void setInteractionStyle(InteractionStyle interactionStyle) {
-        this.interactionStyle = interactionStyle;
-    }
-
-    public RelationshipType getType() {
-        return type;
-    }
-
-    public void setType(RelationshipType type) {
-        this.type = type;
+    @Override
+    protected Set<String> getRequiredTags() {
+        return build(Constants.RELATIONSHIP);
     }
 
     @Override

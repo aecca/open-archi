@@ -9,7 +9,7 @@ import java.util.Collection;
 
 @Entity
 @PersistenceContext(unitName = "gsa")
-@Table(name = "MetaData", schema = "AM")
+@Table(name = "ArchitecturalMetaData", schema = "AM")
 public class MetaData extends BaseEntity {
 
     @OneToMany
