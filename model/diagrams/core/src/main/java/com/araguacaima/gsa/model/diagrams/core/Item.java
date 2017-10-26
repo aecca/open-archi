@@ -163,8 +163,8 @@ public abstract class Item extends Taggable {
         return relationships.contains(relationship);
     }
 
-    public boolean addRelationship(Relationship<? extends Item> relationship) {
-        return relationships.add((Relationship)relationship);
+    public boolean addRelationship(Relationship relationship) {
+        return relationships.add(relationship);
     }
 
     public Point getLocation() {
