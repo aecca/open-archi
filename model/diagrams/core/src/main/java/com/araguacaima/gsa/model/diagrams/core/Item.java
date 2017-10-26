@@ -8,7 +8,7 @@ import java.util.*;
 /**
  * This is the superclass for all model elements.
  */
-public abstract class Item<T extends Item> extends Taggable {
+public abstract class Item extends Taggable {
 
     private String name;
     private String description;
@@ -163,8 +163,8 @@ public abstract class Item<T extends Item> extends Taggable {
         return relationships.contains(relationship);
     }
 
-    public boolean addRelationship(Relationship relationship) {
-        return relationships.add(relationship);
+    public boolean addRelationship(Relationship<? extends Item> relationship) {
+        return relationships.add((Relationship)relationship);
     }
 
     public Point getLocation() {

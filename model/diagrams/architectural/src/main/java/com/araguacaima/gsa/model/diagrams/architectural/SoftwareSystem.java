@@ -1,6 +1,7 @@
 package com.araguacaima.gsa.model.diagrams.architectural;
 
 import com.araguacaima.gsa.model.diagrams.core.Element;
+import com.araguacaima.gsa.model.diagrams.core.Item;
 import com.araguacaima.gsa.model.diagrams.core.Relationship;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

@@ -1,17 +1,25 @@
-package com.araguacaima.gsa.model.diagrams.er;
+package com.araguacaima.gsa.model.diagrams.gantt;
 
 import com.araguacaima.gsa.model.diagrams.core.Element;
 import com.araguacaima.gsa.model.diagrams.core.ElementKind;
+import com.araguacaima.gsa.model.diagrams.core.Relationship;
 
+import java.util.Collection;
 import java.util.Set;
 
-/**
- * This is the superclass for all model elements.
- */
-public abstract class EntityRelationshipElement extends Element {
+public class Model extends Element {
 
-    public static final String CANONICAL_NAME_SEPARATOR = "|";
-    private ElementKind kind = ElementKind.ENTITY_RELATIONSHIP_MODEL;
+    public static final String CANONICAL_NAME_SEPARATOR = "/";
+    private Collection<Gantt> gantt;
+    private ElementKind kind = ElementKind.GANTT_MODEL;
+
+    public Collection<Gantt> getGantt() {
+        return gantt;
+    }
+
+    public void setGantt(Collection<Gantt> gantt) {
+        this.gantt = gantt;
+    }
 
     @Override
     protected String getCanonicalNameSeparator() {
@@ -32,4 +40,5 @@ public abstract class EntityRelationshipElement extends Element {
     protected Set<String> getRequiredTags() {
         return null;
     }
+
 }

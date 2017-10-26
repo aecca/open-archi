@@ -126,8 +126,8 @@ public class Model extends Element {
         }
     }
 
-    Component addComponentOfType(Container<Item<Item>> parent, String name, String type, String description, String technology) {
-        Component component = new Component();
+    Component<Item> addComponentOfType(Container parent, String name, String type, String description, String technology) {
+        Component<Item> component = new Component<>();
         component.setName(name);
         component.addFeature(type);
         component.setDescription(description);
@@ -143,8 +143,8 @@ public class Model extends Element {
         return component;
     }
 
-    Component addComponent(Container<Item<Item>> parent, String name, String description) {
-        Component component = new Component();
+    Component<Item> addComponent(Container parent, String name, String description) {
+        Component<Item> component = new Component<>();
         component.setName(name);
         component.setDescription(description);
 
@@ -343,7 +343,7 @@ public class Model extends Element {
      * @param element any element
      * @return true, if the element is contained in this model
      */
-    public boolean contains(Element<Item<Item<Item>>> element) {
+    public boolean contains(Element element) {
         return elementsById.values().contains(element);
     }
 

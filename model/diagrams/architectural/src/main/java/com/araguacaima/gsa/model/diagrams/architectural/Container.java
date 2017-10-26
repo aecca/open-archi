@@ -17,7 +17,7 @@ import java.util.Set;
  * A container is essentially a context or boundary inside which some code is executed
  * or some data is stored. And each container is a separately deployable thing.
  */
-public class Container<T extends Item> extends StacticElement {
+public class Container extends StacticElement {
 
     private String technology;
     private Set<Component> components = new LinkedHashSet<>();
@@ -45,11 +45,11 @@ public class Container<T extends Item> extends StacticElement {
     }
 
     public Component addComponent(String name, String description) {
-        return getModel().addComponent((Container<Item<Item>>) this, name, description);
+        return getModel().addComponent(this, name, description);
     }
 
     public Component addComponent(String name, String description, String technology) {
-        Component c = getModel().addComponent((Container<Item<Item>>) this, name, description);
+        Component c = getModel().addComponent(this, name, description);
         c.setTechnology(technology);
         return c;
     }
@@ -59,7 +59,7 @@ public class Container<T extends Item> extends StacticElement {
     }
 
     public Component addComponent(String name, String type, String description, String technology) {
-        return getModel().addComponentOfType((Container<Item<Item>>) this, name, type, description, technology);
+        return getModel().addComponentOfType(this, name, type, description, technology);
     }
 
     void add(Component component) {

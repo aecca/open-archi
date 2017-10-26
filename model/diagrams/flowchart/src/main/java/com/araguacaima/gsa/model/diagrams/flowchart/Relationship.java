@@ -1,7 +1,6 @@
 package com.araguacaima.gsa.model.diagrams.flowchart;
 
 import com.araguacaima.gsa.model.diagrams.core.Constants;
-import com.araguacaima.gsa.model.diagrams.core.Relationship;
 import com.araguacaima.gsa.model.diagrams.core.RelationshipType;
 
 import java.util.Set;
@@ -9,11 +8,11 @@ import java.util.Set;
 /**
  * A relationship between two classes.
  */
-public class FlowchartRelationship extends Relationship {
+public class Relationship extends com.araguacaima.gsa.model.diagrams.core.Relationship {
 
     private RelationshipType type;
 
-    public FlowchartRelationship() {
+    public Relationship() {
     }
 
     @Override

@@ -8,7 +8,7 @@ import java.util.*;
 /**
  * This is the superclass for all model elements.
  */
-public abstract class Element<T extends Item> extends Item {
+public abstract class Element extends Item {
 
     private String url;
     private Map<String, String> properties = new HashMap<>();

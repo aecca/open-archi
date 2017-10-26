@@ -1,6 +1,7 @@
 package com.araguacaima.gsa.model.diagrams.architectural;
 
 import com.araguacaima.gsa.model.diagrams.core.Feature;
+import com.araguacaima.gsa.model.diagrams.core.Item;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.HashSet;
@@ -15,7 +16,7 @@ import java.util.Set;
  * as how those components are packaged (e.g. one component vs many components
  * per JAR file, DLL, shared library, etc) is a separate and orthogonal concern.
  */
-public class Component extends StacticElement {
+public class Component<T extends Item> extends StacticElement {
 
     private String technology;
     private Set<Feature> features = new HashSet<>();

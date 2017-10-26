@@ -1,19 +1,18 @@
 package com.araguacaima.gsa.model.diagrams.gantt;
 
 import com.araguacaima.gsa.model.diagrams.core.Constants;
-import com.araguacaima.gsa.model.diagrams.core.Relationship;
 import com.araguacaima.gsa.model.diagrams.core.RelationshipType;
 
 import java.util.Set;
 
 /**
- * A relationship between two classes.
+ * A relationship between two Gantt activities.
  */
-public class GanttRelationship extends Relationship {
+public class Relationship extends com.araguacaima.gsa.model.diagrams.core.Relationship {
 
     private RelationshipType type;
 
-    public GanttRelationship() {
+    public Relationship() {
     }
 
     @Override

@@ -1,23 +1,23 @@
-package com.araguacaima.gsa.model.diagrams.flowchart;
+package com.araguacaima.gsa.model.diagrams.sequence;
 
 import com.araguacaima.gsa.model.diagrams.core.Element;
 import com.araguacaima.gsa.model.diagrams.core.ElementKind;
-import com.araguacaima.gsa.model.diagrams.core.Item;
 
+import java.util.Collection;
 import java.util.Set;
 
-public class Flowchart extends Item {
+public class Model extends Element {
 
-    public static final String CANONICAL_NAME_SEPARATOR = "#";
-    private Category category;
-    private ElementKind kind = ElementKind.FLOWCHART;
+    public static final String CANONICAL_NAME_SEPARATOR = "/";
+    private Collection<Sequence> sequence;
+    private ElementKind kind = ElementKind.SEQUENCE_MODEL;
 
-    public Category getCategory() {
-        return category;
+    public Collection<Sequence> getSequence() {
+        return sequence;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setSequence(Collection<Sequence> sequence) {
+        this.sequence = sequence;
     }
 
     @Override
@@ -39,4 +39,5 @@ public class Flowchart extends Item {
     protected Set<String> getRequiredTags() {
         return null;
     }
+
 }
