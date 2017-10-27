@@ -6,9 +6,10 @@ import javax.persistence.*;
  * Represents a feature, such as a Java class or interface,
  * that is part of the implementation of a component.
  */
+
 @Entity
 @PersistenceContext(unitName = "gsa")
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Table(name = "Feature", schema = "DIAGRAMS")
 public class Feature extends Item {
 
     /**

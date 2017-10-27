@@ -6,15 +6,19 @@ import com.araguacaima.gsa.model.meta.Version;
 import com.araguacaima.gsa.model.meta.View;
 import com.araguacaima.gsa.model.persons.Responsible;
 
-import javax.persistence.Column;
+import javax.persistence.*;
 import java.util.Collection;
 
+@Entity
+@PersistenceContext(unitName = "gsa")
+@Table(name = "MetaData", schema = "DIAGRAMS")
 public class MetaData implements IMetaData {
 
     private Collection<Responsible> responsibles;
     private Collection<Responsible> collaborators;
     private Collection<Element> relatedWith;
     private Collection<Element> usedId;
+    @OneToOne
     private Version version;
     @Column
     private Type type;

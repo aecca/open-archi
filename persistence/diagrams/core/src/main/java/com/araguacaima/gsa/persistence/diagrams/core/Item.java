@@ -17,11 +17,14 @@ public abstract class Item extends Taggable {
     private String name;
     @Column
     private String description;
-
+    @OneToOne
     private Point location;
+    @OneToOne
     private Item parent;
+    @OneToOne
     private Shape shape;
     private Set<Relationship> relationships = new LinkedHashSet<>();
+    @OneToOne
     private MetaData metaData;
 
     public Item() {

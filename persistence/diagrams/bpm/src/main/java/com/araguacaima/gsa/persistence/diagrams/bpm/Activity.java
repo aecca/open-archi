@@ -3,11 +3,18 @@ package com.araguacaima.gsa.persistence.diagrams.bpm;
 import com.araguacaima.gsa.persistence.diagrams.core.ElementKind;
 import com.araguacaima.gsa.persistence.diagrams.core.Item;
 
+import javax.persistence.*;
 import java.util.Set;
 
+@Entity
+@PersistenceContext(unitName = "gsa")
+@Table(name = "Activity", schema = "DIAGRAMS")
 public class Activity extends Item {
 
+    @OneToOne
     private Lane lane;
+
+    @Column
     private ElementKind kind;
 
     public Lane getLane() {

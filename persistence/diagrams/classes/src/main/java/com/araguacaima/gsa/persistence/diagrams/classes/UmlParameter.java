@@ -1,8 +1,20 @@
 package com.araguacaima.gsa.persistence.diagrams.classes;
 
-public class UmlParameter {
+import com.araguacaima.gsa.persistence.meta.BaseEntity;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Table;
+
+@Entity
+@PersistenceContext(unitName = "gsa")
+@Table(name = "UmlParameter", schema = "DIAGRAMS")
+public class UmlParameter extends BaseEntity {
+
+    @Column
     private String name;
+    @Column
     private String type;
 
     public String getName() {

@@ -1,15 +1,20 @@
 package com.araguacaima.gsa.persistence.diagrams.core;
 
-import javax.persistence.Column;
+import javax.persistence.*;
 
 /**
  * A relationship between two elements.
  */
+@Entity
+@PersistenceContext(unitName = "gsa")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class Relationship<T extends Item> extends Taggable {
 
+    @OneToOne
     private T source;
     @Column
     private String sourceId;
+    @OneToOne
     private T destination;
     @Column
     private String destinationId;

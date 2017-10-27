@@ -13,7 +13,7 @@ import javax.persistence.Table;
  */
 @Entity
 @PersistenceContext(unitName = "gsa")
-@Table(name = "Relationship", schema = "DIAGRAMS")
+@Table(name = "Architecture_Relationship", schema = "DIAGRAMS")
 public class Relationship<T extends Item> extends com.araguacaima.gsa.persistence.diagrams.core.Relationship {
 
     @Column

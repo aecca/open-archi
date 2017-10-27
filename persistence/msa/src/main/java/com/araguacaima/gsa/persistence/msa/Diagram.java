@@ -15,7 +15,7 @@ public class Diagram extends BaseEntity {
     private ArchitectSolutionModel architectSolutionModel;
     @OneToOne
     private Markdown description;
-    @Column
+    @OneToOne
     private Model diagram;
     @ManyToOne
     private IntermediateSolution intermediateSolution;

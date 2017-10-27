@@ -1,17 +1,24 @@
 package com.araguacaima.gsa.persistence.diagrams.er;
 
-import com.araguacaima.gsa.persistence.diagrams.core.Constants;
 import com.araguacaima.gsa.persistence.diagrams.core.RelationshipType;
 
-import java.util.Set;
+import javax.persistence.Column;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Table;
 
 /**
  * A relationship between two entities.
  */
-public class Relationship extends com.araguacaima.gsa.persistence.diagrams.core.Relationship<Entity> {
 
+@javax.persistence.Entity
+@PersistenceContext(unitName = "gsa")
+@Table(name = "ER_Relationship", schema = "DIAGRAMS")
+public class Relationship extends com.araguacaima.gsa.persistence.diagrams.core.Relationship<Entity> {
+    @Column
     private RelationshipType type;
+    @Column
     private String sourceText;
+    @Column
     private String destinationText;
 
     public Relationship() {

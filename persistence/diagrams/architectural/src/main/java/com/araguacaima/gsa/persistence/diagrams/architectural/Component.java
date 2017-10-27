@@ -26,10 +26,10 @@ public class Component<T extends Item> extends StaticElement {
 
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",
-            name = "%%%%%_#####",
-            joinColumns = {@JoinColumn(name = "#####_Id",
+            name = "Component_Features",
+            joinColumns = {@JoinColumn(name = "Feature_Id",
                     referencedColumnName = "Id")},
-            inverseJoinColumns = {@JoinColumn(name = "#####_Id",
+            inverseJoinColumns = {@JoinColumn(name = "Feature_Id",
                     referencedColumnName = "Id")})
     private Set<Feature> features = new HashSet<>();
 

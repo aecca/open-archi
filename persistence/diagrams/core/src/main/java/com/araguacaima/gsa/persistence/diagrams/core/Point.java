@@ -2,6 +2,9 @@ package com.araguacaima.gsa.persistence.diagrams.core;
 
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Table;
 import java.io.Serializable;
 
 /**
@@ -11,6 +14,9 @@ import java.io.Serializable;
  * @author Sami Shaio
  * @since 1.0
  */
+@Entity
+@PersistenceContext(unitName = "gsa")
+@Table(name = "Point", schema = "DIAGRAMS")
 public class Point implements Serializable, Cloneable {
     /*
      * JDK 1.1 serialVersionUID

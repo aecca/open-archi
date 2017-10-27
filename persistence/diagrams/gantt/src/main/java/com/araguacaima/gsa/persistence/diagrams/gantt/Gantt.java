@@ -3,13 +3,22 @@ package com.araguacaima.gsa.persistence.diagrams.gantt;
 import com.araguacaima.gsa.persistence.diagrams.core.ElementKind;
 import com.araguacaima.gsa.persistence.diagrams.core.Item;
 
-import java.util.Set;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Table;
 
+@Entity
+@PersistenceContext(unitName = "gsa")
+@Table(name = "Activity", schema = "DIAGRAMS")
 public class Gantt extends Item {
-
+    @Column
     private Category category;
+    @Column
     private int start;
+    @Column
     private int end;
+    @Column
     private ElementKind kind = ElementKind.GANTT;
 
     public Category getCategory() {

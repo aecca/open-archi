@@ -1,9 +1,22 @@
 package com.araguacaima.gsa.persistence.diagrams.classes;
 
-public class UmlField {
+import com.araguacaima.gsa.persistence.meta.BaseEntity;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Table;
+
+@Entity
+@PersistenceContext(unitName = "gsa")
+@Table(name = "UmlField", schema = "DIAGRAMS")
+public class UmlField extends BaseEntity{
+
+    @Column
     private String name;
+    @Column
     private String type;
+    @Column
     private Visibility visibility = Visibility.PACKAGE;
 
     public String getName() {

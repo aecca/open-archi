@@ -1,11 +1,27 @@
 package com.araguacaima.gsa.persistence.diagrams.classes;
 
+import com.araguacaima.gsa.persistence.meta.BaseEntity;
+
+import javax.persistence.*;
 import java.util.Collection;
 
-public class UmlMethod {
+@Entity
+@PersistenceContext(unitName = "gsa")
+@Table(name = "UmlMethod", schema = "DIAGRAMS")
+public class UmlMethod extends BaseEntity {
+    @Column
     private String name;
+    @Column
     private String type;
+    @OneToMany
+    @JoinTable(schema = "DIAGRAMS",
+            name = "UmlMethod_Parameters",
+            joinColumns = {@JoinColumn(name = "Parameter_Id",
+                    referencedColumnName = "Id")},
+            inverseJoinColumns = {@JoinColumn(name = "Parameter_Id",
+                    referencedColumnName = "Id")})
     private Collection<UmlParameter> parameters;
+    @Column
     private Visibility visibility = Visibility.PACKAGE;
 
     public String getName() {

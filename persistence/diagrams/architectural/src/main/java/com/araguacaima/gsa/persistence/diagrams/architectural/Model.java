@@ -15,18 +15,21 @@ import java.util.Set;
  */
 @Entity
 @PersistenceContext(unitName = "gsa")
-@Table(name = "Model", schema = "DIAGRAMS")
+@Table(name = "Architecture_Model", schema = "DIAGRAMS")
 public class Model extends Element {
 
-    private final Map<String, Element> elementsById = new HashMap<>();
-    private final Map<String, com.araguacaima.gsa.persistence.diagrams.core.Relationship> relationshipsById = new HashMap<>();
+    @OneToMany
+    @CollectionTable(name = "Architecture_Model_Elements",
+            schema = "DIAGRAMS")
+    @MapKeyColumn(name = "elements")
+    private final Map<String, Element> elements = new HashMap<>();
 
     @Column
     private ElementKind kind = ElementKind.ARCHITECTURAL_MODEL;
 
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",
-            name = "Model_People",
+            name = "Architecture_Model_People",
             joinColumns = {@JoinColumn(name = "People_Id",
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "People_Id",
@@ -35,7 +38,7 @@ public class Model extends Element {
 
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",
-            name = "Model_SoftwareSystems",
+            name = "Architecture_Model_SoftwareSystems",
             joinColumns = {@JoinColumn(name = "SoftwareSystem_Id",
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "SoftwareSystem_Id",
@@ -44,7 +47,7 @@ public class Model extends Element {
 
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",
-            name = "Model_DeploymentNodes",
+            name = "Architecture_Model_DeploymentNodes",
             joinColumns = {@JoinColumn(name = "DeploymentNode_Id",
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "DeploymentNode_Id",
@@ -54,12 +57,8 @@ public class Model extends Element {
     public Model() {
     }
 
-    public Map<String, Element> getElementsById() {
-        return elementsById;
-    }
-
-    public Map<String, Relationship> getRelationshipsById() {
-        return relationshipsById;
+    public Map<String, Element> getElements() {
+        return elements;
     }
 
     public ElementKind getKind() {

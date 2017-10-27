@@ -1,9 +1,21 @@
 package com.araguacaima.gsa.persistence.diagrams.er;
 
-public class Attribute {
+import com.araguacaima.gsa.persistence.meta.BaseEntity;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Table;
+
+@Entity
+@PersistenceContext(unitName = "gsa")
+@Table(name = "Attribute", schema = "DIAGRAMS")
+public class Attribute extends BaseEntity {
+@Column
     private String name;
+    @Column
     private String type;
+    @Column
     private boolean key;
 
     public String getName() {

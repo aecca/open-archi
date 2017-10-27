@@ -3,13 +3,24 @@ package com.araguacaima.gsa.persistence.diagrams.er;
 import com.araguacaima.gsa.persistence.diagrams.core.Element;
 import com.araguacaima.gsa.persistence.diagrams.core.ElementKind;
 
+import javax.persistence.*;
 import java.util.Collection;
-import java.util.Set;
 
+@javax.persistence.Entity
+@PersistenceContext(unitName = "gsa")
+@Table(name = "ER_Model", schema = "DIAGRAMS")
 public class Model extends Element {
 
+    @OneToMany
+    @JoinTable(schema = "DIAGRAMS",
+            name = "Model_Entities",
+            joinColumns = {@JoinColumn(name = "Entity_Id",
+                    referencedColumnName = "Id")},
+            inverseJoinColumns = {@JoinColumn(name = "Entity_Id",
+                    referencedColumnName = "Id")})
     private Collection<Entity> entities;
-    private ElementKind kind = ElementKind.BPM_MODEL;
+    @Column
+    private ElementKind kind = ElementKind.ENTITY_RELATIONSHIP_MODEL;
 
     public Collection<Entity> getEntities() {
         return entities;
