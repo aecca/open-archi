@@ -14,7 +14,7 @@ import java.util.UUID;
  */
 
 @Entity
-@Table(schema = "COMMON", name = "Role")
+@Table(schema = "COMMONS", name = "Role")
 @NamedQueries(value = {@NamedQuery(name = Role.FIND_BY_PRIORITY,
         query = "select a from Role a where a.priority = :"
                 + Role.PARAM_PRIORITY), @NamedQuery(name = Role.FIND_BY_ID,

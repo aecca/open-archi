@@ -6,15 +6,13 @@
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
         <properties>
             <property name="javax.persistence.jdbc.url"
-                      value="jdbc:h2:file:D:/tmp/gsa/db/gsa;AUTO_SERVER=TRUE;MVCC=TRUE;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=TRUE;INIT=CREATE SCHEMA IF NOT EXISTS MSA\;CREATE SCHEMA IF NOT EXISTS AM\;CREATE SCHEMA IF NOT EXISTS PERSONS\;"/>
+                      value="jdbc:h2:file:D:/tmp/gsa/db/gsa;AUTO_SERVER=TRUE;MVCC=TRUE;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=TRUE;INIT=CREATE SCHEMA IF NOT EXISTS MSA\;CREATE SCHEMA IF NOT EXISTS DIAGRAMS\;CREATE SCHEMA IF NOT EXISTS PERSONS\;CREATE SCHEMA IF NOT EXISTS COMMONS\;"/>
             <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
             <property name="javax.persistence.jdbc.user" value="gsa"/>
             <property name="javax.persistence.jdbc.password" value="gsa"/>
             <property name="eclipselink.weaving" value="static"/>
-            <!--
-                        <property name="eclipselink.ddl-generation" value="create-or-extend-tables"/>
-                        <property name="eclipselink.ddl-generation.output-mode" value="database"/>
-            -->
+            <property name="eclipselink.ddl-generation" value="create-or-extend-tables"/>
+            <property name="eclipselink.ddl-generation.output-mode" value="database"/>
         </properties>
     </persistence-unit>
 

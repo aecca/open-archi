@@ -32,11 +32,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.araguacaima.gsa.model</groupId>
-            <artifactId>model-architectural</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
         </dependency>

@@ -13,7 +13,7 @@ import java.util.UUID;
  * Created by Alejandro on 19/12/2014.
  */
 @Entity
-@Table(schema = "COMMON", name = "MetaInfo")
+@Table(schema = "COMMONS", name = "MetaInfo")
 @NamedQueries(value = {@NamedQuery(name = MetaInfo.COUNT_ALL_META_INFO,
         query = "select count(a) from MetaInfo a"), @NamedQuery(
         name = MetaInfo.GET_ALL_META_INFO,
