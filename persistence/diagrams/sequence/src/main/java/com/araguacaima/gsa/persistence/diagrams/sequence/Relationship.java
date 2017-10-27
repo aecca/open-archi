@@ -16,6 +16,14 @@ public class Relationship extends com.araguacaima.gsa.persistence.diagrams.core.
     public Relationship() {
     }
 
+    public RelationshipType getType() {
+        return type;
+    }
+
+    public void setType(RelationshipType type) {
+        this.type = type;
+    }
+
     public int getTime() {
         return time;
     }
@@ -23,20 +31,4 @@ public class Relationship extends com.araguacaima.gsa.persistence.diagrams.core.
     public void setTime(int time) {
         this.time = time;
     }
-
-    @Override
-    public RelationshipType getType() {
-        return type;
-    }
-
-    @Override
-    public void setType(RelationshipType type) {
-        this.type = type;
-    }
-
-    @Override
-    protected Set<String> getRequiredTags() {
-        return build(Constants.RELATIONSHIP);
-    }
-
 }

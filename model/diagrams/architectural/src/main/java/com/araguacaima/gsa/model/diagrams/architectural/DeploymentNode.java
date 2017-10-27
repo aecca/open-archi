@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import static com.araguacaima.gsa.model.diagrams.architectural.StacticElement.CANONICAL_NAME_SEPARATOR;
+import static com.araguacaima.gsa.model.diagrams.architectural.StaticElement.CANONICAL_NAME_SEPARATOR;
 
 /**
  * <p>

@@ -11,11 +11,18 @@ import java.util.Set;
 public class Relationship extends com.araguacaima.gsa.persistence.diagrams.core.Relationship<Entity> {
 
     private RelationshipType type;
-
     private String sourceText;
     private String destinationText;
 
     public Relationship() {
+    }
+
+    public RelationshipType getType() {
+        return type;
+    }
+
+    public void setType(RelationshipType type) {
+        this.type = type;
     }
 
     public String getSourceText() {
@@ -33,20 +40,4 @@ public class Relationship extends com.araguacaima.gsa.persistence.diagrams.core.
     public void setDestinationText(String destinationText) {
         this.destinationText = destinationText;
     }
-
-    @Override
-    public RelationshipType getType() {
-        return type;
-    }
-
-    @Override
-    public void setType(RelationshipType type) {
-        this.type = type;
-    }
-
-    @Override
-    protected Set<String> getRequiredTags() {
-        return build(Constants.RELATIONSHIP);
-    }
-
 }

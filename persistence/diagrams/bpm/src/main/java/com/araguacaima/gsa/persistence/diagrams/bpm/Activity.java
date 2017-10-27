@@ -18,23 +18,11 @@ public class Activity extends Item {
         this.lane = lane;
     }
 
-    @Override
-    protected String getCanonicalNameSeparator() {
-        return null;
-    }
-
-    @Override
     public ElementKind getKind() {
-        return this.kind;
+        return kind;
     }
 
-    @Override
     public void setKind(ElementKind kind) {
         this.kind = kind;
-    }
-
-    @Override
-    protected Set<String> getRequiredTags() {
-        return null;
     }
 }

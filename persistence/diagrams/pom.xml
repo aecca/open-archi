@@ -22,7 +22,8 @@
         <org.apache.maven.plugins-maven-jar-plugin>3.0.2</org.apache.maven.plugins-maven-jar-plugin>
         <com.fasterxml.jackson.core-jackson-annotations>2.9.2</com.fasterxml.jackson.core-jackson-annotations>
         <org.apache.commons-commons-lang3>3.5</org.apache.commons-commons-lang3>
-        <org.apache.commons-commons-collections4>4.0</org.apache.commons-commons-collections4>        <junit.version>4.11</junit.version>
+        <org.apache.commons-commons-collections4>4.0</org.apache.commons-commons-collections4>
+        <junit.version>4.11</junit.version>
     </properties>
 
     <dependencyManagement>

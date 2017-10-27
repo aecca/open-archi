@@ -17,7 +17,7 @@ import java.util.Set;
  * A container is essentially a context or boundary inside which some code is executed
  * or some data is stored. And each container is a separately deployable thing.
  */
-public class Container extends StacticElement {
+public class Container extends StaticElement {
 
     private String technology;
     private Set<Component> components = new LinkedHashSet<>();

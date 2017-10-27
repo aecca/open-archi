@@ -2,8 +2,8 @@ package com.araguacaima.gsa.persistence.diagrams.architectural;
 
 import com.araguacaima.gsa.persistence.diagrams.core.Feature;
 import com.araguacaima.gsa.persistence.diagrams.core.Item;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,88 +16,52 @@ import java.util.Set;
  * as how those components are packaged (e.g. one component vs many components
  * per JAR file, DLL, shared library, etc) is a separate and orthogonal concern.
  */
-public class Component<T extends Item> extends StacticElement {
+@Entity
+@PersistenceContext(unitName = "gsa")
+@Table(name = "Component", schema = "DIAGRAMS")
+public class Component<T extends Item> extends StaticElement {
 
+    @Column
     private String technology;
+
+    @OneToMany
+    @JoinTable(schema = "DIAGRAMS",
+            name = "%%%%%_#####",
+            joinColumns = {@JoinColumn(name = "#####_Id",
+                    referencedColumnName = "Id")},
+            inverseJoinColumns = {@JoinColumn(name = "#####_Id",
+                    referencedColumnName = "Id")})
     private Set<Feature> features = new HashSet<>();
+
+    @Column
     private long size;
 
-    Component() {
+    public Component() {
     }
 
-    public Set<Feature> getFeatures() {
-        return features;
-    }
-
-    public void setFeatures(Set<Feature> features) {
-        this.features = features;
-    }
-
-    /**
-     * Gets the technology associated with this component (e.g. "Spring Bean").
-     *
-     * @return the technology, as a String,
-     * or null if no technology has been specified
-     */
     public String getTechnology() {
         return technology;
     }
 
-    /**
-     * Sets the technology associated with this component (e.g. "Spring Bean").
-     *
-     * @param technology the technology, as a String
-     */
     public void setTechnology(String technology) {
         this.technology = technology;
     }
 
+    @Override
+    public Set<Feature> getFeatures() {
+        return features;
+    }
 
+    @Override
+    public void setFeatures(Set<Feature> features) {
+        this.features = features;
+    }
 
-    /**
-     * Gets the size of this Component (e.g. number of lines).
-     *
-     * @return the size of this component, as a long
-     */
     public long getSize() {
         return size;
     }
 
-    /**
-     * Sets the size of this component (e.g. number of lines).
-     *
-     * @param size the size
-     */
     public void setSize(long size) {
         this.size = size;
     }
-
-    /**
-     * Gets the Java package of this component (i.e. the package of the primary feature).
-     *
-     * @return the package name, as a String
-     */
-    @JsonIgnore
-    public String getPackage() {
-        if (getType() != null) {
-            try {
-                return ClassLoader.getSystemClassLoader().loadClass(getType()).getPackage().getName();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return null;
-    }
-
-    @Override
-    public String getCanonicalName() {
-        return getParent().getCanonicalName() + CANONICAL_NAME_SEPARATOR + formatForCanonicalName(getName());
-    }
-
-    @Override
-    protected Set<String> getRequiredTags() {
-        return build(Tags.ELEMENT, Tags.COMPONENT);
-    }
-
 }

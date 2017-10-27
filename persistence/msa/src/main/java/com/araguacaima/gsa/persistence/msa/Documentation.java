@@ -11,7 +11,7 @@ import javax.persistence.Table;
 @PersistenceContext(unitName = "gsa")
 @Table(schema = "MSA",
         name = "Documentation")
-public class Documentation extends BaseEntity{
+public class Documentation extends BaseEntity {
 
     @Column
     private String value;

@@ -1,10 +1,7 @@
 package com.araguacaima.gsa.persistence.diagrams.architectural;
 
-import com.araguacaima.gsa.persistence.diagrams.core.Item;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
+import javax.persistence.*;
 import java.util.LinkedHashSet;
-import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -17,25 +14,26 @@ import java.util.Set;
  * A container is essentially a context or boundary inside which some code is executed
  * or some data is stored. And each container is a separately deployable thing.
  */
-public class Container extends StacticElement {
+@Entity
+@PersistenceContext(unitName = "gsa")
+@Table(name = "Container", schema = "DIAGRAMS")
+public class Container extends StaticElement {
 
+    @Column
     private String technology;
+
+    @OneToMany
+    @JoinTable(schema = "DIAGRAMS",
+            name = "Container_Components",
+            joinColumns = {@JoinColumn(name = "Component_Id",
+                    referencedColumnName = "Id")},
+            inverseJoinColumns = {@JoinColumn(name = "Component_Id",
+                    referencedColumnName = "Id")})
     private Set<Component> components = new LinkedHashSet<>();
 
-    Container() {
+    public Container() {
     }
 
-    @JsonIgnore
-    public SoftwareSystem getSoftwareSystem() {
-        return (SoftwareSystem) getParent();
-    }
-
-    /**
-     * Gets the technology associated with thie container (e.g. Apache Tomcat).
-     *
-     * @return the technology, as a String,
-     * or null if no technology has been specified
-     */
     public String getTechnology() {
         return technology;
     }
@@ -44,65 +42,11 @@ public class Container extends StacticElement {
         this.technology = technology;
     }
 
-    public Component addComponent(String name, String description) {
-        return getModel().addComponent(this, name, description);
-    }
-
-    public Component addComponent(String name, String description, String technology) {
-        Component c = getModel().addComponent(this, name, description);
-        c.setTechnology(technology);
-        return c;
-    }
-
-    public Component addComponent(String name, Class type, String description, String technology) {
-        return this.addComponent(name, type.getCanonicalName(), description, technology);
-    }
-
-    public Component addComponent(String name, String type, String description, String technology) {
-        return getModel().addComponentOfType(this, name, type, description, technology);
-    }
-
-    void add(Component component) {
-        if (getComponentWithName(component.getName()) == null) {
-            components.add(component);
-        }
-    }
-
-    /**
-     * Gets the set of components within this software system.
-     *
-     * @return a Set of Component objects
-     */
     public Set<Component> getComponents() {
         return components;
     }
 
-    public Component getComponentWithName(String name) {
-        if (name == null) {
-            return null;
-        }
-
-        Optional<Component> component = components.stream().filter(c -> name.equals(c.getName())).findFirst();
-        return component.orElse(null);
+    public void setComponents(Set<Component> components) {
+        this.components = components;
     }
-
-    public Component getComponentOfType(String type) {
-        if (type == null) {
-            return null;
-        }
-
-        Optional<Component> component = components.stream().filter(c -> type.equals(c.getType())).findFirst();
-        return component.orElse(null);
-    }
-
-    @Override
-    public String getCanonicalName() {
-        return getParent().getCanonicalName() + CANONICAL_NAME_SEPARATOR + formatForCanonicalName(getName());
-    }
-
-    @Override
-    protected Set<String> getRequiredTags() {
-        return build(Tags.ELEMENT, Tags.CONTAINER);
-    }
-
 }

@@ -6,6 +6,7 @@ import com.araguacaima.gsa.model.meta.Version;
 import com.araguacaima.gsa.model.meta.View;
 import com.araguacaima.gsa.model.persons.Responsible;
 
+import javax.persistence.Column;
 import java.util.Collection;
 
 public class MetaData implements IMetaData {
@@ -15,6 +16,7 @@ public class MetaData implements IMetaData {
     private Collection<Element> relatedWith;
     private Collection<Element> usedId;
     private Version version;
+    @Column
     private Type type;
     private Collection<View> views;
 

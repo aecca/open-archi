@@ -1,11 +1,6 @@
 package com.araguacaima.gsa.persistence.diagrams.architectural;
 
-import com.araguacaima.gsa.persistence.diagrams.core.Element;
-import com.araguacaima.gsa.persistence.diagrams.core.Item;
-import com.araguacaima.gsa.persistence.diagrams.core.Relationship;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import java.util.HashSet;
+import javax.persistence.*;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -18,105 +13,39 @@ import java.util.Set;
  * See <a href="https://structurizr.com/help/model#SoftwareSystem">Model - Software System</a>
  * on the Structurizr website for more information.
  */
-public class SoftwareSystem extends StacticElement {
+@Entity
+@PersistenceContext(unitName = "gsa")
+@Table(name = "SoftwareSystem", schema = "DIAGRAMS")
+public class SoftwareSystem extends StaticElement {
 
+    @Column
     private Scope scope = Scope.Unspecified;
 
+    @OneToMany
+    @JoinTable(schema = "DIAGRAMS",
+            name = "SoftwareSystem_Containers",
+            joinColumns = {@JoinColumn(name = "Container_Id",
+                    referencedColumnName = "Id")},
+            inverseJoinColumns = {@JoinColumn(name = "Container_Id",
+                    referencedColumnName = "Id")})
     private Set<Container> containers = new LinkedHashSet<>();
 
-    SoftwareSystem() {
+    public SoftwareSystem() {
     }
 
-    @Override
-    @JsonIgnore
-    public Element getParent() {
-        return null;
-    }
-
-    /**
-     * Gets the location of this software system.
-     *
-     * @return a Scope
-     */
     public Scope getScope() {
         return scope;
     }
 
     public void setScope(Scope scope) {
-        if (scope != null) {
-            this.scope = scope;
-        } else {
-            this.scope = Scope.Unspecified;
-        }
+        this.scope = scope;
     }
 
-    void add(Container container) {
-        containers.add(container);
-    }
-
-    /**
-     * Gets the set of containers within this software system.
-     *
-     * @return a Set of Container objects
-     */
     public Set<Container> getContainers() {
-        return new HashSet<>(containers);
+        return containers;
     }
 
-    /**
-     * Adds a container with the specified name, description and technology
-     * (unless one exists with the same name already).
-     *
-     * @param name        the name of the container (e.g. "Web Application")
-     * @param description a short description/list of responsibilities
-     * @param technology  the technoogy choice (e.g. "Spring MVC", "Java EE", etc)
-     * @return the newly created Container instance added to the model (or null)
-     */
-    public Container addContainer(String name, String description, String technology) {
-        return getModel().addContainer(this, name, description, technology);
+    public void setContainers(Set<Container> containers) {
+        this.containers = containers;
     }
-
-    /**
-     * @param name the name of the {@link Container}
-     * @return the container with the specified name (or null if it doesn't exist).
-     */
-    public Container getContainerWithName(String name) {
-        for (Container container : getContainers()) {
-            if (container.getName().equals(name)) {
-                return container;
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * @param id the {@link Container#getId()} of the container
-     * @return Gets the container with the specified ID (or null if it doesn't exist).
-     */
-    public Container getContainerWithId(String id) {
-        for (Container container : getContainers()) {
-            if (container.getId().equals(id)) {
-                return container;
-            }
-        }
-
-        return null;
-    }
-
-    @Override
-    public String getCanonicalName() {
-        return CANONICAL_NAME_SEPARATOR + formatForCanonicalName(getName());
-    }
-
-    @Override
-    public String formatForCanonicalName(String name) {
-        return name.replace(CANONICAL_NAME_SEPARATOR, "");
-    }
-
-    @Override
-    protected Set<String> getRequiredTags() {
-        return build(Tags.ELEMENT, Tags.SOFTWARE_SYSTEM);
-    }
-
 }

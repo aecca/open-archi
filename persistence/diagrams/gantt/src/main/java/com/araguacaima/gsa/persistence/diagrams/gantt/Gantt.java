@@ -1,6 +1,5 @@
 package com.araguacaima.gsa.persistence.diagrams.gantt;
 
-import com.araguacaima.gsa.persistence.diagrams.core.Element;
 import com.araguacaima.gsa.persistence.diagrams.core.ElementKind;
 import com.araguacaima.gsa.persistence.diagrams.core.Item;
 
@@ -8,7 +7,6 @@ import java.util.Set;
 
 public class Gantt extends Item {
 
-    public static final String CANONICAL_NAME_SEPARATOR = "/";
     private Category category;
     private int start;
     private int end;
@@ -20,16 +18,6 @@ public class Gantt extends Item {
 
     public void setCategory(Category category) {
         this.category = category;
-    }
-
-    @Override
-    protected String getCanonicalNameSeparator() {
-        return CANONICAL_NAME_SEPARATOR;
-    }
-
-    @Override
-    public ElementKind getKind() {
-        return kind;
     }
 
     public int getStart() {
@@ -48,13 +36,11 @@ public class Gantt extends Item {
         this.end = end;
     }
 
-    @Override
-    public void setKind(ElementKind kind) {
-        this.kind = kind;
+    public ElementKind getKind() {
+        return kind;
     }
 
-    @Override
-    protected Set<String> getRequiredTags() {
-        return null;
+    public void setKind(ElementKind kind) {
+        this.kind = kind;
     }
 }

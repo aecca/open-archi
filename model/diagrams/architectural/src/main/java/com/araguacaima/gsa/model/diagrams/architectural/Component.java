@@ -16,7 +16,7 @@ import java.util.Set;
  * as how those components are packaged (e.g. one component vs many components
  * per JAR file, DLL, shared library, etc) is a separate and orthogonal concern.
  */
-public class Component<T extends Item> extends StacticElement {
+public class Component<T extends Item> extends StaticElement {
 
     private String technology;
     private Set<Feature> features = new HashSet<>();

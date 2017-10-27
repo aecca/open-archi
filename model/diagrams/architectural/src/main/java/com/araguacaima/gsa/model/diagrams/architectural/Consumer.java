@@ -13,9 +13,9 @@ import java.util.Set;
  * See <a href="https://structurizr.com/help/model#Consumer">Model - Consumer</a>
  * on the Structurizr website for more information.
  */
-public class Consumer extends StacticElement {
+public class Consumer extends StaticElement {
 
-    private Scope location = Scope.Unspecified;
+    private Scope scope = Scope.Unspecified;
 
     Consumer() {
     }
@@ -27,19 +27,19 @@ public class Consumer extends StacticElement {
     }
 
     /**
-     * Gets the location of this consumer.
+     * Gets the scope of this consumer.
      *
      * @return a Scope
      */
     public Scope getScope() {
-        return location;
+        return scope;
     }
 
-    public void setScope(Scope location) {
-        if (location != null) {
-            this.location = location;
+    public void setScope(Scope scope) {
+        if (scope != null) {
+            this.scope = scope;
         } else {
-            this.location = Scope.Unspecified;
+            this.scope = Scope.Unspecified;
         }
     }
 

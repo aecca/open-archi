@@ -15,7 +15,7 @@ import java.util.Set;
 @Table(schema = "MSA",
         name = "Msa")
 @NamedQueries(value = {@NamedQuery(name = "Msa.getAll",
-        query = "SELECT msa FROM Msa msa"),@NamedQuery(name = "Msa.getById",
+        query = "SELECT msa FROM Msa msa"), @NamedQuery(name = "Msa.getById",
         query = "SELECT msa FROM Msa msa WHERE msa.id=:id")})
 public class Msa extends BaseEntity {
 

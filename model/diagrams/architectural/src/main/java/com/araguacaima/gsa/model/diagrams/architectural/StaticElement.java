@@ -8,13 +8,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * This is the superclass for model elements that describe the static structure
  * of a software system, namely Person, SoftwareSystem, Container and Component.
  */
-public abstract class StacticElement extends Element {
+public abstract class StaticElement extends Element {
 
     public static final String CANONICAL_NAME_SEPARATOR = "/";
     private Model model;
     private ElementKind kind = ElementKind.ARCHITECTURAL_MODEL;
 
-    protected StacticElement() {
+    protected StaticElement() {
     }
 
     @Override

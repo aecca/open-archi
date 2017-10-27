@@ -1,5 +1,6 @@
 package com.araguacaima.gsa.persistence.msa;
 
+import com.araguacaima.gsa.persistence.diagrams.architectural.Model;
 import com.araguacaima.gsa.persistence.meta.BaseEntity;
 
 import javax.persistence.*;
@@ -15,7 +16,7 @@ public class Diagram extends BaseEntity {
     @OneToOne
     private Markdown description;
     @Column
-    private Byte[] diagram;
+    private Model diagram;
     @ManyToOne
     private IntermediateSolution intermediateSolution;
     @Column
@@ -41,11 +42,11 @@ public class Diagram extends BaseEntity {
         this.description = description;
     }
 
-    public Byte[] getDiagram() {
+    public Model getDiagram() {
         return diagram;
     }
 
-    public void setDiagram(Byte[] diagram) {
+    public void setDiagram(Model diagram) {
         this.diagram = diagram;
     }
 

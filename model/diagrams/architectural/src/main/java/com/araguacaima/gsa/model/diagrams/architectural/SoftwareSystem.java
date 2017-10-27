@@ -18,7 +18,7 @@ import java.util.Set;
  * See <a href="https://structurizr.com/help/model#SoftwareSystem">Model - Software System</a>
  * on the Structurizr website for more information.
  */
-public class SoftwareSystem extends StacticElement {
+public class SoftwareSystem extends StaticElement {
 
     private Scope scope = Scope.Unspecified;
 

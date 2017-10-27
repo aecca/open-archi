@@ -18,23 +18,12 @@ public class Pool extends Item {
     public void setLanes(Collection<Lane> lanes) {
         this.lanes = lanes;
     }
-    @Override
-    protected String getCanonicalNameSeparator() {
-        return null;
-    }
 
-    @Override
     public ElementKind getKind() {
-        return this.kind;
+        return kind;
     }
 
-    @Override
     public void setKind(ElementKind kind) {
         this.kind = kind;
-    }
-
-    @Override
-    protected Set<String> getRequiredTags() {
-        return null;
     }
 }

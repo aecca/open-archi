@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.Set;
 
-import static com.araguacaima.gsa.model.diagrams.architectural.StacticElement.CANONICAL_NAME_SEPARATOR;
+import static com.araguacaima.gsa.model.diagrams.architectural.StaticElement.CANONICAL_NAME_SEPARATOR;
 
 /**
  * Represents a deployment instance of a {@link Container}, which can be added to a {@link DeploymentNode}.
