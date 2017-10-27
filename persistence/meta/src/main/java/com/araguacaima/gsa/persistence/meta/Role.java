@@ -12,7 +12,7 @@ import java.util.UUID;
 /**
  * Created by Alejandro on 20/01/2015.
  */
-
+@PersistenceContext(unitName = "meta")
 @Entity
 @Table(schema = "COMMONS", name = "Role")
 @NamedQueries(value = {@NamedQuery(name = Role.FIND_BY_PRIORITY,

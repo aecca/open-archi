@@ -11,7 +11,7 @@ import java.util.Set;
 import java.util.UUID;
 
 
-@PersistenceContext(unitName = "gsa")
+@PersistenceContext(unitName = "meta")
 @Entity
 @Table(schema = "COMMONS", name = "Account")
 @NamedQueries(value = {@NamedQuery(name = Account.FIND_BY_EMAIL,

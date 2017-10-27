@@ -1,6 +1,8 @@
 package com.araguacaima.gsa.persistence.diagrams.core;
 
 
+import com.araguacaima.gsa.persistence.meta.BaseEntity;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.PersistenceContext;
@@ -15,31 +17,23 @@ import java.io.Serializable;
  * @since 1.0
  */
 @Entity
-@PersistenceContext(unitName = "gsa")
+@PersistenceContext(unitName = "diagrams")
 @Table(name = "Point", schema = "DIAGRAMS")
-public class Point implements Serializable, Cloneable {
-    /*
-     * JDK 1.1 serialVersionUID
-     */
+public class Point extends BaseEntity implements Serializable, Cloneable {
+
     private static final long serialVersionUID = -5276940640259749850L;
     /**
      * The X coordinate of this <code>Point</code>.
      * If no X coordinate is set it will default to 0.
-     *
-     * @serial
-     * @since 1.0
      */
     @Column
-    public double x;
+    private double x;
     /**
      * The Y coordinate of this <code>Point</code>.
      * If no Y coordinate is set it will default to 0.
-     *
-     * @serial
-     * @since 1.0
      */
     @Column
-    public double y;
+    private double y;
 
     /**
      * Constructs and initializes a point at the origin
@@ -60,7 +54,7 @@ public class Point implements Serializable, Cloneable {
      * @param y the Y coordinate of the newly constructed <code>Point</code>
      * @since 1.0
      */
-    public Point(double x, double y) {
+    Point(double x, double y) {
         this.x = x;
         this.y = y;
     }

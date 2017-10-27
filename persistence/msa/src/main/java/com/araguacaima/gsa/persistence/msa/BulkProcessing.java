@@ -7,7 +7,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Table;
 
 @Entity
-@PersistenceContext(unitName = "gsa")
+@PersistenceContext(unitName = "msa")
 @Table(name = "BulkProcessing",
         schema = "MSA")
 public class BulkProcessing extends BaseEntity {

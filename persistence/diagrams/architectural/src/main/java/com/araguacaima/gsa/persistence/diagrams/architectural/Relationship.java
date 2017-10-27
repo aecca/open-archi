@@ -12,7 +12,7 @@ import javax.persistence.Table;
  * A relationship between two architectural elements.
  */
 @Entity
-@PersistenceContext(unitName = "gsa")
+@PersistenceContext(unitName = "diagrams")
 @Table(name = "Architecture_Relationship", schema = "DIAGRAMS")
 public class Relationship<T extends Item> extends com.araguacaima.gsa.persistence.diagrams.core.Relationship {
 

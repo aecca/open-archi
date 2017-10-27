@@ -9,7 +9,7 @@ import javax.persistence.*;
  * Represents a deployment instance of a {@link Container}, which can be added to a {@link DeploymentNode}.
  */
 @Entity
-@PersistenceContext(unitName = "gsa")
+@PersistenceContext(unitName = "diagrams")
 @Table(name = "ContainerInstance", schema = "DIAGRAMS")
 public class ContainerInstance extends Element {
 

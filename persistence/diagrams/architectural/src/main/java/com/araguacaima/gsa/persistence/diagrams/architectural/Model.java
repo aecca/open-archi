@@ -14,7 +14,7 @@ import java.util.Set;
  * A software architecture model.
  */
 @Entity
-@PersistenceContext(unitName = "gsa")
+@PersistenceContext(unitName = "diagrams")
 @Table(name = "Architecture_Model", schema = "DIAGRAMS")
 public class Model extends Element {
 

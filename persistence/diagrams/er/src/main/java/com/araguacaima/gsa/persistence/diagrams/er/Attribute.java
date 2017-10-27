@@ -8,7 +8,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Table;
 
 @Entity
-@PersistenceContext(unitName = "gsa")
+@PersistenceContext(unitName = "diagrams")
 @Table(name = "Attribute", schema = "DIAGRAMS")
 public class Attribute extends BaseEntity {
 @Column

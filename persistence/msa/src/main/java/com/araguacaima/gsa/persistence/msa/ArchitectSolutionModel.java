@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.util.Collection;
 
 @Entity
-@PersistenceContext(unitName = "gsa")
+@PersistenceContext(unitName = "msa")
 @Table(schema = "MSA",
         name = "ArchitectSolutionModel")
 public class ArchitectSolutionModel extends BaseEntity {

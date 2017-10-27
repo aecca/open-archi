@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.util.Map;
 
 @Entity
-@PersistenceContext(unitName = "gsa")
+@PersistenceContext(unitName = "msa")
 @Table(schema = "MSA",
         name = "TechnicalSolution")
 public class TechnicalSolution extends BaseEntity {

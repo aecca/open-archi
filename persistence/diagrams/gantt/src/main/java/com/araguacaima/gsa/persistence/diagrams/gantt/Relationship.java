@@ -14,7 +14,7 @@ import java.util.Set;
  */
 
 @Entity
-@PersistenceContext(unitName = "gsa")
+@PersistenceContext(unitName = "diagrams")
 @Table(name = "Gantt_Relationship", schema = "DIAGRAMS")
 public class Relationship extends com.araguacaima.gsa.persistence.diagrams.core.Relationship {
     @Column

@@ -8,7 +8,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Table;
 
 @Entity
-@PersistenceContext(unitName = "gsa")
+@PersistenceContext(unitName = "msa")
 @Table(name = "Concurrency",
         schema = "MSA")
 public class Concurrency extends BaseEntity {

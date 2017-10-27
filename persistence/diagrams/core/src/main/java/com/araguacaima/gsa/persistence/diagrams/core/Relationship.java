@@ -6,7 +6,7 @@ import javax.persistence.*;
  * A relationship between two elements.
  */
 @Entity
-@PersistenceContext(unitName = "gsa")
+@PersistenceContext(unitName = "diagrams")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class Relationship<T extends Item> extends Taggable {
 

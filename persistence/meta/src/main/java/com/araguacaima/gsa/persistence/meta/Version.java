@@ -8,7 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.UUID;
-
+@PersistenceContext(unitName = "meta")
 @Entity
 @Table(schema = "COMMONS", name = "Version", uniqueConstraints = @UniqueConstraint(columnNames = {"major", "minor", "build"}))
 @NamedQueries(value = {@NamedQuery(name = Version.COUNT_ALL_VERSIONS,

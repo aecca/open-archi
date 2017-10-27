@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Entity
-@PersistenceContext(unitName = "gsa")
+@PersistenceContext(unitName = "diagrams")
 @Table(name = "UmlClass", schema = "DIAGRAMS")
 public class UmlClass extends UmlItem {
 

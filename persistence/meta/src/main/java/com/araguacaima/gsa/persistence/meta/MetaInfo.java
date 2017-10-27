@@ -12,6 +12,7 @@ import java.util.UUID;
 /**
  * Created by Alejandro on 19/12/2014.
  */
+@PersistenceContext(unitName = "meta")
 @Entity
 @Table(schema = "COMMONS", name = "MetaInfo")
 @NamedQueries(value = {@NamedQuery(name = MetaInfo.COUNT_ALL_META_INFO,

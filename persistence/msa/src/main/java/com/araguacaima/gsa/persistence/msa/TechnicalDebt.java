@@ -8,7 +8,7 @@ import java.util.Collection;
 import java.util.Map;
 
 @Entity
-@PersistenceContext(unitName = "gsa")
+@PersistenceContext(unitName = "msa")
 @Table(schema = "MSA",
         name = "TechnicalDebt")
 public class TechnicalDebt extends BaseEntity {

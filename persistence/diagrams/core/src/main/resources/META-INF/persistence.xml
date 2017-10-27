@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
 
-    <persistence-unit name="gsa" transaction-type="RESOURCE_LOCAL">
+    <persistence-unit name="diagrams" transaction-type="RESOURCE_LOCAL">
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
         <properties>
@@ -11,8 +11,8 @@
             <property name="javax.persistence.jdbc.user" value="gsa"/>
             <property name="javax.persistence.jdbc.password" value="gsa"/>
             <property name="eclipselink.weaving" value="static"/>
-                        <property name="eclipselink.ddl-generation" value="create-or-extend-tables"/>
-                        <property name="eclipselink.ddl-generation.output-mode" value="database"/>
+            <property name="eclipselink.ddl-generation" value="create-or-extend-tables"/>
+            <property name="eclipselink.ddl-generation.output-mode" value="database"/>
         </properties>
     </persistence-unit>
 

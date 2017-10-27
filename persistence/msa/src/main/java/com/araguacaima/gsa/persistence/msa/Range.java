@@ -8,7 +8,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Table;
 
 @Entity
-@PersistenceContext(unitName = "gsa")
+@PersistenceContext(unitName = "msa")
 @Table(schema = "MSA",
         name = "Range")
 public class Range<T extends Enum> extends BaseEntity {

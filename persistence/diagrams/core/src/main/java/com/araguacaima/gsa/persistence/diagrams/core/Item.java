@@ -9,7 +9,7 @@ import java.util.Set;
  * This is the superclass for all model elements.
  */
 @Entity
-@PersistenceContext(unitName = "gsa")
+@PersistenceContext(unitName = "diagrams")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class Item extends Taggable {
 
@@ -23,7 +23,16 @@ public abstract class Item extends Taggable {
     private Item parent;
     @OneToOne
     private Shape shape;
+
+    @OneToMany
+    @JoinTable(schema = "DIAGRAMS",
+            name = "Item_Pelationships",
+            joinColumns = {@JoinColumn(name = "Relationship_Id",
+                    referencedColumnName = "Id")},
+            inverseJoinColumns = {@JoinColumn(name = "Relationship_Id",
+                    referencedColumnName = "Id")})
     private Set<Relationship> relationships = new LinkedHashSet<>();
+
     @OneToOne
     private MetaData metaData;
 

@@ -9,7 +9,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Table;
 
 @Entity
-@PersistenceContext(unitName = "gsa")
+@PersistenceContext(unitName = "diagrams")
 @Table(name = "Activity", schema = "DIAGRAMS")
 public class Gantt extends Item {
     @Column

@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.util.Collection;
 
 @javax.persistence.Entity
-@PersistenceContext(unitName = "gsa")
+@PersistenceContext(unitName = "diagrams")
 @Table(name = "ER_Model", schema = "DIAGRAMS")
 public class Model extends Element {
 

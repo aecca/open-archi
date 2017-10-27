@@ -13,26 +13,42 @@ import java.sql.SQLException;
 
 public class AbstractJPATest {
 
-    protected static EntityManager em;
-    protected static EntityManagerFactory emf;
+    static EntityManager emMeta;
+    static EntityManagerFactory emfMeta;
+    static EntityManager emPersons;
+    static EntityManagerFactory emfPersons;
+    static EntityManager emDiagrams;
+    static EntityManagerFactory emfDiagrams;
+    static EntityManager emMsa;
+    static EntityManagerFactory emfMsa;
+    static EntityManager emGsa;
+    static EntityManagerFactory emfGsa;
 
     @BeforeClass
     public static void init()
             throws FileNotFoundException, SQLException {
-        emf = Persistence.createEntityManagerFactory("gsa");
-        em = emf.createEntityManager();
+        emfMeta = Persistence.createEntityManagerFactory("meta");
+        emMeta = emfMeta.createEntityManager();
+        emfPersons = Persistence.createEntityManagerFactory("persons");
+        emPersons = emfPersons.createEntityManager();
+        emfDiagrams = Persistence.createEntityManagerFactory("diagrams");
+        emDiagrams = emfDiagrams.createEntityManager();
+        emfMsa = Persistence.createEntityManagerFactory("msa");
+        emMsa = emfMsa.createEntityManager();
+        emfGsa = Persistence.createEntityManagerFactory("gsa");
+        emGsa = emfGsa.createEntityManager();
     }
 
     @AfterClass
     public static void tearDown() {
-        em.clear();
-        em.close();
-        emf.close();
+        emMsa.clear();
+        emMsa.close();
+        emfMsa.close();
     }
 
     @Before
     public void initializeDatabase() {
-        Session session = em.unwrap(Session.class);
+        Session session = emMsa.unwrap(Session.class);
 
     }
 }

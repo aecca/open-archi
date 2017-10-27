@@ -17,7 +17,7 @@ import java.util.Set;
  * per JAR file, DLL, shared library, etc) is a separate and orthogonal concern.
  */
 @Entity
-@PersistenceContext(unitName = "gsa")
+@PersistenceContext(unitName = "diagrams")
 @Table(name = "Component", schema = "DIAGRAMS")
 public class Component<T extends Item> extends StaticElement {
 

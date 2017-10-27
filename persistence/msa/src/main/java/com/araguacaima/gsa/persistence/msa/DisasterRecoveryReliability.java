@@ -5,7 +5,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Table;
 
 @Entity
-@PersistenceContext(unitName = "gsa")
+@PersistenceContext(unitName = "msa")
 @Table(schema = "MSA",
         name = "DisasterRecoveryReliability")
 public class DisasterRecoveryReliability extends AbstractReliability {

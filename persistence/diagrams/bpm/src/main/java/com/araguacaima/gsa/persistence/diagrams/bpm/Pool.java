@@ -8,7 +8,7 @@ import java.util.Collection;
 import java.util.Set;
 
 @Entity
-@PersistenceContext(unitName = "gsa")
+@PersistenceContext(unitName = "diagrams")
 @Table(name = "Pool", schema = "DIAGRAMS")
 public class Pool extends Item {
 

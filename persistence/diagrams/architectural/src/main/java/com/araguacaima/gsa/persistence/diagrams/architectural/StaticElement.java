@@ -10,7 +10,7 @@ import javax.persistence.*;
  * of a software system, namely Person, SoftwareSystem, Container and Component.
  */
 @Entity
-@PersistenceContext(unitName = "gsa")
+@PersistenceContext(unitName = "diagrams")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class StaticElement extends Element {
 

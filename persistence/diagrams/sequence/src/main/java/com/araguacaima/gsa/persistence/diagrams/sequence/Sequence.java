@@ -10,7 +10,7 @@ import javax.persistence.Table;
 import java.util.Set;
 
 @Entity
-@PersistenceContext(unitName = "gsa")
+@PersistenceContext(unitName = "diagrams")
 @Table(name = "Sequence", schema = "DIAGRAMS")
 public class Sequence extends Item {
 

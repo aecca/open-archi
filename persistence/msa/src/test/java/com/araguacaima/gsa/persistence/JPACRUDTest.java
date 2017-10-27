@@ -14,40 +14,40 @@ public class JPACRUDTest extends AbstractJPATest {
 
     @Test
     public void testDelete_success() {
-        Msa msa = em.find(Msa.class, 1);
+        Msa msa = emMsa.find(Msa.class, 1);
 
-        em.getTransaction().begin();
-        em.remove(msa);
-        em.getTransaction().commit();
+        emMsa.getTransaction().begin();
+        emMsa.remove(msa);
+        emMsa.getTransaction().commit();
 
-        List<Msa> msas = em.createNamedQuery("Msa.getAll", Msa.class).getResultList();
+        List<Msa> msas = emMsa.createNamedQuery("Msa.getAll", Msa.class).getResultList();
 
         assertEquals(0, msas.size());
     }
 
     @Test
     public void testGetAll_success() {
-        List<Msa> msas = em.createNamedQuery("Msa.getAll", Msa.class).getResultList();
+        List<Msa> msas = emMsa.createNamedQuery("Msa.getAll", Msa.class).getResultList();
         assertEquals(1, msas.size());
     }
 
     @Test
     public void testGetObjectById_success() {
-        Msa msa = em.find(Msa.class, 1);
+        Msa msa = emMsa.find(Msa.class, 1);
         assertNotNull(msa);
     }
 
     @Test
     public void testPersist_success() {
-        em.getTransaction().begin();
+        emMsa.getTransaction().begin();
         final Msa msa = new Msa();
         String id = msa.getId();
         msa.setIssueDate(Calendar.getInstance().getTime());
         msa.setExpirationDate(Calendar.getInstance().getTime());
-        em.persist(msa);
-        em.getTransaction().commit();
+        emMsa.persist(msa);
+        emMsa.getTransaction().commit();
 
-        TypedQuery<Msa> consultaAlumnos = em.createNamedQuery("Msa.getById", Msa.class);
+        TypedQuery<Msa> consultaAlumnos = emMsa.createNamedQuery("Msa.getById", Msa.class);
         consultaAlumnos.setParameter("id", id);
         List<Msa> msas = consultaAlumnos.getResultList();
 

@@ -8,7 +8,7 @@ import javax.persistence.*;
  */
 
 @Entity
-@PersistenceContext(unitName = "gsa")
+@PersistenceContext(unitName = "diagrams")
 @Table(name = "Feature", schema = "DIAGRAMS")
 public class Feature extends Item {
 
@@ -54,6 +54,7 @@ public class Feature extends Item {
     @Column
     private long size;
 
+    @Column
     private ElementKind kind = ElementKind.FEATURE;
 
     public Feature() {
