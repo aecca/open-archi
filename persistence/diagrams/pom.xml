@@ -8,7 +8,7 @@
     <artifactId>persistence-diagrams</artifactId>
     <version>1.0.1</version>
     <packaging>pom</packaging>
-    <name>Diagrams</name>
+    <name>Persistence Diagrams</name>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -22,28 +22,24 @@
         <org.apache.maven.plugins-maven-jar-plugin>3.0.2</org.apache.maven.plugins-maven-jar-plugin>
         <com.fasterxml.jackson.core-jackson-annotations>2.9.2</com.fasterxml.jackson.core-jackson-annotations>
         <org.apache.commons-commons-lang3>3.5</org.apache.commons-commons-lang3>
-        <org.apache.commons-commons-collections4>4.0</org.apache.commons-commons-collections4>
+        <org.apache.commons-commons-collections4>4.0</org.apache.commons-commons-collections4>        <junit.version>4.11</junit.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
 
             <dependency>
-                <groupId>com.araguacaima.gsa.persistence</groupId>
-                <artifactId>persistence-core</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-annotations</artifactId>
                 <version>${com.fasterxml.jackson.core-jackson-annotations}</version>
+                <scope>compile</scope>
             </dependency>
 
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>${org.apache.commons-commons-lang3}</version>
+                <scope>compile</scope>
             </dependency>
 
             <dependency>
@@ -52,7 +48,13 @@
                 <version>${org.apache.commons-commons-collections4}</version>
                 <scope>compile</scope>
             </dependency>
-
+            <!-- Testing -->
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

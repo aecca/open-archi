@@ -22,12 +22,12 @@
             <version>${project.version}</version>
         </dependency>
 
-
         <dependency>
             <groupId>com.araguacaima.gsa</groupId>
             <artifactId>persistence-persons</artifactId>
             <version>${project.version}</version>
         </dependency>
+
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
@@ -41,6 +41,11 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-collections4</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
         </dependency>
     </dependencies>
 

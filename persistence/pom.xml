@@ -50,7 +50,31 @@
                 <version>${org.apache.commons-commons-collections4}</version>
                 <scope>compile</scope>
             </dependency>
+
+            <dependency>
+                <groupId>com.araguacaima.gsa</groupId>
+                <artifactId>persistence-meta</artifactId>
+                <version>${project.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.araguacaima.gsa</groupId>
+                <artifactId>persistence-persons</artifactId>
+                <version>${project.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.araguacaima.gsa.model</groupId>
+                <artifactId>model-architectural</artifactId>
+                <version>${project.version}</version>
+                <scope>compile</scope>
+            </dependency>
         </dependencies>
+
+
+
     </dependencyManagement>
 
     <dependencies>
