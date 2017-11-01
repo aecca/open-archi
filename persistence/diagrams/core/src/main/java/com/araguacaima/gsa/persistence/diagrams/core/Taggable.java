@@ -6,10 +6,11 @@ import javax.persistence.*;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+
 @Entity
-@PersistenceContext(unitName = "diagrams")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class Taggable extends BaseEntity {
+@PersistenceUnit(unitName = "diagrams")
+public abstract class Taggable<T> extends BaseEntity {
 
     @ElementCollection
     @CollectionTable(name = "Tag", schema = "DIAGRAMS")

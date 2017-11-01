@@ -8,9 +8,9 @@ import javax.persistence.*;
  */
 
 @Entity
-@PersistenceContext(unitName = "diagrams")
-@Table(name = "Feature", schema = "DIAGRAMS")
-public class Feature extends Item {
+@PersistenceUnit(unitName = "diagrams")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+public class Feature extends Item<Feature> {
 
     /**
      * the role of the feature ... Primary or Supporting

@@ -9,10 +9,10 @@ import java.util.Set;
 /**
  * This is the superclass for all model elements.
  */
-@Entity
-@PersistenceContext(unitName = "diagrams")
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class Element extends Item {
+
+@MappedSuperclass
+@PersistenceUnit(unitName = "diagrams")
+public abstract class Element<T> extends Item {
 
     @Column
     private String url;
@@ -20,12 +20,12 @@ public abstract class Element extends Item {
     @ElementCollection
     @MapKeyColumn(name = "key")
     @Column(name = "value")
-    @CollectionTable(schema = "AM", name = "Element_Properties", joinColumns = @JoinColumn(name = "Property_Id"))
+    @CollectionTable(schema = "DIAGRAMS", name = "Element_Properties", joinColumns = @JoinColumn(name = "Property_Id"))
     private Map<String, String> properties = new HashMap<>();
 
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",
-            name = "Component_Features",
+            name = "Element_Features",
             joinColumns = {@JoinColumn(name = "Feature_Id",
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Feature_Id",

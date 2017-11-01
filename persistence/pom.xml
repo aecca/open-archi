@@ -27,6 +27,8 @@
         <junit.version>4.11</junit.version>
         <javax.validation-validation-api>2.0.0.Final</javax.validation-validation-api>
         <org.apache.commons-commons-collections4>4.0</org.apache.commons-commons-collections4>
+        <commons-io-commons-io>2.6</commons-io-commons-io>
+
     </properties>
 
 
@@ -71,6 +73,14 @@
                 <version>${project.version}</version>
                 <scope>compile</scope>
             </dependency>
+
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons-io-commons-io}</version>
+                <scope>test</scope>
+            </dependency>
+
         </dependencies>
 
     </dependencyManagement>

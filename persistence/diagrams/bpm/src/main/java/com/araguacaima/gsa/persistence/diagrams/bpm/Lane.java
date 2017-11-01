@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.util.Collection;
 
 @Entity
-@PersistenceContext(unitName = "diagrams")
+@PersistenceUnit(unitName = "diagrams")
 @Table(name = "Lane", schema = "DIAGRAMS")
 public class Lane extends BaseEntity{
 

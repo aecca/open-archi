@@ -4,9 +4,9 @@ import com.araguacaima.gsa.persistence.meta.BaseEntity;
 
 import javax.persistence.*;
 
-@PersistenceContext(unitName = "persons")
+@PersistenceUnit(unitName = "persons")
 @Entity
-@Table(schema = "PERSONS",
+@Table(schema = "PERSONS", catalog = "Persons",
         name = "Responsible")
 public class Responsible extends BaseEntity {
 

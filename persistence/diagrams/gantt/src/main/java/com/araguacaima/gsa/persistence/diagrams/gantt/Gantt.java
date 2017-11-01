@@ -5,11 +5,11 @@ import com.araguacaima.gsa.persistence.diagrams.core.Item;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceUnit;
 import javax.persistence.Table;
 
 @Entity
-@PersistenceContext(unitName = "diagrams")
+@PersistenceUnit(unitName = "diagrams")
 @Table(name = "Activity", schema = "DIAGRAMS")
 public class Gantt extends Item {
     @Column

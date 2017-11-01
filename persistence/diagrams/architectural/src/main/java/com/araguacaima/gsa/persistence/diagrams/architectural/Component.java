@@ -17,7 +17,7 @@ import java.util.Set;
  * per JAR file, DLL, shared library, etc) is a separate and orthogonal concern.
  */
 @Entity
-@PersistenceContext(unitName = "diagrams")
+@PersistenceUnit(unitName = "diagrams")
 @Table(name = "Component", schema = "DIAGRAMS")
 public class Component<T extends Item> extends StaticElement {
 
@@ -45,16 +45,6 @@ public class Component<T extends Item> extends StaticElement {
 
     public void setTechnology(String technology) {
         this.technology = technology;
-    }
-
-    @Override
-    public Set<Feature> getFeatures() {
-        return features;
-    }
-
-    @Override
-    public void setFeatures(Set<Feature> features) {
-        this.features = features;
     }
 
     public long getSize() {

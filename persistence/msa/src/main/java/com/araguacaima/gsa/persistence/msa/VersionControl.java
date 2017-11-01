@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@PersistenceContext(unitName = "msa")
+@PersistenceUnit(unitName = "msa")
 @Table(schema = "MSA",
         name = "VersionControl")
 public class VersionControl extends BaseEntity {

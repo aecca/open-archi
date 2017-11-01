@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@PersistenceContext(unitName = "msa")
+@PersistenceUnit(unitName = "msa")
 @Table(schema = "MSA",
         name = "ReliabilitySolution")
 public class ReliabilitySolution extends BaseEntity {

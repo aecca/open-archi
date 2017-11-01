@@ -1,17 +1,18 @@
 package com.araguacaima.gsa.persistence.diagrams.core;
 
+import com.araguacaima.gsa.persistence.meta.BaseEntity;
 import com.araguacaima.gsa.persistence.meta.Type;
 import com.araguacaima.gsa.persistence.meta.Version;
 import com.araguacaima.gsa.persistence.meta.View;
 import com.araguacaima.gsa.persistence.persons.Responsible;
-import com.araguacaima.gsa.persistence.meta.BaseEntity;
 
 import javax.persistence.*;
 import java.util.Collection;
 
 @Entity
-@PersistenceContext(unitName = "diagrams")
+@PersistenceUnits({@PersistenceUnit(unitName = "diagrams"), @PersistenceUnit(unitName = "persons"), @PersistenceUnit(unitName = "meta")})
 @Table(name = "MetaData", schema = "DIAGRAMS")
+@SecondaryTables({@SecondaryTable(schema = "PERSONS", catalog = "Persons", name = "Responsible"), @SecondaryTable(schema = "META", catalog = "Meta", name = "Version")})
 public class MetaData extends BaseEntity {
 
     @OneToMany
@@ -21,6 +22,7 @@ public class MetaData extends BaseEntity {
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Responsible_Id",
                     referencedColumnName = "Id")})
+    @JoinColumn(name = "Responsible_Id", referencedColumnName = "Id", table = "Responsible")
     private Collection<Responsible> responsibles;
 
     @OneToMany
@@ -30,6 +32,7 @@ public class MetaData extends BaseEntity {
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Responsible_Id",
                     referencedColumnName = "Id")})
+    @JoinColumn(name = "Responsible_Id", referencedColumnName = "Id", table = "Responsible")
     private Collection<Responsible> collaborators;
 
     @OneToMany
@@ -39,7 +42,7 @@ public class MetaData extends BaseEntity {
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Element_Id",
                     referencedColumnName = "Id")})
-    private Collection<Element> relatedWith;
+    private Collection<Taggable> relatedWith;
 
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",
@@ -48,9 +51,12 @@ public class MetaData extends BaseEntity {
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Element_Id",
                     referencedColumnName = "Id")})
-    private Collection<Element> usedIn;
+    private Collection<Taggable> usedIn;
+
     @OneToOne
+    @JoinColumn(name = "Version_Id", referencedColumnName = "Id", table = "Version")
     private Version version;
+
     @Column
     private Type type;
 
@@ -79,19 +85,19 @@ public class MetaData extends BaseEntity {
         this.collaborators = collaborators;
     }
 
-    public Collection<Element> getRelatedWith() {
+    public Collection<Taggable> getRelatedWith() {
         return relatedWith;
     }
 
-    public void setRelatedWith(Collection<Element> relatedWith) {
+    public void setRelatedWith(Collection<Taggable> relatedWith) {
         this.relatedWith = relatedWith;
     }
 
-    public Collection<Element> getUsedIn() {
+    public Collection<Taggable> getUsedIn() {
         return usedIn;
     }
 
-    public void setUsedIn(Collection<Element> usedId) {
+    public void setUsedIn(Collection<Taggable> usedId) {
         this.usedIn = usedId;
     }
 

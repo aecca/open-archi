@@ -11,9 +11,9 @@ import java.util.Set;
 import java.util.UUID;
 
 
-@PersistenceContext(unitName = "meta")
+@PersistenceUnit(unitName = "meta")
 @Entity
-@Table(schema = "COMMONS", name = "Account")
+@Table(schema = "META", catalog = "Meta", name = "Account")
 @NamedQueries(value = {@NamedQuery(name = Account.FIND_BY_EMAIL,
         query = "select a from Account a where a.email = :"
                 + Account.PARAM_EMAIL), @NamedQuery(name = Account.FIND_BY_LOGIN,
@@ -74,7 +74,7 @@ public class Account implements Serializable {
 
     @ManyToMany
     @JoinTable(
-            schema = "COMMONS",
+            schema = "META", catalog = "Meta",
             name = "ACCOUNT_ROLES",
             joinColumns = {@JoinColumn(name = "ACCOUNT_ID", referencedColumnName = "ID")},
             inverseJoinColumns = {@JoinColumn(name = "ROLE_ID", referencedColumnName = "ID")})

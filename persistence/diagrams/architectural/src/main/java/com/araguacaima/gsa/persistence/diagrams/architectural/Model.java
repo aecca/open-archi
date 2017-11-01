@@ -2,7 +2,6 @@ package com.araguacaima.gsa.persistence.diagrams.architectural;
 
 import com.araguacaima.gsa.persistence.diagrams.core.Element;
 import com.araguacaima.gsa.persistence.diagrams.core.ElementKind;
-import com.araguacaima.gsa.persistence.diagrams.core.Relationship;
 
 import javax.persistence.*;
 import java.util.HashMap;
@@ -14,9 +13,9 @@ import java.util.Set;
  * A software architecture model.
  */
 @Entity
-@PersistenceContext(unitName = "diagrams")
+@PersistenceUnit(unitName = "diagrams")
 @Table(name = "Architecture_Model", schema = "DIAGRAMS")
-public class Model extends Element {
+public class Model extends Element<Model> {
 
     @OneToMany
     @CollectionTable(name = "Architecture_Model_Elements",

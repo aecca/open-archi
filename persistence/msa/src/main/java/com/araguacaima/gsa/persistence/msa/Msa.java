@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.Set;
 
 @Entity
-@PersistenceContext(unitName = "msa")
+@PersistenceUnit(unitName = "msa")
 @Table(schema = "MSA",
         name = "Msa")
 @NamedQueries(value = {@NamedQuery(name = "Msa.getAll",

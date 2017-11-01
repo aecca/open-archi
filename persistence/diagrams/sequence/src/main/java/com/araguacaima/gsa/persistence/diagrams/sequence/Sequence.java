@@ -5,12 +5,12 @@ import com.araguacaima.gsa.persistence.diagrams.core.Item;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceUnit;
 import javax.persistence.Table;
 import java.util.Set;
 
 @Entity
-@PersistenceContext(unitName = "diagrams")
+@PersistenceUnit(unitName = "diagrams")
 @Table(name = "Sequence", schema = "DIAGRAMS")
 public class Sequence extends Item {
 

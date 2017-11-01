@@ -3,7 +3,7 @@ package com.araguacaima.gsa.persistence.diagrams.er;
 import com.araguacaima.gsa.persistence.diagrams.core.RelationshipType;
 
 import javax.persistence.Column;
-import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceUnit;
 import javax.persistence.Table;
 
 /**
@@ -11,7 +11,7 @@ import javax.persistence.Table;
  */
 
 @javax.persistence.Entity
-@PersistenceContext(unitName = "diagrams")
+@PersistenceUnit(unitName = "diagrams")
 @Table(name = "ER_Relationship", schema = "DIAGRAMS")
 public class Relationship extends com.araguacaima.gsa.persistence.diagrams.core.Relationship<Entity> {
     @Column

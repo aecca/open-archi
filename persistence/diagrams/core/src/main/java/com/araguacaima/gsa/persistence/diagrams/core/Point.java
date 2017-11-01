@@ -5,7 +5,7 @@ import com.araguacaima.gsa.persistence.meta.BaseEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceUnit;
 import javax.persistence.Table;
 import java.io.Serializable;
 
@@ -17,7 +17,7 @@ import java.io.Serializable;
  * @since 1.0
  */
 @Entity
-@PersistenceContext(unitName = "diagrams")
+@PersistenceUnit(unitName = "diagrams")
 @Table(name = "Point", schema = "DIAGRAMS")
 public class Point extends BaseEntity implements Serializable, Cloneable {
 

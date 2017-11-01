@@ -8,9 +8,9 @@ import java.util.Collection;
 import java.util.Set;
 
 @Entity
-@PersistenceContext(unitName = "diagrams")
+@PersistenceUnit(unitName = "diagrams")
 @Table(name = "Classes_Model", schema = "DIAGRAMS")
-public class Model extends Element {
+public class Model extends Element<Model> {
 
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",

@@ -4,11 +4,11 @@ import com.araguacaima.gsa.persistence.meta.BaseEntity;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
-import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceUnit;
 import javax.persistence.Table;
 
 @Entity
-@PersistenceContext(unitName = "msa")
+@PersistenceUnit(unitName = "msa")
 @Table(name = "Concurrency",
         schema = "MSA")
 public class Concurrency extends BaseEntity {

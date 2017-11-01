@@ -2,7 +2,7 @@ package com.araguacaima.gsa.persistence.diagrams.architectural;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceUnit;
 import javax.persistence.Table;
 
 /**
@@ -13,7 +13,7 @@ import javax.persistence.Table;
  * on the Structurizr website for more information.
  */
 @Entity
-@PersistenceContext(unitName = "diagrams")
+@PersistenceUnit(unitName = "diagrams")
 @Table(name = "Consumer", schema = "DIAGRAMS")
 public class Consumer extends StaticElement {
 

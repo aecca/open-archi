@@ -6,15 +6,15 @@ import javax.persistence.*;
  * A relationship between two elements.
  */
 @Entity
-@PersistenceContext(unitName = "diagrams")
+@PersistenceUnit(unitName = "diagrams")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class Relationship<T extends Item> extends Taggable {
+public abstract class Relationship<T extends Taggable> extends Taggable<T> {
 
-    @OneToOne
+    @OneToOne(targetEntity=Taggable.class)
     private T source;
     @Column
     private String sourceId;
-    @OneToOne
+    @OneToOne(targetEntity=Taggable.class)
     private T destination;
     @Column
     private String destinationId;

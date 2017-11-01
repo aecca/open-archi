@@ -8,10 +8,11 @@ import java.util.Set;
 /**
  * This is the superclass for all model elements.
  */
+@MappedSuperclass
 @Entity
-@PersistenceContext(unitName = "diagrams")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class Item extends Taggable {
+@PersistenceUnit(unitName = "diagrams")
+public abstract class Item<T> extends Taggable {
 
     @Column
     private String name;
@@ -19,14 +20,14 @@ public abstract class Item extends Taggable {
     private String description;
     @OneToOne
     private Point location;
-    @OneToOne
-    private Item parent;
+    @OneToOne(targetEntity = Taggable.class)
+    private Taggable<T> parent;
     @OneToOne
     private Shape shape;
 
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",
-            name = "Item_Pelationships",
+            name = "Item_Relationships",
             joinColumns = {@JoinColumn(name = "Relationship_Id",
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Relationship_Id",
@@ -63,11 +64,11 @@ public abstract class Item extends Taggable {
         this.location = location;
     }
 
-    public Item getParent() {
+    public Taggable<T> getParent() {
         return parent;
     }
 
-    public void setParent(Item parent) {
+    public void setParent(Taggable<T> parent) {
         this.parent = parent;
     }
 

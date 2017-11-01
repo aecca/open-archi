@@ -1,5 +1,6 @@
 package com.araguacaima.gsa.persistence;
 
+import org.apache.commons.io.FileUtils;
 import org.eclipse.persistence.sessions.Session;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -8,7 +9,9 @@ import org.junit.BeforeClass;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.SQLException;
 
 public class AbstractJPATest {
@@ -41,14 +44,29 @@ public class AbstractJPATest {
 
     @AfterClass
     public static void tearDown() {
-        emMsa.clear();
-        emMsa.close();
-        emfMsa.close();
+        close(emMeta, emfMeta);
+        close(emPersons, emfPersons);
+        close(emDiagrams, emfDiagrams);
+        close(emMsa, emfMsa);
+        close(emGsa, emfGsa);
+    }
+
+    private static void close(EntityManager em, EntityManagerFactory emf) {
+        if (em == null) {
+            try {
+                FileUtils.forceDeleteOnExit(new File("D:\\tmp\\gsa\\db"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            em.clear();
+            em.close();
+            emf.close();
+        }
     }
 
     @Before
     public void initializeDatabase() {
         Session session = emMsa.unwrap(Session.class);
-
     }
 }

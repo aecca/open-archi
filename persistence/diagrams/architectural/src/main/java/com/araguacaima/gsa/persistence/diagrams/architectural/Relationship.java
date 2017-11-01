@@ -2,19 +2,20 @@ package com.araguacaima.gsa.persistence.diagrams.architectural;
 
 import com.araguacaima.gsa.persistence.diagrams.core.Item;
 import com.araguacaima.gsa.persistence.diagrams.core.RelationshipType;
+import com.araguacaima.gsa.persistence.diagrams.core.Taggable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceUnit;
 import javax.persistence.Table;
 
 /**
  * A relationship between two architectural elements.
  */
 @Entity
-@PersistenceContext(unitName = "diagrams")
+@PersistenceUnit(unitName = "diagrams")
 @Table(name = "Architecture_Relationship", schema = "DIAGRAMS")
-public class Relationship<T extends Item> extends com.araguacaima.gsa.persistence.diagrams.core.Relationship {
+public class Relationship extends com.araguacaima.gsa.persistence.diagrams.core.Relationship<StaticElement> {
 
     @Column
     private String technology;

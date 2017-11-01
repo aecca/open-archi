@@ -7,9 +7,9 @@ import javax.persistence.*;
 import java.util.Collection;
 
 @Entity
-@PersistenceContext(unitName = "diagrams")
+@PersistenceUnit(unitName = "diagrams")
 @Table(name = "Flowchart_Model", schema = "DIAGRAMS")
-public class Model extends Element {
+public class Model extends Element<Model> {
 
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",
