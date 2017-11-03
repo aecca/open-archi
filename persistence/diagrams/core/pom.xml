@@ -19,13 +19,11 @@
         <dependency>
             <groupId>com.araguacaima.gsa</groupId>
             <artifactId>persistence-meta</artifactId>
-            <version>${project.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.araguacaima.gsa</groupId>
             <artifactId>persistence-persons</artifactId>
-            <version>${project.version}</version>
         </dependency>
 
         <dependency>

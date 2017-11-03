@@ -9,7 +9,7 @@ import javax.persistence.*;
 
 @Entity
 @PersistenceUnit(unitName = "diagrams")
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Table(name = "Features", schema = "DIAGRAMS")
 public class Feature extends Item<Feature> {
 
     /**

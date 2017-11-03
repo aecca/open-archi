@@ -9,8 +9,9 @@ import javax.persistence.*;
  * This is the superclass for model elements that describe the static structure
  * of a software system, namely Person, SoftwareSystem, Container and Component.
  */
-
-@MappedSuperclass
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@PersistenceUnit(unitName = "diagrams")
 public abstract class StaticElement extends Element<StaticElement> {
 
     @OneToOne

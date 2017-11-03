@@ -19,12 +19,12 @@ import java.util.Set;
 @Entity
 @PersistenceUnit(unitName = "diagrams")
 @Table(name = "Component", schema = "DIAGRAMS")
-public class Component<T extends Item> extends StaticElement {
+public class Component extends StaticElement {
 
     @Column
     private String technology;
 
-    @OneToMany
+    @OneToMany(targetEntity = Feature.class)
     @JoinTable(schema = "DIAGRAMS",
             name = "Component_Features",
             joinColumns = {@JoinColumn(name = "Feature_Id",
@@ -37,6 +37,16 @@ public class Component<T extends Item> extends StaticElement {
     private long size;
 
     public Component() {
+    }
+
+    @Override
+    public Set<Feature> getFeatures() {
+        return features;
+    }
+
+    @Override
+    public void setFeatures(Set<Feature> features) {
+        this.features = features;
     }
 
     public String getTechnology() {

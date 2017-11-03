@@ -10,7 +10,8 @@ import java.util.Set;
  * This is the superclass for all model elements.
  */
 
-@MappedSuperclass
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @PersistenceUnit(unitName = "diagrams")
 public abstract class Element<T> extends Item {
 

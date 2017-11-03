@@ -15,9 +15,9 @@ import java.util.Set;
 @Entity
 @PersistenceUnit(unitName = "diagrams")
 @Table(name = "Architecture_Model", schema = "DIAGRAMS")
-public class Model extends Element<Model> {
+public class Model extends Element<StaticElement> {
 
-    @OneToMany
+    @OneToMany(targetEntity = StaticElement.class)
     @CollectionTable(name = "Architecture_Model_Elements",
             schema = "DIAGRAMS")
     @MapKeyColumn(name = "elements")

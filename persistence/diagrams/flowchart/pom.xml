@@ -19,7 +19,6 @@
         <dependency>
             <groupId>com.araguacaima.gsa.persistence</groupId>
             <artifactId>persistence-core</artifactId>
-            <version>${project.version}</version>
         </dependency>
 
         <dependency>
