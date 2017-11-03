@@ -30,7 +30,6 @@
     <dependencyManagement>
         <dependencies>
 
-
             <dependency>
                 <groupId>com.araguacaima.gsa.persistence</groupId>
                 <artifactId>persistence-core</artifactId>
@@ -44,7 +43,6 @@
                 <version>${project.version}</version>
                 <scope>compile</scope>
             </dependency>
-
 
             <dependency>
                 <groupId>com.araguacaima.gsa</groupId>

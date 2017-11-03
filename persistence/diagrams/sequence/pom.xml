@@ -22,6 +22,11 @@
         </dependency>
 
         <dependency>
+            <groupId>com.araguacaima.gsa</groupId>
+            <artifactId>persistence-persons</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
         </dependency>
@@ -50,5 +55,11 @@
 
     <build>
         <defaultGoal>clean install</defaultGoal>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+            </testResource>
+        </testResources>
     </build>
 </project>
