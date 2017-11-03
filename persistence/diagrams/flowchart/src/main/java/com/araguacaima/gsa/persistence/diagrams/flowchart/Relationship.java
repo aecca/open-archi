@@ -13,9 +13,9 @@ import java.util.Set;
  * A relationship between two classes.
  */
 @Entity
-@PersistenceUnit(unitName = "diagrams")
+@PersistenceUnit(unitName = "gsa" )
 @Table(name = "Flowchart_Relationship", schema = "DIAGRAMS")
-public class Relationship extends com.araguacaima.gsa.persistence.diagrams.core.Relationship<Flowchart> {
+public class Relationship extends com.araguacaima.gsa.persistence.diagrams.core.Relationship  {
     @Column
     private RelationshipType type;
 

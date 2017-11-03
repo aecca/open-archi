@@ -12,9 +12,9 @@ import java.util.Set;
  * A relationship between two Gantt activities.
  */
 @Entity
-@PersistenceUnit(unitName = "diagrams")
+@PersistenceUnit(unitName = "gsa" )
 @Table(name = "Sequence_Relationship", schema = "DIAGRAMS")
-public class Relationship extends com.araguacaima.gsa.persistence.diagrams.core.Relationship<Sequence> {
+public class Relationship extends com.araguacaima.gsa.persistence.diagrams.core.Relationship {
 
     private RelationshipType type;
     private int time;

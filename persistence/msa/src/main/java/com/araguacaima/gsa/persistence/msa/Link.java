@@ -5,7 +5,7 @@ import com.araguacaima.gsa.persistence.meta.BaseEntity;
 import javax.persistence.*;
 
 @Entity
-@PersistenceUnit(unitName = "msa")
+@PersistenceUnit(unitName = "gsa" )
 @Table(schema = "MSA",
         name = "Link")
 public class Link extends BaseEntity {

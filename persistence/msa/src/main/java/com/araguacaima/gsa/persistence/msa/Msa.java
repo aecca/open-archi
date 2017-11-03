@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.Set;
 
 @Entity
-@PersistenceUnit(unitName = "msa")
+@PersistenceUnit(unitName = "gsa" )
 @Table(schema = "MSA",
         name = "Msa")
 @NamedQueries(value = {@NamedQuery(name = "Msa.getAll",
@@ -56,6 +56,7 @@ public class Msa extends BaseEntity {
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Responsible_Id",
                     referencedColumnName = "Id")})
+    @JoinColumn(table = "Responsibles", name = "Responsible_Id", referencedColumnName = "Id")
     private Collection<Responsible> responsibles;
     @OneToMany
     @JoinTable(schema = "MSA",

@@ -7,8 +7,8 @@ import javax.persistence.PersistenceUnit;
 import javax.persistence.Table;
 
 @Entity
-@PersistenceUnit(unitName = "meta")
-@Table(name = "View", schema = "META", catalog = "Meta")
+@PersistenceUnit(unitName = "gsa" )
+@Table(name = "View", schema = "META")
 public class View extends BaseEntity {
 
     @Column

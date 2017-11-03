@@ -8,7 +8,7 @@ import javax.persistence.PersistenceUnit;
 import javax.persistence.Table;
 
 @Entity
-@PersistenceUnit(unitName = "diagrams")
+@PersistenceUnit(unitName = "gsa" )
 @Table(name = "Shape", schema = "DIAGRAMS")
 public class Shape extends BaseEntity{
 

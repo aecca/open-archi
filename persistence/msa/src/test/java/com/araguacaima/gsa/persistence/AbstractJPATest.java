@@ -44,11 +44,11 @@ public class AbstractJPATest {
 
     @AfterClass
     public static void tearDown() {
-        close(emMeta, emfMeta);
+/*        close(emMeta, emfMeta);
         close(emPersons, emfPersons);
         close(emDiagrams, emfDiagrams);
         close(emMsa, emfMsa);
-        close(emGsa, emfGsa);
+        close(emGsa, emfGsa);*/
     }
 
     private static void close(EntityManager em, EntityManagerFactory emf) {

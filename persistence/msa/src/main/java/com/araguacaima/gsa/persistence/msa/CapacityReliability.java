@@ -6,7 +6,7 @@ import javax.persistence.PersistenceUnit;
 import javax.persistence.Table;
 
 @Entity
-@PersistenceUnit(unitName = "msa")
+@PersistenceUnit(unitName = "gsa" )
 @Table(schema = "MSA",
         name = "CapacityReliability")
 

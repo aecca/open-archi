@@ -11,8 +11,8 @@ import javax.persistence.*;
  */
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-@PersistenceUnit(unitName = "diagrams")
-public abstract class StaticElement extends Element<StaticElement> {
+@PersistenceUnit(unitName = "gsa" )
+public abstract class StaticElement extends Element {
 
     @OneToOne
     private Model model;

@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@PersistenceUnit(unitName = "msa")
+@PersistenceUnit(unitName = "gsa" )
 @Table(schema = "MSA",
         name = "Volumetry")
 public class Volumetry extends BaseEntity {

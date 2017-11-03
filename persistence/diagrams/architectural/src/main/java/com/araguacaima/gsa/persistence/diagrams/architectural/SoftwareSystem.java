@@ -14,7 +14,7 @@ import java.util.Set;
  * on the Structurizr website for more information.
  */
 @Entity
-@PersistenceUnit(unitName = "diagrams")
+@PersistenceUnit(unitName = "gsa" )
 @Table(name = "SoftwareSystem", schema = "DIAGRAMS")
 public class SoftwareSystem extends StaticElement {
 

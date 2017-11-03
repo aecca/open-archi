@@ -13,7 +13,7 @@ import javax.persistence.Table;
  * on the Structurizr website for more information.
  */
 @Entity
-@PersistenceUnit(unitName = "diagrams")
+@PersistenceUnit(unitName = "gsa" )
 @Table(name = "Consumer", schema = "DIAGRAMS")
 public class Consumer extends StaticElement {
 

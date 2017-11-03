@@ -6,16 +6,16 @@ import javax.persistence.*;
  * A relationship between two elements.
  */
 @Entity
-@PersistenceUnit(unitName = "diagrams")
+@PersistenceUnit(unitName = "gsa" )
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class Relationship<T extends Taggable> extends Taggable<T> {
+public abstract class Relationship extends Taggable {
 
     @OneToOne(targetEntity=Taggable.class)
-    private T source;
+    private Taggable source;
     @Column
     private String sourceId;
     @OneToOne(targetEntity=Taggable.class)
-    private T destination;
+    private Taggable destination;
     @Column
     private String destinationId;
     @Column
@@ -28,11 +28,11 @@ public abstract class Relationship<T extends Taggable> extends Taggable<T> {
     public Relationship() {
     }
 
-    public T getSource() {
+    public Taggable getSource() {
         return source;
     }
 
-    public void setSource(T source) {
+    public void setSource(Taggable source) {
         this.source = source;
     }
 
@@ -44,11 +44,11 @@ public abstract class Relationship<T extends Taggable> extends Taggable<T> {
         this.sourceId = sourceId;
     }
 
-    public T getDestination() {
+    public Taggable getDestination() {
         return destination;
     }
 
-    public void setDestination(T destination) {
+    public void setDestination(Taggable destination) {
         this.destination = destination;
     }
 

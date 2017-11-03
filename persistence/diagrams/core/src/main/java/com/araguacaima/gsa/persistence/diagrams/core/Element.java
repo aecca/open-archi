@@ -12,8 +12,8 @@ import java.util.Set;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-@PersistenceUnit(unitName = "diagrams")
-public abstract class Element<T> extends Item {
+@PersistenceUnit(unitName = "gsa" )
+public abstract class Element extends Item {
 
     @Column
     private String url;

@@ -8,7 +8,7 @@ import java.util.Collection;
 import java.util.Set;
 
 @javax.persistence.Entity
-@PersistenceUnit(unitName = "diagrams")
+@PersistenceUnit(unitName = "gsa" )
 @Table(name = "Entity", schema = "DIAGRAMS")
 public class Entity extends Element {
     @Column

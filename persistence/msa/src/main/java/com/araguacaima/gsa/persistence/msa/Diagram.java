@@ -6,7 +6,7 @@ import com.araguacaima.gsa.persistence.meta.BaseEntity;
 import javax.persistence.*;
 
 @Entity
-@PersistenceUnit(unitName = "msa")
+@PersistenceUnit(unitName = "gsa" )
 @Table(schema = "MSA",
         name = "Diagram")
 public class Diagram extends BaseEntity {
@@ -15,8 +15,9 @@ public class Diagram extends BaseEntity {
     private ArchitectSolutionModel architectSolutionModel;
     @OneToOne
     private Markdown description;
-    @OneToOne
-    private Model diagram;
+/*    @OneToOne
+    @JoinColumn(table = "Architecture_Model", name = "Architecture_Model_Id", referencedColumnName = "Id")
+    private Model diagram;*/
     @ManyToOne
     private IntermediateSolution intermediateSolution;
     @Column
@@ -41,14 +42,14 @@ public class Diagram extends BaseEntity {
     public void setDescription(Markdown description) {
         this.description = description;
     }
-
+/*
     public Model getDiagram() {
         return diagram;
     }
 
     public void setDiagram(Model diagram) {
         this.diagram = diagram;
-    }
+    }*/
 
     public IntermediateSolution getIntermediateSolution() {
         return intermediateSolution;

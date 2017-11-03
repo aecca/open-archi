@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.util.Collection;
 
 @Entity
-@PersistenceUnit(unitName = "msa")
+@PersistenceUnit(unitName = "gsa" )
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class AbstractReliability extends BaseEntity implements IReliability {
     @Column

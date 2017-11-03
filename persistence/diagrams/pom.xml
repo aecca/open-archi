@@ -23,6 +23,7 @@
         <com.fasterxml.jackson.core-jackson-annotations>2.9.2</com.fasterxml.jackson.core-jackson-annotations>
         <org.apache.commons-commons-lang3>3.5</org.apache.commons-commons-lang3>
         <org.apache.commons-commons-collections4>4.0</org.apache.commons-commons-collections4>
+        <commons-io-commons-io>2.6</commons-io-commons-io>
         <junit.version>4.11</junit.version>
     </properties>
 
@@ -73,12 +74,22 @@
                 <scope>compile</scope>
             </dependency>
             <!-- Testing -->
+
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons-io-commons-io}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <!-- Testing -->
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
                 <version>${junit.version}</version>
                 <scope>test</scope>
             </dependency>
+
         </dependencies>
     </dependencyManagement>
 

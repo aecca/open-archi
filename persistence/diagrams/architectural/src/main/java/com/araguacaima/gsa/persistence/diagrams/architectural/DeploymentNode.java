@@ -23,7 +23,7 @@ import java.util.Set;
  * </ul>
  */
 @Entity
-@PersistenceUnit(unitName = "diagrams")
+@PersistenceUnit(unitName = "gsa" )
 @Table(name = "DeploymentNode", schema = "DIAGRAMS")
 public class DeploymentNode extends Element {
 

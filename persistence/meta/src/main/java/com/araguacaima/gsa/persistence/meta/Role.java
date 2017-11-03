@@ -12,9 +12,9 @@ import java.util.UUID;
 /**
  * Created by Alejandro on 20/01/2015.
  */
-@PersistenceUnit(unitName = "meta")
+@PersistenceUnit(unitName = "gsa" )
 @Entity
-@Table(schema = "META", catalog = "Meta", name = "Role")
+@Table(schema = "META", name = "Role")
 @NamedQueries(value = {@NamedQuery(name = Role.FIND_BY_PRIORITY,
         query = "select a from Role a where a.priority = :"
                 + Role.PARAM_PRIORITY), @NamedQuery(name = Role.FIND_BY_ID,

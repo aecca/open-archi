@@ -11,9 +11,9 @@ import javax.persistence.Table;
  * A relationship between two classes.
  */
 @Entity
-@PersistenceUnit(unitName = "diagrams")
+@PersistenceUnit(unitName = "gsa" )
 @Table(name = "Classes_Relationship", schema = "DIAGRAMS")
-public class Relationship extends com.araguacaima.gsa.persistence.diagrams.core.Relationship<UmlClass> {
+public class Relationship extends com.araguacaima.gsa.persistence.diagrams.core.Relationship {
 
     @Column
     private RelationshipType type;

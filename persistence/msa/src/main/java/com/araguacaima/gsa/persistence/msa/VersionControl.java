@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@PersistenceUnit(unitName = "msa")
+@PersistenceUnit(unitName = "gsa" )
 @Table(schema = "MSA",
         name = "VersionControl")
 public class VersionControl extends BaseEntity {
@@ -17,7 +17,11 @@ public class VersionControl extends BaseEntity {
     @Column
     private Date issueDate;
     @OneToOne
-    private Responsible Responsible;
+    @JoinTable(schema = "PERSONS",
+            name = "Responsible",
+            joinColumns = {
+                    @JoinColumn(table = "Responsible", name = "Person_Id", referencedColumnName = "Id")})
+    private Responsible responsible;
     @ManyToOne
     private Msa msa;
     @Column
@@ -40,11 +44,11 @@ public class VersionControl extends BaseEntity {
     }
 
     public Responsible getResponsible() {
-        return Responsible;
+        return responsible;
     }
 
     public void setResponsible(Responsible Responsible) {
-        this.Responsible = Responsible;
+        this.responsible = Responsible;
     }
 
     public Msa getMsa() {

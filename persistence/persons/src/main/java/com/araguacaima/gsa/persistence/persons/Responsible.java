@@ -4,16 +4,16 @@ import com.araguacaima.gsa.persistence.meta.BaseEntity;
 
 import javax.persistence.*;
 
-@PersistenceUnit(unitName = "persons")
+@PersistenceUnit(unitName = "gsa" )
 @Entity
-@Table(schema = "PERSONS", catalog = "Persons",
+@Table(schema = "PERSONS",
         name = "Responsible")
 public class Responsible extends BaseEntity {
 
     @Column
     private String organizationUnit;
     @OneToOne
-    private Person Responsible;
+    private Person responsible;
 
     public String getOrganizationUnit() {
         return organizationUnit;
@@ -24,11 +24,11 @@ public class Responsible extends BaseEntity {
     }
 
     public Person getResponsible() {
-        return Responsible;
+        return responsible;
     }
 
     public void setResponsible(Person Responsible) {
-        this.Responsible = Responsible;
+        this.responsible = Responsible;
     }
 
 }

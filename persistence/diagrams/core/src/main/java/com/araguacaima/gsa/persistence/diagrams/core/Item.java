@@ -11,8 +11,8 @@ import java.util.Set;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-@PersistenceUnit(unitName = "diagrams")
-public abstract class Item<T> extends Taggable {
+@PersistenceUnit(unitName = "gsa" )
+public abstract class Item extends Taggable {
 
     @Column
     private String name;
@@ -21,7 +21,7 @@ public abstract class Item<T> extends Taggable {
     @OneToOne
     private Point location;
     @OneToOne(targetEntity = Taggable.class)
-    private Taggable<T> parent;
+    private Taggable parent;
     @OneToOne
     private Shape shape;
 
@@ -64,11 +64,11 @@ public abstract class Item<T> extends Taggable {
         this.location = location;
     }
 
-    public Taggable<T> getParent() {
+    public Taggable getParent() {
         return parent;
     }
 
-    public void setParent(Taggable<T> parent) {
+    public void setParent(Taggable parent) {
         this.parent = parent;
     }
 

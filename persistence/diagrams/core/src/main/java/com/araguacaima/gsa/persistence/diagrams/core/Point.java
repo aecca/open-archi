@@ -17,7 +17,7 @@ import java.io.Serializable;
  * @since 1.0
  */
 @Entity
-@PersistenceUnit(unitName = "diagrams")
+@PersistenceUnit(unitName = "gsa" )
 @Table(name = "Point", schema = "DIAGRAMS")
 public class Point extends BaseEntity implements Serializable, Cloneable {
 

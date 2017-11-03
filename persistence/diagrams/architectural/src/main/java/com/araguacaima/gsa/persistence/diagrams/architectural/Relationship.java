@@ -13,9 +13,9 @@ import javax.persistence.Table;
  * A relationship between two architectural elements.
  */
 @Entity
-@PersistenceUnit(unitName = "diagrams")
+@PersistenceUnit(unitName = "gsa" )
 @Table(name = "Architecture_Relationship", schema = "DIAGRAMS")
-public class Relationship extends com.araguacaima.gsa.persistence.diagrams.core.Relationship<StaticElement> {
+public class Relationship extends com.araguacaima.gsa.persistence.diagrams.core.Relationship {
 
     @Column
     private String technology;

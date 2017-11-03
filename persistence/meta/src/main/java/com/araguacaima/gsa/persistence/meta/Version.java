@@ -8,9 +8,9 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.UUID;
-@PersistenceUnit(unitName = "meta")
+@PersistenceUnit(unitName = "gsa" )
 @Entity
-@Table(schema = "META", catalog = "Meta", name = "Version", uniqueConstraints = @UniqueConstraint(columnNames = {"major", "minor", "build"}))
+@Table(schema = "META", name = "Version", uniqueConstraints = @UniqueConstraint(columnNames = {"major", "minor", "build"}))
 @NamedQueries(value = {@NamedQuery(name = Version.COUNT_ALL_VERSIONS,
         query = "select count(a) from Version a"), @NamedQuery(name = Version.GET_DEFAULT_VERSION,
         query = "select a from Version a where a.major = 1 and a.minor = 0 and a.build = 0"), @NamedQuery(

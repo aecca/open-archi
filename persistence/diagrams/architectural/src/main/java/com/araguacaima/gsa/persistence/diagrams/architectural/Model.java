@@ -13,9 +13,9 @@ import java.util.Set;
  * A software architecture model.
  */
 @Entity
-@PersistenceUnit(unitName = "diagrams")
+@PersistenceUnit(unitName = "gsa" )
 @Table(name = "Architecture_Model", schema = "DIAGRAMS")
-public class Model extends Element<StaticElement> {
+public class Model extends Element {
 
     @OneToMany(targetEntity = StaticElement.class)
     @CollectionTable(name = "Architecture_Model_Elements",

@@ -9,7 +9,7 @@ import javax.persistence.*;
  * This is the superclass for all model elements.
  */
 @Entity
-@PersistenceUnit(unitName = "diagrams")
+@PersistenceUnit(unitName = "gsa" )
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class UmlItem extends Item {
 

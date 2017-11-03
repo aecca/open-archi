@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.util.Collection;
 
 @Entity
-@PersistenceUnit(unitName = "diagrams")
+@PersistenceUnit(unitName = "gsa" )
 @Table(name = "UmlMethod", schema = "DIAGRAMS")
 public class UmlMethod extends BaseEntity {
     @Column

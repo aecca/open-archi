@@ -9,8 +9,8 @@ import java.util.Set;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-@PersistenceUnit(unitName = "diagrams")
-public abstract class Taggable<T> extends BaseEntity {
+@PersistenceUnit(unitName = "gsa" )
+public abstract class Taggable extends BaseEntity {
 
     @ElementCollection
     @CollectionTable(name = "Tag", schema = "DIAGRAMS")
