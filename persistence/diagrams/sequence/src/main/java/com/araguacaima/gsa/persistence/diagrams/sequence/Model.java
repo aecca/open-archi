@@ -9,6 +9,7 @@ import java.util.Collection;
 @Entity
 @PersistenceUnit(unitName = "gsa" )
 @Table(name = "Sequence_Model", schema = "DIAGRAMS")
+@DiscriminatorValue(value = "SequenceModel")
 @NamedQueries(value = {
        /* @NamedQuery(
         name = Model.FIND_BY_NAME,

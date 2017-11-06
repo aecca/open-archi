@@ -15,6 +15,7 @@ import java.util.Set;
 @Entity
 @PersistenceUnit(unitName = "gsa" )
 @Table(name = "Architecture_Model", schema = "DIAGRAMS")
+@DiscriminatorValue(value = "ArchitectureModel")
 public class Model extends Element {
 
     @OneToMany(targetEntity = StaticElement.class)

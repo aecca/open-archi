@@ -9,6 +9,7 @@ import java.util.Collection;
 @Entity
 @PersistenceUnit(unitName = "gsa" )
 @Table(name = "Gantt_Model", schema = "DIAGRAMS")
+@DiscriminatorValue(value = "GanttModel")
 public class Model extends Element {
 
     @OneToMany

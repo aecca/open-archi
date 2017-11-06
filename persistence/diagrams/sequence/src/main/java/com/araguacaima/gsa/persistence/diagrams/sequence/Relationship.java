@@ -3,6 +3,7 @@ package com.araguacaima.gsa.persistence.diagrams.sequence;
 import com.araguacaima.gsa.persistence.diagrams.core.Constants;
 import com.araguacaima.gsa.persistence.diagrams.core.RelationshipType;
 
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.PersistenceUnit;
 import javax.persistence.Table;
@@ -14,6 +15,7 @@ import java.util.Set;
 @Entity
 @PersistenceUnit(unitName = "gsa" )
 @Table(name = "Sequence_Relationship", schema = "DIAGRAMS")
+@DiscriminatorValue(value = "SequenceRelationship")
 public class Relationship extends com.araguacaima.gsa.persistence.diagrams.core.Relationship {
 
     private RelationshipType type;

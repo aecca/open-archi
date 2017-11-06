@@ -9,6 +9,7 @@ import java.util.Collection;
 @Entity
 @PersistenceUnit(unitName = "gsa" )
 @Table(name = "Flowchart_Model", schema = "DIAGRAMS")
+@DiscriminatorValue(value = "FlowchartModel")
 public class Model extends Element {
 
     @OneToMany

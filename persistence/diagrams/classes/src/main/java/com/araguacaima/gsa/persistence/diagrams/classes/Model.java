@@ -10,6 +10,7 @@ import java.util.Set;
 @Entity
 @PersistenceUnit(unitName = "gsa" )
 @Table(name = "Classes_Model", schema = "DIAGRAMS")
+@DiscriminatorValue(value = "ClassesModel")
 public class Model extends Element {
 
     @OneToMany

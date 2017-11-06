@@ -46,28 +46,4 @@ public class SequenceModelsJpaCRUDTest extends AbstractJPATest {
         assertEquals(id, persistedSequenceModel.getId());
     }
 
-    @Test
-    public void testPersist_success2() {
-        emGsa.getTransaction().begin();
-        final SmallProject smallProject = new SmallProject();
-        String id = smallProject.getId();
-        emGsa.persist(smallProject);
-        emGsa.getTransaction().commit();
-        SmallProject persistedSequenceModel = emGsa.find(SmallProject.class, id);
-        assertNotNull(persistedSequenceModel);
-        assertEquals(id, persistedSequenceModel.getId());
-    }
-
-
-    @Test
-    public void testPersist_success3() {
-        emGsa.getTransaction().begin();
-        final LargeProject largeProject = new LargeProject();
-        String id = largeProject.getId();
-        emGsa.persist(largeProject);
-        emGsa.getTransaction().commit();
-        LargeProject persistedSequenceModel = emGsa.find(LargeProject.class, id);
-        assertNotNull(persistedSequenceModel);
-        assertEquals(id, persistedSequenceModel.getId());
-    }
 }
