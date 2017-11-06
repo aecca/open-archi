@@ -23,7 +23,7 @@ public class ProjectMetaData extends BaseEntity {
     @OneToMany
     @JoinTable(schema = "MSA",
             name = "ProjectMetaData_GlobalSolutionArchitects",
-            joinColumns = {@JoinColumn(name = "Person_Id",
+            joinColumns = {@JoinColumn(name = "ProjectMetaData_Id",
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Person_Id",
                     referencedColumnName = "Id")})
@@ -33,7 +33,7 @@ public class ProjectMetaData extends BaseEntity {
     @OneToMany
     @JoinTable(schema = "MSA",
             name = "ProjectMetaData_LocalSolutionArchitects",
-            joinColumns = {@JoinColumn(name = "Person_Id",
+            joinColumns = {@JoinColumn(name = "ProjectMetaData_Id",
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Person_Id",
                     referencedColumnName = "Id")})

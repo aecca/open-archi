@@ -13,20 +13,20 @@ public class StatusLifeCycle extends BaseEntity {
 
     @OneToMany
     @JoinTable(schema = "MSA",
-            name = "VolumetryStatusLifeCycle_Ancestors",
-            joinColumns = {@JoinColumn(name = "Ancestors_Id",
+            name = "StatusLifeCycle_Ancestors",
+            joinColumns = {@JoinColumn(name = "StatusLifeCycle_Id",
                     referencedColumnName = "Id")},
-            inverseJoinColumns = {@JoinColumn(name = "Ancestors_Id",
+            inverseJoinColumns = {@JoinColumn(name = "Ancestor_Id",
                     referencedColumnName = "Id")})
     private Collection<Status> ancestors;
     @OneToOne
     private Status current;
     @OneToMany
     @JoinTable(schema = "MSA",
-            name = "VolumetryStatusLifeCycle_Descendants",
-            joinColumns = {@JoinColumn(name = "Status_Id",
+            name = "StatusLifeCycle_Descendants",
+            joinColumns = {@JoinColumn(name = "StatusLifeCycle_Id",
                     referencedColumnName = "Id")},
-            inverseJoinColumns = {@JoinColumn(name = "Status_Id",
+            inverseJoinColumns = {@JoinColumn(name = "Descendant_Id",
                     referencedColumnName = "Id")})
     private Collection<Status> descendants;
 

@@ -26,7 +26,7 @@ public class Element extends Item {
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",
             name = "Element_Features",
-            joinColumns = {@JoinColumn(name = "Feature_Id",
+            joinColumns = {@JoinColumn(name = "Element_Id",
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Feature_Id",
                     referencedColumnName = "Id")})

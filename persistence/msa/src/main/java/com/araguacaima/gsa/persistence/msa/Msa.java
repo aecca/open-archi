@@ -40,7 +40,7 @@ public class Msa extends BaseEntity {
     @OneToMany
     @JoinTable(schema = "MSA",
             name = "Msa_LinksOfInterests",
-            joinColumns = {@JoinColumn(name = "Link_Id",
+            joinColumns = {@JoinColumn(name = "Msa_Id",
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Link_Id",
                     referencedColumnName = "Id")})
@@ -52,16 +52,15 @@ public class Msa extends BaseEntity {
     @OneToMany
     @JoinTable(schema = "MSA",
             name = "Msa_Responsibles",
-            joinColumns = {@JoinColumn(name = "Responsible_Id",
+            joinColumns = {@JoinColumn(name = "Msa_Id",
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Responsible_Id",
                     referencedColumnName = "Id")})
-    @JoinColumn(table = "Responsibles", name = "Responsible_Id", referencedColumnName = "Id")
     private Collection<Responsible> responsibles;
     @OneToMany
     @JoinTable(schema = "MSA",
             name = "Msa_Statuses",
-            joinColumns = {@JoinColumn(name = "Status_Id",
+            joinColumns = {@JoinColumn(name = "Msa_Id",
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Status_Id",
                     referencedColumnName = "Id")})
@@ -69,7 +68,7 @@ public class Msa extends BaseEntity {
     @OneToMany
     @JoinTable(schema = "MSA",
             name = "Msa_VersionControls",
-            joinColumns = {@JoinColumn(name = "VersionControl_Id",
+            joinColumns = {@JoinColumn(name = "Msa_Id",
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "VersionControl_Id",
                     referencedColumnName = "Id")})

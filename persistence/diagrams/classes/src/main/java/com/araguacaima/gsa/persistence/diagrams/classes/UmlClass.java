@@ -12,15 +12,15 @@ public class UmlClass extends UmlItem {
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",
             name = "UmlClass_Fields",
-            joinColumns = {@JoinColumn(name = "Fields_Id",
+            joinColumns = {@JoinColumn(name = "UmlClass_Id",
                     referencedColumnName = "Id")},
-            inverseJoinColumns = {@JoinColumn(name = "Fields_Id",
+            inverseJoinColumns = {@JoinColumn(name = "Field_Id",
                     referencedColumnName = "Id")})
     private Map<String, UmlField> fields = new HashMap<>();
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",
             name = "UmlClass_Methods",
-            joinColumns = {@JoinColumn(name = "Method_Id",
+            joinColumns = {@JoinColumn(name = "UmlClass_Id",
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Method_Id",
                     referencedColumnName = "Id")})

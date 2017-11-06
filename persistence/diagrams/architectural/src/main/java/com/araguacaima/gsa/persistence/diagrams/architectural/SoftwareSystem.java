@@ -24,7 +24,7 @@ public class SoftwareSystem extends StaticElement {
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",
             name = "SoftwareSystem_Containers",
-            joinColumns = {@JoinColumn(name = "Container_Id",
+            joinColumns = {@JoinColumn(name = "SoftwareSystem_Id",
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Container_Id",
                     referencedColumnName = "Id")})

@@ -14,7 +14,7 @@ public class ArchitectSolutionModel extends BaseEntity {
     @OneToMany
     @JoinTable(schema = "MSA",
             name = "ArchitectSolutionModel_Diagrams",
-            joinColumns = {@JoinColumn(name = "Diagram_Id",
+            joinColumns = {@JoinColumn(name = "ArchitectSolutionModel_Id",
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Diagram_Id",
                     referencedColumnName = "Id")})

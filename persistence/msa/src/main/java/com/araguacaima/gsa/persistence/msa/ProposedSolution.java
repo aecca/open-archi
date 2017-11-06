@@ -16,7 +16,7 @@ public class ProposedSolution extends BaseEntity {
     @OneToMany
     @JoinTable(schema = "MSA",
             name = "ProposedSolution_Functional_Diagrams",
-            joinColumns = {@JoinColumn(name = "Diagram_Id",
+            joinColumns = {@JoinColumn(name = "ProposedSolution_Id",
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Diagram_Id",
                     referencedColumnName = "Id")})

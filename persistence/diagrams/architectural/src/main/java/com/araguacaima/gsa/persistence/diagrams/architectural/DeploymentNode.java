@@ -47,14 +47,14 @@ public class DeploymentNode extends Element {
             name = "DeploymentNode_Children",
             joinColumns = {@JoinColumn(name = "DeploymentNode_Id",
                     referencedColumnName = "Id")},
-            inverseJoinColumns = {@JoinColumn(name = "DeploymentNode_Id",
+            inverseJoinColumns = {@JoinColumn(name = "DeploymentNodeChild_Id",
                     referencedColumnName = "Id")})
     private Set<DeploymentNode> children = new HashSet<>();
 
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",
             name = "DeploymentNode_ContainerInstances",
-            joinColumns = {@JoinColumn(name = "ContainerInstance_Id",
+            joinColumns = {@JoinColumn(name = "DeploymentNode_Id",
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "ContainerInstance_Id",
                     referencedColumnName = "Id")})

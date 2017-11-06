@@ -16,7 +16,7 @@ public class UmlMethod extends BaseEntity {
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",
             name = "UmlMethod_Parameters",
-            joinColumns = {@JoinColumn(name = "Parameter_Id",
+            joinColumns = {@JoinColumn(name = "UmlMethod_Id",
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Parameter_Id",
                     referencedColumnName = "Id")})

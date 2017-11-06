@@ -14,7 +14,7 @@ public class Model extends Element {
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",
             name = "Flowchart_Model_Flowcharts",
-            joinColumns = {@JoinColumn(name = "Flowchart_Id",
+            joinColumns = {@JoinColumn(name = "Flowchart_Model_Id",
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Flowchart_Id",
                     referencedColumnName = "Id")})

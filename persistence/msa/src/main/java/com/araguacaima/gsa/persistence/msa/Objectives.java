@@ -16,7 +16,7 @@ public class Objectives extends BaseEntity {
     @OneToMany
     @JoinTable(schema = "MSA",
             name = "Objectives_Diagrams",
-            joinColumns = {@JoinColumn(name = "Diagram_Id",
+            joinColumns = {@JoinColumn(name = "Objectives_Id",
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Diagram_Id",
                     referencedColumnName = "Id")})

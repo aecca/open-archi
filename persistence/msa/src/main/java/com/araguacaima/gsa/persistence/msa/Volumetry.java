@@ -14,7 +14,7 @@ public class Volumetry extends BaseEntity {
     @OneToMany
     @JoinTable(schema = "MSA",
             name = "Volumetry_Activities",
-            joinColumns = {@JoinColumn(name = "Activities_Id",
+            joinColumns = {@JoinColumn(name = "Volumetry_Id",
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Activities_Id",
                     referencedColumnName = "Id")})
@@ -22,7 +22,7 @@ public class Volumetry extends BaseEntity {
     @OneToMany
     @JoinTable(schema = "MSA",
             name = "Volumetry_BatchProcessing",
-            joinColumns = {@JoinColumn(name = "BatchProcessing_Id",
+            joinColumns = {@JoinColumn(name = "Volumetry_Id",
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "BatchProcessing_Id",
                     referencedColumnName = "Id")})
@@ -30,7 +30,7 @@ public class Volumetry extends BaseEntity {
     @OneToMany
     @JoinTable(schema = "MSA",
             name = "Volumetry_BulkProcessing",
-            joinColumns = {@JoinColumn(name = "BulkProcessing_Id",
+            joinColumns = {@JoinColumn(name = "Volumetry_Id",
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "BulkProcessing_Id",
                     referencedColumnName = "Id")})
@@ -38,7 +38,7 @@ public class Volumetry extends BaseEntity {
     @OneToMany
     @JoinTable(schema = "MSA",
             name = "Volumetry_Concurrency",
-            joinColumns = {@JoinColumn(name = "Concurrency_Id",
+            joinColumns = {@JoinColumn(name = "Volumetry_Id",
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Concurrency_Id",
                     referencedColumnName = "Id")})
@@ -46,7 +46,7 @@ public class Volumetry extends BaseEntity {
     @OneToMany
     @JoinTable(schema = "MSA",
             name = "Volumetry_Database",
-            joinColumns = {@JoinColumn(name = "Database_Id",
+            joinColumns = {@JoinColumn(name = "Volumetry_Id",
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Database_Id",
                     referencedColumnName = "Id")})
@@ -54,7 +54,7 @@ public class Volumetry extends BaseEntity {
     @OneToMany
     @JoinTable(schema = "MSA",
             name = "Volumetry_FileTransfer",
-            joinColumns = {@JoinColumn(name = "FileTransfer_Id",
+            joinColumns = {@JoinColumn(name = "Volumetry_Id",
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "FileTransfer_Id",
                     referencedColumnName = "Id")})
@@ -62,7 +62,7 @@ public class Volumetry extends BaseEntity {
     @OneToMany
     @JoinTable(schema = "MSA",
             name = "Volumetry_Rate",
-            joinColumns = {@JoinColumn(name = "Rate_Id",
+            joinColumns = {@JoinColumn(name = "Volumetry_Id",
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Rate_Id",
                     referencedColumnName = "Id")})

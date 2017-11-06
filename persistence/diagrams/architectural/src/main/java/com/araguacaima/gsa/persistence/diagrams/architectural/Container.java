@@ -25,7 +25,7 @@ public class Container extends StaticElement {
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",
             name = "Container_Components",
-            joinColumns = {@JoinColumn(name = "Component_Id",
+            joinColumns = {@JoinColumn(name = "Container_Id",
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Component_Id",
                     referencedColumnName = "Id")})

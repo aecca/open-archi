@@ -26,7 +26,7 @@ public class Item extends Taggable {
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",
             name = "Item_Relationships",
-            joinColumns = {@JoinColumn(name = "Relationship_Id",
+            joinColumns = {@JoinColumn(name = "Item_Id",
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Relationship_Id",
                     referencedColumnName = "Id")})

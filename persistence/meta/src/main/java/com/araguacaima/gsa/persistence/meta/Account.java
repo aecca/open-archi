@@ -75,9 +75,9 @@ public class Account implements Serializable {
     @ManyToMany
     @JoinTable(
             schema = "META",
-            name = "ACCOUNT_ROLES",
-            joinColumns = {@JoinColumn(name = "ACCOUNT_ID", referencedColumnName = "ID")},
-            inverseJoinColumns = {@JoinColumn(name = "ROLE_ID", referencedColumnName = "ID")})
+            name = "Account_Roles",
+            joinColumns = {@JoinColumn(name = "Account_Id", referencedColumnName = "Id")},
+            inverseJoinColumns = {@JoinColumn(name = "Role_Id", referencedColumnName = "Id")})
     private Set<Role> roles;
 
     public Account() {

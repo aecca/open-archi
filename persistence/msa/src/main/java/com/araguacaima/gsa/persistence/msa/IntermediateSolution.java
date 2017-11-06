@@ -16,7 +16,7 @@ public class IntermediateSolution extends BaseEntity {
     @OneToMany
     @JoinTable(schema = "MSA",
             name = "IntermediateSolution_Functional_Diagrams",
-            joinColumns = {@JoinColumn(name = "Diagram_Id",
+            joinColumns = {@JoinColumn(name = "IntermediateSolution_Id",
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Diagram_Id",
                     referencedColumnName = "Id")})
@@ -24,7 +24,7 @@ public class IntermediateSolution extends BaseEntity {
     @OneToMany
     @JoinTable(schema = "MSA",
             name = "IntermediateSolution_TechnicalDebts",
-            joinColumns = {@JoinColumn(name = "TechnicalDebt_Id",
+            joinColumns = {@JoinColumn(name = "IntermediateSolution_Id",
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "TechnicalDebt_Id",
                     referencedColumnName = "Id")})

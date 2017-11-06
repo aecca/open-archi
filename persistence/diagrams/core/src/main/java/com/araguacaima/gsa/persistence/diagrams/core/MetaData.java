@@ -17,8 +17,8 @@ public class MetaData extends BaseEntity {
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",
             name = "MetaData_Responsibles",
-            joinColumns = {@JoinColumn(name = "Responsible_Id",
-                    referencedColumnName = "Id", table = "Responsible")},
+            joinColumns = {@JoinColumn(name = "MetaData_Id",
+                    referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Responsible_Id",
                     referencedColumnName = "Id")})
     private Collection<Responsible> responsibles;
@@ -26,7 +26,7 @@ public class MetaData extends BaseEntity {
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",
             name = "MetaData_Collaborators",
-            joinColumns = {@JoinColumn(name = "Collaborator_Id",
+            joinColumns = {@JoinColumn(name = "MetaData_Id",
                     referencedColumnName = "Id", table = "Responsible")},
             inverseJoinColumns = {@JoinColumn(name = "Collaborator_Id",
                     referencedColumnName = "Id")})
@@ -35,38 +35,39 @@ public class MetaData extends BaseEntity {
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",
             name = "MetaData_RelatedWith",
-            joinColumns = {@JoinColumn(name = "Element_Id",
+            joinColumns = {@JoinColumn(name = "MetaData_Id",
                     referencedColumnName = "Id")},
-            inverseJoinColumns = {@JoinColumn(name = "Element_Id",
+            inverseJoinColumns = {@JoinColumn(name = "RelatedWith_Id",
                     referencedColumnName = "Id")})
     private Collection<Taggable> relatedWith;
 
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",
             name = "MetaData_UsedIn",
-            joinColumns = {@JoinColumn(name = "Element_Id",
+            joinColumns = {@JoinColumn(name = "MetaData_Id",
                     referencedColumnName = "Id")},
-            inverseJoinColumns = {@JoinColumn(name = "Element_Id",
+            inverseJoinColumns = {@JoinColumn(name = "UsedIn_Id",
                     referencedColumnName = "Id")})
     private Collection<Taggable> usedIn;
-/*
+
     @OneToOne
     @JoinTable(schema = "META",
-            name = "Version",
-            joinColumns = {@JoinColumn(name = "Version_Id", referencedColumnName = "Id")})
-    private Version version;*/
+            name = "MetaData_Version",
+            joinColumns = {@JoinColumn(name = "MetaData_Id", referencedColumnName = "Id")},
+            inverseJoinColumns = {@JoinColumn(name = "Version_Id", referencedColumnName = "Id")})
+    private Version version;
 
     @Column
     private Type type;
 
-/*    @OneToMany
+    @OneToMany
     @JoinTable(schema = "DIAGRAMS",
             name = "MetaData_Views",
-            joinColumns = {@JoinColumn(name = "View_Id",
+            joinColumns = {@JoinColumn(name = "MetaData_Id",
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "View_Id",
                     referencedColumnName = "Id")})
-    private Collection<View> views;*/
+    private Collection<View> views;
 
     public Collection<Responsible> getResponsibles() {
         return responsibles;
@@ -99,14 +100,14 @@ public class MetaData extends BaseEntity {
     public void setUsedIn(Collection<Taggable> usedId) {
         this.usedIn = usedId;
     }
-/*
+
     public Version getVersion() {
         return version;
     }
 
     public void setVersion(Version version) {
         this.version = version;
-    }*/
+    }
 
     public Type getType() {
         return type;
@@ -116,11 +117,11 @@ public class MetaData extends BaseEntity {
         this.type = type;
     }
 
-/*    public Collection<View> getViews() {
+    public Collection<View> getViews() {
         return views;
     }
 
     public void setViews(Collection<View> views) {
         this.views = views;
-    }*/
+    }
 }

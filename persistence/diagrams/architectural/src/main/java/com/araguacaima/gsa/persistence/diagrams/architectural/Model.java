@@ -29,16 +29,16 @@ public class Model extends Element {
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",
             name = "Architecture_Model_People",
-            joinColumns = {@JoinColumn(name = "People_Id",
+            joinColumns = {@JoinColumn(name = "Architecture_Model_Consumer_Id",
                     referencedColumnName = "Id")},
-            inverseJoinColumns = {@JoinColumn(name = "People_Id",
+            inverseJoinColumns = {@JoinColumn(name = "Consumer_Id",
                     referencedColumnName = "Id")})
     private Set<Consumer> people = new LinkedHashSet<>();
 
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",
             name = "Architecture_Model_SoftwareSystems",
-            joinColumns = {@JoinColumn(name = "SoftwareSystem_Id",
+            joinColumns = {@JoinColumn(name = "Architecture_Model_Id",
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "SoftwareSystem_Id",
                     referencedColumnName = "Id")})
@@ -47,7 +47,7 @@ public class Model extends Element {
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",
             name = "Architecture_Model_DeploymentNodes",
-            joinColumns = {@JoinColumn(name = "DeploymentNode_Id",
+            joinColumns = {@JoinColumn(name = "Architecture_Model_Id",
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "DeploymentNode_Id",
                     referencedColumnName = "Id")})

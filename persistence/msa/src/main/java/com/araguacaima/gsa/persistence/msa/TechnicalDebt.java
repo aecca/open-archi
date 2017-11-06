@@ -27,7 +27,7 @@ public class TechnicalDebt extends BaseEntity {
     @OneToMany
     @JoinTable(schema = "MSA",
             name = "TechnicalDebt_Responsibles",
-            joinColumns = {@JoinColumn(name = "Responsible_Id",
+            joinColumns = {@JoinColumn(name = "TechnicalDebt_Id",
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Responsible_Id",
                     referencedColumnName = "Id")})
