@@ -3,15 +3,13 @@ package com.araguacaima.gsa.persistence.diagrams.sequence;
 import com.araguacaima.gsa.persistence.diagrams.core.ElementKind;
 import com.araguacaima.gsa.persistence.diagrams.core.Item;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.PersistenceUnit;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Set;
 
 @Entity
 @PersistenceUnit(unitName = "gsa" )
 @Table(name = "Sequence", schema = "DIAGRAMS")
+@DiscriminatorValue("Sequence")
 public class Sequence extends Item {
 
     @Column

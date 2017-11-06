@@ -23,7 +23,8 @@
         <com.fasterxml.jackson.core-jackson-annotations>2.9.2</com.fasterxml.jackson.core-jackson-annotations>
         <org.apache.commons-commons-lang3>3.5</org.apache.commons-commons-lang3>
         <com.h2database-h2>1.4.196</com.h2database-h2>
-        <org.eclipse.persistence-org.eclipse.persistence.jpa>2.7.0</org.eclipse.persistence-org.eclipse.persistence.jpa>
+        <!--<org.eclipse.persistence-org.eclipse.persistence.jpa>2.7.0</org.eclipse.persistence-org.eclipse.persistence.jpa>-->
+        <org.hibernate-hibernate-core>5.2.12.Final</org.hibernate-hibernate-core>
         <junit.version>4.11</junit.version>
         <javax.validation-validation-api>2.0.0.Final</javax.validation-validation-api>
         <org.apache.commons-commons-collections4>4.0</org.apache.commons-commons-collections4>
@@ -99,10 +100,18 @@
             <version>${javax.validation-validation-api}</version>
         </dependency>
 
+<!--
         <dependency>
             <groupId>org.eclipse.persistence</groupId>
             <artifactId>org.eclipse.persistence.jpa</artifactId>
             <version>${org.eclipse.persistence-org.eclipse.persistence.jpa}</version>
+        </dependency>
+-->
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${org.hibernate-hibernate-core}</version>
         </dependency>
 
         <dependency>
@@ -136,6 +145,12 @@
 
     <build>
         <defaultGoal>clean install</defaultGoal>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+            </testResource>
+        </testResources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

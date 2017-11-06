@@ -1,7 +1,7 @@
 package com.araguacaima.gsa.persistence.meta;
 
 import org.apache.commons.io.FileUtils;
-import org.eclipse.persistence.sessions.Session;
+import org.hibernate.Session;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;

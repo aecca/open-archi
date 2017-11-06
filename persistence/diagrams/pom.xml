@@ -20,9 +20,12 @@
         <org.apache.maven.plugins-maven-compiler-plugin>2.3.2</org.apache.maven.plugins-maven-compiler-plugin>
         <org.apache.maven.plugins-maven-dependency-plugin>2.10</org.apache.maven.plugins-maven-dependency-plugin>
         <org.apache.maven.plugins-maven-jar-plugin>3.0.2</org.apache.maven.plugins-maven-jar-plugin>
+        <org.apache.maven.plugins-maven-dependency-plugin>3.0.2</org.apache.maven.plugins-maven-dependency-plugin>
         <com.fasterxml.jackson.core-jackson-annotations>2.9.2</com.fasterxml.jackson.core-jackson-annotations>
         <org.apache.commons-commons-lang3>3.5</org.apache.commons-commons-lang3>
         <org.apache.commons-commons-collections4>4.0</org.apache.commons-commons-collections4>
+        <!--<org.eclipse.persistence-org.eclipse.persistence.jpa>2.7.0</org.eclipse.persistence-org.eclipse.persistence.jpa>-->
+        <org.hibernate-hibernate-core>5.2.12.Final</org.hibernate-hibernate-core>
         <commons-io-commons-io>2.6</commons-io-commons-io>
         <junit.version>4.11</junit.version>
     </properties>
@@ -91,6 +94,21 @@
         </dependencies>
     </dependencyManagement>
 
+    <dependencies>
+<!--
+        <dependency>
+            <groupId>org.eclipse.persistence</groupId>
+            <artifactId>org.eclipse.persistence.jpa</artifactId>
+            <version>${org.eclipse.persistence-org.eclipse.persistence.jpa}</version>
+        </dependency>
+-->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${org.hibernate-hibernate-core}</version>
+        </dependency>
+    </dependencies>
+
     <modules>
         <module>core</module>
         <module>architectural</module>
@@ -101,8 +119,18 @@
         <module>sequence</module>
         <module>gantt</module>
     </modules>
+
     <build>
         <defaultGoal>clean install</defaultGoal>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <version>${org.apache.maven.plugins-maven-dependency-plugin}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

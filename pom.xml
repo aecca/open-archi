@@ -41,7 +41,6 @@
         <app.prefix>msa</app.prefix>
         <aspectj.version>1.8.4</aspectj.version>
         <backport-util-concurrent-backport-util-concurrent>3.1</backport-util-concurrent-backport-util-concurrent>
-        <com.ethlo.eclipselink.tools-eclipselink-maven-plugin>2.0</com.ethlo.eclipselink.tools-eclipselink-maven-plugin>
         <com.fasterxml.jackson.core-jackson-core>2.7.1</com.fasterxml.jackson.core-jackson-core>
         <com.fasterxml.jackson.core-jackson-databind>2.8.7</com.fasterxml.jackson.core-jackson-databind>
         <com.github.rjeschke-txtmark>0.13</com.github.rjeschke-txtmark>
@@ -84,8 +83,6 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.version>3.0</maven.compiler.version>
-        <maven.eclipse.version>2.9</maven.eclipse.version>
-        <maven.eclipse.wtp.version>2.0</maven.eclipse.wtp.version>
         <maven.skipTests>true</maven.skipTests>
         <maven.surefire.version>2.13</maven.surefire.version>
         <mysql-mysql-connector-java>5.1.35</mysql-mysql-connector-java>
@@ -112,9 +109,9 @@
         <org.apache.maven.plugins-maven-jar-plugin>3.0.2</org.apache.maven.plugins-maven-jar-plugin>
         <org.bitbucket.mstrobel-procyon-compilertools>0.5.27</org.bitbucket.mstrobel-procyon-compilertools>
         <org.codehaus.mojo-aspectj-maven-plugin>1.8</org.codehaus.mojo-aspectj-maven-plugin>
-        <org.codehaus.plexus-plexus-utils>3.0.8</org.codehaus.plexus-plexus-utils>
+        <org.codehaus.plexus-plexus-utils>3.0.8</org.codehaus.plexus-plexus-utils><!--
         <org.eclipse.persistence-javax.persistence>2.2.0</org.eclipse.persistence-javax.persistence>
-        <org.eclipse.persistence-org.eclipse.persistence.jpa>2.7.0</org.eclipse.persistence-org.eclipse.persistence.jpa>
+        <org.eclipse.persistence-org.eclipse.persistence.jpa>2.7.0</org.eclipse.persistence-org.eclipse.persistence.jpa>-->
         <org.fusesource.jansi-jansi>1.16</org.fusesource.jansi-jansi>
         <org.hsqldb-hsqldb>2.3.1</org.hsqldb-hsqldb>
         <org.jsoup-jsoup>1.8.1</org.jsoup-jsoup>

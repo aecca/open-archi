@@ -11,18 +11,17 @@ import java.util.Set;
  */
 
 @Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @PersistenceUnit(unitName = "gsa" )
-public abstract class Element extends Item {
+public class Element extends Item {
 
     @Column
-    private String url;
+    protected String url;
 
     @ElementCollection
     @MapKeyColumn(name = "key")
     @Column(name = "value")
     @CollectionTable(schema = "DIAGRAMS", name = "Element_Properties", joinColumns = @JoinColumn(name = "Property_Id"))
-    private Map<String, String> properties = new HashMap<>();
+    protected Map<String, String> properties = new HashMap<>();
 
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",
@@ -31,7 +30,7 @@ public abstract class Element extends Item {
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Feature_Id",
                     referencedColumnName = "Id")})
-    private Set<Feature> features = new LinkedHashSet<>();
+    protected Set<Feature> features = new LinkedHashSet<>();
 
     public Element() {
     }

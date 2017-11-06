@@ -3,10 +3,12 @@ package com.araguacaima.gsa.persistence.meta;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.PersistenceUnit;
 import java.io.Serializable;
 import java.util.UUID;
 
 @MappedSuperclass
+@PersistenceUnit(unitName = "gsa" )
 public class BaseEntity implements Serializable, BasicEntity, Cloneable {
 
     private static final long serialVersionUID = 5449758397914117108L;

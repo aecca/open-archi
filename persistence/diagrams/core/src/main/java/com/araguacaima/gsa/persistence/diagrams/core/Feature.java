@@ -9,7 +9,6 @@ import javax.persistence.*;
 
 @Entity
 @PersistenceUnit(unitName = "gsa" )
-@Table(name = "Features", schema = "DIAGRAMS")
 public class Feature extends Item {
 
     /**

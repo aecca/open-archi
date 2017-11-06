@@ -43,7 +43,7 @@ public class JPACRUDTest extends AbstractJPATest {
         emGsa.persist(account);
         emGsa.getTransaction().commit();
 
-        TypedQuery<Account> consultaAlumnos = emGsa.createNamedQuery("Account.getById", Account.class);
+        TypedQuery<Account> consultaAlumnos = emGsa.createNamedQuery("", Account.class);
         consultaAlumnos.setParameter("id", id);
         List<Account> accounts = consultaAlumnos.getResultList();
 

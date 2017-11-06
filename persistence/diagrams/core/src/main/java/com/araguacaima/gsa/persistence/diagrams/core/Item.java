@@ -10,20 +10,18 @@ import java.util.Set;
  */
 
 @Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @PersistenceUnit(unitName = "gsa" )
-public abstract class Item extends Taggable {
+public class Item extends Taggable {
 
+    protected String name;
     @Column
-    private String name;
-    @Column
-    private String description;
+    protected String description;
     @OneToOne
-    private Point location;
+    protected Point location;
     @OneToOne(targetEntity = Taggable.class)
-    private Taggable parent;
+    protected Taggable parent;
     @OneToOne
-    private Shape shape;
+    protected Shape shape;
 
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",
@@ -32,10 +30,10 @@ public abstract class Item extends Taggable {
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Relationship_Id",
                     referencedColumnName = "Id")})
-    private Set<Relationship> relationships = new LinkedHashSet<>();
+    protected Set<Relationship> relationships = new LinkedHashSet<>();
 
     @OneToOne
-    private MetaData metaData;
+    protected MetaData metaData;
 
     public Item() {
     }

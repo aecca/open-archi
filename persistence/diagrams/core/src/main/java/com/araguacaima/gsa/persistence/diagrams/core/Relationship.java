@@ -7,8 +7,7 @@ import javax.persistence.*;
  */
 @Entity
 @PersistenceUnit(unitName = "gsa" )
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class Relationship extends Taggable {
+public class Relationship extends Taggable {
 
     @OneToOne(targetEntity=Taggable.class)
     private Taggable source;
