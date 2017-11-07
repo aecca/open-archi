@@ -142,6 +142,28 @@
 
     <dependencyManagement>
         <dependencies>
+
+            <dependency>
+                <groupId>com.araguacaima.gsa</groupId>
+                <artifactId>persistence-utils</artifactId>
+                <version>${project.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.araguacaima.gsa.persistence</groupId>
+                <artifactId>persistence-core</artifactId>
+                <version>${project.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.araguacaima.gsa.persistence</groupId>
+                <artifactId>persistence-commons</artifactId>
+                <version>${project.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
             <dependency>
                 <groupId>javax.validation</groupId>
                 <artifactId>validation-api</artifactId>

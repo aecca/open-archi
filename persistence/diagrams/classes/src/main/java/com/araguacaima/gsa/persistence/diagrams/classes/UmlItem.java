@@ -1,5 +1,6 @@
 package com.araguacaima.gsa.persistence.diagrams.classes;
 
+import com.araguacaima.gsa.persistence.commons.exceptions.EntityError;
 import com.araguacaima.gsa.persistence.diagrams.core.ElementKind;
 import com.araguacaima.gsa.persistence.diagrams.core.Item;
 
@@ -23,4 +24,5 @@ public abstract class UmlItem extends Item {
     public void setKind(ElementKind kind) {
         this.kind = kind;
     }
+
 }

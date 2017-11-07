@@ -1,5 +1,6 @@
 package com.araguacaima.gsa.persistence.diagrams.bpm;
 
+import com.araguacaima.gsa.persistence.commons.exceptions.EntityError;
 import com.araguacaima.gsa.persistence.diagrams.core.ElementKind;
 import com.araguacaima.gsa.persistence.diagrams.core.Item;
 
@@ -32,4 +33,5 @@ public class Activity extends Item {
     public void setKind(ElementKind kind) {
         this.kind = kind;
     }
+
 }

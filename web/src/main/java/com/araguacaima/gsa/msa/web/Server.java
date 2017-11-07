@@ -1,11 +1,12 @@
 package com.araguacaima.gsa.msa.web;
 
 import com.araguacaima.gsa.msa.web.wrapper.RsqlJsonFilter;
+import com.araguacaima.gsa.persistence.diagrams.core.Taggable;
+import com.araguacaima.gsa.persistence.utils.JPAEntityManagerUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import de.neuland.jade4j.JadeConfiguration;
 import de.neuland.jade4j.template.TemplateLoader;
-import io.jsondb.JsonDBTemplate;
-import io.jsondb.crypto.DefaultAESCBCCipher;
-import io.jsondb.crypto.ICipher;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,10 +14,7 @@ import spark.*;
 import spark.template.jade.JadeTemplateEngine;
 import spark.template.jade.loader.SparkClasspathTemplateLoader;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.URISyntaxException;
 import java.security.GeneralSecurityException;
 import java.util.Arrays;
@@ -25,13 +23,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static java.net.HttpURLConnection.*;
 import static spark.Spark.*;
 
 public class Server {
     private static final String DB_PATH = "./db/cards.json";
+    private static final String CONTENT_TYPE = "application/json";
+    private static final String EMPTY_RESPONSE = "";
     private static JadeConfiguration config = new JadeConfiguration();
     private static JadeTemplateEngine engine = new JadeTemplateEngine(config);
     private static Logger log = LoggerFactory.getLogger(Server.class);
+
     private static final ExceptionHandler exceptionHandler = new ExceptionHandlerImpl(Exception.class) {
         @Override
         public void handle(Exception exception, Request request, Response response) {
@@ -64,54 +66,94 @@ public class Server {
     public static void main(String[] args)
             throws GeneralSecurityException {
 
-        //Java package name where POJO's are present
-        String baseScanPackage = "com.araguacaima.apis.model";
-
-        //Optionally a Cipher object if you need Encryption
-        ICipher cipher = new DefaultAESCBCCipher("1r8+24pibarAWgS85/Heeg==");
-
-        JsonDBTemplate jsonDBTemplate = new JsonDBTemplate(DB_PATH, baseScanPackage, cipher);
-        String jxQuery = String.format("/.[id>'%s']", "04");
-//        IList<Cards> cards = jsonDBTemplate.findAll(jxQuery, Cards.class);
         int assignedPort = getAssignedPort();
         port(assignedPort);
         log.info("Server listen on port '" + assignedPort + "'");
-        String root = "cards";
-        String jsonPath = root + ".json";
         Map<String, Object> map = new HashMap<>();
-        map.put("title", "GRAPI FIQL Test");
+        map.put("title", "Architectural Model PoC");
 
         staticFiles.location("/web/public");
         get("/", (req, res) -> new ModelAndView(map, "home"), engine);
         path("/api", () -> {
+
+            exception(Exception.class, exceptionHandler);
+
             before("/*", (req, res) -> log.info("Received api call to '" + req.pathInfo() + "'"));
-            get("/" + root, (req, res) -> {
-                String filter_ = filter(req.queryParams("$filter"), jsonPath);
-                String json = req.pathInfo().replaceFirst("/api/", "");
+
+            post("/models", (request, response) -> {
+                ObjectMapper mapper = new ObjectMapper();
+                Taggable model = mapper.readValue(request.body(), Taggable.class);
+                try {
+                    model.validateCreation();
+                    JPAEntityManagerUtils.persist(model);
+                    response.status(HTTP_CREATED);
+                    response.type(CONTENT_TYPE);
+                    response.header("Location", request.pathInfo() + "/models/" + model.getId());
+                    return EMPTY_RESPONSE;
+                } catch (Exception ex) {
+                    return throwError(response, ex);
+                }
+            });
+
+            get("/models/:uuid", (request, response) -> {
+                try {
+                    String id = request.params(":uuid");
+                    Taggable model = JPAEntityManagerUtils.find(Taggable.class, id);
+                    model.validateRequest();
+                    response.status(HTTP_OK);
+                    response.type(CONTENT_TYPE);
+                    return  dataToJson(model);
+                } catch (Exception ex) {
+                    return throwError(response, ex);
+                }
+            });
+
+            get("/models", (request, response) -> {
+                response.status(HTTP_OK);
+                response.type(CONTENT_TYPE);
+
+                List<Taggable> models = JPAEntityManagerUtils.executeQuery(Taggable.class, Taggable.GET_ALL_MODELS);
+                String jsonObjects = dataToJson(models);
+                String filter_ = filter(request.queryParams("$filter"), jsonObjects);
+                String json = request.pathInfo().replaceFirst("/api/models", "");
                 Map<String, Object> jsonMap = new HashMap<>();
                 jsonMap.put("title", StringUtils.capitalize(json));
                 jsonMap.put("json", filter_);
                 return render(jsonMap, "json");
+
+                // return dataToJson(model.getAllPosts());
             });
 
-            exception(Exception.class, exceptionHandler);
-        });
-
-        path("/db", () -> {
-            get("/" + root, (req, res) -> {
-                String filter_ = filter(req.queryParams("$filter"), jsonPath);
-                Map<String, Object> jsonMap = new HashMap<>();
-                jsonMap.put("title", "DB");
-                jsonMap.put("json", filter_);
-                jsonMap.put("card_db_relative_path", DB_PATH);
-                jsonMap.put("rows", "");
-                jsonMap.put("cards", "");
-                jsonMap.put("fields", "");
-                return render(jsonMap, "db");
+            post("/models/:uuid/children", (request, response) -> {
+                response.status(HTTP_NOT_IMPLEMENTED);
+                response.type(CONTENT_TYPE);
+                return EMPTY_RESPONSE;
             });
-            exception(Exception.class, exceptionHandler);
-        });
 
+            get("/models/:uuid/children", (request, response) -> {
+                response.status(HTTP_NOT_IMPLEMENTED);
+                response.type(CONTENT_TYPE);
+                return EMPTY_RESPONSE;
+            });
+        });
+    }
+
+    private static Object throwError(Response response, Exception ex) {
+        response.status(HTTP_BAD_REQUEST);
+        response.type(CONTENT_TYPE);
+        return ex.getMessage();
+    }
+
+    private static String dataToJson(Object data) {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.enable(SerializationFeature.INDENT_OUTPUT);
+            StringWriter sw = new StringWriter();
+            mapper.writeValue(sw, data);
+            return sw.toString();
+        } catch (IOException e) {
+            throw new RuntimeException("IOException from a StringWriter?");
+        }
     }
 
     private static int getAssignedPort() {
@@ -139,11 +181,11 @@ public class Server {
         }
     }
 
-    public static String render(Map<String, Object> model, String templatePath) {
+    private static String render(Map<String, Object> model, String templatePath) {
         return engine.render(new ModelAndView(model, templatePath));
     }
 
-    public static String read(InputStream input)
+    private static String read(InputStream input)
             throws IOException {
         try (BufferedReader buffer = new BufferedReader(new InputStreamReader(input))) {
             return buffer.lines().collect(Collectors.joining("\n"));

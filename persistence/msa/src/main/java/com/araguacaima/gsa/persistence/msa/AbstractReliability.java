@@ -1,5 +1,6 @@
 package com.araguacaima.gsa.persistence.msa;
 
+import com.araguacaima.gsa.persistence.commons.exceptions.EntityError;
 import com.araguacaima.gsa.persistence.meta.BaseEntity;
 
 import javax.persistence.*;

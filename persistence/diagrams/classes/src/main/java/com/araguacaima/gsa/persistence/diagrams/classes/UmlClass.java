@@ -1,5 +1,7 @@
 package com.araguacaima.gsa.persistence.diagrams.classes;
 
+import com.araguacaima.gsa.persistence.commons.exceptions.EntityError;
+
 import javax.persistence.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -41,4 +43,5 @@ public class UmlClass extends UmlItem {
     public void setMethods(Map<String, UmlMethod> methods) {
         this.methods = methods;
     }
+
 }

@@ -51,6 +51,15 @@
             <groupId>io.jsondb</groupId>
             <artifactId>jsondb-core</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.araguacaima.gsa.persistence</groupId>
+            <artifactId>persistence-core</artifactId>
+            <version>1.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.araguacaima.gsa</groupId>
+            <artifactId>persistence-utils</artifactId>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

@@ -23,6 +23,11 @@
 
         <dependency>
             <groupId>com.araguacaima.gsa</groupId>
+            <artifactId>persistence-utils</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.araguacaima.gsa</groupId>
             <artifactId>persistence-persons</artifactId>
         </dependency>
 

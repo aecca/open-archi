@@ -1,14 +1,15 @@
 package com.araguacaima.gsa.persistence.msa;
 
+import com.araguacaima.gsa.persistence.commons.exceptions.EntityError;
 import com.araguacaima.gsa.persistence.meta.BaseEntity;
 
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@PersistenceUnit(unitName = "gsa" )
+@PersistenceUnit(unitName = "gsa")
 @Table(schema = "MSA",
-        name = "Volumetry")
+        name = "Volumetry", uniqueConstraints = @UniqueConstraint(columnNames = {"name", "company_id"}))
 public class Volumetry extends BaseEntity {
 
     @OneToMany
@@ -122,5 +123,26 @@ public class Volumetry extends BaseEntity {
 
     public void setRates(Set<Rate> rates) {
         this.rates = rates;
+    }
+
+    @Override
+    public void validateRequest() throws EntityError {
+        //Do nothing. All request are valid on this entity
+    }
+
+    @Override
+    public void validateCreation() {
+        if (!(activities != null || batchProcessing != null || bulkProcessing != null || concurrencies != null || dataBase != null || fileTransfers != null || rates != null)) {
+            throw new EntityError(resourceBundle.getString(getCreationErrorMessageKey()));
+        }
+    }
+
+    @Override
+    public void validateModification() throws EntityError {
+        if (!(id == null && (
+                activities != null || batchProcessing != null || bulkProcessing != null || concurrencies != null || dataBase != null || fileTransfers != null || rates != null)))
+        {
+            throw new EntityError(resourceBundle.getString(getModificationErrorMessageKey()));
+        }
     }
 }

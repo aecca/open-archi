@@ -1,5 +1,6 @@
 package com.araguacaima.gsa.persistence.msa;
 
+import com.araguacaima.gsa.persistence.commons.exceptions.EntityError;
 import com.araguacaima.gsa.persistence.meta.BaseEntity;
 import com.araguacaima.gsa.persistence.persons.Responsible;
 
@@ -67,5 +68,27 @@ public class VersionControl extends BaseEntity {
 
     public void setVersion(String version) {
         this.version = version;
+    }
+
+    @Override
+    public void validateRequest() throws EntityError {
+        super.validateRequest();
+        //Do nothing. All request are valid on this entity
+    }
+
+    @Override
+    public void validateCreation() {
+        super.validateCreation();
+        if (description == null || responsible == null || issueDate == null) {
+            throw new EntityError(resourceBundle.getString(getCreationErrorMessageKey()));
+        }
+    }
+
+    @Override
+    public void validateModification() throws EntityError {
+        super.validateModification();
+        if (issueDate != null) {
+            throw new EntityError(resourceBundle.getString(getModificationErrorMessageKey()));
+        }
     }
 }

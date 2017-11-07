@@ -12,8 +12,12 @@ import java.util.Set;
 @PersistenceUnit(unitName = "gsa" )
 @Table(name = "Tags", schema = "DIAGRAMS")
 @DiscriminatorColumn(name = "diagramType")
+
+@NamedQueries({ @NamedQuery(name = Taggable.GET_ALL_MODELS,
+        query = "select a from Taggable a ")})
 public class Taggable extends BaseEntity {
 
+    public static final String GET_ALL_MODELS = "get.all.models";
     @ElementCollection
     @CollectionTable(name = "Tag", schema = "DIAGRAMS")
     protected Set<String> tags = new LinkedHashSet<>();

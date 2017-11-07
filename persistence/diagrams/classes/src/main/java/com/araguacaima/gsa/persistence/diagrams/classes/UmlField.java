@@ -1,5 +1,6 @@
 package com.araguacaima.gsa.persistence.diagrams.classes;
 
+import com.araguacaima.gsa.persistence.commons.exceptions.EntityError;
 import com.araguacaima.gsa.persistence.meta.BaseEntity;
 
 import javax.persistence.Column;

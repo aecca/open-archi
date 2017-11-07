@@ -1,5 +1,6 @@
 package com.araguacaima.gsa.persistence.diagrams.classes;
 
+import com.araguacaima.gsa.persistence.commons.exceptions.EntityError;
 import com.araguacaima.gsa.persistence.meta.BaseEntity;
 
 import javax.persistence.Column;
@@ -32,4 +33,5 @@ public class UmlParameter extends BaseEntity {
     public void setType(String type) {
         this.type = type;
     }
+
 }
