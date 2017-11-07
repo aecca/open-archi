@@ -38,6 +38,7 @@ public class Server {
         @Override
         public void handle(Exception exception, Request request, Response response) {
             String message = exception.getMessage();
+            response.type("text/html");
             StackTraceElement[] stackTrace = exception.getStackTrace();
             if (message == null) {
                 try {
@@ -164,20 +165,13 @@ public class Server {
         return 4567;
     }
 
-    private static String filter(String query, String jsonPath)
+    private static String filter(String query, String json)
             throws IOException, URISyntaxException {
 
-        String name = "/db/" + jsonPath;
-        log.info("Finding path: " + name);
-        InputStream resource = Server.class.getResourceAsStream(name);
-        log.info("Resource: " + resource);
-        assert resource != null;
-        String jsonStr = read(resource);
-        log.info(jsonPath + " file loaded!!!");
         if (query == null) {
-            return jsonStr;
+            return json;
         } else {
-            return RsqlJsonFilter.rsql(query, jsonStr);
+            return RsqlJsonFilter.rsql(query, json);
         }
     }
 

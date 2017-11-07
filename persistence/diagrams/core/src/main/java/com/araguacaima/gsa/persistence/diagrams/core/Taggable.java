@@ -12,7 +12,6 @@ import java.util.Set;
 @PersistenceUnit(unitName = "gsa" )
 @Table(name = "Tags", schema = "DIAGRAMS")
 @DiscriminatorColumn(name = "diagramType")
-
 @NamedQueries({ @NamedQuery(name = Taggable.GET_ALL_MODELS,
         query = "select a from Taggable a ")})
 public class Taggable extends BaseEntity {
