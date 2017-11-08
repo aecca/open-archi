@@ -67,8 +67,8 @@ public class Server {
     static {
         config.setTemplateLoader(templateLoader);
         try {
-            deepFulfilledModel = (Taggable) reflectionUtils.createObject(Taggable.class);
-            reflectionUtils.deepInitialization(deepFulfilledModel);
+            deepFulfilledModel = reflectionUtils.createObject(Taggable.class);
+            reflectionUtils.deepInitialization(deepFulfilledModel, null, true, true);
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
@@ -94,7 +94,7 @@ public class Server {
             options("/models", (request, response) -> {
                 response.status(HTTP_OK);
                 response.header("Allow", "POST, GET");
-                response.header("Content-Type", JSON_CONTENT_TYPE + HTML_CONTENT_TYPE);
+                response.header("Content-Type", JSON_CONTENT_TYPE + "," + HTML_CONTENT_TYPE);
                 return jsonUtils.toJSON(deepFulfilledModel);
             });
 

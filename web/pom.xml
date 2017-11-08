@@ -44,10 +44,6 @@
             <artifactId>commons-collections4</artifactId>
         </dependency>
         <dependency>
-            <groupId>io.jsondb</groupId>
-            <artifactId>jsondb-core</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.araguacaima.gsa.persistence</groupId>
             <artifactId>persistence-core</artifactId>
             <version>1.0.1</version>
