@@ -1,22 +1,23 @@
 package com.araguacaima.gsa.persistence.diagrams.core;
 
 import com.araguacaima.gsa.persistence.meta.BaseEntity;
-import com.sun.tracing.dtrace.ModuleAttributes;
 
 import javax.persistence.*;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
-@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
-@PersistenceUnit(unitName = "gsa" )
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@PersistenceUnit(unitName = "gsa")
 @Table(name = "Tags", schema = "DIAGRAMS")
-@DiscriminatorColumn(name = "diagramType")
-@NamedQueries({ @NamedQuery(name = Taggable.GET_ALL_MODELS,
-        query = "select a from Taggable a ")})
+@DiscriminatorColumn(name = "diagramType", discriminatorType = DiscriminatorType.STRING)
+@NamedQueries({@NamedQuery(name = Taggable.GET_ALL_MODELS,
+        query = "select a from Taggable a "), @NamedQuery(name = Taggable.GET_MODELS_BY_TYPE,
+        query = "select a from Taggable a where a.class=:diagramType")})
 public class Taggable extends BaseEntity {
 
     public static final String GET_ALL_MODELS = "get.all.models";
+    public static final String GET_MODELS_BY_TYPE = "get.models.by.type";
     @ElementCollection
     @CollectionTable(name = "Tag", schema = "DIAGRAMS")
     protected Set<String> tags = new LinkedHashSet<>();

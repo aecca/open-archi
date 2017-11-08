@@ -41,14 +41,18 @@ public abstract class BaseEntity implements Serializable, BasicEntity, Cloneable
         return this.id;
     }
 
+
+    @JsonIgnore
     protected String getRequestErrorMessageKey() {
         return this.getClass().getName().toLowerCase() + "-" + "request" + "." + "error";
     }
 
+    @JsonIgnore
     protected String getModificationErrorMessageKey() {
         return this.getClass().getName().toLowerCase() + "-" + "modification" + "." + "error";
     }
 
+    @JsonIgnore
     protected String getCreationErrorMessageKey() {
         return this.getClass().getName().toLowerCase() + "-" + "creation" + "." + "error";
     }

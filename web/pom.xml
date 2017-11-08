@@ -45,9 +45,33 @@
         </dependency>
         <dependency>
             <groupId>com.araguacaima.gsa.persistence</groupId>
-            <artifactId>persistence-core</artifactId>
-            <version>1.0.1</version>
+            <artifactId>persistence-architectural</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.araguacaima.gsa.persistence</groupId>
+            <artifactId>persistence-bpm</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.araguacaima.gsa.persistence</groupId>
+            <artifactId>persistence-er</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.araguacaima.gsa.persistence</groupId>
+            <artifactId>persistence-flowchart</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.araguacaima.gsa.persistence</groupId>
+            <artifactId>persistence-gantt</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.araguacaima.gsa.persistence</groupId>
+            <artifactId>persistence-sequence</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.araguacaima.gsa.persistence</groupId>
+            <artifactId>persistence-uml-classes</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>com.araguacaima.gsa</groupId>
             <artifactId>persistence-utils</artifactId>

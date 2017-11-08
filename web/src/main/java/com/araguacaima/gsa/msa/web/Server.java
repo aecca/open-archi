@@ -4,6 +4,7 @@ import com.araguacaima.commons.utils.JsonUtils;
 import com.araguacaima.commons.utils.ReflectionUtils;
 import com.araguacaima.gsa.msa.web.wrapper.RsqlJsonFilter;
 import com.araguacaima.gsa.persistence.diagrams.core.Taggable;
+import com.araguacaima.gsa.persistence.diagrams.er.Model;
 import com.araguacaima.gsa.persistence.utils.JPAEntityManagerUtils;
 import de.neuland.jade4j.JadeConfiguration;
 import de.neuland.jade4j.template.TemplateLoader;
@@ -14,7 +15,10 @@ import spark.*;
 import spark.template.jade.JadeTemplateEngine;
 import spark.template.jade.loader.SparkClasspathTemplateLoader;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
 import java.security.GeneralSecurityException;
@@ -62,13 +66,33 @@ public class Server {
     };
     private static TemplateLoader templateLoader = new SparkClasspathTemplateLoader("web/views");
     private static ReflectionUtils reflectionUtils = new ReflectionUtils(null);
-    private static Taggable deepFulfilledModel;
-
+    private static Taggable deeplyFulfilledParentModel;
+    private static com.araguacaima.gsa.persistence.diagrams.architectural.Model  deeplyFulfilledArchitectureModel;
+    private static com.araguacaima.gsa.persistence.diagrams.bpm.Model   deeplyFulfilledBpmModel;
+    private static com.araguacaima.gsa.persistence.diagrams.er.Model    deeplyFulfilledERModel;
+    private static com.araguacaima.gsa.persistence.diagrams.flowchart.Model  deeplyFulfilledFlowchartModel;
+    private static com.araguacaima.gsa.persistence.diagrams.gantt.Model  deeplyFulfilledGanttModel;
+    private static com.araguacaima.gsa.persistence.diagrams.sequence.Model  deeplyFulfilledSequenceModel;
+    private static com.araguacaima.gsa.persistence.diagrams.classes.Model  deeplyFulfilledClassesModel;
     static {
         config.setTemplateLoader(templateLoader);
         try {
-            deepFulfilledModel = reflectionUtils.createObject(Taggable.class);
-            reflectionUtils.deepInitialization(deepFulfilledModel, null, true, true);
+            deeplyFulfilledParentModel = reflectionUtils.createObject(Taggable.class);
+            reflectionUtils.deepInitialization(deeplyFulfilledParentModel);
+            deeplyFulfilledArchitectureModel = reflectionUtils.createObject(com.araguacaima.gsa.persistence.diagrams.architectural.Model.class);
+            reflectionUtils.deepInitialization(deeplyFulfilledArchitectureModel);
+            deeplyFulfilledBpmModel = reflectionUtils.createObject(com.araguacaima.gsa.persistence.diagrams.bpm.Model.class);
+            reflectionUtils.deepInitialization(deeplyFulfilledArchitectureModel);
+            deeplyFulfilledERModel = reflectionUtils.createObject(com.araguacaima.gsa.persistence.diagrams.er.Model.class);
+            reflectionUtils.deepInitialization(deeplyFulfilledArchitectureModel);
+            deeplyFulfilledFlowchartModel = reflectionUtils.createObject(com.araguacaima.gsa.persistence.diagrams.flowchart.Model.class);
+            reflectionUtils.deepInitialization(deeplyFulfilledArchitectureModel);
+            deeplyFulfilledGanttModel = reflectionUtils.createObject(com.araguacaima.gsa.persistence.diagrams.gantt.Model.class);
+            reflectionUtils.deepInitialization(deeplyFulfilledArchitectureModel);
+            deeplyFulfilledSequenceModel = reflectionUtils.createObject(com.araguacaima.gsa.persistence.diagrams.sequence.Model.class);
+            reflectionUtils.deepInitialization(deeplyFulfilledArchitectureModel);
+            deeplyFulfilledClassesModel = reflectionUtils.createObject(com.araguacaima.gsa.persistence.diagrams.classes.Model.class);
+            reflectionUtils.deepInitialization(deeplyFulfilledArchitectureModel);
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
@@ -95,7 +119,7 @@ public class Server {
                 response.status(HTTP_OK);
                 response.header("Allow", "POST, GET");
                 response.header("Content-Type", JSON_CONTENT_TYPE + "," + HTML_CONTENT_TYPE);
-                return jsonUtils.toJSON(deepFulfilledModel);
+                return jsonUtils.toJSON(deeplyFulfilledParentModel);
             });
 
             post("/models", (request, response) -> {
@@ -126,21 +150,7 @@ public class Server {
             });
 
             get("/models", (request, response) -> {
-                response.status(HTTP_OK);
-
-                List<Taggable> models = JPAEntityManagerUtils.executeQuery(Taggable.class, Taggable.GET_ALL_MODELS);
-                String jsonObjects = jsonUtils.toJSON(models);
-                String filter_ = filter(request.queryParams("$filter"), jsonObjects);
-                String json = request.pathInfo().replaceFirst("/api/models", "");
-                String contentType = getContentType(request);
-                if (contentType.equals(HTML_CONTENT_TYPE)) {
-                    Map<String, Object> jsonMap = new HashMap<>();
-                    jsonMap.put("title", StringUtils.capitalize(json));
-                    jsonMap.put("json", filter_);
-                    return jsonUtils.toJSON(render(jsonMap, "json"));
-                } else {
-                    return jsonUtils.toJSON(filter_);
-                }
+                return getList(request, response, Taggable.GET_ALL_MODELS, null);
             });
 
             post("/models/:uuid/children", (request, response) -> {
@@ -154,7 +164,117 @@ public class Server {
                 response.type(JSON_CONTENT_TYPE);
                 return EMPTY_RESPONSE;
             });
+
+            get("/models/:uuid/parent", (request, response) -> {
+                response.status(HTTP_NOT_IMPLEMENTED);
+                response.type(JSON_CONTENT_TYPE);
+                return EMPTY_RESPONSE;
+            });
+            options("/models/architectures", (request, response) -> {
+                response.status(HTTP_OK);
+                response.header("Allow", "GET");
+                response.header("Content-Type", JSON_CONTENT_TYPE );
+                return jsonUtils.toJSON(deeplyFulfilledArchitectureModel);
+            });
+            get("/models/architectures", (request, response) -> {
+                Map<String, Object> params = new HashMap<>();
+                params.put("diagramType", "ArchitectureModel");
+                response.type(JSON_CONTENT_TYPE);
+                return jsonUtils.toJSON(getList(request, response, Taggable.GET_MODELS_BY_TYPE, params));
+            });
+            options("/models/bpms", (request, response) -> {
+                response.status(HTTP_OK);
+                response.header("Allow", "GET");
+                response.header("Content-Type", JSON_CONTENT_TYPE );
+                return jsonUtils.toJSON(deeplyFulfilledBpmModel);
+            });
+            get("/models/bpms", (request, response) -> {
+                Map<String, Object> params = new HashMap<>();
+                params.put("diagramType", "BpmModel");
+                response.type(JSON_CONTENT_TYPE);
+                return jsonUtils.toJSON(getList(request, response, Taggable.GET_MODELS_BY_TYPE, params));
+            });
+            options("/models/ers", (request, response) -> {
+                response.status(HTTP_OK);
+                response.header("Allow", "GET");
+                response.header("Content-Type", JSON_CONTENT_TYPE );
+                return jsonUtils.toJSON(deeplyFulfilledERModel);
+            });
+            get("/models/ers", (request, response) -> {
+                Map<String, Object> params = new HashMap<>();
+                params.put("diagramType", "ERModel");
+                response.type(JSON_CONTENT_TYPE);
+                return jsonUtils.toJSON(getList(request, response, Taggable.GET_MODELS_BY_TYPE, params));
+            });
+            options("/models/flowcharts", (request, response) -> {
+                response.status(HTTP_OK);
+                response.header("Allow", "GET");
+                response.header("Content-Type", JSON_CONTENT_TYPE );
+                return jsonUtils.toJSON(deeplyFulfilledFlowchartModel);
+            });
+            get("/models/flowcharts", (request, response) -> {
+                Map<String, Object> params = new HashMap<>();
+                params.put("diagramType", "FlowchartModel");
+                response.type(JSON_CONTENT_TYPE);
+                return jsonUtils.toJSON(getList(request, response, Taggable.GET_MODELS_BY_TYPE, params));
+            });
+            options("/models/gantts", (request, response) -> {
+                response.status(HTTP_OK);
+                response.header("Allow", "GET");
+                response.header("Content-Type", JSON_CONTENT_TYPE );
+                return jsonUtils.toJSON(deeplyFulfilledGanttModel);
+            });
+            get("/models/gantts", (request, response) -> {
+                Map<String, Object> params = new HashMap<>();
+                params.put("diagramType", "GanttModel");
+                response.type(JSON_CONTENT_TYPE);
+                return jsonUtils.toJSON(getList(request, response, Taggable.GET_MODELS_BY_TYPE, params));
+            });
+            options("/models/sequences", (request, response) -> {
+                response.status(HTTP_OK);
+                response.header("Allow", "GET");
+                response.header("Content-Type", JSON_CONTENT_TYPE );
+                return jsonUtils.toJSON(deeplyFulfilledSequenceModel);
+            });
+            get("/models/sequences", (request, response) -> {
+                Map<String, Object> params = new HashMap<>();
+                params.put("diagramType", "SequenceModel");
+                response.type(JSON_CONTENT_TYPE);
+                return jsonUtils.toJSON(getList(request, response, Taggable.GET_MODELS_BY_TYPE, params));
+            });
+            options("/models/classes", (request, response) -> {
+                response.status(HTTP_OK);
+                response.header("Allow", "GET");
+                response.header("Content-Type", JSON_CONTENT_TYPE );
+                return jsonUtils.toJSON(deeplyFulfilledClassesModel);
+            });
+            get("/models/classes", (request, response) -> {
+                Map<String, Object> params = new HashMap<>();
+                params.put("diagramType", "ClassesModel");
+                response.type(JSON_CONTENT_TYPE);
+                return jsonUtils.toJSON(getList(request, response, Taggable.GET_MODELS_BY_TYPE, params));
+            });
+
+
         });
+    }
+
+    private static Object getList(Request request, Response response, String query, Map<String, Object> params) throws IOException, URISyntaxException {
+        response.status(HTTP_OK);
+
+        List<Taggable> models = JPAEntityManagerUtils.executeQuery(Taggable.class, query, params);
+        String jsonObjects = jsonUtils.toJSON(models);
+        String filter_ = filter(request.queryParams("$filter"), jsonObjects);
+        String json = request.pathInfo().replaceFirst("/api/models", "");
+        String contentType = getContentType(request);
+        if (contentType.equals(HTML_CONTENT_TYPE)) {
+            Map<String, Object> jsonMap = new HashMap<>();
+            jsonMap.put("title", StringUtils.capitalize(json));
+            jsonMap.put("json", filter_);
+            return jsonUtils.toJSON(render(jsonMap, "json"));
+        } else {
+            return jsonUtils.toJSON(filter_);
+        }
     }
 
     private static Object throwError(Response response, Exception ex) {

@@ -1,6 +1,8 @@
 package com.araguacaima.gsa.persistence.diagrams.core;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -19,6 +21,7 @@ public class Item extends Taggable {
     @OneToOne
     protected Point location;
     @OneToOne(targetEntity = Taggable.class)
+    @JsonIgnore
     protected Taggable parent;
     @OneToOne
     protected Shape shape;

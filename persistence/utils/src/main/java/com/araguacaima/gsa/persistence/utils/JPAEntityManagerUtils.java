@@ -5,7 +5,9 @@ import org.hibernate.Session;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.TypedQuery;
 import java.util.List;
+import java.util.Map;
 
 public class JPAEntityManagerUtils {
     private static EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("gsa");
@@ -42,8 +44,19 @@ public class JPAEntityManagerUtils {
         return entityManager.find(clazz, key);
     }
 
+
     public static <T> List<T> executeQuery(Class<T> clazz, String query) {
-        return entityManager.createNamedQuery(query, clazz).getResultList();
+        return executeQuery(clazz, query, null);
+    }
+
+    public static <T> List<T> executeQuery(Class<T> clazz, String query, Map<String, Object> params) {
+        TypedQuery<T> namedQuery = entityManager.createNamedQuery(query, clazz);
+        if (params != null) {
+            for (Map.Entry<String, Object> param : params.entrySet()) {
+                namedQuery.setParameter(param.getKey(), param.getValue());
+            }
+        }
+        return namedQuery.getResultList();
     }
 
     public static void persist(Object entity) {
