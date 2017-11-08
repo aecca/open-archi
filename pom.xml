@@ -41,8 +41,10 @@
         <app.prefix>msa</app.prefix>
         <aspectj.version>1.8.4</aspectj.version>
         <backport-util-concurrent-backport-util-concurrent>3.1</backport-util-concurrent-backport-util-concurrent>
+        <com.fasterxml.jackson.core-jackson-databind>2.7.1-1</com.fasterxml.jackson.core-jackson-databind>
         <com.fasterxml.jackson.core-jackson-core>2.7.1</com.fasterxml.jackson.core-jackson-core>
-        <com.fasterxml.jackson.core-jackson-databind>2.8.7</com.fasterxml.jackson.core-jackson-databind>
+        <com.fasterxml.jackson.module-jackson-module-jsonSchema>2.7.1
+        </com.fasterxml.jackson.module-jackson-module-jsonSchema>
         <com.github.rjeschke-txtmark>0.13</com.github.rjeschke-txtmark>
         <com.google.api-client>1.22.0</com.google.api-client>
         <com.google.apis-google-api-services-calendar>v3-rev254-1.22.0</com.google.apis-google-api-services-calendar>
@@ -270,23 +272,10 @@
             </dependency>
 
             <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-databind</artifactId>
-                <version>${com.fasterxml.jackson.core-jackson-databind}</version>
-                <scope>compile</scope>
-            </dependency>
-
-            <dependency>
                 <groupId>org.apache.poi</groupId>
                 <artifactId>poi-ooxml</artifactId>
                 <version>${org.apache.poi-poi-ooxml}</version>
                 <scope>compile</scope>
-            </dependency>
-
-            <dependency>
-                <groupId>com.fasterxml.jackson.module</groupId>
-                <artifactId>jackson-module-jsonSchema</artifactId>
-                <version>${com.fasterxml.jackson.module-jackson-module-jsonSchema}</version>
             </dependency>
 
             <dependency>
@@ -366,13 +355,6 @@
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
                 <version>${commons-io-commons-io}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-core</artifactId>
-                <version>${com.fasterxml.jackson.core-jackson-core}</version>
-                <scope>compile</scope>
             </dependency>
 
             <dependency>
@@ -561,6 +543,7 @@
         </dependencies>
 
     </dependencyManagement>
+
     <modules>
         <module>model</module>
         <module>persistence</module>

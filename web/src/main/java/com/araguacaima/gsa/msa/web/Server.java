@@ -1,10 +1,10 @@
 package com.araguacaima.gsa.msa.web;
 
+import com.araguacaima.commons.utils.JsonUtils;
+import com.araguacaima.commons.utils.ReflectionUtils;
 import com.araguacaima.gsa.msa.web.wrapper.RsqlJsonFilter;
 import com.araguacaima.gsa.persistence.diagrams.core.Taggable;
 import com.araguacaima.gsa.persistence.utils.JPAEntityManagerUtils;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import de.neuland.jade4j.JadeConfiguration;
 import de.neuland.jade4j.template.TemplateLoader;
 import org.apache.commons.lang3.StringUtils;
@@ -15,6 +15,7 @@ import spark.template.jade.JadeTemplateEngine;
 import spark.template.jade.loader.SparkClasspathTemplateLoader;
 
 import java.io.*;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
 import java.security.GeneralSecurityException;
 import java.util.Arrays;
@@ -27,12 +28,13 @@ import static java.net.HttpURLConnection.*;
 import static spark.Spark.*;
 
 public class Server {
-    private static final String DB_PATH = "./db/cards.json";
-    private static final String CONTENT_TYPE = "application/json";
+    private static final String JSON_CONTENT_TYPE = "application/json";
+    private static final String HTML_CONTENT_TYPE = "text/html";
     private static final String EMPTY_RESPONSE = "";
     private static JadeConfiguration config = new JadeConfiguration();
     private static JadeTemplateEngine engine = new JadeTemplateEngine(config);
     private static Logger log = LoggerFactory.getLogger(Server.class);
+    private static final JsonUtils jsonUtils = new JsonUtils();
 
     private static final ExceptionHandler exceptionHandler = new ExceptionHandlerImpl(Exception.class) {
         @Override
@@ -59,9 +61,17 @@ public class Server {
         }
     };
     private static TemplateLoader templateLoader = new SparkClasspathTemplateLoader("web/views");
+    private static ReflectionUtils reflectionUtils = new ReflectionUtils(null);
+    private static Taggable deepFulfilledModel;
 
     static {
         config.setTemplateLoader(templateLoader);
+        try {
+            deepFulfilledModel = (Taggable) reflectionUtils.createObject(Taggable.class);
+            reflectionUtils.deepInitialization(deepFulfilledModel);
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args)
@@ -81,14 +91,20 @@ public class Server {
 
             before("/*", (req, res) -> log.info("Received api call to '" + req.pathInfo() + "'"));
 
+            options("/models", (request, response) -> {
+                response.status(HTTP_OK);
+                response.header("Allow", "POST, GET");
+                response.header("Content-Type", JSON_CONTENT_TYPE + HTML_CONTENT_TYPE);
+                return jsonUtils.toJSON(deepFulfilledModel);
+            });
+
             post("/models", (request, response) -> {
-                ObjectMapper mapper = new ObjectMapper();
-                Taggable model = mapper.readValue(request.body(), Taggable.class);
+                Taggable model = jsonUtils.fromJSON(request.body(), Taggable.class);
                 try {
                     model.validateCreation();
                     JPAEntityManagerUtils.persist(model);
                     response.status(HTTP_CREATED);
-                    response.type(CONTENT_TYPE);
+                    response.type(JSON_CONTENT_TYPE);
                     response.header("Location", request.pathInfo() + "/models/" + model.getId());
                     return EMPTY_RESPONSE;
                 } catch (Exception ex) {
@@ -102,8 +118,8 @@ public class Server {
                     Taggable model = JPAEntityManagerUtils.find(Taggable.class, id);
                     model.validateRequest();
                     response.status(HTTP_OK);
-                    response.type(CONTENT_TYPE);
-                    return  dataToJson(model);
+                    response.type(JSON_CONTENT_TYPE);
+                    return jsonUtils.toJSON(model);
                 } catch (Exception ex) {
                     return throwError(response, ex);
                 }
@@ -111,29 +127,31 @@ public class Server {
 
             get("/models", (request, response) -> {
                 response.status(HTTP_OK);
-                response.type(CONTENT_TYPE);
 
                 List<Taggable> models = JPAEntityManagerUtils.executeQuery(Taggable.class, Taggable.GET_ALL_MODELS);
-                String jsonObjects = dataToJson(models);
+                String jsonObjects = jsonUtils.toJSON(models);
                 String filter_ = filter(request.queryParams("$filter"), jsonObjects);
                 String json = request.pathInfo().replaceFirst("/api/models", "");
-                Map<String, Object> jsonMap = new HashMap<>();
-                jsonMap.put("title", StringUtils.capitalize(json));
-                jsonMap.put("json", filter_);
-                return render(jsonMap, "json");
-
-                // return dataToJson(model.getAllPosts());
+                String contentType = getContentType(request);
+                if (contentType.equals(HTML_CONTENT_TYPE)) {
+                    Map<String, Object> jsonMap = new HashMap<>();
+                    jsonMap.put("title", StringUtils.capitalize(json));
+                    jsonMap.put("json", filter_);
+                    return jsonUtils.toJSON(render(jsonMap, "json"));
+                } else {
+                    return jsonUtils.toJSON(filter_);
+                }
             });
 
             post("/models/:uuid/children", (request, response) -> {
                 response.status(HTTP_NOT_IMPLEMENTED);
-                response.type(CONTENT_TYPE);
+                response.type(JSON_CONTENT_TYPE);
                 return EMPTY_RESPONSE;
             });
 
             get("/models/:uuid/children", (request, response) -> {
                 response.status(HTTP_NOT_IMPLEMENTED);
-                response.type(CONTENT_TYPE);
+                response.type(JSON_CONTENT_TYPE);
                 return EMPTY_RESPONSE;
             });
         });
@@ -141,20 +159,8 @@ public class Server {
 
     private static Object throwError(Response response, Exception ex) {
         response.status(HTTP_BAD_REQUEST);
-        response.type(CONTENT_TYPE);
+        response.type(JSON_CONTENT_TYPE);
         return ex.getMessage();
-    }
-
-    private static String dataToJson(Object data) {
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.enable(SerializationFeature.INDENT_OUTPUT);
-            StringWriter sw = new StringWriter();
-            mapper.writeValue(sw, data);
-            return sw.toString();
-        } catch (IOException e) {
-            throw new RuntimeException("IOException from a StringWriter?");
-        }
     }
 
     private static int getAssignedPort() {
@@ -183,6 +189,21 @@ public class Server {
             throws IOException {
         try (BufferedReader buffer = new BufferedReader(new InputStreamReader(input))) {
             return buffer.lines().collect(Collectors.joining("\n"));
+        }
+    }
+
+    private static String getContentType(Request request) {
+        String accept = request.headers("Accept");
+        if (accept == null) {
+            accept = request.headers("ACCEPT");
+        }
+        if (accept == null) {
+            accept = request.headers("accept");
+        }
+        if (accept != null && accept.trim().equalsIgnoreCase(HTML_CONTENT_TYPE)) {
+            return HTML_CONTENT_TYPE;
+        } else {
+            return JSON_CONTENT_TYPE;
         }
     }
 }

@@ -28,10 +28,6 @@
             <artifactId>spark-template-jade</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
         </dependency>
@@ -59,6 +55,10 @@
         <dependency>
             <groupId>com.araguacaima.gsa</groupId>
             <artifactId>persistence-utils</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.araguacaima</groupId>
+            <artifactId>commons-utils</artifactId>
         </dependency>
     </dependencies>
     <build>
