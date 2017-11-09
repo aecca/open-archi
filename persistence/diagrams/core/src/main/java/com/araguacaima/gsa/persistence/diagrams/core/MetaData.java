@@ -57,9 +57,6 @@ public class MetaData extends BaseEntity {
             inverseJoinColumns = {@JoinColumn(name = "Version_Id", referencedColumnName = "Id")})
     private Version version;
 
-    @Column
-    private Type type;
-
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",
             name = "MetaData_Views",
@@ -107,14 +104,6 @@ public class MetaData extends BaseEntity {
 
     public void setVersion(Version version) {
         this.version = version;
-    }
-
-    public Type getType() {
-        return type;
-    }
-
-    public void setType(Type type) {
-        this.type = type;
     }
 
     public Collection<View> getViews() {

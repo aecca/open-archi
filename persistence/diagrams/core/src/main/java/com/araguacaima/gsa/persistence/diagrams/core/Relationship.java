@@ -1,5 +1,7 @@
 package com.araguacaima.gsa.persistence.diagrams.core;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 /**
@@ -10,10 +12,12 @@ import javax.persistence.*;
 public class Relationship extends Taggable {
 
     @OneToOne(targetEntity=Taggable.class)
+    @JsonIgnore
     private Taggable source;
     @Column
     private String sourceId;
     @OneToOne(targetEntity=Taggable.class)
+    @JsonIgnore
     private Taggable destination;
     @Column
     private String destinationId;
