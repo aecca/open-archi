@@ -1,21 +1,17 @@
 package com.araguacaima.gsa.persistence.diagrams.flowchart;
 
-import com.araguacaima.gsa.persistence.diagrams.core.Constants;
 import com.araguacaima.gsa.persistence.diagrams.core.RelationshipType;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.PersistenceUnit;
-import javax.persistence.Table;
-import java.util.Set;
+import javax.persistence.*;
 
 /**
  * A relationship between two classes.
  */
 @Entity
-@PersistenceUnit(unitName = "gsa" )
+@PersistenceUnit(unitName = "gsa")
 @Table(name = "Flowchart_Relationship", schema = "DIAGRAMS")
-public class Relationship extends com.araguacaima.gsa.persistence.diagrams.core.Relationship  {
+@DiscriminatorValue("FlowchartRelationship")
+public class Relationship extends com.araguacaima.gsa.persistence.diagrams.core.Relationship {
     @Column
     private RelationshipType type;
 

@@ -4,16 +4,14 @@ import com.araguacaima.gsa.persistence.diagrams.core.Item;
 import com.araguacaima.gsa.persistence.diagrams.core.RelationshipType;
 import com.araguacaima.gsa.persistence.diagrams.core.Taggable;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.PersistenceUnit;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * A relationship between two architectural elements.
  */
 @Entity
 @PersistenceUnit(unitName = "gsa" )
+@DiscriminatorValue("ArchitectureRelationship")
 @Table(name = "Architecture_Relationship", schema = "DIAGRAMS")
 public class Relationship extends com.araguacaima.gsa.persistence.diagrams.core.Relationship {
 
