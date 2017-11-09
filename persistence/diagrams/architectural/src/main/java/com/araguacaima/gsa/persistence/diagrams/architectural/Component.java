@@ -24,29 +24,10 @@ public class Component extends StaticElement {
     @Column
     private String technology;
 
-    @OneToMany(targetEntity = Feature.class)
-    @JoinTable(schema = "DIAGRAMS",
-            name = "Component_Features",
-            joinColumns = {@JoinColumn(name = "Component_Id",
-                    referencedColumnName = "Id")},
-            inverseJoinColumns = {@JoinColumn(name = "Feature_Id",
-                    referencedColumnName = "Id")})
-    private Set<Feature> features = new HashSet<>();
-
     @Column
     private long size;
 
     public Component() {
-    }
-
-    @Override
-    public Set<Feature> getFeatures() {
-        return features;
-    }
-
-    @Override
-    public void setFeatures(Set<Feature> features) {
-        this.features = features;
     }
 
     public String getTechnology() {

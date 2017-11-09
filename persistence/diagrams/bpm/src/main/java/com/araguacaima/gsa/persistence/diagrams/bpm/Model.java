@@ -16,7 +16,7 @@ public class Model extends Element {
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",
             name = "Model_Pools",
-            joinColumns = {@JoinColumn(name = "Pool_Id",
+            joinColumns = {@JoinColumn(name = "Bpm_Model_Id",
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Pool_Id",
                     referencedColumnName = "Id")})

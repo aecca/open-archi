@@ -23,14 +23,9 @@ public class Element extends Item {
     @CollectionTable(schema = "DIAGRAMS", name = "Element_Properties", joinColumns = @JoinColumn(name = "Property_Id"))
     protected Map<String, String> properties = new HashMap<>();
 
-    @OneToMany
-    @JoinTable(schema = "DIAGRAMS",
-            name = "Element_Features",
-            joinColumns = {@JoinColumn(name = "Element_Id",
-                    referencedColumnName = "Id")},
-            inverseJoinColumns = {@JoinColumn(name = "Feature_Id",
-                    referencedColumnName = "Id")})
-    protected Set<Feature> features = new LinkedHashSet<>();
+    @ElementCollection
+    @CollectionTable(name = "Element_FeatureIds", schema = "DIAGRAMS")
+    protected Set<String> featureIds = new LinkedHashSet<>();
 
     public Element() {
     }
@@ -56,11 +51,11 @@ public class Element extends Item {
         this.properties = properties;
     }
 
-    public Set<Feature> getFeatures() {
-        return features;
+    public Set<String> getFeatures() {
+        return featureIds;
     }
 
-    public void setFeatures(Set<Feature> features) {
-        this.features = features;
+    public void setFeatures(Set<String> features) {
+        this.featureIds = features;
     }
 }

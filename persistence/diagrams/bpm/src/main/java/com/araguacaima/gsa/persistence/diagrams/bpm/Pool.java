@@ -15,7 +15,7 @@ public class Pool extends Item {
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",
             name = "Pool_Lanes",
-            joinColumns = {@JoinColumn(name = "Lane_Id",
+            joinColumns = {@JoinColumn(name = "Pool_Id",
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Lane_Id",
                     referencedColumnName = "Id")})

@@ -34,7 +34,7 @@ public class Model extends Element {
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Consumer_Id",
                     referencedColumnName = "Id")})
-    private Set<Consumer> people = new LinkedHashSet<>();
+    private Set<Consumer> consumers = new LinkedHashSet<>();
 
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",
@@ -69,12 +69,12 @@ public class Model extends Element {
         this.kind = kind;
     }
 
-    public Set<Consumer> getPeople() {
-        return people;
+    public Set<Consumer> getConsumers() {
+        return consumers;
     }
 
-    public void setPeople(Set<Consumer> people) {
-        this.people = people;
+    public void setConsumers(Set<Consumer> people) {
+        this.consumers = people;
     }
 
     public Set<SoftwareSystem> getSoftwareSystems() {

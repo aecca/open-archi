@@ -47,12 +47,6 @@ public class Feature extends Item {
     @Column
     private String visibility;
 
-    /**
-     * the size of the feature; e.g. the number of lines
-     */
-    @Column
-    private long size;
-
     @Column
     private ElementKind kind = ElementKind.FEATURE;
 
@@ -105,14 +99,6 @@ public class Feature extends Item {
 
     public void setVisibility(String visibility) {
         this.visibility = visibility;
-    }
-
-    public long getSize() {
-        return size;
-    }
-
-    public void setSize(long size) {
-        this.size = size;
     }
 
     public ElementKind getKind() {

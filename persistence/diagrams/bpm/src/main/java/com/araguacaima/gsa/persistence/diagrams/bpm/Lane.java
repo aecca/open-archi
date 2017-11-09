@@ -16,7 +16,7 @@ public class Lane extends BaseEntity{
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",
             name = "Lane_Activities",
-            joinColumns = {@JoinColumn(name = "Activity_Id",
+            joinColumns = {@JoinColumn(name = "Lane_Id",
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Activity_Id",
                     referencedColumnName = "Id")})

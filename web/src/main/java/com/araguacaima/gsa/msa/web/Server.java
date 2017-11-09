@@ -166,7 +166,8 @@ public class Server {
                 return EMPTY_RESPONSE;
             });
             options("/models/architectures", (request, response) -> {
-                return getOptions(response, deeplyFulfilledArchitectureModel);
+
+                return getOptions(request, response, deeplyFulfilledArchitectureModel);
             });
             get("/models/architectures", (request, response) -> {
                 Map<String, Object> params = new HashMap<>();
@@ -175,7 +176,7 @@ public class Server {
                 return jsonUtils.toJSON(getList(request, response, Taggable.GET_MODELS_BY_TYPE, params));
             });
             options("/models/bpms", (request, response) -> {
-                return getOptions(response, deeplyFulfilledBpmModel);
+                return getOptions(request, response, deeplyFulfilledBpmModel);
             });
             get("/models/bpms", (request, response) -> {
                 Map<String, Object> params = new HashMap<>();
@@ -184,7 +185,7 @@ public class Server {
                 return jsonUtils.toJSON(getList(request, response, Taggable.GET_MODELS_BY_TYPE, params));
             });
             options("/models/ers", (request, response) -> {
-                return getOptions(response, deeplyFulfilledERModel);
+                return getOptions(request, response, deeplyFulfilledERModel);
             });
             get("/models/ers", (request, response) -> {
                 Map<String, Object> params = new HashMap<>();
@@ -193,7 +194,7 @@ public class Server {
                 return jsonUtils.toJSON(getList(request, response, Taggable.GET_MODELS_BY_TYPE, params));
             });
             options("/models/flowcharts", (request, response) -> {
-                return getOptions(response, deeplyFulfilledFlowchartModel);
+                return getOptions(request, response, deeplyFulfilledFlowchartModel);
             });
             get("/models/flowcharts", (request, response) -> {
                 Map<String, Object> params = new HashMap<>();
@@ -202,7 +203,7 @@ public class Server {
                 return jsonUtils.toJSON(getList(request, response, Taggable.GET_MODELS_BY_TYPE, params));
             });
             options("/models/gantts", (request, response) -> {
-                return getOptions(response, deeplyFulfilledGanttModel);
+                return getOptions(request, response, deeplyFulfilledGanttModel);
             });
             get("/models/gantts", (request, response) -> {
                 Map<String, Object> params = new HashMap<>();
@@ -211,7 +212,7 @@ public class Server {
                 return jsonUtils.toJSON(getList(request, response, Taggable.GET_MODELS_BY_TYPE, params));
             });
             options("/models/sequences", (request, response) -> {
-                return getOptions(response, deeplyFulfilledSequenceModel);
+                return getOptions(request, response, deeplyFulfilledSequenceModel);
             });
             get("/models/sequences", (request, response) -> {
                 Map<String, Object> params = new HashMap<>();
@@ -220,7 +221,7 @@ public class Server {
                 return jsonUtils.toJSON(getList(request, response, Taggable.GET_MODELS_BY_TYPE, params));
             });
             options("/models/classes", (request, response) -> {
-                return getOptions(response, deeplyFulfilledClassesModel);
+                return getOptions(request, response, deeplyFulfilledClassesModel);
             });
             get("/models/classes", (request, response) -> {
                 Map<String, Object> params = new HashMap<>();
@@ -233,13 +234,31 @@ public class Server {
         });
     }
 
-    private static Object getOptions(Response response, Object object) throws IOException {
+    private static Object getOptions(Request request, Response response, Object object) throws IOException {
         response.status(HTTP_OK);
         response.header("Allow", "GET");
-        response.header("Content-Type", JSON_CONTENT_TYPE);
         Map<String, Object> jsonMap = new HashMap<>();
-        jsonMap.put("modelExample", object);
-        return jsonUtils.toJSON(jsonMap);
+
+        String contentType = getContentType(request);
+        response.header("Content-Type", contentType);
+        try {
+            if (contentType.equals(HTML_CONTENT_TYPE)) {
+                String json = request.pathInfo().replaceFirst(request.pathInfo(), "");
+                jsonMap.put("title", StringUtils.capitalize(json));
+                jsonMap.put("json", jsonUtils.toJSON(object));
+                return render(jsonMap, "json");
+            } else {
+                return jsonUtils.toJSON(object);
+            }
+        } catch (Throwable t) {
+            jsonMap = new HashMap<>();
+            jsonMap.put("error", t.getMessage());
+            if (contentType.equals(HTML_CONTENT_TYPE)) {
+                return render(jsonMap, "json");
+            } else {
+                return jsonUtils.toJSON(jsonMap);
+            }
+        }
     }
 
     private static Object getList(Request request, Response response, String query, Map<String, Object> params) throws IOException, URISyntaxException {
@@ -250,11 +269,12 @@ public class Server {
         String filter_ = filter(request.queryParams("$filter"), jsonObjects);
         String json = request.pathInfo().replaceFirst("/api/models", "");
         String contentType = getContentType(request);
+        response.header("Content-Type", contentType);
         if (contentType.equals(HTML_CONTENT_TYPE)) {
             Map<String, Object> jsonMap = new HashMap<>();
             jsonMap.put("title", StringUtils.capitalize(json));
-            jsonMap.put("json", filter_);
-            return jsonUtils.toJSON(render(jsonMap, "json"));
+            jsonMap.put("json", jsonUtils.toJSON(filter_));
+            return render(jsonMap, "json");
         } else {
             return jsonUtils.toJSON(filter_);
         }
