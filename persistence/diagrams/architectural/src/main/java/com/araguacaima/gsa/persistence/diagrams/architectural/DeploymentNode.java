@@ -2,6 +2,7 @@ package com.araguacaima.gsa.persistence.diagrams.architectural;
 
 import com.araguacaima.gsa.persistence.diagrams.core.Element;
 import com.araguacaima.gsa.persistence.diagrams.core.ElementKind;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -28,10 +29,8 @@ import java.util.Set;
 public class DeploymentNode extends Element {
 
     @OneToOne
+    @JsonIgnore
     private Model model;
-
-    @OneToOne
-    private DeploymentNode parent;
 
     @Column
     private String technology;
@@ -41,15 +40,6 @@ public class DeploymentNode extends Element {
 
     @Column
     private ElementKind kind = ElementKind.ARCHITECTURAL_MODEL;
-
-    @OneToMany
-    @JoinTable(schema = "DIAGRAMS",
-            name = "DeploymentNode_Children",
-            joinColumns = {@JoinColumn(name = "DeploymentNode_Id",
-                    referencedColumnName = "Id")},
-            inverseJoinColumns = {@JoinColumn(name = "DeploymentNodeChild_Id",
-                    referencedColumnName = "Id")})
-    private Set<DeploymentNode> children = new HashSet<>();
 
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",
@@ -66,15 +56,6 @@ public class DeploymentNode extends Element {
 
     public void setModel(Model model) {
         this.model = model;
-    }
-
-    @Override
-    public DeploymentNode getParent() {
-        return parent;
-    }
-
-    public void setParent(DeploymentNode parent) {
-        this.parent = parent;
     }
 
     public String getTechnology() {
@@ -99,14 +80,6 @@ public class DeploymentNode extends Element {
 
     public void setKind(ElementKind kind) {
         this.kind = kind;
-    }
-
-    public Set<DeploymentNode> getChildren() {
-        return children;
-    }
-
-    public void setChildren(Set<DeploymentNode> children) {
-        this.children = children;
     }
 
     public Set<ContainerInstance> getContainerInstances() {

@@ -23,9 +23,14 @@ public class Element extends Item {
     @CollectionTable(schema = "DIAGRAMS", name = "Element_Properties", joinColumns = @JoinColumn(name = "Property_Id"))
     protected Map<String, String> properties = new HashMap<>();
 
-    @ElementCollection
-    @CollectionTable(name = "Element_FeatureIds", schema = "DIAGRAMS")
-    protected Set<String> featureIds = new LinkedHashSet<>();
+    @OneToMany
+    @JoinTable(schema = "DIAGRAMS",
+            name = "Element_FeatureIds",
+            joinColumns = {@JoinColumn(name = "Architecture_Model_Id",
+                    referencedColumnName = "Id")},
+            inverseJoinColumns = {@JoinColumn(name = "SoftwareSystem_Id",
+                    referencedColumnName = "Id")})
+    protected Set<CompositeElement<?>> featuresLinks = new LinkedHashSet<>();
 
     public Element() {
     }
@@ -51,11 +56,11 @@ public class Element extends Item {
         this.properties = properties;
     }
 
-    public Set<String> getFeatures() {
-        return featureIds;
+    public Set<CompositeElement<?>> getFeatures() {
+        return featuresLinks;
     }
 
-    public void setFeatures(Set<String> features) {
-        this.featureIds = features;
+    public void setFeatures(Set<CompositeElement<?>> features) {
+        this.featuresLinks = features;
     }
 }

@@ -2,6 +2,7 @@ package com.araguacaima.gsa.persistence.diagrams.architectural;
 
 import com.araguacaima.gsa.persistence.diagrams.core.Element;
 import com.araguacaima.gsa.persistence.diagrams.core.ElementKind;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 
@@ -23,6 +24,7 @@ public class ContainerInstance extends Element {
     private int instanceId;
 
     @OneToOne
+    @JsonIgnore
     private Model model;
 
     @Column

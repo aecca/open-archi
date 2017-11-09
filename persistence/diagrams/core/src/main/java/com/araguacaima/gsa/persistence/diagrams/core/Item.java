@@ -1,9 +1,8 @@
 package com.araguacaima.gsa.persistence.diagrams.core;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -20,9 +19,19 @@ public class Item extends Taggable {
     protected String description;
     @OneToOne
     protected Point location;
-    @OneToOne(targetEntity = Taggable.class)
-    @JsonIgnore
-    protected Taggable parent;
+
+    @OneToOne
+    protected CompositeElement parent;
+
+    @OneToMany
+    @JoinTable(schema = "DIAGRAMS",
+            name = "Item_Children_Ids",
+            joinColumns = {@JoinColumn(name = "Item_Id",
+                    referencedColumnName = "Id")},
+            inverseJoinColumns = {@JoinColumn(name = "Child_Id",
+                    referencedColumnName = "Id")})
+    protected Set<CompositeElement> children = new HashSet<>();
+
     @OneToOne
     protected Shape shape;
 
@@ -65,11 +74,11 @@ public class Item extends Taggable {
         this.location = location;
     }
 
-    public Taggable getParent() {
+    public CompositeElement getParent() {
         return parent;
     }
 
-    public void setParent(Taggable parent) {
+    public void setParent(CompositeElement parent) {
         this.parent = parent;
     }
 
@@ -95,5 +104,13 @@ public class Item extends Taggable {
 
     public void setMetaData(MetaData metaData) {
         this.metaData = metaData;
+    }
+
+    public Set<CompositeElement> getChildren() {
+        return children;
+    }
+
+    public void setChildren(Set<CompositeElement> children) {
+        this.children = children;
     }
 }

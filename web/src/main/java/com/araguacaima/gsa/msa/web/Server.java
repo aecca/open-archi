@@ -91,6 +91,7 @@ public class Server {
         deeplyFulfilledSequenceModel.setKind(ElementKind.SEQUENCE_MODEL);
         deeplyFulfilledClassesModel = reflectionUtils.deepInitialization(com.araguacaima.gsa.persistence.diagrams.classes.Model.class);
         deeplyFulfilledClassesModel.setKind(ElementKind.UML_CLASS_MODEL);
+        Util.dbPopulation();
     }
 
     public static void main(String[] args)

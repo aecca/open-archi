@@ -56,8 +56,6 @@ public abstract class Item extends Taggable {
         this.name = name;
     }
 
-
-    @JsonIgnore
     public String getCanonicalName() {
         return getParent().getCanonicalName() + getCanonicalNameSeparator() + formatForCanonicalName(getName());
     }
