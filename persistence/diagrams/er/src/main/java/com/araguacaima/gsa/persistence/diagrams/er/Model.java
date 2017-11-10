@@ -7,8 +7,7 @@ import javax.persistence.*;
 import java.util.Collection;
 
 @javax.persistence.Entity
-@PersistenceUnit(unitName = "gsa" )
-@Table(name = "ER_Model", schema = "DIAGRAMS")
+@PersistenceUnit(unitName = "gsa")
 @DiscriminatorValue(value = "ERModel")
 public class Model extends Element {
 

@@ -1,24 +1,26 @@
 package com.araguacaima.gsa.persistence.msa;
 
-import com.araguacaima.gsa.persistence.commons.exceptions.EntityError;
 import com.araguacaima.gsa.persistence.meta.BaseEntity;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.Collection;
 
 @Entity
-@PersistenceUnit(unitName = "gsa" )
+@PersistenceUnit(unitName = "gsa")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class AbstractReliability extends BaseEntity implements IReliability {
     @Column
     private Boolean contemplated;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
     private Markdown description;
 
     @OneToMany
     private Collection<Documentation> documentationList;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
     private ReliabilitySolution reliabilitySolution;
 
     @Column

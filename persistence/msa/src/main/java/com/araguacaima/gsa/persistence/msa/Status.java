@@ -1,12 +1,13 @@
 package com.araguacaima.gsa.persistence.msa;
 
 import com.araguacaima.gsa.persistence.meta.BaseEntity;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@PersistenceUnit(unitName = "gsa" )
+@PersistenceUnit(unitName = "gsa")
 @Table(schema = "MSA",
         name = "Status")
 public class Status extends BaseEntity {
@@ -17,7 +18,8 @@ public class Status extends BaseEntity {
     private Date issueDate;
     @Column
     private int rank;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
     private Markdown reason;
     @Column
     private StatusStep step;

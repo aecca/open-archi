@@ -109,13 +109,13 @@
     </dependencyManagement>
 
     <dependencies>
-<!--
-        <dependency>
-            <groupId>org.eclipse.persistence</groupId>
-            <artifactId>org.eclipse.persistence.jpa</artifactId>
-            <version>${org.eclipse.persistence-org.eclipse.persistence.jpa}</version>
-        </dependency>
--->
+        <!--
+                <dependency>
+                    <groupId>org.eclipse.persistence</groupId>
+                    <artifactId>org.eclipse.persistence.jpa</artifactId>
+                    <version>${org.eclipse.persistence-org.eclipse.persistence.jpa}</version>
+                </dependency>
+        -->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>

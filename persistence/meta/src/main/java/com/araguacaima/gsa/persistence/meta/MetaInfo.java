@@ -2,6 +2,7 @@ package com.araguacaima.gsa.persistence.meta;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -12,7 +13,7 @@ import java.util.UUID;
 /**
  * Created by Alejandro on 19/12/2014.
  */
-@PersistenceUnit(unitName = "gsa" )
+@PersistenceUnit(unitName = "gsa")
 @Entity
 @Table(schema = "META", name = "MetaInfo")
 @NamedQueries(value = {@NamedQuery(name = MetaInfo.COUNT_ALL_META_INFO,
@@ -35,10 +36,12 @@ public class MetaInfo implements Serializable, Comparable<MetaInfo> {
     private Version version;
 
     @NotNull
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
     private Account createdBy;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
     private Account modifiedBy;
 
     @Column(nullable = false)

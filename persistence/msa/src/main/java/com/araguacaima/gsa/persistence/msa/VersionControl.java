@@ -3,6 +3,7 @@ package com.araguacaima.gsa.persistence.msa;
 import com.araguacaima.gsa.persistence.commons.exceptions.EntityError;
 import com.araguacaima.gsa.persistence.meta.BaseEntity;
 import com.araguacaima.gsa.persistence.persons.Responsible;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -17,7 +18,8 @@ public class VersionControl extends BaseEntity {
     private String description;
     @Column
     private Date issueDate;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
     @JoinTable(schema = "PERSONS",
             name = "VersionControl_Responsibles",
             joinColumns = {

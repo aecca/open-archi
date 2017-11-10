@@ -1,17 +1,19 @@
 package com.araguacaima.gsa.persistence.msa;
 
 import com.araguacaima.gsa.persistence.meta.BaseEntity;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@PersistenceUnit(unitName = "gsa" )
+@PersistenceUnit(unitName = "gsa")
 @Table(schema = "MSA",
         name = "ReliabilitySolution")
 public class ReliabilitySolution extends BaseEntity {
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
     private Markdown description;
 
     @OneToMany(targetEntity = AbstractReliability.class)

@@ -140,8 +140,7 @@ public class Volumetry extends BaseEntity {
     @Override
     public void validateModification() throws EntityError {
         if (!(id == null && (
-                activities != null || batchProcessing != null || bulkProcessing != null || concurrencies != null || dataBase != null || fileTransfers != null || rates != null)))
-        {
+                activities != null || batchProcessing != null || bulkProcessing != null || concurrencies != null || dataBase != null || fileTransfers != null || rates != null))) {
             throw new EntityError(resourceBundle.getString(getModificationErrorMessageKey()));
         }
     }

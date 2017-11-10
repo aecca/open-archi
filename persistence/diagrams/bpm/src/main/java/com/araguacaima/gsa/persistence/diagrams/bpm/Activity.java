@@ -1,18 +1,17 @@
 package com.araguacaima.gsa.persistence.diagrams.bpm;
 
-import com.araguacaima.gsa.persistence.commons.exceptions.EntityError;
 import com.araguacaima.gsa.persistence.diagrams.core.ElementKind;
 import com.araguacaima.gsa.persistence.diagrams.core.Item;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
-@PersistenceUnit(unitName = "gsa" )
-@Table(name = "Activity", schema = "DIAGRAMS")
+@PersistenceUnit(unitName = "gsa")
 public class Activity extends Item {
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
     private Lane lane;
 
     @Column

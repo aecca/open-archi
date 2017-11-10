@@ -1,8 +1,6 @@
 package com.araguacaima.gsa.persistence.diagrams.architectural;
 
-import com.araguacaima.gsa.persistence.diagrams.core.Item;
 import com.araguacaima.gsa.persistence.diagrams.core.RelationshipType;
-import com.araguacaima.gsa.persistence.diagrams.core.Taggable;
 
 import javax.persistence.*;
 
@@ -10,9 +8,8 @@ import javax.persistence.*;
  * A relationship between two architectural elements.
  */
 @Entity
-@PersistenceUnit(unitName = "gsa" )
+@PersistenceUnit(unitName = "gsa")
 @DiscriminatorValue("ArchitectureRelationship")
-@Table(name = "Architecture_Relationship", schema = "DIAGRAMS")
 public class Relationship extends com.araguacaima.gsa.persistence.diagrams.core.Relationship {
 
     @Column

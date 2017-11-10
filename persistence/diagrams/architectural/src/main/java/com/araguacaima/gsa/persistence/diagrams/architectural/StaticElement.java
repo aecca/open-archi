@@ -3,6 +3,7 @@ package com.araguacaima.gsa.persistence.diagrams.architectural;
 import com.araguacaima.gsa.persistence.diagrams.core.Element;
 import com.araguacaima.gsa.persistence.diagrams.core.ElementKind;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 
@@ -11,11 +12,11 @@ import javax.persistence.*;
  * of a software system, namely Person, SoftwareSystem, Container and Component.
  */
 @Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-@PersistenceUnit(unitName = "gsa" )
+@PersistenceUnit(unitName = "gsa")
 public abstract class StaticElement extends Element {
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
     @JsonIgnore
     private Model model;
     @Column

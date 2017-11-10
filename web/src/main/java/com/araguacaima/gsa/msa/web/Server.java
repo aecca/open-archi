@@ -172,7 +172,7 @@ public class Server {
             });
             get("/models/architectures", (request, response) -> {
                 Map<String, Object> params = new HashMap<>();
-                params.put("diagramType", "ArchitectureModel");
+                params.put("modelType", "ArchitectureModel");
                 response.type(JSON_CONTENT_TYPE);
                 return jsonUtils.toJSON(getList(request, response, Taggable.GET_MODELS_BY_TYPE, params));
             });
@@ -181,7 +181,7 @@ public class Server {
             });
             get("/models/bpms", (request, response) -> {
                 Map<String, Object> params = new HashMap<>();
-                params.put("diagramType", "BpmModel");
+                params.put("modelType", "BpmModel");
                 response.type(JSON_CONTENT_TYPE);
                 return jsonUtils.toJSON(getList(request, response, Taggable.GET_MODELS_BY_TYPE, params));
             });
@@ -190,7 +190,7 @@ public class Server {
             });
             get("/models/ers", (request, response) -> {
                 Map<String, Object> params = new HashMap<>();
-                params.put("diagramType", "ERModel");
+                params.put("modelType", "ERModel");
                 response.type(JSON_CONTENT_TYPE);
                 return jsonUtils.toJSON(getList(request, response, Taggable.GET_MODELS_BY_TYPE, params));
             });
@@ -199,7 +199,7 @@ public class Server {
             });
             get("/models/flowcharts", (request, response) -> {
                 Map<String, Object> params = new HashMap<>();
-                params.put("diagramType", "FlowchartModel");
+                params.put("modelType", "FlowchartModel");
                 response.type(JSON_CONTENT_TYPE);
                 return jsonUtils.toJSON(getList(request, response, Taggable.GET_MODELS_BY_TYPE, params));
             });
@@ -208,7 +208,7 @@ public class Server {
             });
             get("/models/gantts", (request, response) -> {
                 Map<String, Object> params = new HashMap<>();
-                params.put("diagramType", "GanttModel");
+                params.put("modelType", "GanttModel");
                 response.type(JSON_CONTENT_TYPE);
                 return jsonUtils.toJSON(getList(request, response, Taggable.GET_MODELS_BY_TYPE, params));
             });
@@ -217,7 +217,7 @@ public class Server {
             });
             get("/models/sequences", (request, response) -> {
                 Map<String, Object> params = new HashMap<>();
-                params.put("diagramType", "SequenceModel");
+                params.put("modelType", "SequenceModel");
                 response.type(JSON_CONTENT_TYPE);
                 return jsonUtils.toJSON(getList(request, response, Taggable.GET_MODELS_BY_TYPE, params));
             });
@@ -226,7 +226,7 @@ public class Server {
             });
             get("/models/classes", (request, response) -> {
                 Map<String, Object> params = new HashMap<>();
-                params.put("diagramType", "ClassesModel");
+                params.put("modelType", "ClassesModel");
                 response.type(JSON_CONTENT_TYPE);
                 return jsonUtils.toJSON(getList(request, response, Taggable.GET_MODELS_BY_TYPE, params));
             });

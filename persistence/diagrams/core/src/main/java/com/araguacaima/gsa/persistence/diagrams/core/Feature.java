@@ -1,6 +1,8 @@
 package com.araguacaima.gsa.persistence.diagrams.core;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.PersistenceUnit;
 
 /**
  * Represents a feature, such as a Java class or interface,
@@ -8,7 +10,7 @@ import javax.persistence.*;
  */
 
 @Entity
-@PersistenceUnit(unitName = "gsa" )
+@PersistenceUnit(unitName = "gsa")
 public class Feature extends Item {
 
     /**

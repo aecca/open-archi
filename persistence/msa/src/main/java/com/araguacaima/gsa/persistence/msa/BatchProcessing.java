@@ -7,7 +7,7 @@ import javax.persistence.PersistenceUnit;
 import javax.persistence.Table;
 
 @Entity
-@PersistenceUnit(unitName = "gsa" )
+@PersistenceUnit(unitName = "gsa")
 @Table(name = "BatchProcessing",
         schema = "MSA")
 public class BatchProcessing extends BaseEntity {

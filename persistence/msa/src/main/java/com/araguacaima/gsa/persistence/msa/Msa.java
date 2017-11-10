@@ -2,6 +2,7 @@ package com.araguacaima.gsa.persistence.msa;
 
 import com.araguacaima.gsa.persistence.meta.BaseEntity;
 import com.araguacaima.gsa.persistence.persons.Responsible;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -11,7 +12,7 @@ import java.util.Date;
 import java.util.Set;
 
 @Entity
-@PersistenceUnit(unitName = "gsa" )
+@PersistenceUnit(unitName = "gsa")
 @Table(schema = "MSA",
         name = "Msa")
 @NamedQueries(value = {@NamedQuery(name = "Msa.getAll",
@@ -28,9 +29,11 @@ public class Msa extends BaseEntity {
     @NotNull
     @Size(min = 1)
     private Date expirationDate;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
     private Initiative initiative;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
     private IntermediateSolution intermediateSolution;
     @Column(unique = false,
             nullable = false)
@@ -45,9 +48,11 @@ public class Msa extends BaseEntity {
             inverseJoinColumns = {@JoinColumn(name = "Link_Id",
                     referencedColumnName = "Id")})
     private Collection<Link> linksOfInterests;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
     private ProjectMetaData projectMetaData;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
     private ProposedSolution proposedSolution;
     @OneToMany
     @JoinTable(schema = "MSA",

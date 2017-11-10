@@ -2,12 +2,13 @@ package com.araguacaima.gsa.persistence.msa;
 
 import com.araguacaima.gsa.persistence.meta.BaseEntity;
 import com.araguacaima.gsa.persistence.persons.Person;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.Collection;
 
 @Entity
-@PersistenceUnit(unitName = "gsa" )
+@PersistenceUnit(unitName = "gsa")
 @Table(schema = "MSA",
         name = "ProjectMetaData")
 public class ProjectMetaData extends BaseEntity {
@@ -48,7 +49,8 @@ public class ProjectMetaData extends BaseEntity {
     private String projectIdentifier;
     @Column
     private Segment segment;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
     private Msa msa;
 
     public String getBusiness() {

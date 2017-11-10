@@ -4,11 +4,9 @@ import com.araguacaima.gsa.persistence.diagrams.core.ElementKind;
 import com.araguacaima.gsa.persistence.diagrams.core.Item;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
-@PersistenceUnit(unitName = "gsa" )
-@Table(name = "Sequence", schema = "DIAGRAMS")
+@PersistenceUnit(unitName = "gsa")
 @DiscriminatorValue("Sequence")
 public class Sequence extends Item {
 

@@ -7,8 +7,7 @@ import javax.persistence.*;
 import java.util.Collection;
 
 @Entity
-@PersistenceUnit(unitName = "gsa" )
-@Table(name = "Gantt_Model", schema = "DIAGRAMS")
+@PersistenceUnit(unitName = "gsa")
 @DiscriminatorValue(value = "GanttModel")
 public class Model extends Element {
 

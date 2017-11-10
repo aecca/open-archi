@@ -3,6 +3,7 @@ package com.araguacaima.gsa.persistence.diagrams.architectural;
 import com.araguacaima.gsa.persistence.diagrams.core.Element;
 import com.araguacaima.gsa.persistence.diagrams.core.ElementKind;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 
@@ -10,11 +11,11 @@ import javax.persistence.*;
  * Represents a deployment instance of a {@link Container}, which can be added to a {@link DeploymentNode}.
  */
 @Entity
-@PersistenceUnit(unitName = "gsa" )
-@Table(name = "ContainerInstance", schema = "DIAGRAMS")
+@PersistenceUnit(unitName = "gsa")
 public class ContainerInstance extends Element {
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
     private Container container;
 
     @Column
@@ -23,7 +24,8 @@ public class ContainerInstance extends Element {
     @Column
     private int instanceId;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
     @JsonIgnore
     private Model model;
 

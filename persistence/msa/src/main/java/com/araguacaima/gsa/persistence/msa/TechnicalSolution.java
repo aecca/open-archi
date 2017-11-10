@@ -1,30 +1,36 @@
 package com.araguacaima.gsa.persistence.msa;
 
 import com.araguacaima.gsa.persistence.meta.BaseEntity;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.Map;
 
 @Entity
-@PersistenceUnit(unitName = "gsa" )
+@PersistenceUnit(unitName = "gsa")
 @Table(schema = "MSA",
         name = "TechnicalSolution")
 public class TechnicalSolution extends BaseEntity {
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
     private ArchitectSolutionModel architectSolutionModel;
     @OneToMany
     @CollectionTable(name = "TechnicalSolution_Impacts",
             schema = "MSA")
     @MapKeyColumn(name = "impacts")
     private Map<String, Markdown> impacts;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
     private IntermediateSolution intermediate;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
     private ProposedSolution proposed;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
     private ReliabilitySolution reliability;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
     private SecurityControls securityControls;
 
     public ArchitectSolutionModel getArchitectSolutionModel() {

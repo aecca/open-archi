@@ -3,6 +3,7 @@ package com.araguacaima.gsa.persistence.diagrams.architectural;
 import com.araguacaima.gsa.persistence.diagrams.core.Element;
 import com.araguacaima.gsa.persistence.diagrams.core.ElementKind;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -24,11 +25,11 @@ import java.util.Set;
  * </ul>
  */
 @Entity
-@PersistenceUnit(unitName = "gsa" )
-@Table(name = "DeploymentNode", schema = "DIAGRAMS")
+@PersistenceUnit(unitName = "gsa")
 public class DeploymentNode extends Element {
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
     @JsonIgnore
     private Model model;
 

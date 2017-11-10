@@ -1,16 +1,18 @@
 package com.araguacaima.gsa.persistence.diagrams.bpm;
 
 import com.araguacaima.gsa.persistence.meta.BaseEntity;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.Collection;
 
 @Entity
-@PersistenceUnit(unitName = "gsa" )
+@PersistenceUnit(unitName = "gsa")
 @Table(name = "Lane", schema = "DIAGRAMS")
-public class Lane extends BaseEntity{
+public class Lane extends BaseEntity {
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
     private Pool pool;
 
     @OneToMany

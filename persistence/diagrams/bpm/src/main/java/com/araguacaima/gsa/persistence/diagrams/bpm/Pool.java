@@ -5,11 +5,9 @@ import com.araguacaima.gsa.persistence.diagrams.core.Item;
 
 import javax.persistence.*;
 import java.util.Collection;
-import java.util.Set;
 
 @Entity
-@PersistenceUnit(unitName = "gsa" )
-@Table(name = "Pool", schema = "DIAGRAMS")
+@PersistenceUnit(unitName = "gsa")
 public class Pool extends Item {
 
     @OneToMany

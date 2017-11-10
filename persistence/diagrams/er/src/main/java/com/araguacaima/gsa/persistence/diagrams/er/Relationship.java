@@ -12,9 +12,8 @@ import javax.persistence.Table;
  */
 
 @javax.persistence.Entity
-@PersistenceUnit(unitName = "gsa" )
+@PersistenceUnit(unitName = "gsa")
 @DiscriminatorValue("ErRelationship")
-@Table(name = "ER_Relationship", schema = "DIAGRAMS")
 public class Relationship extends com.araguacaima.gsa.persistence.diagrams.core.Relationship {
     @Column
     private RelationshipType type;

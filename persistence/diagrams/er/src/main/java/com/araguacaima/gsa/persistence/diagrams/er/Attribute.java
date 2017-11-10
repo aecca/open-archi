@@ -8,10 +8,10 @@ import javax.persistence.PersistenceUnit;
 import javax.persistence.Table;
 
 @Entity
-@PersistenceUnit(unitName = "gsa" )
+@PersistenceUnit(unitName = "gsa")
 @Table(name = "Attribute", schema = "DIAGRAMS")
 public class Attribute extends BaseEntity {
-@Column
+    @Column
     private String name;
     @Column
     private String type;

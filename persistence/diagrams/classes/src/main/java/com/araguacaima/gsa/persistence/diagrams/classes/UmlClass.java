@@ -1,14 +1,11 @@
 package com.araguacaima.gsa.persistence.diagrams.classes;
 
-import com.araguacaima.gsa.persistence.commons.exceptions.EntityError;
-
 import javax.persistence.*;
 import java.util.HashMap;
 import java.util.Map;
 
 @Entity
-@PersistenceUnit(unitName = "gsa" )
-@Table(name = "UmlClass", schema = "DIAGRAMS")
+@PersistenceUnit(unitName = "gsa")
 public class UmlClass extends UmlItem {
 
     @OneToMany

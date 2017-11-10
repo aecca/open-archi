@@ -1,6 +1,8 @@
 package com.araguacaima.gsa.persistence.diagrams.core;
 
 
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -11,16 +13,18 @@ import java.util.Set;
  */
 
 @Entity
-@PersistenceUnit(unitName = "gsa" )
+@PersistenceUnit(unitName = "gsa")
 public class Item extends Taggable {
 
     protected String name;
     @Column
     protected String description;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
     protected Point location;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
     protected CompositeElement parent;
 
     @OneToMany
@@ -32,7 +36,8 @@ public class Item extends Taggable {
                     referencedColumnName = "Id")})
     protected Set<CompositeElement> children = new HashSet<>();
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
     protected Shape shape;
 
     @OneToMany
@@ -44,7 +49,8 @@ public class Item extends Taggable {
                     referencedColumnName = "Id")})
     protected Set<Relationship> relationships = new LinkedHashSet<>();
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
     protected MetaData metaData;
 
     public Item() {

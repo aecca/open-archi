@@ -8,9 +8,8 @@ import javax.persistence.*;
  * A relationship between two classes.
  */
 @Entity
-@PersistenceUnit(unitName = "gsa" )
+@PersistenceUnit(unitName = "gsa")
 @DiscriminatorValue("ClassesRelationship")
-@Table(name = "Classes_Relationship", schema = "DIAGRAMS")
 public class Relationship extends com.araguacaima.gsa.persistence.diagrams.core.Relationship {
 
     @Column

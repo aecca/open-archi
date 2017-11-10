@@ -1,13 +1,12 @@
 package com.araguacaima.gsa.persistence.diagrams.classes;
 
-import com.araguacaima.gsa.persistence.commons.exceptions.EntityError;
 import com.araguacaima.gsa.persistence.meta.BaseEntity;
 
 import javax.persistence.*;
 import java.util.Collection;
 
 @Entity
-@PersistenceUnit(unitName = "gsa" )
+@PersistenceUnit(unitName = "gsa")
 @Table(name = "UmlMethod", schema = "DIAGRAMS")
 public class UmlMethod extends BaseEntity {
     @Column

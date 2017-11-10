@@ -1,11 +1,9 @@
 package com.araguacaima.gsa.persistence.diagrams.architectural;
 
-import com.araguacaima.gsa.persistence.diagrams.core.Feature;
-import com.araguacaima.gsa.persistence.diagrams.core.Item;
-
-import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.PersistenceUnit;
+import javax.persistence.Table;
 
 /**
  * The word "component" is a hugely overloaded term in the software development
@@ -17,8 +15,7 @@ import java.util.Set;
  * per JAR file, DLL, shared library, etc) is a separate and orthogonal concern.
  */
 @Entity
-@PersistenceUnit(unitName = "gsa" )
-@Table(name = "Component", schema = "DIAGRAMS")
+@PersistenceUnit(unitName = "gsa")
 public class Component extends StaticElement {
 
     @Column

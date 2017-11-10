@@ -9,17 +9,17 @@ import java.util.Set;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @PersistenceUnit(unitName = "gsa")
-@Table(name = "Tags", schema = "DIAGRAMS")
-@DiscriminatorColumn(name = "diagramType", discriminatorType = DiscriminatorType.STRING)
+@Table(name = "Models", schema = "DIAGRAMS")
+@DiscriminatorColumn(name = "modelType", discriminatorType = DiscriminatorType.STRING)
 @NamedQueries({@NamedQuery(name = Taggable.GET_ALL_MODELS,
         query = "select a from Taggable a "), @NamedQuery(name = Taggable.GET_MODELS_BY_TYPE,
-        query = "select a from Taggable a where a.class=:diagramType")})
+        query = "select a from Taggable a where a.class=:modelType")})
 public class Taggable extends BaseEntity {
 
     public static final String GET_ALL_MODELS = "get.all.models";
     public static final String GET_MODELS_BY_TYPE = "get.models.by.type";
     @ElementCollection
-    @CollectionTable(name = "Tag", schema = "DIAGRAMS")
+    @CollectionTable(name = "Tags", schema = "DIAGRAMS")
     protected Set<String> tags = new LinkedHashSet<>();
 
     public Set<String> getTags() {

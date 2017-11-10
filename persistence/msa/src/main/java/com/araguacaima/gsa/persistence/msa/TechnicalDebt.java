@@ -2,13 +2,14 @@ package com.araguacaima.gsa.persistence.msa;
 
 import com.araguacaima.gsa.persistence.meta.BaseEntity;
 import com.araguacaima.gsa.persistence.persons.Responsible;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Map;
 
 @Entity
-@PersistenceUnit(unitName = "gsa" )
+@PersistenceUnit(unitName = "gsa")
 @Table(schema = "MSA",
         name = "TechnicalDebt")
 public class TechnicalDebt extends BaseEntity {
@@ -20,7 +21,8 @@ public class TechnicalDebt extends BaseEntity {
             schema = "MSA")
     @MapKeyColumn(name = "description")
     private Map<String, Markdown> description;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
     private Effort estimatedEffort;
     @ManyToOne
     private IntermediateSolution intermediateSolution;

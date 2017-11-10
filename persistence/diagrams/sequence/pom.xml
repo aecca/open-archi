@@ -55,7 +55,7 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
         </dependency>
-        
+
     </dependencies>
 
     <build>
@@ -73,7 +73,8 @@
                         </goals>
                         <configuration>
                             <includeGroupIds>com.araguacaima.gsa,com.araguacaima.gsa.persistence</includeGroupIds>
-                            <includeArtifactIds>persistence-core,persistence-persons,persistence-meta</includeArtifactIds>
+                            <includeArtifactIds>persistence-core,persistence-persons,persistence-meta
+                            </includeArtifactIds>
                             <outputDirectory>${project.build.directory}/classes</outputDirectory>
                         </configuration>
                     </execution>

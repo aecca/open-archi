@@ -1,16 +1,16 @@
 package com.araguacaima.gsa.persistence.diagrams.core;
 
 import com.araguacaima.gsa.persistence.meta.BaseEntity;
-import com.araguacaima.gsa.persistence.meta.Type;
 import com.araguacaima.gsa.persistence.meta.Version;
 import com.araguacaima.gsa.persistence.meta.View;
 import com.araguacaima.gsa.persistence.persons.Responsible;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.Collection;
 
 @Entity
-@PersistenceUnit(unitName = "gsa" )
+@PersistenceUnit(unitName = "gsa")
 @Table(name = "MetaData", schema = "DIAGRAMS")
 public class MetaData extends BaseEntity {
 
@@ -50,7 +50,8 @@ public class MetaData extends BaseEntity {
                     referencedColumnName = "Id")})
     private Collection<Taggable> usedIn;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
     @JoinTable(schema = "META",
             name = "MetaData_Version",
             joinColumns = {@JoinColumn(name = "MetaData_Id", referencedColumnName = "Id")},

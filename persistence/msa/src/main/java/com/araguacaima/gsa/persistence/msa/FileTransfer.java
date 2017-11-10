@@ -7,7 +7,7 @@ import javax.persistence.PersistenceUnit;
 import javax.persistence.Table;
 
 @Entity
-@PersistenceUnit(unitName = "gsa" )
+@PersistenceUnit(unitName = "gsa")
 @Table(name = "FileTransfer",
         schema = "MSA")
 public class FileTransfer extends BaseEntity {

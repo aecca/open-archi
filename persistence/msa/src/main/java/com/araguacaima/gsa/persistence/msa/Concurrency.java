@@ -1,14 +1,12 @@
 package com.araguacaima.gsa.persistence.msa;
 
 import com.araguacaima.gsa.persistence.meta.BaseEntity;
+import org.hibernate.annotations.Cascade;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
-import javax.persistence.PersistenceUnit;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
-@PersistenceUnit(unitName = "gsa" )
+@PersistenceUnit(unitName = "gsa")
 @Table(name = "Concurrency",
         schema = "MSA")
 public class Concurrency extends BaseEntity {
@@ -23,7 +21,8 @@ public class Concurrency extends BaseEntity {
             .NUMBER_OF_CONCURRENT_USERS,
             31,
             null));
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
     private Measurable value;
 
     public Concurrency() {

@@ -8,9 +8,9 @@ import javax.persistence.PersistenceUnit;
 import javax.persistence.Table;
 
 @Entity
-@PersistenceUnit(unitName = "gsa" )
+@PersistenceUnit(unitName = "gsa")
 @Table(name = "Shape", schema = "DIAGRAMS")
-public class Shape extends BaseEntity{
+public class Shape extends BaseEntity {
 
     @Column
     private ShapeType type;

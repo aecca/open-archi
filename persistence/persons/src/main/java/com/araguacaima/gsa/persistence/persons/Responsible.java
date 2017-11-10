@@ -1,10 +1,11 @@
 package com.araguacaima.gsa.persistence.persons;
 
 import com.araguacaima.gsa.persistence.meta.BaseEntity;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 
-@PersistenceUnit(unitName = "gsa" )
+@PersistenceUnit(unitName = "gsa")
 @Entity
 @Table(schema = "PERSONS",
         name = "Responsible")
@@ -12,7 +13,8 @@ public class Responsible extends BaseEntity {
 
     @Column
     private String organizationUnit;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
     private Person responsible;
 
     public String getOrganizationUnit() {

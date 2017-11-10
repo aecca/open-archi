@@ -1,6 +1,5 @@
 package com.araguacaima.gsa.persistence.diagrams.classes;
 
-import com.araguacaima.gsa.persistence.commons.exceptions.EntityError;
 import com.araguacaima.gsa.persistence.meta.BaseEntity;
 
 import javax.persistence.Column;
@@ -9,9 +8,9 @@ import javax.persistence.PersistenceUnit;
 import javax.persistence.Table;
 
 @Entity
-@PersistenceUnit(unitName = "gsa" )
+@PersistenceUnit(unitName = "gsa")
 @Table(name = "UmlField", schema = "DIAGRAMS")
-public class UmlField extends BaseEntity{
+public class UmlField extends BaseEntity {
 
     @Column
     private String name;

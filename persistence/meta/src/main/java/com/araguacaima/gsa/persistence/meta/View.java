@@ -25,7 +25,6 @@ public class View extends BaseEntity {
     }
 
 
-
     @Override
     public void validateRequest() throws EntityError {
         super.validateRequest();
@@ -43,7 +42,7 @@ public class View extends BaseEntity {
     @Override
     public void validateModification() throws EntityError {
         super.validateModification();
-        if (name != null)    {
+        if (name != null) {
             throw new EntityError(resourceBundle.getString(getModificationErrorMessageKey()));
         }
     }

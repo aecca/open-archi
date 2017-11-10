@@ -1,6 +1,7 @@
 package com.araguacaima.gsa.persistence.diagrams.core;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 
@@ -8,15 +9,17 @@ import javax.persistence.*;
  * A relationship between two elements.
  */
 @Entity
-@PersistenceUnit(unitName = "gsa" )
+@PersistenceUnit(unitName = "gsa")
 public class Relationship extends Taggable {
 
-    @OneToOne(targetEntity=Taggable.class)
+    @OneToOne(targetEntity = Taggable.class, cascade = CascadeType.PERSIST)
+    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
     @JsonIgnore
     private Taggable source;
     @Column
     private String sourceId;
-    @OneToOne(targetEntity=Taggable.class)
+    @OneToOne(targetEntity = Taggable.class, cascade = CascadeType.PERSIST)
+    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
     @JsonIgnore
     private Taggable destination;
     @Column

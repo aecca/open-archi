@@ -9,8 +9,7 @@ import javax.persistence.PersistenceUnit;
 import javax.persistence.Table;
 
 @Entity
-@PersistenceUnit(unitName = "gsa" )
-@Table(name = "Activity", schema = "DIAGRAMS")
+@PersistenceUnit(unitName = "gsa")
 public class Gantt extends Item {
     @Column
     private Category category;

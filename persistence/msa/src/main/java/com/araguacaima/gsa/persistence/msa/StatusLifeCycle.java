@@ -1,12 +1,13 @@
 package com.araguacaima.gsa.persistence.msa;
 
 import com.araguacaima.gsa.persistence.meta.BaseEntity;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.Collection;
 
 @Entity
-@PersistenceUnit(unitName = "gsa" )
+@PersistenceUnit(unitName = "gsa")
 @Table(schema = "MSA",
         name = "StatusLifeCycle")
 public class StatusLifeCycle extends BaseEntity {
@@ -19,7 +20,8 @@ public class StatusLifeCycle extends BaseEntity {
             inverseJoinColumns = {@JoinColumn(name = "Ancestor_Id",
                     referencedColumnName = "Id")})
     private Collection<Status> ancestors;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
     private Status current;
     @OneToMany
     @JoinTable(schema = "MSA",

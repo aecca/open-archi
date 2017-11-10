@@ -9,8 +9,7 @@ import javax.persistence.PersistenceUnit;
 import javax.persistence.Table;
 
 @Entity
-@PersistenceUnit(unitName = "gsa" )
-@Table(name = "Flowchart", schema = "DIAGRAMS")
+@PersistenceUnit(unitName = "gsa")
 public class Flowchart extends Item {
     @Column
     private Category category;

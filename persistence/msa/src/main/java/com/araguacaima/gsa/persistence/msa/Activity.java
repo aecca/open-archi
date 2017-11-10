@@ -1,14 +1,12 @@
 package com.araguacaima.gsa.persistence.msa;
 
 import com.araguacaima.gsa.persistence.meta.BaseEntity;
+import org.hibernate.annotations.Cascade;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
-import javax.persistence.PersistenceUnit;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
-@PersistenceUnit(unitName = "gsa" )
+@PersistenceUnit(unitName = "gsa")
 @Table(name = "Activity", schema = "MSA")
 public class Activity extends BaseEntity {
 
@@ -27,7 +25,8 @@ public class Activity extends BaseEntity {
     public static Measurable DEFAULT_SMALL = new Measurable(new Range<Requests>(Requests.REQUESTS_PER_SECOND,
             120001,
             600000));
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
     private Measurable value;
 
     public Activity() {

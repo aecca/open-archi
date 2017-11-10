@@ -13,8 +13,7 @@ import java.util.Set;
  * A software architecture model.
  */
 @Entity
-@PersistenceUnit(unitName = "gsa" )
-@Table(name = "Architecture_Model", schema = "DIAGRAMS")
+@PersistenceUnit(unitName = "gsa")
 @DiscriminatorValue(value = "ArchitectureModel")
 public class Model extends Element {
 

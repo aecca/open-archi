@@ -1,23 +1,24 @@
 package com.araguacaima.gsa.persistence.msa;
 
-import com.araguacaima.gsa.persistence.diagrams.architectural.Model;
 import com.araguacaima.gsa.persistence.meta.BaseEntity;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 
 @Entity
-@PersistenceUnit(unitName = "gsa" )
+@PersistenceUnit(unitName = "gsa")
 @Table(schema = "MSA",
         name = "Diagram")
 public class Diagram extends BaseEntity {
 
     @ManyToOne
     private ArchitectSolutionModel architectSolutionModel;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
     private Markdown description;
-/*    @OneToOne
-    @JoinColumn(table = "Architecture_Model", name = "Architecture_Model_Id", referencedColumnName = "Id")
-    private Model diagram;*/
+    /*    @OneToOne
+        @JoinColumn(table = "Architecture_Model", name = "Architecture_Model_Id", referencedColumnName = "Id")
+        private Model diagram;*/
     @ManyToOne
     private IntermediateSolution intermediateSolution;
     @Column

@@ -5,11 +5,9 @@ import com.araguacaima.gsa.persistence.diagrams.core.ElementKind;
 
 import javax.persistence.*;
 import java.util.Collection;
-import java.util.Set;
 
 @Entity
-@PersistenceUnit(unitName = "gsa" )
-@Table(name = "Bpm_Model", schema = "DIAGRAMS")
+@PersistenceUnit(unitName = "gsa")
 @DiscriminatorValue(value = "BpmModel")
 public class Model extends Element {
 

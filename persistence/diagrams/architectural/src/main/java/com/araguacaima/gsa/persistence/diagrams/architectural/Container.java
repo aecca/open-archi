@@ -15,8 +15,7 @@ import java.util.Set;
  * or some data is stored. And each container is a separately deployable thing.
  */
 @Entity
-@PersistenceUnit(unitName = "gsa" )
-@Table(name = "Container", schema = "DIAGRAMS")
+@PersistenceUnit(unitName = "gsa")
 public class Container extends StaticElement {
 
     @Column
