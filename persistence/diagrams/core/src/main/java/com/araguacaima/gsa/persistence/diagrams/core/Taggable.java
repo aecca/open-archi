@@ -13,7 +13,7 @@ import java.util.Set;
 @DiscriminatorColumn(name = "modelType", discriminatorType = DiscriminatorType.STRING)
 @NamedQueries({@NamedQuery(name = Taggable.GET_ALL_MODELS,
         query = "select a from Taggable a "), @NamedQuery(name = Taggable.GET_MODELS_BY_TYPE,
-        query = "select a from Taggable a where a.class=:modelType")})
+        query = "select a from Taggable a where TYPE(a)=:modelType")})
 public class Taggable extends BaseEntity {
 
     public static final String GET_ALL_MODELS = "get.all.models";
