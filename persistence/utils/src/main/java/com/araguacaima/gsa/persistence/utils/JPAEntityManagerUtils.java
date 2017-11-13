@@ -12,6 +12,7 @@ import java.util.Map;
 public class JPAEntityManagerUtils {
     private static EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("gsa");
     private static EntityManager entityManager = entityManagerFactory.createEntityManager();
+    private static boolean autocommit = true;
 
     public static void closeAll() {
         close(entityManager, entityManagerFactory);
@@ -60,34 +61,75 @@ public class JPAEntityManagerUtils {
     }
 
     public static void persist(Object entity) {
+        persist(entity, getAutocommit());
+    }
+
+    public static void persist(Object entity, boolean autocommit) {
         try {
-            entityManager.getTransaction().begin();
             entityManager.persist(entity);
-            entityManager.getTransaction().commit();
-        } finally {
+            if (autocommit) {
+                commit();
+            }
+        } catch (Throwable ignored) {
+            rollback();
             close();
         }
     }
 
     public static void delete(Object entity) {
+        delete(entity, getAutocommit());
+    }
+
+    public static void delete(Object entity, boolean autocommit) {
         try {
-            entityManager.getTransaction().begin();
             entityManager.remove(entity);
             entityManager.detach(entity);
-            entityManager.getTransaction().commit();
-        } finally {
+            if (autocommit) {
+                commit();
+            }
+        } catch (Throwable ignored) {
+            rollback();
             close();
         }
     }
 
     public static void update(Object entity) {
+        update(entity, getAutocommit());
+    }
+
+    public static void update(Object entity, boolean autocommit) {
         try {
-            entityManager.getTransaction().begin();
             entityManager.merge(entity);
-            entityManager.getTransaction().commit();
-        } finally {
+            if (autocommit) {
+                commit();
+            }
+        } catch (Throwable ignored) {
+            rollback();
             close();
         }
     }
 
+    public static void begin() {
+        entityManager.getTransaction().begin();
+    }
+
+    public static void commit() {
+        entityManager.getTransaction().commit();
+    }
+
+    public static void rollback() {
+        entityManager.getTransaction().rollback();
+    }
+
+    public static boolean getAutocommit() {
+        return autocommit;
+    }
+
+    public static boolean isAutocommit() {
+        return autocommit;
+    }
+
+    public static void setAutocommit(boolean autocommit) {
+        JPAEntityManagerUtils.autocommit = autocommit;
+    }
 }

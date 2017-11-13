@@ -6,7 +6,10 @@ import com.araguacaima.gsa.persistence.meta.BasicEntity;
 import com.araguacaima.gsa.persistence.utils.JPAEntityManagerUtils;
 import io.github.benas.randombeans.EnhancedRandomBuilder;
 import io.github.benas.randombeans.api.EnhancedRandom;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.Field;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
@@ -16,6 +19,7 @@ import static java.nio.charset.Charset.forName;
 
 public class Util {
 
+    private static Logger log = LoggerFactory.getLogger(Server.class);
     private static Set<Class> classes = new HashSet<>();
     private static ReflectionUtils reflectionUtils = new ReflectionUtils(null);
     private static EnhancedRandomBuilder randomBuilder;
@@ -48,42 +52,63 @@ public class Util {
     }
 
     public static void dbPopulation() {
-
-        EnhancedRandom enhancedRandom = randomBuilder.build();
-        for (Class<?> clazz : classes) {
-            int next = new Random().nextInt((4 - 1) + 1) + 1;
-            for (int i = 0; i < next; i++) {
-                Object entity = enhancedRandom.nextObject(clazz);
-                ReflectionUtils.doWithFields(clazz, field -> {
-                    field.setAccessible(true);
-                    Object object_ = field.get(entity);
-                    process(field.getType(), object_);
-                });
-                JPAEntityManagerUtils.persist(entity);
+        JPAEntityManagerUtils.begin();
+        try {
+            EnhancedRandom enhancedRandom = randomBuilder.build();
+            for (Class<?> clazz : classes) {
+                int next = new Random().nextInt((4 - 1) + 1) + 1;
+                for (int i = 0; i < next; i++) {
+                    Object entity = enhancedRandom.nextObject(clazz);
+                    ReflectionUtils.doWithFields(clazz, field -> {
+                        field.setAccessible(true);
+                        Object object_ = field.get(entity);
+                        process(field.getType(), object_, field.getName(), new LinkedHashMap<>());
+                    }, Util::filterMethod);
+                    JPAEntityManagerUtils.persist(entity);
+                }
             }
+        } catch (Throwable ignored) {
+            JPAEntityManagerUtils.rollback();
+        } finally {
+            JPAEntityManagerUtils.closeAll();
         }
     }
 
-    private static void innerPopulation(Object entity) {
+    private static void innerPopulation(Object entity, Map<Class, Object> entitiesForReattempt) {
         ReflectionUtils.doWithFields(entity.getClass(), field -> {
             field.setAccessible(true);
             Object object_ = field.get(entity);
-            process(field.getType(), object_);
-        });
-        JPAEntityManagerUtils.persist(entity);
+            process(field.getType(), object_, field.getName(), entitiesForReattempt);
+        }, Util::filterMethod);
+        try {
+            JPAEntityManagerUtils.persist(entity);
+        } catch (Throwable t) {
+            entitiesForReattempt.put(entity.getClass(), entity);
+        }
     }
 
-    private static void process(Class<?> type, Object object_) {
+    private static boolean filterMethod(Field field) {
+        Class aClass = ReflectionUtils.extractGenerics(field);
+        String fullyQualifiedJavaTypeOrNull = reflectionUtils.getFullyQualifiedJavaTypeOrNull(aClass);
+        return fullyQualifiedJavaTypeOrNull == null;
+    }
+
+    private static void process(Class<?> type, Object object_, String fieldName, Map<Class, Object> entitiesForReattempt) {
         if (ReflectionUtils.isCollectionImplementation(type)) {
             for (Object innerCollection : (Collection) object_) {
-                innerPopulation(innerCollection);
+                innerPopulation(innerCollection, entitiesForReattempt);
             }
-        } else if (reflectionUtils.isMapImplementation(type)) {
+        } else if (ReflectionUtils.isMapImplementation(type)) {
             for (Object innerMapValues : ((Map) object_).values()) {
-                innerPopulation(innerMapValues);
+                innerPopulation(innerMapValues, entitiesForReattempt);
             }
         } else if (type.isAssignableFrom(BasicEntity.class)) {
-            JPAEntityManagerUtils.persist(object_);
+            log.debug("Persisting field '" + fieldName + "' of type '" + type.getName() + "'");
+            try {
+                JPAEntityManagerUtils.persist(object_);
+            } catch (Throwable t) {
+                entitiesForReattempt.put(object_.getClass(), object_);
+            }
         }
     }
 }

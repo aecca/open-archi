@@ -14,7 +14,8 @@ import java.util.Collection;
 @Table(name = "MetaData", schema = "DIAGRAMS")
 public class MetaData extends BaseEntity {
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.PERSIST)
+    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
     @JoinTable(schema = "DIAGRAMS",
             name = "MetaData_Responsibles",
             joinColumns = {@JoinColumn(name = "MetaData_Id",
@@ -23,7 +24,8 @@ public class MetaData extends BaseEntity {
                     referencedColumnName = "Id")})
     private Collection<Responsible> responsibles;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.PERSIST)
+    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
     @JoinTable(schema = "DIAGRAMS",
             name = "MetaData_Collaborators",
             joinColumns = {@JoinColumn(name = "MetaData_Id",
@@ -32,7 +34,8 @@ public class MetaData extends BaseEntity {
                     referencedColumnName = "Id")})
     private Collection<Responsible> collaborators;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.PERSIST)
+    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
     @JoinTable(schema = "DIAGRAMS",
             name = "MetaData_RelatedWith",
             joinColumns = {@JoinColumn(name = "MetaData_Id",
@@ -41,7 +44,8 @@ public class MetaData extends BaseEntity {
                     referencedColumnName = "Id")})
     private Collection<Taggable> relatedWith;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.PERSIST)
+    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
     @JoinTable(schema = "DIAGRAMS",
             name = "MetaData_UsedIn",
             joinColumns = {@JoinColumn(name = "MetaData_Id",
@@ -58,7 +62,8 @@ public class MetaData extends BaseEntity {
             inverseJoinColumns = {@JoinColumn(name = "Version_Id", referencedColumnName = "Id")})
     private Version version;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.PERSIST)
+    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
     @JoinTable(schema = "DIAGRAMS",
             name = "MetaData_Views",
             joinColumns = {@JoinColumn(name = "MetaData_Id",
