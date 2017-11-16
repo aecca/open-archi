@@ -65,15 +65,7 @@ public class JPAEntityManagerUtils {
     }
 
     public static void persist(Object entity, boolean autocommit) {
-        try {
-            entityManager.persist(entity);
-            if (autocommit) {
-                commit();
-            }
-        } catch (Throwable ignored) {
-            rollback();
-            close();
-        }
+        entityManager.persist(entity);
     }
 
     public static void delete(Object entity) {
@@ -81,16 +73,8 @@ public class JPAEntityManagerUtils {
     }
 
     public static void delete(Object entity, boolean autocommit) {
-        try {
-            entityManager.remove(entity);
-            entityManager.detach(entity);
-            if (autocommit) {
-                commit();
-            }
-        } catch (Throwable ignored) {
-            rollback();
-            close();
-        }
+        entityManager.remove(entity);
+        entityManager.detach(entity);
     }
 
     public static void update(Object entity) {
@@ -98,15 +82,7 @@ public class JPAEntityManagerUtils {
     }
 
     public static void update(Object entity, boolean autocommit) {
-        try {
-            entityManager.merge(entity);
-            if (autocommit) {
-                commit();
-            }
-        } catch (Throwable ignored) {
-            rollback();
-            close();
-        }
+        entityManager.merge(entity);
     }
 
     public static void begin() {

@@ -111,9 +111,8 @@
         <org.apache.maven.plugins-maven-jar-plugin>3.0.2</org.apache.maven.plugins-maven-jar-plugin>
         <org.bitbucket.mstrobel-procyon-compilertools>0.5.27</org.bitbucket.mstrobel-procyon-compilertools>
         <org.codehaus.mojo-aspectj-maven-plugin>1.8</org.codehaus.mojo-aspectj-maven-plugin>
-        <org.codehaus.plexus-plexus-utils>3.0.8</org.codehaus.plexus-plexus-utils><!--
-        <org.eclipse.persistence-javax.persistence>2.2.0</org.eclipse.persistence-javax.persistence>
-        <org.eclipse.persistence-org.eclipse.persistence.jpa>2.7.0</org.eclipse.persistence-org.eclipse.persistence.jpa>-->
+        <org.codehaus.plexus-plexus-utils>3.0.8</org.codehaus.plexus-plexus-utils>
+        <com.mchange-c3p0>0.9.5</com.mchange-c3p0>
         <org.fusesource.jansi-jansi>1.16</org.fusesource.jansi-jansi>
         <org.hsqldb-hsqldb>2.3.1</org.hsqldb-hsqldb>
         <org.jsoup-jsoup>1.8.1</org.jsoup-jsoup>
@@ -140,17 +139,22 @@
         <xerces-xercesImpl>2.9.1</xerces-xercesImpl>
         <com.heroku.sdk-heroku-maven-plugin>0.4.4</com.heroku.sdk-heroku-maven-plugin>
         <com.araguacaima-commons-utils>1.0.1-SNAPSHOT</com.araguacaima-commons-utils>
+        <springframework.version>5.0.1.RELEASE</springframework.version>
+        <springframework.version.data>2.0.1.RELEASE</springframework.version.data>
+        <springframework.version.security>4.2.3.RELEASE</springframework.version.security>
+
+        <!-- Database access -->
+        <tomcat-jdbc.version>7.0.42</tomcat-jdbc.version>
+        <ehcache.version>2.6.6</ehcache.version>
+        <!-- Logging -->
+        <logback.version>1.1.1</logback.version>
+        <org.logback-extensions-logback-ext-spring>0.1.4</org.logback-extensions-logback-ext-spring>
+        <slf4j.version>1.7.7</slf4j.version>
+
     </properties>
 
     <dependencyManagement>
         <dependencies>
-
-            <dependency>
-                <groupId>com.araguacaima.gsa</groupId>
-                <artifactId>persistence-utils</artifactId>
-                <version>${project.version}</version>
-                <scope>compile</scope>
-            </dependency>
 
             <dependency>
                 <groupId>com.araguacaima.gsa.persistence</groupId>
@@ -251,14 +255,6 @@
             </dependency>
 
 
-            <!-- Logging with SLF4J & LogBack -->
-
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
-                <version>${org.slf4j-slf4j-api}</version>
-                <scope>compile</scope>
-            </dependency>
 
             <dependency>
                 <groupId>joda-time</groupId>
@@ -366,20 +362,6 @@
                 <scope>compile</scope>
             </dependency>
 
-            <dependency>
-                <groupId>com.mchange</groupId>
-                <artifactId>c3p0</artifactId>
-                <version>${com.mchange-c3p0}</version>
-                <scope>compile</scope>
-            </dependency>
-            <!--
-                        <dependency>
-                            <groupId>org.eclipse.persistence</groupId>
-                            <artifactId>eclipselink</artifactId>
-                            <version>${org.eclipse.persistence-eclipselink}</version>
-                            <scope>compile</scope>
-                        </dependency>
-            -->
             <dependency>
                 <groupId>commons-beanutils</groupId>
                 <artifactId>commons-beanutils</artifactId>
@@ -579,6 +561,209 @@
                 <groupId>com.araguacaima</groupId>
                 <artifactId>commons-utils</artifactId>
                 <version>${com.araguacaima-commons-utils}</version>
+                <scope>compile</scope>
+            </dependency>
+
+
+
+            <!--  Spring  -->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-aop</artifactId>
+                <version>${springframework.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-jpa</artifactId>
+                <version>${springframework.version.data}</version>
+                <scope>compile</scope>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>*</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-aspects</artifactId>
+                <version>${springframework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-beans</artifactId>
+                <version>${springframework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context</artifactId>
+                <version>${springframework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context-support</artifactId>
+                <version>${springframework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-core</artifactId>
+                <version>${springframework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-expression</artifactId>
+                <version>${springframework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-instrument</artifactId>
+                <version>${springframework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-instrument-tomcat</artifactId>
+                <version>${springframework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-jdbc</artifactId>
+                <version>${springframework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-jms</artifactId>
+                <version>${springframework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-messaging</artifactId>
+                <version>${springframework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-orm</artifactId>
+                <version>${springframework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-oxm</artifactId>
+                <version>${springframework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-test</artifactId>
+                <version>${springframework.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-tx</artifactId>
+                <version>${springframework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-web</artifactId>
+                <version>${springframework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-webmvc</artifactId>
+                <version>${springframework.version}</version>
+            </dependency>
+
+            <!--  security  -->
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-acl</artifactId>
+                <version>${springframework.version.security}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-cas</artifactId>
+                <version>${springframework.version.security}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-config</artifactId>
+                <version>${springframework.version.security}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-core</artifactId>
+                <version>${springframework.version.security}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-ldap</artifactId>
+                <version>${springframework.version.security}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-openid</artifactId>
+                <version>${springframework.version.security}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-remoting</artifactId>
+                <version>${version.spring.security}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-web</artifactId>
+                <version>${springframework.version.security}</version>
+            </dependency>
+
+            <!-- Database connection pool -->
+            <dependency>
+                <groupId>org.apache.tomcat</groupId>
+                <artifactId>tomcat-jdbc</artifactId>
+                <version>${tomcat-jdbc.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
+
+            <dependency>
+                <groupId>com.mchange</groupId>
+                <artifactId>c3p0</artifactId>
+                <version>${com.mchange-c3p0}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <!-- Logging with SLF4J & LogBack -->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>jcl-over-slf4j</artifactId>
+                <version>${slf4j.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>jul-to-slf4j</artifactId>
+                <version>${slf4j.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>${logback.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.logback-extensions</groupId>
+                <artifactId>logback-ext-spring</artifactId>
+                <version>${org.logback-extensions-logback-ext-spring}</version>
                 <scope>compile</scope>
             </dependency>
 

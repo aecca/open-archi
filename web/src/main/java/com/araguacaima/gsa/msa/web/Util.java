@@ -70,6 +70,7 @@ public class Util {
         } catch (Throwable ignored) {
             JPAEntityManagerUtils.rollback();
         } finally {
+            JPAEntityManagerUtils.commit();
             JPAEntityManagerUtils.closeAll();
         }
     }
@@ -88,7 +89,12 @@ public class Util {
     }
 
     private static boolean filterMethod(Field field) {
-        Class aClass = ReflectionUtils.extractGenerics(field);
+        Class aClass = null;
+        try {
+            aClass = ReflectionUtils.extractGenerics(field);
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
         String fullyQualifiedJavaTypeOrNull = reflectionUtils.getFullyQualifiedJavaTypeOrNull(aClass);
         return fullyQualifiedJavaTypeOrNull == null;
     }
