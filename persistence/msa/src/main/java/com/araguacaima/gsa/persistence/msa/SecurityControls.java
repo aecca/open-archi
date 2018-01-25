@@ -11,14 +11,14 @@ import javax.persistence.*;
         name = "SecurityControls")
 public class SecurityControls extends BaseEntity {
 
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private Markdown agileRiskAssessment;
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private Markdown requirementsMeasures;
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private Markdown securityMeasures;
 
     public Markdown getAgileRiskAssessment() {

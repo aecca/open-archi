@@ -49,8 +49,8 @@ public class ProjectMetaData extends BaseEntity {
     private String projectIdentifier;
     @Column
     private Segment segment;
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private Msa msa;
 
     public String getBusiness() {

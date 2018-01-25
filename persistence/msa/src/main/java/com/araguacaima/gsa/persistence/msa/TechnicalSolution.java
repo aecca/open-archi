@@ -12,25 +12,25 @@ import java.util.Map;
         name = "TechnicalSolution")
 public class TechnicalSolution extends BaseEntity {
 
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private ArchitectSolutionModel architectSolutionModel;
     @OneToMany
     @CollectionTable(name = "TechnicalSolution_Impacts",
             schema = "MSA")
     @MapKeyColumn(name = "impacts")
     private Map<String, Markdown> impacts;
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private IntermediateSolution intermediate;
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private ProposedSolution proposed;
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private ReliabilitySolution reliability;
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private SecurityControls securityControls;
 
     public ArchitectSolutionModel getArchitectSolutionModel() {

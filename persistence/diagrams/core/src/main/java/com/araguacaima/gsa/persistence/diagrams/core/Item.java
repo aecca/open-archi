@@ -19,12 +19,12 @@ public class Item extends Taggable {
     protected String name;
     @Column
     protected String description;
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     protected Point location;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     protected CompositeElement parent;
 
     @OneToMany
@@ -36,8 +36,8 @@ public class Item extends Taggable {
                     referencedColumnName = "Id")})
     protected Set<CompositeElement> children = new HashSet<>();
 
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     protected Shape shape;
 
     @OneToMany
@@ -49,8 +49,8 @@ public class Item extends Taggable {
                     referencedColumnName = "Id")})
     protected Set<Relationship> relationships = new LinkedHashSet<>();
 
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     protected MetaData metaData;
 
     public Item() {

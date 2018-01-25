@@ -13,8 +13,8 @@ public class Diagram extends BaseEntity {
 
     @ManyToOne
     private ArchitectSolutionModel architectSolutionModel;
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private Markdown description;
     /*    @OneToOne
         @JoinColumn(table = "Architecture_Model", name = "Architecture_Model_Id", referencedColumnName = "Id")

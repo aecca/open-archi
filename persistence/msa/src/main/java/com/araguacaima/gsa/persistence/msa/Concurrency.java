@@ -21,8 +21,8 @@ public class Concurrency extends BaseEntity {
             .NUMBER_OF_CONCURRENT_USERS,
             31,
             null));
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private Measurable value;
 
     public Concurrency() {

@@ -29,11 +29,11 @@ public class Msa extends BaseEntity {
     @NotNull
     @Size(min = 1)
     private Date expirationDate;
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private Initiative initiative;
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private IntermediateSolution intermediateSolution;
     @Column(unique = false,
             nullable = false)
@@ -48,11 +48,11 @@ public class Msa extends BaseEntity {
             inverseJoinColumns = {@JoinColumn(name = "Link_Id",
                     referencedColumnName = "Id")})
     private Collection<Link> linksOfInterests;
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private ProjectMetaData projectMetaData;
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private ProposedSolution proposedSolution;
     @OneToMany
     @JoinTable(schema = "MSA",

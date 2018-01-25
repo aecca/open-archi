@@ -18,8 +18,8 @@ public class VersionControl extends BaseEntity {
     private String description;
     @Column
     private Date issueDate;
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     @JoinTable(schema = "PERSONS",
             name = "VersionControl_Responsibles",
             joinColumns = {

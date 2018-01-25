@@ -13,8 +13,8 @@ public class Responsible extends BaseEntity {
 
     @Column
     private String organizationUnit;
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private Person responsible;
 
     public String getOrganizationUnit() {

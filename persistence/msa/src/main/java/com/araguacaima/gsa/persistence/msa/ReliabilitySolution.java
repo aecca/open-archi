@@ -12,8 +12,8 @@ import java.util.Set;
         name = "ReliabilitySolution")
 public class ReliabilitySolution extends BaseEntity {
 
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private Markdown description;
 
     @OneToMany(targetEntity = AbstractReliability.class)

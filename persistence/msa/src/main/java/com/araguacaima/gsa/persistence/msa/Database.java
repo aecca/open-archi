@@ -17,8 +17,8 @@ public class Database extends BaseEntity {
     public static Measurable DEFAULT_SMALL = new Measurable(new Range<StorageUnit>(StorageUnit.GB, 51, 100));
     @Column
     private DataBaseType type;
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private Measurable value;
 
     public Database(DataBaseType type) {

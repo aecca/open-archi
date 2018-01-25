@@ -12,8 +12,8 @@ import java.util.Collection;
         name = "IntermediateSolution")
 public class IntermediateSolution extends BaseEntity {
 
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private Markdown description;
     @OneToMany
     @JoinTable(schema = "MSA",
@@ -31,11 +31,11 @@ public class IntermediateSolution extends BaseEntity {
             inverseJoinColumns = {@JoinColumn(name = "TechnicalDebt_Id",
                     referencedColumnName = "Id")})
     private Collection<TechnicalDebt> technicalDebts;
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private TechnicalSolution technicals;
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private Msa msa;
 
     public Markdown getDescription() {

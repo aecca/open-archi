@@ -12,15 +12,15 @@ import java.util.Collection;
 public abstract class AbstractReliability extends BaseEntity implements IReliability {
     @Column
     private Boolean contemplated;
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private Markdown description;
 
     @OneToMany
     private Collection<Documentation> documentationList;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private ReliabilitySolution reliabilitySolution;
 
     @Column

@@ -10,8 +10,8 @@ import javax.persistence.*;
 @PersistenceUnit(unitName = "gsa")
 public class Activity extends Item {
 
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private Lane lane;
 
     @Column

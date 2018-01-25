@@ -14,8 +14,8 @@ import javax.persistence.*;
 @PersistenceUnit(unitName = "gsa")
 public class ContainerInstance extends Element {
 
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private Container container;
 
     @Column
@@ -24,8 +24,8 @@ public class ContainerInstance extends Element {
     @Column
     private int instanceId;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     @JsonIgnore
     private Model model;
 

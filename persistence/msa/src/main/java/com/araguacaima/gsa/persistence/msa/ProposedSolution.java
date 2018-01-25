@@ -12,8 +12,8 @@ import java.util.Collection;
         name = "ProposedSolution")
 public class ProposedSolution extends BaseEntity {
 
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private Markdown description;
     @OneToMany
     @JoinTable(schema = "MSA",
@@ -23,11 +23,11 @@ public class ProposedSolution extends BaseEntity {
             inverseJoinColumns = {@JoinColumn(name = "Diagram_Id",
                     referencedColumnName = "Id")})
     private Collection<Diagram> functionals;
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private TechnicalSolution technicals;
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private Msa msa;
 
     public Markdown getDescription() {

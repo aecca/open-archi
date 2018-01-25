@@ -18,8 +18,8 @@ public class Status extends BaseEntity {
     private Date issueDate;
     @Column
     private int rank;
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private Markdown reason;
     @Column
     private StatusStep step;

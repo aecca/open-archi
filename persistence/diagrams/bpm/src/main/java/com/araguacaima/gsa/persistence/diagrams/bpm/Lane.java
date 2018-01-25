@@ -11,8 +11,8 @@ import java.util.Collection;
 @Table(name = "Lane", schema = "DIAGRAMS")
 public class Lane extends BaseEntity {
 
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private Pool pool;
 
     @OneToMany

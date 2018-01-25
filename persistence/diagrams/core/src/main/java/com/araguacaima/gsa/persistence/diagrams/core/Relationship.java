@@ -12,14 +12,14 @@ import javax.persistence.*;
 @PersistenceUnit(unitName = "gsa")
 public class Relationship extends Taggable {
 
-    @OneToOne(targetEntity = Taggable.class, cascade = CascadeType.PERSIST)
-    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+    @OneToOne(targetEntity = Taggable.class, cascade = CascadeType.REMOVE)
+    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     @JsonIgnore
     private Taggable source;
     @Column
     private String sourceId;
-    @OneToOne(targetEntity = Taggable.class, cascade = CascadeType.PERSIST)
-    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+    @OneToOne(targetEntity = Taggable.class, cascade = CascadeType.REMOVE)
+    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     @JsonIgnore
     private Taggable destination;
     @Column

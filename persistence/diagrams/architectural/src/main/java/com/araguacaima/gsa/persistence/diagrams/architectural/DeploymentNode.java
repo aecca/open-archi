@@ -28,8 +28,8 @@ import java.util.Set;
 @PersistenceUnit(unitName = "gsa")
 public class DeploymentNode extends Element {
 
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     @JsonIgnore
     private Model model;
 

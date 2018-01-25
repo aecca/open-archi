@@ -21,8 +21,8 @@ public class TechnicalDebt extends BaseEntity {
             schema = "MSA")
     @MapKeyColumn(name = "description")
     private Map<String, Markdown> description;
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private Effort estimatedEffort;
     @ManyToOne
     private IntermediateSolution intermediateSolution;

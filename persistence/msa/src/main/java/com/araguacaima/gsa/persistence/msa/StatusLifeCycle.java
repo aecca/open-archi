@@ -20,8 +20,8 @@ public class StatusLifeCycle extends BaseEntity {
             inverseJoinColumns = {@JoinColumn(name = "Ancestor_Id",
                     referencedColumnName = "Id")})
     private Collection<Status> ancestors;
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private Status current;
     @OneToMany
     @JoinTable(schema = "MSA",

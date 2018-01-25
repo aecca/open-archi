@@ -15,8 +15,8 @@ import javax.persistence.*;
 @PersistenceUnit(unitName = "gsa")
 public abstract class StaticElement extends Element {
 
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     @JsonIgnore
     private Model model;
     @Column

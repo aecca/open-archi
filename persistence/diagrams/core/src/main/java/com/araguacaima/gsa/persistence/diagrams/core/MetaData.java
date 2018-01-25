@@ -14,8 +14,8 @@ import java.util.Collection;
 @Table(name = "MetaData", schema = "DIAGRAMS")
 public class MetaData extends BaseEntity {
 
-    @OneToMany(cascade = CascadeType.PERSIST)
-    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+    @OneToMany(cascade = CascadeType.REMOVE)
+    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     @JoinTable(schema = "DIAGRAMS",
             name = "MetaData_Responsibles",
             joinColumns = {@JoinColumn(name = "MetaData_Id",
@@ -24,8 +24,8 @@ public class MetaData extends BaseEntity {
                     referencedColumnName = "Id")})
     private Collection<Responsible> responsibles;
 
-    @OneToMany(cascade = CascadeType.PERSIST)
-    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+    @OneToMany(cascade = CascadeType.REMOVE)
+    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     @JoinTable(schema = "DIAGRAMS",
             name = "MetaData_Collaborators",
             joinColumns = {@JoinColumn(name = "MetaData_Id",
@@ -34,8 +34,8 @@ public class MetaData extends BaseEntity {
                     referencedColumnName = "Id")})
     private Collection<Responsible> collaborators;
 
-    @OneToMany(cascade = CascadeType.PERSIST)
-    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+    @OneToMany(cascade = CascadeType.REMOVE)
+    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     @JoinTable(schema = "DIAGRAMS",
             name = "MetaData_RelatedWith",
             joinColumns = {@JoinColumn(name = "MetaData_Id",
@@ -44,8 +44,8 @@ public class MetaData extends BaseEntity {
                     referencedColumnName = "Id")})
     private Collection<Taggable> relatedWith;
 
-    @OneToMany(cascade = CascadeType.PERSIST)
-    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+    @OneToMany(cascade = CascadeType.REMOVE)
+    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     @JoinTable(schema = "DIAGRAMS",
             name = "MetaData_UsedIn",
             joinColumns = {@JoinColumn(name = "MetaData_Id",
@@ -54,16 +54,16 @@ public class MetaData extends BaseEntity {
                     referencedColumnName = "Id")})
     private Collection<Taggable> usedIn;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     @JoinTable(schema = "META",
             name = "MetaData_Version",
             joinColumns = {@JoinColumn(name = "MetaData_Id", referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Version_Id", referencedColumnName = "Id")})
     private Version version;
 
-    @OneToMany(cascade = CascadeType.PERSIST)
-    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+    @OneToMany(cascade = CascadeType.REMOVE)
+    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     @JoinTable(schema = "DIAGRAMS",
             name = "MetaData_Views",
             joinColumns = {@JoinColumn(name = "MetaData_Id",

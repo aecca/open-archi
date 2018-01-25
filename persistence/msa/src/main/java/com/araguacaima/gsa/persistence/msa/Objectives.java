@@ -12,8 +12,8 @@ import java.util.Collection;
         name = "Objectives")
 public class Objectives extends BaseEntity {
 
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private Markdown currentSituation;
     @OneToMany
     @JoinTable(schema = "MSA",
