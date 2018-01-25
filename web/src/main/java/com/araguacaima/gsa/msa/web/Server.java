@@ -109,7 +109,7 @@ public class Server {
 
             exception(Exception.class, exceptionHandler);
 
-            before("/*", (req, res) -> log.info("Received api call to '" + req.pathInfo() + "'"));
+            before("/*", (req, res) -> log.info("Received api call to " + req.requestMethod()+ " " + req.pathInfo() ));
 
             options("/models", (request, response) -> {
                 response.status(HTTP_OK);

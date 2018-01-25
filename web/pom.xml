@@ -67,6 +67,10 @@
             <groupId>com.araguacaima.gsa.persistence</groupId>
             <artifactId>persistence-uml-classes</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.araguacaima.gsa</groupId>
+            <artifactId>persistence-utils</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>com.araguacaima</groupId>
