@@ -91,7 +91,6 @@ public class Server {
         deeplyFulfilledSequenceModel.setKind(ElementKind.SEQUENCE_MODEL);
         deeplyFulfilledClassesModel = reflectionUtils.deepInitialization(com.araguacaima.gsa.persistence.diagrams.classes.Model.class);
         deeplyFulfilledClassesModel.setKind(ElementKind.UML_CLASS_MODEL);
-        Util.dbPopulation();
     }
 
     public static void main(String[] args)
@@ -101,15 +100,34 @@ public class Server {
         port(assignedPort);
         log.info("Server listen on port '" + assignedPort + "'");
         Map<String, Object> map = new HashMap<>();
-        map.put("title", "Architectural Model PoC");
+        map.put("title", "OpenArchi API");
 
         staticFiles.location("/web/public");
+        options("/*", (request, response) -> {
+
+            String accessControlRequestHeaders = request.headers("Access-Control-Request-Headers");
+            if (accessControlRequestHeaders != null) {
+                response.header("Access-Control-Allow-Headers", accessControlRequestHeaders);
+            }
+
+            String accessControlRequestMethod = request.headers("Access-Control-Request-Method");
+            if (accessControlRequestMethod != null) {
+                response.header("Access-Control-Allow-Methods", accessControlRequestMethod);
+            }
+
+            return "OK";
+        });
+        before((request, response) -> {
+            response.header("Access-Control-Allow-Origin", "*");
+            response.header("Access-Control-Request-Method", "*");
+            response.header("Access-Control-Allow-Headers", "*");
+        });
         get("/", (req, res) -> new ModelAndView(map, "home"), engine);
         path("/api", () -> {
 
             exception(Exception.class, exceptionHandler);
 
-            before("/*", (req, res) -> log.info("Received api call to " + req.requestMethod()+ " " + req.pathInfo() ));
+            before("/*", (req, res) -> log.info("Received api call to " + req.requestMethod() + " " + req.pathInfo()));
 
             options("/models", (request, response) -> {
                 response.status(HTTP_OK);
@@ -329,6 +347,12 @@ public class Server {
         } else {
             return JSON_CONTENT_TYPE;
         }
+    }
+
+    // Enables CORS on requests. This method is an initialization method and should be called once.
+    private static void enableCORS(final String origin, final String methods, final String headers) {
+
+
     }
 }
 

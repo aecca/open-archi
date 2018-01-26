@@ -1,5 +1,6 @@
 package com.araguacaima.gsa.persistence.diagrams.core;
 
+import com.araguacaima.gsa.persistence.meta.BaseEntity;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;

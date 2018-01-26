@@ -9,6 +9,7 @@ import io.github.benas.randombeans.api.EnhancedRandom;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.persistence.Entity;
 import java.lang.reflect.Field;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -32,13 +33,13 @@ public class Util {
     }
 
     static {
-//        classes.add(com.araguacaima.gsa.persistence.diagrams.architectural.Model.class);
-//        classes.add(com.araguacaima.gsa.persistence.diagrams.bpm.Model.class);
-//        classes.add(com.araguacaima.gsa.persistence.diagrams.er.Model.class);
-//        classes.add(com.araguacaima.gsa.persistence.diagrams.flowchart.Model.class);
+        classes.add(com.araguacaima.gsa.persistence.diagrams.architectural.Model.class);
+        classes.add(com.araguacaima.gsa.persistence.diagrams.bpm.Model.class);
+        classes.add(com.araguacaima.gsa.persistence.diagrams.er.Model.class);
+        classes.add(com.araguacaima.gsa.persistence.diagrams.flowchart.Model.class);
         classes.add(com.araguacaima.gsa.persistence.diagrams.gantt.Model.class);
-//        classes.add(com.araguacaima.gsa.persistence.diagrams.sequence.Model.class);
-//        classes.add(com.araguacaima.gsa.persistence.diagrams.classes.Model.class);
+        classes.add(com.araguacaima.gsa.persistence.diagrams.sequence.Model.class);
+        classes.add(com.araguacaima.gsa.persistence.diagrams.classes.Model.class);
         randomBuilder = EnhancedRandomBuilder.aNewEnhancedRandomBuilder()
                 .seed(123L)
                 .objectPoolSize(100)
@@ -46,7 +47,7 @@ public class Util {
                 .timeRange(timeLower, timeUpper)
                 .dateRange(dateLower, dateUpper)
                 .stringLengthRange(5, 20)
-                .collectionSizeRange(1, 1)
+                .collectionSizeRange(1, 5)
                 .scanClasspathForConcreteTypes(true)
                 .overrideDefaultInitialization(true);
     }
@@ -109,7 +110,7 @@ public class Util {
             }
         } else {
             if (reflectionUtils.getFullyQualifiedJavaTypeOrNull(type) == null && !type.isEnum() && !Enum.class.isAssignableFrom(type)) {
-                if (BasicEntity.class.isAssignableFrom(type)) {
+                if (BasicEntity.class.isAssignableFrom(type) || type.getAnnotation(Entity.class) != null) {
                     try {
                         innerPopulation(object_, entitiesForReattempt);
                     } catch (Throwable t) {

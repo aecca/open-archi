@@ -11,9 +11,9 @@ import java.util.Collection;
 @Table(name = "Lane", schema = "DIAGRAMS")
 public class Lane extends BaseEntity {
 
-    @OneToOne(cascade = CascadeType.REMOVE)
+/*    @OneToOne(cascade = CascadeType.REMOVE)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
-    private Pool pool;
+    private Pool pool;*/
 
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",
@@ -24,13 +24,13 @@ public class Lane extends BaseEntity {
                     referencedColumnName = "Id")})
     private Collection<Activity> activities;
 
-    public Pool getPool() {
+/*    public Pool getPool() {
         return pool;
     }
 
     public void setPool(Pool pool) {
         this.pool = pool;
-    }
+    }*/
 
     public Collection<Activity> getActivities() {
         return activities;
