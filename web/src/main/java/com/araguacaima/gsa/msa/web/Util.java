@@ -72,7 +72,7 @@ public class Util {
             JPAEntityManagerUtils.rollback();
         } finally {
             JPAEntityManagerUtils.commit();
-            JPAEntityManagerUtils.closeAll();
+//            JPAEntityManagerUtils.closeAll();
         }
     }
 
@@ -92,7 +92,6 @@ public class Util {
             throw t;
         } finally {
             JPAEntityManagerUtils.commit();
-            JPAEntityManagerUtils.closeAll();
         }
     }
 
