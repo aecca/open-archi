@@ -20,9 +20,7 @@ block scripts
       margin: 0;
       background: #fafafa;
     }
-  script(src='/javascripts/swagger-ui-bundle.js')
-  script(src='/javascripts/swagger-ui-standalone-preset.js')
-  
+
 block content
   svg(xmlns="http://www.w3.org/2000/svg", xmlns:xlink="http://www.w3.org/1999/xlink", style="position:absolute;width:0;height:0")
     defs
@@ -42,6 +40,8 @@ block content
         path(d='M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z')
     
   div#swagger-ui
+  script(src='/javascripts/swagger-ui-bundle.js')
+  script(src='/javascripts/swagger-ui-standalone-preset.js')
   script.
     window.onload = function() {
       

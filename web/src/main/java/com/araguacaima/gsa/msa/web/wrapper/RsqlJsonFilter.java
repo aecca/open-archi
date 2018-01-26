@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public abstract class RsqlJsonFilter {
 
-    public static String rsql(final String query, final String json)
+    public static Object rsql(final String query, final String json)
             throws IOException {
         Node rootNode = new RSQLParser().parse(query);
         return rootNode.accept(new JsonPathRsqlVisitor(json));

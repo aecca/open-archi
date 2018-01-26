@@ -43,7 +43,6 @@ public class Server {
     private static JadeTemplateEngine engine = new JadeTemplateEngine(config);
     private static Logger log = LoggerFactory.getLogger(Server.class);
     private static final JsonUtils jsonUtils = new JsonUtils();
-
     private static final ExceptionHandler exceptionHandler = new ExceptionHandlerImpl(Exception.class) {
         @Override
         public void handle(Exception exception, Request request, Response response) {
@@ -126,13 +125,10 @@ public class Server {
             response.header("Access-Control-Request-Method", "*");
             response.header("Access-Control-Allow-Headers", "*");
         });
-        get("/", (req, res) -> renderContent("index.html"));
+        get("/", (req, res) -> new ModelAndView(map, "home"), engine);
         path("/api", () -> {
-
             exception(Exception.class, exceptionHandler);
-
             before("/*", (req, res) -> log.info("Received api call to " + req.requestMethod() + " " + req.pathInfo()));
-
             options("/models", (request, response) -> {
                 response.status(HTTP_OK);
                 response.header("Allow", "POST, GET");
@@ -141,14 +137,12 @@ public class Server {
                 if (accessControlRequestHeaders != null) {
                     response.header("Access-Control-Allow-Headers", accessControlRequestHeaders);
                 }
-
                 String accessControlRequestMethod = request.headers("Access-Control-Request-Method");
                 if (accessControlRequestMethod != null) {
                     response.header("Access-Control-Allow-Methods", accessControlRequestMethod);
                 }
                 return jsonUtils.toJSON(deeplyFulfilledParentModel);
             });
-
             post("/models", (request, response) -> {
                 Taggable model = jsonUtils.fromJSON(request.body(), Taggable.class);
                 try {
@@ -162,7 +156,6 @@ public class Server {
                     return throwError(response, ex);
                 }
             });
-
             get("/models/:uuid", (request, response) -> {
                 try {
                     String id = request.params(":uuid");
@@ -175,32 +168,25 @@ public class Server {
                     return throwError(response, ex);
                 }
             });
-
             get("/models", (request, response) -> {
                 return getList(request, response, Taggable.GET_ALL_MODELS, null);
             });
-
             post("/models/:uuid/children", (request, response) -> {
                 response.status(HTTP_NOT_IMPLEMENTED);
                 response.type(JSON_CONTENT_TYPE);
                 return EMPTY_RESPONSE;
             });
-
             get("/models/:uuid/children", (request, response) -> {
                 response.status(HTTP_NOT_IMPLEMENTED);
                 response.type(JSON_CONTENT_TYPE);
                 return EMPTY_RESPONSE;
             });
-
             get("/models/:uuid/parent", (request, response) -> {
                 response.status(HTTP_NOT_IMPLEMENTED);
                 response.type(JSON_CONTENT_TYPE);
                 return EMPTY_RESPONSE;
             });
-            options("/models/architectures", (request, response) -> {
-
-                return getOptions(request, response, deeplyFulfilledArchitectureModel);
-            });
+            options("/models/architectures", (request, response) -> getOptions(request, response, deeplyFulfilledArchitectureModel));
             get("/models/architectures", (request, response) -> {
                 Map<String, Object> params = new HashMap<>();
                 params.put("modelType", "ArchitectureModel");
@@ -261,8 +247,6 @@ public class Server {
                 response.type(JSON_CONTENT_TYPE);
                 return jsonUtils.toJSON(getList(request, response, Taggable.GET_MODELS_BY_TYPE, params));
             });
-
-
         });
     }
 
@@ -298,7 +282,7 @@ public class Server {
 
         List<Taggable> models = JPAEntityManagerUtils.executeQuery(Taggable.class, query, params);
         String jsonObjects = jsonUtils.toJSON(models);
-        String filter_ = filter(request.queryParams("$filter"), jsonObjects);
+        Object filter_ = filter(request.queryParams("$filter"), jsonObjects);
         String json = request.pathInfo().replaceFirst("/api/models", "");
         String contentType = getContentType(request);
         response.header("Content-Type", contentType);
@@ -308,7 +292,7 @@ public class Server {
             jsonMap.put("json", jsonUtils.toJSON(filter_));
             return render(jsonMap, "json");
         } else {
-            return jsonUtils.toJSON(filter_);
+            return filter_.getClass().equals(String.class) ? filter_ : jsonUtils.toJSON(filter_);
         }
     }
 
@@ -326,7 +310,7 @@ public class Server {
         return 4567;
     }
 
-    private static String filter(String query, String json)
+    private static Object filter(String query, String json)
             throws IOException, URISyntaxException {
 
         if (query == null) {
