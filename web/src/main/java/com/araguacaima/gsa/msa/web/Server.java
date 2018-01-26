@@ -20,6 +20,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.GeneralSecurityException;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -114,7 +119,6 @@ public class Server {
             if (accessControlRequestMethod != null) {
                 response.header("Access-Control-Allow-Methods", accessControlRequestMethod);
             }
-
             return "OK";
         });
         before((request, response) -> {
@@ -122,7 +126,7 @@ public class Server {
             response.header("Access-Control-Request-Method", "*");
             response.header("Access-Control-Allow-Headers", "*");
         });
-        get("/", (req, res) -> new ModelAndView(map, "home"), engine);
+        get("/", (req, res) -> renderContent("index.html"));
         path("/api", () -> {
 
             exception(Exception.class, exceptionHandler);
@@ -349,10 +353,22 @@ public class Server {
         }
     }
 
-    // Enables CORS on requests. This method is an initialization method and should be called once.
-    private static void enableCORS(final String origin, final String methods, final String headers) {
+    private static String renderContent(String htmlFile) {
+        try {
+            // If you are using maven then your files
+            // will be in a folder called resources.
+            // getResource() gets that folder
+            // and any files you specify.
+            URL url = Server.class.getResource("/web/views/" + "index.html");
 
-
+            // Return a String which has all
+            // the contents of the file.
+            Path path = Paths.get(url.toURI());
+            return new String(Files.readAllBytes(path), Charset.defaultCharset());
+        } catch (IOException | URISyntaxException e) {
+            // Add your own exception handlers here.
+        }
+        return null;
     }
 }
 

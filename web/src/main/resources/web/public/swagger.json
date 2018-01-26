@@ -1,0 +1,108 @@
+{
+  "swagger":"2.0",
+  "info":{
+    "description":"Operations can be done with OpenArchi models.",
+    "version":"1.0.0",
+    "title":"OpenArchi Models API",
+    "contact":{
+      "email":"alejandromanuel.mendez.aragua@bbva.com"
+    },
+    "license":{
+      "name":"Apache 2.0",
+      "url":"http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host":"/",
+  "basePath":"api",
+  "tags":[
+    {
+      "name":"models",
+      "description":"Models"
+    },
+    {
+      "name":"architecture",
+      "description":"Architecture"
+    },
+    {
+      "name":"diagrams",
+      "description":"Diagrams"
+    }
+  ],
+  "schemes":[
+    "http", "https"
+  ],
+  "paths":{
+    "/models":{
+      "get":{
+        "tags":[
+          "models"
+        ],
+        "summary":"Finds models",
+        "description":"This service supports query by using RSQL expressions",
+        "operationId":"models",
+        "produces":[
+          "application/json"
+        ],
+        "parameters":[
+          {
+            "name":"$filter",
+            "in":"query",
+            "description":"Filter models according to an RSQL expression",
+            "required":false,
+            "type":"string"
+          }
+        ],
+        "responses":{
+          "200":{
+            "description":"OK",
+            "schema":{
+              "type":"array",
+              "items":{
+                "$ref":"#/definitions/Models"
+              }
+            }
+          },
+          "400":{
+            "description":"Bad request"
+          }
+        }
+      }
+    }
+  },
+  "securityDefinitions":{
+    "petstore_auth":{
+      "type":"oauth2",
+      "authorizationUrl":"oauth/dialog",
+      "flow":"implicit",
+      "scopes":{
+        "write:model":"modify models",
+        "read:model":"read your models"
+      }
+    },
+    "api_key":{
+      "type":"apiKey",
+      "name":"api_key",
+      "in":"header"
+    }
+  },
+  "definitions":{
+    "Models":{
+      "type":"object",
+      "required":[
+        "name",
+        "photoUrls"
+      ],
+      "properties":{
+        "id":{
+          "type":"string"
+        },
+        "tags":{
+          "type":"array",
+          "items":{
+            "type":"string"
+          }
+        }
+      }
+    }
+  }
+}
