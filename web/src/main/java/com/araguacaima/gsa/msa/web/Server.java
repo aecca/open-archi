@@ -137,6 +137,15 @@ public class Server {
                 response.status(HTTP_OK);
                 response.header("Allow", "POST, GET");
                 response.header("Content-Type", JSON_CONTENT_TYPE + ", " + HTML_CONTENT_TYPE);
+                String accessControlRequestHeaders = request.headers("Access-Control-Request-Headers");
+                if (accessControlRequestHeaders != null) {
+                    response.header("Access-Control-Allow-Headers", accessControlRequestHeaders);
+                }
+
+                String accessControlRequestMethod = request.headers("Access-Control-Request-Method");
+                if (accessControlRequestMethod != null) {
+                    response.header("Access-Control-Allow-Methods", accessControlRequestMethod);
+                }
                 return jsonUtils.toJSON(deeplyFulfilledParentModel);
             });
 
@@ -144,12 +153,12 @@ public class Server {
                 Taggable model = jsonUtils.fromJSON(request.body(), Taggable.class);
                 try {
                     model.validateCreation();
-                    JPAEntityManagerUtils.persist(model);
+                    Util.populate(model);
                     response.status(HTTP_CREATED);
                     response.type(JSON_CONTENT_TYPE);
                     response.header("Location", request.pathInfo() + "/models/" + model.getId());
                     return EMPTY_RESPONSE;
-                } catch (Exception ex) {
+                } catch (Throwable ex) {
                     return throwError(response, ex);
                 }
             });
@@ -303,7 +312,7 @@ public class Server {
         }
     }
 
-    private static Object throwError(Response response, Exception ex) {
+    private static Object throwError(Response response, Throwable ex) {
         response.status(HTTP_BAD_REQUEST);
         response.type(JSON_CONTENT_TYPE);
         return ex.getMessage();

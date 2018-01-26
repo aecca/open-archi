@@ -76,6 +76,26 @@ public class Util {
         }
     }
 
+
+    public static void populate(Object entity) throws Throwable {
+        JPAEntityManagerUtils.begin();
+        try {
+            Class clazz = entity.getClass();
+            ReflectionUtils.doWithFields(clazz, field -> {
+                field.setAccessible(true);
+                Object object_ = field.get(entity);
+                process(field.getType(), object_, new LinkedHashMap<>());
+            }, Util::filterMethod);
+            JPAEntityManagerUtils.persist(entity);
+        } catch (Throwable t) {
+            JPAEntityManagerUtils.rollback();
+            throw t;
+        } finally {
+            JPAEntityManagerUtils.commit();
+            JPAEntityManagerUtils.closeAll();
+        }
+    }
+
     private static void innerPopulation(Object entity, Map<Class, Object> entitiesForReattempt) {
         ReflectionUtils.doWithFields(entity.getClass(), field -> {
             field.setAccessible(true);
