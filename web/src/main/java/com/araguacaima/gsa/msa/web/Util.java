@@ -32,13 +32,13 @@ public class Util {
     }
 
     static {
-        classes.add(com.araguacaima.gsa.persistence.diagrams.architectural.Model.class);
-        classes.add(com.araguacaima.gsa.persistence.diagrams.bpm.Model.class);
-        classes.add(com.araguacaima.gsa.persistence.diagrams.er.Model.class);
-        classes.add(com.araguacaima.gsa.persistence.diagrams.flowchart.Model.class);
+//        classes.add(com.araguacaima.gsa.persistence.diagrams.architectural.Model.class);
+//        classes.add(com.araguacaima.gsa.persistence.diagrams.bpm.Model.class);
+//        classes.add(com.araguacaima.gsa.persistence.diagrams.er.Model.class);
+//        classes.add(com.araguacaima.gsa.persistence.diagrams.flowchart.Model.class);
         classes.add(com.araguacaima.gsa.persistence.diagrams.gantt.Model.class);
-        classes.add(com.araguacaima.gsa.persistence.diagrams.sequence.Model.class);
-        classes.add(com.araguacaima.gsa.persistence.diagrams.classes.Model.class);
+//        classes.add(com.araguacaima.gsa.persistence.diagrams.sequence.Model.class);
+//        classes.add(com.araguacaima.gsa.persistence.diagrams.classes.Model.class);
         randomBuilder = EnhancedRandomBuilder.aNewEnhancedRandomBuilder()
                 .seed(123L)
                 .objectPoolSize(100)
@@ -46,7 +46,7 @@ public class Util {
                 .timeRange(timeLower, timeUpper)
                 .dateRange(dateLower, dateUpper)
                 .stringLengthRange(5, 20)
-                .collectionSizeRange(1, 5)
+                .collectionSizeRange(1, 1)
                 .scanClasspathForConcreteTypes(true)
                 .overrideDefaultInitialization(true);
     }
@@ -62,7 +62,7 @@ public class Util {
                     ReflectionUtils.doWithFields(clazz, field -> {
                         field.setAccessible(true);
                         Object object_ = field.get(entity);
-                        process(field.getType(), object_, field.getName(), new LinkedHashMap<>());
+                        process(field.getType(), object_, new LinkedHashMap<>());
                     }, Util::filterMethod);
                     JPAEntityManagerUtils.persist(entity);
                 }
@@ -79,7 +79,7 @@ public class Util {
         ReflectionUtils.doWithFields(entity.getClass(), field -> {
             field.setAccessible(true);
             Object object_ = field.get(entity);
-            process(field.getType(), object_, field.getName(), entitiesForReattempt);
+            process(field.getType(), object_, entitiesForReattempt);
         }, Util::filterMethod);
         try {
             JPAEntityManagerUtils.persist(entity);
@@ -95,11 +95,10 @@ public class Util {
         } catch (Throwable t) {
             t.printStackTrace();
         }
-        String fullyQualifiedJavaTypeOrNull = reflectionUtils.getFullyQualifiedJavaTypeOrNull(aClass);
-        return fullyQualifiedJavaTypeOrNull == null;
+        return aClass == null || reflectionUtils.getFullyQualifiedJavaTypeOrNull(aClass) == null;
     }
 
-    private static void process(Class<?> type, Object object_, String fieldName, Map<Class, Object> entitiesForReattempt) {
+    private static void process(Class<?> type, Object object_, Map<Class, Object> entitiesForReattempt) {
         if (ReflectionUtils.isCollectionImplementation(type)) {
             for (Object innerCollection : (Collection) object_) {
                 innerPopulation(innerCollection, entitiesForReattempt);
@@ -108,12 +107,15 @@ public class Util {
             for (Object innerMapValues : ((Map) object_).values()) {
                 innerPopulation(innerMapValues, entitiesForReattempt);
             }
-        } else if (type.isAssignableFrom(BasicEntity.class)) {
-            log.debug("Persisting field '" + fieldName + "' of type '" + type.getName() + "'");
-            try {
-                JPAEntityManagerUtils.persist(object_);
-            } catch (Throwable t) {
-                entitiesForReattempt.put(object_.getClass(), object_);
+        } else {
+            if (reflectionUtils.getFullyQualifiedJavaTypeOrNull(type) == null && !type.isEnum() && !Enum.class.isAssignableFrom(type)) {
+                if (BasicEntity.class.isAssignableFrom(type)) {
+                    try {
+                        innerPopulation(object_, entitiesForReattempt);
+                    } catch (Throwable t) {
+                        entitiesForReattempt.put(object_.getClass(), object_);
+                    }
+                }
             }
         }
     }
