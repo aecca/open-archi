@@ -223,7 +223,7 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>${org.apache.maven.plugins-maven-jar-plugin}</version>
                 <configuration>
-                    <finalName>msa-web</finalName>
+                    <finalName>openarchi-api</finalName>
                 </configuration>
             </plugin>
             <plugin>
@@ -257,7 +257,7 @@
                         <artifactId>maven-jar-plugin</artifactId>
                         <version>${org.apache.maven.plugins-maven-jar-plugin}</version>
                         <configuration>
-                            <finalName>msa-web</finalName>
+                            <finalName>openarchi-api</finalName>
                         </configuration>
                     </plugin>
                     <plugin>
@@ -308,9 +308,9 @@
                         <version>${com.heroku.sdk-heroku-maven-plugin}</version>
                         <configuration>
                             <jdkVersion>${java.version}</jdkVersion>
-                            <appName>msa-web</appName>
+                            <appName>openarchi-api</appName>
                             <processTypes>
-                                <web>java -jar ./target/msa-web-1.0.1-with-dependencies.jar</web>
+                                <web>java -jar ./target/openarchi-api-1.0.1-with-dependencies.jar</web>
                             </processTypes>
                         </configuration>
                     </plugin>

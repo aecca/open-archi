@@ -25,7 +25,6 @@ public class BundlesConfig {
         PropertyPlaceholderConfigurer propertyPlaceholderConfigurer = new CustomPropertyPlaceholderConfigurer();
 
         Resource[] locations = new Resource[2];
-        locations[0] = new ClassPathResource("properties/persistence.properties");
         locations[1] = new ClassPathResource("properties/commons.properties");
 
         propertyPlaceholderConfigurer.setLocations(locations);

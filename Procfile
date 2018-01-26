@@ -1,0 +1,1 @@
+web: java -jar ./web/target/openarchi-api-1.0.1-with-dependencies.jar
