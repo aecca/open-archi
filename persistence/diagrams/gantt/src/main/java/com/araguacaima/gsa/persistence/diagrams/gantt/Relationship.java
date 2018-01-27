@@ -1,0 +1,28 @@
+package com.araguacaima.gsa.persistence.diagrams.gantt;
+
+import com.araguacaima.gsa.persistence.diagrams.core.RelationshipType;
+
+import javax.persistence.*;
+
+/**
+ * A relationship between two Gantt activities.
+ */
+
+@Entity
+@PersistenceUnit(unitName = "gsa")
+@DiscriminatorValue(value = "GanttRelationship")
+public class Relationship extends com.araguacaima.gsa.persistence.diagrams.core.Relationship {
+    @Column
+    private RelationshipType type;
+
+    public Relationship() {
+    }
+
+    public RelationshipType getType() {
+        return type;
+    }
+
+    public void setType(RelationshipType type) {
+        this.type = type;
+    }
+}
