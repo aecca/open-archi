@@ -15,8 +15,8 @@
     </parent>
 
     <properties>
-        <env.BASE_URL>localhost</env.BASE_URL>
-        <env.PORT>4567</env.PORT>
+        <env.BASE_URL>open-archi.herokuapp.com</env.BASE_URL>
+        <env.PORT>11261</env.PORT>
     </properties>
 
     <dependencies>
