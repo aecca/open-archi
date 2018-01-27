@@ -119,6 +119,7 @@
         <org.logback-extensions-logback-ext-spring>0.1.4</org.logback-extensions-logback-ext-spring>
         <org.mockito-mockito-core>1.9.5</org.mockito-mockito-core>
         <org.postgresql-postgresql>9.3-1102-jdbc41</org.postgresql-postgresql>
+        <org.threeten-threetenbp>1.3.3</org.threeten-threetenbp>
         <org.reflections-reflections>0.9.9-RC1</org.reflections-reflections>
         <org.scala-lang-scala-library>2.10.4</org.scala-lang-scala-library>
         <org.slf4j-slf4j-simple>1.7.25</org.slf4j-slf4j-simple>
@@ -261,7 +262,6 @@
             </dependency>
 
 
-
             <dependency>
                 <groupId>joda-time</groupId>
                 <artifactId>joda-time</artifactId>
@@ -295,6 +295,13 @@
                 <groupId>org.postgresql</groupId>
                 <artifactId>postgresql</artifactId>
                 <version>${org.postgresql-postgresql}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.threeten</groupId>
+                <artifactId>threetenbp</artifactId>
+                <version>${org.threeten-threetenbp}</version>
                 <scope>compile</scope>
             </dependency>
 
@@ -570,7 +577,6 @@
                 <version>${com.araguacaima-commons-utils}</version>
                 <scope>compile</scope>
             </dependency>
-
 
 
             <!--  Spring  -->
