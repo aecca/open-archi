@@ -6,7 +6,6 @@ import com.araguacaima.gsa.persistence.diagrams.core.Item;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.PersistenceUnit;
-import javax.persistence.Table;
 
 @Entity
 @PersistenceUnit(unitName = "gsa")
@@ -14,9 +13,9 @@ public class Gantt extends Item {
     @Column
     private Category category;
     @Column
-    private int start;
+    private int diagramStart;
     @Column
-    private int end;
+    private int diagramEnd;
     @Column
     private ElementKind kind = ElementKind.GANTT;
 
@@ -28,20 +27,20 @@ public class Gantt extends Item {
         this.category = category;
     }
 
-    public int getStart() {
-        return start;
+    public int getDiagramStart() {
+        return diagramStart;
     }
 
-    public void setStart(int start) {
-        this.start = start;
+    public void setDiagramStart(int start) {
+        this.diagramStart = start;
     }
 
-    public int getEnd() {
-        return end;
+    public int getDiagramEnd() {
+        return diagramEnd;
     }
 
-    public void setEnd(int end) {
-        this.end = end;
+    public void setDiagramEnd(int end) {
+        this.diagramEnd = end;
     }
 
     public ElementKind getKind() {
