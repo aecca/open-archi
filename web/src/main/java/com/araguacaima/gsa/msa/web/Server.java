@@ -1,13 +1,17 @@
 package com.araguacaima.gsa.msa.web;
 
+import com.araguacaima.commons.utils.EnumsUtils;
 import com.araguacaima.commons.utils.JsonUtils;
 import com.araguacaima.commons.utils.ReflectionUtils;
 import com.araguacaima.gsa.msa.web.wrapper.RsqlJsonFilter;
+import com.araguacaima.gsa.persistence.diagrams.core.Element;
 import com.araguacaima.gsa.persistence.diagrams.core.ElementKind;
 import com.araguacaima.gsa.persistence.diagrams.core.Taggable;
 import com.araguacaima.gsa.persistence.utils.JPAEntityManagerUtils;
 import de.neuland.jade4j.JadeConfiguration;
 import de.neuland.jade4j.template.TemplateLoader;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.Predicate;
 import org.apache.commons.lang3.StringUtils;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
@@ -42,6 +46,7 @@ public class Server {
     private static JadeTemplateEngine engine = new JadeTemplateEngine(config);
     private static Logger log = LoggerFactory.getLogger(Server.class);
     private static final JsonUtils jsonUtils = new JsonUtils();
+    private static EnumsUtils enumsUtils = new EnumsUtils();
     private static final ExceptionHandler exceptionHandler = new ExceptionHandlerImpl(Exception.class) {
         @Override
         public void handle(Exception exception, Request request, Response response) {
@@ -98,6 +103,13 @@ public class Server {
         deeplyFulfilledClassesModel.setKind(ElementKind.UML_CLASS_MODEL);
         diagramsReflections = new Reflections("com.araguacaima.gsa.persistence.diagrams", Taggable.class.getClassLoader());
         modelsClasses = diagramsReflections.getSubTypesOf(Taggable.class);
+        CollectionUtils.filter(modelsClasses, new Predicate<Class<? extends Taggable>>() {
+            @Override
+            public boolean evaluate(Class<? extends Taggable> object) {
+                return object.getSuperclass().equals(Element.class);
+            }
+        });
+
         //noinspection ResultOfMethodCallIgnored
         JPAEntityManagerUtils.getEntityManager();
     }
@@ -151,15 +163,18 @@ public class Server {
             post("/models", (request, response) -> {
                 try {
                     Taggable model = null;
-                    Object incomingModel = jsonUtils.fromJSON(request.body(), Object.class);
-                    Object kind = reflectionUtils.invokeMethod(incomingModel, "getKind", null);
-                    modelsClasses = diagramsReflections.getSubTypesOf(Taggable.class);
+                    Map<String, Object> incomingModel = (Map<String, Object>) jsonUtils.fromJSON(request.body(), Map.class);
+                    Object kind = incomingModel.get("kind");
                     for (Class<? extends Taggable> modelClass : modelsClasses) {
-                        Field field = reflectionUtils.getField(modelClass.getClass(), "kind");
-                        Object thisKind = field.get(modelClass.newInstance());
-                        if (kind.equals(thisKind)) {
-                            model = jsonUtils.fromJSON(request.body(), modelClass);
-                            break;
+                        Field field = reflectionUtils.getField(modelClass, "kind");
+                        if (field != null) {
+                            field.setAccessible(true);
+                            Object thisKind = field.get(modelClass.newInstance());
+                            thisKind = enumsUtils.getStringValue((Enum) thisKind);
+                            if (kind.equals(thisKind)) {
+                                model = jsonUtils.fromJSON(request.body(), modelClass);
+                                break;
+                            }
                         }
                     }
                     if (model == null) {
