@@ -140,6 +140,7 @@
         <xerces-xercesImpl>2.9.1</xerces-xercesImpl>
         <com.heroku.sdk-heroku-maven-plugin>0.4.4</com.heroku.sdk-heroku-maven-plugin>
         <com.araguacaima-commons-utils>1.0.1-SNAPSHOT</com.araguacaima-commons-utils>
+        <com.araguacaima-composite-specification>1.0.1-SNAPSHOT</com.araguacaima-composite-specification>
         <springframework.version>5.0.1.RELEASE</springframework.version>
         <springframework.version.data>2.0.1.RELEASE</springframework.version.data>
         <springframework.version.security>4.2.3.RELEASE</springframework.version.security>
@@ -578,6 +579,12 @@
                 <scope>compile</scope>
             </dependency>
 
+            <dependency>
+                <groupId>com.araguacaima</groupId>
+                <artifactId>composite-specification</artifactId>
+                <version>${com.araguacaima-composite-specification}</version>
+                <scope>compile</scope>
+            </dependency>
 
             <!--  Spring  -->
             <dependency>

@@ -1,117 +1,118 @@
 {
-  "swagger":"2.0",
-  "info":{
-    "description":"Operations can be done with OpenArchi models.",
-    "version":"1.0.0",
-    "title":"OpenArchi API",
-    "contact":{
-      "email":"alejandromanuel.mendez.aragua@bbva.com"
+  "swagger": "2.0",
+  "info": {
+    "description": "Operations can be done with OpenArchi models.",
+    "version": "1.0.0",
+    "title": "OpenArchi API",
+    "contact": {
+      "email": "alejandromanuel.mendez.aragua@bbva.com"
     },
-    "license":{
-      "name":"Apache 2.0",
-      "url":"http://www.apache.org/licenses/LICENSE-2.0.html"
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
     }
   },
-  "host":"@HOST@",
-  "basePath":"/api",
-  "tags":[
+  "host": "@HOST@",
+  "basePath": "/api",
+  "tags": [
     {
-      "name":"models",
-      "description":"Models"
+      "name": "models",
+      "description": "Models"
     },
     {
-      "name":"architecture",
-      "description":"Architecture"
+      "name": "architecture",
+      "description": "Architecture"
     },
     {
-      "name":"diagrams",
-      "description":"Diagrams"
+      "name": "diagrams",
+      "description": "Diagrams"
     }
   ],
-  "schemes":[
-    "http", "https"
+  "schemes": [
+    "http",
+    "https"
   ],
-  "paths":{
-    "/models":{
-      "get":{
-        "tags":[
+  "paths": {
+    "/models": {
+      "get": {
+        "tags": [
           "models"
         ],
-        "summary":"Finds models",
-        "description":"This service supports query by using RSQL expressions",
-        "operationId":"get-models",
-        "produces":[
+        "summary": "Finds models",
+        "description": "This service supports query by using RSQL expressions",
+        "operationId": "get-models",
+        "produces": [
           "application/json"
         ],
-        "parameters":[
+        "parameters": [
           {
-            "name":"$filter",
-            "in":"query",
-            "description":"Filter models according to an RSQL expression",
-            "required":false,
-            "type":"string"
+            "name": "$filter",
+            "in": "query",
+            "description": "Filter models according to an RSQL expression",
+            "required": false,
+            "type": "string"
           }
         ],
-        "responses":{
-          "200":{
-            "description":"OK",
-            "schema":{
-              "type":"array",
-              "items":{
-                "$ref":"#/definitions/Model"
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Model"
               }
             }
           },
-          "400":{
-            "description":"Bad request"
+          "400": {
+            "description": "Bad request"
           }
         },
-        "security":[
+        "security": [
           {
-            "openarchi_auth":[
+            "openarchi_auth": [
               "read:models"
             ]
           }
         ]
       },
-      "post":{
-        "tags":[
+      "post": {
+        "tags": [
           "models"
         ],
-        "summary":"Add a new model",
-        "description":"",
-        "operationId":"add-model",
-        "consumes":[
+        "summary": "Add a new model",
+        "description": "",
+        "operationId": "add-model",
+        "consumes": [
           "application/json"
         ],
-        "produces":[
+        "produces": [
           "application/json"
         ],
-        "parameters":[
+        "parameters": [
           {
-            "in":"body",
-            "name":"body",
-            "description":"Model object that needs to be added",
-            "required":true,
-            "schema":{
-              "$ref":"#/definitions/Model"
+            "in": "body",
+            "name": "body",
+            "description": "Model object that needs to be added",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Model_Create"
             }
           }
         ],
-        "responses":{
-          "201":{
-            "description":"Created"
+        "responses": {
+          "201": {
+            "description": "Created"
           },
-          "200":{
-            "description":"Accepted"
+          "200": {
+            "description": "Accepted"
           },
-          "405":{
-            "description":"Invalid input"
+          "405": {
+            "description": "Invalid input"
           }
         },
-        "security":[
+        "security": [
           {
-            "openarchi_auth":[
+            "openarchi_auth": [
               "write:model",
               "read:models"
             ]
@@ -120,37 +121,87 @@
       }
     }
   },
-  "securityDefinitions":{
-    "openarchi_auth":{
-      "type":"oauth2",
-      "authorizationUrl":"https://@HOST@/oauth/dialog",
-      "flow":"implicit",
-      "scopes":{
-        "write:model":"modify a model",
-        "read:models":"read your models"
+  "securityDefinitions": {
+    "openarchi_auth": {
+      "type": "oauth2",
+      "authorizationUrl": "https://@HOST@/oauth/dialog",
+      "flow": "implicit",
+      "scopes": {
+        "write:model": "modify a model",
+        "read:models": "read your models"
       }
     },
-    "api_key":{
-      "type":"apiKey",
-      "name":"api_key",
-      "in":"header"
+    "api_key": {
+      "type": "apiKey",
+      "name": "api_key",
+      "in": "header"
     }
   },
-  "definitions":{
-    "Model":{
-      "type":"object",
-      "required":[
-        "name",
-        "photoUrls"
-      ],
-      "properties":{
-        "id":{
-          "type":"string"
+  "definitions": {
+    "Model": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
         },
-        "tags":{
-          "type":"array",
-          "items":{
-            "type":"string"
+        "kind": {
+          "type": "string",
+          "enum": [
+            "ARCHITECTURAL_MODEL",
+            "FLOWCHART_MODEL",
+            "SEQUENCE_MODEL",
+            "GANTT_MODEL",
+            "ENTITY_RELATIONSHIP_MODEL",
+            "UML_CLASS_MODEL",
+            "BPM_MODEL",
+            "ARCHITECTURAL",
+            "FLOWCHART",
+            "SEQUENCE",
+            "GANTT",
+            "ENTITY_RELATIONSHIP",
+            "UML_CLASS",
+            "FEATURE",
+            "BPM"
+          ]
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "Model_Create": {
+      "type": "object",
+      "required": [
+        "kind"
+      ],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "ARCHITECTURAL_MODEL",
+            "FLOWCHART_MODEL",
+            "SEQUENCE_MODEL",
+            "GANTT_MODEL",
+            "ENTITY_RELATIONSHIP_MODEL",
+            "UML_CLASS_MODEL",
+            "BPM_MODEL",
+            "ARCHITECTURAL",
+            "FLOWCHART",
+            "SEQUENCE",
+            "GANTT",
+            "ENTITY_RELATIONSHIP",
+            "UML_CLASS",
+            "FEATURE",
+            "BPM"
+          ]
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
           }
         }
       }

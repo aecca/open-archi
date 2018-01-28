@@ -26,6 +26,7 @@ public class BundlesConfig {
 
         Resource[] locations = new Resource[2];
         locations[1] = new ClassPathResource("properties/commons.properties");
+        locations[2] = new ClassPathResource("specification.properties");
 
         propertyPlaceholderConfigurer.setLocations(locations);
         propertyPlaceholderConfigurer.setIgnoreUnresolvablePlaceholders(true);

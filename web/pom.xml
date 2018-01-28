@@ -14,10 +14,6 @@
         <version>1.0.1</version>
     </parent>
 
-    <properties>
-        <baseUrl>open-archi.herokuapp.com</baseUrl>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>cz.jirutka.rsql</groupId>
@@ -268,7 +264,7 @@
                     <replacements>
                         <replacement>
                             <token>@HOST@</token>
-                            <value>${baseUrl}</value>
+                            <value>localhost:4567</value>
                         </replacement>
                     </replacements>
                 </configuration>
@@ -346,6 +342,31 @@
                             <processTypes>
                                 <web>java -jar ./target/openarchi-api-with-dependencies.jar</web>
                             </processTypes>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>com.google.code.maven-replacer-plugin</groupId>
+                        <artifactId>replacer</artifactId>
+                        <version>1.5.3</version>
+                        <executions>
+                            <execution>
+                                <phase>generate-sources</phase>
+                                <goals>
+                                    <goal>replace</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <includes>
+                                <include>${basedir}/src/main/resources/web/public/swagger-template.json</include>
+                            </includes>
+                            <outputFile>${basedir}/src/main/resources/web/public/swagger.json</outputFile>
+                            <replacements>
+                                <replacement>
+                                    <token>@HOST@</token>
+                                    <value>open-archi.herokuapp.com</value>
+                                </replacement>
+                            </replacements>
                         </configuration>
                     </plugin>
                 </plugins>

@@ -1,6 +1,5 @@
 package com.araguacaima.gsa.msa.web;
 
-import com.araguacaima.commons.utils.FileUtils;
 import com.araguacaima.commons.utils.JsonUtils;
 import com.araguacaima.commons.utils.ReflectionUtils;
 import com.araguacaima.gsa.msa.web.wrapper.RsqlJsonFilter;
@@ -10,6 +9,7 @@ import com.araguacaima.gsa.persistence.utils.JPAEntityManagerUtils;
 import de.neuland.jade4j.JadeConfiguration;
 import de.neuland.jade4j.template.TemplateLoader;
 import org.apache.commons.lang3.StringUtils;
+import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.*;
@@ -20,6 +20,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Field;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.Charset;
@@ -27,10 +28,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.GeneralSecurityException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.net.HttpURLConnection.*;
@@ -78,6 +76,8 @@ public class Server {
     private static com.araguacaima.gsa.persistence.diagrams.gantt.Model deeplyFulfilledGanttModel;
     private static com.araguacaima.gsa.persistence.diagrams.sequence.Model deeplyFulfilledSequenceModel;
     private static com.araguacaima.gsa.persistence.diagrams.classes.Model deeplyFulfilledClassesModel;
+    private static Set<Class<? extends Taggable>> modelsClasses;
+    private static Reflections diagramsReflections;
 
     static {
         config.setTemplateLoader(templateLoader);
@@ -96,6 +96,8 @@ public class Server {
         deeplyFulfilledSequenceModel.setKind(ElementKind.SEQUENCE_MODEL);
         deeplyFulfilledClassesModel = reflectionUtils.deepInitialization(com.araguacaima.gsa.persistence.diagrams.classes.Model.class);
         deeplyFulfilledClassesModel.setKind(ElementKind.UML_CLASS_MODEL);
+        diagramsReflections = new Reflections("com.araguacaima.gsa.persistence.diagrams", Taggable.class.getClassLoader());
+        modelsClasses = diagramsReflections.getSubTypesOf(Taggable.class);
         //noinspection ResultOfMethodCallIgnored
         JPAEntityManagerUtils.getEntityManager();
     }
@@ -147,8 +149,22 @@ public class Server {
                 return jsonUtils.toJSON(deeplyFulfilledParentModel);
             });
             post("/models", (request, response) -> {
-                Taggable model = jsonUtils.fromJSON(request.body(), Taggable.class);
                 try {
+                    Taggable model = null;
+                    Object incomingModel = jsonUtils.fromJSON(request.body(), Object.class);
+                    Object kind = reflectionUtils.invokeMethod(incomingModel, "getKind", null);
+                    modelsClasses = diagramsReflections.getSubTypesOf(Taggable.class);
+                    for (Class<? extends Taggable> modelClass : modelsClasses) {
+                        Field field = reflectionUtils.getField(modelClass.getClass(), "kind");
+                        Object thisKind = field.get(modelClass.newInstance());
+                        if (kind.equals(thisKind)) {
+                            model = jsonUtils.fromJSON(request.body(), modelClass);
+                            break;
+                        }
+                    }
+                    if (model == null) {
+                        throw new Exception("Invalid kind of model '" + kind + "'");
+                    }
                     model.validateCreation();
                     Util.populate(model);
                     response.status(HTTP_CREATED);

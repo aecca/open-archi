@@ -1,13 +1,19 @@
 package com.araguacaima.gsa.persistence.meta;
 
+import com.araguacaima.commons.utils.MapUtils;
 import com.araguacaima.gsa.persistence.commons.Constants;
 import com.araguacaima.gsa.persistence.commons.exceptions.EntityError;
+import com.araguacaima.specification.Specification;
+import com.araguacaima.specification.util.SpecificationMap;
+import com.araguacaima.specification.util.SpecificationMapBuilder;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.UUID;
 
@@ -21,6 +27,7 @@ public abstract class BaseEntity implements Serializable, BasicEntity, Cloneable
     protected static final ResourceBundle resourceBundle = ResourceBundle.getBundle(Constants.BUNDLE_NAME);
 
     private static final long serialVersionUID = 5449758397914117108L;
+    private static SpecificationMapBuilder specificationMapBuilder = new SpecificationMapBuilder(MapUtils.getInstance());
 
     @Id
     @NotNull
@@ -66,7 +73,21 @@ public abstract class BaseEntity implements Serializable, BasicEntity, Cloneable
     public void validateCreation() throws EntityError {
         if (id == null) {
             this.id = generateId();
+        } else {
+            throw new EntityError("All identifiers are managed by OpenArchi, so, they can not be provided by consumers");
         }
+        try {
+            SpecificationMap specificationMap = specificationMapBuilder.getInstance(this.getClass());
+            Specification specification = specificationMap.getSpecificationFromMethod("validateCreation");
+            Map map = new HashMap<>();
+            if (!specification.isSatisfiedBy(this, map)) {
+                throw new EntityError(map.get("ERROR").toString());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new EntityError(e.getMessage(), e);
+        }
+
     }
 
     @Override
