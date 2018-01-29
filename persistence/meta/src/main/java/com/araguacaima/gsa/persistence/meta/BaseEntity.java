@@ -71,11 +71,6 @@ public abstract class BaseEntity implements Serializable, BasicEntity, Cloneable
 
     @Override
     public void validateCreation() throws EntityError {
-        if (id == null) {
-            this.id = generateId();
-        } else {
-            throw new EntityError("All identifiers are managed by OpenArchi, so, they can not be provided by consumers");
-        }
         try {
             SpecificationMap specificationMap = specificationMapBuilder.getInstance(this.getClass());
             Specification specification = specificationMap.getSpecificationFromMethod("validateCreation");
