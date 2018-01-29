@@ -153,15 +153,7 @@
             "GANTT_MODEL",
             "ENTITY_RELATIONSHIP_MODEL",
             "UML_CLASS_MODEL",
-            "BPM_MODEL",
-            "ARCHITECTURAL",
-            "FLOWCHART",
-            "SEQUENCE",
-            "GANTT",
-            "ENTITY_RELATIONSHIP",
-            "UML_CLASS",
-            "FEATURE",
-            "BPM"
+            "BPM_MODEL"
           ]
         },
         "tags": {

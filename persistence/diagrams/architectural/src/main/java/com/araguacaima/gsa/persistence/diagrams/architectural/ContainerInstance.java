@@ -30,7 +30,7 @@ public class ContainerInstance extends Element {
     private Model model;
 
     @Column
-    private ElementKind kind = ElementKind.ARCHITECTURAL_MODEL;
+    private ElementKind kind = ElementKind.CONTAINER;
 
     public ContainerInstance() {
     }

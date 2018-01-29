@@ -15,5 +15,8 @@ public enum ElementKind {
     ENTITY_RELATIONSHIP,
     UML_CLASS,
     FEATURE,
+    COMPONENT,
+    CONTAINER,
+    DEPLOYMENT,
     BPM
 }

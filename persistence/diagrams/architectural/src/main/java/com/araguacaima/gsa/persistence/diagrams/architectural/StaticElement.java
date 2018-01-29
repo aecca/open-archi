@@ -20,7 +20,7 @@ public abstract class StaticElement extends Element {
     @JsonIgnore
     private Model model;
     @Column
-    private ElementKind kind = ElementKind.ARCHITECTURAL_MODEL;
+    private ElementKind kind = ElementKind.COMPONENT;
 
     public StaticElement() {
     }
