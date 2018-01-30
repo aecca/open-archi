@@ -8,6 +8,7 @@ import com.araguacaima.specification.util.SpecificationMap;
 import com.araguacaima.specification.util.SpecificationMapBuilder;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -20,6 +21,7 @@ import java.util.UUID;
 @MappedSuperclass
 @PersistenceUnit(unitName = "gsa")
 @JsonIgnoreProperties(value = {"resourceBundle"})
+@Component
 public abstract class BaseEntity implements Serializable, BasicEntity, Cloneable {
 
     @Transient
@@ -72,11 +74,13 @@ public abstract class BaseEntity implements Serializable, BasicEntity, Cloneable
     @Override
     public void validateCreation() throws EntityError {
         try {
-            SpecificationMap specificationMap = specificationMapBuilder.getInstance(this.getClass());
+            SpecificationMap specificationMap = specificationMapBuilder.getInstance(this.getClass(), true);
             Specification specification = specificationMap.getSpecificationFromMethod("validateCreation");
-            Map map = new HashMap<>();
-            if (!specification.isSatisfiedBy(this, map)) {
-                throw new EntityError(map.get("ERROR").toString());
+            if (specification != null) {
+                Map map = new HashMap<>();
+                if (!specification.isSatisfiedBy(this, map)) {
+                    throw new EntityError(map.get("ERROR").toString());
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

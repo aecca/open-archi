@@ -119,21 +119,23 @@ public class Util {
     }
 
     private static void process(Class<?> type, Object object_, Map<Class, Object> entitiesForReattempt) {
-        if (ReflectionUtils.isCollectionImplementation(type)) {
-            for (Object innerCollection : (Collection) object_) {
-                innerPopulation(innerCollection, entitiesForReattempt);
-            }
-        } else if (ReflectionUtils.isMapImplementation(type)) {
-            for (Object innerMapValues : ((Map) object_).values()) {
-                innerPopulation(innerMapValues, entitiesForReattempt);
-            }
-        } else {
-            if (reflectionUtils.getFullyQualifiedJavaTypeOrNull(type) == null && !type.isEnum() && !Enum.class.isAssignableFrom(type)) {
-                if (BasicEntity.class.isAssignableFrom(type) || type.getAnnotation(Entity.class) != null) {
-                    try {
-                        innerPopulation(object_, entitiesForReattempt);
-                    } catch (Throwable t) {
-                        entitiesForReattempt.put(object_.getClass(), object_);
+        if (object_ != null) {
+            if (ReflectionUtils.isCollectionImplementation(type)) {
+                for (Object innerCollection : (Collection) object_) {
+                    innerPopulation(innerCollection, entitiesForReattempt);
+                }
+            } else if (ReflectionUtils.isMapImplementation(type)) {
+                for (Object innerMapValues : ((Map) object_).values()) {
+                    innerPopulation(innerMapValues, entitiesForReattempt);
+                }
+            } else {
+                if (reflectionUtils.getFullyQualifiedJavaTypeOrNull(type) == null && !type.isEnum() && !Enum.class.isAssignableFrom(type)) {
+                    if (BasicEntity.class.isAssignableFrom(type) || type.getAnnotation(Entity.class) != null) {
+                        try {
+                            innerPopulation(object_, entitiesForReattempt);
+                        } catch (Throwable t) {
+                            entitiesForReattempt.put(object_.getClass(), object_);
+                        }
                     }
                 }
             }

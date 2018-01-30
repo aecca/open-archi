@@ -11,7 +11,6 @@ import com.araguacaima.gsa.persistence.utils.JPAEntityManagerUtils;
 import de.neuland.jade4j.JadeConfiguration;
 import de.neuland.jade4j.template.TemplateLoader;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.collections4.Predicate;
 import org.apache.commons.lang3.StringUtils;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
@@ -25,6 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.Charset;
@@ -47,6 +47,7 @@ public class Server {
     private static Logger log = LoggerFactory.getLogger(Server.class);
     private static final JsonUtils jsonUtils = new JsonUtils();
     private static EnumsUtils enumsUtils = new EnumsUtils();
+    private static String DIAGRAMS_PACKAGES = "com.araguacaima.gsa.persistence.diagrams";
     private static final ExceptionHandler exceptionHandler = new ExceptionHandlerImpl(Exception.class) {
         @Override
         public void handle(Exception exception, Request request, Response response) {
@@ -101,14 +102,9 @@ public class Server {
         deeplyFulfilledSequenceModel.setKind(ElementKind.SEQUENCE_MODEL);
         deeplyFulfilledClassesModel = reflectionUtils.deepInitialization(com.araguacaima.gsa.persistence.diagrams.classes.Model.class);
         deeplyFulfilledClassesModel.setKind(ElementKind.UML_CLASS_MODEL);
-        diagramsReflections = new Reflections("com.araguacaima.gsa.persistence.diagrams", Taggable.class.getClassLoader());
+        diagramsReflections = new Reflections(DIAGRAMS_PACKAGES, Taggable.class.getClassLoader());
         modelsClasses = diagramsReflections.getSubTypesOf(Taggable.class);
-        CollectionUtils.filter(modelsClasses, new Predicate<Class<? extends Taggable>>() {
-            @Override
-            public boolean evaluate(Class<? extends Taggable> object) {
-                return object.getSuperclass().equals(Element.class);
-            }
-        });
+        CollectionUtils.filter(modelsClasses, clazz -> clazz.getSuperclass().equals(Element.class) && !Modifier.isAbstract(clazz.getModifiers()));
 
         //noinspection ResultOfMethodCallIgnored
         JPAEntityManagerUtils.getEntityManager();
@@ -169,7 +165,8 @@ public class Server {
                         Field field = reflectionUtils.getField(modelClass, "kind");
                         if (field != null) {
                             field.setAccessible(true);
-                            Object thisKind = field.get(modelClass.newInstance());
+                            Object obj = modelClass.newInstance();
+                            Object thisKind = field.get(obj);
                             thisKind = enumsUtils.getStringValue((Enum) thisKind);
                             if (kind.equals(thisKind)) {
                                 model = jsonUtils.fromJSON(request.body(), modelClass);

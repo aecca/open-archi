@@ -22,7 +22,7 @@
         <org.apache.maven.plugins-maven-jar-plugin>3.0.2</org.apache.maven.plugins-maven-jar-plugin>
         <com.fasterxml.jackson.core-jackson-annotations>2.9.2</com.fasterxml.jackson.core-jackson-annotations>
         <org.apache.commons-commons-lang3>3.5</org.apache.commons-commons-lang3>
-        <!--<com.h2database-h2>1.4.196</com.h2database-h2>-->
+        <com.h2database-h2>1.4.196</com.h2database-h2>
         <!--<org.eclipse.persistence-org.eclipse.persistence.jpa>2.7.0</org.eclipse.persistence-org.eclipse.persistence.jpa>-->
         <org.hibernate-hibernate-core>5.2.12.Final</org.hibernate-hibernate-core>
         <org.hibernate.javax.persistence-hibernate-jpa-2.1-api>1.0.0.Final
@@ -119,11 +119,11 @@
 
     <dependencies>
 
-        <!--        <dependency>
-                    <groupId>com.h2database</groupId>
-                    <artifactId>h2</artifactId>
-                    <version>${com.h2database-h2}</version>
-                </dependency>-->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>${com.h2database-h2}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.postgresql</groupId>
