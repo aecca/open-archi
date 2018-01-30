@@ -36,6 +36,9 @@ public abstract class BaseEntity implements Serializable, BasicEntity, Cloneable
     @Column(name = "Id")
     protected String id;
 
+    @OneToOne
+    private MetaInfo meta;
+
     public BaseEntity() {
         this.id = generateId();
     }
@@ -44,12 +47,18 @@ public abstract class BaseEntity implements Serializable, BasicEntity, Cloneable
         return UUID.randomUUID().toString();
     }
 
-
     @Override
     public String getId() {
         return this.id;
     }
 
+    public MetaInfo getMeta() {
+        return meta;
+    }
+
+    public void setMeta(MetaInfo meta) {
+        this.meta = meta;
+    }
 
     @JsonIgnore
     protected String getRequestErrorMessageKey() {

@@ -42,26 +42,28 @@ public class Version extends BaseEntity implements Serializable, Comparable<Vers
 
     @Column(nullable = false)
     @NotNull
-    private Integer major;
+    private Integer major = 0;
 
     @Column(nullable = false)
     @NotNull
-    private Integer minor;
+    private Integer minor = 0;
 
     @Column(nullable = true)
-    private Integer build;
+    private Integer build = 1;
 
     public Version() {
         this.id = UUID.randomUUID().toString();
     }
 
     public Version(Integer major, Integer minor, Integer build) {
+        this();
         this.major = major;
         this.minor = minor;
         this.build = build;
     }
 
     public Version(String version) throws NumberFormatException {
+        this();
         if (StringUtils.isNotBlank(version)) {
             version = version.trim();
             String[] versionSplitted;
@@ -155,6 +157,33 @@ public class Version extends BaseEntity implements Serializable, Comparable<Vers
                 .append(minor, version.minor)
                 .append(build, version.build)
                 .isEquals();
+    }
+
+    public Version nextBuild() {
+        if (build != null) {
+            build = build++;
+        } else {
+            build = 1;
+        }
+        return this;
+     }
+
+    public Version nextMinor() {
+        if (minor != null) {
+            minor = minor++;
+        } else {
+            minor = 0;
+        }
+        return this;
+    }
+
+    public Version nextMajor() {
+        if (major != null) {
+            major = major++;
+        } else {
+            major = 0;
+        }
+        return this;
     }
 
     @Override
