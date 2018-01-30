@@ -18,7 +18,7 @@ public class AppendMetaInfo extends AbstractSpecification {
     }
 
     public boolean isSatisfiedBy(Object object, Map map) {
-        if (object.getClass().isAssignableFrom(BaseEntity.class)) {
+        if (BaseEntity.class.isAssignableFrom(object.getClass())) {
             BaseEntity entity = (BaseEntity) object;
             MetaInfo meta;
             Date thisTime = Calendar.getInstance().getTime();
@@ -28,6 +28,7 @@ public class AppendMetaInfo extends AbstractSpecification {
                 meta.setVersion(version);
                 meta.setCreated(thisTime);
                 meta.setModified(thisTime);
+                entity.setMeta(meta);
             } else {
                 meta = entity.getMeta();
                 meta.setModified(thisTime);

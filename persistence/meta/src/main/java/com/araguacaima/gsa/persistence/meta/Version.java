@@ -25,7 +25,7 @@ import java.util.UUID;
                 + "  (v1.major = v2.major AND v1.minor < v2.minor) OR (v1.major = v2.major AND v1.minor = v2.minor AND v1.build < v2.build) "
                 + "  OR (v1.major < v2.major)) "
                 + "WHERE v2.id IS NULL")})
-public class Version extends BaseEntity implements Serializable, Comparable<Version>, Cloneable {
+public class Version implements Serializable, Comparable<Version>, Cloneable {
 
     public static final String GET_ALL_VERSIONS = "Version.getAllVersions";
     public static final String COUNT_ALL_VERSIONS = "Version.countAllVersions";
@@ -39,6 +39,16 @@ public class Version extends BaseEntity implements Serializable, Comparable<Vers
     public static final String PARAM_BUILD = "build";
 
     private static final long serialVersionUID = -5350803918802322500L;
+
+
+    @Id
+    @NotNull
+    @Column(name = "Id")
+    private  String id = UUID.randomUUID().toString();
+
+    public String getId() {
+        return this.id;
+    }
 
     @Column(nullable = false)
     @NotNull

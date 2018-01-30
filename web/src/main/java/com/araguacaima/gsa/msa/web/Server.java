@@ -120,7 +120,7 @@ public class Server {
         map.put("title", "OpenArchi API");
 
         staticFiles.location("/web/public");
-        options("/*", (request, response) -> {
+        options("/open-archi/*", (request, response) -> {
 
             String accessControlRequestHeaders = request.headers("Access-Control-Request-Headers");
             if (accessControlRequestHeaders != null) {
@@ -138,145 +138,148 @@ public class Server {
             response.header("Access-Control-Request-Method", "*");
             response.header("Access-Control-Allow-Headers", "*");
         });
-        get("/", (req, res) -> new ModelAndView(map, "home"), engine);
-        path("/api", () -> {
-            exception(Exception.class, exceptionHandler);
-            before("/*", (req, res) -> log.info("Received api call to " + req.requestMethod() + " " + req.pathInfo()));
-            options("/models", (request, response) -> {
-                response.status(HTTP_OK);
-                response.header("Allow", "POST, GET");
-                response.header("Content-Type", JSON_CONTENT_TYPE + ", " + HTML_CONTENT_TYPE);
-                String accessControlRequestHeaders = request.headers("Access-Control-Request-Headers");
-                if (accessControlRequestHeaders != null) {
-                    response.header("Access-Control-Allow-Headers", accessControlRequestHeaders);
-                }
-                String accessControlRequestMethod = request.headers("Access-Control-Request-Method");
-                if (accessControlRequestMethod != null) {
-                    response.header("Access-Control-Allow-Methods", accessControlRequestMethod);
-                }
-                return jsonUtils.toJSON(deeplyFulfilledParentModel);
-            });
-            post("/models", (request, response) -> {
-                try {
-                    Taggable model = null;
-                    Map<String, Object> incomingModel = (Map<String, Object>) jsonUtils.fromJSON(request.body(), Map.class);
-                    Object kind = incomingModel.get("kind");
-                    for (Class<? extends Taggable> modelClass : modelsClasses) {
-                        Field field = reflectionUtils.getField(modelClass, "kind");
-                        if (field != null) {
-                            field.setAccessible(true);
-                            Object obj = modelClass.newInstance();
-                            Object thisKind = field.get(obj);
-                            thisKind = enumsUtils.getStringValue((Enum) thisKind);
-                            if (kind.equals(thisKind)) {
-                                model = jsonUtils.fromJSON(request.body(), modelClass);
-                                break;
+        redirect.get("/", "/open-archi/", Redirect.Status.TEMPORARY_REDIRECT);
+        path("/open-archi", () -> {
+            get("/", (req, res) -> new ModelAndView(map, "home"), engine);
+            path("/api", () -> {
+                exception(Exception.class, exceptionHandler);
+                before("/*", (req, res) -> log.info("Received api call to " + req.requestMethod() + " " + req.pathInfo()));
+                options("/models", (request, response) -> {
+                    response.status(HTTP_OK);
+                    response.header("Allow", "POST, GET");
+                    response.header("Content-Type", JSON_CONTENT_TYPE + ", " + HTML_CONTENT_TYPE);
+                    String accessControlRequestHeaders = request.headers("Access-Control-Request-Headers");
+                    if (accessControlRequestHeaders != null) {
+                        response.header("Access-Control-Allow-Headers", accessControlRequestHeaders);
+                    }
+                    String accessControlRequestMethod = request.headers("Access-Control-Request-Method");
+                    if (accessControlRequestMethod != null) {
+                        response.header("Access-Control-Allow-Methods", accessControlRequestMethod);
+                    }
+                    return jsonUtils.toJSON(deeplyFulfilledParentModel);
+                });
+                post("/models", (request, response) -> {
+                    try {
+                        Taggable model = null;
+                        Map<String, Object> incomingModel = (Map<String, Object>) jsonUtils.fromJSON(request.body(), Map.class);
+                        Object kind = incomingModel.get("kind");
+                        for (Class<? extends Taggable> modelClass : modelsClasses) {
+                            Field field = reflectionUtils.getField(modelClass, "kind");
+                            if (field != null) {
+                                field.setAccessible(true);
+                                Object obj = modelClass.newInstance();
+                                Object thisKind = field.get(obj);
+                                thisKind = enumsUtils.getStringValue((Enum) thisKind);
+                                if (kind.equals(thisKind)) {
+                                    model = jsonUtils.fromJSON(request.body(), modelClass);
+                                    break;
+                                }
                             }
                         }
+                        if (model == null) {
+                            throw new Exception("Invalid kind of model '" + kind + "'");
+                        }
+                        model.validateCreation();
+                        Util.populate(model);
+                        response.status(HTTP_CREATED);
+                        response.type(JSON_CONTENT_TYPE);
+                        response.header("Location", request.pathInfo() + "/models/" + model.getId());
+                        return EMPTY_RESPONSE;
+                    } catch (Throwable ex) {
+                        return throwError(response, ex);
                     }
-                    if (model == null) {
-                        throw new Exception("Invalid kind of model '" + kind + "'");
+                });
+                get("/models/:uuid", (request, response) -> {
+                    try {
+                        String id = request.params(":uuid");
+                        Taggable model = JPAEntityManagerUtils.find(Taggable.class, id);
+                        model.validateRequest();
+                        response.status(HTTP_OK);
+                        response.type(JSON_CONTENT_TYPE);
+                        return jsonUtils.toJSON(model);
+                    } catch (Exception ex) {
+                        return throwError(response, ex);
                     }
-                    model.validateCreation();
-                    Util.populate(model);
-                    response.status(HTTP_CREATED);
+                });
+                get("/models", (request, response) -> {
+                    return getList(request, response, Taggable.GET_ALL_MODELS, null);
+                });
+                post("/models/:uuid/children", (request, response) -> {
+                    response.status(HTTP_NOT_IMPLEMENTED);
                     response.type(JSON_CONTENT_TYPE);
-                    response.header("Location", request.pathInfo() + "/models/" + model.getId());
                     return EMPTY_RESPONSE;
-                } catch (Throwable ex) {
-                    return throwError(response, ex);
-                }
-            });
-            get("/models/:uuid", (request, response) -> {
-                try {
-                    String id = request.params(":uuid");
-                    Taggable model = JPAEntityManagerUtils.find(Taggable.class, id);
-                    model.validateRequest();
-                    response.status(HTTP_OK);
+                });
+                get("/models/:uuid/children", (request, response) -> {
+                    response.status(HTTP_NOT_IMPLEMENTED);
                     response.type(JSON_CONTENT_TYPE);
-                    return jsonUtils.toJSON(model);
-                } catch (Exception ex) {
-                    return throwError(response, ex);
-                }
-            });
-            get("/models", (request, response) -> {
-                return getList(request, response, Taggable.GET_ALL_MODELS, null);
-            });
-            post("/models/:uuid/children", (request, response) -> {
-                response.status(HTTP_NOT_IMPLEMENTED);
-                response.type(JSON_CONTENT_TYPE);
-                return EMPTY_RESPONSE;
-            });
-            get("/models/:uuid/children", (request, response) -> {
-                response.status(HTTP_NOT_IMPLEMENTED);
-                response.type(JSON_CONTENT_TYPE);
-                return EMPTY_RESPONSE;
-            });
-            get("/models/:uuid/parent", (request, response) -> {
-                response.status(HTTP_NOT_IMPLEMENTED);
-                response.type(JSON_CONTENT_TYPE);
-                return EMPTY_RESPONSE;
-            });
-            options("/models/architectures", (request, response) -> getOptions(request, response, deeplyFulfilledArchitectureModel));
-            get("/models/architectures", (request, response) -> {
-                Map<String, Object> params = new HashMap<>();
-                params.put("modelType", "ArchitectureModel");
-                response.type(JSON_CONTENT_TYPE);
-                return jsonUtils.toJSON(getList(request, response, Taggable.GET_MODELS_BY_TYPE, params));
-            });
-            options("/models/bpms", (request, response) -> {
-                return getOptions(request, response, deeplyFulfilledBpmModel);
-            });
-            get("/models/bpms", (request, response) -> {
-                Map<String, Object> params = new HashMap<>();
-                params.put("modelType", "BpmModel");
-                response.type(JSON_CONTENT_TYPE);
-                return jsonUtils.toJSON(getList(request, response, Taggable.GET_MODELS_BY_TYPE, params));
-            });
-            options("/models/ers", (request, response) -> {
-                return getOptions(request, response, deeplyFulfilledERModel);
-            });
-            get("/models/ers", (request, response) -> {
-                Map<String, Object> params = new HashMap<>();
-                params.put("modelType", "ERModel");
-                response.type(JSON_CONTENT_TYPE);
-                return jsonUtils.toJSON(getList(request, response, Taggable.GET_MODELS_BY_TYPE, params));
-            });
-            options("/models/flowcharts", (request, response) -> {
-                return getOptions(request, response, deeplyFulfilledFlowchartModel);
-            });
-            get("/models/flowcharts", (request, response) -> {
-                Map<String, Object> params = new HashMap<>();
-                params.put("modelType", "FlowchartModel");
-                response.type(JSON_CONTENT_TYPE);
-                return jsonUtils.toJSON(getList(request, response, Taggable.GET_MODELS_BY_TYPE, params));
-            });
-            options("/models/gantts", (request, response) -> {
-                return getOptions(request, response, deeplyFulfilledGanttModel);
-            });
-            get("/models/gantts", (request, response) -> {
-                Map<String, Object> params = new HashMap<>();
-                params.put("modelType", "GanttModel");
-                response.type(JSON_CONTENT_TYPE);
-                return jsonUtils.toJSON(getList(request, response, Taggable.GET_MODELS_BY_TYPE, params));
-            });
-            options("/models/sequences", (request, response) -> {
-                return getOptions(request, response, deeplyFulfilledSequenceModel);
-            });
-            get("/models/sequences", (request, response) -> {
-                Map<String, Object> params = new HashMap<>();
-                params.put("modelType", "SequenceModel");
-                response.type(JSON_CONTENT_TYPE);
-                return jsonUtils.toJSON(getList(request, response, Taggable.GET_MODELS_BY_TYPE, params));
-            });
-            options("/models/classes", (request, response) -> {
-                return getOptions(request, response, deeplyFulfilledClassesModel);
-            });
-            get("/models/classes", (request, response) -> {
-                Map<String, Object> params = new HashMap<>();
-                params.put("modelType", "ClassesModel");
-                response.type(JSON_CONTENT_TYPE);
-                return jsonUtils.toJSON(getList(request, response, Taggable.GET_MODELS_BY_TYPE, params));
+                    return EMPTY_RESPONSE;
+                });
+                get("/models/:uuid/parent", (request, response) -> {
+                    response.status(HTTP_NOT_IMPLEMENTED);
+                    response.type(JSON_CONTENT_TYPE);
+                    return EMPTY_RESPONSE;
+                });
+                options("/models/architectures", (request, response) -> getOptions(request, response, deeplyFulfilledArchitectureModel));
+                get("/models/architectures", (request, response) -> {
+                    Map<String, Object> params = new HashMap<>();
+                    params.put("modelType", "ArchitectureModel");
+                    response.type(JSON_CONTENT_TYPE);
+                    return jsonUtils.toJSON(getList(request, response, Taggable.GET_MODELS_BY_TYPE, params));
+                });
+                options("/models/bpms", (request, response) -> {
+                    return getOptions(request, response, deeplyFulfilledBpmModel);
+                });
+                get("/models/bpms", (request, response) -> {
+                    Map<String, Object> params = new HashMap<>();
+                    params.put("modelType", "BpmModel");
+                    response.type(JSON_CONTENT_TYPE);
+                    return jsonUtils.toJSON(getList(request, response, Taggable.GET_MODELS_BY_TYPE, params));
+                });
+                options("/models/ers", (request, response) -> {
+                    return getOptions(request, response, deeplyFulfilledERModel);
+                });
+                get("/models/ers", (request, response) -> {
+                    Map<String, Object> params = new HashMap<>();
+                    params.put("modelType", "ERModel");
+                    response.type(JSON_CONTENT_TYPE);
+                    return jsonUtils.toJSON(getList(request, response, Taggable.GET_MODELS_BY_TYPE, params));
+                });
+                options("/models/flowcharts", (request, response) -> {
+                    return getOptions(request, response, deeplyFulfilledFlowchartModel);
+                });
+                get("/models/flowcharts", (request, response) -> {
+                    Map<String, Object> params = new HashMap<>();
+                    params.put("modelType", "FlowchartModel");
+                    response.type(JSON_CONTENT_TYPE);
+                    return jsonUtils.toJSON(getList(request, response, Taggable.GET_MODELS_BY_TYPE, params));
+                });
+                options("/models/gantts", (request, response) -> {
+                    return getOptions(request, response, deeplyFulfilledGanttModel);
+                });
+                get("/models/gantts", (request, response) -> {
+                    Map<String, Object> params = new HashMap<>();
+                    params.put("modelType", "GanttModel");
+                    response.type(JSON_CONTENT_TYPE);
+                    return jsonUtils.toJSON(getList(request, response, Taggable.GET_MODELS_BY_TYPE, params));
+                });
+                options("/models/sequences", (request, response) -> {
+                    return getOptions(request, response, deeplyFulfilledSequenceModel);
+                });
+                get("/models/sequences", (request, response) -> {
+                    Map<String, Object> params = new HashMap<>();
+                    params.put("modelType", "SequenceModel");
+                    response.type(JSON_CONTENT_TYPE);
+                    return jsonUtils.toJSON(getList(request, response, Taggable.GET_MODELS_BY_TYPE, params));
+                });
+                options("/models/classes", (request, response) -> {
+                    return getOptions(request, response, deeplyFulfilledClassesModel);
+                });
+                get("/models/classes", (request, response) -> {
+                    Map<String, Object> params = new HashMap<>();
+                    params.put("modelType", "ClassesModel");
+                    response.type(JSON_CONTENT_TYPE);
+                    return jsonUtils.toJSON(getList(request, response, Taggable.GET_MODELS_BY_TYPE, params));
+                });
             });
         });
     }

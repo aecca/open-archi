@@ -16,6 +16,7 @@
 
     <properties>
         <baseUrl>open-archi.herokuapp.com</baseUrl>
+        <!--<baseUrl>localhost:4567</baseUrl>-->
     </properties>
 
     <dependencies>
@@ -268,7 +269,6 @@
                     <replacements>
                         <replacement>
                             <token>@HOST@</token>
-                            <!--<value>localhost:4567</value>-->
                             <value>${baseUrl}</value>
                         </replacement>
                     </replacements>
@@ -369,7 +369,6 @@
                             <replacements>
                                 <replacement>
                                     <token>@HOST@</token>
-                                    <!--<value>localhost:4567</value>-->
                                     <value>${baseUrl}</value>
                                 </replacement>
                             </replacements>
