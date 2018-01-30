@@ -13,7 +13,7 @@
     }
   },
   "host": "@HOST@",
-  "basePath": "/api",
+  "basePath": "/open-archi/api",
   "tags": [
     {
       "name": "models",
