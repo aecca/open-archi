@@ -114,60 +114,32 @@ securityDefinitions:
     type: apiKey
     name: api_key
     in: header
+
 definitions:
-  Model:
-    description: Model object
+  Consumer:
+    type: object
+
+  SoftwareSystem:
+    type: object
+
+  DeploymentNode:
+    type: object
+
+  Consumer_Create:
+    type: object
+
+  SoftwareSystem_Create:
+    type: object
+
+  DeploymentNode_Create:
+    type: object
+
+  Item:
+    description: Abstract item object
     allOf:
     - $ref: "#/definitions/Taggable"
     - type: object
       properties:
-        name:
-          type: string
-          description: Model name
-        kind:
-          type: string
-          description: Type of model
-          enum:
-          - ARCHITECTURAL_MODEL
-          - FLOWCHART_MODEL
-          - SEQUENCE_MODEL
-          - GANTT_MODEL
-          - ENTITY_RELATIONSHIP_MODEL
-          - UML_CLASS_MODEL
-          - BPM_MODEL
-          - ARCHITECTURAL
-          - FLOWCHART
-          - SEQUENCE
-          - GANTT
-          - ENTITY_RELATIONSHIP
-          - UML_CLASS
-          - FEATURE
-          - BPM
-        description:
-          type: string
-          description: Long description of model
-        location:
-          $ref: "#/definitions/Point"
-          description: Long description of model
-        parent:
-          $ref: "#/definitions/CompositeElement"
-          description: Long description of model
-        children:
-          type: array
-          description: Children of the model
-          items:
-            $ref: "#/definitions/CompositeElement"
-        shape:
-          $ref: "#/definitions/Shape"
-          description: Long description of model
-        relationships:
-          type: array
-          description: Relationships of the model
-          items:
-            $ref: "#/definitions/Relationship"
-        metaData:
-          $ref: "#/definitions/MetaData"
-          description: Meta data associated with the model
         url:
           type: string
           description: Url for the physical access to the of model
@@ -180,13 +152,30 @@ definitions:
           description: Links to the features that conforms the model
           items:
             $ref: "#/definitions/CompositeElement"
-      required:
-      - name
-      - kind
-  Model_Create:
-    description: Model object
+
+  Item_Create:
+    description: Abstract item object
     allOf:
     - $ref: "#/definitions/Taggable_Create"
+    - type: object
+      properties:
+        url:
+          type: string
+          description: Url for the physical access to the of model
+        properties:
+          type: object
+          additionalProperties:
+            type: string
+        featuresLinks:
+          type: array
+          description: Links to the features that conforms the model
+          items:
+            $ref: "#/definitions/CompositeElement"
+
+  Element_Create:
+    description: Abstract element object
+    allOf:
+    - $ref: "#/definitions/Item_Create"
     - type: object
       properties:
         name:
@@ -194,7 +183,7 @@ definitions:
           description: Model name
         kind:
           type: string
-          description: Type of model
+          description: Type of element
           enum:
           - ARCHITECTURAL_MODEL
           - FLOWCHART_MODEL
@@ -236,21 +225,147 @@ definitions:
         metaData:
           $ref: "#/definitions/MetaData_Create"
           description: Meta data associated with the model
-        url:
-          type: string
-          description: Url for the physical access to the of model
-        properties:
-          type: object
-          additionalProperties:
-            type: string
-        featuresLinks:
-          type: array
-          description: Links to the features that conforms the model
-          items:
-            $ref: "#/definitions/CompositeElement"
+      discriminator: kind
       required:
       - name
       - kind
+
+  Element:
+    description: Abstract element object
+    allOf:
+    - $ref: "#/definitions/Item"
+    - type: object
+      properties:
+        name:
+          type: string
+          description: Model name
+        kind:
+          type: string
+          description: Type of element
+          enum:
+          - ARCHITECTURAL_MODEL
+          - FLOWCHART_MODEL
+          - SEQUENCE_MODEL
+          - GANTT_MODEL
+          - ENTITY_RELATIONSHIP_MODEL
+          - UML_CLASS_MODEL
+          - BPM_MODEL
+          - ARCHITECTURAL
+          - FLOWCHART
+          - SEQUENCE
+          - GANTT
+          - ENTITY_RELATIONSHIP
+          - UML_CLASS
+          - FEATURE
+          - BPM
+        description:
+          type: string
+          description: Long description of model
+        location:
+          $ref: "#/definitions/Point"
+          description: Long description of model
+        parent:
+          $ref: "#/definitions/CompositeElement"
+          description: Long description of model
+        children:
+          type: array
+          description: Children of the model
+          items:
+            $ref: "#/definitions/CompositeElement"
+        shape:
+          $ref: "#/definitions/Shape"
+          description: Long description of model
+        relationships:
+          type: array
+          description: Relationships of the model
+          items:
+            $ref: "#/definitions/Relationship"
+        metaData:
+          $ref: "#/definitions/MetaData"
+          description: Meta data associated with the model
+      discriminator: kind
+      required:
+      - name
+      - kind
+
+  ArchitecturalModel:
+    description: Architectural Model object
+    allOf:
+    - $ref: "#/definitions/Element"
+    - type: object
+      properties:
+        elements:
+          type: object
+          additionalProperties:
+            $ref: "#/definitions/Element"
+        kind:
+          type: string
+          description: Type of model
+          enum:
+          - ARCHITECTURAL_MODEL
+        consumers:
+          type: array
+          description: Consumers of the model
+          items:
+            $ref: "#/definitions/Consumer"
+        softwareSystems:
+          type: array
+          description: Consumers of the model
+          items:
+            $ref: "#/definitions/SoftwareSystem"
+        deploymentNodes:
+          type: array
+          description: Deployment node of the model
+          items:
+            $ref: "#/definitions/DeploymentNode"
+      required:
+      - kind
+
+  ArchitecturalModel_Create:
+    description: Architectural Model object
+    allOf:
+    - $ref: "#/definitions/Element"
+    - type: object
+      properties:
+        elements:
+          type: object
+          additionalProperties:
+            $ref: "#/definitions/Element"
+        kind:
+          type: string
+          description: Type of model
+          enum:
+          - ARCHITECTURAL_MODEL
+        consumers:
+          type: array
+          description: Consumers of the model
+          items:
+            $ref: "#/definitions/Consumer_Create"
+        softwareSystems:
+          type: array
+          description: Consumers of the model
+          items:
+            $ref: "#/definitions/SoftwareSystem_Create"
+        deploymentNodes:
+          type: array
+          description: Deployment node of the model
+          items:
+            $ref: "#/definitions/DeploymentNode_Create"
+      required:
+      - kind
+
+  Model:
+    description: Model object
+    type: object
+    allOf:
+    - $ref: "#/definitions/ArchitecturalModel"
+
+  Model_Create:
+    description: Model object
+    type: object
+    allOf:
+    - $ref: "#/definitions/ArchitecturalModel_Create"
+
   Point:
     type: object
     description: Coordinates on which the model is located
@@ -270,6 +385,7 @@ definitions:
     required:
     - x
     - y
+
   CompositeElement:
     type: object
     description: A reference to a taggable element
@@ -305,6 +421,7 @@ definitions:
     required:
     - id
     - type
+
   Shape:
     type: object
     description: Concrete shape that univocally identify o model
@@ -324,6 +441,7 @@ definitions:
     required:
     - id
     - type
+
   MetaData_Create:
     description: MetaData object
     allOf:
@@ -358,6 +476,7 @@ definitions:
       required:
       - id
       - type
+
   MetaData:
     description: MetaData object
     allOf:
@@ -392,6 +511,7 @@ definitions:
       required:
       - id
       - type
+
   Taggable:
     description: Instantiable model
     allOf:
@@ -405,6 +525,7 @@ definitions:
             type: string
       required:
       - id
+
   Taggable_Create:
     description: Instantiable model
     allOf:
@@ -416,6 +537,7 @@ definitions:
           description: Tags of the model
           items:
             type: string
+
   BaseEntity:
     type: object
     description: Basic entity info for managing a model
@@ -429,6 +551,7 @@ definitions:
     required:
     - id
     - meta
+
   BaseEntity_Create:
     type: object
     description: Basic entity info for managing a model
@@ -436,6 +559,7 @@ definitions:
       meta:
         $ref: "#/definitions/MetaInfo_Create"
         description: Meta info related to the model
+
   Relationship:
     description: Relationship between model objects
     allOf:
@@ -466,6 +590,7 @@ definitions:
       required:
       - sourceId
       - destinationId
+
   Relationship_Create:
     type: object
     description: Relationship between model objects
@@ -490,6 +615,7 @@ definitions:
       required:
       - sourceId
       - destinationId
+
   Responsible:
     description: Person that is responsible of a specific component of a model
     allOf:
@@ -505,6 +631,7 @@ definitions:
       required:
       - organizationUnit
       - responsible
+
   Responsible_Create:
     description: Person that is responsible of a specific component of a model
     allOf:
@@ -520,6 +647,7 @@ definitions:
       required:
       - organizationUnit
       - responsible
+
   Person:
     description: Person
     allOf:
@@ -535,6 +663,7 @@ definitions:
       required:
       - names
       - lastNames
+
   Person_Create:
     description: Person
     allOf:
@@ -550,6 +679,7 @@ definitions:
       required:
       - names
       - lastNames
+
   View:
     description: View of the model
     allOf:
@@ -561,6 +691,7 @@ definitions:
           description: Name of the view
       required:
       - name
+
   View_Create:
     description: View of the model
     allOf:
@@ -572,6 +703,7 @@ definitions:
           description: Name of the view
       required:
       - name
+
   MetaInfo:
     type: object
     description: Meta info for any object
@@ -601,6 +733,7 @@ definitions:
     - version
     - createdBy
     - modifiedBy
+
   MetaInfo_Create:
     type: object
     description: Meta info for any object
@@ -625,6 +758,7 @@ definitions:
     required:
     - version
     - createdBy
+
   Version:
     type: object
     description: Version
@@ -649,6 +783,7 @@ definitions:
     - major
     - minor
     - build
+
   Version_Create:
     type: object
     description: Version
@@ -669,6 +804,7 @@ definitions:
     - major
     - minor
     - build
+
   Account:
     description: Account
     type: object
@@ -688,6 +824,7 @@ definitions:
       firstAccess:
         type: boolean
         description: Indicator for showing whether this is the first access to the account or not
+
   Account_Create:
     description: Account
     type: object
