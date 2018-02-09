@@ -19,7 +19,7 @@ import java.util.ResourceBundle;
 import java.util.UUID;
 
 @MappedSuperclass
-@PersistenceUnit(unitName = "gsa")
+@PersistenceUnit(unitName = "open-archi")
 @JsonIgnoreProperties(value = {"resourceBundle"})
 @Component
 public abstract class BaseEntity implements Serializable, BasicEntity, Cloneable {

@@ -10,7 +10,7 @@ import javax.persistence.*;
 import java.util.Collection;
 
 @Entity
-@PersistenceUnit(unitName = "gsa")
+@PersistenceUnit(unitName = "open-archi")
 @Table(name = "MetaData", schema = "DIAGRAMS")
 public class MetaData extends BaseEntity {
 
@@ -53,14 +53,14 @@ public class MetaData extends BaseEntity {
             inverseJoinColumns = {@JoinColumn(name = "UsedIn_Id",
                     referencedColumnName = "Id")})
     private Collection<Taggable> usedIn;
-
+/*
     @OneToOne(cascade = CascadeType.REMOVE)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     @JoinTable(schema = "META",
             name = "MetaData_Version",
             joinColumns = {@JoinColumn(name = "MetaData_Id", referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Version_Id", referencedColumnName = "Id")})
-    private Version version;
+    private Version version;*/
 
     @OneToMany(cascade = CascadeType.REMOVE)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
@@ -104,13 +104,13 @@ public class MetaData extends BaseEntity {
         this.usedIn = usedId;
     }
 
-    public Version getVersion() {
+/*    public Version getVersion() {
         return version;
     }
 
     public void setVersion(Version version) {
         this.version = version;
-    }
+    }*/
 
     public Collection<View> getViews() {
         return views;

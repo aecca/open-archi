@@ -15,7 +15,7 @@ import javax.persistence.Table;
  * per JAR file, DLL, shared library, etc) is a separate and orthogonal concern.
  */
 @Entity
-@PersistenceUnit(unitName = "gsa")
+@PersistenceUnit(unitName = "open-archi")
 public class Component extends StaticElement {
 
     @Column

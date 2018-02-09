@@ -11,7 +11,7 @@ import javax.persistence.Table;
  * A relationship between two Gantt activities.
  */
 @Entity
-@PersistenceUnit(unitName = "gsa")
+@PersistenceUnit(unitName = "open-archi")
 @DiscriminatorValue(value = "SequenceRelationship")
 public class Relationship extends com.araguacaima.gsa.persistence.diagrams.core.Relationship {
 

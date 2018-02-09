@@ -8,8 +8,8 @@ import javax.persistence.PersistenceUnit;
 import javax.persistence.Table;
 
 @Entity
-@PersistenceUnit(unitName = "gsa")
-@Table(schema = "MSA",
+@PersistenceUnit(unitName = "open-archi")
+@Table(schema = "SM",
         name = "Documentation")
 public class Documentation extends BaseEntity {
 

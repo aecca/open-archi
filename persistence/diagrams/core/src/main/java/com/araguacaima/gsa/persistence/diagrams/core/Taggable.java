@@ -9,7 +9,7 @@ import java.util.Set;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@PersistenceUnit(unitName = "gsa")
+@PersistenceUnit(unitName = "open-archi")
 @Table(name = "Models", schema = "DIAGRAMS")
 @DiscriminatorColumn(name = "modelType", discriminatorType = DiscriminatorType.STRING)
 @NamedQueries({@NamedQuery(name = Taggable.GET_ALL_MODELS,

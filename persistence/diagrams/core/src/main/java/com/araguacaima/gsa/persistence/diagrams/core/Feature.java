@@ -10,7 +10,7 @@ import javax.persistence.PersistenceUnit;
  */
 
 @Entity
-@PersistenceUnit(unitName = "gsa")
+@PersistenceUnit(unitName = "open-archi")
 public class Feature extends Item {
 
     /**

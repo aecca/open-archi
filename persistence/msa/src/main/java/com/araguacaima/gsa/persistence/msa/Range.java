@@ -8,8 +8,8 @@ import javax.persistence.PersistenceUnit;
 import javax.persistence.Table;
 
 @Entity
-@PersistenceUnit(unitName = "gsa")
-@Table(schema = "MSA",
+@PersistenceUnit(unitName = "open-archi")
+@Table(schema = "SM",
         name = "Range")
 public class Range<T extends Enum> extends BaseEntity {
 

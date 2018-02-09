@@ -9,7 +9,7 @@ import javax.persistence.PersistenceUnit;
 import javax.persistence.Table;
 
 @Entity
-@PersistenceUnit(unitName = "gsa")
+@PersistenceUnit(unitName = "open-archi")
 public class Flowchart extends Item {
     @Column
     private Category category;

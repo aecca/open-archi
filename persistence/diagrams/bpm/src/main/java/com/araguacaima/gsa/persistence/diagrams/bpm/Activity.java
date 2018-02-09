@@ -7,7 +7,7 @@ import org.hibernate.annotations.Cascade;
 import javax.persistence.*;
 
 @Entity
-@PersistenceUnit(unitName = "gsa")
+@PersistenceUnit(unitName = "open-archi")
 public class Activity extends Item {
 
     @OneToOne(cascade = CascadeType.REMOVE)

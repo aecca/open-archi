@@ -38,7 +38,7 @@ public class AbstractJPATest {
         emDiagrams = emfDiagrams.createEntityManager();
         emfMsa = Persistence.createEntityManagerFactory("msa");
         emMsa = emfMsa.createEntityManager();
-        emfGsa = Persistence.createEntityManagerFactory("gsa");
+        emfGsa = Persistence.createEntityManagerFactory("open-archi");
         emGsa = emfGsa.createEntityManager();
     }
 

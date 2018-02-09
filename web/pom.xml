@@ -15,8 +15,8 @@
     </parent>
 
     <properties>
-        <baseUrl>open-archi.herokuapp.com</baseUrl>
-        <!--<baseUrl>localhost:4567</baseUrl>-->
+        <!--<baseUrl>open-archi.herokuapp.com</baseUrl>-->
+        <baseUrl>localhost:4567</baseUrl>
     </properties>
 
     <dependencies>
@@ -263,9 +263,9 @@
                 </executions>
                 <configuration>
                     <includes>
-                        <include>${basedir}/src/main/resources/web/public/swagger-template.json</include>
+                        <include>${basedir}/src/main/resources/web/public/swagger-template.yaml</include>
                     </includes>
-                    <outputFile>${basedir}/src/main/resources/web/public/swagger.json</outputFile>
+                    <outputFile>${basedir}/src/main/resources/web/public/swagger.yaml</outputFile>
                     <replacements>
                         <replacement>
                             <token>@HOST@</token>
@@ -363,9 +363,9 @@
                         </executions>
                         <configuration>
                             <includes>
-                                <include>${basedir}/src/main/resources/web/public/swagger-template.json</include>
+                                <include>${basedir}/src/main/resources/web/public/swagger-template.yaml</include>
                             </includes>
-                            <outputFile>${basedir}/src/main/resources/web/public/swagger.json</outputFile>
+                            <outputFile>${basedir}/src/main/resources/web/public/swagger.yaml</outputFile>
                             <replacements>
                                 <replacement>
                                     <token>@HOST@</token>

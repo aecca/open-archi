@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 public class JPAEntityManagerUtils {
-    private static EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("gsa");
+    private static EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("open-archi");
     private static EntityManager entityManager = entityManagerFactory.createEntityManager();
     private static boolean autocommit = true;
 

@@ -11806,7 +11806,7 @@
     }, function(t, e, n) {
         t.exports = n(254)()
     }, function(t, e) {
-        t.exports = '---\nurl: "swagger.json"\ndom_id: "#swagger-ui"\nvalidatorUrl: "https://online.swagger.io/validator"\noauth2RedirectUrl: "http://localhost:3200/oauth2-redirect.html"\n'
+        t.exports = '---\nurl: "swagger.yaml"\ndom_id: "#swagger-ui"\nvalidatorUrl: "https://online.swagger.io/validator"\noauth2RedirectUrl: "http://localhost:3200/oauth2-redirect.html"\n'
     }, function(t, e, n) {
         "use strict";
 

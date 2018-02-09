@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.PersistenceUnit;
 
 @Entity
-@PersistenceUnit(unitName = "gsa")
+@PersistenceUnit(unitName = "open-archi")
 public class Gantt extends Item {
     @Column
     private Category category;

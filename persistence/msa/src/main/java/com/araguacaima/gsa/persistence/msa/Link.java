@@ -5,8 +5,8 @@ import com.araguacaima.gsa.persistence.meta.BaseEntity;
 import javax.persistence.*;
 
 @Entity
-@PersistenceUnit(unitName = "gsa")
-@Table(schema = "MSA",
+@PersistenceUnit(unitName = "open-archi")
+@Table(schema = "SM",
         name = "Link")
 public class Link extends BaseEntity {
 

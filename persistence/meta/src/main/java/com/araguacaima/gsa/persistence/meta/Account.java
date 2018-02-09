@@ -11,7 +11,7 @@ import java.util.Set;
 import java.util.UUID;
 
 
-@PersistenceUnit(unitName = "gsa")
+@PersistenceUnit(unitName = "open-archi")
 @Entity
 @Table(schema = "META", name = "Account")
 @NamedQueries(value = {@NamedQuery(name = Account.FIND_BY_EMAIL,

@@ -25,7 +25,7 @@ import java.util.Set;
  * </ul>
  */
 @Entity
-@PersistenceUnit(unitName = "gsa")
+@PersistenceUnit(unitName = "open-archi")
 public class DeploymentNode extends Element {
 
     @OneToOne(cascade = CascadeType.REMOVE)

@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.util.Collection;
 
 @javax.persistence.Entity
-@PersistenceUnit(unitName = "gsa")
+@PersistenceUnit(unitName = "open-archi")
 public class Entity extends Element {
     @Column
     private ElementKind kind = ElementKind.ENTITY_RELATIONSHIP_MODEL;

@@ -9,8 +9,8 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@PersistenceUnit(unitName = "gsa")
-@Table(schema = "MSA",
+@PersistenceUnit(unitName = "open-archi")
+@Table(schema = "SM",
         name = "VersionControl")
 public class VersionControl extends BaseEntity {
 

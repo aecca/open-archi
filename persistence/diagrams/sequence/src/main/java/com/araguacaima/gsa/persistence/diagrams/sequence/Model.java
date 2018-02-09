@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.util.Collection;
 
 @Entity
-@PersistenceUnit(unitName = "gsa")
+@PersistenceUnit(unitName = "open-archi")
 @DiscriminatorValue(value = "SequenceModel")
 @NamedQueries(value = {
        /* @NamedQuery(

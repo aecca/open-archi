@@ -9,7 +9,7 @@ import javax.persistence.*;
  * A relationship between two elements.
  */
 @Entity
-@PersistenceUnit(unitName = "gsa")
+@PersistenceUnit(unitName = "open-archi")
 public class Relationship extends Taggable {
 
     @OneToOne(targetEntity = Taggable.class, cascade = CascadeType.REMOVE)

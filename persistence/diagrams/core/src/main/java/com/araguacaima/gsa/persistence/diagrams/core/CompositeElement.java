@@ -7,7 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@PersistenceUnit(unitName = "gsa")
+@PersistenceUnit(unitName = "open-archi")
 @Table(name = "CompositeElement", schema = "DIAGRAMS")
 public class CompositeElement<T extends ElementKind> {
 

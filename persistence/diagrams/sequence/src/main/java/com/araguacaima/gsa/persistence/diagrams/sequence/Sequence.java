@@ -6,7 +6,7 @@ import com.araguacaima.gsa.persistence.diagrams.core.Item;
 import javax.persistence.*;
 
 @Entity
-@PersistenceUnit(unitName = "gsa")
+@PersistenceUnit(unitName = "open-archi")
 @DiscriminatorValue("Sequence")
 public class Sequence extends Item {
 

@@ -9,8 +9,8 @@ import java.util.Collection;
 import java.util.Map;
 
 @Entity
-@PersistenceUnit(unitName = "gsa")
-@Table(schema = "MSA",
+@PersistenceUnit(unitName = "open-archi")
+@Table(schema = "SM",
         name = "TechnicalDebt")
 public class TechnicalDebt extends BaseEntity {
 
@@ -27,7 +27,7 @@ public class TechnicalDebt extends BaseEntity {
     @ManyToOne
     private IntermediateSolution intermediateSolution;
     @OneToMany
-    @JoinTable(schema = "MSA",
+    @JoinTable(schema = "SM",
             name = "TechnicalDebt_Responsibles",
             joinColumns = {@JoinColumn(name = "TechnicalDebt_Id",
                     referencedColumnName = "Id")},
