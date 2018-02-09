@@ -114,25 +114,132 @@ securityDefinitions:
     type: apiKey
     name: api_key
     in: header
-
 definitions:
-  Consumer:
+  StaticElement:
+    description: Static element
     type: object
+    allOf:
+    - $ref: "#/definitions/Element"
+    - type: object
+      properties:
+        kind:
+          description: Type of static element
+          type: string
+          enum:
+          - COMPONENT
+
+  StaticElement_Create:
+    description: Static element
+    type: object
+    allOf:
+    - $ref: "#/definitions/Element_Create"
+    - type: object
+      properties:
+        kind:
+          description: Type of static element
+          type: string
+          enum:
+          - COMPONENT
+
+  Consumer:
+    description: Consumer
+    type: object
+    allOf:
+    - $ref: "#/definitions/StaticElement"
+    - type: object
+      properties:
+        scope:
+          description: Scope on which this customer is relevant
+          type: string
+          enum:
+          - Internal
+          - External
+          - Unspecified
 
   SoftwareSystem:
+    description: Software System
     type: object
+    allOf:
+    - $ref: "#/definitions/StaticElement"
+    - type: object
+      properties:
+        scope:
+          description: Scope on which this software system is relevant
+          type: string
+          enum:
+          - Internal
+          - External
+          - Unspecified
 
   DeploymentNode:
+    description: Deployment Node
     type: object
+    allOf:
+    - $ref: "#/definitions/Element"
+    - type: object
+      properties:
+        technology:
+          description: Technology
+          type: string
+        instances:
+          description: Instances
+          type: integer
+          format: int32
+        kind:
+          type: string
+          description: Type of element
+          enum:
+          - DEPLOYMENT
 
   Consumer_Create:
+    description: Consumer
     type: object
+    allOf:
+    - $ref: "#/definitions/StaticElement_Create"
+    - type: object
+      properties:
+        scope:
+          description: Scope on which this customer is relevant
+          type: string
+          enum:
+          - Internal
+          - External
+          - Unspecified
 
   SoftwareSystem_Create:
+    description: Software System
     type: object
+    allOf:
+    - $ref: "#/definitions/StaticElement_Create"
+    - type: object
+      properties:
+        scope:
+          description: Scope on which this software system is relevant
+          type: string
+          enum:
+          - Internal
+          - External
+          - Unspecified
 
   DeploymentNode_Create:
+    description: Deployment Node
     type: object
+    allOf:
+    - $ref: "#/definitions/Element_Create"
+    - type: object
+      properties:
+        technology:
+          description: Technology
+          type: string
+        instances:
+          description: Instances
+          type: integer
+          format: int32
+        kind:
+          type: string
+          description: Type of element
+          enum:
+          - DEPLOYMENT
 
   Item:
     description: Abstract item object
