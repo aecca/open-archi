@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.araguacaima.gsa</groupId>
+    <artifactId>persistence</artifactId>
+    <version>1.0.1</version>
+    <packaging>pom</packaging>
+    <name>Persistence</name>
+
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.skipTests>true</maven.skipTests>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <org.apache.maven.plugin-maven-source-plugin>2.4</org.apache.maven.plugin-maven-source-plugin>
+        <org.apache.maven.plugin-maven-surefire-plugin>2.12.4</org.apache.maven.plugin-maven-surefire-plugin>
+        <org.apache.maven.plugins-maven-compiler-plugin>2.3.2</org.apache.maven.plugins-maven-compiler-plugin>
+        <org.apache.maven.plugins-maven-dependency-plugin>2.10</org.apache.maven.plugins-maven-dependency-plugin>
+        <org.apache.maven.plugins-maven-jar-plugin>3.0.2</org.apache.maven.plugins-maven-jar-plugin>
+        <com.fasterxml.jackson.core-jackson-annotations>2.9.2</com.fasterxml.jackson.core-jackson-annotations>
+        <org.apache.commons-commons-lang3>3.5</org.apache.commons-commons-lang3>
+        <com.h2database-h2>1.4.196</com.h2database-h2>
+        <!--<org.eclipse.persistence-org.eclipse.persistence.jpa>2.7.0</org.eclipse.persistence-org.eclipse.persistence.jpa>-->
+        <org.hibernate-hibernate-core>5.2.12.Final</org.hibernate-hibernate-core>
+        <org.hibernate.javax.persistence-hibernate-jpa-2.1-api>1.0.0.Final
+        </org.hibernate.javax.persistence-hibernate-jpa-2.1-api>
+        <junit.version>4.11</junit.version>
+        <javax.validation-validation-api>2.0.0.Final</javax.validation-validation-api>
+        <org.apache.commons-commons-collections4>4.0</org.apache.commons-commons-collections4>
+        <commons-io-commons-io>2.6</commons-io-commons-io>
+        <org.postgresql-postgresql>9.3-1102-jdbc41</org.postgresql-postgresql>
+        <org.threeten-threetenbp>1.3.3</org.threeten-threetenbp>
+        <com.araguacaima-commons-utils>1.0.1-SNAPSHOT</com.araguacaima-commons-utils>
+        <com.araguacaima-composite-specification>1.0.1-SNAPSHOT</com.araguacaima-composite-specification>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>oss.sonatype.org-snapshot</id>
+            <url>http://oss.sonatype.org/content/repositories/snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${com.fasterxml.jackson.core-jackson-annotations}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${org.apache.commons-commons-lang3}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-collections4</artifactId>
+                <version>${org.apache.commons-commons-collections4}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.araguacaima.gsa</groupId>
+                <artifactId>persistence-meta</artifactId>
+                <version>${project.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.araguacaima.gsa</groupId>
+                <artifactId>persistence-persons</artifactId>
+                <version>${project.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.araguacaima.gsa.persistence</groupId>
+                <artifactId>persistence-utils</artifactId>
+                <version>${project.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.araguacaima.gsa</groupId>
+                <artifactId>persistence-commons</artifactId>
+                <version>${project.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.araguacaima.gsa.persistence</groupId>
+                <artifactId>persistence-architectural</artifactId>
+                <version>${project.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons-io-commons-io}</version>
+                <scope>test</scope>
+            </dependency>
+
+        </dependencies>
+
+    </dependencyManagement>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>${com.h2database-h2}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${org.postgresql-postgresql}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.threeten</groupId>
+            <artifactId>threetenbp</artifactId>
+            <version>${org.threeten-threetenbp}</version>
+            <scope>compile</scope>
+        </dependency>
+
+
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>${javax.validation-validation-api}</version>
+        </dependency>
+
+        <!--
+                <dependency>
+                    <groupId>org.eclipse.persistence</groupId>
+                    <artifactId>org.eclipse.persistence.jpa</artifactId>
+                    <version>${org.eclipse.persistence-org.eclipse.persistence.jpa}</version>
+                </dependency>
+        -->
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${org.hibernate-hibernate-core}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate.javax.persistence</groupId>
+            <artifactId>hibernate-jpa-2.1-api</artifactId>
+            <version>${org.hibernate.javax.persistence-hibernate-jpa-2.1-api}</version>
+        </dependency>
+        <!--
+                <dependency>
+                    <groupId>com.araguacaima.gsa</groupId>
+                    <artifactId>model</artifactId>
+                    <version>${project.version}</version>
+                </dependency>-->
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${org.apache.commons-commons-lang3}</version>
+        </dependency>
+
+        <!-- araguacaima libraries -->
+        <dependency>
+            <groupId>com.araguacaima</groupId>
+            <artifactId>commons-utils</artifactId>
+            <version>${com.araguacaima-commons-utils}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.araguacaima</groupId>
+            <artifactId>composite-specification</artifactId>
+            <version>${com.araguacaima-composite-specification}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!-- Testing -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+    <modules>
+        <module>commons</module>
+        <module>meta</module>
+        <module>msa</module>
+        <module>persons</module>
+        <module>diagrams</module>
+        <module>utils</module>
+    </modules>
+
+    <build>
+        <defaultGoal>clean install</defaultGoal>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+            </testResource>
+        </testResources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>${org.apache.maven.plugins-maven-jar-plugin}</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${org.apache.maven.plugins-maven-compiler-plugin}</version>
+                <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${org.apache.maven.plugin-maven-surefire-plugin}</version>
+                <configuration>
+                    <skipTests>${maven.skipTests}</skipTests>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>${org.apache.maven.plugin-maven-source-plugin}</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
