@@ -8,7 +8,7 @@ import javax.persistence.*;
  * A relationship between two architectural elements.
  */
 @Entity
-@PersistenceUnit(unitName = "gsa")
+@PersistenceUnit(unitName = "open-archi")
 @DiscriminatorValue("ArchitectureRelationship")
 public class Relationship extends com.araguacaima.gsa.persistence.diagrams.core.Relationship {
 

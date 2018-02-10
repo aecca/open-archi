@@ -6,7 +6,7 @@ import org.hibernate.annotations.Cascade;
 import javax.persistence.*;
 
 @Entity
-@PersistenceUnit(unitName = "gsa")
+@PersistenceUnit(unitName = "open-archi")
 @Table(name = "Rate",
         schema = "MSA")
 public class Rate extends BaseEntity {

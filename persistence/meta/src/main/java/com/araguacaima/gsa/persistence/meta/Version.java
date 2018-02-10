@@ -9,9 +9,9 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.UUID;
 
-@PersistenceUnit(unitName = "gsa")
+@PersistenceUnit(unitName = "open-archi")
 @Entity
-@Table(schema = "META", name = "Version", uniqueConstraints = @UniqueConstraint(columnNames = {"major", "minor", "build"}))
+@Table(schema = "META", name = "Version")
 @NamedQueries(value = {@NamedQuery(name = Version.COUNT_ALL_VERSIONS,
         query = "select count(a) from Version a"), @NamedQuery(name = Version.GET_DEFAULT_VERSION,
         query = "select a from Version a where a.major = 1 and a.minor = 0 and a.build = 0"), @NamedQuery(
@@ -25,7 +25,7 @@ import java.util.UUID;
                 + "  (v1.major = v2.major AND v1.minor < v2.minor) OR (v1.major = v2.major AND v1.minor = v2.minor AND v1.build < v2.build) "
                 + "  OR (v1.major < v2.major)) "
                 + "WHERE v2.id IS NULL")})
-public class Version extends BaseEntity implements Serializable, Comparable<Version>, Cloneable {
+public class Version implements Serializable, Comparable<Version>, Cloneable {
 
     public static final String GET_ALL_VERSIONS = "Version.getAllVersions";
     public static final String COUNT_ALL_VERSIONS = "Version.countAllVersions";
@@ -40,28 +40,40 @@ public class Version extends BaseEntity implements Serializable, Comparable<Vers
 
     private static final long serialVersionUID = -5350803918802322500L;
 
-    @Column(nullable = false)
+
+    @Id
     @NotNull
-    private Integer major;
+    @Column(name = "Id")
+    private  String id = UUID.randomUUID().toString();
+
+    public String getId() {
+        return this.id;
+    }
 
     @Column(nullable = false)
     @NotNull
-    private Integer minor;
+    private Integer major = 0;
+
+    @Column(nullable = false)
+    @NotNull
+    private Integer minor = 0;
 
     @Column(nullable = true)
-    private Integer build;
+    private Integer build = 1;
 
     public Version() {
         this.id = UUID.randomUUID().toString();
     }
 
     public Version(Integer major, Integer minor, Integer build) {
+        this();
         this.major = major;
         this.minor = minor;
         this.build = build;
     }
 
     public Version(String version) throws NumberFormatException {
+        this();
         if (StringUtils.isNotBlank(version)) {
             version = version.trim();
             String[] versionSplitted;
@@ -155,6 +167,33 @@ public class Version extends BaseEntity implements Serializable, Comparable<Vers
                 .append(minor, version.minor)
                 .append(build, version.build)
                 .isEquals();
+    }
+
+    public Version nextBuild() {
+        if (build != null) {
+            build = build++;
+        } else {
+            build = 1;
+        }
+        return this;
+     }
+
+    public Version nextMinor() {
+        if (minor != null) {
+            minor = minor++;
+        } else {
+            minor = 0;
+        }
+        return this;
+    }
+
+    public Version nextMajor() {
+        if (major != null) {
+            major = major++;
+        } else {
+            major = 0;
+        }
+        return this;
     }
 
     @Override

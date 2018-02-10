@@ -5,8 +5,8 @@ import org.hibernate.annotations.Cascade;
 import javax.persistence.*;
 
 @Entity
-@PersistenceUnit(unitName = "gsa")
-@Table(schema = "MSA",
+@PersistenceUnit(unitName = "open-archi")
+@Table(schema = "SM",
         name = "CapacityReliability")
 
 public class CapacityReliability extends AbstractReliability implements IVolumetricReliability {

@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 @Configuration
-@ComponentScan(basePackages = {"com.araguacaima.gsa"},
+@ComponentScan(basePackages = {"com.araguacaima.gsa", "com.araguacaima.specification", "com.araguacaima.commons.utils"},
         excludeFilters = {@ComponentScan.Filter(type = FilterType.ANNOTATION, value = Controller.class)
         })
 @DependsOn("propertyPlaceholderConfigurer")

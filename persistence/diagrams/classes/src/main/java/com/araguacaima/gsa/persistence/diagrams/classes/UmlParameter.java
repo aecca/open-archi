@@ -8,7 +8,7 @@ import javax.persistence.PersistenceUnit;
 import javax.persistence.Table;
 
 @Entity
-@PersistenceUnit(unitName = "gsa")
+@PersistenceUnit(unitName = "open-archi")
 @Table(name = "UmlParameter", schema = "DIAGRAMS")
 public class UmlParameter extends BaseEntity {
 

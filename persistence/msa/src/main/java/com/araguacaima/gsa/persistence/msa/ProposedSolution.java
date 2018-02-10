@@ -7,8 +7,8 @@ import javax.persistence.*;
 import java.util.Collection;
 
 @Entity
-@PersistenceUnit(unitName = "gsa")
-@Table(schema = "MSA",
+@PersistenceUnit(unitName = "open-archi")
+@Table(schema = "SM",
         name = "ProposedSolution")
 public class ProposedSolution extends BaseEntity {
 
@@ -16,7 +16,7 @@ public class ProposedSolution extends BaseEntity {
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private Markdown description;
     @OneToMany
-    @JoinTable(schema = "MSA",
+    @JoinTable(schema = "SM",
             name = "ProposedSolution_Functional_Diagrams",
             joinColumns = {@JoinColumn(name = "ProposedSolution_Id",
                     referencedColumnName = "Id")},

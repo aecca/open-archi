@@ -17,7 +17,7 @@ import java.io.Serializable;
  * @since 1.0
  */
 @Entity
-@PersistenceUnit(unitName = "gsa")
+@PersistenceUnit(unitName = "open-archi")
 @Table(name = "Point", schema = "DIAGRAMS")
 public class Point extends BaseEntity implements Serializable, Cloneable {
 
@@ -36,13 +36,18 @@ public class Point extends BaseEntity implements Serializable, Cloneable {
     private double y;
 
     /**
+     * The Z coordinate of this <code>Point</code>.
+     * If no Z coordinate is set it will default to 0.
+     */
+    @Column
+    private double z;
+
+    /**
      * Constructs and initializes a point at the origin
      * (0,&nbsp;0) of the coordinate space.
-     *
-     * @since 1.1
      */
     public Point() {
-        this(0, 0);
+        this(0, 0, 0);
     }
 
 
@@ -52,11 +57,24 @@ public class Point extends BaseEntity implements Serializable, Cloneable {
      *
      * @param x the X coordinate of the newly constructed <code>Point</code>
      * @param y the Y coordinate of the newly constructed <code>Point</code>
-     * @since 1.0
      */
-    Point(double x, double y) {
+    public Point(double x, double y) {
         this.x = x;
         this.y = y;
+    }
+
+    /**
+     * Constructs and initializes a point at the specified
+     * {@code (x,y,z)} location in the coordinate space.
+     *
+     * @param x the X coordinate of the newly constructed <code>Point</code>
+     * @param y the Y coordinate of the newly constructed <code>Point</code>
+     * @param z the Z coordinate of the newly constructed <code>Point</code>
+     */
+    public Point(double x, double y, double z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
     }
 
     /**
@@ -75,6 +93,16 @@ public class Point extends BaseEntity implements Serializable, Cloneable {
      */
     public double getY() {
         return y;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     *
+     * @since 1.2
+     */
+    public double getZ() {
+        return z;
     }
 
 

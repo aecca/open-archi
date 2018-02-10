@@ -9,7 +9,7 @@ import javax.persistence.*;
  * This is the superclass for all model elements.
  */
 @Entity
-@PersistenceUnit(unitName = "gsa")
+@PersistenceUnit(unitName = "open-archi")
 public abstract class UmlItem extends Item {
 
     @Column

@@ -13,7 +13,7 @@ import java.util.Set;
  */
 
 @Entity
-@PersistenceUnit(unitName = "gsa")
+@PersistenceUnit(unitName = "open-archi")
 public class Item extends Taggable {
 
     protected String name;

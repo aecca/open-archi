@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.PersistenceUnit;
 import javax.persistence.Table;
 
-@PersistenceUnit(unitName = "gsa")
+@PersistenceUnit(unitName = "open-archi")
 @Entity
 @Table(schema = "PERSONS",
         name = "Person")

@@ -11,7 +11,7 @@ import javax.persistence.*;
  * Represents a deployment instance of a {@link Container}, which can be added to a {@link DeploymentNode}.
  */
 @Entity
-@PersistenceUnit(unitName = "gsa")
+@PersistenceUnit(unitName = "open-archi")
 public class ContainerInstance extends Element {
 
     @OneToOne(cascade = CascadeType.REMOVE)
@@ -30,7 +30,7 @@ public class ContainerInstance extends Element {
     private Model model;
 
     @Column
-    private ElementKind kind = ElementKind.ARCHITECTURAL_MODEL;
+    private ElementKind kind = ElementKind.CONTAINER;
 
     public ContainerInstance() {
     }

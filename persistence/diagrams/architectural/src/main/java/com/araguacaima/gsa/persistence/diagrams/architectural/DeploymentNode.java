@@ -25,7 +25,7 @@ import java.util.Set;
  * </ul>
  */
 @Entity
-@PersistenceUnit(unitName = "gsa")
+@PersistenceUnit(unitName = "open-archi")
 public class DeploymentNode extends Element {
 
     @OneToOne(cascade = CascadeType.REMOVE)
@@ -40,7 +40,7 @@ public class DeploymentNode extends Element {
     private int instances = 1;
 
     @Column
-    private ElementKind kind = ElementKind.ARCHITECTURAL_MODEL;
+    private ElementKind kind = ElementKind.DEPLOYMENT;
 
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",

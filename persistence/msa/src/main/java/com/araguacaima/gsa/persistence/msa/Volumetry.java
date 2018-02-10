@@ -7,13 +7,13 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@PersistenceUnit(unitName = "gsa")
-@Table(schema = "MSA",
+@PersistenceUnit(unitName = "open-archi")
+@Table(schema = "SM",
         name = "Volumetry", uniqueConstraints = @UniqueConstraint(columnNames = {"name", "company_id"}))
 public class Volumetry extends BaseEntity {
 
     @OneToMany
-    @JoinTable(schema = "MSA",
+    @JoinTable(schema = "SM",
             name = "Volumetry_Activities",
             joinColumns = {@JoinColumn(name = "Volumetry_Id",
                     referencedColumnName = "Id")},
@@ -21,7 +21,7 @@ public class Volumetry extends BaseEntity {
                     referencedColumnName = "Id")})
     private Set<Activity> activities;
     @OneToMany
-    @JoinTable(schema = "MSA",
+    @JoinTable(schema = "SM",
             name = "Volumetry_BatchProcessing",
             joinColumns = {@JoinColumn(name = "Volumetry_Id",
                     referencedColumnName = "Id")},
@@ -29,7 +29,7 @@ public class Volumetry extends BaseEntity {
                     referencedColumnName = "Id")})
     private Set<BatchProcessing> batchProcessing;
     @OneToMany
-    @JoinTable(schema = "MSA",
+    @JoinTable(schema = "SM",
             name = "Volumetry_BulkProcessing",
             joinColumns = {@JoinColumn(name = "Volumetry_Id",
                     referencedColumnName = "Id")},
@@ -37,7 +37,7 @@ public class Volumetry extends BaseEntity {
                     referencedColumnName = "Id")})
     private Set<BulkProcessing> bulkProcessing;
     @OneToMany
-    @JoinTable(schema = "MSA",
+    @JoinTable(schema = "SM",
             name = "Volumetry_Concurrency",
             joinColumns = {@JoinColumn(name = "Volumetry_Id",
                     referencedColumnName = "Id")},
@@ -45,7 +45,7 @@ public class Volumetry extends BaseEntity {
                     referencedColumnName = "Id")})
     private Set<Concurrency> concurrencies;
     @OneToMany
-    @JoinTable(schema = "MSA",
+    @JoinTable(schema = "SM",
             name = "Volumetry_Database",
             joinColumns = {@JoinColumn(name = "Volumetry_Id",
                     referencedColumnName = "Id")},
@@ -53,7 +53,7 @@ public class Volumetry extends BaseEntity {
                     referencedColumnName = "Id")})
     private Set<Database> dataBase;
     @OneToMany
-    @JoinTable(schema = "MSA",
+    @JoinTable(schema = "SM",
             name = "Volumetry_FileTransfer",
             joinColumns = {@JoinColumn(name = "Volumetry_Id",
                     referencedColumnName = "Id")},
@@ -61,7 +61,7 @@ public class Volumetry extends BaseEntity {
                     referencedColumnName = "Id")})
     private Set<FileTransfer> fileTransfers;
     @OneToMany
-    @JoinTable(schema = "MSA",
+    @JoinTable(schema = "SM",
             name = "Volumetry_Rate",
             joinColumns = {@JoinColumn(name = "Volumetry_Id",
                     referencedColumnName = "Id")},

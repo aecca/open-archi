@@ -6,13 +6,13 @@ import javax.persistence.*;
 import java.util.Collection;
 
 @Entity
-@PersistenceUnit(unitName = "gsa")
-@Table(schema = "MSA",
+@PersistenceUnit(unitName = "open-archi")
+@Table(schema = "SM",
         name = "ArchitectSolutionModel")
 public class ArchitectSolutionModel extends BaseEntity {
 
     @OneToMany
-    @JoinTable(schema = "MSA",
+    @JoinTable(schema = "SM",
             name = "ArchitectSolutionModel_Diagrams",
             joinColumns = {@JoinColumn(name = "ArchitectSolutionModel_Id",
                     referencedColumnName = "Id")},

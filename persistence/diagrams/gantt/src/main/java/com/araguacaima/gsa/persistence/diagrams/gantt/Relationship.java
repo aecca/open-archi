@@ -9,7 +9,7 @@ import javax.persistence.*;
  */
 
 @Entity
-@PersistenceUnit(unitName = "gsa")
+@PersistenceUnit(unitName = "open-archi")
 @DiscriminatorValue(value = "GanttRelationship")
 public class Relationship extends com.araguacaima.gsa.persistence.diagrams.core.Relationship {
     @Column

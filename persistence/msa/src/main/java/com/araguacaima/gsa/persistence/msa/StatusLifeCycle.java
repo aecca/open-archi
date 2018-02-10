@@ -7,13 +7,13 @@ import javax.persistence.*;
 import java.util.Collection;
 
 @Entity
-@PersistenceUnit(unitName = "gsa")
-@Table(schema = "MSA",
+@PersistenceUnit(unitName = "open-archi")
+@Table(schema = "SM",
         name = "StatusLifeCycle")
 public class StatusLifeCycle extends BaseEntity {
 
     @OneToMany
-    @JoinTable(schema = "MSA",
+    @JoinTable(schema = "SM",
             name = "StatusLifeCycle_Ancestors",
             joinColumns = {@JoinColumn(name = "StatusLifeCycle_Id",
                     referencedColumnName = "Id")},
@@ -24,7 +24,7 @@ public class StatusLifeCycle extends BaseEntity {
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private Status current;
     @OneToMany
-    @JoinTable(schema = "MSA",
+    @JoinTable(schema = "SM",
             name = "StatusLifeCycle_Descendants",
             joinColumns = {@JoinColumn(name = "StatusLifeCycle_Id",
                     referencedColumnName = "Id")},

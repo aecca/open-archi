@@ -6,8 +6,8 @@ import org.hibernate.annotations.Cascade;
 import javax.persistence.*;
 
 @Entity
-@PersistenceUnit(unitName = "gsa")
-@Table(schema = "MSA",
+@PersistenceUnit(unitName = "open-archi")
+@Table(schema = "SM",
         name = "Measurable")
 public class Measurable extends BaseEntity {
 

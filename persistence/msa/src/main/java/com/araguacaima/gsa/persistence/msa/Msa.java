@@ -12,8 +12,8 @@ import java.util.Date;
 import java.util.Set;
 
 @Entity
-@PersistenceUnit(unitName = "gsa")
-@Table(schema = "MSA",
+@PersistenceUnit(unitName = "open-archi")
+@Table(schema = "SM",
         name = "Msa")
 @NamedQueries(value = {@NamedQuery(name = "Msa.getAll",
         query = "SELECT msa FROM Msa msa"), @NamedQuery(name = "Msa.getById",
@@ -41,7 +41,7 @@ public class Msa extends BaseEntity {
     @Size(min = 1)
     private Date issueDate;
     @OneToMany
-    @JoinTable(schema = "MSA",
+    @JoinTable(schema = "SM",
             name = "Msa_LinksOfInterests",
             joinColumns = {@JoinColumn(name = "Msa_Id",
                     referencedColumnName = "Id")},
@@ -55,7 +55,7 @@ public class Msa extends BaseEntity {
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private ProposedSolution proposedSolution;
     @OneToMany
-    @JoinTable(schema = "MSA",
+    @JoinTable(schema = "SM",
             name = "Msa_Responsibles",
             joinColumns = {@JoinColumn(name = "Msa_Id",
                     referencedColumnName = "Id")},
@@ -63,7 +63,7 @@ public class Msa extends BaseEntity {
                     referencedColumnName = "Id")})
     private Collection<Responsible> responsibles;
     @OneToMany
-    @JoinTable(schema = "MSA",
+    @JoinTable(schema = "SM",
             name = "Msa_Statuses",
             joinColumns = {@JoinColumn(name = "Msa_Id",
                     referencedColumnName = "Id")},
@@ -71,7 +71,7 @@ public class Msa extends BaseEntity {
                     referencedColumnName = "Id")})
     private Set<Status> status;
     @OneToMany
-    @JoinTable(schema = "MSA",
+    @JoinTable(schema = "SM",
             name = "Msa_VersionControls",
             joinColumns = {@JoinColumn(name = "Msa_Id",
                     referencedColumnName = "Id")},

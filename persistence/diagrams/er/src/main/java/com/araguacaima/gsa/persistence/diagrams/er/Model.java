@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.util.Collection;
 
 @javax.persistence.Entity
-@PersistenceUnit(unitName = "gsa")
+@PersistenceUnit(unitName = "open-archi")
 @DiscriminatorValue(value = "ERModel")
 public class Model extends Element {
 

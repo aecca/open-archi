@@ -6,8 +6,8 @@ import org.hibernate.annotations.Cascade;
 import javax.persistence.*;
 
 @Entity
-@PersistenceUnit(unitName = "gsa")
-@Table(name = "Activity", schema = "MSA")
+@PersistenceUnit(unitName = "open-archi")
+@Table(name = "Activity", schema = "SM")
 public class Activity extends BaseEntity {
 
     public static Measurable DEFAULT_BIG = new Measurable(new Range<Requests>(Requests.REQUESTS_PER_MONTH,

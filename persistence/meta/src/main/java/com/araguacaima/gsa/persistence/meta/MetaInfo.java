@@ -13,7 +13,7 @@ import java.util.UUID;
 /**
  * Created by Alejandro on 19/12/2014.
  */
-@PersistenceUnit(unitName = "gsa")
+@PersistenceUnit(unitName = "open-archi")
 @Entity
 @Table(schema = "META", name = "MetaInfo")
 @NamedQueries(value = {@NamedQuery(name = MetaInfo.COUNT_ALL_META_INFO,

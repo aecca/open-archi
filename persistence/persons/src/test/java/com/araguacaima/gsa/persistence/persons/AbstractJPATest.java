@@ -22,7 +22,7 @@ public class AbstractJPATest {
     @BeforeClass
     public static void init()
             throws FileNotFoundException, SQLException {
-        emfGsa = Persistence.createEntityManagerFactory("gsa");
+        emfGsa = Persistence.createEntityManagerFactory("open-archi");
         emGsa = emfGsa.createEntityManager();
     }
 

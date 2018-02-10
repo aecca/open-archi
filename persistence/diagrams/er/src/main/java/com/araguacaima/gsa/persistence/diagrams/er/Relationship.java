@@ -12,7 +12,7 @@ import javax.persistence.Table;
  */
 
 @javax.persistence.Entity
-@PersistenceUnit(unitName = "gsa")
+@PersistenceUnit(unitName = "open-archi")
 @DiscriminatorValue("ErRelationship")
 public class Relationship extends com.araguacaima.gsa.persistence.diagrams.core.Relationship {
     @Column

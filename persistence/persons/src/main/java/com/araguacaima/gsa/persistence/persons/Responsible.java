@@ -5,7 +5,7 @@ import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 
-@PersistenceUnit(unitName = "gsa")
+@PersistenceUnit(unitName = "open-archi")
 @Entity
 @Table(schema = "PERSONS",
         name = "Responsible")

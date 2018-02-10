@@ -11,7 +11,7 @@ import java.util.Set;
  */
 
 @Entity
-@PersistenceUnit(unitName = "gsa")
+@PersistenceUnit(unitName = "open-archi")
 public class Element extends Item {
 
     @Column

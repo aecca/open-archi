@@ -12,7 +12,7 @@ import java.util.UUID;
 /**
  * Created by Alejandro on 20/01/2015.
  */
-@PersistenceUnit(unitName = "gsa")
+@PersistenceUnit(unitName = "open-archi")
 @Entity
 @Table(schema = "META", name = "Role")
 @NamedQueries(value = {@NamedQuery(name = Role.FIND_BY_PRIORITY,

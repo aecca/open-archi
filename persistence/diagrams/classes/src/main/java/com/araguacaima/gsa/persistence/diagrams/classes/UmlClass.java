@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Entity
-@PersistenceUnit(unitName = "gsa")
+@PersistenceUnit(unitName = "open-archi")
 public class UmlClass extends UmlItem {
 
     @OneToMany

@@ -14,7 +14,7 @@ import java.util.Set;
  * on the Structurizr website for more information.
  */
 @Entity
-@PersistenceUnit(unitName = "gsa")
+@PersistenceUnit(unitName = "open-archi")
 public class SoftwareSystem extends StaticElement {
 
     @Column

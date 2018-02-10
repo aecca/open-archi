@@ -12,7 +12,7 @@ import javax.persistence.*;
  * of a software system, namely Person, SoftwareSystem, Container and Component.
  */
 @Entity
-@PersistenceUnit(unitName = "gsa")
+@PersistenceUnit(unitName = "open-archi")
 public abstract class StaticElement extends Element {
 
     @OneToOne(cascade = CascadeType.REMOVE)
@@ -20,7 +20,7 @@ public abstract class StaticElement extends Element {
     @JsonIgnore
     private Model model;
     @Column
-    private ElementKind kind = ElementKind.ARCHITECTURAL_MODEL;
+    private ElementKind kind = ElementKind.COMPONENT;
 
     public StaticElement() {
     }
