@@ -115,6 +115,61 @@ securityDefinitions:
     name: api_key
     in: header
 definitions:
+
+  Activity:
+    description: Pool's lane
+    type: object
+    allOf:
+    - $ref: "#/definitions/BaseEntity"
+    - type: object
+      properties:
+        kind:
+          description: Type of static element
+          type: string
+          enum:
+          - COMPONENT
+        activities:
+          type: array
+          description: Activities in the lane
+          items:
+            $ref: "#/definitions/Activity"
+
+  Lane:
+    description: Pool's lane
+    type: object
+    allOf:
+    - $ref: "#/definitions/BaseEntity"
+    - type: object
+      properties:
+        kind:
+          description: Type of static element
+          type: string
+          enum:
+          - COMPONENT
+        activities:
+          type: array
+          description: Activities in the lane
+          items:
+            $ref: "#/definitions/Activity"
+
+  Pool:
+    description: BPM's pool
+    type: object
+    allOf:
+    - $ref: "#/definitions/Item"
+    - type: object
+      properties:
+        kind:
+          description: Type of static element
+          type: string
+          enum:
+          - COMPONENT
+        lanes:
+          type: array
+          description: Lanes in the pool
+          items:
+            $ref: "#/definitions/Lane"
+
   StaticElement:
     description: Static element
     type: object
@@ -461,17 +516,57 @@ definitions:
       required:
       - kind
 
+  BPMModel:
+    description: BPM Model object
+    allOf:
+    - $ref: "#/definitions/Element"
+    - type: object
+      properties:
+        kind:
+          type: string
+          description: Type of model
+          enum:
+          - BPM_MODEL
+        pools:
+          type: array
+          description: Pools of the model
+          items:
+            $ref: "#/definitions/Pool"
+      required:
+      - kind
+
+  BPMModel_Create:
+    description: BPM Model object
+    allOf:
+    - $ref: "#/definitions/Element_Create"
+    - type: object
+      properties:
+        kind:
+          type: string
+          description: Type of model
+          enum:
+          - BPM_MODEL
+        pools:
+          type: array
+          description: Pools of the model
+          items:
+            $ref: "#/definitions/Pool"
+      required:
+      - kind
+
   Model:
     description: Model object
     type: object
     allOf:
     - $ref: "#/definitions/ArchitecturalModel"
+    - $ref: "#/definitions/BPMModel"
 
   Model_Create:
     description: Model object
     type: object
     allOf:
     - $ref: "#/definitions/ArchitecturalModel_Create"
+    - $ref: "#/definitions/BPMModel_Create"
 
   Point:
     type: object
