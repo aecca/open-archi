@@ -14,23 +14,12 @@ public class Activity extends Item {
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private Lane lane;
 
-    @Column
-    private ElementKind kind;
-
     public Lane getLane() {
         return lane;
     }
 
     public void setLane(Lane lane) {
         this.lane = lane;
-    }
-
-    public ElementKind getKind() {
-        return kind;
-    }
-
-    public void setKind(ElementKind kind) {
-        this.kind = kind;
     }
 
 }
