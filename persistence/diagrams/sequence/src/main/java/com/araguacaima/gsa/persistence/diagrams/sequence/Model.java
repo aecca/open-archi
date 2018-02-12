@@ -32,16 +32,16 @@ public class Model extends Element {
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Sequence_Id",
                     referencedColumnName = "Id")})
-    private Collection<Sequence> sequence;
+    private Collection<Sequence> sequences;
     @Column
     private ElementKind kind = ElementKind.SEQUENCE_MODEL;
 
-    public Collection<Sequence> getSequence() {
-        return sequence;
+    public Collection<Sequence> getSequences() {
+        return sequences;
     }
 
-    public void setSequence(Collection<Sequence> sequence) {
-        this.sequence = sequence;
+    public void setSequences(Collection<Sequence> sequence) {
+        this.sequences = sequence;
     }
 
     public ElementKind getKind() {

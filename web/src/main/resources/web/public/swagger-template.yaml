@@ -11,12 +11,10 @@ info:
 host: "@HOST@"
 basePath: "/open-archi/api"
 tags:
-- name: models
-  description: Models
-- name: architecture
-  description: Architecture
-- name: diagrams
-  description: Diagrams
+- name: Models
+  description: Set of functionalities related to model in an agnostically manner to its types.
+- name: Diagrams
+  description: Functionalities for managing models of a specifically kind of diagram
 schemes:
 - http
 - https
@@ -24,7 +22,7 @@ paths:
   "/models":
     get:
       tags:
-      - models
+      - Models
       summary: Finds models
       description: This service supports query by using RSQL expressions
       operationId: get-models
@@ -50,7 +48,7 @@ paths:
         - read:models
     post:
       tags:
-      - models
+      - Models
       summary: Add a new model
       description: ''
       operationId: add-model
@@ -79,7 +77,7 @@ paths:
   "/models/{model-id}":
     get:
       tags:
-      - models
+      - Models
       summary: Find a model by ID
       description: Returns a single model
       operationId: get-model-by-id
@@ -102,6 +100,404 @@ paths:
           description: Model not found
       security:
       - api_key: []
+  "/models/{model-id}/children":
+    get:
+      tags:
+      - Models
+      summary: Finds children of a model
+      description: This service supports query by using RSQL expressions
+      operationId: get-model-children
+      produces:
+      - application/json
+      parameters:
+      - name: model-id
+        in: path
+        description: ID of the model to return
+        required: true
+        type: string
+      - name: "$filter"
+        in: query
+        description: Filter children of a model according to an RSQL expression
+        required: false
+        type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              "$ref": "#/definitions/CompositeElement"
+        '400':
+          description: Bad request
+      security:
+      - openarchi_auth:
+        - read:models
+    put:
+      tags:
+      - Models
+      summary: Add a new child to the model
+      description: If the child object does not exists previously, it will be created.
+      operationId: add-model-child
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: model-id
+        in: path
+        description: ID of the model to return
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Model object that needs to be added
+        required: true
+        schema:
+          "$ref": "#/definitions/CompositeElement_Create"
+      responses:
+        '200':
+          description: Accepted
+        '201':
+          description: Created
+        '405':
+          description: Invalid input
+      security:
+      - openarchi_auth:
+        - write:model
+        - read:models
+  "/models/{model-id}/parent":
+    get:
+      tags:
+      - Models
+      summary: Find the parent of a model
+      description: Gets the full info related to the parent of the model
+      operationId: get-model-parent
+      produces:
+      - application/json
+      parameters:
+      - name: model-id
+        in: path
+        description: ID of the model to return
+        required: true
+        type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            "$ref": "#/definitions/Model"
+        '400':
+          description: Bad request
+      security:
+      - openarchi_auth:
+        - read:models
+    post:
+      tags:
+      - Models
+      summary: Add a parent to the current model
+      description: Relates an existing model as a parent of the current one. If parent model does not exists an error will occur. Only model parent id is required
+      operationId: add-model-parent
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: model-id
+        in: path
+        description: ID of the model to return
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Model object that needs to be added as a parent of the current model
+        required: true
+        schema:
+          "$ref": "#/definitions/Model_Parent_Create"
+      responses:
+        '200':
+          description: Accepted
+        '201':
+          description: Created
+        '405':
+          description: Invalid input
+      security:
+      - openarchi_auth:
+        - write:model
+        - read:models
+  "/models/architectures":
+    get:
+      tags:
+      - Diagrams
+      summary: Finds models of the type architecture
+      description: This service supports query by using RSQL expressions
+      operationId: get-architecture-models
+      produces:
+      - application/json
+      parameters:
+      - name: "$filter"
+        in: query
+        description: Filter models according to an RSQL expression
+        required: false
+        type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              "$ref": "#/definitions/ArchitecturalModel"
+        '400':
+          description: Bad request
+      security:
+      - openarchi_auth:
+        - read:models
+    post:
+      tags:
+      - Diagrams
+      summary: Add a new model of the type architecture
+      description: ''
+      operationId: add-architecture-model
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: Architecture Model object that needs to be added
+        required: true
+        schema:
+          "$ref": "#/definitions/ArchitecturalModel_Create"
+      responses:
+        '200':
+          description: Accepted
+        '201':
+          description: Created
+        '405':
+          description: Invalid input
+      security:
+      - openarchi_auth:
+        - write:model
+        - read:models
+  "/models/bpms":
+    get:
+      tags:
+      - Diagrams
+      summary: Finds models of the type bpm
+      description: This service supports query by using RSQL expressions
+      operationId: get-bpm-models
+      produces:
+      - application/json
+      parameters:
+      - name: "$filter"
+        in: query
+        description: Filter models according to an RSQL expression
+        required: false
+        type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              "$ref": "#/definitions/ArchitecturalModel"
+        '400':
+          description: Bad request
+      security:
+      - openarchi_auth:
+        - read:models
+    post:
+      tags:
+      - Diagrams
+      summary: Add a new model of the type bpm
+      description: ''
+      operationId: add-bpm-model
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: Bpm Model object that needs to be added
+        required: true
+        schema:
+          "$ref": "#/definitions/ArchitecturalModel_Create"
+      responses:
+        '200':
+          description: Accepted
+        '201':
+          description: Created
+        '405':
+          description: Invalid input
+      security:
+      - openarchi_auth:
+        - write:model
+        - read:models  
+  "/models/flowcharts":
+    get:
+      tags:
+      - Diagrams
+      summary: Finds models of the type flowchart
+      description: This service supports query by using RSQL expressions
+      operationId: get-flowchart-models
+      produces:
+      - application/json
+      parameters:
+      - name: "$filter"
+        in: query
+        description: Filter models according to an RSQL expression
+        required: false
+        type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              "$ref": "#/definitions/ArchitecturalModel"
+        '400':
+          description: Bad request
+      security:
+      - openarchi_auth:
+        - read:models
+    post:
+      tags:
+      - Diagrams
+      summary: Add a new model of the type flowchart
+      description: ''
+      operationId: add-flowchart-model
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: Flowchart Model object that needs to be added
+        required: true
+        schema:
+          "$ref": "#/definitions/ArchitecturalModel_Create"
+      responses:
+        '200':
+          description: Accepted
+        '201':
+          description: Created
+        '405':
+          description: Invalid input
+      security:
+      - openarchi_auth:
+        - write:model
+        - read:models  
+  "/models/gantts":
+    get:
+      tags:
+      - Diagrams
+      summary: Finds models of the type gantt
+      description: This service supports query by using RSQL expressions
+      operationId: get-gantt-models
+      produces:
+      - application/json
+      parameters:
+      - name: "$filter"
+        in: query
+        description: Filter models according to an RSQL expression
+        required: false
+        type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              "$ref": "#/definitions/ArchitecturalModel"
+        '400':
+          description: Bad request
+      security:
+      - openarchi_auth:
+        - read:models
+    post:
+      tags:
+      - Diagrams
+      summary: Add a new model of the type gantt
+      description: ''
+      operationId: add-gantt-model
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: Gantt Model object that needs to be added
+        required: true
+        schema:
+          "$ref": "#/definitions/ArchitecturalModel_Create"
+      responses:
+        '200':
+          description: Accepted
+        '201':
+          description: Created
+        '405':
+          description: Invalid input
+      security:
+      - openarchi_auth:
+        - write:model
+        - read:models  
+  "/models/sequences":
+    get:
+      tags:
+      - Diagrams
+      summary: Finds models of the type sequence
+      description: This service supports query by using RSQL expressions
+      operationId: get-sequence-models
+      produces:
+      - application/json
+      parameters:
+      - name: "$filter"
+        in: query
+        description: Filter models according to an RSQL expression
+        required: false
+        type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              "$ref": "#/definitions/ArchitecturalModel"
+        '400':
+          description: Bad request
+      security:
+      - openarchi_auth:
+        - read:models
+    post:
+      tags:
+      - Diagrams
+      summary: Add a new model of the type sequence
+      description: ''
+      operationId: add-sequence-model
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: Sequence Model object that needs to be added
+        required: true
+        schema:
+          "$ref": "#/definitions/ArchitecturalModel_Create"
+      responses:
+        '200':
+          description: Accepted
+        '201':
+          description: Created
+        '405':
+          description: Invalid input
+      security:
+      - openarchi_auth:
+        - write:model
+        - read:models  
 securityDefinitions:
   openarchi_auth:
     type: oauth2
@@ -149,6 +545,162 @@ definitions:
           items:
             $ref: "#/definitions/Lane"
 
+  Gantt:
+    description: Gantt
+    type: object
+    allOf:
+    - $ref: "#/definitions/Item"
+    - type: object
+      properties:
+        category:
+          type: string
+          description: Category
+          enum:
+          - ACTIVITY
+          - START
+          - END
+        diagramStart:
+          type: integer
+          format: int32
+          description: Start of the Gantt's activity
+        diagramEnd:
+          type: integer
+          format: int32
+          description: End of the Gantt's activity
+        kind:
+          type: string
+          description: Type of model
+          enum:
+          - GANTT
+      required:
+      - category
+      - kind
+       
+  Gantt_Create:
+    description: Gantt
+    type: object
+    allOf:
+    - $ref: "#/definitions/Item_Create"
+    - type: object
+      properties:
+        category:
+          type: string
+          description: Category
+          enum:
+          - ACTIVITY
+          - START
+          - END
+        diagramStart:
+          type: integer
+          format: int32
+          description: Start of the Gantt's activity
+        diagramEnd:
+          type: integer
+          format: int32
+          description: End of the Gantt's activity
+        kind:
+          type: string
+          description: Type of model
+          enum:
+          - GANTT
+      required:
+      - category
+      - kind
+
+  Sequence:
+    description: Sequence
+    type: object
+    allOf:
+    - $ref: "#/definitions/Item"
+    - type: object
+      properties:
+        start:
+          type: integer
+          format: int32
+          description: Start of the sequence's activity
+        duration:
+          type: integer
+          format: int32
+          description: Duration of the sequence's activity
+        kind:
+          type: string
+          description: Type of model
+          enum:
+          - SEQUENCE_MODEL
+      required:
+      - kind
+       
+  Sequence_Create:
+    description: Sequence
+    type: object
+    allOf:
+    - $ref: "#/definitions/Item_Create"
+    - type: object
+      properties:
+        start:
+          type: integer
+          format: int32
+          description: Start of the sequence's activity
+        duration:
+          type: integer
+          format: int32
+          description: Duration of the sequence's activity
+        kind:
+          type: string
+          description: Type of model
+          enum:
+          - SEQUENCE_MODEL
+      required:
+      - kind
+
+  Flowchart:
+    description: Flowchart
+    type: object
+    allOf:
+    - $ref: "#/definitions/Item"
+    - type: object
+      properties:
+        category:
+          type: string
+          description: Category
+          enum:
+          - ACTIVITY
+          - DECISION_POINT
+          - START
+          - END
+        kind:
+          type: string
+          description: Type of model
+          enum:
+          - FLOWCHART
+      required:
+      - category
+      - kind
+       
+  Flowchart_Create:
+    description: Flowchart
+    type: object
+    allOf:
+    - $ref: "#/definitions/Item_Create"
+    - type: object
+      properties:
+        category:
+          type: string
+          description: Category
+          enum:
+          - ACTIVITY
+          - DECISION_POINT
+          - START
+          - END
+        kind:
+          type: string
+          description: Type of model
+          enum:
+          - FLOWCHART
+      required:
+      - category
+      - kind
+      
   Activity_Create:
     description: Lane's activity
     type: object
@@ -570,12 +1122,129 @@ definitions:
       required:
       - kind
 
+  FlowchartModel:
+    description: Flowchart Model object
+    allOf:
+    - $ref: "#/definitions/Element"
+    - type: object
+      properties:
+        kind:
+          type: string
+          description: Type of model
+          enum:
+          - FLOWCHART_MODEL
+        pools:
+          type: array
+          description: Pools of the model
+          items:
+            $ref: "#/definitions/Flowchart"
+      required:
+      - kind
+
+  FlowchartModel_Create:
+    description: Flowchart Model object
+    allOf:
+    - $ref: "#/definitions/Element_Create"
+    - type: object
+      properties:
+        kind:
+          type: string
+          description: Type of model
+          enum:
+          - FLOWCHART_MODEL
+        pools:
+          type: array
+          description: Pools of the model
+          items:
+            $ref: "#/definitions/Flowchart"
+      required:
+      - kind
+      
+  GanttModel:
+    description: Gantt Model object
+    allOf:
+    - $ref: "#/definitions/Element"
+    - type: object
+      properties:
+        kind:
+          type: string
+          description: Type of model
+          enum:
+          - GANTT_MODEL
+        pools:
+          type: array
+          description: Pools of the model
+          items:
+            $ref: "#/definitions/Gantt"
+      required:
+      - kind
+
+  GanttModel_Create:
+    description: Gantt Model object
+    allOf:
+    - $ref: "#/definitions/Element_Create"
+    - type: object
+      properties:
+        kind:
+          type: string
+          description: Type of model
+          enum:
+          - GANTT_MODEL
+        pools:
+          type: array
+          description: Pools of the model
+          items:
+            $ref: "#/definitions/Gantt"
+      required:
+      - kind
+      
+  SequenceModel:
+    description: Sequence Model object
+    allOf:
+    - $ref: "#/definitions/Element"
+    - type: object
+      properties:
+        kind:
+          type: string
+          description: Type of model
+          enum:
+          - SEQUENCE_MODEL
+        pools:
+          type: array
+          description: Pools of the model
+          items:
+            $ref: "#/definitions/Sequence"
+      required:
+      - kind
+
+  SequenceModel_Create:
+    description: Sequence Model object
+    allOf:
+    - $ref: "#/definitions/Element_Create"
+    - type: object
+      properties:
+        kind:
+          type: string
+          description: Type of model
+          enum:
+          - SEQUENCE_MODEL
+        pools:
+          type: array
+          description: Pools of the model
+          items:
+            $ref: "#/definitions/Sequence"
+      required:
+      - kind
+            
   Model:
     description: Model object
     type: object
     allOf:
     - $ref: "#/definitions/ArchitecturalModel"
     - $ref: "#/definitions/BPMModel"
+    - $ref: "#/definitions/FlowchartModel"
+    - $ref: "#/definitions/GanttModel"
+    - $ref: "#/definitions/SequenceModel"
 
   Model_Create:
     description: Model object
@@ -583,6 +1252,39 @@ definitions:
     allOf:
     - $ref: "#/definitions/ArchitecturalModel_Create"
     - $ref: "#/definitions/BPMModel_Create"
+    - $ref: "#/definitions/FlowchartModel_Create"
+    - $ref: "#/definitions/GanttModel_Create"
+    - $ref: "#/definitions/SequenceModel_Create"
+
+  Model_Parent_Create:
+    description: A reference to a taggable element
+    type: object
+    properties:
+      id:
+        type: string
+        description: Composite element identifier
+      type:
+        type: string
+        description: Referenced element type
+        enum:
+        - ARCHITECTURAL_MODEL
+        - FLOWCHART_MODEL
+        - SEQUENCE_MODEL
+        - GANTT_MODEL
+        - ENTITY_RELATIONSHIP_MODEL
+        - UML_CLASS_MODEL
+        - BPM_MODEL
+        - ARCHITECTURAL
+        - FLOWCHART
+        - SEQUENCE
+        - GANTT
+        - ENTITY_RELATIONSHIP
+        - UML_CLASS
+        - FEATURE
+        - COMPONENT
+        - CONTAINER
+        - DEPLOYMENT
+        - BPM
 
   Point:
     type: object
@@ -605,6 +1307,42 @@ definitions:
     - y
 
   CompositeElement:
+    type: object
+    description: A reference to a taggable element
+    properties:
+      id:
+        type: string
+        description: Composite element identifier
+      type:
+        type: string
+        description: Referenced element type
+        enum:
+        - ARCHITECTURAL_MODEL
+        - FLOWCHART_MODEL
+        - SEQUENCE_MODEL
+        - GANTT_MODEL
+        - ENTITY_RELATIONSHIP_MODEL
+        - UML_CLASS_MODEL
+        - BPM_MODEL
+        - ARCHITECTURAL
+        - FLOWCHART
+        - SEQUENCE
+        - GANTT
+        - ENTITY_RELATIONSHIP
+        - UML_CLASS
+        - FEATURE
+        - COMPONENT
+        - CONTAINER
+        - DEPLOYMENT
+        - BPM
+      link:
+        type: string
+        description: Link to the referenced element
+    required:
+    - id
+    - type
+
+  CompositeElement_Create:
     type: object
     description: A reference to a taggable element
     properties:

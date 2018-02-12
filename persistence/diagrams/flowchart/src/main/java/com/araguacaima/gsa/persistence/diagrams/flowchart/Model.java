@@ -18,16 +18,16 @@ public class Model extends Element {
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Flowchart_Id",
                     referencedColumnName = "Id")})
-    private Collection<Flowchart> flowchart;
+    private Collection<Flowchart> flowcharts;
     @Column
     private ElementKind kind = ElementKind.FLOWCHART_MODEL;
 
-    public Collection<Flowchart> getFlowchart() {
-        return flowchart;
+    public Collection<Flowchart> getFlowcharts() {
+        return flowcharts;
     }
 
-    public void setFlowchart(Collection<Flowchart> flowchart) {
-        this.flowchart = flowchart;
+    public void setFlowcharts(Collection<Flowchart> flowchart) {
+        this.flowcharts = flowchart;
     }
 
     public ElementKind getKind() {

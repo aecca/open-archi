@@ -18,16 +18,16 @@ public class Model extends Element {
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Gantt_Id",
                     referencedColumnName = "Id")})
-    private Collection<Gantt> gantt;
+    private Collection<Gantt> gantts;
     @Column
     private ElementKind kind = ElementKind.GANTT_MODEL;
 
-    public Collection<Gantt> getGantt() {
-        return gantt;
+    public Collection<Gantt> getGantts() {
+        return gantts;
     }
 
-    public void setGantt(Collection<Gantt> gantt) {
-        this.gantt = gantt;
+    public void setGantts(Collection<Gantt> gantt) {
+        this.gantts = gantt;
     }
 
     public ElementKind getKind() {
