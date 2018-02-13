@@ -20,6 +20,20 @@ schemes:
 - https
 paths:
   "/models":
+    options:
+      tags:
+      - Models
+      summary: Shows options for models object
+      operationId: options-models
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            allOf:
+            - "$ref": "#/definitions/Options_Get_Collection"
+            - "$ref": "#/definitions/Options_Post"
     get:
       tags:
       - Models
@@ -75,6 +89,24 @@ paths:
         - write:model
         - read:models
   "/models/{model-id}":
+    options:
+      tags:
+      - Models
+      summary: Shows options for a specific model object
+      operationId: options-model
+      produces:
+      - application/json
+      parameters:
+      - name: model-id
+        in: path
+        description: ID of the model to check its options
+        required: true
+        type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            "$ref": "#/definitions/Options_Get"
     get:
       tags:
       - Models
@@ -101,6 +133,26 @@ paths:
       security:
       - api_key: []
   "/models/{model-id}/children":
+    options:
+      tags:
+      - Models
+      summary: Shows options for the children objects of a specific model
+      operationId: options-model-children
+      produces:
+      - application/json
+      parameters:
+      - name: model-id
+        in: path
+        description: ID of the model to check its children options
+        required: true
+        type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            allOf:
+            - "$ref": "#/definitions/Options_Get_Collection"
+            - "$ref": "#/definitions/Options_Put"
     get:
       tags:
       - Models
@@ -166,6 +218,26 @@ paths:
         - write:model
         - read:models
   "/models/{model-id}/parent":
+    options:
+      tags:
+      - Models
+      summary: Shows options for the parent object of a specific model
+      operationId: options-model-parent
+      produces:
+      - application/json
+      parameters:
+      - name: model-id
+        in: path
+        description: ID of the model to check its parent options
+        required: true
+        type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            allOf:
+            - "$ref": "#/definitions/Options_Get"
+            - "$ref": "#/definitions/Options_Post"
     get:
       tags:
       - Models
@@ -223,7 +295,21 @@ paths:
       - openarchi_auth:
         - write:model
         - read:models
-  "/models/architectures":
+  "/diagrams/architectures":
+    options:
+      tags:
+      - Diagrams
+      summary: Shows options for architecture diagram
+      operationId: options-architecture
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            allOf:
+            - "$ref": "#/definitions/Options_Get_Collection"
+            - "$ref": "#/definitions/Options_Post"
     get:
       tags:
       - Diagrams
@@ -278,7 +364,21 @@ paths:
       - openarchi_auth:
         - write:model
         - read:models
-  "/models/bpms":
+  "/diagrams/bpms":
+    options:
+      tags:
+      - Diagrams
+      summary: Shows options for BPM diagram
+      operationId: options-bpm
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            allOf:
+            - "$ref": "#/definitions/Options_Get_Collection"
+            - "$ref": "#/definitions/Options_Post"
     get:
       tags:
       - Diagrams
@@ -333,7 +433,21 @@ paths:
       - openarchi_auth:
         - write:model
         - read:models  
-  "/models/flowcharts":
+  "/diagrams/flowcharts":
+    options:
+      tags:
+      - Diagrams
+      summary: Shows options for flowcharts diagram
+      operationId: options-flowcharts
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            allOf:
+            - "$ref": "#/definitions/Options_Get_Collection"
+            - "$ref": "#/definitions/Options_Post"
     get:
       tags:
       - Diagrams
@@ -388,7 +502,21 @@ paths:
       - openarchi_auth:
         - write:model
         - read:models  
-  "/models/gantts":
+  "/diagrams/gantts":
+    options:
+      tags:
+      - Diagrams
+      summary: Shows options for gantts diagram
+      operationId: options-gantt
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            allOf:
+            - "$ref": "#/definitions/Options_Get_Collection"
+            - "$ref": "#/definitions/Options_Post"
     get:
       tags:
       - Diagrams
@@ -443,7 +571,21 @@ paths:
       - openarchi_auth:
         - write:model
         - read:models  
-  "/models/sequences":
+  "/diagrams/sequences":
+    options:
+      tags:
+      - Diagrams
+      summary: Shows options for sequences diagram
+      operationId: options-sequence
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            allOf:
+            - "$ref": "#/definitions/Options_Get_Collection"
+            - "$ref": "#/definitions/Options_Post"
     get:
       tags:
       - Diagrams
@@ -511,6 +653,64 @@ securityDefinitions:
     name: api_key
     in: header
 definitions:
+
+  Options_Input_Item:
+    type: object
+    properties:
+      input:
+        type: object
+
+  Options_Output_Item:
+    type: object
+    properties:
+      output:
+        type: object
+
+  Options_Output_Collection_Item:
+    type: object
+    properties:
+      output:
+        type: array
+        items:
+          type: object
+
+  Options_Get_Collection:
+    description: Generic object to expose endpoint functionalitites
+    properties:
+      get:
+        $ref: '#/definitions/Options_Output_Collection_Item'
+
+  Options_Get:
+    description: Generic object to expose endpoint functionalitites
+    properties:
+      get:
+        $ref: '#/definitions/Options_Output_Item'
+
+  Options_Post:
+    description: Generic object to expose endpoint functionalitites
+    properties:
+      post:
+        $ref: '#/definitions/Options_Input_Item'
+
+  Options_Put:
+    description: Generic object to expose endpoint functionalitites
+    properties:
+      put:
+        $ref: '#/definitions/Options_Input_Item'
+
+  Options_Patch:
+    description: Generic object to expose endpoint functionalitites
+    properties:
+      patch:
+        $ref: '#/definitions/Options_Input_Item'
+      head:
+        $ref: '#/definitions/Options_Output_Item'
+
+  Options_Head:
+    description: Generic object to expose endpoint functionalitites
+    properties:
+      head:
+        $ref: '#/definitions/Options_Output_Item'
 
   Activity:
     description: Lane's activity
@@ -732,7 +932,7 @@ definitions:
           type: array
           description: Lanes in the pool
           items:
-            $ref: "#/definitions/Lane"
+            $ref: "#/definitions/Lane_Create"
 
   StaticElement:
     description: Static element
@@ -1054,13 +1254,13 @@ definitions:
   ArchitecturalModel_Create:
     description: Architectural Model object
     allOf:
-    - $ref: "#/definitions/Element"
+    - $ref: "#/definitions/Element_Create"
     - type: object
       properties:
         elements:
           type: object
           additionalProperties:
-            $ref: "#/definitions/Element"
+            $ref: "#/definitions/Element_Create"
         kind:
           type: string
           description: Type of model
@@ -1118,7 +1318,7 @@ definitions:
           type: array
           description: Pools of the model
           items:
-            $ref: "#/definitions/Pool"
+            $ref: "#/definitions/Pool_Create"
       required:
       - kind
 
@@ -1156,7 +1356,7 @@ definitions:
           type: array
           description: Pools of the model
           items:
-            $ref: "#/definitions/Flowchart"
+            $ref: "#/definitions/Flowchart_Create"
       required:
       - kind
       
@@ -1194,7 +1394,7 @@ definitions:
           type: array
           description: Pools of the model
           items:
-            $ref: "#/definitions/Gantt"
+            $ref: "#/definitions/Gantt_Create"
       required:
       - kind
       
@@ -1232,7 +1432,7 @@ definitions:
           type: array
           description: Pools of the model
           items:
-            $ref: "#/definitions/Sequence"
+            $ref: "#/definitions/Sequence_Create"
       required:
       - kind
             
