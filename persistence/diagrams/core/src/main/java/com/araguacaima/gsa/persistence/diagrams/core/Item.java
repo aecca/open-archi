@@ -15,7 +15,7 @@ import java.util.Set;
 @Entity
 @PersistenceUnit(unitName = "open-archi")
 @NamedQueries({@NamedQuery(name = Item.GET_ALL_CHILDREN,
-        query = "select a.children from Item a where id=:id")})
+        query = "select a.children from Item a where a.id=:id")})
 public class Item extends Taggable {
 
     public static final String GET_ALL_CHILDREN = "get.all.children";

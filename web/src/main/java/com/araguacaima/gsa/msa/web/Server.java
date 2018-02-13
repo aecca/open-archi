@@ -4,10 +4,7 @@ import com.araguacaima.commons.utils.EnumsUtils;
 import com.araguacaima.commons.utils.JsonUtils;
 import com.araguacaima.commons.utils.ReflectionUtils;
 import com.araguacaima.gsa.msa.web.wrapper.RsqlJsonFilter;
-import com.araguacaima.gsa.persistence.diagrams.core.CompositeElement;
-import com.araguacaima.gsa.persistence.diagrams.core.Element;
-import com.araguacaima.gsa.persistence.diagrams.core.ElementKind;
-import com.araguacaima.gsa.persistence.diagrams.core.Taggable;
+import com.araguacaima.gsa.persistence.diagrams.core.*;
 import com.araguacaima.gsa.persistence.utils.JPAEntityManagerUtils;
 import de.neuland.jade4j.JadeConfiguration;
 import de.neuland.jade4j.template.TemplateLoader;
@@ -229,7 +226,7 @@ public class Server {
         map.put("title", "OpenArchi API");
 
         staticFiles.location("/web/public");
-        options("/open-archi/*", (request, response) -> {
+/*        options("/open-archi/*", (request, response) -> {
 
             String accessControlRequestHeaders = request.headers("Access-Control-Request-Headers");
             if (accessControlRequestHeaders != null) {
@@ -241,7 +238,7 @@ public class Server {
                 response.header("Access-Control-Allow-Methods", accessControlRequestMethod);
             }
             return "OK";
-        });
+        });*/
         before((request, response) -> {
             response.header("Access-Control-Allow-Origin", "*");
             response.header("Access-Control-Request-Method", "*");
@@ -289,7 +286,7 @@ public class Server {
                         return throwError(response, ex);
                     }
                 });
-                get("/models", (request, response) -> getList(request, response, Taggable.GET_ALL_MODELS, null));
+                get("/models", (request, response) -> getList(request, response, Taggable.GET_ALL_MODELS, null, null));
                 options("/models/:uuid", (request, response) -> {
                     setCORS(request, response);
                     Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledParentModel, null, HttpMethod.get, null);
@@ -314,8 +311,9 @@ public class Server {
                 });
                 get("/models/:uuid/children", (request, response) -> {
                     Map<String, Object> params = new HashMap<>();
-                    params.put("id", request.params("uuid"));
-                    return getList(request, response, Taggable.GET_ALL_MODELS, params); });
+                    params.put("id", request.params(":uuid"));
+                    return getList(request, response, Item.GET_ALL_CHILDREN, params, Collection.class);
+                });
                 put("/models/:uuid/children", (request, response) -> {
                     response.status(HTTP_NOT_IMPLEMENTED);
                     response.type(JSON_CONTENT_TYPE);
@@ -358,7 +356,7 @@ public class Server {
                     Map<String, Object> params = new HashMap<>();
                     params.put("modelType", "ArchitectureModel");
                     response.type(JSON_CONTENT_TYPE);
-                    return jsonUtils.toJSON(getList(request, response, Taggable.GET_MODELS_BY_TYPE, params));
+                    return jsonUtils.toJSON(getList(request, response, Taggable.GET_MODELS_BY_TYPE, params, null));
                 });
                 post("/diagrams/architectures", (request, response) -> {
                     try {
@@ -388,7 +386,7 @@ public class Server {
                     Map<String, Object> params = new HashMap<>();
                     params.put("modelType", "BpmModel");
                     response.type(JSON_CONTENT_TYPE);
-                    return jsonUtils.toJSON(getList(request, response, Taggable.GET_MODELS_BY_TYPE, params));
+                    return jsonUtils.toJSON(getList(request, response, Taggable.GET_MODELS_BY_TYPE, params, null));
                 });
                 post("/diagrams/bpms", (request, response) -> {
                     try {
@@ -418,7 +416,7 @@ public class Server {
                     Map<String, Object> params = new HashMap<>();
                     params.put("modelType", "ERModel");
                     response.type(JSON_CONTENT_TYPE);
-                    return jsonUtils.toJSON(getList(request, response, Taggable.GET_MODELS_BY_TYPE, params));
+                    return jsonUtils.toJSON(getList(request, response, Taggable.GET_MODELS_BY_TYPE, params, null));
                 });
                 post("/diagrams/ers", (request, response) -> {
                     try {
@@ -448,7 +446,7 @@ public class Server {
                     Map<String, Object> params = new HashMap<>();
                     params.put("modelType", "FlowchartModel");
                     response.type(JSON_CONTENT_TYPE);
-                    return jsonUtils.toJSON(getList(request, response, Taggable.GET_MODELS_BY_TYPE, params));
+                    return jsonUtils.toJSON(getList(request, response, Taggable.GET_MODELS_BY_TYPE, params, null));
                 });
                 post("/diagrams/flowcharts", (request, response) -> {
                     try {
@@ -478,7 +476,7 @@ public class Server {
                     Map<String, Object> params = new HashMap<>();
                     params.put("modelType", "GanttModel");
                     response.type(JSON_CONTENT_TYPE);
-                    return jsonUtils.toJSON(getList(request, response, Taggable.GET_MODELS_BY_TYPE, params));
+                    return jsonUtils.toJSON(getList(request, response, Taggable.GET_MODELS_BY_TYPE, params, null));
                 });
                 post("/diagrams/gantts", (request, response) -> {
                     try {
@@ -508,7 +506,7 @@ public class Server {
                     Map<String, Object> params = new HashMap<>();
                     params.put("modelType", "SequenceModel");
                     response.type(JSON_CONTENT_TYPE);
-                    return jsonUtils.toJSON(getList(request, response, Taggable.GET_MODELS_BY_TYPE, params));
+                    return jsonUtils.toJSON(getList(request, response, Taggable.GET_MODELS_BY_TYPE, params, null));
                 });
                 post("/diagrams/sequences", (request, response) -> {
                     try {
@@ -538,7 +536,7 @@ public class Server {
                     Map<String, Object> params = new HashMap<>();
                     params.put("modelType", "ClassesModel");
                     response.type(JSON_CONTENT_TYPE);
-                    return jsonUtils.toJSON(getList(request, response, Taggable.GET_MODELS_BY_TYPE, params));
+                    return jsonUtils.toJSON(getList(request, response, Taggable.GET_MODELS_BY_TYPE, params, null));
                 });
                 post("/diagrams/classes", (request, response) -> {
                     try {
@@ -581,7 +579,7 @@ public class Server {
 
     private static void setCORS(Request request, Response response) {
         response.status(HTTP_OK);
-        response.header("Allow", "POST, GET");
+        response.header("Allow", "POST, GET, PUT, OPTIONS, HEAD");
         response.header("Content-Type", JSON_CONTENT_TYPE + ", " + HTML_CONTENT_TYPE);
         String accessControlRequestHeaders = request.headers("Access-Control-Request-Headers");
         if (accessControlRequestHeaders != null) {
@@ -620,13 +618,13 @@ public class Server {
         }
     }
 
-    private static Object getList(Request request, Response response, String query, Map<String, Object> params) throws IOException, URISyntaxException {
+    private static Object getList(Request request, Response response, String query, Map<String, Object> params, Class type) throws IOException, URISyntaxException {
         response.status(HTTP_OK);
 
-        List<Taggable> models = JPAEntityManagerUtils.executeQuery(Taggable.class, query, params);
+        List<Taggable> models = JPAEntityManagerUtils.executeQuery(type == null ? Taggable.class : type, query, params);
         String jsonObjects = jsonUtils.toJSON(models);
         Object filter_ = filter(request.queryParams("$filter"), jsonObjects);
-        String json = request.pathInfo().replaceFirst("/api/models", "");
+        String json = request.pathInfo().replaceFirst("/api/models", "").replaceFirst("/api/diagrams", "");
         String contentType = getContentType(request);
         response.header("Content-Type", contentType);
         if (contentType.equals(HTML_CONTENT_TYPE)) {
