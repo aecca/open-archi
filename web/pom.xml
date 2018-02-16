@@ -228,7 +228,7 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>${org.apache.maven.plugins-maven-jar-plugin}</version>
                 <configuration>
-                    <finalName>openarchi-api</finalName>
+                    <finalName>open-archi</finalName>
                 </configuration>
             </plugin>
             <plugin>
@@ -290,7 +290,7 @@
                         <artifactId>maven-jar-plugin</artifactId>
                         <version>${org.apache.maven.plugins-maven-jar-plugin}</version>
                         <configuration>
-                            <finalName>openarchi-api</finalName>
+                            <finalName>open-archi</finalName>
                         </configuration>
                     </plugin>
                     <plugin>
@@ -343,9 +343,9 @@
                         <version>${com.heroku.sdk-heroku-maven-plugin}</version>
                         <configuration>
                             <jdkVersion>${java.version}</jdkVersion>
-                            <appName>openarchi-api</appName>
+                            <appName>open-archi</appName>
                             <processTypes>
-                                <web>java -jar ./target/openarchi-api-with-dependencies.jar</web>
+                                <web>java -jar ./target/open-archi-with-dependencies.jar</web>
                             </processTypes>
                         </configuration>
                     </plugin>
