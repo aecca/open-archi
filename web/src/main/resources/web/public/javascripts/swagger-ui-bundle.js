@@ -30363,11 +30363,11 @@
                         className: "info"
                     }, m.default.createElement("hgroup", {
                         className: "main"
-                    }, m.default.createElement("h2", {
+                    },/* m.default.createElement("h2", {
                         className: "title"
                     }, l, s && m.default.createElement(_, {
                         version: s
-                    })), r || i ? m.default.createElement(w, {
+                    })),*/ r || i ? m.default.createElement(w, {
                         host: r,
                         basePath: i
                     }) : null, n && m.default.createElement("a", {

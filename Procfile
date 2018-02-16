@@ -1,1 +1,1 @@
-web: java -jar ./web/target/openarchi-api-with-dependencies.jar
+web: java -jar ./target/trivia-naturalizacion-with-dependencies.jar

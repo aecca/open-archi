@@ -222,23 +222,8 @@ public class Server {
         int assignedPort = getAssignedPort();
         port(assignedPort);
         log.info("Server listen on port '" + assignedPort + "'");
-        Map<String, Object> map = new HashMap<>();
-        map.put("title", "OpenArchi API");
 
         staticFiles.location("/web/public");
-/*        options("/open-archi/*", (request, response) -> {
-
-            String accessControlRequestHeaders = request.headers("Access-Control-Request-Headers");
-            if (accessControlRequestHeaders != null) {
-                response.header("Access-Control-Allow-Headers", accessControlRequestHeaders);
-            }
-
-            String accessControlRequestMethod = request.headers("Access-Control-Request-Method");
-            if (accessControlRequestMethod != null) {
-                response.header("Access-Control-Allow-Methods", accessControlRequestMethod);
-            }
-            return "OK";
-        });*/
         before((request, response) -> {
             response.header("Access-Control-Allow-Origin", "*");
             response.header("Access-Control-Request-Method", "*");
@@ -246,10 +231,23 @@ public class Server {
         });
         redirect.get("/", "/open-archi/", Redirect.Status.TEMPORARY_REDIRECT);
         path("/open-archi", () -> {
-            get("/", (req, res) -> new ModelAndView(map, "home"), engine);
-            path("/api", () -> {
+            redirect.get("/api", "/open-archi/api/", Redirect.Status.PERMANENT_REDIRECT);
+            redirect.get("/editor", "/open-archi/editor/", Redirect.Status.PERMANENT_REDIRECT);
+            Map<String, Object> mapHome = new HashMap<>();
+            mapHome.put("title", "OpenArchi");
+            get("/", (req, res) -> new ModelAndView(mapHome, "home"), engine);
+            path("/editor", () -> {
+                Map<String, Object> mapEditor = new HashMap<>();
                 exception(Exception.class, exceptionHandler);
-                before("/*", (req, res) -> log.info("Received api call to " + req.requestMethod() + " " + req.pathInfo()));
+                mapEditor.put("title", "OpenArchi Editor");
+                get("/", (req, res) -> new ModelAndView(mapEditor, "editor"), engine);
+            });
+            path("/api", () -> {
+                Map<String, Object> mapApi = new HashMap<>();
+                exception(Exception.class, exceptionHandler);
+                before("/api/*", (req, res) -> log.info("Received api call to " + req.requestMethod() + " " + req.pathInfo()));
+                mapApi.put("title", "OpenArchi API");
+                get("/", (req, res) -> new ModelAndView(mapApi, "apis"), engine);
                 options("/models", (request, response) -> {
                     setCORS(request, response);
                     Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledParentModelCollection, deeplyFulfilledParentModel, HttpMethod.get, HttpMethod.post);

@@ -1,13 +1,69 @@
 doctype html
 html
-  head
-    title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
-    link(rel='stylesheet', href='/stylesheets/jquery.json-view.min.css')
-    script(src='/javascripts/jquery-3.1.1.min.js')
-    script(src='/javascripts/commons.js')    
-    script(src='/javascripts/jquery.json-view.min.js')
-    block scripts
-  body
-    block content
+    head
+        title= title
+        link(rel='stylesheet', type='text/css', href='/stylesheets/style.css')
+        link(rel='stylesheet', type='text/css', href='/stylesheets/jquery.json-view.min.css')
+        link(rel='stylesheet', type='text/css', href='https://fonts.googleapis.com/css?family=Open+Sans:400,700|Source+Code+Pro:300,600|Titillium+Web:400,600,700')
+        link(rel='stylesheet', type='text/css', href='/stylesheets/swagger-ui.css')
+        style.
+            html {
+                box-sizing: border-box;
+                overflow: -moz-scrollbars-vertical;
+                overflow-y: scroll;
+            }
+
+            *,
+            *:before,
+            *:after {
+                box-sizing: inherit;
+            }
+
+            .title {
+                font-size: 36px;
+                margin: 0;
+                font-family: Open Sans, sans-serif;
+                color: #3b4151;
+            }
+
+            .sticky {
+                position: -webkit-sticky; /* Safari */
+                position: sticky;
+                top: 0;
+                height: 100px;
+            }
+
+            .table {
+                display: table-cell;
+            }
+
+            a {
+                padding-bottom: 10px;
+                text-decoration: none;
+            }
+
+            .element {
+                font-size: 24px;
+                margin: 0 0 5px;
+                font-family: Titillium Web, sans-serif;
+                color: #3b4151;
+            }
+
+            body {
+                margin: 0;
+                background: #fafafa;
+                padding-left: 50px;
+                padding-top: 20px;
+            }
+        script(src='/javascripts/jquery-3.1.1.min.js')
+        script(src='/javascripts/commons.js')
+        script(src='/javascripts/jquery.json-view.min.js')
+        block scripts
+    body
+        div
+            div.sticky
+                img(src='/images/OpenArchi.png', width='150', height='100', style="float: left;")
+                h2.title= title
+            br
+        block content
 
