@@ -331,7 +331,7 @@
                             </descriptorRefs>
                             <archive>
                                 <manifest>
-                                    <mainClass>com.araguacaima.open_archi.asm.web.Server</mainClass>
+                                    <mainClass>com.araguacaima.open_archi.web.Server</mainClass>
                                 </manifest>
                             </archive>
                             <appendAssemblyId>false</appendAssemblyId>
