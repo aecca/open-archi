@@ -1,4 +1,4 @@
-package com.araguacaima.gsa.persistence.meta;
+package com.araguacaima.open_archi.persistence.meta;
 
 import org.apache.commons.io.FileUtils;
 import org.hibernate.Session;

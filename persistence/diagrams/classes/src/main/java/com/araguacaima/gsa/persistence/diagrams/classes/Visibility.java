@@ -1,4 +1,4 @@
-package com.araguacaima.gsa.persistence.diagrams.classes;
+package com.araguacaima.open_archi.persistence.diagrams.classes;
 
 public enum Visibility {
     PUBLIC("public"),

@@ -9,7 +9,7 @@
     <name>Persistence Architectural</name>
 
     <parent>
-        <groupId>com.araguacaima.gsa.persistence</groupId>
+        <groupId>com.araguacaima.open_archi.persistence</groupId>
         <artifactId>persistence-diagrams</artifactId>
         <version>1.0.1</version>
     </parent>
@@ -17,12 +17,12 @@
     <dependencies>
 
         <dependency>
-            <groupId>com.araguacaima.gsa.persistence</groupId>
+            <groupId>com.araguacaima.open_archi.persistence</groupId>
             <artifactId>persistence-core</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.araguacaima.gsa</groupId>
+            <groupId>com.araguacaima.open_archi</groupId>
             <artifactId>persistence-persons</artifactId>
         </dependency>
 

@@ -9,7 +9,7 @@
     <name>Persistence Commons</name>
 
     <parent>
-        <groupId>com.araguacaima.gsa</groupId>
+        <groupId>com.araguacaima.open_archi</groupId>
         <artifactId>persistence</artifactId>
         <version>1.0.1</version>
     </parent>

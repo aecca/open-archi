@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.araguacaima.gsa.persistence</groupId>
+    <groupId>com.araguacaima.open_archi.persistence</groupId>
     <artifactId>persistence-diagrams</artifactId>
     <version>1.0.1</version>
     <packaging>pom</packaging>
@@ -34,35 +34,35 @@
         <dependencies>
 
             <dependency>
-                <groupId>com.araguacaima.gsa.persistence</groupId>
+                <groupId>com.araguacaima.open_archi.persistence</groupId>
                 <artifactId>persistence-core</artifactId>
                 <version>${project.version}</version>
                 <scope>compile</scope>
             </dependency>
 
             <dependency>
-                <groupId>com.araguacaima.gsa</groupId>
+                <groupId>com.araguacaima.open_archi</groupId>
                 <artifactId>persistence-utils</artifactId>
                 <version>${project.version}</version>
                 <scope>compile</scope>
             </dependency>
 
             <dependency>
-                <groupId>com.araguacaima.gsa</groupId>
+                <groupId>com.araguacaima.open_archi</groupId>
                 <artifactId>persistence-persons</artifactId>
                 <version>${project.version}</version>
                 <scope>compile</scope>
             </dependency>
 
             <dependency>
-                <groupId>com.araguacaima.gsa.persistence</groupId>
+                <groupId>com.araguacaima.open_archi.persistence</groupId>
                 <artifactId>persistence-commons</artifactId>
                 <version>${project.version}</version>
                 <scope>compile</scope>
             </dependency>
 
             <dependency>
-                <groupId>com.araguacaima.gsa</groupId>
+                <groupId>com.araguacaima.open_archi</groupId>
                 <artifactId>persistence-meta</artifactId>
                 <version>${project.version}</version>
                 <scope>compile</scope>

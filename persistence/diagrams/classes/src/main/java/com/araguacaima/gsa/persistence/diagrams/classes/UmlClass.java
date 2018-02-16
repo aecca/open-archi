@@ -1,4 +1,4 @@
-package com.araguacaima.gsa.persistence.diagrams.classes;
+package com.araguacaima.open_archi.persistence.diagrams.classes;
 
 import javax.persistence.*;
 import java.util.HashMap;

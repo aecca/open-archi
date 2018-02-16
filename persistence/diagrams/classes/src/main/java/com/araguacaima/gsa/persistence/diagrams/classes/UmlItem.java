@@ -1,7 +1,7 @@
-package com.araguacaima.gsa.persistence.diagrams.classes;
+package com.araguacaima.open_archi.persistence.diagrams.classes;
 
-import com.araguacaima.gsa.persistence.diagrams.core.ElementKind;
-import com.araguacaima.gsa.persistence.diagrams.core.Item;
+import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
+import com.araguacaima.open_archi.persistence.diagrams.core.Item;
 
 import javax.persistence.*;
 

@@ -1,4 +1,4 @@
-package com.araguacaima.gsa.msa.web;
+package com.araguacaima.open_archi.web;
 
 import org.junit.Ignore;
 import org.junit.Test;

@@ -1,6 +1,6 @@
-package com.araguacaima.gsa.persistence.diagrams.flowchart;
+package com.araguacaima.open_archi.persistence.diagrams.flowchart;
 
-import com.araguacaima.gsa.persistence.diagrams.core.RelationshipType;
+import com.araguacaima.open_archi.persistence.diagrams.core.RelationshipType;
 
 import javax.persistence.*;
 
@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Entity
 @PersistenceUnit(unitName = "open-archi")
 @DiscriminatorValue("FlowchartRelationship")
-public class Relationship extends com.araguacaima.gsa.persistence.diagrams.core.Relationship {
+public class Relationship extends com.araguacaima.open_archi.persistence.diagrams.core.Relationship {
     @Column
     private RelationshipType type;
 

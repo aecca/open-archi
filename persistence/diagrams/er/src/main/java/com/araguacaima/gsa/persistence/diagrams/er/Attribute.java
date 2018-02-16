@@ -1,6 +1,6 @@
-package com.araguacaima.gsa.persistence.diagrams.er;
+package com.araguacaima.open_archi.persistence.diagrams.er;
 
-import com.araguacaima.gsa.persistence.meta.BaseEntity;
+import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

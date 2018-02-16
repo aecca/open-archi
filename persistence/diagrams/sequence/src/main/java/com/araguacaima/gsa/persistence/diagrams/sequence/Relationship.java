@@ -1,6 +1,6 @@
-package com.araguacaima.gsa.persistence.diagrams.sequence;
+package com.araguacaima.open_archi.persistence.diagrams.sequence;
 
-import com.araguacaima.gsa.persistence.diagrams.core.RelationshipType;
+import com.araguacaima.open_archi.persistence.diagrams.core.RelationshipType;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -13,7 +13,7 @@ import javax.persistence.Table;
 @Entity
 @PersistenceUnit(unitName = "open-archi")
 @DiscriminatorValue(value = "SequenceRelationship")
-public class Relationship extends com.araguacaima.gsa.persistence.diagrams.core.Relationship {
+public class Relationship extends com.araguacaima.open_archi.persistence.diagrams.core.Relationship {
 
     private RelationshipType type;
     private int time;

@@ -1,4 +1,4 @@
-package com.araguacaima.gsa.persistence.diagrams.flowchart;
+package com.araguacaima.open_archi.persistence.diagrams.flowchart;
 
 public enum Category {
     ACTIVITY,

@@ -1,7 +1,7 @@
-package com.araguacaima.gsa.persistence.diagrams.gantt;
+package com.araguacaima.open_archi.persistence.diagrams.gantt;
 
-import com.araguacaima.gsa.persistence.diagrams.core.ElementKind;
-import com.araguacaima.gsa.persistence.diagrams.core.Item;
+import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
+import com.araguacaima.open_archi.persistence.diagrams.core.Item;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

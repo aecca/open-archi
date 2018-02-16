@@ -1,6 +1,6 @@
-package com.araguacaima.gsa.persistence.diagrams.er;
+package com.araguacaima.open_archi.persistence.diagrams.er;
 
-import com.araguacaima.gsa.persistence.diagrams.core.RelationshipType;
+import com.araguacaima.open_archi.persistence.diagrams.core.RelationshipType;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
@@ -14,7 +14,7 @@ import javax.persistence.Table;
 @javax.persistence.Entity
 @PersistenceUnit(unitName = "open-archi")
 @DiscriminatorValue("ErRelationship")
-public class Relationship extends com.araguacaima.gsa.persistence.diagrams.core.Relationship {
+public class Relationship extends com.araguacaima.open_archi.persistence.diagrams.core.Relationship {
     @Column
     private RelationshipType type;
     @Column

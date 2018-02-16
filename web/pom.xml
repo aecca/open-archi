@@ -9,7 +9,7 @@
     <name>Web</name>
 
     <parent>
-        <groupId>com.araguacaima.gsa</groupId>
+        <groupId>com.araguacaima.open_archi</groupId>
         <artifactId>parent</artifactId>
         <version>1.0.1</version>
     </parent>
@@ -45,35 +45,35 @@
             <artifactId>commons-collections4</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.araguacaima.gsa.persistence</groupId>
+            <groupId>com.araguacaima.open_archi.persistence</groupId>
             <artifactId>persistence-architectural</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.araguacaima.gsa.persistence</groupId>
+            <groupId>com.araguacaima.open_archi.persistence</groupId>
             <artifactId>persistence-bpm</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.araguacaima.gsa.persistence</groupId>
+            <groupId>com.araguacaima.open_archi.persistence</groupId>
             <artifactId>persistence-er</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.araguacaima.gsa.persistence</groupId>
+            <groupId>com.araguacaima.open_archi.persistence</groupId>
             <artifactId>persistence-flowchart</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.araguacaima.gsa.persistence</groupId>
+            <groupId>com.araguacaima.open_archi.persistence</groupId>
             <artifactId>persistence-gantt</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.araguacaima.gsa.persistence</groupId>
+            <groupId>com.araguacaima.open_archi.persistence</groupId>
             <artifactId>persistence-sequence</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.araguacaima.gsa.persistence</groupId>
+            <groupId>com.araguacaima.open_archi.persistence</groupId>
             <artifactId>persistence-uml-classes</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.araguacaima.gsa</groupId>
+            <groupId>com.araguacaima.open_archi</groupId>
             <artifactId>persistence-utils</artifactId>
         </dependency>
 
@@ -217,7 +217,7 @@
                             <goal>unpack-dependencies</goal>
                         </goals>
                         <configuration>
-                            <includeGroupIds>com.araguacaima.gsa,com.araguacaima.gsa.persistence</includeGroupIds>
+                            <includeGroupIds>com.araguacaima.open_archi,com.araguacaima.open_archi.persistence</includeGroupIds>
                             <outputDirectory>${project.build.directory}/classes</outputDirectory>
                         </configuration>
                     </execution>
@@ -324,14 +324,14 @@
                             </execution>
                         </executions>
                         <configuration>
-                            <finalName>openarchi-api-with-dependencies</finalName>
+                            <finalName>open-archi-with-dependencies</finalName>
                             <descriptorRefs>
                                 <!-- This tells Maven to include all dependencies -->
                                 <descriptorRef>jar-with-dependencies</descriptorRef>
                             </descriptorRefs>
                             <archive>
                                 <manifest>
-                                    <mainClass>com.araguacaima.gsa.msa.web.Server</mainClass>
+                                    <mainClass>com.araguacaima.open_archi.asm.web.Server</mainClass>
                                 </manifest>
                             </archive>
                             <appendAssemblyId>false</appendAssemblyId>
