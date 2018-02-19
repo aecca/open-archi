@@ -2,9 +2,12 @@ package com.araguacaima.open_archi.persistence.diagrams.classes;
 
 import com.araguacaima.open_archi.persistence.diagrams.core.Element;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
+import com.araguacaima.open_archi.persistence.diagrams.core.Relationship;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Entity
 @PersistenceUnit(unitName = "open-archi")
@@ -23,6 +26,16 @@ public class Model extends Element {
     @Enumerated(EnumType.STRING)
     private ElementKind kind = ElementKind.BPM_MODEL;
 
+
+    @OneToMany
+    @JoinTable(schema = "DIAGRAMS",
+            name = "Classes_Model_Relationships",
+            joinColumns = {@JoinColumn(name = "Classes_Model_Id",
+                    referencedColumnName = "Id")},
+            inverseJoinColumns = {@JoinColumn(name = "Relationship_Id",
+                    referencedColumnName = "Id")})
+    protected Set<Relationship> relationships = new LinkedHashSet<>();
+
     public Collection<UmlClass> getClasses() {
         return classes;
     }
@@ -37,5 +50,13 @@ public class Model extends Element {
 
     public void setKind(ElementKind kind) {
         this.kind = kind;
+    }
+
+    public Set<Relationship> getRelationships() {
+        return relationships;
+    }
+
+    public void setRelationships(Set<Relationship> relationships) {
+        this.relationships = relationships;
     }
 }

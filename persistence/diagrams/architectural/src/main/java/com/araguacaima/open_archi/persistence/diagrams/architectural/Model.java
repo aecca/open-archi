@@ -15,7 +15,12 @@ import java.util.Set;
 @Entity
 @PersistenceUnit(unitName = "open-archi")
 @DiscriminatorValue(value = "ArchitectureModel")
+@NamedQueries({@NamedQuery(name = Model.GET_ALL_RELATIONSHIPS,
+        query = "select a.relationships from Model a where a.id=:id"),})
 public class Model extends Element {
+
+
+    public static final String GET_ALL_RELATIONSHIPS = "get.all.relationships";
 
     @OneToMany(targetEntity = StaticElement.class)
     @CollectionTable(name = "Architecture_Model_Elements",
@@ -54,6 +59,15 @@ public class Model extends Element {
                     referencedColumnName = "Id")})
     private Set<DeploymentNode> deploymentNodes = new LinkedHashSet<>();
 
+    @OneToMany
+    @JoinTable(schema = "DIAGRAMS",
+            name = "Architecture_Model_Relationships",
+            joinColumns = {@JoinColumn(name = "Architecture_Model_Id",
+                    referencedColumnName = "Id")},
+            inverseJoinColumns = {@JoinColumn(name = "Relationship_Id",
+                    referencedColumnName = "Id")})
+    protected Set<Relationship> relationships = new LinkedHashSet<>();
+
     public Model() {
     }
 
@@ -91,5 +105,13 @@ public class Model extends Element {
 
     public void setDeploymentNodes(Set<DeploymentNode> deploymentNodes) {
         this.deploymentNodes = deploymentNodes;
+    }
+
+    public Set<Relationship> getRelationships() {
+        return relationships;
+    }
+
+    public void setRelationships(Set<Relationship> relationships) {
+        this.relationships = relationships;
     }
 }

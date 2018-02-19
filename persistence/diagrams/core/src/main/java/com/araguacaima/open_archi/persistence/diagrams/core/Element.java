@@ -12,8 +12,11 @@ import java.util.Set;
 
 @Entity
 @PersistenceUnit(unitName = "open-archi")
+@NamedQueries({@NamedQuery(name = Element.GET_ALL_FEATURES,
+        query = "select a.features from Element a where a.id=:id")})
 public class Element extends Item {
 
+    public static final String GET_ALL_FEATURES = "get.all.features";
     @Column
     protected String url;
 

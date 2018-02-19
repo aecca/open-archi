@@ -5,6 +5,8 @@ import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Entity
 @PersistenceUnit(unitName = "open-archi")
@@ -24,6 +26,16 @@ public class Model extends Element {
     @Enumerated(EnumType.STRING)
     private ElementKind kind = ElementKind.BPM_MODEL;
 
+
+    @OneToMany
+    @JoinTable(schema = "DIAGRAMS",
+            name = "Bpm_Model_Relationships",
+            joinColumns = {@JoinColumn(name = "Bpm_Model_Id",
+                    referencedColumnName = "Id")},
+            inverseJoinColumns = {@JoinColumn(name = "Relationship_Id",
+                    referencedColumnName = "Id")})
+    protected Set<Relationship> relationships = new LinkedHashSet<>();
+
     public Collection<Pool> getPools() {
         return pools;
     }
@@ -38,5 +50,13 @@ public class Model extends Element {
 
     public void setKind(ElementKind kind) {
         this.kind = kind;
+    }
+
+    public Set<Relationship> getRelationships() {
+        return relationships;
+    }
+
+    public void setRelationships(Set<Relationship> relationships) {
+        this.relationships = relationships;
     }
 }

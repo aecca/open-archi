@@ -15,10 +15,13 @@ import java.util.Set;
 @Entity
 @PersistenceUnit(unitName = "open-archi")
 @NamedQueries({@NamedQuery(name = Item.GET_ALL_CHILDREN,
-        query = "select a.children from Item a where a.id=:id")})
+        query = "select a.children from Item a where a.id=:id"),
+        @NamedQuery(name = Item.GET_META_DATA,
+                query = "select a.metaData from Item a where a.id=:id")})
 public class Item extends Taggable {
 
     public static final String GET_ALL_CHILDREN = "get.all.children";
+    public static final String GET_META_DATA = "get.meta.data";
 
     protected String name;
     @Column
@@ -43,15 +46,6 @@ public class Item extends Taggable {
     @OneToOne(cascade = CascadeType.REMOVE)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     protected Shape shape;
-
-    @OneToMany
-    @JoinTable(schema = "DIAGRAMS",
-            name = "Item_Relationships",
-            joinColumns = {@JoinColumn(name = "Item_Id",
-                    referencedColumnName = "Id")},
-            inverseJoinColumns = {@JoinColumn(name = "Relationship_Id",
-                    referencedColumnName = "Id")})
-    protected Set<Relationship> relationships = new LinkedHashSet<>();
 
     @OneToOne(cascade = CascadeType.REMOVE)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
@@ -98,14 +92,6 @@ public class Item extends Taggable {
 
     public void setShape(Shape shape) {
         this.shape = shape;
-    }
-
-    public Set<Relationship> getRelationships() {
-        return relationships;
-    }
-
-    public void setRelationships(Set<Relationship> relationships) {
-        this.relationships = relationships;
     }
 
     public MetaData getMetaData() {

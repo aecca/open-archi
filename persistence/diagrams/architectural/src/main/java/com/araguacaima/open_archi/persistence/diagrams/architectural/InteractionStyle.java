@@ -10,15 +10,15 @@ import com.araguacaima.open_archi.persistence.diagrams.core.Relationship;
 public enum InteractionStyle {
 
     /**
-     * Denotes synchronous communication. The tag {@link InteractionStyle#Synchronous} is automatically added to such {@link Relationship}s,
+     * Denotes synchronous communication. The tag {@link InteractionStyle#SYNCHRONOUS} is automatically added to such {@link Relationship}s,
      * so you might use that tag to adapt the relationship style in the diagram
      */
-    Synchronous,
+    SYNCHRONOUS,
 
     /**
-     * Denotes asynchronous communication. The tag {@link InteractionStyle#Asynchronous} is automatically added to such {@link Relationship}s,
+     * Denotes asynchronous communication. The tag {@link InteractionStyle#ASYNCHRONOUS} is automatically added to such {@link Relationship}s,
      * so you might use that tag to adapt the relationship style in the diagram
      */
-    Asynchronous
+    ASYNCHRONOUS
 
 }
