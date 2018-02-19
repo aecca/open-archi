@@ -22,6 +22,7 @@ public class Status extends BaseEntity {
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private Markdown reason;
     @Column
+    @Enumerated(EnumType.STRING)
     private StatusStep step;
     @ManyToOne
     private Asm asm;

@@ -34,6 +34,7 @@ public class Model extends Element {
                     referencedColumnName = "Id")})
     private Collection<Sequence> sequences;
     @Column
+    @Enumerated(EnumType.STRING)
     private ElementKind kind = ElementKind.SEQUENCE_MODEL;
 
     public Collection<Sequence> getSequences() {

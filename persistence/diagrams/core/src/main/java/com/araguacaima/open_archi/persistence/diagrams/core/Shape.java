@@ -2,10 +2,7 @@ package com.araguacaima.open_archi.persistence.diagrams.core;
 
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.PersistenceUnit;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @PersistenceUnit(unitName = "open-archi")
@@ -13,6 +10,7 @@ import javax.persistence.Table;
 public class Shape extends BaseEntity {
 
     @Column
+    @Enumerated(EnumType.STRING)
     private ShapeType type;
 
     public ShapeType getType() {

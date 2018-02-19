@@ -16,6 +16,7 @@ public enum ElementKind {
     UML_CLASS,
     FEATURE,
     COMPONENT,
+    CONSUMER,
     CONTAINER,
     DEPLOYMENT,
     BPM

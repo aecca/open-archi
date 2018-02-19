@@ -15,6 +15,7 @@ import java.util.Map;
 public class TechnicalDebt extends BaseEntity {
 
     @Column
+    @Enumerated(EnumType.STRING)
     private Complexity complexity;
     @OneToMany
     @CollectionTable(name = "TechnicalDebt_Descriptions",
@@ -35,6 +36,7 @@ public class TechnicalDebt extends BaseEntity {
                     referencedColumnName = "Id")})
     private Collection<Responsible> responsibles;
     @Column
+    @Enumerated(EnumType.STRING)
     private TechnicalDebtScope scope;
 
     public Complexity getComplexity() {

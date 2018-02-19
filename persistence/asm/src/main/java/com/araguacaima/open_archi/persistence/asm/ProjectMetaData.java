@@ -40,6 +40,7 @@ public class ProjectMetaData extends BaseEntity {
                     referencedColumnName = "Id")})
     private Collection<Person> localSolutionArchitects;
     @Column
+    @Enumerated(EnumType.STRING)
     private Methodology methodology;
     @ManyToOne
     private Person productOwner;
@@ -48,6 +49,7 @@ public class ProjectMetaData extends BaseEntity {
     @Column
     private String projectIdentifier;
     @Column
+    @Enumerated(EnumType.STRING)
     private Segment segment;
     @OneToOne(cascade = CascadeType.REMOVE)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})

@@ -13,6 +13,7 @@ import javax.persistence.*;
 public class Relationship extends com.araguacaima.open_archi.persistence.diagrams.core.Relationship {
 
     @Column
+    @Enumerated(EnumType.STRING)
     private RelationshipType type;
 
     public Relationship() {

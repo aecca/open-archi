@@ -2,10 +2,7 @@ package com.araguacaima.open_archi.persistence.asm;
 
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.PersistenceUnit;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @PersistenceUnit(unitName = "open-archi")
@@ -14,6 +11,7 @@ import javax.persistence.Table;
 public class Markdown extends BaseEntity {
 
     @Column
+    @Enumerated(EnumType.STRING)
     private MarkdownFlavour flavour;
     @Column
     private String value;

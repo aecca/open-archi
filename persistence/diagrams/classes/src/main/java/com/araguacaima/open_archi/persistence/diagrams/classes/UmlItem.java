@@ -13,6 +13,7 @@ import javax.persistence.*;
 public abstract class UmlItem extends Item {
 
     @Column
+    @Enumerated(EnumType.STRING)
     private ElementKind kind = ElementKind.UML_CLASS_MODEL;
 
     public ElementKind getKind() {

@@ -18,6 +18,7 @@ import java.util.Set;
 public class SoftwareSystem extends StaticElement {
 
     @Column
+    @Enumerated(EnumType.STRING)
     private Scope scope = Scope.Unspecified;
 
     @OneToMany

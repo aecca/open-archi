@@ -2,10 +2,7 @@ package com.araguacaima.open_archi.persistence.diagrams.er;
 
 import com.araguacaima.open_archi.persistence.diagrams.core.RelationshipType;
 
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.PersistenceUnit;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * A relationship between two entities.
@@ -16,6 +13,7 @@ import javax.persistence.Table;
 @DiscriminatorValue("ErRelationship")
 public class Relationship extends com.araguacaima.open_archi.persistence.diagrams.core.Relationship {
     @Column
+    @Enumerated(EnumType.STRING)
     private RelationshipType type;
     @Column
     private String sourceText;

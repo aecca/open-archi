@@ -2,10 +2,7 @@ package com.araguacaima.open_archi.persistence.diagrams.sequence;
 
 import com.araguacaima.open_archi.persistence.diagrams.core.RelationshipType;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.PersistenceUnit;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * A relationship between two Gantt activities.
@@ -15,7 +12,11 @@ import javax.persistence.Table;
 @DiscriminatorValue(value = "SequenceRelationship")
 public class Relationship extends com.araguacaima.open_archi.persistence.diagrams.core.Relationship {
 
+    @Column
+    @Enumerated(EnumType.STRING)
     private RelationshipType type;
+
+    @Column
     private int time;
 
     public Relationship() {

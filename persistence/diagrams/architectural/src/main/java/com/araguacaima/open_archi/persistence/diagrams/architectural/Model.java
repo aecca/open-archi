@@ -24,6 +24,7 @@ public class Model extends Element {
     private final Map<String, Element> elements = new HashMap<>();
 
     @Column
+    @Enumerated(EnumType.STRING)
     private ElementKind kind = ElementKind.ARCHITECTURAL_MODEL;
 
     @OneToMany

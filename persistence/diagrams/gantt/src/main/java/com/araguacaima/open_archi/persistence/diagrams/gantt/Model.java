@@ -20,6 +20,7 @@ public class Model extends Element {
                     referencedColumnName = "Id")})
     private Collection<Gantt> gantts;
     @Column
+    @Enumerated(EnumType.STRING)
     private ElementKind kind = ElementKind.GANTT_MODEL;
 
     public Collection<Gantt> getGantts() {

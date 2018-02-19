@@ -6,6 +6,8 @@ import com.araguacaima.commons.utils.ReflectionUtils;
 import com.araguacaima.open_archi.web.wrapper.RsqlJsonFilter;
 import com.araguacaima.open_archi.persistence.diagrams.core.*;
 import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import de.neuland.jade4j.JadeConfiguration;
 import de.neuland.jade4j.template.TemplateLoader;
 import org.apache.commons.collections4.CollectionUtils;
@@ -127,6 +129,9 @@ public class Server {
     }
 
     static {
+        ObjectMapper mapper = jsonUtils.getMapper();
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
         config.setTemplateLoader(templateLoader);
         deeplyFulfilledParentModel = reflectionUtils.deepInitialization(Taggable.class);
         deeplyFulfilledArchitectureModel = reflectionUtils.deepInitialization(com.araguacaima.open_archi.persistence.diagrams.architectural.Model.class);
@@ -344,7 +349,6 @@ public class Server {
                         return throwError(response, ex);
                     }
                 });
-
                 options("/diagrams/architectures", (request, response) -> {
                     setCORS(request, response);
                     Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledArchitectureModelCollection, deeplyFulfilledArchitectureModel, HttpMethod.get, HttpMethod.post);
@@ -354,7 +358,7 @@ public class Server {
                     Map<String, Object> params = new HashMap<>();
                     params.put("modelType", "ArchitectureModel");
                     response.type(JSON_CONTENT_TYPE);
-                    return jsonUtils.toJSON(getList(request, response, Taggable.GET_MODELS_BY_TYPE, params, null));
+                    return jsonUtils.toJSON(getList(request, response, Taggable.GET_MODELS_BY_TYPE, params, null), true);
                 });
                 post("/diagrams/architectures", (request, response) -> {
                     try {

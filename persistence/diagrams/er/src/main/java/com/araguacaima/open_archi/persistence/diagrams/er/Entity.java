@@ -10,6 +10,7 @@ import java.util.Collection;
 @PersistenceUnit(unitName = "open-archi")
 public class Entity extends Element {
     @Column
+    @Enumerated(EnumType.STRING)
     private ElementKind kind = ElementKind.ENTITY_RELATIONSHIP_MODEL;
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",

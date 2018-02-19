@@ -20,6 +20,7 @@ public class Model extends Element {
                     referencedColumnName = "Id")})
     private Collection<UmlClass> classes;
     @Column
+    @Enumerated(EnumType.STRING)
     private ElementKind kind = ElementKind.BPM_MODEL;
 
     public Collection<UmlClass> getClasses() {

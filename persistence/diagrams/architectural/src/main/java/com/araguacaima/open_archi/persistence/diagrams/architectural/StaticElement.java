@@ -20,6 +20,7 @@ public abstract class StaticElement extends Element {
     @JsonIgnore
     private Model model;
     @Column
+    @Enumerated(EnumType.STRING)
     private ElementKind kind = ElementKind.COMPONENT;
 
     public StaticElement() {

@@ -20,6 +20,7 @@ public class Model extends Element {
                     referencedColumnName = "Id")})
     private Collection<Flowchart> flowcharts;
     @Column
+    @Enumerated(EnumType.STRING)
     private ElementKind kind = ElementKind.FLOWCHART_MODEL;
 
     public Collection<Flowchart> getFlowcharts() {

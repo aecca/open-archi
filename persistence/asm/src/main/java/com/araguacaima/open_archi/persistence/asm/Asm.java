@@ -23,6 +23,7 @@ public class Asm extends BaseEntity {
     @Column
     private Byte[] attachments;
     @Column
+    @Enumerated(EnumType.STRING)
     private Country country;
     @Column(unique = false,
             nullable = false)

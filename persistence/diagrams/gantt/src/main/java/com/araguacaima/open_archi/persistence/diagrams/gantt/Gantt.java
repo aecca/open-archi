@@ -3,20 +3,20 @@ package com.araguacaima.open_archi.persistence.diagrams.gantt;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 import com.araguacaima.open_archi.persistence.diagrams.core.Item;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.PersistenceUnit;
+import javax.persistence.*;
 
 @Entity
 @PersistenceUnit(unitName = "open-archi")
 public class Gantt extends Item {
     @Column
+    @Enumerated(EnumType.STRING)
     private Category category;
     @Column
     private int diagramStart;
     @Column
     private int diagramEnd;
     @Column
+    @Enumerated(EnumType.STRING)
     private ElementKind kind = ElementKind.GANTT;
 
     public Category getCategory() {

@@ -1,8 +1,6 @@
 package com.araguacaima.open_archi.persistence.diagrams.core;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.PersistenceUnit;
+import javax.persistence.*;
 
 /**
  * Represents a feature, such as a Java class or interface,
@@ -17,6 +15,7 @@ public class Feature extends Item {
      * the role of the feature ... Primary or Supporting
      */
     @Column
+    @Enumerated(EnumType.STRING)
     private FeatureRole role = FeatureRole.Supporting;
 
     /**
@@ -50,6 +49,7 @@ public class Feature extends Item {
     private String visibility;
 
     @Column
+    @Enumerated(EnumType.STRING)
     private ElementKind kind = ElementKind.FEATURE;
 
     public Feature() {

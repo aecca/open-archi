@@ -3,17 +3,16 @@ package com.araguacaima.open_archi.persistence.diagrams.flowchart;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 import com.araguacaima.open_archi.persistence.diagrams.core.Item;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.PersistenceUnit;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @PersistenceUnit(unitName = "open-archi")
 public class Flowchart extends Item {
     @Column
+    @Enumerated(EnumType.STRING)
     private Category category;
     @Column
+    @Enumerated(EnumType.STRING)
     private ElementKind kind = ElementKind.FLOWCHART;
 
     public Category getCategory() {

@@ -22,6 +22,7 @@ public class UmlMethod extends BaseEntity {
                     referencedColumnName = "Id")})
     private Collection<UmlParameter> parameters;
     @Column
+    @Enumerated(EnumType.STRING)
     private Visibility visibility = Visibility.PACKAGE;
 
     public String getName() {

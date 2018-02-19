@@ -30,7 +30,7 @@ public class Element extends Item {
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "SoftwareSystem_Id",
                     referencedColumnName = "Id")})
-    protected Set<CompositeElement<?>> featuresLinks = new LinkedHashSet<>();
+    protected Set<CompositeElement<?>> features = new LinkedHashSet<>();
 
     public Element() {
     }
@@ -57,10 +57,10 @@ public class Element extends Item {
     }
 
     public Set<CompositeElement<?>> getFeatures() {
-        return featuresLinks;
+        return features;
     }
 
     public void setFeatures(Set<CompositeElement<?>> features) {
-        this.featuresLinks = features;
+        this.features = features;
     }
 }

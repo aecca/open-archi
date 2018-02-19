@@ -15,8 +15,10 @@ public class Relationship extends com.araguacaima.open_archi.persistence.diagram
     @Column
     private String technology;
     @Column
+    @Enumerated(EnumType.STRING)
     private InteractionStyle interactionStyle = InteractionStyle.Synchronous;
     @Column
+    @Enumerated(EnumType.STRING)
     private RelationshipType type;
 
     public Relationship() {

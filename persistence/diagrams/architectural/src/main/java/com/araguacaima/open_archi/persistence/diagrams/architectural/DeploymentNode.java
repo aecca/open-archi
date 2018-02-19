@@ -40,6 +40,7 @@ public class DeploymentNode extends Element {
     private int instances = 1;
 
     @Column
+    @Enumerated(EnumType.STRING)
     private ElementKind kind = ElementKind.DEPLOYMENT;
 
     @OneToMany

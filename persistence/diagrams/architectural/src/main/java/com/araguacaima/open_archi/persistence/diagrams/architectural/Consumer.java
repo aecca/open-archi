@@ -1,9 +1,8 @@
 package com.araguacaima.open_archi.persistence.diagrams.architectural;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.PersistenceUnit;
-import javax.persistence.Table;
+import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
+
+import javax.persistence.*;
 
 /**
  * However you think about your users (as actors, roles, persons, etc),
@@ -17,7 +16,12 @@ import javax.persistence.Table;
 public class Consumer extends StaticElement {
 
     @Column
+    @Enumerated(EnumType.STRING)
     private Scope scope = Scope.Unspecified;
+
+    @Column
+    @Enumerated(EnumType.STRING)
+    private ElementKind kind = ElementKind.CONSUMER;
 
     public Consumer() {
     }
@@ -28,5 +32,15 @@ public class Consumer extends StaticElement {
 
     public void setScope(Scope scope) {
         this.scope = scope;
+    }
+
+    @Override
+    public ElementKind getKind() {
+        return kind;
+    }
+
+    @Override
+    public void setKind(ElementKind kind) {
+        this.kind = kind;
     }
 }

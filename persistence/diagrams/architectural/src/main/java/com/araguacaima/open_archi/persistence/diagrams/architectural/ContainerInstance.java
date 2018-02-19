@@ -30,6 +30,7 @@ public class ContainerInstance extends Element {
     private Model model;
 
     @Column
+    @Enumerated(EnumType.STRING)
     private ElementKind kind = ElementKind.CONTAINER;
 
     public ContainerInstance() {

@@ -21,6 +21,7 @@ public class Model extends Element {
     private Collection<Pool> pools;
 
     @Column
+    @Enumerated(EnumType.STRING)
     private ElementKind kind = ElementKind.BPM_MODEL;
 
     public Collection<Pool> getPools() {

@@ -2,10 +2,7 @@ package com.araguacaima.open_archi.persistence.diagrams.classes;
 
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.PersistenceUnit;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @PersistenceUnit(unitName = "open-archi")
@@ -17,6 +14,7 @@ public class UmlField extends BaseEntity {
     @Column
     private String type;
     @Column
+    @Enumerated(EnumType.STRING)
     private Visibility visibility = Visibility.PACKAGE;
 
     public String getName() {

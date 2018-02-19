@@ -20,6 +20,7 @@ public class Pool extends Item {
     private Collection<Lane> lanes;
 
     @Column
+    @Enumerated(EnumType.STRING)
     private ElementKind kind;
 
     public Collection<Lane> getLanes() {

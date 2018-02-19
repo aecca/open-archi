@@ -20,6 +20,7 @@ public class Model extends Element {
                     referencedColumnName = "Id")})
     private Collection<Entity> entities;
     @Column
+    @Enumerated(EnumType.STRING)
     private ElementKind kind = ElementKind.ENTITY_RELATIONSHIP_MODEL;
 
     public Collection<Entity> getEntities() {
