@@ -12,19 +12,13 @@ import java.util.Set;
 
 @Entity
 @PersistenceUnit(unitName = "open-archi")
-@NamedQueries({@NamedQuery(name = Element.GET_ALL_FEATURES,
+@NamedQueries({@NamedQuery(name = Elements.GET_ALL_FEATURES,
         query = "select a.features from Element a where a.id=:id")})
-public class Element extends Item {
+public class Elements extends Items {
 
     public static final String GET_ALL_FEATURES = "get.all.features";
     @Column
     protected String url;
-
-    @ElementCollection
-    @MapKeyColumn(name = "key")
-    @Column(name = "value")
-    @CollectionTable(schema = "DIAGRAMS", name = "Element_Properties", joinColumns = @JoinColumn(name = "Property_Id"))
-    protected Map<String, String> properties = new HashMap<>();
 
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",
@@ -33,9 +27,9 @@ public class Element extends Item {
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "SoftwareSystem_Id",
                     referencedColumnName = "Id")})
-    protected Set<Feature> features = new LinkedHashSet<>();
+    protected Set<Features> features = new LinkedHashSet<>();
 
-    public Element() {
+    public Elements() {
     }
 
     /**
@@ -51,19 +45,11 @@ public class Element extends Item {
         this.url = url;
     }
 
-    public Map<String, String> getProperties() {
-        return properties;
-    }
-
-    public void setProperties(Map<String, String> properties) {
-        this.properties = properties;
-    }
-
-    public Set<Feature> getFeatures() {
+    public Set<Features> getFeatures() {
         return features;
     }
 
-    public void setFeatures(Set<Feature> features) {
+    public void setFeatures(Set<Features> features) {
         this.features = features;
     }
 }

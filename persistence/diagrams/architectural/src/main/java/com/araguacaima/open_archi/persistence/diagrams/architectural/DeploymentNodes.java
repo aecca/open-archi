@@ -2,8 +2,7 @@ package com.araguacaima.open_archi.persistence.diagrams.architectural;
 
 import com.araguacaima.open_archi.persistence.diagrams.core.Element;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.Cascade;
+import com.araguacaima.open_archi.persistence.diagrams.core.Elements;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -26,7 +25,7 @@ import java.util.Set;
  */
 @Entity
 @PersistenceUnit(unitName = "open-archi")
-public class DeploymentNode extends Element {
+public class DeploymentNodes extends Elements {
 
     @Column
     private String technology;
@@ -45,7 +44,7 @@ public class DeploymentNode extends Element {
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "ContainerInstance_Id",
                     referencedColumnName = "Id")})
-    private Set<ContainerInstance> containerInstances = new HashSet<>();
+    private Set<ContainerInstances> containerInstances = new HashSet<>();
 
     public String getTechnology() {
         return technology;
@@ -71,11 +70,11 @@ public class DeploymentNode extends Element {
         this.kind = kind;
     }
 
-    public Set<ContainerInstance> getContainerInstances() {
+    public Set<ContainerInstances> getContainerInstances() {
         return containerInstances;
     }
 
-    public void setContainerInstances(Set<ContainerInstance> containerInstances) {
+    public void setContainerInstances(Set<ContainerInstances> containerInstances) {
         this.containerInstances = containerInstances;
     }
 }

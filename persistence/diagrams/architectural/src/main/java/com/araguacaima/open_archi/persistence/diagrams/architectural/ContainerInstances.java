@@ -2,7 +2,7 @@ package com.araguacaima.open_archi.persistence.diagrams.architectural;
 
 import com.araguacaima.open_archi.persistence.diagrams.core.Element;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.araguacaima.open_archi.persistence.diagrams.core.Elements;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
@@ -12,11 +12,7 @@ import javax.persistence.*;
  */
 @Entity
 @PersistenceUnit(unitName = "open-archi")
-public class ContainerInstance extends Element {
-
-    @OneToOne(cascade = CascadeType.REMOVE)
-    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
-    private Container container;
+public class ContainerInstances extends Elements {
 
     @Column
     private String containerId;
@@ -28,15 +24,7 @@ public class ContainerInstance extends Element {
     @Enumerated(EnumType.STRING)
     private ElementKind kind = ElementKind.CONTAINER;
 
-    public ContainerInstance() {
-    }
-
-    public Container getContainer() {
-        return container;
-    }
-
-    public void setContainer(Container container) {
-        this.container = container;
+    public ContainerInstances() {
     }
 
     public String getContainerId() {

@@ -52,7 +52,7 @@ paths:
           schema:
             type: array
             items:
-              "$ref": "#/definitions/Model"
+              "$ref": "#/definitions/Models"
         '400':
           description: Bad request
       security:
@@ -80,6 +80,55 @@ paths:
           description: Accepted
         '201':
           description: Created
+          schema:
+            type: array
+            items:
+              "$ref": "#/definitions/Models"
+        '405':
+          description: Invalid input
+      security:
+      - openarchi_auth:
+        - write:model
+        - read:models
+  "/models/batch":
+    options:
+      tags:
+      - Models
+      summary: Shows options for batch models objects processing
+      operationId: options-models-batch
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            "$ref": "#/definitions/Options_Post_Collection"
+    post:
+      tags:
+      - Models
+      summary: Add a list of models
+      description: ''
+      operationId: add-models
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: List of model objects that needs to be added
+        required: true
+        schema:
+          "$ref": "#/definitions/Models_Create"
+      responses:
+        '200':
+          description: Accepted
+        '201':
+          description: Created
+          schema:
+            type: array
+            items:
+              "$ref": "#/definitions/Models_Create"
         '405':
           description: Invalid input
       security:
@@ -123,729 +172,6 @@ paths:
           description: Invalid ID supplied
         '404':
           description: Model not found
-      security:
-      - api_key: []
-  "/models/:model-id/children":
-    options:
-      tags:
-      - Models
-      summary: Shows options for the children objects of a specific model
-      operationId: options-model-children
-      produces:
-      - application/json
-      responses:
-        '200':
-          description: OK
-          schema:
-            allOf:
-            - "$ref": "#/definitions/Options_Get_Collection"
-            - "$ref": "#/definitions/Options_Put"
-  "/models/{model-id}/children":
-    get:
-      tags:
-      - Models
-      summary: Finds children of a model
-      description: This service supports query by using RSQL expressions
-      operationId: get-model-children
-      produces:
-      - application/json
-      parameters:
-      - name: model-id
-        in: path
-        description: ID of the model to return
-        required: true
-        type: string
-      - name: "$filter"
-        in: query
-        description: Filter children of a model according to an RSQL expression
-        required: false
-        type: string
-      responses:
-        '200':
-          description: OK
-          schema:
-            type: array
-            items:
-              "$ref": "#/definitions/Composite_Element"
-        '400':
-          description: Bad request
-      security:
-      - openarchi_auth:
-        - read:models
-    put:
-      tags:
-      - Models
-      summary: Add a new child to the model
-      description: If the child object does not exists previously, it will be created.
-      operationId: add-model-child
-      consumes:
-      - application/json
-      produces:
-      - application/json
-      parameters:
-      - name: model-id
-        in: path
-        description: ID of the model to return
-        required: true
-        type: string
-      - in: body
-        name: body
-        description: Model object that needs to be added
-        required: true
-        schema:
-          "$ref": "#/definitions/Composite_Element_Create"
-      responses:
-        '200':
-          description: Accepted
-        '201':
-          description: Created
-        '405':
-          description: Invalid input
-      security:
-      - openarchi_auth:
-        - write:model
-        - read:models
-  "/models/:model-id/parent":
-    options:
-      tags:
-      - Models
-      summary: Shows options for the parent object of a specific model
-      operationId: options-model-parent
-      produces:
-      - application/json
-      responses:
-        '200':
-          description: OK
-          schema:
-            allOf:
-            - "$ref": "#/definitions/Options_Get"
-            - "$ref": "#/definitions/Options_Post"
-  "/models/{model-id}/parent":
-    get:
-      tags:
-      - Models
-      summary: Find the parent of a model
-      description: Gets the full info related to the parent of the model
-      operationId: get-model-parent
-      produces:
-      - application/json
-      parameters:
-      - name: model-id
-        in: path
-        description: ID of the model to return
-        required: true
-        type: string
-      responses:
-        '200':
-          description: OK
-          schema:
-            "$ref": "#/definitions/Model"
-        '400':
-          description: Bad request
-      security:
-      - openarchi_auth:
-        - read:models
-    post:
-      tags:
-      - Models
-      summary: Add a parent to the current model
-      description: Relates an existing model as a parent of the current one. If parent model does not exists an error will occur. Only model parent id is required
-      operationId: add-model-parent
-      consumes:
-      - application/json
-      produces:
-      - application/json
-      parameters:
-      - name: model-id
-        in: path
-        description: ID of the model to return
-        required: true
-        type: string
-      - in: body
-        name: body
-        description: Model object that needs to be added as a parent of the current model
-        required: true
-        schema:
-          "$ref": "#/definitions/Model_Parent_Create"
-      responses:
-        '200':
-          description: Accepted
-        '201':
-          description: Created
-        '405':
-          description: Invalid input
-      security:
-      - openarchi_auth:
-        - write:model
-        - read:models
-  "/models/:model-id/meta-data":
-    options:
-      tags:
-      - Models
-      summary: Shows options for the meta data info of a specific model
-      operationId: options-model-meta-data
-      produces:
-      - application/json
-      responses:
-        '200':
-          description: OK
-          schema:
-            allOf:
-            - "$ref": "#/definitions/Options_Get"
-            - "$ref": "#/definitions/Options_Post"
-  "/models/{model-id}/meta-data":
-    get:
-      tags:
-      - Models
-      summary: Get the model's meta data
-      description: Gets the full meta data info related to the model
-      operationId: get-model-meta-data
-      produces:
-      - application/json
-      parameters:
-      - name: model-id
-        in: path
-        description: ID of the model to which return its meta data
-        required: true
-        type: string
-      responses:
-        '200':
-          description: OK
-          schema:
-            "$ref": "#/definitions/Meta_Data"
-        '400':
-          description: Bad request
-      security:
-      - openarchi_auth:
-        - read:models
-    post:
-      tags:
-      - Models
-      summary: Add the meta-data of the current model
-      description: Add the meta-data of the current model
-      operationId: add-meta-data
-      consumes:
-      - application/json
-      produces:
-      - application/json
-      parameters:
-      - name: model-id
-        in: path
-        description: ID of the model to add meta data
-        required: true
-        type: string
-      - in: body
-        name: body
-        description: MetaData object that needs to be added to the current model
-        required: true
-        schema:
-          "$ref": "#/definitions/Meta_Data_Create"
-      responses:
-        '200':
-          description: Accepted
-        '201':
-          description: Created
-        '405':
-          description: Invalid input
-      security:
-      - openarchi_auth:
-        - write:model
-        - read:models
-  "/models/:model-id/features":
-    options:
-      tags:
-      - Models
-      summary: Shows options for the features of a specific model
-      operationId: options-model-features
-      produces:
-      - application/json
-      responses:
-        '200':
-          description: OK
-          schema:
-            allOf:
-            - "$ref": "#/definitions/Options_Get_Collection"
-            - "$ref": "#/definitions/Options_Put"
-  "/models/{model-id}/features":
-    get:
-      tags:
-      - Models
-      summary: Get the model's features
-      description: Gets the full features info related to the model
-      operationId: get-model-features
-      produces:
-      - application/json
-      parameters:
-      - name: model-id
-        in: path
-        description: ID of the model to which return its features
-        required: true
-        type: string
-      responses:
-        '200':
-          description: OK
-          schema:
-            type: array
-            items:
-              "$ref": "#/definitions/Feature"
-        '400':
-          description: Bad request
-      security:
-      - openarchi_auth:
-        - read:models
-    put:
-      tags:
-      - Models
-      summary: Add a feature to the current model
-      description: Add a feature to the current model
-      operationId: add-feature
-      consumes:
-      - application/json
-      produces:
-      - application/json
-      parameters:
-      - name: model-id
-        in: path
-        description: ID of the model to add the feature
-        required: true
-        type: string
-      - in: body
-        name: body
-        description: Feature object that needs to be added to the current model
-        required: true
-        schema:
-          "$ref": "#/definitions/Feature_Create"
-      responses:
-        '200':
-          description: Accepted
-        '201':
-          description: Created
-        '405':
-          description: Invalid input
-      security:
-      - openarchi_auth:
-        - write:model
-        - read:models
-  "/models/architectures":
-    options:
-      tags:
-      - Models
-      summary: Shows options for architecture diagram
-      operationId: options-architecture
-      produces:
-      - application/json
-      responses:
-        '200':
-          description: OK
-          schema:
-            allOf:
-            - "$ref": "#/definitions/Options_Get_Collection"
-            - "$ref": "#/definitions/Options_Post"
-    get:
-      tags:
-      - Models
-      summary: Finds models of the type architecture
-      description: This service supports query by using RSQL expressions
-      operationId: get-architecture-models
-      produces:
-      - application/json
-      parameters:
-      - name: "$filter"
-        in: query
-        description: Filter models according to an RSQL expression
-        required: false
-        type: string
-      responses:
-        '200':
-          description: OK
-          schema:
-            type: array
-            items:
-              "$ref": "#/definitions/Architectural_Model"
-        '400':
-          description: Bad request
-      security:
-      - openarchi_auth:
-        - read:models
-    post:
-      tags:
-      - Models
-      summary: Add a new model of the type architecture
-      description: ''
-      operationId: add-architecture-model
-      consumes:
-      - application/json
-      produces:
-      - application/json
-      parameters:
-      - in: body
-        name: body
-        description: Architecture Model object that needs to be added
-        required: true
-        schema:
-          "$ref": "#/definitions/Architectural_Model_Create"
-      responses:
-        '200':
-          description: Accepted
-        '201':
-          description: Created
-        '405':
-          description: Invalid input
-      security:
-      - openarchi_auth:
-        - write:model
-        - read:models
-  "/models/architectures/:model-id/relationships":
-    options:
-      tags:
-      - Models
-      summary: Shows options for the relationships of a specific model
-      operationId: options-model-relationships
-      produces:
-      - application/json
-      responses:
-        '200':
-          description: OK
-          schema:
-            allOf:
-            - "$ref": "#/definitions/Options_Get_Collection"
-            - "$ref": "#/definitions/Options_Put"
-  "/models/architectures/{model-id}/relationships":
-    get:
-      tags:
-      - Models
-      summary: Get the model's relationships
-      description: Gets the full relationships info related to the model
-      operationId: get-model-relationships
-      produces:
-      - application/json
-      parameters:
-      - name: model-id
-        in: path
-        description: ID of the model to which return its relationships
-        required: true
-        type: string
-      responses:
-        '200':
-          description: OK
-          schema:
-            type: array
-            items:
-              "$ref": "#/definitions/Architecture_Relationship"
-        '400':
-          description: Bad request
-      security:
-      - openarchi_auth:
-        - read:models
-    put:
-      tags:
-      - Models
-      summary: Add a relationship to the current model
-      description: Add a relationship to the current model
-      operationId: add-relationship
-      consumes:
-      - application/json
-      produces:
-      - application/json
-      parameters:
-      - name: model-id
-        in: path
-        description: ID of the model to add the relationship
-        required: true
-        type: string
-      - in: body
-        name: body
-        description: Relationship object that needs to be added to the current model
-        required: true
-        schema:
-          "$ref": "#/definitions/Architecture_Relationship_Create"
-      responses:
-        '200':
-          description: Accepted
-        '201':
-          description: Created
-        '405':
-          description: Invalid input
-      security:
-      - openarchi_auth:
-        - write:model
-        - read:models
-  "/models/bpms":
-    options:
-      tags:
-      - Models
-      summary: Shows options for BPM diagram
-      operationId: options-bpm
-      produces:
-      - application/json
-      responses:
-        '200':
-          description: OK
-          schema:
-            allOf:
-            - "$ref": "#/definitions/Options_Get_Collection"
-            - "$ref": "#/definitions/Options_Post"
-    get:
-      tags:
-      - Models
-      summary: Finds models of the type bpm
-      description: This service supports query by using RSQL expressions
-      operationId: get-bpm-models
-      produces:
-      - application/json
-      parameters:
-      - name: "$filter"
-        in: query
-        description: Filter models according to an RSQL expression
-        required: false
-        type: string
-      responses:
-        '200':
-          description: OK
-          schema:
-            type: array
-            items:
-              "$ref": "#/definitions/Architectural_Model"
-        '400':
-          description: Bad request
-      security:
-      - openarchi_auth:
-        - read:models
-    post:
-      tags:
-      - Models
-      summary: Add a new model of the type bpm
-      description: ''
-      operationId: add-bpm-model
-      consumes:
-      - application/json
-      produces:
-      - application/json
-      parameters:
-      - in: body
-        name: body
-        description: Bpm Model object that needs to be added
-        required: true
-        schema:
-          "$ref": "#/definitions/Architectural_Model_Create"
-      responses:
-        '200':
-          description: Accepted
-        '201':
-          description: Created
-        '405':
-          description: Invalid input
-      security:
-      - openarchi_auth:
-        - write:model
-        - read:models  
-  "/models/flowcharts":
-    options:
-      tags:
-      - Models
-      summary: Shows options for flowcharts diagram
-      operationId: options-flowcharts
-      produces:
-      - application/json
-      responses:
-        '200':
-          description: OK
-          schema:
-            allOf:
-            - "$ref": "#/definitions/Options_Get_Collection"
-            - "$ref": "#/definitions/Options_Post"
-    get:
-      tags:
-      - Models
-      summary: Finds models of the type flowchart
-      description: This service supports query by using RSQL expressions
-      operationId: get-flowchart-models
-      produces:
-      - application/json
-      parameters:
-      - name: "$filter"
-        in: query
-        description: Filter models according to an RSQL expression
-        required: false
-        type: string
-      responses:
-        '200':
-          description: OK
-          schema:
-            type: array
-            items:
-              "$ref": "#/definitions/Architectural_Model"
-        '400':
-          description: Bad request
-      security:
-      - openarchi_auth:
-        - read:models
-    post:
-      tags:
-      - Models
-      summary: Add a new model of the type flowchart
-      description: ''
-      operationId: add-flowchart-model
-      consumes:
-      - application/json
-      produces:
-      - application/json
-      parameters:
-      - in: body
-        name: body
-        description: Flowchart Model object that needs to be added
-        required: true
-        schema:
-          "$ref": "#/definitions/Architectural_Model_Create"
-      responses:
-        '200':
-          description: Accepted
-        '201':
-          description: Created
-        '405':
-          description: Invalid input
-      security:
-      - openarchi_auth:
-        - write:model
-        - read:models  
-  "/models/gantts":
-    options:
-      tags:
-      - Models
-      summary: Shows options for gantts diagram
-      operationId: options-gantt
-      produces:
-      - application/json
-      responses:
-        '200':
-          description: OK
-          schema:
-            allOf:
-            - "$ref": "#/definitions/Options_Get_Collection"
-            - "$ref": "#/definitions/Options_Post"
-    get:
-      tags:
-      - Models
-      summary: Finds models of the type gantt
-      description: This service supports query by using RSQL expressions
-      operationId: get-gantt-models
-      produces:
-      - application/json
-      parameters:
-      - name: "$filter"
-        in: query
-        description: Filter models according to an RSQL expression
-        required: false
-        type: string
-      responses:
-        '200':
-          description: OK
-          schema:
-            type: array
-            items:
-              "$ref": "#/definitions/Architectural_Model"
-        '400':
-          description: Bad request
-      security:
-      - openarchi_auth:
-        - read:models
-    post:
-      tags:
-      - Models
-      summary: Add a new model of the type gantt
-      description: ''
-      operationId: add-gantt-model
-      consumes:
-      - application/json
-      produces:
-      - application/json
-      parameters:
-      - in: body
-        name: body
-        description: Gantt Model object that needs to be added
-        required: true
-        schema:
-          "$ref": "#/definitions/Architectural_Model_Create"
-      responses:
-        '200':
-          description: Accepted
-        '201':
-          description: Created
-        '405':
-          description: Invalid input
-      security:
-      - openarchi_auth:
-        - write:model
-        - read:models  
-  "/models/sequences":
-    options:
-      tags:
-      - Models
-      summary: Shows options for sequences diagram
-      operationId: options-sequence
-      produces:
-      - application/json
-      responses:
-        '200':
-          description: OK
-          schema:
-            allOf:
-            - "$ref": "#/definitions/Options_Get_Collection"
-            - "$ref": "#/definitions/Options_Post"
-    get:
-      tags:
-      - Models
-      summary: Finds models of the type sequence
-      description: This service supports query by using RSQL expressions
-      operationId: get-sequence-models
-      produces:
-      - application/json
-      parameters:
-      - name: "$filter"
-        in: query
-        description: Filter models according to an RSQL expression
-        required: false
-        type: string
-      responses:
-        '200':
-          description: OK
-          schema:
-            type: array
-            items:
-              "$ref": "#/definitions/Architectural_Model"
-        '400':
-          description: Bad request
-      security:
-      - openarchi_auth:
-        - read:models
-    post:
-      tags:
-      - Models
-      summary: Add a new model of the type sequence
-      description: ''
-      operationId: add-sequence-model
-      consumes:
-      - application/json
-      produces:
-      - application/json
-      parameters:
-      - in: body
-        name: body
-        description: Sequence Model object that needs to be added
-        required: true
-        schema:
-          "$ref": "#/definitions/Architectural_Model_Create"
-      responses:
-        '200':
-          description: Accepted
-        '201':
-          description: Created
-        '405':
-          description: Invalid input
-      security:
-      - openarchi_auth:
-        - write:model
-        - read:models  
 securityDefinitions:
   openarchi_auth:
     type: oauth2
@@ -859,77 +185,9 @@ securityDefinitions:
     name: api_key
     in: header
 definitions:
-
-  Account:
-    description: Account
+  Architecture_Model:
     type: object
-    properties:
-      id:
-        type: string
-        description: Account identifier
-      email:
-        type: string
-        description: Email of the account
-      login:
-        type: string
-        description: Login
-      password:
-        type: string
-        description: Password of the account
-      firstAccess:
-        type: boolean
-        description: Indicator for showing whether this is the first access to the account or not
-      roles:
-        type: array
-        description: Roles that an account have
-        items:
-          $ref: "#/definitions/Role"
-
-  Account_Create:
-    description: Account
-    type: object
-    properties:
-      email:
-        type: string
-        description: Email of the account
-      login:
-        type: string
-        description: Login
-      password:
-        type: string
-        description: Password of the account
-      roles:
-        type: array
-        description: Roles that an account have
-        items:
-          $ref: "#/definitions/Role_Create"
-
-  Activity:
-    description: Lane's activity
-    type: object
-    allOf:
-    - $ref: "#/definitions/Base_Entity"
-    - type: object
-      properties:
-        lanes:
-          type: array
-          items:
-            $ref: "#/definitions/Lane"
-
-  Activity_Create:
-    description: Lane's activity
-    type: object
-    allOf:
-    - $ref: "#/definitions/Base_Entity_Create"
-    - type: object
-      properties:
-        lanes:
-          type: array
-          items:
-            $ref: "#/definitions/Lane_Create"
-
-  Architectural_Model:
-    description: Architectural Model object
+    description: Architecture Model object
     allOf:
     - $ref: "#/definitions/Element"
     - type: object
@@ -964,17 +222,13 @@ definitions:
             $ref: "#/definitions/Architecture_Relationship"
       required:
       - kind
-
-  Architectural_Model_Create:
-    description: Architectural Model object
+  Architecture_Models:
+    type: object
+    description: Architecture Model object
     allOf:
-    - $ref: "#/definitions/Element_Create"
+    - $ref: "#/definitions/Elements"
     - type: object
       properties:
-        elements:
-          type: object
-          additionalProperties:
-            $ref: "#/definitions/Element_Create"
         kind:
           type: string
           description: Type of model
@@ -984,172 +238,40 @@ definitions:
           type: array
           description: Consumers of the model
           items:
-            $ref: "#/definitions/Consumer_Create"
+            $ref: "#/definitions/Consumers"
         softwareSystems:
           type: array
           description: Consumers of the model
           items:
-            $ref: "#/definitions/Software_System_Create"
+            $ref: "#/definitions/Software_Systems"
         deploymentNodes:
           type: array
           description: Deployment node of the model
           items:
-            $ref: "#/definitions/Deployment_Node_Create"
+            $ref: "#/definitions/Deployment_Nodes"
         relationships:
           type: array
           items:
-            $ref: "#/definitions/Architecture_Relationship_Create"
+            $ref: "#/definitions/Architecture_Relationships"
       required:
       - kind
-
+  Architecture_Model_Create:
+    type: object
+  Architecture_Models_Create:
+    type: object
   Architecture_Relationship:
-    description: Relationship between model objects
-    allOf:
-    - $ref: "#/definitions/Relationship"
-    - type: object
-      properties:
-        technology:
-          type: string
-          description: Technology that underlies the relationship between architecture's components
-        interactionStyle:
-          type: string
-          description: Type of interaction between architecture's components
-          enum:
-          - SYNCHRONOUS
-          - ASYNCHRONOUS
-        type:
-          type: string
-          description: Type of relationship
-          enum:
-          - UNIDIRECTIONAL
-          - BIDIRECTIONAL
-      required:
-      - type
-
-  Architecture_Relationship_Create:
     type: object
-    description: Relationship between model objects
-    allOf:
-    - $ref: "#/definitions/Relationship_Create"
-    - properties:
-        technology:
-          type: string
-          description: Technology that underlies the relationship between architecture's components
-        interactionStyle:
-          type: string
-          description: Type of interaction between architecture's components
-          enum:
-          - SYNCHRONOUS
-          - ASYNCHRONOUS
-        type:
-          type: string
-          description: Type of relationship
-          enum:
-          - UNIDIRECTIONAL
-          - BIDIRECTIONAL
-      required:
-      - type
-
+  Architecture_Relationships:
+    type: object
   BPM_Model:
-    description: BPM Model object
-    allOf:
-    - $ref: "#/definitions/Element"
-    - type: object
-      properties:
-        kind:
-          type: string
-          description: Type of model
-          enum:
-          - BPM_MODEL
-        pools:
-          type: array
-          description: Pools of the model
-          items:
-            $ref: "#/definitions/Pool"
-        relationships:
-          type: array
-          items:
-            $ref: "#/definitions/BPM_Relationship"
-      required:
-      - kind
-
+    type: object
+  BPM_Models:
+    type: object
   BPM_Model_Create:
-    description: BPM Model object
-    allOf:
-    - $ref: "#/definitions/Element_Create"
-    - type: object
-      properties:
-        kind:
-          type: string
-          description: Type of model
-          enum:
-          - BPM_MODEL
-        pools:
-          type: array
-          description: Pools of the model
-          items:
-            $ref: "#/definitions/Pool_Create"
-        relationships:
-          type: array
-          items:
-            $ref: "#/definitions/Architecture_Relationship_Create"
-      required:
-      - kind
-
-  BPM_Relationship:
-    description: Relationship between model objects
-    allOf:
-    - $ref: "#/definitions/Relationship"
-    - type: object
-      properties:
-        type:
-          type: string
-          description: Type of relationship
-          enum:
-          - UNIDIRECTIONAL
-          - BIDIRECTIONAL
-      required:
-      - type
-
-  BPM_Relationship_Create:
     type: object
-    description: Relationship between model objects
-    allOf:
-    - $ref: "#/definitions/Relationship_Create"
-    - properties:
-        type:
-          type: string
-          description: Type of relationship
-          enum:
-          - UNIDIRECTIONAL
-          - BIDIRECTIONAL
-      required:
-      - type
-
-  Base_Entity:
+  BPM_Models_Create:
     type: object
-    description: Basic entity info for managing a model
-    properties:
-      id:
-        type: string
-        description: Model identifier
-      meta:
-        $ref: "#/definitions/Meta_Info"
-        description: Meta info related to the model
-    required:
-    - id
-    - meta
-
-  Base_Entity_Create:
-    type: object
-    description: Basic entity info for managing a model
-    properties:
-      meta:
-        $ref: "#/definitions/Meta_Info_Create"
-        description: Meta info related to the model
-
   Consumer:
-    description: Consumer
     type: object
     allOf:
     - $ref: "#/definitions/Static_Element"
@@ -1162,12 +284,14 @@ definitions:
           - Internal
           - External
           - Unspecified
-
-  Consumer_Create:
-    description: Consumer
+        kind:
+          type: string
+          enum:
+          - CONSUMER
+  Consumers:
     type: object
     allOf:
-    - $ref: "#/definitions/Static_Element_Create"
+    - $ref: "#/definitions/Static_Elements"
     - type: object
       properties:
         scope:
@@ -1177,798 +301,139 @@ definitions:
           - Internal
           - External
           - Unspecified
-
-  Composite_Element:
+        kind:
+          type: string
+          enum:
+          - CONSUMER
+  Container:
     type: object
-    description: A reference to a taggable element
+    description: Container
     properties:
-      id:
+      technology:
         type: string
-        description: Composite element identifier
-      type:
-        type: string
-        description: Referenced element type
-        enum:
-        - ARCHITECTURAL_MODEL
-        - FLOWCHART_MODEL
-        - SEQUENCE_MODEL
-        - GANTT_MODEL
-        - ENTITY_RELATIONSHIP_MODEL
-        - UML_CLASS_MODEL
-        - BPM_MODEL
-        - ARCHITECTURAL
-        - FLOWCHART
-        - SEQUENCE
-        - GANTT
-        - ENTITY_RELATIONSHIP
-        - UML_CLASS
-        - FEATURE
-        - COMPONENT
-        - CONTAINER
-        - DEPLOYMENT
-        - BPM
-      link:
-        type: string
-        description: Link to the referenced element
-    required:
-    - id
-    - type
-
-  Composite_Element_Create:
+        description: Technology that underlied this container
+      components:
+        type: array
+        description: Components that conforms this container
+        items:
+          $ref: "#/definitions/Component"
+  Containers:
     type: object
-    description: A reference to a taggable element
+    description: List of containers
     properties:
-      id:
+      technology:
         type: string
-        description: Composite element identifier
-      type:
-        type: string
-        description: Referenced element type
-        enum:
-        - ARCHITECTURAL_MODEL
-        - FLOWCHART_MODEL
-        - SEQUENCE_MODEL
-        - GANTT_MODEL
-        - ENTITY_RELATIONSHIP_MODEL
-        - UML_CLASS_MODEL
-        - BPM_MODEL
-        - ARCHITECTURAL
-        - FLOWCHART
-        - SEQUENCE
-        - GANTT
-        - ENTITY_RELATIONSHIP
-        - UML_CLASS
-        - FEATURE
-        - COMPONENT
-        - CONTAINER
-        - DEPLOYMENT
-        - BPM
-      link:
-        type: string
-        description: Link to the referenced element
-    required:
-    - id
-    - type
-
-  Deployment_Node_Create:
-    description: Deployment Node
+        description: Technology that underlied this container
+      components:
+        type: array
+        description: Components that conforms this container
+        items:
+          $ref: "#/definitions/Components"
+  Component:
+    description: Component
     type: object
     allOf:
-    - $ref: "#/definitions/Element_Create"
+    - $ref: "#/definitions/Static_Element"
     - type: object
       properties:
         technology:
           description: Technology
           type: string
-        instances:
-          description: Instances
+        size:
+          description: Components
           type: integer
-          format: int32
-        kind:
-          type: string
-          description: Type of element
-          enum:
-          - DEPLOYMENT
-
-  Deployment_Node:
-    description: Deployment Node
+          format: int64
+  Components:
+    description: Component
     type: object
     allOf:
-    - $ref: "#/definitions/Element"
+    - $ref: "#/definitions/Static_Elements"
     - type: object
       properties:
         technology:
           description: Technology
           type: string
-        instances:
-          description: Instances
+        size:
+          description: Components
           type: integer
-          format: int32
-        kind:
-          type: string
-          description: Type of element
-          enum:
-          - DEPLOYMENT
-
-  Element_Create:
-    description: Abstract element object
-    allOf:
-    - $ref: "#/definitions/Item_Create"
-    - type: object
-      properties:
-        name:
-          type: string
-          description: Model name
-        kind:
-          type: string
-          description: Type of element
-          enum:
-          - ARCHITECTURAL_MODEL
-          - FLOWCHART_MODEL
-          - SEQUENCE_MODEL
-          - GANTT_MODEL
-          - ENTITY_RELATIONSHIP_MODEL
-          - UML_CLASS_MODEL
-          - BPM_MODEL
-          - ARCHITECTURAL
-          - FLOWCHART
-          - SEQUENCE
-          - GANTT
-          - ENTITY_RELATIONSHIP
-          - UML_CLASS
-          - FEATURE
-          - BPM
-        description:
-          type: string
-          description: Long description of model
-        location:
-          $ref: "#/definitions/Point"
-          description: Long description of model
-        parent:
-          $ref: "#/definitions/Composite_Element"
-          description: Long description of model
-        children:
-          type: array
-          description: Children of the model
-          items:
-            $ref: "#/definitions/Composite_Element"
-        shape:
-          $ref: "#/definitions/Shape"
-          description: Long description of model
-        relationships:
-          type: array
-          description: Relationships of the model
-          items:
-            $ref: "#/definitions/Relationship_Create"
-        metaData:
-          $ref: "#/definitions/Meta_Data_Create"
-          description: Meta data associated with the model
-      discriminator: kind
-      required:
-      - name
-      - kind
-
+          format: int64
   Element:
-    description: Abstract element object
-    allOf:
-    - $ref: "#/definitions/Item"
-    - type: object
-      properties:
-        name:
-          type: string
-          description: Model name
-        kind:
-          type: string
-          description: Type of element
-          enum:
-          - ARCHITECTURAL_MODEL
-          - FLOWCHART_MODEL
-          - SEQUENCE_MODEL
-          - GANTT_MODEL
-          - ENTITY_RELATIONSHIP_MODEL
-          - UML_CLASS_MODEL
-          - BPM_MODEL
-          - ARCHITECTURAL
-          - FLOWCHART
-          - SEQUENCE
-          - GANTT
-          - ENTITY_RELATIONSHIP
-          - UML_CLASS
-          - FEATURE
-          - BPM
-        description:
-          type: string
-          description: Long description of model
-        location:
-          $ref: "#/definitions/Point"
-          description: Long description of model
-        parent:
-          $ref: "#/definitions/Composite_Element"
-          description: Long description of model
-        children:
-          type: array
-          description: Children of the model
-          items:
-            $ref: "#/definitions/Composite_Element"
-        shape:
-          $ref: "#/definitions/Shape"
-          description: Long description of model
-        relationships:
-          type: array
-          description: Relationships of the model
-          items:
-            $ref: "#/definitions/Relationship"
-        metaData:
-          $ref: "#/definitions/Meta_Data"
-          description: Meta data associated with the model
-      discriminator: kind
-      required:
-      - name
-      - kind
-
-  Feature_Create:
-    description: Abstract element object
-    allOf:
-    - $ref: "#/definitions/Item_Create"
-    - type: object
-      properties:
-        role:
-          type: string
-          description: the role of the feature ... Primary or Supporting
-          enum:
-          - Primary
-          - Supporting
-        type:
-          type: string
-          description: the fully qualified type of the feature
-        url:
-          type: string
-          description: a URL; e.g. a reference to the feature in source code control
-        language:
-          type: string
-          description: the programming language used to create the feature
-        category:
-          type: string
-          description: the category of feature; e.g. class, interface, etc
-        visibility:
-          type: string
-          description: the visibility of the feature; e.g. public, package, private
-        kind:
-          type: string
-          enum:
-          - FEATURE
-
-  Feature:
-    description: Abstract element object
-    allOf:
-    - $ref: "#/definitions/Item"
-    - type: object
-      properties:
-        role:
-          type: string
-          description: the role of the feature ... Primary or Supporting
-          enum:
-          - Primary
-          - Supporting
-        type:
-          type: string
-          description: the fully qualified type of the feature
-        url:
-          type: string
-          description: a URL; e.g. a reference to the feature in source code control
-        language:
-          type: string
-          description: the programming language used to create the feature
-        category:
-          type: string
-          description: the category of feature; e.g. class, interface, etc
-        visibility:
-          type: string
-          description: the visibility of the feature; e.g. public, package, private
-        kind:
-          type: string
-          enum:
-          - FEATURE
-
+    type: object
+  Elements:
+    type: object
+  Deployment_Node:
+    type: object
+  Deployment_Nodes:
+    type: object
   Flowchart_Model:
-    description: Flowchart Model object
-    allOf:
-    - $ref: "#/definitions/Element"
-    - type: object
-      properties:
-        kind:
-          type: string
-          description: Type of model
-          enum:
-          - FLOWCHART_MODEL
-        pools:
-          type: array
-          description: Pools of the model
-          items:
-            $ref: "#/definitions/Flowchart"
-        relationships:
-          type: array
-          items:
-            $ref: "#/definitions/Flowchart_Relationship"
-      required:
-      - kind
-
+    type: object
+  Flowchart_Models:
+    type: object
   Flowchart_Model_Create:
-    description: Flowchart Model object
-    allOf:
-    - $ref: "#/definitions/Element_Create"
-    - type: object
-      properties:
-        kind:
-          type: string
-          description: Type of model
-          enum:
-          - FLOWCHART_MODEL
-        pools:
-          type: array
-          description: Pools of the model
-          items:
-            $ref: "#/definitions/Flowchart_Create"
-        relationships:
-          type: array
-          items:
-            $ref: "#/definitions/Flowchart_Relationship_Create"
-      required:
-      - kind
-
-  Flowchart_Relationship:
-    description: Relationship between model objects
-    allOf:
-    - $ref: "#/definitions/Relationship"
-    - type: object
-      properties:
-        type:
-          type: string
-          description: Type of relationship
-          enum:
-          - UNIDIRECTIONAL
-          - BIDIRECTIONAL
-      required:
-      - type
-
-  Flowchart_Relationship_Create:
     type: object
-    description: Relationship between model objects
-    allOf:
-    - $ref: "#/definitions/Relationship_Create"
-    - properties:
-        type:
-          type: string
-          description: Type of relationship
-          enum:
-          - UNIDIRECTIONAL
-          - BIDIRECTIONAL
-      required:
-      - type
-
-  Flowchart:
-    description: Flowchart
+  Flowchart_Models_Create:
     type: object
-    allOf:
-    - $ref: "#/definitions/Item"
-    - type: object
-      properties:
-        category:
-          type: string
-          description: Category
-          enum:
-          - ACTIVITY
-          - DECISION_POINT
-          - START
-          - END
-        kind:
-          type: string
-          description: Type of model
-          enum:
-          - FLOWCHART
-      required:
-      - category
-      - kind
-
-  Flowchart_Create:
-    description: Flowchart
-    type: object
-    allOf:
-    - $ref: "#/definitions/Item_Create"
-    - type: object
-      properties:
-        category:
-          type: string
-          description: Category
-          enum:
-          - ACTIVITY
-          - DECISION_POINT
-          - START
-          - END
-        kind:
-          type: string
-          description: Type of model
-          enum:
-          - FLOWCHART
-      required:
-      - category
-      - kind
-
-  Gantt:
-    description: Gantt
-    type: object
-    allOf:
-    - $ref: "#/definitions/Item"
-    - type: object
-      properties:
-        category:
-          type: string
-          description: Category
-          enum:
-          - ACTIVITY
-          - START
-          - END
-        diagramStart:
-          type: integer
-          format: int32
-          description: Start of the Gantt's activity
-        diagramEnd:
-          type: integer
-          format: int32
-          description: End of the Gantt's activity
-        kind:
-          type: string
-          description: Type of model
-          enum:
-          - GANTT
-      required:
-      - category
-      - kind
-
-  Gantt_Create:
-    description: Gantt
-    type: object
-    allOf:
-    - $ref: "#/definitions/Item_Create"
-    - type: object
-      properties:
-        category:
-          type: string
-          description: Category
-          enum:
-          - ACTIVITY
-          - START
-          - END
-        diagramStart:
-          type: integer
-          format: int32
-          description: Start of the Gantt's activity
-        diagramEnd:
-          type: integer
-          format: int32
-          description: End of the Gantt's activity
-        kind:
-          type: string
-          description: Type of model
-          enum:
-          - GANTT
-      required:
-      - category
-      - kind
-
   Gantt_Model:
-    description: Gantt Model object
-    allOf:
-    - $ref: "#/definitions/Element"
-    - type: object
-      properties:
-        kind:
-          type: string
-          description: Type of model
-          enum:
-          - GANTT_MODEL
-        gantts:
-          type: array
-          description: Gantts of the model
-          items:
-            $ref: "#/definitions/Gantt"
-        relationships:
-          type: array
-          items:
-            $ref: "#/definitions/Gantt_Relationship"
-      required:
-      - kind
-
+    type: object
+  Gantt_Models:
+    type: object
   Gantt_Model_Create:
-    description: Gantt Model object
-    allOf:
-    - $ref: "#/definitions/Element_Create"
-    - type: object
-      properties:
-        kind:
-          type: string
-          description: Type of model
-          enum:
-          - GANTT_MODEL
-        gantts:
-          type: array
-          description: Gantts of the model
-          items:
-            $ref: "#/definitions/Gantt_Create"
-        relationships:
-          type: array
-          items:
-            $ref: "#/definitions/Architecture_Relationship"
-      required:
-      - kind
-
-  Gantt_Relationship:
-    description: Relationship between model objects
-    allOf:
-    - $ref: "#/definitions/Relationship"
-    - type: object
-      properties:
-        type:
-          type: string
-          description: Type of relationship
-          enum:
-          - UNIDIRECTIONAL
-          - BIDIRECTIONAL
-      required:
-      - type
-
-  Gantt_Relationship_Create:
     type: object
-    description: Relationship between model objects
-    allOf:
-    - $ref: "#/definitions/Relationship_Create"
-    - properties:
-        type:
-          type: string
-          description: Type of relationship
-          enum:
-          - UNIDIRECTIONAL
-          - BIDIRECTIONAL
-      required:
-      - type
-      
-  Item:
-    description: Abstract item object
-    allOf:
-    - $ref: "#/definitions/Taggable"
-    - type: object
-      properties:
-        url:
-          type: string
-          description: Url for the physical access to the of model
-        properties:
-          type: object
-          additionalProperties:
-            type: string
-        featuresLinks:
-          type: array
-          description: Links to the features that conforms the model
-          items:
-            $ref: "#/definitions/Composite_Element"
-
-  Item_Create:
-    description: Abstract item object
-    allOf:
-    - $ref: "#/definitions/Taggable_Create"
-    - type: object
-      properties:
-        url:
-          type: string
-          description: Url for the physical access to the of model
-        properties:
-          type: object
-          additionalProperties:
-            type: string
-        features:
-          type: array
-          description: Links to the features that conforms the model
-          items:
-            $ref: "#/definitions/Feature"
-
-  Lane:
-    description: Pool's lane
+  Gantt_Models_Create:
     type: object
-    allOf:
-    - $ref: "#/definitions/Base_Entity"
-    - type: object
-      properties:
-        activities:
-          type: array
-          description: Activities in the lane
-          items:
-            $ref: "#/definitions/Activity"
-
-  Lane_Create:
-    description: Pool's lane
-    type: object
-    allOf:
-    - $ref: "#/definitions/Base_Entity_Create"
-    - type: object
-      properties:
-        activities:
-          type: array
-          description: Activities in the lane
-          items:
-            $ref: "#/definitions/Activity"
-
-  Meta_Data_Create:
-    description: Meta Data
-    type: object
-    allOf:
-    - $ref: "#/definitions/Base_Entity_Create"
-    - type: object
-      properties:
-        responsibles:
-          type: array
-          items:
-            $ref: "#/definitions/Responsible_Create"
-        collaborators:
-          type: array
-          items:
-            $ref: "#/definitions/Responsible_Create"
-        relatedWith:
-          type: array
-          items:
-            $ref: "#/definitions/Taggable_Create"
-        usedIn:
-          type: array
-          items:
-            $ref: "#/definitions/Taggable_Create"
-        views:
-          type: array
-          items:
-            $ref: "#/definitions/View_Create"
-
-  Meta_Data:
-    description: Meta Data
-    type: object
-    allOf:
-    - $ref: "#/definitions/Base_Entity"
-    - type: object
-      properties:
-        responsibles:
-          type: array
-          items:
-            $ref: "#/definitions/Responsible"
-        collaborators:
-          type: array
-          items:
-            $ref: "#/definitions/Responsible"
-        relatedWith:
-          type: array
-          items:
-            $ref: "#/definitions/Taggable"
-        usedIn:
-          type: array
-          items:
-            $ref: "#/definitions/Taggable"
-        views:
-          type: array
-          items:
-            $ref: "#/definitions/View"
-
   Model:
     description: Model object
     type: object
     allOf:
-    - $ref: "#/definitions/Architectural_Model"
+    - $ref: "#/definitions/Architecture_Model"
     - $ref: "#/definitions/BPM_Model"
     - $ref: "#/definitions/Flowchart_Model"
     - $ref: "#/definitions/Gantt_Model"
     - $ref: "#/definitions/Sequence_Model"
-
-  Model_Create:
-    description: Model object
+  Models:
+    description: List of model objects
     type: object
     allOf:
-    - $ref: "#/definitions/Architectural_Model_Create"
+    - $ref: "#/definitions/Architecture_Models"
+    - $ref: "#/definitions/BPM_Models"
+    - $ref: "#/definitions/Flowchart_Models"
+    - $ref: "#/definitions/Gantt_Models"
+    - $ref: "#/definitions/Sequence_Models"
+  Model_Create:
+    description: Model object to be created
+    type: object
+    allOf:
+    - $ref: "#/definitions/Architecture_Model_Create"
     - $ref: "#/definitions/BPM_Model_Create"
     - $ref: "#/definitions/Flowchart_Model_Create"
     - $ref: "#/definitions/Gantt_Model_Create"
     - $ref: "#/definitions/Sequence_Model_Create"
-
-  Model_Parent_Create:
-    description: A reference to a taggable element
+  Models_Create:
+    description: List of model objects to be created
     type: object
-    properties:
-      id:
-        type: string
-        description: Composite element identifier
-      type:
-        type: string
-        description: Referenced element type
-        enum:
-        - ARCHITECTURAL_MODEL
-        - FLOWCHART_MODEL
-        - SEQUENCE_MODEL
-        - GANTT_MODEL
-        - ENTITY_RELATIONSHIP_MODEL
-        - UML_CLASS_MODEL
-        - BPM_MODEL
-        - ARCHITECTURAL
-        - FLOWCHART
-        - SEQUENCE
-        - GANTT
-        - ENTITY_RELATIONSHIP
-        - UML_CLASS
-        - FEATURE
-        - COMPONENT
-        - CONTAINER
-        - DEPLOYMENT
-        - BPM
-
-  Meta_Info:
-    type: object
-    description: Meta info for any object
-    properties:
-      id:
-        type: string
-        description: Meta info identifier
-      version:
-        $ref: "#/definitions/Version"
-        description: Version of the object
-      createdBy:
-        $ref: "#/definitions/Account"
-        description: Account that creates the object
-      modifiedBy:
-        $ref: "#/definitions/Account"
-        description: Account that modifies the object
-      created:
-        type: string
-        format: date-time
-        description: Full date of creation of the object
-      modified:
-        type: string
-        format: date-time
-        description: Full date of modification of the object
-    required:
-    - id
-    - version
-    - createdBy
-    - modifiedBy
-
-  Meta_Info_Create:
-    type: object
-    description: Meta info for any object
-    properties:
-      version:
-        $ref: "#/definitions/Version_Create"
-        description: Version of the object
-      createdBy:
-        $ref: "#/definitions/Account_Create"
-        description: Account that creates the object
-      modifiedBy:
-        $ref: "#/definitions/Account_Create"
-        description: Account that modifies the object
-      created:
-        type: string
-        format: date-time
-        description: Full date of creation of the object
-      modified:
-        type: string
-        format: date-time
-        description: Full date of modification of the object
-    required:
-    - version
-    - createdBy
-
+    allOf:
+    - $ref: "#/definitions/Architecture_Models_Create"
+    - $ref: "#/definitions/BPM_Models_Create"
+    - $ref: "#/definitions/Flowchart_Models_Create"
+    - $ref: "#/definitions/Gantt_Models_Create"
+    - $ref: "#/definitions/Sequence_Models_Create"
   Options_Input_Item:
     type: object
     properties:
       input:
         type: object
-
   Options_Output_Item:
     type: object
     properties:
       output:
         type: object
-
+  Options_Input_Collection_Item:
+    type: object
+    properties:
+      output:
+        type: array
+        items:
+          type: object
   Options_Output_Collection_Item:
     type: object
     properties:
@@ -1976,31 +441,31 @@ definitions:
         type: array
         items:
           type: object
-
   Options_Get_Collection:
     description: Generic object to expose endpoint functionalitites
     properties:
       get:
         $ref: '#/definitions/Options_Output_Collection_Item'
-
   Options_Get:
     description: Generic object to expose endpoint functionalitites
     properties:
       get:
         $ref: '#/definitions/Options_Output_Item'
-
   Options_Post:
     description: Generic object to expose endpoint functionalitites
     properties:
       post:
         $ref: '#/definitions/Options_Input_Item'
-
+  Options_Post_Collection:
+    description: Generic object to expose endpoint functionalitites for batching input processing
+    properties:
+      post:
+        $ref: '#/definitions/Options_Input_Collection_Item'
   Options_Put:
     description: Generic object to expose endpoint functionalitites
     properties:
       put:
         $ref: '#/definitions/Options_Input_Item'
-
   Options_Patch:
     description: Generic object to expose endpoint functionalitites
     properties:
@@ -2008,295 +473,19 @@ definitions:
         $ref: '#/definitions/Options_Input_Item'
       head:
         $ref: '#/definitions/Options_Output_Item'
-
   Options_Head:
     description: Generic object to expose endpoint functionalitites
     properties:
       head:
         $ref: '#/definitions/Options_Output_Item'
-
-  Person:
-    description: Person
-    allOf:
-    - $ref: "#/definitions/Base_Entity"
-    - type: object
-      properties:
-        names:
-          type: string
-          description: Names of the person
-        lastNames:
-          type: string
-          description: Lastname(s) of the person
-      required:
-      - names
-      - lastNames
-
-  Person_Create:
-    description: Person
-    allOf:
-    - $ref: "#/definitions/Base_Entity"
-    - type: object
-      properties:
-        names:
-          type: string
-          description: Names of the person
-        lastNames:
-          type: string
-          description: Lastname(s) of the person
-      required:
-      - names
-      - lastNames
-
-  Pool:
-    description: BPM's pool
+  Sequence_Model:
     type: object
-    allOf:
-    - $ref: "#/definitions/Item"
-    - type: object
-      properties:
-        lanes:
-          type: array
-          description: Lanes in the pool
-          items:
-            $ref: "#/definitions/Lane"
-
-  Pool_Create:
-    description: BPM's pool
+  Sequence_Models:
     type: object
-    allOf:
-    - $ref: "#/definitions/Item_Create"
-    - type: object
-      properties:
-        lanes:
-          type: array
-          description: Lanes in the pool
-          items:
-            $ref: "#/definitions/Lane_Create"
-
-  Point:
+  Sequence_Model_Create:
     type: object
-    description: Coordinates on which the model is located
-    properties:
-      x:
-        type: string
-        format: double
-        description: Relative x coordinate of the point on which the model is located
-      y:
-        type: string
-        format: double
-        description: Relative y coordinate of the point on which the model is located
-      z:
-        type: string
-        format: double
-        description: Relative z coordinate of the point on which the model is located
-    required:
-    - x
-    - y
-
-  Relationship:
-    description: Relationship between model objects
-    allOf:
-    - $ref: "#/definitions/Taggable"
-    - type: object
-      properties:
-        source:
-          $ref: "#/definitions/Taggable"
-          description: Model acting as source of the relationship
-        sourceId:
-          type: string
-          description: Long description of model
-        destination:
-          $ref: "#/definitions/Taggable"
-          description: Model acting as destination of the relationship
-        destinationId:
-          type: string
-          description: Identifier of the model acting as destination of the relationship
-        description:
-          type: string
-          description: Long description of the relationship
-        sourcePort:
-          type: string
-          description: Port of the model acting as source of the relationship
-        destinationPort:
-          type: string
-          description: Port of the model acting as destination of the relationship
-      required:
-      - sourceId
-      - destinationId
-
-  Relationship_Create:
+  Sequence_Models_Create:
     type: object
-    description: Relationship between model objects
-    allOf:
-    - $ref: "#/definitions/Taggable_Create"
-    - properties:
-        sourceId:
-          type: string
-          description: Identifier of the model acting as source of the relationship
-        destinationId:
-          type: string
-          description: Identifier of the model acting as destination of the relationship
-        description:
-          type: string
-          description: Long description of the relationship
-        sourcePort:
-          type: string
-          description: Port of the model acting as source of the relationship
-        destinationPort:
-          type: string
-          description: Port of the model acting as destination of the relationship
-      required:
-      - sourceId
-      - destinationId
-
-  Responsible:
-    description: Person that is responsible of a specific component of a model
-    allOf:
-    - $ref: "#/definitions/Base_Entity"
-    - type: object
-      properties:
-        organizationUnit:
-          type: string
-          description: Organization unit to which the responsible belongs to
-        responsible:
-          $ref: "#/definitions/Person"
-          description: Person that is responsible of a specific component of a model
-      required:
-      - organizationUnit
-      - responsible
-
-  Responsible_Create:
-    description: Person that is responsible of a specific component of a model
-    allOf:
-    - $ref: "#/definitions/Base_Entity"
-    - type: object
-      properties:
-        organizationUnit:
-          type: string
-          description: Organization unit to which the responsible belongs to
-        responsible:
-          $ref: "#/definitions/Person_Create"
-          description: Person that is responsible of a specific component of a model
-      required:
-      - organizationUnit
-      - responsible
-
-  Role:
-    description: A rola an account could have
-    type: object
-    properties:
-      id:
-        type: string
-      name:
-        type: string
-      priority:
-        type: integer
-
-  Role_Create:
-    description: A rola an account could have
-    type: object
-    properties:
-      name:
-        type: string
-      priority:
-        type: integer
-
-  Shape:
-    type: object
-    description: Concrete shape that univocally identify o model
-    properties:
-      id:
-        type: string
-        description: Shape identifier
-      type:
-        type: string
-        description: Shape type
-        enum:
-        - PERSON
-        - ROUNDED_BOX
-        - BOX
-        - DIAMOND
-        - CIRCLE
-    required:
-    - id
-    - type
-
-  Sequence:
-    description: Sequence
-    type: object
-    allOf:
-    - $ref: "#/definitions/Item"
-    - type: object
-      properties:
-        start:
-          type: integer
-          format: int32
-          description: Start of the sequence's activity
-        duration:
-          type: integer
-          format: int32
-          description: Duration of the sequence's activity
-        kind:
-          type: string
-          description: Type of model
-          enum:
-          - SEQUENCE_MODEL
-      required:
-      - kind
-       
-  Sequence_Create:
-    description: Sequence
-    type: object
-    allOf:
-    - $ref: "#/definitions/Item_Create"
-    - type: object
-      properties:
-        start:
-          type: integer
-          format: int32
-          description: Start of the sequence's activity
-        duration:
-          type: integer
-          format: int32
-          description: Duration of the sequence's activity
-        kind:
-          type: string
-          description: Type of model
-          enum:
-          - SEQUENCE_MODEL
-      required:
-      - kind
-
-  Static_Element:
-    description: Static element
-    type: object
-    allOf:
-    - $ref: "#/definitions/Element"
-    - type: object
-      properties:
-        kind:
-          description: Type of static element
-          type: string
-          enum:
-          - COMPONENT
-      required:
-      - kind
-
-  Static_Element_Create:
-    description: Static element
-    type: object
-    allOf:
-    - $ref: "#/definitions/Element_Create"
-    - type: object
-      properties:
-        kind:
-          description: Type of static element
-          type: string
-          enum:
-          - COMPONENT
-      required:
-      - kind
-
   Software_System:
     description: Software System
     type: object
@@ -2311,12 +500,16 @@ definitions:
           - Internal
           - External
           - Unspecified
-
-  Software_System_Create:
+        containers:
+          description: Containers embeded in this software system
+          type: array
+          items:
+            $ref: "#/definitions/Container"
+  Software_Systems:
     description: Software System
     type: object
     allOf:
-    - $ref: "#/definitions/Static_Element_Create"
+    - $ref: "#/definitions/Static_Elements"
     - type: object
       properties:
         scope:
@@ -2326,175 +519,36 @@ definitions:
           - Internal
           - External
           - Unspecified
-
-  Sequence_Model:
-    description: Sequence Model object
+        containers:
+          description: Containers embeded in this software system
+          type: array
+          items:
+            $ref: "#/definitions/Containers"
+  Static_Element:
+    type: object
+    description: Static element
     allOf:
     - $ref: "#/definitions/Element"
     - type: object
       properties:
         kind:
+          description: Type of static element
           type: string
-          description: Type of model
           enum:
-          - SEQUENCE_MODEL
-        sequences:
-          type: array
-          description: Sequences of the model
-          items:
-            $ref: "#/definitions/Sequence"
-        relationships:
-          type: array
-          items:
-            $ref: "#/definitions/Sequence_Relationship"
+          - COMPONENT
       required:
       - kind
-
-  Sequence_Model_Create:
-    description: Sequence Model object
+  Static_Elements:
+    type: object
+    description: Static element
     allOf:
-    - $ref: "#/definitions/Element_Create"
+    - $ref: "#/definitions/Elements"
     - type: object
       properties:
         kind:
+          description: Type of static element
           type: string
-          description: Type of model
           enum:
-          - SEQUENCE_MODEL
-        sequences:
-          type: array
-          description: Sequences of the model
-          items:
-            $ref: "#/definitions/Sequence_Create"
-        relationships:
-          type: array
-          items:
-            $ref: "#/definitions/Sequence_Relationship"
+          - COMPONENT
       required:
       - kind
-
-  Sequence_Relationship:
-    description: Relationship between model objects
-    allOf:
-    - $ref: "#/definitions/Relationship"
-    - type: object
-      properties:
-        type:
-          type: string
-          description: Type of relationship
-          enum:
-          - UNIDIRECTIONAL
-          - BIDIRECTIONAL
-      required:
-      - type
-
-  Sequence_Relationship_Create:
-    type: object
-    description: Relationship between model objects
-    allOf:
-    - $ref: "#/definitions/Relationship_Create"
-    - properties:
-        type:
-          type: string
-          description: Type of relationship
-          enum:
-          - UNIDIRECTIONAL
-          - BIDIRECTIONAL
-      required:
-      - type
-      
-  Taggable:
-    description: Instantiable model
-    allOf:
-    - $ref: "#/definitions/Base_Entity"
-    - type: object
-      properties:
-        tags:
-          type: array
-          description: Tags of the model
-          items:
-            type: string
-      required:
-      - id
-
-  Taggable_Create:
-    description: Instantiable model
-    allOf:
-    - $ref: "#/definitions/Base_Entity_Create"
-    - type: object
-      properties:
-        tags:
-          type: array
-          description: Tags of the model
-          items:
-            type: string
-
-  View:
-    description: View of the model
-    allOf:
-    - $ref: "#/definitions/Base_Entity"
-    - type: object
-      properties:
-        name:
-          type: string
-          description: Name of the view
-      required:
-      - name
-
-  View_Create:
-    description: View of the model
-    allOf:
-    - $ref: "#/definitions/Base_Entity_Create"
-    - type: object
-      properties:
-        name:
-          type: string
-          description: Name of the view
-      required:
-      - name
-
-  Version:
-    type: object
-    description: Version
-    properties:
-      id:
-        type: string
-        description: Version identifier
-      major:
-        type: integer
-        format: int32
-        description: Major part of the version
-      minor:
-        type: integer
-        format: int32
-        description: Minor part of the version
-      build:
-        type: integer
-        format: int32
-        description: Build part of the version
-    required:
-    - id
-    - major
-    - minor
-    - build
-
-  Version_Create:
-    type: object
-    description: Version
-    properties:
-      major:
-        type: integer
-        format: int32
-        description: Major part of the version
-      minor:
-        type: integer
-        format: int32
-        description: Minor part of the version
-      build:
-        type: integer
-        format: int32
-        description: Build part of the version
-    required:
-    - major
-    - minor
-    - build

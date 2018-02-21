@@ -2,6 +2,7 @@ package com.araguacaima.open_archi.persistence.diagrams.architectural;
 
 import com.araguacaima.open_archi.persistence.diagrams.core.Element;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
+import com.araguacaima.open_archi.persistence.diagrams.core.Elements;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cascade;
 
@@ -13,13 +14,13 @@ import javax.persistence.*;
  */
 @Entity
 @PersistenceUnit(unitName = "open-archi")
-public abstract class StaticElement extends Element {
+public abstract class StaticElements extends Elements {
 
     @Column
     @Enumerated(EnumType.STRING)
     private ElementKind kind = ElementKind.COMPONENT;
 
-    public StaticElement() {
+    public StaticElements() {
     }
 
     public ElementKind getKind() {
