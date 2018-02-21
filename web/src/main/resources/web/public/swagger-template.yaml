@@ -998,6 +998,7 @@ definitions:
           enum:
           - FEATURE
   Flowchart_Model:
+    type: object
     description: Flowchart Model object
     allOf:
     - $ref: "#/definitions/Element"
@@ -1020,6 +1021,7 @@ definitions:
       required:
       - kind
   Flowchart_Model_Create:
+    type: object
     description: Flowchart Model object
     allOf:
     - $ref: "#/definitions/Element_Create"
@@ -1042,9 +1044,25 @@ definitions:
       required:
       - kind
   Flowchart_Relationship:
+    type: object
     description: Relationship between model objects
     allOf:
     - $ref: "#/definitions/Relationship"
+    - type: object
+      properties:
+        type:
+          type: string
+          description: Type of relationship
+          enum:
+          - UNIDIRECTIONAL
+          - BIDIRECTIONAL
+      required:
+      - type
+  Flowchart_Relationships:
+    type: object
+    description: Relationship between model objects
+    allOf:
+    - $ref: "#/definitions/Relationships"
     - type: object
       properties:
         type:
@@ -1070,8 +1088,8 @@ definitions:
       required:
       - type
   Flowchart:
-    description: Flowchart
     type: object
+    description: Flowchart
     allOf:
     - $ref: "#/definitions/Item"
     - type: object
@@ -1092,9 +1110,32 @@ definitions:
       required:
       - category
       - kind
-  Flowchart_Create:
-    description: Flowchart
+  Flowcharts:
     type: object
+    description: Flowchart
+    allOf:
+    - $ref: "#/definitions/Items"
+    - type: object
+      properties:
+        category:
+          type: string
+          description: Category
+          enum:
+          - ACTIVITY
+          - DECISION_POINT
+          - START
+          - END
+        kind:
+          type: string
+          description: Type of model
+          enum:
+          - FLOWCHART
+      required:
+      - category
+      - kind
+  Flowchart_Create:
+    type: object
+    description: Flowchart
     allOf:
     - $ref: "#/definitions/Item_Create"
     - type: object
@@ -1117,14 +1158,227 @@ definitions:
       - kind
   Flowchart_Models:
     type: object
+    description: Flowchart Model object
+    allOf:
+    - $ref: "#/definitions/Elements"
+    - type: object
+      properties:
+        kind:
+          type: string
+          description: Type of model
+          enum:
+          - FLOWCHART_MODEL
+        pools:
+          type: array
+          description: Pools of the model
+          items:
+            $ref: "#/definitions/Flowcharts"
+        relationships:
+          type: array
+          items:
+            $ref: "#/definitions/Flowchart_Relationships"
+      required:
+      - kind
   Flowchart_Models_Create:
     type: object
+  Gantt:
+    type: object
+    description: Gantt
+    allOf:
+    - $ref: "#/definitions/Item"
+    - type: object
+      properties:
+        category:
+          type: string
+          description: Category
+          enum:
+          - ACTIVITY
+          - START
+          - END
+        diagramStart:
+          type: integer
+          format: int32
+          description: Start of the Gantt's activity
+        diagramEnd:
+          type: integer
+          format: int32
+          description: End of the Gantt's activity
+        kind:
+          type: string
+          description: Type of model
+          enum:
+          - GANTT
+      required:
+      - category
+      - kind
+  Gantts:
+    type: object
+    description: Gantt
+    allOf:
+    - $ref: "#/definitions/Items"
+    - type: object
+      properties:
+        category:
+          type: string
+          description: Category
+          enum:
+          - ACTIVITY
+          - START
+          - END
+        diagramStart:
+          type: integer
+          format: int32
+          description: Start of the Gantt's activity
+        diagramEnd:
+          type: integer
+          format: int32
+          description: End of the Gantt's activity
+        kind:
+          type: string
+          description: Type of model
+          enum:
+          - GANTT
+      required:
+      - category
+      - kind
+  Gantt_Create:
+    type: object
+    description: Gantt
+    allOf:
+    - $ref: "#/definitions/Item_Create"
+    - type: object
+      properties:
+        category:
+          type: string
+          description: Category
+          enum:
+          - ACTIVITY
+          - START
+          - END
+        diagramStart:
+          type: integer
+          format: int32
+          description: Start of the Gantt's activity
+        diagramEnd:
+          type: integer
+          format: int32
+          description: End of the Gantt's activity
+        kind:
+          type: string
+          description: Type of model
+          enum:
+          - GANTT
+      required:
+      - category
+      - kind
   Gantt_Model:
-    type: object
-  Gantt_Models:
-    type: object
+    description: Gantt Model object
+    allOf:
+    - $ref: "#/definitions/Element"
+    - type: object
+      properties:
+        kind:
+          type: string
+          description: Type of model
+          enum:
+          - GANTT_MODEL
+        gantts:
+          type: array
+          description: Gantts of the model
+          items:
+            $ref: "#/definitions/Gantt"
+        relationships:
+          type: array
+          items:
+            $ref: "#/definitions/Gantt_Relationship"
+      required:
+      - kind
   Gantt_Model_Create:
+    description: Gantt Model object
+    allOf:
+    - $ref: "#/definitions/Element_Create"
+    - type: object
+      properties:
+        kind:
+          type: string
+          description: Type of model
+          enum:
+          - GANTT_MODEL
+        gantts:
+          type: array
+          description: Gantts of the model
+          items:
+            $ref: "#/definitions/Gantt_Create"
+        relationships:
+          type: array
+          items:
+            $ref: "#/definitions/Gantt_Relationship"
+      required:
+      - kind
+  Gantt_Relationship:
+    description: Relationship between model objects
+    allOf:
+    - $ref: "#/definitions/Relationship"
+    - type: object
+      properties:
+        type:
+          type: string
+          description: Type of relationship
+          enum:
+          - UNIDIRECTIONAL
+          - BIDIRECTIONAL
+      required:
+      - type
+  Gantt_Relationships:
+    description: Relationship between model objects
+    allOf:
+    - $ref: "#/definitions/Relationships"
+    - type: object
+      properties:
+        type:
+          type: string
+          description: Type of relationship
+          enum:
+          - UNIDIRECTIONAL
+          - BIDIRECTIONAL
+      required:
+      - type
+  Gantt_Relationship_Create:
     type: object
+    description: Relationship between model objects
+    allOf:
+    - $ref: "#/definitions/Relationship_Create"
+    - properties:
+        type:
+          type: string
+          description: Type of relationship
+          enum:
+          - UNIDIRECTIONAL
+          - BIDIRECTIONAL
+      required:
+      - type
+  Gantt_Models:
+    description: Gantt Model object
+    allOf:
+    - $ref: "#/definitions/Elements"
+    - type: object
+      properties:
+        kind:
+          type: string
+          description: Type of model
+          enum:
+          - GANTT_MODEL
+        gantts:
+          type: array
+          description: Gantts of the model
+          items:
+            $ref: "#/definitions/Gantts"
+        relationships:
+          type: array
+          items:
+            $ref: "#/definitions/Gantt_Relationships"
+      required:
+      - kind
   Gantt_Models_Create:
     type: object
   Item:
@@ -1418,12 +1672,180 @@ definitions:
         type: string
       priority:
         type: integer
+  Sequence:
+    description: Sequence
+    type: object
+    allOf:
+    - $ref: "#/definitions/Item"
+    - type: object
+      properties:
+        start:
+          type: integer
+          format: int32
+          description: Start of the sequence's activity
+        duration:
+          type: integer
+          format: int32
+          description: Duration of the sequence's activity
+        kind:
+          type: string
+          description: Type of model
+          enum:
+          - SEQUENCE_MODEL
+      required:
+      - kind
+  Sequences:
+    type: object
+    description: Sequence
+    allOf:
+    - $ref: "#/definitions/Items"
+    - type: object
+      properties:
+        start:
+          type: integer
+          format: int32
+          description: Start of the sequence's activity
+        duration:
+          type: integer
+          format: int32
+          description: Duration of the sequence's activity
+        kind:
+          type: string
+          description: Type of model
+          enum:
+          - SEQUENCE_MODEL
+      required:
+      - kind
+  Sequence_Create:
+    description: Sequence
+    type: object
+    allOf:
+    - $ref: "#/definitions/Item_Create"
+    - type: object
+      properties:
+        start:
+          type: integer
+          format: int32
+          description: Start of the sequence's activity
+        duration:
+          type: integer
+          format: int32
+          description: Duration of the sequence's activity
+        kind:
+          type: string
+          description: Type of model
+          enum:
+          - SEQUENCE_MODEL
+      required:
+      - kind
   Sequence_Model:
-    type: object
+    description: Sequence Model object
+    allOf:
+    - $ref: "#/definitions/Element"
+    - type: object
+      properties:
+        kind:
+          type: string
+          description: Type of model
+          enum:
+          - SEQUENCE_MODEL
+        sequences:
+          type: array
+          description: Sequences of the model
+          items:
+            $ref: "#/definitions/Sequence"
+        relationships:
+          type: array
+          items:
+            $ref: "#/definitions/Sequence_Relationship"
+      required:
+      - kind
   Sequence_Models:
-    type: object
+    description: Sequence Model object
+    allOf:
+    - $ref: "#/definitions/Elements"
+    - type: object
+      properties:
+        kind:
+          type: string
+          description: Type of model
+          enum:
+          - SEQUENCE_MODEL
+        sequences:
+          type: array
+          description: Sequences of the model
+          items:
+            $ref: "#/definitions/Sequences"
+        relationships:
+          type: array
+          items:
+            $ref: "#/definitions/Sequence_Relationships"
+      required:
+      - kind
   Sequence_Model_Create:
+    description: Sequence Model object
+    allOf:
+    - $ref: "#/definitions/Element_Create"
+    - type: object
+      properties:
+        kind:
+          type: string
+          description: Type of model
+          enum:
+          - SEQUENCE_MODEL
+        sequences:
+          type: array
+          description: Sequences of the model
+          items:
+            $ref: "#/definitions/Sequence_Create"
+        relationships:
+          type: array
+          items:
+            $ref: "#/definitions/Sequence_Relationship"
+      required:
+      - kind
+  Sequence_Relationship:
+    description: Relationship between model objects
+    allOf:
+    - $ref: "#/definitions/Relationship"
+    - type: object
+      properties:
+        type:
+          type: string
+          description: Type of relationship
+          enum:
+          - UNIDIRECTIONAL
+          - BIDIRECTIONAL
+      required:
+      - type
+  Sequence_Relationships:
+    description: Relationship between model objects
+    allOf:
+    - $ref: "#/definitions/Relationships"
+    - type: object
+      properties:
+        type:
+          type: string
+          description: Type of relationship
+          enum:
+          - UNIDIRECTIONAL
+          - BIDIRECTIONAL
+      required:
+      - type
+  Sequence_Relationship_Create:
     type: object
+    description: Relationship between model objects
+    allOf:
+    - $ref: "#/definitions/Relationship_Create"
+    - properties:
+        type:
+          type: string
+          description: Type of relationship
+          enum:
+          - UNIDIRECTIONAL
+          - BIDIRECTIONAL
+      required:
+      - type
   Sequence_Models_Create:
     type: object
   Software_System:
