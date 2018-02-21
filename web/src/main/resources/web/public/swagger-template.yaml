@@ -774,6 +774,111 @@ definitions:
           description: Components
           type: integer
           format: int64
+  Composite_Element:
+    type: object
+    description: A reference to a taggable element
+    properties:
+      id:
+        type: string
+        description: Composite element identifier
+      type:
+        type: string
+        description: Referenced element type
+        enum:
+        - ARCHITECTURE_MODEL
+        - FLOWCHART_MODEL
+        - SEQUENCE_MODEL
+        - GANTT_MODEL
+        - ENTITY_RELATIONSHIP_MODEL
+        - UML_CLASS_MODEL
+        - BPM_MODEL
+        - ARCHITECTURAL
+        - FLOWCHART
+        - SEQUENCE
+        - GANTT
+        - ENTITY_RELATIONSHIP
+        - UML_CLASS
+        - FEATURE
+        - COMPONENT
+        - CONTAINER
+        - DEPLOYMENT
+        - BPM
+      link:
+        type: string
+        description: Link to the referenced element
+    required:
+    - id
+    - type
+  Composite_Elements:
+    type: object
+    description: A reference to a taggable element
+    properties:
+      id:
+        type: string
+        description: Composite element identifier
+      type:
+        type: string
+        description: Referenced element type
+        enum:
+        - ARCHITECTURE_MODEL
+        - FLOWCHART_MODEL
+        - SEQUENCE_MODEL
+        - GANTT_MODEL
+        - ENTITY_RELATIONSHIP_MODEL
+        - UML_CLASS_MODEL
+        - BPM_MODEL
+        - ARCHITECTURAL
+        - FLOWCHART
+        - SEQUENCE
+        - GANTT
+        - ENTITY_RELATIONSHIP
+        - UML_CLASS
+        - FEATURE
+        - COMPONENT
+        - CONTAINER
+        - DEPLOYMENT
+        - BPM
+      link:
+        type: string
+        description: Link to the referenced element
+    required:
+    - id
+    - type
+  Composite_Element_Create:
+    type: object
+    description: A reference to a taggable element
+    properties:
+      id:
+        type: string
+        description: Composite element identifier
+      type:
+        type: string
+        description: Referenced element type
+        enum:
+        - ARCHITECTURE_MODEL
+        - FLOWCHART_MODEL
+        - SEQUENCE_MODEL
+        - GANTT_MODEL
+        - ENTITY_RELATIONSHIP_MODEL
+        - UML_CLASS_MODEL
+        - BPM_MODEL
+        - ARCHITECTURAL
+        - FLOWCHART
+        - SEQUENCE
+        - GANTT
+        - ENTITY_RELATIONSHIP
+        - UML_CLASS
+        - FEATURE
+        - COMPONENT
+        - CONTAINER
+        - DEPLOYMENT
+        - BPM
+      link:
+        type: string
+        description: Link to the referenced element
+    required:
+    - id
+    - type
   Element:
     type: object
     description: Abstract element object
@@ -1383,10 +1488,154 @@ definitions:
     type: object
   Item:
     type: object
+    description: Abstract item object
+    allOf:
+    - $ref: "#/definitions/Taggable"
+    - type: object
+      properties:
+        name:
+          type: string
+          description: Model name
+        kind:
+          type: string
+          description: Type of element
+          enum:
+          - ARCHITECTURE_MODEL
+          - FLOWCHART_MODEL
+          - SEQUENCE_MODEL
+          - GANTT_MODEL
+          - ENTITY_RELATIONSHIP_MODEL
+          - UML_CLASS_MODEL
+          - BPM_MODEL
+          - ARCHITECTURAL
+          - FLOWCHART
+          - SEQUENCE
+          - GANTT
+          - ENTITY_RELATIONSHIP
+          - UML_CLASS
+          - FEATURE
+          - BPM
+        description:
+          type: string
+          description: Long description of model
+        location:
+          $ref: "#/definitions/Point"
+          description: Long description of model
+        parent:
+          $ref: "#/definitions/Composite_Element"
+          description: Long description of model
+        children:
+          type: array
+          description: Children of the model
+          items:
+            $ref: "#/definitions/Composite_Element"
+        shape:
+          $ref: "#/definitions/Shape"
+          description: Long description of model
+        metaData:
+          $ref: "#/definitions/Meta_Data"
+          description: Meta data associated with the model
+      discriminator: kind
   Item_Create:
     type: object
+    description: Abstract item object
+    allOf:
+    - $ref: "#/definitions/Taggable_Create"
+    - type: object
+      properties:
+        name:
+          type: string
+          description: Model name
+        kind:
+          type: string
+          description: Type of element
+          enum:
+          - ARCHITECTURE_MODEL
+          - FLOWCHART_MODEL
+          - SEQUENCE_MODEL
+          - GANTT_MODEL
+          - ENTITY_RELATIONSHIP_MODEL
+          - UML_CLASS_MODEL
+          - BPM_MODEL
+          - ARCHITECTURAL
+          - FLOWCHART
+          - SEQUENCE
+          - GANTT
+          - ENTITY_RELATIONSHIP
+          - UML_CLASS
+          - FEATURE
+          - BPM
+        description:
+          type: string
+          description: Long description of model
+        location:
+          $ref: "#/definitions/Point_Create"
+          description: Long description of model
+        parent:
+          $ref: "#/definitions/Composite_Element_Create"
+          description: Long description of model
+        children:
+          type: array
+          description: Children of the model
+          items:
+            $ref: "#/definitions/Composite_Element_Create"
+        shape:
+          $ref: "#/definitions/Shape_Create"
+          description: Long description of model
+        metaData:
+          $ref: "#/definitions/Meta_Data_Create"
+          description: Meta data associated with the model
+      discriminator: kind
   Items:
     type: object
+    description: Abstract item object
+    allOf:
+    - $ref: "#/definitions/Taggable"
+    - type: object
+      properties:
+        name:
+          type: string
+          description: Model name
+        kind:
+          type: string
+          description: Type of element
+          enum:
+          - ARCHITECTURE_MODEL
+          - FLOWCHART_MODEL
+          - SEQUENCE_MODEL
+          - GANTT_MODEL
+          - ENTITY_RELATIONSHIP_MODEL
+          - UML_CLASS_MODEL
+          - BPM_MODEL
+          - ARCHITECTURAL
+          - FLOWCHART
+          - SEQUENCE
+          - GANTT
+          - ENTITY_RELATIONSHIP
+          - UML_CLASS
+          - FEATURE
+          - BPM
+        description:
+          type: string
+          description: Long description of model
+        location:
+          $ref: "#/definitions/Points"
+          description: Long description of model
+        parent:
+          $ref: "#/definitions/Composite_Elements"
+          description: Long description of model
+        children:
+          type: array
+          description: Children of the model
+          items:
+            $ref: "#/definitions/Composite_Elements"
+        shape:
+          $ref: "#/definitions/Shapes"
+          description: Long description of model
+        metaData:
+          $ref: "#/definitions/Meta_Data_List"
+          description: Meta data associated with the model
+      discriminator: kind
   Lane:
     description: Pool's lane
     type: object
@@ -1423,6 +1672,12 @@ definitions:
           description: Activities in the lane
           items:
             $ref: "#/definitions/Activity"
+  Meta_Data:
+    type: object
+  Meta_Data_List:
+    type: object
+  Meta_Data_Create:
+    type: object
   Meta_Info:
     type: object
     description: Meta info for any object
@@ -1638,6 +1893,63 @@ definitions:
           description: Lanes in the pool
           items:
             $ref: "#/definitions/Lane_Create"
+  Point:
+    type: object
+    description: Coordinates on which the model is located
+    properties:
+      x:
+        type: string
+        format: double
+        description: Relative x coordinate of the point on which the model is located
+      y:
+        type: string
+        format: double
+        description: Relative y coordinate of the point on which the model is located
+      z:
+        type: string
+        format: double
+        description: Relative z coordinate of the point on which the model is located
+    required:
+    - x
+    - y
+  Points:
+    type: object
+    description: Coordinates on which the model is located
+    properties:
+      x:
+        type: string
+        format: double
+        description: Relative x coordinate of the point on which the model is located
+      y:
+        type: string
+        format: double
+        description: Relative y coordinate of the point on which the model is located
+      z:
+        type: string
+        format: double
+        description: Relative z coordinate of the point on which the model is located
+    required:
+    - x
+    - y
+  Point_Create:
+    type: object
+    description: Coordinates on which the model is located
+    properties:
+      x:
+        type: string
+        format: double
+        description: Relative x coordinate of the point on which the model is located
+      y:
+        type: string
+        format: double
+        description: Relative y coordinate of the point on which the model is located
+      z:
+        type: string
+        format: double
+        description: Relative z coordinate of the point on which the model is located
+    required:
+    - x
+    - y
   Relationship:
     type: object
   Relationship_Create:
@@ -1672,6 +1984,63 @@ definitions:
         type: string
       priority:
         type: integer
+  Shape:
+    type: object
+    description: Concrete shape that univocally identify o model
+    properties:
+      id:
+        type: string
+        description: Shape identifier
+      type:
+        type: string
+        description: Shape type
+        enum:
+        - PERSON
+        - ROUNDED_BOX
+        - BOX
+        - DIAMOND
+        - CIRCLE
+    required:
+    - id
+    - type
+  Shapes:
+    type: object
+    description: Concrete shape that univocally identify o model
+    properties:
+      id:
+        type: string
+        description: Shape identifier
+      type:
+        type: string
+        description: Shape type
+        enum:
+        - PERSON
+        - ROUNDED_BOX
+        - BOX
+        - DIAMOND
+        - CIRCLE
+    required:
+    - id
+    - type
+  Shape_Create:
+    type: object
+    description: Concrete shape that univocally identify o model
+    properties:
+      id:
+        type: string
+        description: Shape identifier
+      type:
+        type: string
+        description: Shape type
+        enum:
+        - PERSON
+        - ROUNDED_BOX
+        - BOX
+        - DIAMOND
+        - CIRCLE
+    required:
+    - id
+    - type
   Sequence:
     description: Sequence
     type: object
@@ -1947,6 +2316,30 @@ definitions:
           - COMPONENT
       required:
       - kind
+  Taggable:
+    description: Instantiable model
+    allOf:
+    - $ref: "#/definitions/Base_Entity"
+    - type: object
+      properties:
+        tags:
+          type: array
+          description: Tags of the model
+          items:
+            type: string
+      required:
+      - id
+  Taggable_Create:
+    description: Instantiable model
+    allOf:
+    - $ref: "#/definitions/Base_Entity_Create"
+    - type: object
+      properties:
+        tags:
+          type: array
+          description: Tags of the model
+          items:
+            type: string
   Volumetry:
     type: object
   Volumetry_Create:
