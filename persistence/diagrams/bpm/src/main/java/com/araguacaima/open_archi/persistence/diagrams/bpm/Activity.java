@@ -10,16 +10,5 @@ import javax.persistence.*;
 @PersistenceUnit(unitName = "open-archi")
 public class Activity extends Item {
 
-    @OneToOne(cascade = CascadeType.REMOVE)
-    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
-    private Lane lane;
-
-    public Lane getLane() {
-        return lane;
-    }
-
-    public void setLane(Lane lane) {
-        this.lane = lane;
-    }
 
 }

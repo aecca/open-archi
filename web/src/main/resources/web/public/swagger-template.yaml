@@ -185,6 +185,90 @@ securityDefinitions:
     name: api_key
     in: header
 definitions:
+  Account:
+    description: Account
+    type: object
+    properties:
+      id:
+        type: string
+        description: Account identifier
+      email:
+        type: string
+        description: Email of the account
+      login:
+        type: string
+        description: Login
+      password:
+        type: string
+        description: Password of the account
+      firstAccess:
+        type: boolean
+        description: Indicator for showing whether this is the first access to the account or not
+      roles:
+        type: array
+        description: Roles that an account have
+        items:
+          $ref: "#/definitions/Role"
+  Accounts:
+    description: Account
+    type: object
+    properties:
+      id:
+        type: string
+        description: Account identifier
+      email:
+        type: string
+        description: Email of the account
+      login:
+        type: string
+        description: Login
+      password:
+        type: string
+        description: Password of the account
+      firstAccess:
+        type: boolean
+        description: Indicator for showing whether this is the first access to the account or not
+      roles:
+        type: array
+        description: Roles that an account have
+        items:
+          $ref: "#/definitions/Roles"
+  Account_Create:
+    description: Account
+    type: object
+    properties:
+      email:
+        type: string
+        description: Email of the account
+      login:
+        type: string
+        description: Login
+      password:
+        type: string
+        description: Password of the account
+      roles:
+        type: array
+        description: Roles that an account have
+        items:
+          $ref: "#/definitions/Role_Create"
+  Activity:
+    description: Lane's activity
+    type: object
+    allOf:
+    - $ref: "#/definitions/Base_Entity"
+    - type: object
+  Activities:
+    description: Lane's activity
+    type: object
+    allOf:
+    - $ref: "#/definitions/Base_Entities"
+    - type: object
+  Activity_Create:
+    description: Lane's activity
+    type: object
+    allOf:
+    - $ref: "#/definitions/Base_Entity_Create"
+    - type: object
   Architecture_Model:
     type: object
     description: Architecture Model object
@@ -281,7 +365,7 @@ definitions:
         relationships:
           type: array
           items:
-            $ref: "#/definitions/Architecture_Relationship"
+            $ref: "#/definitions/Architecture_Relationship_Create"
       required:
       - kind
   Architecture_Models_Create:
@@ -290,6 +374,29 @@ definitions:
     description: Relationship between model objects
     allOf:
     - $ref: "#/definitions/Relationship"
+    - type: object
+      properties:
+        technology:
+          type: string
+          description: Technology that underlies the relationship between architecture's components
+        interactionStyle:
+          type: string
+          description: Type of interaction between architecture's components
+          enum:
+          - SYNCHRONOUS
+          - ASYNCHRONOUS
+        type:
+          type: string
+          description: Type of relationship
+          enum:
+          - UNIDIRECTIONAL
+          - BIDIRECTIONAL
+      required:
+      - type
+  Architecture_Relationship_Create:
+    description: Relationship between model objects
+    allOf:
+    - $ref: "#/definitions/Relationship_Create"
     - type: object
       properties:
         technology:
@@ -332,12 +439,149 @@ definitions:
           - BIDIRECTIONAL
       required:
       - type
+  Base_Entity:
+    type: object
+    description: Basic entity info for managing a model
+    properties:
+      id:
+        type: string
+        description: Model identifier
+      meta:
+        $ref: "#/definitions/Meta_Info"
+        description: Meta info related to the model
+    required:
+    - id
+    - meta
+  Base_Entities:
+    type: object
+    description: Basic entity info for managing a model
+    properties:
+      id:
+        type: string
+        description: Model identifier
+      meta:
+        $ref: "#/definitions/Meta_Info_List"
+        description: Meta info related to the model
+    required:
+    - id
+    - meta
+  Base_Entity_Create:
+    type: object
+    description: Basic entity info for managing a model
+    properties:
+      meta:
+        $ref: "#/definitions/Meta_Info_Create"
+        description: Meta info related to the model
   BPM_Model:
     type: object
+    description: BPM Model object
+    allOf:
+    - $ref: "#/definitions/Element"
+    - type: object
+      properties:
+        kind:
+          type: string
+          description: Type of model
+          enum:
+          - BPM_MODEL
+        pools:
+          type: array
+          description: Pools of the model
+          items:
+            $ref: "#/definitions/Pool"
+        relationships:
+          type: array
+          items:
+            $ref: "#/definitions/BPM_Relationship"
+      required:
+      - kind
+  BPM_Model_Create:
+    description: BPM Model object
+    allOf:
+    - $ref: "#/definitions/Element_Create"
+    - type: object
+      properties:
+        kind:
+          type: string
+          description: Type of model
+          enum:
+          - BPM_MODEL
+        pools:
+          type: array
+          description: Pools of the model
+          items:
+            $ref: "#/definitions/Pool_Create"
+        relationships:
+          type: array
+          items:
+            $ref: "#/definitions/Architecture_Relationship_Create"
+      required:
+      - kind
+  BPM_Relationship:
+    description: Relationship between model objects
+    allOf:
+    - $ref: "#/definitions/Relationship"
+    - type: object
+      properties:
+        type:
+          type: string
+          description: Type of relationship
+          enum:
+          - UNIDIRECTIONAL
+          - BIDIRECTIONAL
+      required:
+      - type
+  BPM_Relationships:
+    description: Relationship between model objects
+    allOf:
+    - $ref: "#/definitions/Relationships"
+    - type: object
+      properties:
+        type:
+          type: string
+          description: Type of relationship
+          enum:
+          - UNIDIRECTIONAL
+          - BIDIRECTIONAL
+      required:
+      - type
+  BPM_Relationship_Create:
+    type: object
+    description: Relationship between model objects
+    allOf:
+    - $ref: "#/definitions/Relationship_Create"
+    - properties:
+        type:
+          type: string
+          description: Type of relationship
+          enum:
+          - UNIDIRECTIONAL
+          - BIDIRECTIONAL
+      required:
+      - type
   BPM_Models:
     type: object
-  BPM_Model_Create:
-    type: object
+    description: BPM Model object
+    allOf:
+    - $ref: "#/definitions/Elements"
+    - type: object
+      properties:
+        kind:
+          type: string
+          description: Type of model
+          enum:
+          - BPM_MODEL
+        pools:
+          type: array
+          description: Pools of the model
+          items:
+            $ref: "#/definitions/Pools"
+        relationships:
+          type: array
+          items:
+            $ref: "#/definitions/BPM_Relationships"
+      required:
+      - kind
   BPM_Models_Create:
     type: object
   Consumer:
@@ -775,6 +1019,124 @@ definitions:
     type: object
   Items:
     type: object
+  Lane:
+    description: Pool's lane
+    type: object
+    allOf:
+    - $ref: "#/definitions/Base_Entity"
+    - type: object
+      properties:
+        activities:
+          type: array
+          description: Activities in the lane
+          items:
+            $ref: "#/definitions/Activity"
+  Lanes:
+    description: Pool's lane
+    type: object
+    allOf:
+    - $ref: "#/definitions/Base_Entities"
+    - type: object
+      properties:
+        activities:
+          type: array
+          description: Activities in the lane
+          items:
+            $ref: "#/definitions/Activities"
+  Lane_Create:
+    description: Pool's lane
+    type: object
+    allOf:
+    - $ref: "#/definitions/Base_Entity_Create"
+    - type: object
+      properties:
+        activities:
+          type: array
+          description: Activities in the lane
+          items:
+            $ref: "#/definitions/Activity"
+  Meta_Info:
+    type: object
+    description: Meta info for any object
+    properties:
+      id:
+        type: string
+        description: Meta info identifier
+      version:
+        $ref: "#/definitions/Version"
+        description: Version of the object
+      createdBy:
+        $ref: "#/definitions/Account"
+        description: Account that creates the object
+      modifiedBy:
+        $ref: "#/definitions/Account"
+        description: Account that modifies the object
+      created:
+        type: string
+        format: date-time
+        description: Full date of creation of the object
+      modified:
+        type: string
+        format: date-time
+        description: Full date of modification of the object
+    required:
+    - id
+    - version
+    - createdBy
+    - modifiedBy
+  Meta_Info_List:
+    type: object
+    description: Meta info for any object
+    properties:
+      id:
+        type: string
+        description: Meta info identifier
+      version:
+        $ref: "#/definitions/Versions"
+        description: Version of the object
+      createdBy:
+        $ref: "#/definitions/Accounts"
+        description: Account that creates the object
+      modifiedBy:
+        $ref: "#/definitions/Accounts"
+        description: Account that modifies the object
+      created:
+        type: string
+        format: date-time
+        description: Full date of creation of the object
+      modified:
+        type: string
+        format: date-time
+        description: Full date of modification of the object
+    required:
+    - id
+    - version
+    - createdBy
+    - modifiedBy
+  Meta_Info_Create:
+    type: object
+    description: Meta info for any object
+    properties:
+      version:
+        $ref: "#/definitions/Version_Create"
+        description: Version of the object
+      createdBy:
+        $ref: "#/definitions/Account_Create"
+        description: Account that creates the object
+      modifiedBy:
+        $ref: "#/definitions/Account_Create"
+        description: Account that modifies the object
+      created:
+        type: string
+        format: date-time
+        description: Full date of creation of the object
+      modified:
+        type: string
+        format: date-time
+        description: Full date of modification of the object
+    required:
+    - version
+    - createdBy
   Model:
     description: Model object
     type: object
@@ -872,10 +1234,76 @@ definitions:
     properties:
       head:
         $ref: '#/definitions/Options_Output_Item'
+  Pool:
+    description: BPM's pool
+    type: object
+    allOf:
+    - $ref: "#/definitions/Item"
+    - type: object
+      properties:
+        lanes:
+          type: array
+          description: Lanes in the pool
+          items:
+            $ref: "#/definitions/Lane"
+  Pools:
+    description: BPM's pool
+    type: object
+    allOf:
+    - $ref: "#/definitions/Items"
+    - type: object
+      properties:
+        lanes:
+          type: array
+          description: Lanes in the pool
+          items:
+            $ref: "#/definitions/Lanes"
+  Pool_Create:
+    description: BPM's pool
+    type: object
+    allOf:
+    - $ref: "#/definitions/Item_Create"
+    - type: object
+      properties:
+        lanes:
+          type: array
+          description: Lanes in the pool
+          items:
+            $ref: "#/definitions/Lane_Create"
   Relationship:
+    type: object
+  Relationship_Create:
     type: object
   Relationships:
     type: object
+  Role:
+    description: A role an account could have
+    type: object
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      priority:
+        type: integer
+  Roles:
+    description: A role an account could have
+    type: object
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      priority:
+        type: integer
+  Role_Create:
+    description: A role an account could have
+    type: object
+    properties:
+      name:
+        type: string
+      priority:
+        type: integer
   Sequence_Model:
     type: object
   Sequence_Models:
@@ -987,3 +1415,71 @@ definitions:
     type: object
   Volumetry_Create:
     type: object
+  Version:
+    type: object
+    description: Version
+    properties:
+      id:
+        type: string
+        description: Version identifier
+      major:
+        type: integer
+        format: int32
+        description: Major part of the version
+      minor:
+        type: integer
+        format: int32
+        description: Minor part of the version
+      build:
+        type: integer
+        format: int32
+        description: Build part of the version
+    required:
+    - id
+    - major
+    - minor
+    - build
+  Versions:
+    type: object
+    description: Version
+    properties:
+      id:
+        type: string
+        description: Version identifier
+      major:
+        type: integer
+        format: int32
+        description: Major part of the version
+      minor:
+        type: integer
+        format: int32
+        description: Minor part of the version
+      build:
+        type: integer
+        format: int32
+        description: Build part of the version
+    required:
+    - id
+    - major
+    - minor
+    - build
+  Version_Create:
+    type: object
+    description: Version
+    properties:
+      major:
+        type: integer
+        format: int32
+        description: Major part of the version
+      minor:
+        type: integer
+        format: int32
+        description: Minor part of the version
+      build:
+        type: integer
+        format: int32
+        description: Build part of the version
+    required:
+    - major
+    - minor
+    - build
