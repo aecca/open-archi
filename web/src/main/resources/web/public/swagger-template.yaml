@@ -172,6 +172,726 @@ paths:
           description: Invalid ID supplied
         '404':
           description: Model not found
+  "/models/:model-id/children":
+    options:
+      tags:
+      - Models
+      summary: Shows options for the children objects of a specific model
+      operationId: options-model-children
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            allOf:
+            - $ref: "#/definitions/Options_Get_Collection"
+            - $ref: "#/definitions/Options_Put"
+  "/models/{model-id}/children":
+    get:
+      tags:
+      - Models
+      summary: Finds children of a model
+      description: This service supports query by using RSQL expressions
+      operationId: get-model-children
+      produces:
+      - application/json
+      parameters:
+      - name: model-id
+        in: path
+        description: ID of the model to return
+        required: true
+        type: string
+      - name: "$filter"
+        in: query
+        description: Filter children of a model according to an RSQL expression
+        required: false
+        type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Composite_Element"
+        '400':
+          description: Bad request
+      security:
+      - openarchi_auth:
+        - read:models
+    put:
+      tags:
+      - Models
+      summary: Add a new child to the model
+      description: If the child object does not exists previously, it will be created.
+      operationId: add-model-child
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: model-id
+        in: path
+        description: ID of the model to return
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Model object that needs to be added
+        required: true
+        schema:
+          $ref: "#/definitions/Composite_Element_Create"
+      responses:
+        '200':
+          description: Accepted
+        '201':
+          description: Created
+        '405':
+          description: Invalid input
+      security:
+      - openarchi_auth:
+        - write:model
+        - read:models
+  "/models/:model-id/parent":
+    options:
+      tags:
+      - Models
+      summary: Shows options for the parent object of a specific model
+      operationId: options-model-parent
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            allOf:
+            - $ref: "#/definitions/Options_Get"
+            - $ref: "#/definitions/Options_Post"
+  "/models/{model-id}/parent":
+    get:
+      tags:
+      - Models
+      summary: Find the parent of a model
+      description: Gets the full info related to the parent of the model
+      operationId: get-model-parent
+      produces:
+      - application/json
+      parameters:
+      - name: model-id
+        in: path
+        description: ID of the model to return
+        required: true
+        type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: "#/definitions/Model"
+        '400':
+          description: Bad request
+      security:
+      - openarchi_auth:
+        - read:models
+    post:
+      tags:
+      - Models
+      summary: Add a parent to the current model
+      description: Relates an existing model as a parent of the current one. If parent model does not exists an error will occur. Only model parent id is required
+      operationId: add-model-parent
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: model-id
+        in: path
+        description: ID of the model to return
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Model object that needs to be added as a parent of the current model
+        required: true
+        schema:
+          $ref: "#/definitions/Model_Parent_Create"
+      responses:
+        '200':
+          description: Accepted
+        '201':
+          description: Created
+        '405':
+          description: Invalid input
+      security:
+      - openarchi_auth:
+        - write:model
+        - read:models
+  "/models/:model-id/meta-data":
+    options:
+      tags:
+      - Models
+      summary: Shows options for the meta data info of a specific model
+      operationId: options-model-meta-data
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            allOf:
+            - $ref: "#/definitions/Options_Get"
+            - $ref: "#/definitions/Options_Post"
+  "/models/{model-id}/meta-data":
+    get:
+      tags:
+      - Models
+      summary: Get the model's meta data
+      description: Gets the full meta data info related to the model
+      operationId: get-model-meta-data
+      produces:
+      - application/json
+      parameters:
+      - name: model-id
+        in: path
+        description: ID of the model to which return its meta data
+        required: true
+        type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: "#/definitions/Meta_Data"
+        '400':
+          description: Bad request
+      security:
+      - openarchi_auth:
+        - read:models
+    post:
+      tags:
+      - Models
+      summary: Add the meta-data of the current model
+      description: Add the meta-data of the current model
+      operationId: add-meta-data
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: model-id
+        in: path
+        description: ID of the model to add meta data
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: MetaData object that needs to be added to the current model
+        required: true
+        schema:
+          $ref: "#/definitions/Meta_Data_Create"
+      responses:
+        '200':
+          description: Accepted
+        '201':
+          description: Created
+        '405':
+          description: Invalid input
+      security:
+      - openarchi_auth:
+        - write:model
+        - read:models
+  "/models/:model-id/features":
+    options:
+      tags:
+      - Models
+      summary: Shows options for the features of a specific model
+      operationId: options-model-features
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            allOf:
+            - $ref: "#/definitions/Options_Get_Collection"
+            - $ref: "#/definitions/Options_Put"
+  "/models/{model-id}/features":
+    get:
+      tags:
+      - Models
+      summary: Get the model's features
+      description: Gets the full features info related to the model
+      operationId: get-model-features
+      produces:
+      - application/json
+      parameters:
+      - name: model-id
+        in: path
+        description: ID of the model to which return its features
+        required: true
+        type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Feature"
+        '400':
+          description: Bad request
+      security:
+      - openarchi_auth:
+        - read:models
+    put:
+      tags:
+      - Models
+      summary: Add a feature to the current model
+      description: Add a feature to the current model
+      operationId: add-feature
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: model-id
+        in: path
+        description: ID of the model to add the feature
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Feature object that needs to be added to the current model
+        required: true
+        schema:
+          $ref: "#/definitions/Feature_Create"
+      responses:
+        '200':
+          description: Accepted
+        '201':
+          description: Created
+        '405':
+          description: Invalid input
+      security:
+      - openarchi_auth:
+        - write:model
+        - read:models
+  "/models/architectures":
+    options:
+      tags:
+      - Models
+      summary: Shows options for architecture diagram
+      operationId: options-architecture
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            allOf:
+            - $ref: "#/definitions/Options_Get_Collection"
+            - $ref: "#/definitions/Options_Post"
+    get:
+      tags:
+      - Models
+      summary: Finds models of the type architecture
+      description: This service supports query by using RSQL expressions
+      operationId: get-architecture-models
+      produces:
+      - application/json
+      parameters:
+      - name: "$filter"
+        in: query
+        description: Filter models according to an RSQL expression
+        required: false
+        type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Architecture_Model"
+        '400':
+          description: Bad request
+      security:
+      - openarchi_auth:
+        - read:models
+    post:
+      tags:
+      - Models
+      summary: Add a new model of the type architecture
+      description: ''
+      operationId: add-architecture-model
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: Architecture Model object that needs to be added
+        required: true
+        schema:
+          $ref: "#/definitions/Architecture_Model_Create"
+      responses:
+        '200':
+          description: Accepted
+        '201':
+          description: Created
+        '405':
+          description: Invalid input
+      security:
+      - openarchi_auth:
+        - write:model
+        - read:models
+  "/models/architectures/:model-id/relationships":
+    options:
+      tags:
+      - Models
+      summary: Shows options for the relationships of a specific model
+      operationId: options-model-relationships
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            allOf:
+            - $ref: "#/definitions/Options_Get_Collection"
+            - $ref: "#/definitions/Options_Put"
+  "/models/architectures/{model-id}/relationships":
+    get:
+      tags:
+      - Models
+      summary: Get the model's relationships
+      description: Gets the full relationships info related to the model
+      operationId: get-model-relationships
+      produces:
+      - application/json
+      parameters:
+      - name: model-id
+        in: path
+        description: ID of the model to which return its relationships
+        required: true
+        type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Architecture_Relationship"
+        '400':
+          description: Bad request
+      security:
+      - openarchi_auth:
+        - read:models
+    put:
+      tags:
+      - Models
+      summary: Add a relationship to the current model
+      description: Add a relationship to the current model
+      operationId: add-relationship
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: model-id
+        in: path
+        description: ID of the model to add the relationship
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Relationship object that needs to be added to the current model
+        required: true
+        schema:
+          $ref: "#/definitions/Architecture_Relationship_Create"
+      responses:
+        '200':
+          description: Accepted
+        '201':
+          description: Created
+        '405':
+          description: Invalid input
+      security:
+      - openarchi_auth:
+        - write:model
+        - read:models
+  "/models/bpms":
+    options:
+      tags:
+      - Models
+      summary: Shows options for BPM diagram
+      operationId: options-bpm
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            allOf:
+            - $ref: "#/definitions/Options_Get_Collection"
+            - $ref: "#/definitions/Options_Post"
+    get:
+      tags:
+      - Models
+      summary: Finds models of the type bpm
+      description: This service supports query by using RSQL expressions
+      operationId: get-bpm-models
+      produces:
+      - application/json
+      parameters:
+      - name: "$filter"
+        in: query
+        description: Filter models according to an RSQL expression
+        required: false
+        type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Architecture_Model"
+        '400':
+          description: Bad request
+      security:
+      - openarchi_auth:
+        - read:models
+    post:
+      tags:
+      - Models
+      summary: Add a new model of the type bpm
+      description: ''
+      operationId: add-bpm-model
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: Bpm Model object that needs to be added
+        required: true
+        schema:
+          $ref: "#/definitions/Architecture_Model_Create"
+      responses:
+        '200':
+          description: Accepted
+        '201':
+          description: Created
+        '405':
+          description: Invalid input
+      security:
+      - openarchi_auth:
+        - write:model
+        - read:models
+  "/models/flowcharts":
+    options:
+      tags:
+      - Models
+      summary: Shows options for flowcharts diagram
+      operationId: options-flowcharts
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            allOf:
+            - $ref: "#/definitions/Options_Get_Collection"
+            - $ref: "#/definitions/Options_Post"
+    get:
+      tags:
+      - Models
+      summary: Finds models of the type flowchart
+      description: This service supports query by using RSQL expressions
+      operationId: get-flowchart-models
+      produces:
+      - application/json
+      parameters:
+      - name: "$filter"
+        in: query
+        description: Filter models according to an RSQL expression
+        required: false
+        type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Architecture_Model"
+        '400':
+          description: Bad request
+      security:
+      - openarchi_auth:
+        - read:models
+    post:
+      tags:
+      - Models
+      summary: Add a new model of the type flowchart
+      description: ''
+      operationId: add-flowchart-model
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: Flowchart Model object that needs to be added
+        required: true
+        schema:
+          $ref: "#/definitions/Architecture_Model_Create"
+      responses:
+        '200':
+          description: Accepted
+        '201':
+          description: Created
+        '405':
+          description: Invalid input
+      security:
+      - openarchi_auth:
+        - write:model
+        - read:models
+  "/models/gantts":
+    options:
+      tags:
+      - Models
+      summary: Shows options for gantts diagram
+      operationId: options-gantt
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            allOf:
+            - $ref: "#/definitions/Options_Get_Collection"
+            - $ref: "#/definitions/Options_Post"
+    get:
+      tags:
+      - Models
+      summary: Finds models of the type gantt
+      description: This service supports query by using RSQL expressions
+      operationId: get-gantt-models
+      produces:
+      - application/json
+      parameters:
+      - name: "$filter"
+        in: query
+        description: Filter models according to an RSQL expression
+        required: false
+        type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Architecture_Model"
+        '400':
+          description: Bad request
+      security:
+      - openarchi_auth:
+        - read:models
+    post:
+      tags:
+      - Models
+      summary: Add a new model of the type gantt
+      description: ''
+      operationId: add-gantt-model
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: Gantt Model object that needs to be added
+        required: true
+        schema:
+          $ref: "#/definitions/Architecture_Model_Create"
+      responses:
+        '200':
+          description: Accepted
+        '201':
+          description: Created
+        '405':
+          description: Invalid input
+      security:
+      - openarchi_auth:
+        - write:model
+        - read:models
+  "/models/sequences":
+    options:
+      tags:
+      - Models
+      summary: Shows options for sequences diagram
+      operationId: options-sequence
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            allOf:
+            - $ref: "#/definitions/Options_Get_Collection"
+            - $ref: "#/definitions/Options_Post"
+    get:
+      tags:
+      - Models
+      summary: Finds models of the type sequence
+      description: This service supports query by using RSQL expressions
+      operationId: get-sequence-models
+      produces:
+      - application/json
+      parameters:
+      - name: "$filter"
+        in: query
+        description: Filter models according to an RSQL expression
+        required: false
+        type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Architecture_Model"
+        '400':
+          description: Bad request
+      security:
+      - openarchi_auth:
+        - read:models
+    post:
+      tags:
+      - Models
+      summary: Add a new model of the type sequence
+      description: ''
+      operationId: add-sequence-model
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: Sequence Model object that needs to be added
+        required: true
+        schema:
+          $ref: "#/definitions/Architecture_Model_Create"
+      responses:
+        '200':
+          description: Accepted
+        '201':
+          description: Created
+        '405':
+          description: Invalid input
+      security:
+      - openarchi_auth:
+        - read:models
 securityDefinitions:
   openarchi_auth:
     type: oauth2
@@ -843,7 +1563,7 @@ definitions:
         - ENTITY_RELATIONSHIP_MODEL
         - UML_CLASS_MODEL
         - BPM_MODEL
-        - ARCHITECTURAL
+        - ARCHITECTURE
         - FLOWCHART
         - SEQUENCE
         - GANTT
@@ -878,7 +1598,7 @@ definitions:
         - ENTITY_RELATIONSHIP_MODEL
         - UML_CLASS_MODEL
         - BPM_MODEL
-        - ARCHITECTURAL
+        - ARCHITECTURE
         - FLOWCHART
         - SEQUENCE
         - GANTT
@@ -913,7 +1633,7 @@ definitions:
         - ENTITY_RELATIONSHIP_MODEL
         - UML_CLASS_MODEL
         - BPM_MODEL
-        - ARCHITECTURAL
+        - ARCHITECTURE
         - FLOWCHART
         - SEQUENCE
         - GANTT
@@ -1599,7 +2319,7 @@ definitions:
           - ENTITY_RELATIONSHIP_MODEL
           - UML_CLASS_MODEL
           - BPM_MODEL
-          - ARCHITECTURAL
+          - ARCHITECTURE
           - FLOWCHART
           - SEQUENCE
           - GANTT
@@ -1649,7 +2369,7 @@ definitions:
           - ENTITY_RELATIONSHIP_MODEL
           - UML_CLASS_MODEL
           - BPM_MODEL
-          - ARCHITECTURAL
+          - ARCHITECTURE
           - FLOWCHART
           - SEQUENCE
           - GANTT
@@ -1699,7 +2419,7 @@ definitions:
           - ENTITY_RELATIONSHIP_MODEL
           - UML_CLASS_MODEL
           - BPM_MODEL
-          - ARCHITECTURAL
+          - ARCHITECTURE
           - FLOWCHART
           - SEQUENCE
           - GANTT
@@ -1766,10 +2486,85 @@ definitions:
             $ref: "#/definitions/Activity"
   Meta_Data:
     type: object
+    description: Meta Data
+    allOf:
+    - $ref: "#/definitions/Base_Entity"
+    - type: object
+      properties:
+        responsibles:
+          type: array
+          items:
+            $ref: "#/definitions/Responsible"
+        collaborators:
+          type: array
+          items:
+            $ref: "#/definitions/Responsible"
+        relatedWith:
+          type: array
+          items:
+            $ref: "#/definitions/Taggable"
+        usedIn:
+          type: array
+          items:
+            $ref: "#/definitions/Taggable"
+        views:
+          type: array
+          items:
+            $ref: "#/definitions/View"
   Meta_Data_List:
     type: object
+    description: Meta Data
+    allOf:
+    - $ref: "#/definitions/Base_Entities"
+    - type: object
+      properties:
+        responsibles:
+          type: array
+          items:
+            $ref: "#/definitions/Responsible"
+        collaborators:
+          type: array
+          items:
+            $ref: "#/definitions/Responsible"
+        relatedWith:
+          type: array
+          items:
+            $ref: "#/definitions/Taggable"
+        usedIn:
+          type: array
+          items:
+            $ref: "#/definitions/Taggable"
+        views:
+          type: array
+          items:
+            $ref: "#/definitions/Views"
   Meta_Data_Create:
     type: object
+    description: Meta Data
+    allOf:
+    - $ref: "#/definitions/Base_Entity_Create"
+    - type: object
+      properties:
+        responsibles:
+          type: array
+          items:
+            $ref: "#/definitions/Responsible_Create"
+        collaborators:
+          type: array
+          items:
+            $ref: "#/definitions/Responsible_Create"
+        relatedWith:
+          type: array
+          items:
+            $ref: "#/definitions/Taggable_Create"
+        usedIn:
+          type: array
+          items:
+            $ref: "#/definitions/Taggable_Create"
+        views:
+          type: array
+          items:
+            $ref: "#/definitions/View_Create"
   Meta_Info:
     type: object
     description: Meta info for any object
@@ -1888,6 +2683,35 @@ definitions:
     - $ref: "#/definitions/Flowchart_Models_Create"
     - $ref: "#/definitions/Gantt_Models_Create"
     - $ref: "#/definitions/Sequence_Models_Create"
+  Model_Parent_Create:
+    description: A reference to a taggable element
+    type: object
+    properties:
+      id:
+        type: string
+        description: Composite element identifier
+      type:
+        type: string
+        description: Referenced element type
+        enum:
+        - ARCHITECTURE_MODEL
+        - FLOWCHART_MODEL
+        - SEQUENCE_MODEL
+        - GANTT_MODEL
+        - ENTITY_RELATIONSHIP_MODEL
+        - UML_CLASS_MODEL
+        - BPM_MODEL
+        - ARCHITECTURE
+        - FLOWCHART
+        - SEQUENCE
+        - GANTT
+        - ENTITY_RELATIONSHIP
+        - UML_CLASS
+        - FEATURE
+        - COMPONENT
+        - CONTAINER
+        - DEPLOYMENT
+        - BPM
   Options_Input_Item:
     type: object
     properties:
@@ -2042,6 +2866,96 @@ definitions:
     required:
     - x
     - y
+  Person:
+    description: Person
+    allOf:
+    - $ref: "#/definitions/Base_Entity"
+    - type: object
+      properties:
+        names:
+          type: string
+          description: Names of the person
+        lastNames:
+          type: string
+          description: Lastname(s) of the person
+      required:
+      - names
+      - lastNames
+  Persons:
+    description: Person
+    allOf:
+    - $ref: "#/definitions/Base_Entities"
+    - type: object
+      properties:
+        names:
+          type: string
+          description: Names of the person
+        lastNames:
+          type: string
+          description: Lastname(s) of the person
+      required:
+      - names
+      - lastNames
+  Person_Create:
+    description: Person
+    allOf:
+    - $ref: "#/definitions/Base_Entity"
+    - type: object
+      properties:
+        names:
+          type: string
+          description: Names of the person
+        lastNames:
+          type: string
+          description: Lastname(s) of the person
+      required:
+      - names
+      - lastNames
+  Responsible:
+    description: Person that is responsible of a specific component of a model
+    allOf:
+    - $ref: "#/definitions/Base_Entity"
+    - type: object
+      properties:
+        organizationUnit:
+          type: string
+          description: Organization unit to which the responsible belongs to
+        responsible:
+          $ref: "#/definitions/Person"
+          description: Person that is responsible of a specific component of a model
+      required:
+      - organizationUnit
+      - responsible
+  Responsibles:
+    description: Person that is responsible of a specific component of a model
+    allOf:
+    - $ref: "#/definitions/Base_Entities"
+    - type: object
+      properties:
+        organizationUnit:
+          type: string
+          description: Organization unit to which the responsible belongs to
+        responsible:
+          $ref: "#/definitions/Persons"
+          description: Person that is responsible of a specific component of a model
+      required:
+      - organizationUnit
+      - responsible
+  Responsible_Create:
+    description: Person that is responsible of a specific component of a model
+    allOf:
+    - $ref: "#/definitions/Base_Entity"
+    - type: object
+      properties:
+        organizationUnit:
+          type: string
+          description: Organization unit to which the responsible belongs to
+        responsible:
+          $ref: "#/definitions/Person_Create"
+          description: Person that is responsible of a specific component of a model
+      required:
+      - organizationUnit
+      - responsible
   Relationship:
     type: object
     description: Relationship between model objects
@@ -2598,3 +3512,36 @@ definitions:
     - major
     - minor
     - build
+  View:
+    description: View of the model
+    allOf:
+    - $ref: "#/definitions/Base_Entity"
+    - type: object
+      properties:
+        name:
+          type: string
+          description: Name of the view
+      required:
+      - name
+  Views:
+    description: View of the model
+    allOf:
+    - $ref: "#/definitions/Base_Entities"
+    - type: object
+      properties:
+        name:
+          type: string
+          description: Name of the view
+      required:
+      - name
+  View_Create:
+    description: View of the model
+    allOf:
+    - $ref: "#/definitions/Base_Entity_Create"
+    - type: object
+      properties:
+        name:
+          type: string
+          description: Name of the view
+      required:
+      - name
