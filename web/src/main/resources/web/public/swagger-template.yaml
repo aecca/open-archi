@@ -370,6 +370,37 @@ definitions:
       - kind
   Architecture_Models_Create:
     type: object
+    description: Architecture Model object
+    allOf:
+    - $ref: "#/definitions/Element_Create"
+    - type: object
+      properties:
+        kind:
+          type: string
+          description: Type of model
+          enum:
+          - ARCHITECTURE_MODEL
+        consumers:
+          type: array
+          description: Consumers of the model
+          items:
+            $ref: "#/definitions/Consumer_Create"
+        softwareSystems:
+          type: array
+          description: Consumers of the model
+          items:
+            $ref: "#/definitions/Software_System_Create"
+        deploymentNodes:
+          type: array
+          description: Deployment node of the model
+          items:
+            $ref: "#/definitions/Deployment_Node_Create"
+        relationships:
+          type: array
+          items:
+            $ref: "#/definitions/Architecture_Relationship_Create"
+      required:
+      - kind
   Architecture_Relationship:
     description: Relationship between model objects
     allOf:
@@ -583,7 +614,27 @@ definitions:
       required:
       - kind
   BPM_Models_Create:
-    type: object
+    description: BPM Model object
+    allOf:
+    - $ref: "#/definitions/Element_Create"
+    - type: object
+      properties:
+        kind:
+          type: string
+          description: Type of model
+          enum:
+          - BPM_MODEL
+        pools:
+          type: array
+          description: Pools of the model
+          items:
+            $ref: "#/definitions/Pool_Create"
+        relationships:
+          type: array
+          items:
+            $ref: "#/definitions/Architecture_Relationship_Create"
+      required:
+      - kind
   Consumer:
     type: object
     allOf:
@@ -1286,6 +1337,27 @@ definitions:
       - kind
   Flowchart_Models_Create:
     type: object
+    description: Flowchart Model object
+    allOf:
+    - $ref: "#/definitions/Element_Create"
+    - type: object
+      properties:
+        kind:
+          type: string
+          description: Type of model
+          enum:
+          - FLOWCHART_MODEL
+        pools:
+          type: array
+          description: Pools of the model
+          items:
+            $ref: "#/definitions/Flowchart_Create"
+        relationships:
+          type: array
+          items:
+            $ref: "#/definitions/Flowchart_Relationship_Create"
+      required:
+      - kind
   Gantt:
     type: object
     description: Gantt
@@ -1485,7 +1557,27 @@ definitions:
       required:
       - kind
   Gantt_Models_Create:
-    type: object
+    description: Gantt Model object
+    allOf:
+    - $ref: "#/definitions/Element_Create"
+    - type: object
+      properties:
+        kind:
+          type: string
+          description: Type of model
+          enum:
+          - GANTT_MODEL
+        gantts:
+          type: array
+          description: Gantts of the model
+          items:
+            $ref: "#/definitions/Gantt_Create"
+        relationships:
+          type: array
+          items:
+            $ref: "#/definitions/Gantt_Relationship"
+      required:
+      - kind
   Item:
     type: object
     description: Abstract item object
@@ -1952,10 +2044,84 @@ definitions:
     - y
   Relationship:
     type: object
+    description: Relationship between model objects
+    allOf:
+    - $ref: "#/definitions/Taggable"
+    - type: object
+      properties:
+        source:
+          $ref: "#/definitions/Taggable"
+          description: Model acting as source of the relationship
+        sourceId:
+          type: string
+          description: Long description of model
+        destination:
+          $ref: "#/definitions/Taggable"
+          description: Model acting as destination of the relationship
+        destinationId:
+          type: string
+          description: Identifier of the model acting as destination of the relationship
+        description:
+          type: string
+          description: Long description of the relationship
+        sourcePort:
+          type: string
+          description: Port of the model acting as source of the relationship
+        destinationPort:
+          type: string
+          description: Port of the model acting as destination of the relationship
+      required:
+      - sourceId
+      - destinationId
   Relationship_Create:
     type: object
+    description: Relationship between model objects
+    allOf:
+    - $ref: "#/definitions/Taggable_Create"
+    - properties:
+        sourceId:
+          type: string
+          description: Identifier of the model acting as source of the relationship
+        destinationId:
+          type: string
+          description: Identifier of the model acting as destination of the relationship
+        description:
+          type: string
+          description: Long description of the relationship
+        sourcePort:
+          type: string
+          description: Port of the model acting as source of the relationship
+        destinationPort:
+          type: string
+          description: Port of the model acting as destination of the relationship
+      required:
+      - sourceId
+      - destinationId
   Relationships:
     type: object
+    description: Relationship between model objects
+    allOf:
+    - $ref: "#/definitions/Taggable"
+    - type: object
+      properties:
+        sourceId:
+          type: string
+          description: Long description of model
+        destinationId:
+          type: string
+          description: Identifier of the model acting as destination of the relationship
+        description:
+          type: string
+          description: Long description of the relationship
+        sourcePort:
+          type: string
+          description: Port of the model acting as source of the relationship
+        destinationPort:
+          type: string
+          description: Port of the model acting as destination of the relationship
+      required:
+      - sourceId
+      - destinationId
   Role:
     description: A role an account could have
     type: object
@@ -2216,7 +2382,27 @@ definitions:
       required:
       - type
   Sequence_Models_Create:
-    type: object
+    description: Sequence Model object
+    allOf:
+    - $ref: "#/definitions/Element_Create"
+    - type: object
+      properties:
+        kind:
+          type: string
+          description: Type of model
+          enum:
+          - SEQUENCE_MODEL
+        sequences:
+          type: array
+          description: Sequences of the model
+          items:
+            $ref: "#/definitions/Sequence_Create"
+        relationships:
+          type: array
+          items:
+            $ref: "#/definitions/Sequence_Relationship"
+      required:
+      - kind
   Software_System:
     description: Software System
     type: object
