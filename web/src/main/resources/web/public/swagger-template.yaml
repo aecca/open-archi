@@ -30,8 +30,8 @@ paths:
           description: OK
           schema:
             allOf:
-            - "$ref": "#/definitions/Options_Get_Collection"
-            - "$ref": "#/definitions/Options_Post"
+            - $ref: "#/definitions/Options_Get_Collection"
+            - $ref: "#/definitions/Options_Post"
     get:
       tags:
       - Models
@@ -52,7 +52,7 @@ paths:
           schema:
             type: array
             items:
-              "$ref": "#/definitions/Models"
+              $ref: "#/definitions/Models"
         '400':
           description: Bad request
       security:
@@ -74,7 +74,7 @@ paths:
         description: Model object that needs to be added
         required: true
         schema:
-          "$ref": "#/definitions/Model_Create"
+          $ref: "#/definitions/Model_Create"
       responses:
         '200':
           description: Accepted
@@ -83,7 +83,7 @@ paths:
           schema:
             type: array
             items:
-              "$ref": "#/definitions/Models"
+              $ref: "#/definitions/Models"
         '405':
           description: Invalid input
       security:
@@ -102,7 +102,7 @@ paths:
         '200':
           description: OK
           schema:
-            "$ref": "#/definitions/Options_Post_Collection"
+            $ref: "#/definitions/Options_Post_Collection"
     post:
       tags:
       - Models
@@ -119,7 +119,7 @@ paths:
         description: List of model objects that needs to be added
         required: true
         schema:
-          "$ref": "#/definitions/Models_Create"
+          $ref: "#/definitions/Models_Create"
       responses:
         '200':
           description: Accepted
@@ -128,7 +128,7 @@ paths:
           schema:
             type: array
             items:
-              "$ref": "#/definitions/Models_Create"
+              $ref: "#/definitions/Models_Create"
         '405':
           description: Invalid input
       security:
@@ -147,7 +147,7 @@ paths:
         '200':
           description: OK
           schema:
-            "$ref": "#/definitions/Options_Get"
+            $ref: "#/definitions/Options_Get"
   "/models/{model-id}":
     get:
       tags:
@@ -167,7 +167,7 @@ paths:
         '200':
           description: successful operation
           schema:
-            "$ref": "#/definitions/Model"
+            $ref: "#/definitions/Model"
         '400':
           description: Invalid ID supplied
         '404':
@@ -329,6 +329,50 @@ definitions:
         description: Components that conforms this container
         items:
           $ref: "#/definitions/Components"
+  Container_Instance:
+    description: Container Instance
+    type: object
+    allOf:
+    - $ref: "#/definitions/Element"
+    - type: object
+      properties:
+        container:
+          description: Container
+          $ref: "#/definitions/Container"
+        containerId:
+          description: Container identifier
+          type: string
+        instanceId:
+          description: Instance identifier
+          type: integer
+          format: int32
+        kind:
+          type: string
+          description: Type of element
+          enum:
+          - CONTAINER
+  Container_Instances:
+    description: Container instances list
+    type: object
+    allOf:
+    - $ref: "#/definitions/Elements"
+    - type: object
+      properties:
+        container:
+          description: Container
+          $ref: "#/definitions/Containers"
+        containerId:
+          description: Container identifier
+          type: string
+        instanceId:
+          description: Instance identifier
+          type: integer
+          format: int32
+        kind:
+          type: string
+          description: Type of element
+          enum:
+          - CONTAINER
   Component:
     description: Component
     type: object
@@ -362,9 +406,51 @@ definitions:
   Elements:
     type: object
   Deployment_Node:
+    description: Deployment Node
     type: object
+    allOf:
+    - $ref: "#/definitions/Element"
+    - type: object
+      properties:
+        technology:
+          description: Technology
+          type: string
+        instances:
+          description: Instances
+          type: integer
+          format: int32
+        kind:
+          type: string
+          description: Type of element
+          enum:
+          - DEPLOYMENT
+        containerInstances:
+          type: array
+          items:
+            $ref: "#/definitions/Container_Instance"
   Deployment_Nodes:
+    description: Deployment Node
     type: object
+    allOf:
+    - $ref: "#/definitions/Elements"
+    - type: object
+      properties:
+        technology:
+          description: Technology
+          type: string
+        instances:
+          description: Instances
+          type: integer
+          format: int32
+        kind:
+          type: string
+          description: Type of element
+          enum:
+          - DEPLOYMENT
+        containerInstances:
+          type: array
+          items:
+            $ref: "#/definitions/Container_Instances"
   Flowchart_Model:
     type: object
   Flowchart_Models:

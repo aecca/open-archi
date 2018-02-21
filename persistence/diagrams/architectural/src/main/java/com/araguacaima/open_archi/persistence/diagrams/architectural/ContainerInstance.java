@@ -14,10 +14,6 @@ import javax.persistence.*;
 @PersistenceUnit(unitName = "open-archi")
 public class ContainerInstance extends Element {
 
-    @OneToOne(cascade = CascadeType.REMOVE)
-    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
-    private Container container;
-
     @Column
     private String containerId;
 
@@ -29,14 +25,6 @@ public class ContainerInstance extends Element {
     private ElementKind kind = ElementKind.CONTAINER;
 
     public ContainerInstance() {
-    }
-
-    public Container getContainer() {
-        return container;
-    }
-
-    public void setContainer(Container container) {
-        this.container = container;
     }
 
     public String getContainerId() {

@@ -30,8 +30,8 @@ paths:
           description: OK
           schema:
             allOf:
-            - "$ref": "#/definitions/Options_Get_Collection"
-            - "$ref": "#/definitions/Options_Post"
+            - $ref: "#/definitions/Options_Get_Collection"
+            - $ref: "#/definitions/Options_Post"
     get:
       tags:
       - Models
@@ -52,7 +52,7 @@ paths:
           schema:
             type: array
             items:
-              "$ref": "#/definitions/Model"s
+              $ref: "#/definitions/Model"s
         '400':
           description: Bad request
       security:
@@ -74,7 +74,7 @@ paths:
         description: Model object that needs to be added
         required: true
         schema:
-          "$ref": "#/definitions/Models_Create"
+          $ref: "#/definitions/Models_Create"
       responses:
         '200':
           description: Accepted
@@ -98,7 +98,7 @@ paths:
         '200':
           description: OK
           schema:
-            "$ref": "#/definitions/Options_Get"
+            $ref: "#/definitions/Options_Get"
   "/models/{model-id}":
     get:
       tags:
@@ -118,7 +118,7 @@ paths:
         '200':
           description: successful operation
           schema:
-            "$ref": "#/definitions/Model"
+            $ref: "#/definitions/Model"
         '400':
           description: Invalid ID supplied
         '404':
@@ -138,8 +138,8 @@ paths:
 #          description: OK
 #          schema:
 #            allOf:
-#            - "$ref": "#/definitions/Options_Get_Collection"
-#            - "$ref": "#/definitions/Options_Put"
+#            - $ref: "#/definitions/Options_Get_Collection"
+#            - $ref: "#/definitions/Options_Put"
 #  "/models/{model-id}/children":
 #    get:
 #      tags:
@@ -166,7 +166,7 @@ paths:
 #          schema:
 #            type: array
 #            items:
-#              "$ref": "#/definitions/Composite_Element"
+#              $ref: "#/definitions/Composite_Element"
 #        '400':
 #          description: Bad request
 #      security:
@@ -193,7 +193,7 @@ paths:
 #        description: Model object that needs to be added
 #        required: true
 #        schema:
-#          "$ref": "#/definitions/Composite_Element_Create"
+#          $ref: "#/definitions/Composite_Element_Create"
 #      responses:
 #        '200':
 #          description: Accepted
@@ -218,8 +218,8 @@ paths:
 #          description: OK
 #          schema:
 #            allOf:
-#            - "$ref": "#/definitions/Options_Get"
-#            - "$ref": "#/definitions/Options_Post"
+#            - $ref: "#/definitions/Options_Get"
+#            - $ref: "#/definitions/Options_Post"
 #  "/models/{model-id}/parent":
 #    get:
 #      tags:
@@ -239,7 +239,7 @@ paths:
 #        '200':
 #          description: OK
 #          schema:
-#            "$ref": "#/definitions/Model"
+#            $ref: "#/definitions/Model"
 #        '400':
 #          description: Bad request
 #      security:
@@ -266,7 +266,7 @@ paths:
 #        description: Model object that needs to be added as a parent of the current model
 #        required: true
 #        schema:
-#          "$ref": "#/definitions/Model_Parent_Create"
+#          $ref: "#/definitions/Model_Parent_Create"
 #      responses:
 #        '200':
 #          description: Accepted
@@ -291,8 +291,8 @@ paths:
 #          description: OK
 #          schema:
 #            allOf:
-#            - "$ref": "#/definitions/Options_Get"
-#            - "$ref": "#/definitions/Options_Post"
+#            - $ref: "#/definitions/Options_Get"
+#            - $ref: "#/definitions/Options_Post"
 #  "/models/{model-id}/meta-data":
 #    get:
 #      tags:
@@ -312,7 +312,7 @@ paths:
 #        '200':
 #          description: OK
 #          schema:
-#            "$ref": "#/definitions/Meta_Data"
+#            $ref: "#/definitions/Meta_Data"
 #        '400':
 #          description: Bad request
 #      security:
@@ -339,7 +339,7 @@ paths:
 #        description: MetaData object that needs to be added to the current model
 #        required: true
 #        schema:
-#          "$ref": "#/definitions/Meta_Data_Create"
+#          $ref: "#/definitions/Meta_Data_Create"
 #      responses:
 #        '200':
 #          description: Accepted
@@ -364,8 +364,8 @@ paths:
 #          description: OK
 #          schema:
 #            allOf:
-#            - "$ref": "#/definitions/Options_Get_Collection"
-#            - "$ref": "#/definitions/Options_Put"
+#            - $ref: "#/definitions/Options_Get_Collection"
+#            - $ref: "#/definitions/Options_Put"
 #  "/models/{model-id}/features":
 #    get:
 #      tags:
@@ -387,7 +387,7 @@ paths:
 #          schema:
 #            type: array
 #            items:
-#              "$ref": "#/definitions/Feature"
+#              $ref: "#/definitions/Feature"
 #        '400':
 #          description: Bad request
 #      security:
@@ -414,7 +414,7 @@ paths:
 #        description: Feature object that needs to be added to the current model
 #        required: true
 #        schema:
-#          "$ref": "#/definitions/Feature_Create"
+#          $ref: "#/definitions/Feature_Create"
 #      responses:
 #        '200':
 #          description: Accepted
@@ -439,8 +439,8 @@ paths:
 #          description: OK
 #          schema:
 #            allOf:
-#            - "$ref": "#/definitions/Options_Get_Collection"
-#            - "$ref": "#/definitions/Options_Post"
+#            - $ref: "#/definitions/Options_Get_Collection"
+#            - $ref: "#/definitions/Options_Post"
 #    get:
 #      tags:
 #      - Models
@@ -461,7 +461,7 @@ paths:
 #          schema:
 #            type: array
 #            items:
-#              "$ref": "#/definitions/Architectural_Model"
+#              $ref: "#/definitions/Architectural_Model"
 #        '400':
 #          description: Bad request
 #      security:
@@ -483,7 +483,7 @@ paths:
 #        description: Architecture Model object that needs to be added
 #        required: true
 #        schema:
-#          "$ref": "#/definitions/Architectural_Model_Create"
+#          $ref: "#/definitions/Architectural_Model_Create"
 #      responses:
 #        '200':
 #          description: Accepted
@@ -508,8 +508,8 @@ paths:
 #          description: OK
 #          schema:
 #            allOf:
-#            - "$ref": "#/definitions/Options_Get_Collection"
-#            - "$ref": "#/definitions/Options_Put"
+#            - $ref: "#/definitions/Options_Get_Collection"
+#            - $ref: "#/definitions/Options_Put"
 #  "/models/architectures/{model-id}/relationships":
 #    get:
 #      tags:
@@ -531,7 +531,7 @@ paths:
 #          schema:
 #            type: array
 #            items:
-#              "$ref": "#/definitions/Architecture_Relationship"
+#              $ref: "#/definitions/Architecture_Relationship"
 #        '400':
 #          description: Bad request
 #      security:
@@ -558,7 +558,7 @@ paths:
 #        description: Relationship object that needs to be added to the current model
 #        required: true
 #        schema:
-#          "$ref": "#/definitions/Architecture_Relationship_Create"
+#          $ref: "#/definitions/Architecture_Relationship_Create"
 #      responses:
 #        '200':
 #          description: Accepted
@@ -583,8 +583,8 @@ paths:
 #          description: OK
 #          schema:
 #            allOf:
-#            - "$ref": "#/definitions/Options_Get_Collection"
-#            - "$ref": "#/definitions/Options_Post"
+#            - $ref: "#/definitions/Options_Get_Collection"
+#            - $ref: "#/definitions/Options_Post"
 #    get:
 #      tags:
 #      - Models
@@ -605,7 +605,7 @@ paths:
 #          schema:
 #            type: array
 #            items:
-#              "$ref": "#/definitions/Architectural_Model"
+#              $ref: "#/definitions/Architectural_Model"
 #        '400':
 #          description: Bad request
 #      security:
@@ -627,7 +627,7 @@ paths:
 #        description: Bpm Model object that needs to be added
 #        required: true
 #        schema:
-#          "$ref": "#/definitions/Architectural_Model_Create"
+#          $ref: "#/definitions/Architectural_Model_Create"
 #      responses:
 #        '200':
 #          description: Accepted
@@ -652,8 +652,8 @@ paths:
 #          description: OK
 #          schema:
 #            allOf:
-#            - "$ref": "#/definitions/Options_Get_Collection"
-#            - "$ref": "#/definitions/Options_Post"
+#            - $ref: "#/definitions/Options_Get_Collection"
+#            - $ref: "#/definitions/Options_Post"
 #    get:
 #      tags:
 #      - Models
@@ -674,7 +674,7 @@ paths:
 #          schema:
 #            type: array
 #            items:
-#              "$ref": "#/definitions/Architectural_Model"
+#              $ref: "#/definitions/Architectural_Model"
 #        '400':
 #          description: Bad request
 #      security:
@@ -696,7 +696,7 @@ paths:
 #        description: Flowchart Model object that needs to be added
 #        required: true
 #        schema:
-#          "$ref": "#/definitions/Architectural_Model_Create"
+#          $ref: "#/definitions/Architectural_Model_Create"
 #      responses:
 #        '200':
 #          description: Accepted
@@ -721,8 +721,8 @@ paths:
 #          description: OK
 #          schema:
 #            allOf:
-#            - "$ref": "#/definitions/Options_Get_Collection"
-#            - "$ref": "#/definitions/Options_Post"
+#            - $ref: "#/definitions/Options_Get_Collection"
+#            - $ref: "#/definitions/Options_Post"
 #    get:
 #      tags:
 #      - Models
@@ -743,7 +743,7 @@ paths:
 #          schema:
 #            type: array
 #            items:
-#              "$ref": "#/definitions/Architectural_Model"
+#              $ref: "#/definitions/Architectural_Model"
 #        '400':
 #          description: Bad request
 #      security:
@@ -765,7 +765,7 @@ paths:
 #        description: Gantt Model object that needs to be added
 #        required: true
 #        schema:
-#          "$ref": "#/definitions/Architectural_Model_Create"
+#          $ref: "#/definitions/Architectural_Model_Create"
 #      responses:
 #        '200':
 #          description: Accepted
@@ -790,8 +790,8 @@ paths:
 #          description: OK
 #          schema:
 #            allOf:
-#            - "$ref": "#/definitions/Options_Get_Collection"
-#            - "$ref": "#/definitions/Options_Post"
+#            - $ref: "#/definitions/Options_Get_Collection"
+#            - $ref: "#/definitions/Options_Post"
 #    get:
 #      tags:
 #      - Models
@@ -812,7 +812,7 @@ paths:
 #          schema:
 #            type: array
 #            items:
-#              "$ref": "#/definitions/Architectural_Model"
+#              $ref: "#/definitions/Architectural_Model"
 #        '400':
 #          description: Bad request
 #      security:
@@ -834,7 +834,7 @@ paths:
 #        description: Sequence Model object that needs to be added
 #        required: true
 #        schema:
-#          "$ref": "#/definitions/Architectural_Model_Create"
+#          $ref: "#/definitions/Architectural_Model_Create"
 #      responses:
 #        '200':
 #          description: Accepted
