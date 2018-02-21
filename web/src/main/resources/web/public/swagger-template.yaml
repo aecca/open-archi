@@ -998,10 +998,124 @@ definitions:
           enum:
           - FEATURE
   Flowchart_Model:
-    type: object
-  Flowchart_Models:
-    type: object
+    description: Flowchart Model object
+    allOf:
+    - $ref: "#/definitions/Element"
+    - type: object
+      properties:
+        kind:
+          type: string
+          description: Type of model
+          enum:
+          - FLOWCHART_MODEL
+        pools:
+          type: array
+          description: Pools of the model
+          items:
+            $ref: "#/definitions/Flowchart"
+        relationships:
+          type: array
+          items:
+            $ref: "#/definitions/Flowchart_Relationship"
+      required:
+      - kind
   Flowchart_Model_Create:
+    description: Flowchart Model object
+    allOf:
+    - $ref: "#/definitions/Element_Create"
+    - type: object
+      properties:
+        kind:
+          type: string
+          description: Type of model
+          enum:
+          - FLOWCHART_MODEL
+        pools:
+          type: array
+          description: Pools of the model
+          items:
+            $ref: "#/definitions/Flowchart_Create"
+        relationships:
+          type: array
+          items:
+            $ref: "#/definitions/Flowchart_Relationship_Create"
+      required:
+      - kind
+  Flowchart_Relationship:
+    description: Relationship between model objects
+    allOf:
+    - $ref: "#/definitions/Relationship"
+    - type: object
+      properties:
+        type:
+          type: string
+          description: Type of relationship
+          enum:
+          - UNIDIRECTIONAL
+          - BIDIRECTIONAL
+      required:
+      - type
+  Flowchart_Relationship_Create:
+    type: object
+    description: Relationship between model objects
+    allOf:
+    - $ref: "#/definitions/Relationship_Create"
+    - properties:
+        type:
+          type: string
+          description: Type of relationship
+          enum:
+          - UNIDIRECTIONAL
+          - BIDIRECTIONAL
+      required:
+      - type
+  Flowchart:
+    description: Flowchart
+    type: object
+    allOf:
+    - $ref: "#/definitions/Item"
+    - type: object
+      properties:
+        category:
+          type: string
+          description: Category
+          enum:
+          - ACTIVITY
+          - DECISION_POINT
+          - START
+          - END
+        kind:
+          type: string
+          description: Type of model
+          enum:
+          - FLOWCHART
+      required:
+      - category
+      - kind
+  Flowchart_Create:
+    description: Flowchart
+    type: object
+    allOf:
+    - $ref: "#/definitions/Item_Create"
+    - type: object
+      properties:
+        category:
+          type: string
+          description: Category
+          enum:
+          - ACTIVITY
+          - DECISION_POINT
+          - START
+          - END
+        kind:
+          type: string
+          description: Type of model
+          enum:
+          - FLOWCHART
+      required:
+      - category
+      - kind
+  Flowchart_Models:
     type: object
   Flowchart_Models_Create:
     type: object
