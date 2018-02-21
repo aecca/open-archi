@@ -23,6 +23,7 @@ public class Item extends Taggable {
     public static final String GET_ALL_CHILDREN = "get.all.children";
     public static final String GET_META_DATA = "get.meta.data";
 
+    @Column
     protected String name;
     @Column
     protected String description;

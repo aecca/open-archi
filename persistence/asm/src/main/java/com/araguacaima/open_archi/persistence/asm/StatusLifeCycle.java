@@ -8,12 +8,12 @@ import java.util.Collection;
 
 @Entity
 @PersistenceUnit(unitName = "open-archi")
-@Table(schema = "SM",
+@Table(schema = "ASM",
         name = "StatusLifeCycle")
 public class StatusLifeCycle extends BaseEntity {
 
     @OneToMany
-    @JoinTable(schema = "SM",
+    @JoinTable(schema = "ASM",
             name = "StatusLifeCycle_Ancestors",
             joinColumns = {@JoinColumn(name = "StatusLifeCycle_Id",
                     referencedColumnName = "Id")},
@@ -24,7 +24,7 @@ public class StatusLifeCycle extends BaseEntity {
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private Status current;
     @OneToMany
-    @JoinTable(schema = "SM",
+    @JoinTable(schema = "ASM",
             name = "StatusLifeCycle_Descendants",
             joinColumns = {@JoinColumn(name = "StatusLifeCycle_Id",
                     referencedColumnName = "Id")},

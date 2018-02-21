@@ -8,7 +8,7 @@ import java.util.Date;
 
 @Entity
 @PersistenceUnit(unitName = "open-archi")
-@Table(schema = "SM",
+@Table(schema = "ASM",
         name = "Status")
 public class Status extends BaseEntity {
 

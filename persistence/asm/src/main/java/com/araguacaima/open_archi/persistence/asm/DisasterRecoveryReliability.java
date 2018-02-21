@@ -6,7 +6,7 @@ import javax.persistence.Table;
 
 @Entity
 @PersistenceUnit(unitName = "open-archi")
-@Table(schema = "SM",
+@Table(schema = "ASM",
         name = "DisasterRecoveryReliability")
 public class DisasterRecoveryReliability extends AbstractReliability {
 

@@ -22,12 +22,6 @@ public class Model extends Element {
 
     public static final String GET_ALL_RELATIONSHIPS = "get.all.relationships";
 
-    @OneToMany(targetEntity = StaticElement.class)
-    @CollectionTable(name = "Architecture_Model_Elements",
-            schema = "DIAGRAMS")
-    @MapKeyColumn(name = "elements")
-    private final Map<String, Element> elements = new HashMap<>();
-
     @Column
     @Enumerated(EnumType.STRING)
     private ElementKind kind = ElementKind.ARCHITECTURE_MODEL;
@@ -69,10 +63,6 @@ public class Model extends Element {
     protected Set<Relationship> relationships = new LinkedHashSet<>();
 
     public Model() {
-    }
-
-    public Map<String, Element> getElements() {
-        return elements;
     }
 
     public ElementKind getKind() {

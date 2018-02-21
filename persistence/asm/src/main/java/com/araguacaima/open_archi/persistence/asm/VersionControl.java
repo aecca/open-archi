@@ -10,7 +10,7 @@ import java.util.Date;
 
 @Entity
 @PersistenceUnit(unitName = "open-archi")
-@Table(schema = "SM",
+@Table(schema = "ASM",
         name = "VersionControl")
 public class VersionControl extends BaseEntity {
 

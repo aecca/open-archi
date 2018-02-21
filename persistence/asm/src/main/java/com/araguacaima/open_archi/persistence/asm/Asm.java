@@ -13,7 +13,7 @@ import java.util.Set;
 
 @Entity
 @PersistenceUnit(unitName = "open-archi")
-@Table(schema = "SM",
+@Table(schema = "ASM",
         name = "Asm")
 @NamedQueries(value = {@NamedQuery(name = "Asm.getAll",
         query = "SELECT asm FROM Asm asm"), @NamedQuery(name = "Asm.getById",

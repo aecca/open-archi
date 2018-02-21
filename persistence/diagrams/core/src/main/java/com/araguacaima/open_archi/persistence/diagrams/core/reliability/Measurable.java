@@ -1,4 +1,4 @@
-package com.araguacaima.open_archi.persistence.asm;
+package com.araguacaima.open_archi.persistence.diagrams.core.reliability;
 
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 import org.hibernate.annotations.Cascade;
@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 @Entity
 @PersistenceUnit(unitName = "open-archi")
-@Table(schema = "ASM",
+@Table(schema = "DIAGRAMS",
         name = "Measurable")
 public class Measurable extends BaseEntity {
 

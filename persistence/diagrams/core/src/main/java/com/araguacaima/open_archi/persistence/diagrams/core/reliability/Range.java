@@ -1,4 +1,4 @@
-package com.araguacaima.open_archi.persistence.asm;
+package com.araguacaima.open_archi.persistence.diagrams.core.reliability;
 
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 
@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @PersistenceUnit(unitName = "open-archi")
-@Table(schema = "ASM",
+@Table(schema = "DIAGRAMS",
         name = "Range")
 public class Range<T extends Enum> extends BaseEntity {
 

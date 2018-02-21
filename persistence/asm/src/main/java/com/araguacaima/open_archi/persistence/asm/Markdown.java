@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Entity
 @PersistenceUnit(unitName = "open-archi")
-@Table(schema = "SM",
+@Table(schema = "ASM",
         name = "Markdown")
 public class Markdown extends BaseEntity {
 

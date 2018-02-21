@@ -1,4 +1,4 @@
-package com.araguacaima.open_archi.persistence.asm;
+package com.araguacaima.open_archi.persistence.diagrams.core.reliability;
 
 import com.araguacaima.open_archi.persistence.commons.exceptions.EntityError;
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
@@ -6,14 +6,15 @@ import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 import javax.persistence.*;
 import java.util.Set;
 
+
 @Entity
 @PersistenceUnit(unitName = "open-archi")
-@Table(schema = "ASM",
-        name = "Volumetry", uniqueConstraints = @UniqueConstraint(columnNames = {"name", "company_id"}))
+@Table(schema = "DIAGRAMS",
+        name = "Volumetry")
 public class Volumetry extends BaseEntity {
 
     @OneToMany
-    @JoinTable(schema = "ASM",
+    @JoinTable(schema = "DIAGRAMS",
             name = "Volumetry_Activities",
             joinColumns = {@JoinColumn(name = "Volumetry_Id",
                     referencedColumnName = "Id")},
@@ -21,7 +22,7 @@ public class Volumetry extends BaseEntity {
                     referencedColumnName = "Id")})
     private Set<Activity> activities;
     @OneToMany
-    @JoinTable(schema = "ASM",
+    @JoinTable(schema = "DIAGRAMS",
             name = "Volumetry_BatchProcessing",
             joinColumns = {@JoinColumn(name = "Volumetry_Id",
                     referencedColumnName = "Id")},
@@ -29,7 +30,7 @@ public class Volumetry extends BaseEntity {
                     referencedColumnName = "Id")})
     private Set<BatchProcessing> batchProcessing;
     @OneToMany
-    @JoinTable(schema = "ASM",
+    @JoinTable(schema = "DIAGRAMS",
             name = "Volumetry_BulkProcessing",
             joinColumns = {@JoinColumn(name = "Volumetry_Id",
                     referencedColumnName = "Id")},
@@ -37,7 +38,7 @@ public class Volumetry extends BaseEntity {
                     referencedColumnName = "Id")})
     private Set<BulkProcessing> bulkProcessing;
     @OneToMany
-    @JoinTable(schema = "ASM",
+    @JoinTable(schema = "DIAGRAMS",
             name = "Volumetry_Concurrency",
             joinColumns = {@JoinColumn(name = "Volumetry_Id",
                     referencedColumnName = "Id")},
@@ -45,7 +46,7 @@ public class Volumetry extends BaseEntity {
                     referencedColumnName = "Id")})
     private Set<Concurrency> concurrencies;
     @OneToMany
-    @JoinTable(schema = "ASM",
+    @JoinTable(schema = "DIAGRAMS",
             name = "Volumetry_Database",
             joinColumns = {@JoinColumn(name = "Volumetry_Id",
                     referencedColumnName = "Id")},
@@ -53,7 +54,7 @@ public class Volumetry extends BaseEntity {
                     referencedColumnName = "Id")})
     private Set<Database> dataBase;
     @OneToMany
-    @JoinTable(schema = "ASM",
+    @JoinTable(schema = "DIAGRAMS",
             name = "Volumetry_FileTransfer",
             joinColumns = {@JoinColumn(name = "Volumetry_Id",
                     referencedColumnName = "Id")},
@@ -61,7 +62,7 @@ public class Volumetry extends BaseEntity {
                     referencedColumnName = "Id")})
     private Set<FileTransfer> fileTransfers;
     @OneToMany
-    @JoinTable(schema = "ASM",
+    @JoinTable(schema = "DIAGRAMS",
             name = "Volumetry_Rate",
             joinColumns = {@JoinColumn(name = "Volumetry_Id",
                     referencedColumnName = "Id")},

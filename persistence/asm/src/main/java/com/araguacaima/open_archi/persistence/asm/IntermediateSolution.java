@@ -8,7 +8,7 @@ import java.util.Collection;
 
 @Entity
 @PersistenceUnit(unitName = "open-archi")
-@Table(schema = "SM",
+@Table(schema = "ASM",
         name = "IntermediateSolution")
 public class IntermediateSolution extends BaseEntity {
 
@@ -16,7 +16,7 @@ public class IntermediateSolution extends BaseEntity {
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private Markdown description;
     @OneToMany
-    @JoinTable(schema = "SM",
+    @JoinTable(schema = "ASM",
             name = "IntermediateSolution_Functional_Diagrams",
             joinColumns = {@JoinColumn(name = "IntermediateSolution_Id",
                     referencedColumnName = "Id")},
@@ -24,7 +24,7 @@ public class IntermediateSolution extends BaseEntity {
                     referencedColumnName = "Id")})
     private Collection<Diagram> functionals;
     @OneToMany
-    @JoinTable(schema = "SM",
+    @JoinTable(schema = "ASM",
             name = "IntermediateSolution_TechnicalDebts",
             joinColumns = {@JoinColumn(name = "IntermediateSolution_Id",
                     referencedColumnName = "Id")},

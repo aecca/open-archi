@@ -7,12 +7,12 @@ import java.util.Collection;
 
 @Entity
 @PersistenceUnit(unitName = "open-archi")
-@Table(schema = "SM",
+@Table(schema = "ASM",
         name = "ArchitectSolutionModel")
 public class ArchitectSolutionModel extends BaseEntity {
 
     @OneToMany
-    @JoinTable(schema = "SM",
+    @JoinTable(schema = "ASM",
             name = "ArchitectSolutionModel_Diagrams",
             joinColumns = {@JoinColumn(name = "ArchitectSolutionModel_Id",
                     referencedColumnName = "Id")},

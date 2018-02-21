@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Entity
 @PersistenceUnit(unitName = "open-archi")
-@Table(schema = "SM",
+@Table(schema = "ASM",
         name = "CapacityReliability")
 
 public class CapacityReliability extends AbstractReliability implements IVolumetricReliability {

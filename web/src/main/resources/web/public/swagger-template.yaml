@@ -192,10 +192,6 @@ definitions:
     - $ref: "#/definitions/Element"
     - type: object
       properties:
-        elements:
-          type: object
-          additionalProperties:
-            $ref: "#/definitions/Element"
         kind:
           type: string
           description: Type of model
@@ -257,6 +253,37 @@ definitions:
       - kind
   Architecture_Model_Create:
     type: object
+    description: Architecture Model object
+    allOf:
+    - $ref: "#/definitions/Element_Create"
+    - type: object
+      properties:
+        kind:
+          type: string
+          description: Type of model
+          enum:
+          - ARCHITECTURE_MODEL
+        consumers:
+          type: array
+          description: Consumers of the model
+          items:
+            $ref: "#/definitions/Consumer_Create"
+        softwareSystems:
+          type: array
+          description: Consumers of the model
+          items:
+            $ref: "#/definitions/Software_System_Create"
+        deploymentNodes:
+          type: array
+          description: Deployment node of the model
+          items:
+            $ref: "#/definitions/Deployment_Node_Create"
+        relationships:
+          type: array
+          items:
+            $ref: "#/definitions/Architecture_Relationship"
+      required:
+      - kind
   Architecture_Models_Create:
     type: object
   Architecture_Relationship:
@@ -330,6 +357,23 @@ definitions:
           type: string
           enum:
           - CONSUMER
+  Consumer_Create:
+    type: object
+    allOf:
+    - $ref: "#/definitions/Static_Element_Create"
+    - type: object
+      properties:
+        scope:
+          description: Scope on which this customer is relevant
+          type: string
+          enum:
+          - Internal
+          - External
+          - Unspecified
+        kind:
+          type: string
+          enum:
+          - CONSUMER
   Consumers:
     type: object
     allOf:
@@ -361,7 +405,14 @@ definitions:
           $ref: "#/definitions/Component"
   Containers:
     type: object
-    description: List of containers
+    description: Container
+    properties:
+      technology:
+        type: string
+        description: Technology that underlied this container
+  Container_Create:
+    type: object
+    description: Container
     properties:
       technology:
         type: string
@@ -370,7 +421,7 @@ definitions:
         type: array
         description: Components that conforms this container
         items:
-          $ref: "#/definitions/Components"
+          $ref: "#/definitions/Component_Create"
   Container_Instance:
     description: Container Instance
     type: object
@@ -381,6 +432,28 @@ definitions:
         container:
           description: Container
           $ref: "#/definitions/Container"
+        containerId:
+          description: Container identifier
+          type: string
+        instanceId:
+          description: Instance identifier
+          type: integer
+          format: int32
+        kind:
+          type: string
+          description: Type of element
+          enum:
+          - CONTAINER
+  Container_Instance_Create:
+    description: Container Instance
+    type: object
+    allOf:
+    - $ref: "#/definitions/Element_Create"
+    - type: object
+      properties:
+        container:
+          description: Container
+          $ref: "#/definitions/Container_Create"
         containerId:
           description: Container identifier
           type: string
@@ -429,6 +502,20 @@ definitions:
           description: Components
           type: integer
           format: int64
+  Component_Create:
+    description: Component
+    type: object
+    allOf:
+    - $ref: "#/definitions/Static_Element_Create"
+    - type: object
+      properties:
+        technology:
+          description: Technology
+          type: string
+        size:
+          description: Components
+          type: integer
+          format: int64
   Components:
     description: Component
     type: object
@@ -445,8 +532,54 @@ definitions:
           format: int64
   Element:
     type: object
+    description: Abstract element object
+    allOf:
+    - $ref: "#/definitions/Item"
+    - type: object
+      properties:
+        url:
+          type: string
+          description: Url for the physical access to the of model
+        properties:
+          type: object
+          description: Extensible and customizable properties related to an element
+          additionalProperties:
+            type: string
+        features:
+          type: array
+          description: Features that conforms the model
+          items:
+            $ref: "#/definitions/Feature"
+  Element_Create:
+    type: object
+    description: Abstract element object
+    allOf:
+    - $ref: "#/definitions/Item_Create"
+    - type: object
+      properties:
+        url:
+          type: string
+          description: Url for the physical access to the of model
+        properties:
+          type: object
+          description: Extensible and customizable properties related to an element
+          additionalProperties:
+            type: string
+        features:
+          type: array
+          description: Features that conforms the model
+          items:
+            $ref: "#/definitions/Feature_Create"
   Elements:
     type: object
+    description: Abstract element object
+    allOf:
+    - $ref: "#/definitions/Items"
+    - type: object
+      properties:
+        url:
+          type: string
+          description: Url for the physical access to the of model
   Deployment_Node:
     description: Deployment Node
     type: object
@@ -470,6 +603,29 @@ definitions:
           type: array
           items:
             $ref: "#/definitions/Container_Instance"
+  Deployment_Node_Create:
+    description: Deployment Node
+    type: object
+    allOf:
+    - $ref: "#/definitions/Element_Create"
+    - type: object
+      properties:
+        technology:
+          description: Technology
+          type: string
+        instances:
+          description: Instances
+          type: integer
+          format: int32
+        kind:
+          type: string
+          description: Type of element
+          enum:
+          - DEPLOYMENT
+        containerInstances:
+          type: array
+          items:
+            $ref: "#/definitions/Container_Instance_Create"
   Deployment_Nodes:
     description: Deployment Node
     type: object
@@ -493,6 +649,110 @@ definitions:
           type: array
           items:
             $ref: "#/definitions/Container_Instances"
+  Feature:
+    description: Feature an element can handle
+    allOf:
+    - $ref: "#/definitions/Item"
+    - type: object
+      properties:
+        role:
+          type: string
+          description: the role of the feature ... Primary or Supporting
+          enum:
+          - Primary
+          - Supporting
+        url:
+          type: string
+          description: a URL; e.g. a reference to the feature in source code control
+        category:
+          type: string
+          description: the category of feature; e.g. class, interface, etc
+          enum:
+          - CATEGORY_1
+          - CATEGORY_2
+        visibility:
+          type: string
+          description: the visibility of the feature; e.g. public, package, private
+        incomingConstraints:
+          type: array
+          description: Aspects that conditionates an element can have this feature
+          items:
+            $ref: "#/definitions/Volumetry"
+        outgoingConstraints:
+          type: array
+          description: Aspects that conditionates how this feature can be related to another element
+          items:
+            $ref: "#/definitions/Volumetry"
+        kind:
+          type: string
+          enum:
+          - FEATURE
+  Features:
+    description: Feature an element can handle
+    allOf:
+    - $ref: "#/definitions/Items"
+    - type: object
+      properties:
+        role:
+          type: string
+          description: the role of the feature ... Primary or Supporting
+          enum:
+          - Primary
+          - Supporting
+        url:
+          type: string
+          description: a URL; e.g. a reference to the feature in source code control
+        category:
+          type: string
+          description: the category of feature; e.g. class, interface, etc
+          enum:
+          - CATEGORY_1
+          - CATEGORY_2
+        visibility:
+          type: string
+          description: the visibility of the feature; e.g. public, package, private
+        kind:
+          type: string
+          enum:
+          - FEATURE
+  Feature_Create:
+    description: Feature an element can handle
+    allOf:
+    - $ref: "#/definitions/Item_Create"
+    - type: object
+      properties:
+        role:
+          type: string
+          description: the role of the feature ... Primary or Supporting
+          enum:
+          - Primary
+          - Supporting
+        url:
+          type: string
+          description: a URL; e.g. a reference to the feature in source code control
+        category:
+          type: string
+          description: the category of feature; e.g. class, interface, etc
+          enum:
+          - CATEGORY_1
+          - CATEGORY_2
+        visibility:
+          type: string
+          description: the visibility of the feature; e.g. public, package, private
+        incomingConstraints:
+          type: array
+          description: Aspects that conditionates an element can have this feature
+          items:
+            $ref: "#/definitions/Volumetry_Create"
+        outgoingConstraints:
+          type: array
+          description: Aspects that conditionates how this feature can be related to another element
+          items:
+            $ref: "#/definitions/Volumetry_Create"
+        kind:
+          type: string
+          enum:
+          - FEATURE
   Flowchart_Model:
     type: object
   Flowchart_Models:
@@ -508,6 +768,12 @@ definitions:
   Gantt_Model_Create:
     type: object
   Gantt_Models_Create:
+    type: object
+  Item:
+    type: object
+  Item_Create:
+    type: object
+  Items:
     type: object
   Model:
     description: Model object
@@ -637,6 +903,25 @@ definitions:
           type: array
           items:
             $ref: "#/definitions/Container"
+  Software_System_Create:
+    description: Software System
+    type: object
+    allOf:
+    - $ref: "#/definitions/Static_Element_Create"
+    - type: object
+      properties:
+        scope:
+          description: Scope on which this software system is relevant
+          type: string
+          enum:
+          - Internal
+          - External
+          - Unspecified
+        containers:
+          description: Containers embeded in this software system
+          type: array
+          items:
+            $ref: "#/definitions/Container_Create"
   Software_Systems:
     description: Software System
     type: object
@@ -670,6 +955,20 @@ definitions:
           - COMPONENT
       required:
       - kind
+  Static_Element_Create:
+    type: object
+    description: Static element
+    allOf:
+    - $ref: "#/definitions/Element_Create"
+    - type: object
+      properties:
+        kind:
+          description: Type of static element
+          type: string
+          enum:
+          - COMPONENT
+      required:
+      - kind
   Static_Elements:
     type: object
     description: Static element
@@ -684,3 +983,7 @@ definitions:
           - COMPONENT
       required:
       - kind
+  Volumetry:
+    type: object
+  Volumetry_Create:
+    type: object

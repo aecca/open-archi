@@ -1,6 +1,10 @@
 package com.araguacaima.open_archi.persistence.diagrams.core;
 
+import com.araguacaima.open_archi.persistence.diagrams.core.reliability.Volumetry;
+
 import javax.persistence.*;
+import java.util.Collection;
+import java.util.Set;
 
 /**
  * Represents a feature, such as a Java class or interface,
@@ -19,34 +23,41 @@ public class Feature extends Item {
     private FeatureRole role = FeatureRole.Supporting;
 
     /**
-     * the fully qualified type of the feature
-     **/
-    @Column
-    private String type;
-
-    /**
      * a URL; e.g. a reference to the feature in source code control
      */
     @Column
     private String url;
 
     /**
-     * the programming language used to create the feature
-     */
-    @Column
-    private String language;
-
-    /**
      * the category of feature; e.g. class, interface, etc
      */
     @Column
-    private String category;
+    private FeatureCategory category;
 
     /**
      * the visibility of the feature; e.g. public, package, private
      */
     @Column
     private String visibility;
+
+    @OneToMany
+    @JoinTable(schema = "DIAGRAMS",
+            name = "Feature_Incoming_Constraint",
+            joinColumns = {@JoinColumn(name = "Feature_Id",
+                    referencedColumnName = "Id")},
+            inverseJoinColumns = {@JoinColumn(name = "Incoming_Constraint_Id",
+                    referencedColumnName = "Id")})
+    private Set<Volumetry> incomingConstraints;
+
+
+    @OneToMany
+    @JoinTable(schema = "DIAGRAMS",
+            name = "Feature_Outgoing_Constraint",
+            joinColumns = {@JoinColumn(name = "Feature_Id",
+                    referencedColumnName = "Id")},
+            inverseJoinColumns = {@JoinColumn(name = "Outgoing_Constraint_Id",
+                    referencedColumnName = "Id")})
+    private Set<Volumetry> outgoingConstraints;
 
     @Column
     @Enumerated(EnumType.STRING)
@@ -63,14 +74,6 @@ public class Feature extends Item {
         this.role = role;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
     public String getUrl() {
         return url;
     }
@@ -79,19 +82,11 @@ public class Feature extends Item {
         this.url = url;
     }
 
-    public String getLanguage() {
-        return language;
-    }
-
-    public void setLanguage(String language) {
-        this.language = language;
-    }
-
-    public String getCategory() {
+    public FeatureCategory getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(FeatureCategory category) {
         this.category = category;
     }
 
@@ -101,6 +96,22 @@ public class Feature extends Item {
 
     public void setVisibility(String visibility) {
         this.visibility = visibility;
+    }
+
+    public Set<Volumetry> getIncomingConstraints() {
+        return incomingConstraints;
+    }
+
+    public void setIncomingConstraints(Set<Volumetry> incomingConstraints) {
+        this.incomingConstraints = incomingConstraints;
+    }
+
+    public Set<Volumetry> getOutgoingConstraints() {
+        return outgoingConstraints;
+    }
+
+    public void setOutgoingConstraints(Set<Volumetry> outgoingConstraints) {
+        this.outgoingConstraints = outgoingConstraints;
     }
 
     public ElementKind getKind() {

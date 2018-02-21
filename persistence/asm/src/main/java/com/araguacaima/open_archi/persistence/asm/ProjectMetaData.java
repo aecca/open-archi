@@ -9,7 +9,7 @@ import java.util.Collection;
 
 @Entity
 @PersistenceUnit(unitName = "open-archi")
-@Table(schema = "SM",
+@Table(schema = "ASM",
         name = "ProjectMetaData")
 public class ProjectMetaData extends BaseEntity {
 
@@ -22,7 +22,7 @@ public class ProjectMetaData extends BaseEntity {
     @Column
     private String functionalInitiativeDescription;
     @OneToMany
-    @JoinTable(schema = "SM",
+    @JoinTable(schema = "ASM",
             name = "ProjectMetaData_GlobalSolutionArchitects",
             joinColumns = {@JoinColumn(name = "ProjectMetaData_Id",
                     referencedColumnName = "Id")},
@@ -32,7 +32,7 @@ public class ProjectMetaData extends BaseEntity {
     @Column
     private String initiativeName;
     @OneToMany
-    @JoinTable(schema = "SM",
+    @JoinTable(schema = "ASM",
             name = "ProjectMetaData_LocalSolutionArchitects",
             joinColumns = {@JoinColumn(name = "ProjectMetaData_Id",
                     referencedColumnName = "Id")},

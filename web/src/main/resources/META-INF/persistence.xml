@@ -62,6 +62,8 @@
             <property name="hibernate.connection.username" value="niheyjkauxafdk"/>
             <property name="hibernate.connection.password"
                       value="3aa11f4917ebf5282d520ccfb544bdab1addaaa754ce78bca9a3872283dd3315"/>
+            <property name="javax.persistence.schema-generation.create-source" value="script"/>
+            <property name="javax.persistence.schema-generation.create-script-source" value="META-INF/scripts/postgresql/create-schemas.sql"/>
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.flushMode" value="FLUSH_AUTO"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>

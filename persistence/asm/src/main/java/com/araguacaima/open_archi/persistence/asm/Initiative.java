@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 @Entity
 @PersistenceUnit(unitName = "open-archi")
-@Table(schema = "SM",
+@Table(schema = "ASM",
         name = "Initiative")
 public class Initiative extends BaseEntity {
 

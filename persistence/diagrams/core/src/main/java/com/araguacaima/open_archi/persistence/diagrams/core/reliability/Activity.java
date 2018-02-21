@@ -1,13 +1,14 @@
-package com.araguacaima.open_archi.persistence.asm;
+package com.araguacaima.open_archi.persistence.diagrams.core.reliability;
 
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 
+
 @Entity
 @PersistenceUnit(unitName = "open-archi")
-@Table(name = "Activity", schema = "ASM")
+@Table(name = "Activity", schema = "DIAGRAMS")
 public class Activity extends BaseEntity {
 
     public static Measurable DEFAULT_BIG = new Measurable(new Range<Requests>(Requests.REQUESTS_PER_MONTH,

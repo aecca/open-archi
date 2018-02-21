@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 @Entity
 @PersistenceUnit(unitName = "open-archi")
-@Table(schema = "SM",
+@Table(schema = "ASM",
         name = "SecurityControls")
 public class SecurityControls extends BaseEntity {
 

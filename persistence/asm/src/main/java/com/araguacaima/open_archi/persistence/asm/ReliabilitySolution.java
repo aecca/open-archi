@@ -8,7 +8,7 @@ import java.util.Set;
 
 @Entity
 @PersistenceUnit(unitName = "open-archi")
-@Table(schema = "SM",
+@Table(schema = "ASM",
         name = "ReliabilitySolution")
 public class ReliabilitySolution extends BaseEntity {
 
