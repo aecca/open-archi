@@ -30,7 +30,7 @@ public class Model extends Element {
 
     @Column
     @Enumerated(EnumType.STRING)
-    private ElementKind kind = ElementKind.ARCHITECTURAL_MODEL;
+    private ElementKind kind = ElementKind.ARCHITECTURE_MODEL;
 
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",

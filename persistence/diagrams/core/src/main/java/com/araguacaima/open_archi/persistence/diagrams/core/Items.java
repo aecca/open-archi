@@ -20,8 +20,8 @@ import java.util.Set;
                 query = "select a.metaData from Item a where a.id=:id")})
 public class Items extends Taggable {
 
-    public static final String GET_ALL_CHILDREN = "get.all.children";
-    public static final String GET_META_DATA = "get.meta.data";
+    public static final String GET_ALL_CHILDREN = "get.all.children_list";
+    public static final String GET_META_DATA = "get.meta.data_list";
 
     protected String name;
     @Column

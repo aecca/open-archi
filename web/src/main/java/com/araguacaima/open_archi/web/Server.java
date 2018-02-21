@@ -149,7 +149,7 @@ public class Server {
         deeplyFulfilledMetaData = reflectionUtils.deepInitialization(MetaData.class);
         deeplyFulfilledParentModel = reflectionUtils.deepInitialization(Taggable.class);
         deeplyFulfilledArchitectureModel = reflectionUtils.deepInitialization(com.araguacaima.open_archi.persistence.diagrams.architectural.Model.class);
-        deeplyFulfilledArchitectureModel.setKind(ElementKind.ARCHITECTURAL_MODEL);
+        deeplyFulfilledArchitectureModel.setKind(ElementKind.ARCHITECTURE_MODEL);
         deeplyFulfilledBpmModel = reflectionUtils.deepInitialization(com.araguacaima.open_archi.persistence.diagrams.bpm.Model.class);
         deeplyFulfilledBpmModel.setKind(ElementKind.BPM_MODEL);
         deeplyFulfilledERModel = reflectionUtils.deepInitialization(com.araguacaima.open_archi.persistence.diagrams.er.Model.class);
@@ -166,7 +166,7 @@ public class Server {
 
         deeplyFulfilledParentModel_1 = reflectionUtils.deepInitialization(Taggable.class);
         deeplyFulfilledArchitectureModel_1 = reflectionUtils.deepInitialization(com.araguacaima.open_archi.persistence.diagrams.architectural.Model.class);
-        deeplyFulfilledArchitectureModel_1.setKind(ElementKind.ARCHITECTURAL_MODEL);
+        deeplyFulfilledArchitectureModel_1.setKind(ElementKind.ARCHITECTURE_MODEL);
         deeplyFulfilledBpmModel_1 = reflectionUtils.deepInitialization(com.araguacaima.open_archi.persistence.diagrams.bpm.Model.class);
         deeplyFulfilledBpmModel_1.setKind(ElementKind.BPM_MODEL);
         deeplyFulfilledERModel_1 = reflectionUtils.deepInitialization(com.araguacaima.open_archi.persistence.diagrams.er.Model.class);
@@ -183,7 +183,7 @@ public class Server {
 
         deeplyFulfilledParentModel_2 = reflectionUtils.deepInitialization(Taggable.class);
         deeplyFulfilledArchitectureModel_2 = reflectionUtils.deepInitialization(com.araguacaima.open_archi.persistence.diagrams.architectural.Model.class);
-        deeplyFulfilledArchitectureModel_2.setKind(ElementKind.ARCHITECTURAL_MODEL);
+        deeplyFulfilledArchitectureModel_2.setKind(ElementKind.ARCHITECTURE_MODEL);
         deeplyFulfilledBpmModel_2 = reflectionUtils.deepInitialization(com.araguacaima.open_archi.persistence.diagrams.bpm.Model.class);
         deeplyFulfilledBpmModel_2.setKind(ElementKind.BPM_MODEL);
         deeplyFulfilledERModel_2 = reflectionUtils.deepInitialization(com.araguacaima.open_archi.persistence.diagrams.er.Model.class);
@@ -436,8 +436,8 @@ public class Server {
                         if (model == null) {
                             throw new Exception("Invalid model");
                         }
-                        if (model.getKind() != ElementKind.ARCHITECTURAL_MODEL) {
-                            throw new Exception("Invalid kind of model '" + model.getKind() + "'. It should be '" + ElementKind.ARCHITECTURAL_MODEL + "'");
+                        if (model.getKind() != ElementKind.ARCHITECTURE_MODEL) {
+                            throw new Exception("Invalid kind of model '" + model.getKind() + "'. It should be '" + ElementKind.ARCHITECTURE_MODEL + "'");
                         }
                         model.validateCreation();
                         Util.populate(model);

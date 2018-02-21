@@ -942,7 +942,7 @@ definitions:
           type: string
           description: Type of model
           enum:
-          - ARCHITECTURAL_MODEL
+          - ARCHITECTURE_MODEL
         consumers:
           type: array
           description: Consumers of the model
@@ -979,7 +979,7 @@ definitions:
           type: string
           description: Type of model
           enum:
-          - ARCHITECTURAL_MODEL
+          - ARCHITECTURE_MODEL
         consumers:
           type: array
           description: Consumers of the model
@@ -1197,7 +1197,7 @@ definitions:
         type: string
         description: Referenced element type
         enum:
-        - ARCHITECTURAL_MODEL
+        - ARCHITECTURE_MODEL
         - FLOWCHART_MODEL
         - SEQUENCE_MODEL
         - GANTT_MODEL
@@ -1233,7 +1233,7 @@ definitions:
         type: string
         description: Referenced element type
         enum:
-        - ARCHITECTURAL_MODEL
+        - ARCHITECTURE_MODEL
         - FLOWCHART_MODEL
         - SEQUENCE_MODEL
         - GANTT_MODEL
@@ -1791,7 +1791,7 @@ definitions:
           type: string
           description: Type of element
           enum:
-          - ARCHITECTURAL_MODEL
+          - ARCHITECTURE_MODEL
           - FLOWCHART_MODEL
           - SEQUENCE_MODEL
           - GANTT_MODEL
@@ -1841,7 +1841,7 @@ definitions:
           type: string
           description: Type of element
           enum:
-          - ARCHITECTURAL_MODEL
+          - ARCHITECTURE_MODEL
           - FLOWCHART_MODEL
           - SEQUENCE_MODEL
           - GANTT_MODEL
@@ -1892,7 +1892,7 @@ definitions:
         type: string
         description: Type of element
         enum:
-        - ARCHITECTURAL_MODEL
+        - ARCHITECTURE_MODEL
         - FLOWCHART_MODEL
         - SEQUENCE_MODEL
         - GANTT_MODEL
@@ -2051,7 +2051,7 @@ definitions:
         type: string
         description: Referenced element type
         enum:
-        - ARCHITECTURAL_MODEL
+        - ARCHITECTURE_MODEL
         - FLOWCHART_MODEL
         - SEQUENCE_MODEL
         - GANTT_MODEL

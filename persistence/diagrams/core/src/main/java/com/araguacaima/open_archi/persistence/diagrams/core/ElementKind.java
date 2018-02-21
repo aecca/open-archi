@@ -1,7 +1,7 @@
 package com.araguacaima.open_archi.persistence.diagrams.core;
 
 public enum ElementKind {
-    ARCHITECTURAL_MODEL,
+    ARCHITECTURE_MODEL,
     FLOWCHART_MODEL,
     SEQUENCE_MODEL,
     GANTT_MODEL,

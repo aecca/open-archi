@@ -1,13 +1,10 @@
 package com.araguacaima.open_archi.persistence.diagrams.architectural;
 
-import com.araguacaima.open_archi.persistence.diagrams.core.Element;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 import com.araguacaima.open_archi.persistence.diagrams.core.Elements;
 
 import javax.persistence.*;
-import java.util.HashMap;
 import java.util.LinkedHashSet;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -15,16 +12,16 @@ import java.util.Set;
  */
 @Entity
 @PersistenceUnit(unitName = "open-archi")
-@DiscriminatorValue(value = "ArchitectureModel")
+@DiscriminatorValue(value = "ArchitectureModels")
 @NamedQueries({@NamedQuery(name = Models.GET_ALL_RELATIONSHIPS,
         query = "select a.relationships from Model a where a.id=:id"),})
 public class Models extends Elements {
 
-    public static final String GET_ALL_RELATIONSHIPS = "get.all.relationships";
+    public static final String GET_ALL_RELATIONSHIPS = "get.all.relationships_list";
 
     @Column
     @Enumerated(EnumType.STRING)
-    private ElementKind kind = ElementKind.ARCHITECTURAL_MODEL;
+    private ElementKind kind = ElementKind.ARCHITECTURE_MODEL;
 
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",

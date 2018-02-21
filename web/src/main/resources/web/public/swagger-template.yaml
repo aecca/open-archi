@@ -200,7 +200,7 @@ definitions:
           type: string
           description: Type of model
           enum:
-          - ARCHITECTURAL_MODEL
+          - ARCHITECTURE_MODEL
         consumers:
           type: array
           description: Consumers of the model
@@ -233,7 +233,7 @@ definitions:
           type: string
           description: Type of model
           enum:
-          - ARCHITECTURAL_MODEL
+          - ARCHITECTURE_MODEL
         consumers:
           type: array
           description: Consumers of the model
@@ -260,9 +260,51 @@ definitions:
   Architecture_Models_Create:
     type: object
   Architecture_Relationship:
-    type: object
+    description: Relationship between model objects
+    allOf:
+    - $ref: "#/definitions/Relationship"
+    - type: object
+      properties:
+        technology:
+          type: string
+          description: Technology that underlies the relationship between architecture's components
+        interactionStyle:
+          type: string
+          description: Type of interaction between architecture's components
+          enum:
+          - SYNCHRONOUS
+          - ASYNCHRONOUS
+        type:
+          type: string
+          description: Type of relationship
+          enum:
+          - UNIDIRECTIONAL
+          - BIDIRECTIONAL
+      required:
+      - type
   Architecture_Relationships:
-    type: object
+    description: Relationship between model objects
+    allOf:
+    - $ref: "#/definitions/Relationships"
+    - type: object
+      properties:
+        technology:
+          type: string
+          description: Technology that underlies the relationship between architecture's components
+        interactionStyle:
+          type: string
+          description: Type of interaction between architecture's components
+          enum:
+          - SYNCHRONOUS
+          - ASYNCHRONOUS
+        type:
+          type: string
+          description: Type of relationship
+          enum:
+          - UNIDIRECTIONAL
+          - BIDIRECTIONAL
+      required:
+      - type
   BPM_Model:
     type: object
   BPM_Models:
@@ -564,6 +606,10 @@ definitions:
     properties:
       head:
         $ref: '#/definitions/Options_Output_Item'
+  Relationship:
+    type: object
+  Relationships:
+    type: object
   Sequence_Model:
     type: object
   Sequence_Models:
