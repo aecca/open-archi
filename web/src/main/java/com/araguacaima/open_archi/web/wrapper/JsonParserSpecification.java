@@ -18,7 +18,7 @@ import static cz.jirutka.rsql.parser.ast.RSQLOperators.*;
 class JsonParserSpecification {
 
     private static final Set<Class<?>> WRAPPER_TYPES = getWrapperTypes();
-    private static final String MARKED_FOR_DELETION = "###MARKED_FOR_DELETION###";
+    public static final String MARKED_FOR_DELETION = "###MARKED_FOR_DELETION###";
     private static Logger log = LoggerFactory.getLogger(JsonParserSpecification.class);
 
     private static boolean isWrapperType(Class<?> clazz) {
@@ -134,6 +134,18 @@ class JsonParserSpecification {
         }
 
         if (op == EQUAL) {
+            String value_ = value.toString();
+            String newElement_ = newElement.toString();
+            if (value_.startsWith("*") && value_.endsWith("*")) {
+                CharSequence obj = value_.subSequence(1, value_.length() - 1);
+                return newElement_.matches(String.valueOf(obj));
+            }
+            if (value_.endsWith("*")) {
+                return newElement_.startsWith(value_);
+            }
+            if (value_.startsWith("*")) {
+                return newElement_.endsWith(value_);
+            }
             return newElement.equals(value);
         } else if (op == NOT_EQUAL) {
             return !newElement.equals(value);

@@ -274,6 +274,7 @@ public class Server {
                 Map<String, Object> mapEditor = new HashMap<>();
                 exception(Exception.class, exceptionHandler);
                 mapEditor.put("title", "OpenArchi Editor");
+                mapEditor.put("diagramTypes", deeplyFulfilledDiagramTypesCollection);
                 get("/", (req, res) -> new ModelAndView(mapEditor, "editor"), engine);
             });
             path("/api", () -> {

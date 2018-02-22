@@ -10,6 +10,7 @@ public abstract class RsqlJsonFilter {
     public static Object rsql(final String query, final String json)
             throws IOException {
         Node rootNode = new RSQLParser().parse(query);
-        return rootNode.accept(new JsonPathRsqlVisitor(json));
+        String accept = rootNode.accept(new JsonPathRsqlVisitor(json));
+        return accept.equals(JsonParserSpecification.MARKED_FOR_DELETION) ? "{}" : accept;
     }
 }
