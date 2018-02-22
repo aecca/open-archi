@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import de.neuland.jade4j.JadeConfiguration;
 import de.neuland.jade4j.template.TemplateLoader;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.IterableUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
@@ -77,10 +78,11 @@ public class Server {
     private static Taggable deeplyFulfilledParentModel;
     private static Taggable deeplyFulfilledParentModel_1;
     private static Taggable deeplyFulfilledParentModel_2;
-
+    private static String deeplyFulfilledDiagramType;
     private static MetaData deeplyFulfilledMetaData;
 
     private static Collection<Taggable> deeplyFulfilledParentModelCollection = new ArrayList<>();
+    private static Collection<String> deeplyFulfilledDiagramTypesCollection = new ArrayList<>();
     private static Collection<com.araguacaima.open_archi.persistence.diagrams.architectural.Model> deeplyFulfilledArchitectureModelCollection = new ArrayList<>();
     private static Collection<com.araguacaima.open_archi.persistence.diagrams.bpm.Model> deeplyFulfilledBpmModelCollection = new ArrayList<>();
     private static Collection<com.araguacaima.open_archi.persistence.diagrams.er.Model> deeplyFulfilledERModelCollection = new ArrayList<>();
@@ -116,7 +118,7 @@ public class Server {
     private static com.araguacaima.open_archi.persistence.diagrams.sequence.Model deeplyFulfilledSequenceModel_2;
     private static com.araguacaima.open_archi.persistence.diagrams.classes.Model deeplyFulfilledClassesModel_2;
 
-    private static com.araguacaima.open_archi.persistence.diagrams.architectural.Relationship  deeplyFulfilledArchitectureRelationship;
+    private static com.araguacaima.open_archi.persistence.diagrams.architectural.Relationship deeplyFulfilledArchitectureRelationship;
     private static com.araguacaima.open_archi.persistence.diagrams.architectural.Relationship deeplyFulfilledArchitectureRelationship_1;
     private static com.araguacaima.open_archi.persistence.diagrams.architectural.Relationship deeplyFulfilledArchitectureRelationship_2;
 
@@ -233,6 +235,16 @@ public class Server {
         diagramsReflections = new Reflections(DIAGRAMS_PACKAGES, Taggable.class.getClassLoader());
         modelsClasses = diagramsReflections.getSubTypesOf(Taggable.class);
         CollectionUtils.filter(modelsClasses, clazz -> clazz.getSuperclass().equals(Element.class) && !Modifier.isAbstract(clazz.getModifiers()));
+
+        Set<Class<? extends DiagramableElement>> diagramTypes = diagramsReflections.getSubTypesOf(DiagramableElement.class);
+        IterableUtils.forEach(diagramTypes, input -> {
+            try {
+                deeplyFulfilledDiagramTypesCollection.add(input.newInstance().getKind().name());
+            } catch (InstantiationException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        });
+        deeplyFulfilledDiagramType = deeplyFulfilledDiagramTypesCollection.iterator().next();
 
         //noinspection ResultOfMethodCallIgnored
         JPAEntityManagerUtils.getEntityManager();
@@ -655,6 +667,17 @@ public class Server {
                         return throwError(response, ex);
                     }
                 });
+                options("/catalogs/diagram-types", (request, response) -> {
+                    setCORS(request, response);
+                    Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledDiagramTypesCollection, deeplyFulfilledDiagramType, HttpMethod.get, HttpMethod.post);
+                    return getOptions(request, response, output);
+                });
+                post("/catalogs/diagram-types", (request, response) -> {
+                    response.status(HTTP_NOT_IMPLEMENTED);
+                    response.type(JSON_CONTENT_TYPE);
+                    return EMPTY_RESPONSE;
+                });
+                get("/catalogs/diagram-types", (request, response) -> getList(request, response, deeplyFulfilledDiagramTypesCollection));
             });
         });
     }
@@ -720,6 +743,23 @@ public class Server {
         response.status(HTTP_OK);
 
         List<Taggable> models = JPAEntityManagerUtils.executeQuery(type == null ? Taggable.class : type, query, params);
+        String jsonObjects = jsonUtils.toJSON(models);
+        Object filter_ = filter(request.queryParams("$filter"), jsonObjects);
+        String json = request.pathInfo().replaceFirst("/api/models", "");
+        String contentType = getContentType(request);
+        response.header("Content-Type", contentType);
+        if (contentType.equals(HTML_CONTENT_TYPE)) {
+            Map<String, Object> jsonMap = new HashMap<>();
+            jsonMap.put("title", StringUtils.capitalize(json));
+            jsonMap.put("json", jsonUtils.toJSON(filter_));
+            return render(jsonMap, "json");
+        } else {
+            return filter_.getClass().equals(String.class) ? filter_ : jsonUtils.toJSON(filter_);
+        }
+    }
+
+    private static Object getList(Request request, Response response, Collection models) throws IOException, URISyntaxException {
+        response.status(HTTP_OK);
         String jsonObjects = jsonUtils.toJSON(models);
         Object filter_ = filter(request.queryParams("$filter"), jsonObjects);
         String json = request.pathInfo().replaceFirst("/api/models", "");

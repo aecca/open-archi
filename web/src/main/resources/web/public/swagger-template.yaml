@@ -892,6 +892,67 @@ paths:
       security:
       - openarchi_auth:
         - read:models
+  "/catalogs/diagram-types":
+    options:
+      tags:
+      - Catalogs
+      summary: Shows options for catalogs of diagram types
+      operationId: options-catalogs-diagram-types
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            allOf:
+            - $ref: "#/definitions/Options_Get_String_Collection"
+            - $ref: "#/definitions/Options_Post_String"
+    get:
+      tags:
+      - Catalogs
+      summary: Finds diagram's types
+      description: Returns all permitter and implemented diagram types
+      operationId: get-diagram-types
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              type: string
+        '400':
+          description: Bad request
+      security:
+      - openarchi_auth:
+        - read:diagrams
+    post:
+      tags:
+      - Catalogs
+      summary: Request for the addition of a new diagram type
+      description: ''
+      operationId: post-diagram-types
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: Model object that needs to be added
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Accepted
+        '501':
+          description: Not implemented
+      security:
+      - openarchi_auth:
+        - write:diagram
+        - read:diagrams
 securityDefinitions:
   openarchi_auth:
     type: oauth2
@@ -2801,6 +2862,11 @@ definitions:
         type: array
         items:
           type: object
+  Options_Get_String_Collection:
+    description: Generic object to expose endpoint functionalitites
+    properties:
+      get:
+        type: string
   Options_Get_Collection:
     description: Generic object to expose endpoint functionalitites
     properties:
@@ -2816,6 +2882,11 @@ definitions:
     properties:
       post:
         $ref: '#/definitions/Options_Input_Item'
+  Options_Post_String:
+    description: Generic object to expose endpoint functionalitites
+    properties:
+      post:
+        type: string
   Options_Post_Collection:
     description: Generic object to expose endpoint functionalitites for batching input processing
     properties:

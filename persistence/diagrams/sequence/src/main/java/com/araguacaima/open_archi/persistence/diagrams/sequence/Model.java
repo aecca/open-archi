@@ -1,5 +1,6 @@
 package com.araguacaima.open_archi.persistence.diagrams.sequence;
 
+import com.araguacaima.open_archi.persistence.diagrams.core.DiagramableElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.Element;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 
@@ -20,7 +21,7 @@ import java.util.Set;
         @NamedQuery(
                 name = Model.GET_ALL_SEQUENCE_MODELS,
                 query = "select a from Model a")})
-public class Model extends Element {
+public class Model extends Element implements DiagramableElement {
 
     public static final String FIND_BY_NAME = "SequenceModel.findByName";
     public static final String GET_MODELS_COUNT = "SequenceModel.getModelsCount";

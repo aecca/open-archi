@@ -1,5 +1,6 @@
 package com.araguacaima.open_archi.persistence.diagrams.er;
 
+import com.araguacaima.open_archi.persistence.diagrams.core.DiagramableElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.Element;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 
@@ -11,7 +12,7 @@ import java.util.Set;
 @javax.persistence.Entity
 @PersistenceUnit(unitName = "open-archi")
 @DiscriminatorValue(value = "ERModel")
-public class Model extends Element {
+public class Model extends Element implements DiagramableElement {
 
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",

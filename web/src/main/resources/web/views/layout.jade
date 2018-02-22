@@ -62,8 +62,9 @@ html
     body
         div
             div.sticky
-                img(src='/images/OpenArchi.png', width='150', height='100', style="float: left;")
-                h2.title= title
+                a(href="/")
+                    img(src='/images/OpenArchi.png', width='150', height='100', style="float: left;")
+                    h2.title= title
             br
         block content
 

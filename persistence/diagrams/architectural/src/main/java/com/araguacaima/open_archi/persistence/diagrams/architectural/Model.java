@@ -1,5 +1,6 @@
 package com.araguacaima.open_archi.persistence.diagrams.architectural;
 
+import com.araguacaima.open_archi.persistence.diagrams.core.DiagramableElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.Element;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 
@@ -15,7 +16,7 @@ import java.util.Set;
 @DiscriminatorValue(value = "ArchitectureModel")
 @NamedQueries({@NamedQuery(name = Model.GET_ALL_RELATIONSHIPS,
         query = "select a.relationships from Model a where a.id=:id"),})
-public class Model extends Element {
+public class Model extends Element implements DiagramableElement {
 
 
     public static final String GET_ALL_RELATIONSHIPS = "get.all.relationships";
