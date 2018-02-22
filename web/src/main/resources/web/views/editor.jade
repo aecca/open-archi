@@ -591,14 +591,15 @@ block scripts
 
                 });
         }
+        var dataArray = [];
         $(function () {
-
             $("#diagramId").autocomplete({
                 minLength: 3,
                 source: function (request, response) {
                     $.get("/open-archi/api/models", {$filter: "name=='*" + request.term + "*'"})
                         .done(function (data) {
                             var models = [{id: "-1", value: "Select one..."}];
+                            dataArray = data;
                             data.forEach(function (model) {
                                 models.push({id: model.id, value: model.name});
                             });
@@ -606,7 +607,10 @@ block scripts
                         });
                 },
                 select: function (event, ui) {
-
+                    var name = event.target.innerHtml;
+                    $("#savedModel").html(dataArray.find(function (model) {
+                        return model.name === name;
+                    }));
                 },
                 // optional (if other layers overlap autocomplete list)
                 open: function (event, ui) {
