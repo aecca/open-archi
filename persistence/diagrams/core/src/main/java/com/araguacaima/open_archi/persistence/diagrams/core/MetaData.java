@@ -1,7 +1,6 @@
 package com.araguacaima.open_archi.persistence.diagrams.core;
 
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
-import com.araguacaima.open_archi.persistence.meta.Version;
 import com.araguacaima.open_archi.persistence.meta.View;
 import com.araguacaima.open_archi.persistence.persons.Responsible;
 import org.hibernate.annotations.Cascade;

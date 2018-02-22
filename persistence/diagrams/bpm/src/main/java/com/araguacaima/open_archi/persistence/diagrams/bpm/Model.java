@@ -15,26 +15,23 @@ public class Model extends Element {
 
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",
-            name = "Model_Pools",
-            joinColumns = {@JoinColumn(name = "Bpm_Model_Id",
-                    referencedColumnName = "Id")},
-            inverseJoinColumns = {@JoinColumn(name = "Pool_Id",
-                    referencedColumnName = "Id")})
-    private Collection<Pool> pools;
-
-    @Column
-    @Enumerated(EnumType.STRING)
-    private ElementKind kind = ElementKind.BPM_MODEL;
-
-
-    @OneToMany
-    @JoinTable(schema = "DIAGRAMS",
             name = "Bpm_Model_Relationships",
             joinColumns = {@JoinColumn(name = "Bpm_Model_Id",
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Relationship_Id",
                     referencedColumnName = "Id")})
     protected Set<Relationship> relationships = new LinkedHashSet<>();
+    @OneToMany
+    @JoinTable(schema = "DIAGRAMS",
+            name = "Model_Pools",
+            joinColumns = {@JoinColumn(name = "Bpm_Model_Id",
+                    referencedColumnName = "Id")},
+            inverseJoinColumns = {@JoinColumn(name = "Pool_Id",
+                    referencedColumnName = "Id")})
+    private Collection<Pool> pools;
+    @Column
+    @Enumerated(EnumType.STRING)
+    private ElementKind kind = ElementKind.BPM_MODEL;
 
     public Collection<Pool> getPools() {
         return pools;

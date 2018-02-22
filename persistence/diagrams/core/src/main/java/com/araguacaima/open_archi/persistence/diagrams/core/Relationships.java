@@ -1,9 +1,8 @@
 package com.araguacaima.open_archi.persistence.diagrams.core;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.Cascade;
-
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.PersistenceUnit;
 
 /**
  * A relationship between two elements.

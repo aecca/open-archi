@@ -15,6 +15,14 @@ public class Model extends Element {
 
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",
+            name = "ER_Model_Relationships",
+            joinColumns = {@JoinColumn(name = "ER_Model_Id",
+                    referencedColumnName = "Id")},
+            inverseJoinColumns = {@JoinColumn(name = "Relationship_Id",
+                    referencedColumnName = "Id")})
+    protected Set<Relationship> relationships = new LinkedHashSet<>();
+    @OneToMany
+    @JoinTable(schema = "DIAGRAMS",
             name = "Model_Entities",
             joinColumns = {@JoinColumn(name = "ER_Model_Id",
                     referencedColumnName = "Id")},
@@ -24,16 +32,6 @@ public class Model extends Element {
     @Column
     @Enumerated(EnumType.STRING)
     private ElementKind kind = ElementKind.ENTITY_RELATIONSHIP_MODEL;
-
-
-    @OneToMany
-    @JoinTable(schema = "DIAGRAMS",
-            name = "ER_Model_Relationships",
-            joinColumns = {@JoinColumn(name = "ER_Model_Id",
-                    referencedColumnName = "Id")},
-            inverseJoinColumns = {@JoinColumn(name = "Relationship_Id",
-                    referencedColumnName = "Id")})
-    protected Set<Relationship> relationships = new LinkedHashSet<>();
 
     public Collection<Entity> getEntities() {
         return entities;

@@ -4,9 +4,7 @@ import com.araguacaima.open_archi.persistence.diagrams.core.Element;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 
 import javax.persistence.*;
-import java.util.HashMap;
 import java.util.LinkedHashSet;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -21,38 +19,6 @@ public class Model extends Element {
 
 
     public static final String GET_ALL_RELATIONSHIPS = "get.all.relationships";
-
-    @Column
-    @Enumerated(EnumType.STRING)
-    private ElementKind kind = ElementKind.ARCHITECTURE_MODEL;
-
-    @OneToMany
-    @JoinTable(schema = "DIAGRAMS",
-            name = "Architecture_Model_People",
-            joinColumns = {@JoinColumn(name = "Architecture_Model_Consumer_Id",
-                    referencedColumnName = "Id")},
-            inverseJoinColumns = {@JoinColumn(name = "Consumer_Id",
-                    referencedColumnName = "Id")})
-    private Set<Consumer> consumers = new LinkedHashSet<>();
-
-    @OneToMany
-    @JoinTable(schema = "DIAGRAMS",
-            name = "Architecture_Model_SoftwareSystems",
-            joinColumns = {@JoinColumn(name = "Architecture_Model_Id",
-                    referencedColumnName = "Id")},
-            inverseJoinColumns = {@JoinColumn(name = "SoftwareSystem_Id",
-                    referencedColumnName = "Id")})
-    private Set<SoftwareSystem> softwareSystems = new LinkedHashSet<>();
-
-    @OneToMany
-    @JoinTable(schema = "DIAGRAMS",
-            name = "Architecture_Model_DeploymentNodes",
-            joinColumns = {@JoinColumn(name = "Architecture_Model_Id",
-                    referencedColumnName = "Id")},
-            inverseJoinColumns = {@JoinColumn(name = "DeploymentNode_Id",
-                    referencedColumnName = "Id")})
-    private Set<DeploymentNode> deploymentNodes = new LinkedHashSet<>();
-
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",
             name = "Architecture_Model_Relationships",
@@ -61,6 +27,33 @@ public class Model extends Element {
             inverseJoinColumns = {@JoinColumn(name = "Relationship_Id",
                     referencedColumnName = "Id")})
     protected Set<Relationship> relationships = new LinkedHashSet<>();
+    @Column
+    @Enumerated(EnumType.STRING)
+    private ElementKind kind = ElementKind.ARCHITECTURE_MODEL;
+    @OneToMany
+    @JoinTable(schema = "DIAGRAMS",
+            name = "Architecture_Model_People",
+            joinColumns = {@JoinColumn(name = "Architecture_Model_Consumer_Id",
+                    referencedColumnName = "Id")},
+            inverseJoinColumns = {@JoinColumn(name = "Consumer_Id",
+                    referencedColumnName = "Id")})
+    private Set<Consumer> consumers = new LinkedHashSet<>();
+    @OneToMany
+    @JoinTable(schema = "DIAGRAMS",
+            name = "Architecture_Model_SoftwareSystems",
+            joinColumns = {@JoinColumn(name = "Architecture_Model_Id",
+                    referencedColumnName = "Id")},
+            inverseJoinColumns = {@JoinColumn(name = "SoftwareSystem_Id",
+                    referencedColumnName = "Id")})
+    private Set<SoftwareSystem> softwareSystems = new LinkedHashSet<>();
+    @OneToMany
+    @JoinTable(schema = "DIAGRAMS",
+            name = "Architecture_Model_DeploymentNodes",
+            joinColumns = {@JoinColumn(name = "Architecture_Model_Id",
+                    referencedColumnName = "Id")},
+            inverseJoinColumns = {@JoinColumn(name = "DeploymentNode_Id",
+                    referencedColumnName = "Id")})
+    private Set<DeploymentNode> deploymentNodes = new LinkedHashSet<>();
 
     public Model() {
     }

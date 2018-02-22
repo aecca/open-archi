@@ -11,16 +11,16 @@ import javax.persistence.Table;
 @PersistenceUnit(unitName = "open-archi")
 @Table(schema = "DIAGRAMS",
         name = "Range")
-public class Range<T extends Enum> extends BaseEntity {
+public class Range extends BaseEntity {
 
+    @Column
+    private String unit;
     @Column
     private Integer lower;
     @Column
-    private T unit;
-    @Column
     private Integer upper;
 
-    public Range(T unit, Integer lower, Integer upper) {
+    public Range(String unit, Integer lower, Integer upper) {
         this.unit = unit;
         this.lower = lower;
         this.upper = upper;
@@ -37,11 +37,11 @@ public class Range<T extends Enum> extends BaseEntity {
         this.lower = lower;
     }
 
-    public T getUnit() {
+    public String getUnit() {
         return unit;
     }
 
-    public void setUnit(T unit) {
+    public void setUnit(String unit) {
         this.unit = unit;
     }
 

@@ -3,7 +3,6 @@ package com.araguacaima.open_archi.persistence.diagrams.core;
 import com.araguacaima.open_archi.persistence.diagrams.core.reliability.Volumetry;
 
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.Set;
 
 /**

@@ -15,6 +15,14 @@ public class Model extends Element {
 
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",
+            name = "Flowchart_Model_Relationships",
+            joinColumns = {@JoinColumn(name = "Flowchart_Model_Id",
+                    referencedColumnName = "Id")},
+            inverseJoinColumns = {@JoinColumn(name = "Relationship_Id",
+                    referencedColumnName = "Id")})
+    protected Set<Relationship> relationships = new LinkedHashSet<>();
+    @OneToMany
+    @JoinTable(schema = "DIAGRAMS",
             name = "Flowchart_Model_Flowcharts",
             joinColumns = {@JoinColumn(name = "Flowchart_Model_Id",
                     referencedColumnName = "Id")},
@@ -24,16 +32,6 @@ public class Model extends Element {
     @Column
     @Enumerated(EnumType.STRING)
     private ElementKind kind = ElementKind.FLOWCHART_MODEL;
-
-
-    @OneToMany
-    @JoinTable(schema = "DIAGRAMS",
-            name = "Flowchart_Model_Relationships",
-            joinColumns = {@JoinColumn(name = "Flowchart_Model_Id",
-                    referencedColumnName = "Id")},
-            inverseJoinColumns = {@JoinColumn(name = "Relationship_Id",
-                    referencedColumnName = "Id")})
-    protected Set<Relationship> relationships = new LinkedHashSet<>();
 
     public Collection<Flowchart> getFlowcharts() {
         return flowcharts;

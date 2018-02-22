@@ -4,22 +4,31 @@ import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @PersistenceUnit(unitName = "open-archi")
 @Table(name = "Rate",
         schema = "DIAGRAMS")
-public class Rate extends BaseEntity {
+public class Rate extends BaseEntity implements MeasurableRange {
 
-    public static Measurable DEFAULT_BIG = new Measurable(new Range<Requests>(Requests.REQUESTS_PER_SECOND, 251, 500));
-    public static Measurable DEFAULT_HUGE = new Measurable(new Range<Requests>(Requests.REQUESTS_PER_SECOND,
+    private static final Set<Measurable> RANGES = new HashSet<Measurable>() {{
+        add(DEFAULT_BIG);
+        add(DEFAULT_HUGE);
+        add(DEFAULT_MEDIUM);
+        add(DEFAULT_MINIMAL);
+        add(DEFAULT_SMALL);
+    }};
+    public static Measurable DEFAULT_BIG = new Measurable(new Range(Requests.REQUESTS_PER_SECOND.name(), 251, 500));
+    public static Measurable DEFAULT_HUGE = new Measurable(new Range(Requests.REQUESTS_PER_SECOND.name(),
             501,
             null));
-    public static Measurable DEFAULT_MEDIUM = new Measurable(new Range<Requests>(Requests.REQUESTS_PER_SECOND,
+    public static Measurable DEFAULT_MEDIUM = new Measurable(new Range(Requests.REQUESTS_PER_SECOND.name(),
             101,
             250));
-    public static Measurable DEFAULT_MINIMAL = new Measurable(new Range<Requests>(Requests.REQUESTS_PER_SECOND, 0, 50));
-    public static Measurable DEFAULT_SMALL = new Measurable(new Range<Requests>(Requests.REQUESTS_PER_SECOND, 51, 100));
+    public static Measurable DEFAULT_MINIMAL = new Measurable(new Range(Requests.REQUESTS_PER_SECOND.name(), 0, 50));
+    public static Measurable DEFAULT_SMALL = new Measurable(new Range(Requests.REQUESTS_PER_SECOND.name(), 51, 100));
     @Column
     @Enumerated(EnumType.STRING)
     private RequestTarget target;
@@ -48,5 +57,10 @@ public class Rate extends BaseEntity {
 
     public void setValue(Measurable value) {
         this.value = value;
+    }
+
+    @Override
+    public Set<Measurable> getRanges() {
+        return RANGES;
     }
 }

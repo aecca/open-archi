@@ -44,20 +44,13 @@ public class Version implements Serializable, Comparable<Version>, Cloneable {
     @Id
     @NotNull
     @Column(name = "Id")
-    private  String id = UUID.randomUUID().toString();
-
-    public String getId() {
-        return this.id;
-    }
-
+    private String id = UUID.randomUUID().toString();
     @Column(nullable = false)
     @NotNull
     private Integer major = 0;
-
     @Column(nullable = false)
     @NotNull
     private Integer minor = 0;
-
     @Column(nullable = true)
     private Integer build = 1;
 
@@ -111,6 +104,10 @@ public class Version implements Serializable, Comparable<Version>, Cloneable {
             } catch (IndexOutOfBoundsException ignored) {
             }
         }
+    }
+
+    public String getId() {
+        return this.id;
     }
 
     public Integer getMajor() {
@@ -176,7 +173,7 @@ public class Version implements Serializable, Comparable<Version>, Cloneable {
             build = 1;
         }
         return this;
-     }
+    }
 
     public Version nextMinor() {
         if (minor != null) {

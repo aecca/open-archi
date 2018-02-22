@@ -3,7 +3,6 @@ package com.araguacaima.open_archi.persistence.diagrams.core;
 import com.araguacaima.commons.utils.MapUtils;
 import com.araguacaima.open_archi.persistence.commons.Constants;
 import com.araguacaima.open_archi.persistence.commons.exceptions.EntityError;
-import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 import com.araguacaima.open_archi.persistence.meta.Valuable;
 import com.araguacaima.specification.Specification;
 import com.araguacaima.specification.util.SpecificationMap;
@@ -20,14 +19,13 @@ import java.util.ResourceBundle;
 @Entity
 @PersistenceUnit(unitName = "open-archi")
 @Table(name = "CompositeElement", schema = "DIAGRAMS")
-public class CompositeElement<T extends ElementKind> implements Valuable{
+public class CompositeElement<T extends ElementKind> implements Valuable {
 
 
-    private static SpecificationMapBuilder specificationMapBuilder = new SpecificationMapBuilder(MapUtils.getInstance());
     @Transient
     @JsonIgnore
     protected static final ResourceBundle resourceBundle = ResourceBundle.getBundle(Constants.BUNDLE_NAME);
-
+    private static SpecificationMapBuilder specificationMapBuilder = new SpecificationMapBuilder(MapUtils.getInstance());
     @Id
     @NotNull
     @Column(name = "Id")

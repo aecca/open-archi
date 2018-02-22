@@ -16,6 +16,14 @@ public class Model extends Element {
 
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",
+            name = "Classes_Model_Relationships",
+            joinColumns = {@JoinColumn(name = "Classes_Model_Id",
+                    referencedColumnName = "Id")},
+            inverseJoinColumns = {@JoinColumn(name = "Relationship_Id",
+                    referencedColumnName = "Id")})
+    protected Set<Relationship> relationships = new LinkedHashSet<>();
+    @OneToMany
+    @JoinTable(schema = "DIAGRAMS",
             name = "Model_Classes",
             joinColumns = {@JoinColumn(name = "Classes_Model_Id",
                     referencedColumnName = "Id")},
@@ -25,16 +33,6 @@ public class Model extends Element {
     @Column
     @Enumerated(EnumType.STRING)
     private ElementKind kind = ElementKind.BPM_MODEL;
-
-
-    @OneToMany
-    @JoinTable(schema = "DIAGRAMS",
-            name = "Classes_Model_Relationships",
-            joinColumns = {@JoinColumn(name = "Classes_Model_Id",
-                    referencedColumnName = "Id")},
-            inverseJoinColumns = {@JoinColumn(name = "Relationship_Id",
-                    referencedColumnName = "Id")})
-    protected Set<Relationship> relationships = new LinkedHashSet<>();
 
     public Collection<UmlClass> getClasses() {
         return classes;

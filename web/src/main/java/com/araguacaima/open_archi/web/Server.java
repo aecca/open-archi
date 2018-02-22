@@ -3,9 +3,9 @@ package com.araguacaima.open_archi.web;
 import com.araguacaima.commons.utils.EnumsUtils;
 import com.araguacaima.commons.utils.JsonUtils;
 import com.araguacaima.commons.utils.ReflectionUtils;
-import com.araguacaima.open_archi.web.wrapper.RsqlJsonFilter;
 import com.araguacaima.open_archi.persistence.diagrams.core.*;
 import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
+import com.araguacaima.open_archi.web.wrapper.RsqlJsonFilter;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.neuland.jade4j.JadeConfiguration;
@@ -386,7 +386,7 @@ public class Server {
                         Util.populate(metaData);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
-                        response.header("Location", request.pathInfo() + "/models/" +  request.params(":uuid") + "/meta-data");
+                        response.header("Location", request.pathInfo() + "/models/" + request.params(":uuid") + "/meta-data");
                         return EMPTY_RESPONSE;
                     } catch (Throwable ex) {
                         return throwError(response, ex);

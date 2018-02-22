@@ -4,17 +4,26 @@ import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @PersistenceUnit(unitName = "open-archi")
 @Table(name = "Database",
         schema = "DIAGRAMS")
-public class Database extends BaseEntity {
-    public static Measurable DEFAULT_BIG = new Measurable(new Range<StorageUnit>(StorageUnit.GB, 251, 500));
-    public static Measurable DEFAULT_HUGE = new Measurable(new Range<StorageUnit>(StorageUnit.GB, 501, null));
-    public static Measurable DEFAULT_MEDIUM = new Measurable(new Range<StorageUnit>(StorageUnit.GB, 101, 250));
-    public static Measurable DEFAULT_MINIMAL = new Measurable(new Range<StorageUnit>(StorageUnit.GB, 0, 50));
-    public static Measurable DEFAULT_SMALL = new Measurable(new Range<StorageUnit>(StorageUnit.GB, 51, 100));
+public class Database extends BaseEntity implements MeasurableRange {
+    private static final Set<Measurable> RANGE = new HashSet<Measurable>() {{
+        add(DEFAULT_BIG);
+        add(DEFAULT_HUGE);
+        add(DEFAULT_MEDIUM);
+        add(DEFAULT_MINIMAL);
+        add(DEFAULT_SMALL);
+    }};
+    public static Measurable DEFAULT_BIG = new Measurable(new Range(StorageUnit.Giga_Bytes.name(), 251, 500));
+    public static Measurable DEFAULT_HUGE = new Measurable(new Range(StorageUnit.Giga_Bytes.name(), 501, null));
+    public static Measurable DEFAULT_MEDIUM = new Measurable(new Range(StorageUnit.Giga_Bytes.name(), 101, 250));
+    public static Measurable DEFAULT_MINIMAL = new Measurable(new Range(StorageUnit.Giga_Bytes.name(), 0, 50));
+    public static Measurable DEFAULT_SMALL = new Measurable(new Range(StorageUnit.Giga_Bytes.name(), 51, 100));
     @Column
     @Enumerated(EnumType.STRING)
     private DataBaseType type;
@@ -43,5 +52,10 @@ public class Database extends BaseEntity {
 
     public void setValue(Measurable value) {
         this.value = value;
+    }
+
+    @Override
+    public Set<Measurable> getRanges() {
+        return RANGE;
     }
 }

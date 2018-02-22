@@ -153,7 +153,7 @@
         <logback.version>1.1.1</logback.version>
         <org.logback-extensions-logback-ext-spring>0.1.4</org.logback-extensions-logback-ext-spring>
         <slf4j.version>1.7.7</slf4j.version>
-
+        <com.querydsl-querydsl-core>4.0.1</com.querydsl-querydsl-core>
     </properties>
 
     <dependencyManagement>
@@ -788,6 +788,12 @@
                 <scope>compile</scope>
             </dependency>
 
+            <dependency>
+                <groupId>com.querydsl</groupId>
+                <artifactId>querydsl-core</artifactId>
+                <version>${com.querydsl-querydsl-core}</version>
+                <scope>compile</scope>
+            </dependency>
         </dependencies>
 
     </dependencyManagement>

@@ -3,7 +3,6 @@ package com.araguacaima.open_archi.persistence.diagrams.architectural;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.PersistenceUnit;
-import javax.persistence.Table;
 
 /**
  * The word "component" is a hugely overloaded term in the software development

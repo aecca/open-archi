@@ -8,7 +8,7 @@ public enum ElementKind {
     ENTITY_RELATIONSHIP_MODEL,
     UML_CLASS_MODEL,
     BPM_MODEL,
-    ARCHITECTURAL,
+    ARCHITECTURE,
     FLOWCHART,
     SEQUENCE,
     GANTT,
