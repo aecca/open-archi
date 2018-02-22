@@ -48,6 +48,24 @@ public class Item extends Taggable {
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     protected Shape shape;
 
+    @OneToMany
+    @JoinTable(schema = "DIAGRAMS",
+            name = "Item_Can_Be_Connected_From_Ids",
+            joinColumns = {@JoinColumn(name = "Item_Id",
+                    referencedColumnName = "Id")},
+            inverseJoinColumns = {@JoinColumn(name = "Can_Be_Connected_From_Id",
+                    referencedColumnName = "Id")})
+    protected Set<CompositeElement> canBeConnectedFrom;
+
+    @OneToMany
+    @JoinTable(schema = "DIAGRAMS",
+            name = "Item_Can_Be_Connected_To_Ids",
+            joinColumns = {@JoinColumn(name = "Item_Id",
+                    referencedColumnName = "Id")},
+            inverseJoinColumns = {@JoinColumn(name = "Can_Be_Connected_To_Id",
+                    referencedColumnName = "Id")})
+    protected Set<CompositeElement> canBeConnectedTo;
+
     @OneToOne(cascade = CascadeType.REMOVE)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     protected MetaData metaData;
@@ -93,6 +111,22 @@ public class Item extends Taggable {
 
     public void setShape(Shape shape) {
         this.shape = shape;
+    }
+
+    public Set<CompositeElement> getCanBeConnectedFrom() {
+        return canBeConnectedFrom;
+    }
+
+    public void setCanBeConnectedFrom(Set<CompositeElement> canBeConnectedFrom) {
+        this.canBeConnectedFrom = canBeConnectedFrom;
+    }
+
+    public Set<CompositeElement> getCanBeConnectedTo() {
+        return canBeConnectedTo;
+    }
+
+    public void setCanBeConnectedTo(Set<CompositeElement> canBeConnectedTo) {
+        this.canBeConnectedTo = canBeConnectedTo;
     }
 
     public MetaData getMetaData() {

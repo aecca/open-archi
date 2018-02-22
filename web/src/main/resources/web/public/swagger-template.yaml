@@ -2344,6 +2344,16 @@ definitions:
         shape:
           $ref: "#/definitions/Shape"
           description: Long description of model
+        canBeConnectedFrom:
+          type: array
+          description: Origin elements from which it is allowed to connect to this item
+          items:
+            $ref: "#/definitions/Composite_Element"
+        canBeConnectedTo:
+          type: array
+          description: Target elements to which this item can be connected
+          items:
+            $ref: "#/definitions/Composite_Element"
         metaData:
           $ref: "#/definitions/Meta_Data"
           description: Meta data associated with the model
@@ -2394,6 +2404,16 @@ definitions:
         shape:
           $ref: "#/definitions/Shape_Create"
           description: Long description of model
+        canBeConnectedFrom:
+          type: array
+          description: Origin elements from which it is allowed to connect to this item
+          items:
+            $ref: "#/definitions/Composite_Element"
+        canBeConnectedTo:
+          type: array
+          description: Target elements to which this item can be connected
+          items:
+            $ref: "#/definitions/Composite_Element"
         metaData:
           $ref: "#/definitions/Meta_Data_Create"
           description: Meta data associated with the model
