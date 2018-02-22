@@ -10,61 +10,61 @@ import java.util.Set;
 @Entity
 @PersistenceUnit(unitName = "open-archi")
 @Table(schema = "DIAGRAMS",
-        name = "Volumetry")
-public class Volumetry extends BaseEntity {
+        name = "Constraint")
+public class Constraint extends BaseEntity {
 
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",
-            name = "Volumetry_Activities",
-            joinColumns = {@JoinColumn(name = "Volumetry_Id",
+            name = "Constraint_Activities",
+            joinColumns = {@JoinColumn(name = "Constraint_Id",
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Activities_Id",
                     referencedColumnName = "Id")})
     private Set<Activity> activities;
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",
-            name = "Volumetry_BatchProcessing",
-            joinColumns = {@JoinColumn(name = "Volumetry_Id",
+            name = "Constraint_BatchProcessing",
+            joinColumns = {@JoinColumn(name = "Constraint_Id",
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "BatchProcessing_Id",
                     referencedColumnName = "Id")})
     private Set<BatchProcessing> batchProcessing;
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",
-            name = "Volumetry_BulkProcessing",
-            joinColumns = {@JoinColumn(name = "Volumetry_Id",
+            name = "Constraint_BulkProcessing",
+            joinColumns = {@JoinColumn(name = "Constraint_Id",
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "BulkProcessing_Id",
                     referencedColumnName = "Id")})
     private Set<BulkProcessing> bulkProcessing;
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",
-            name = "Volumetry_Concurrency",
-            joinColumns = {@JoinColumn(name = "Volumetry_Id",
+            name = "Constraint_Concurrency",
+            joinColumns = {@JoinColumn(name = "Constraint_Id",
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Concurrency_Id",
                     referencedColumnName = "Id")})
     private Set<Concurrency> concurrencies;
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",
-            name = "Volumetry_Database",
-            joinColumns = {@JoinColumn(name = "Volumetry_Id",
+            name = "Constraint_Database",
+            joinColumns = {@JoinColumn(name = "Constraint_Id",
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Database_Id",
                     referencedColumnName = "Id")})
     private Set<Database> dataBase;
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",
-            name = "Volumetry_FileTransfer",
-            joinColumns = {@JoinColumn(name = "Volumetry_Id",
+            name = "Constraint_FileTransfer",
+            joinColumns = {@JoinColumn(name = "Constraint_Id",
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "FileTransfer_Id",
                     referencedColumnName = "Id")})
     private Set<FileTransfer> fileTransfers;
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",
-            name = "Volumetry_Rate",
-            joinColumns = {@JoinColumn(name = "Volumetry_Id",
+            name = "Constraint_Rate",
+            joinColumns = {@JoinColumn(name = "Constraint_Id",
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Rate_Id",
                     referencedColumnName = "Id")})

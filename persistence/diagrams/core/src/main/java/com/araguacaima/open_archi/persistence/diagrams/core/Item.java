@@ -54,7 +54,7 @@ public class Item extends Taggable {
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Can_Be_Connected_From_Id",
                     referencedColumnName = "Id")})
-    protected Set<CompositeElement> canBeConnectedFrom;
+    protected Set<ConnectTrigger> canBeConnectedFrom;
 
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",
@@ -63,7 +63,7 @@ public class Item extends Taggable {
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Can_Be_Connected_To_Id",
                     referencedColumnName = "Id")})
-    protected Set<CompositeElement> canBeConnectedTo;
+    protected Set<ConnectTrigger> canBeConnectedTo;
 
     @OneToOne(cascade = CascadeType.REMOVE)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
@@ -112,19 +112,19 @@ public class Item extends Taggable {
         this.shape = shape;
     }
 
-    public Set<CompositeElement> getCanBeConnectedFrom() {
+    public Set<ConnectTrigger> getCanBeConnectedFrom() {
         return canBeConnectedFrom;
     }
 
-    public void setCanBeConnectedFrom(Set<CompositeElement> canBeConnectedFrom) {
+    public void setCanBeConnectedFrom(Set<ConnectTrigger> canBeConnectedFrom) {
         this.canBeConnectedFrom = canBeConnectedFrom;
     }
 
-    public Set<CompositeElement> getCanBeConnectedTo() {
+    public Set<ConnectTrigger> getCanBeConnectedTo() {
         return canBeConnectedTo;
     }
 
-    public void setCanBeConnectedTo(Set<CompositeElement> canBeConnectedTo) {
+    public void setCanBeConnectedTo(Set<ConnectTrigger> canBeConnectedTo) {
         this.canBeConnectedTo = canBeConnectedTo;
     }
 

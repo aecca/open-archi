@@ -1,6 +1,6 @@
 package com.araguacaima.open_archi.persistence.diagrams.core;
 
-import com.araguacaima.open_archi.persistence.diagrams.core.reliability.Volumetry;
+import com.araguacaima.open_archi.persistence.diagrams.core.reliability.Constraint;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -46,7 +46,7 @@ public class Feature extends Item {
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Incoming_Constraint_Id",
                     referencedColumnName = "Id")})
-    private Set<Volumetry> incomingConstraints;
+    private Set<Constraint> incomingConstraints;
 
 
     @OneToMany
@@ -56,7 +56,7 @@ public class Feature extends Item {
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Outgoing_Constraint_Id",
                     referencedColumnName = "Id")})
-    private Set<Volumetry> outgoingConstraints;
+    private Set<Constraint> outgoingConstraints;
 
     @Column
     @Enumerated(EnumType.STRING)
@@ -97,19 +97,19 @@ public class Feature extends Item {
         this.visibility = visibility;
     }
 
-    public Set<Volumetry> getIncomingConstraints() {
+    public Set<Constraint> getIncomingConstraints() {
         return incomingConstraints;
     }
 
-    public void setIncomingConstraints(Set<Volumetry> incomingConstraints) {
+    public void setIncomingConstraints(Set<Constraint> incomingConstraints) {
         this.incomingConstraints = incomingConstraints;
     }
 
-    public Set<Volumetry> getOutgoingConstraints() {
+    public Set<Constraint> getOutgoingConstraints() {
         return outgoingConstraints;
     }
 
-    public void setOutgoingConstraints(Set<Volumetry> outgoingConstraints) {
+    public void setOutgoingConstraints(Set<Constraint> outgoingConstraints) {
         this.outgoingConstraints = outgoingConstraints;
     }
 

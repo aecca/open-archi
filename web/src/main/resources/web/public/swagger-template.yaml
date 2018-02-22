@@ -1503,6 +1503,51 @@ definitions:
           description: Type of element
           enum:
           - CONTAINER
+  Connect_Trigger:
+    type: object
+    description: Trigger for connecting an Item from or to any other Item
+    properties:
+      id:
+        type: string
+        description: Identifier of the trigger for connecting an Item from or to any other Item
+      triggerById:
+        type: string
+        description: Identifier of an Item that can be connected from/to any other Item
+      triggerByName:
+        type: string
+        description: Name of an Item that can be connected from/to any other Item
+      triggerByExpression:
+        type: string
+        description: Regular expression, applied to the Item's name that can be connected from/to any other Item
+  Connect_Triggers:
+    type: object
+    description: Trigger for connecting an Item from or to any other Item
+    properties:
+      id:
+        type: string
+        description: Identifier of the trigger for connecting an Item from or to any other Item
+      triggerById:
+        type: string
+        description: Identifier of an Item that can be connected from/to any other Item
+      triggerByName:
+        type: string
+        description: Name of an Item that can be connected from/to any other Item
+      triggerByExpression:
+        type: string
+        description: Regular expression, applied to the Item's name that can be connected from/to any other Item
+  Connect_Trigger_Create:
+    type: object
+    description: Trigger for connecting an Item from or to any other Item
+    properties:
+      triggerById:
+        type: string
+        description: Identifier of an Item that can be connected from/to any other Item
+      triggerByName:
+        type: string
+        description: Name of an Item that can be connected from/to any other Item
+      triggerByExpression:
+        type: string
+        description: Regular expression, applied to the Item's name that can be connected from/to any other Item
   Component:
     description: Component
     type: object
@@ -1797,12 +1842,12 @@ definitions:
           type: array
           description: Aspects that conditionates an element can have this feature
           items:
-            $ref: "#/definitions/Volumetry"
+            $ref: "#/definitions/Constraint"
         outgoingConstraints:
           type: array
           description: Aspects that conditionates how this feature can be related to another element
           items:
-            $ref: "#/definitions/Volumetry"
+            $ref: "#/definitions/Constraint"
         kind:
           type: string
           enum:
@@ -1863,12 +1908,12 @@ definitions:
           type: array
           description: Aspects that conditionates an element can have this feature
           items:
-            $ref: "#/definitions/Volumetry_Create"
+            $ref: "#/definitions/Constraint_Create"
         outgoingConstraints:
           type: array
           description: Aspects that conditionates how this feature can be related to another element
           items:
-            $ref: "#/definitions/Volumetry_Create"
+            $ref: "#/definitions/Constraint_Create"
         kind:
           type: string
           enum:
@@ -2348,12 +2393,12 @@ definitions:
           type: array
           description: Origin elements from which it is allowed to connect to this item
           items:
-            $ref: "#/definitions/Composite_Element"
+            $ref: "#/definitions/Connect_Trigger"
         canBeConnectedTo:
           type: array
           description: Target elements to which this item can be connected
           items:
-            $ref: "#/definitions/Composite_Element"
+            $ref: "#/definitions/Connect_Trigger"
         metaData:
           $ref: "#/definitions/Meta_Data"
           description: Meta data associated with the model
@@ -2408,12 +2453,12 @@ definitions:
           type: array
           description: Origin elements from which it is allowed to connect to this item
           items:
-            $ref: "#/definitions/Composite_Element"
+            $ref: "#/definitions/Connect_Trigger_Create"
         canBeConnectedTo:
           type: array
           description: Target elements to which this item can be connected
           items:
-            $ref: "#/definitions/Composite_Element"
+            $ref: "#/definitions/Connect_Trigger_Create"
         metaData:
           $ref: "#/definitions/Meta_Data_Create"
           description: Meta data associated with the model
@@ -3460,9 +3505,11 @@ definitions:
           description: Tags of the model
           items:
             type: string
-  Volumetry:
+  Constraint:
     type: object
-  Volumetry_Create:
+  Constraints:
+    type: object
+  Constraint_Create:
     type: object
   Version:
     type: object
