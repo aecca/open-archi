@@ -8,11 +8,12 @@ block scripts
     script(type='text/javascript', src='/javascripts/jquery-ui.js')
     script#code(type="text/javascript")
     script.
+        var myDiagram;
         function init() {
             if (window.goSamples) goSamples();  // init for these samples -- you don't need to call this
             var openArchiEditor = go.GraphObject.make;  // for conciseness in defining templates
             myDiagram =
-                openArchiEditor(go.Diagram, "myDiagramDiv",  // must name or refer to the DIV HTML element
+                openArchiEditor(go.Diagram, "diagrams",  // must name or refer to the DIV HTML element
                     {
                         initialContentAlignment: go.Spot.Center,
                         allowDrop: true,  // must be true to accept drops from the Palette
@@ -539,7 +540,7 @@ block scripts
             load();  // load an initial diagram from some JSON text
             // initialize the Palette that is on the left side of the page
             myPalette =
-                openArchiEditor(go.Palette, "myPaletteDiv",  // must name or refer to the DIV HTML element
+                openArchiEditor(go.Palette, "palette",  // must name or refer to the DIV HTML element
                     {
                         scrollsPageOnFocus: false,
                         nodeTemplateMap: myDiagram.nodeTemplateMap,  // share the templates used by myDiagram
@@ -562,11 +563,11 @@ block scripts
         }
         // Show the diagram's model in JSON format that the user may edit
         function save() {
-            document.getElementById("mySavedModel").value = myDiagram.model.toJson();
+            document.getElementById("savedModel").value = myDiagram.model.toJson();
             myDiagram.isModified = false;
         }
         function load() {
-            myDiagram.model = go.Model.fromJson(document.getElementById("mySavedModel").value);
+            myDiagram.model = go.Model.fromJson(document.getElementById("savedModel").value);
         }
         // add an SVG rendering of the diagram at the end of this page
         function makeSVG() {
@@ -593,6 +594,7 @@ block scripts
         }
         var dataArray = [];
         $(function () {
+            init();
             $("#diagramId").autocomplete({
                 minLength: 3,
                 source: function (request, response) {
@@ -606,10 +608,10 @@ block scripts
                             response(models);
                         });
                 },
-                select: function (event, ui) {
-                    var name = event.target.innerHtml;
+                select: function (event, element) {
+                    var id = element.item.id;
                     $("#savedModel").html(dataArray.find(function (model) {
-                        return model.name === name;
+                        return model.id === id;
                     }));
                 },
                 // optional (if other layers overlap autocomplete list)
