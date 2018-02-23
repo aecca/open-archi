@@ -12,6 +12,7 @@ import de.neuland.jade4j.JadeConfiguration;
 import de.neuland.jade4j.template.TemplateLoader;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.IterableUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
@@ -79,8 +80,12 @@ public class Server {
     private static Taggable deeplyFulfilledParentModel_1;
     private static Taggable deeplyFulfilledParentModel_2;
     private static String deeplyFulfilledDiagramType;
+    private static Map<String, String> deeplyFulfilledIdValue = new HashMap<>();
+    private static Map<String, String> deeplyFulfilledIdValue_1 = new HashMap<>();
+    private static Map<String, String> deeplyFulfilledIdValue_2 = new HashMap<>();
     private static MetaData deeplyFulfilledMetaData;
 
+    private static Collection<Map<String, String>> deeplyFulfilledIdValueCollection = new ArrayList<>();
     private static Collection<Taggable> deeplyFulfilledParentModelCollection = new ArrayList<>();
     private static Collection<String> deeplyFulfilledDiagramTypesCollection = new ArrayList<>();
     private static Collection<com.araguacaima.open_archi.persistence.diagrams.architectural.Model> deeplyFulfilledArchitectureModelCollection = new ArrayList<>();
@@ -245,6 +250,19 @@ public class Server {
             }
         });
         deeplyFulfilledDiagramType = deeplyFulfilledDiagramTypesCollection.iterator().next();
+
+        deeplyFulfilledIdValue.put("id", UUID.randomUUID().toString());
+        deeplyFulfilledIdValue.put("name", RandomStringUtils.random(20, true, false));
+
+        deeplyFulfilledIdValue_1.put("id", UUID.randomUUID().toString());
+        deeplyFulfilledIdValue_1.put("name", RandomStringUtils.random(20, true, false));
+
+        deeplyFulfilledIdValue_2.put("id", UUID.randomUUID().toString());
+        deeplyFulfilledIdValue_2.put("name", RandomStringUtils.random(20, true, false));
+
+        deeplyFulfilledIdValueCollection.add(deeplyFulfilledIdValue);
+        deeplyFulfilledIdValueCollection.add(deeplyFulfilledIdValue_1);
+        deeplyFulfilledIdValueCollection.add(deeplyFulfilledIdValue_2);
 
         //noinspection ResultOfMethodCallIgnored
         JPAEntityManagerUtils.getEntityManager();
@@ -679,6 +697,28 @@ public class Server {
                     return EMPTY_RESPONSE;
                 });
                 get("/catalogs/diagram-types", (request, response) -> getList(request, response, deeplyFulfilledDiagramTypesCollection));
+                options("/catalogs/diagram-names", (request, response) -> {
+                    setCORS(request, response);
+                    Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledIdValueCollection, deeplyFulfilledIdValue, HttpMethod.get, HttpMethod.post);
+                    return getOptions(request, response, output);
+                });
+                post("/catalogs/diagram-names", (request, response) -> {
+                    response.status(HTTP_NOT_IMPLEMENTED);
+                    response.type(JSON_CONTENT_TYPE);
+                    return EMPTY_RESPONSE;
+                });
+                get("/catalogs/diagram-names", (request, response) -> getList(request, response, Item.GET_ALL_PROTOTYPE_NAMES, null, Item.class));
+                options("/catalogs/prototype-names", (request, response) -> {
+                    setCORS(request, response);
+                    Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledIdValueCollection, deeplyFulfilledIdValue, HttpMethod.get, HttpMethod.post);
+                    return getOptions(request, response, output);
+                });
+                post("/catalogs/prototype-names", (request, response) -> {
+                    response.status(HTTP_NOT_IMPLEMENTED);
+                    response.type(JSON_CONTENT_TYPE);
+                    return EMPTY_RESPONSE;
+                });
+                get("/catalogs/prototype-names", (request, response) -> getList(request, response, Item.GET_ALL_PROTOTYPE_NAMES, null, Item.class));
             });
         });
     }

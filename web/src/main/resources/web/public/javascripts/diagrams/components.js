@@ -1,52 +1,11 @@
 var myDiagram;
-
-// Make all ports on a node visible when the mouse is over the node
-function showPorts(node, show) {
-    var diagram = node.diagram;
-    if (!diagram || diagram.isReadOnly || !diagram.allowLink) return;
-    node.ports.each(function (port) {
-        port.stroke = (show ? "white" : null);
-    });
-}
-
-// Show the diagram's model in JSON format that the user may edit
-function save() {
-    document.getElementById("savedModel").value = myDiagram.model.toJson();
-    myDiagram.isModified = false;
-}
-
-function load() {
-    myDiagram.model = go.Model.fromJson(document.getElementById("savedModel").value);
-}
-
-// add an SVG rendering of the diagram at the end of this page
-function makeSVG() {
-    var svg = myDiagram.makeSvg({
-        scale: 0.5
-    });
-    svg.style.border = "1px solid black";
-    obj = document.getElementById("SVGArea");
-    obj.appendChild(svg);
-    if (obj.children.length > 0) {
-        obj.replaceChild(svg, obj.children[0]);
-    }
-}
-
-function retrieveData(id) {
-    $.get("/open-archi/api/models/" + id)
-        .done(function (data) {
-            var temp = previousFollowUp;
-            if (!process(data)) {
-                //
-            }
-
-        });
-}
+var myPalette;
 
 function initComponentsDiagram() {
     var openArchiEditor = go.GraphObject.make;  // for conciseness in defining templates
+
     myDiagram =
-        openArchiEditor(go.Diagram, "diagrams",  // must name or refer to the DIV HTML element
+        openArchiEditor(go.Diagram, "component-diagram",  // must name or refer to the DIV HTML element
             {
                 initialContentAlignment: go.Spot.Center,
                 allowDrop: true,  // must be true to accept drops from the Palette
@@ -59,8 +18,9 @@ function initComponentsDiagram() {
                 // allow Ctrl-G to call groupSelection()
                 "commandHandler.archetypeGroupData": {text: "Group", isGroup: true, color: "blue"}
             });
+
     // when the document is modified, add a "*" to the title and enable the "Save" button
-    myDiagram.addDiagramListener("Modified", function (e) {
+    myDiagram.addDiagramListener("Modified", function(e) {
         var button = document.getElementById("SaveButton");
         if (button) button.disabled = !myDiagram.isModified;
         var idx = document.title.indexOf("*");
@@ -70,12 +30,19 @@ function initComponentsDiagram() {
             if (idx >= 0) document.title = document.title.substr(0, idx);
         }
     });
+
+
+
+
+
+
     var linkSelectionAdornmentTemplate =
         openArchiEditor(go.Adornment, "Link",
             openArchiEditor(go.Shape,
                 // isPanelMain declares that this Shape shares the Link.geometry
                 {isPanelMain: true, fill: null, stroke: "deepskyblue", strokeWidth: 0})  // use selection object's strokeWidth
         );
+
     // Define the appearance and behavior for Nodes:
     // First, define the shared context menu for all Nodes, Links, and Groups.
     // To simplify this code we define a function for creating a context menu button:
@@ -88,6 +55,8 @@ function initComponentsDiagram() {
                 return o.diagram ? visiblePredicate(o, e) : false;
             }).ofObject() : {});
     }
+
+
 
     function nodeInfo(d) {  // Tooltip info for a node data object
         var str = "Node " + d.key + ": " + d.text + "\n";
@@ -167,16 +136,17 @@ function initComponentsDiagram() {
                     return o.diagram.commandHandler.canUngroupSelection();
                 })
         );
+
+
+
+
+
     var nodeSelectionAdornmentTemplate =
         openArchiEditor(go.Adornment, "Auto",
-            openArchiEditor(go.Shape, {
-                fill: null,
-                stroke: "deepskyblue",
-                strokeWidth: 1.5,
-                strokeDashArray: [4, 2]
-            }),
+            openArchiEditor(go.Shape, {fill: null, stroke: "deepskyblue", strokeWidth: 1.5, strokeDashArray: [4, 2]}),
             openArchiEditor(go.Placeholder)
         );
+
     var nodeResizeAdornmentTemplate =
         openArchiEditor(go.Adornment, "Spot",
             {locationSpot: go.Spot.Right},
@@ -202,6 +172,7 @@ function initComponentsDiagram() {
                 fill: "lightblue",
                 stroke: "deepskyblue"
             }),
+
             openArchiEditor(go.Shape, {
                 alignment: go.Spot.Left,
                 cursor: "w-resize",
@@ -216,6 +187,7 @@ function initComponentsDiagram() {
                 fill: "lightblue",
                 stroke: "deepskyblue"
             }),
+
             openArchiEditor(go.Shape, {
                 alignment: go.Spot.BottomLeft,
                 cursor: "se-resize",
@@ -238,6 +210,7 @@ function initComponentsDiagram() {
                 stroke: "deepskyblue"
             })
         );
+
     var nodeRotateAdornmentTemplate =
         openArchiEditor(go.Adornment,
             {locationSpot: go.Spot.Center, locationObjectName: "CIRCLE"},
@@ -286,6 +259,7 @@ function initComponentsDiagram() {
     }
 
     // helper definitions for node templates
+
     function nodeStyle() {
         return [
             // The Node.location comes from the "loc" property of the node data,
@@ -299,12 +273,8 @@ function initComponentsDiagram() {
                 //isShadowed: true,
                 //shadowColor: "#888",
                 // handle mouse enter/leave events to show/hide the ports
-                mouseEnter: function (e, obj) {
-                    showPorts(obj.part, true);
-                },
-                mouseLeave: function (e, obj) {
-                    showPorts(obj.part, false);
-                }
+                mouseEnter: function (e, obj) { showPorts(obj.part, true); },
+                mouseLeave: function (e, obj) { showPorts(obj.part, false); }
             }
         ];
     }
@@ -329,7 +299,9 @@ function initComponentsDiagram() {
     }
 
     // define the Node templates for regular nodes
+
     var lightText = 'whitesmoke';
+
     myDiagram.nodeTemplate =
         openArchiEditor(go.Node, "Auto",
             {locationSpot: go.Spot.Center},
@@ -344,12 +316,14 @@ function initComponentsDiagram() {
                 contextMenu: partContextMenu
             }
         );
+
+
     myDiagram.nodeTemplateMap.add("",  // the default category
         openArchiEditor(go.Node, "Spot", nodeStyle(),
             // the main object is a Panel that surrounds a TextBlock with a rectangular Shape
             openArchiEditor(go.Panel, "Auto",
                 openArchiEditor(go.Shape, "Rectangle",
-                    {fill: "#00A9C9", stroke: null},
+                    { fill: "#00A9C9", stroke: null },
                     new go.Binding("figure", "figure")),
                 openArchiEditor(go.TextBlock,
                     {
@@ -368,13 +342,14 @@ function initComponentsDiagram() {
             makePort("R", go.Spot.Right, true, true),
             makePort("B", go.Spot.Bottom, true, false)
         ));
+
     myDiagram.nodeTemplateMap.add("Start",
         openArchiEditor(go.Node, "Spot", nodeStyle(),
             openArchiEditor(go.Panel, "Auto",
                 openArchiEditor(go.Shape, "Circle",
-                    {minSize: new go.Size(40, 40), fill: "#79C900", stroke: null}),
+                    { minSize: new go.Size(40, 40), fill: "#79C900", stroke: null }),
                 openArchiEditor(go.TextBlock, "Start",
-                    {font: "bold 11pt Helvetica, Arial, sans-serif", stroke: lightText},
+                    { font: "bold 11pt Helvetica, Arial, sans-serif", stroke: lightText },
                     new go.Binding("text"))
             ),
             // three named ports, one on each side except the top, all output only:
@@ -382,13 +357,14 @@ function initComponentsDiagram() {
             makePort("R", go.Spot.Right, true, false),
             makePort("B", go.Spot.Bottom, true, false)
         ));
+
     myDiagram.nodeTemplateMap.add("End",
         openArchiEditor(go.Node, "Spot", nodeStyle(),
             openArchiEditor(go.Panel, "Auto",
                 openArchiEditor(go.Shape, "Circle",
-                    {minSize: new go.Size(40, 40), fill: "#DC3C00", stroke: null}),
+                    { minSize: new go.Size(40, 40), fill: "#DC3C00", stroke: null }),
                 openArchiEditor(go.TextBlock, "End",
-                    {font: "bold 11pt Helvetica, Arial, sans-serif", stroke: lightText},
+                    { font: "bold 11pt Helvetica, Arial, sans-serif", stroke: lightText },
                     new go.Binding("text"))
             ),
             // three named ports, one on each side except the bottom, all input only:
@@ -396,10 +372,11 @@ function initComponentsDiagram() {
             makePort("L", go.Spot.Left, false, true),
             makePort("R", go.Spot.Right, false, true)
         ));
+
     myDiagram.nodeTemplateMap.add("Comment",
         openArchiEditor(go.Node, "Auto", nodeStyle(),
             openArchiEditor(go.Shape, "File",
-                {fill: "#EFFAB4", stroke: null}),
+                { fill: "#EFFAB4", stroke: null }),
             openArchiEditor(go.TextBlock,
                 {
                     margin: 5,
@@ -413,6 +390,8 @@ function initComponentsDiagram() {
                 new go.Binding("text").makeTwoWay())
             // no ports, because no links are allowed to connect with a comment
         ));
+
+
     // replace the default Link template in the linkTemplateMap
     myDiagram.linkTemplate =
         openArchiEditor(go.Link,  // the whole link panel
@@ -425,25 +404,21 @@ function initComponentsDiagram() {
                 reshapable: true,
                 resegmentable: true,
                 // mouse-overs subtly highlight links:
-                mouseEnter: function (e, link) {
-                    link.findObject("HIGHLIGHT").stroke = "rgba(30,144,255,0.2)";
-                },
-                mouseLeave: function (e, link) {
-                    link.findObject("HIGHLIGHT").stroke = "transparent";
-                }
+                mouseEnter: function(e, link) { link.findObject("HIGHLIGHT").stroke = "rgba(30,144,255,0.2)"; },
+                mouseLeave: function(e, link) { link.findObject("HIGHLIGHT").stroke = "transparent"; }
             },
             new go.Binding("points").makeTwoWay(),
             openArchiEditor(go.Shape,  // the highlight shape, normally transparent
-                {isPanelMain: true, strokeWidth: 8, stroke: "transparent", name: "HIGHLIGHT"}),
+                { isPanelMain: true, strokeWidth: 8, stroke: "transparent", name: "HIGHLIGHT" }),
             openArchiEditor(go.Shape,  // the link path shape
-                {isPanelMain: true, stroke: "gray", strokeWidth: 2}),
+                { isPanelMain: true, stroke: "gray", strokeWidth: 2 }),
             openArchiEditor(go.Shape,  // the arrowhead
-                {toArrow: "standard", stroke: null, fill: "gray"}),
+                { toArrow: "standard", stroke: null, fill: "gray"}),
             openArchiEditor(go.Panel, "Auto",  // the link label, normally not visible
-                {visible: false, name: "LABEL", segmentIndex: 2, segmentFraction: 0.5},
+                { visible: false, name: "LABEL", segmentIndex: 2, segmentFraction: 0.5},
                 new go.Binding("visible", "visible").makeTwoWay(),
                 openArchiEditor(go.Shape, "RoundedRectangle",  // the label shape
-                    {fill: "#F8F8F8", stroke: null}),
+                    { fill: "#F8F8F8", stroke: null }),
                 openArchiEditor(go.TextBlock, "Yes",  // the label
                     {
                         textAlign: "center",
@@ -464,6 +439,8 @@ function initComponentsDiagram() {
                 }
             )
         );
+
+
 
     // Define the appearance and behavior for Groups:
     function groupInfo(adornment) {  // takes the tooltip or context menu, not a group node data object
@@ -570,7 +547,9 @@ function initComponentsDiagram() {
     // temporary links used by LinkingTool and RelinkingTool are also orthogonal:
     myDiagram.toolManager.linkingTool.temporaryLink.routing = go.Link.Orthogonal;
     myDiagram.toolManager.relinkingTool.temporaryLink.routing = go.Link.Orthogonal;
+
     load();  // load an initial diagram from some JSON text
+
     // initialize the Palette that is on the left side of the page
     myPalette =
         openArchiEditor(go.Palette, "palette",  // must name or refer to the DIV HTML element
@@ -578,11 +557,43 @@ function initComponentsDiagram() {
                 scrollsPageOnFocus: false,
                 nodeTemplateMap: myDiagram.nodeTemplateMap,  // share the templates used by myDiagram
                 model: new go.GraphLinksModel([  // specify the contents of the Palette
-                    {category: "Start", text: "Start"},
-                    {text: "Step"},
-                    {text: "???", figure: "Diamond"},
-                    {category: "End", text: "End"},
-                    {category: "Comment", text: "Comment"}
+                    { category: "Start", text: "Start" },
+                    { text: "Step" },
+                    { text: "???", figure: "Diamond" },
+                    { category: "End", text: "End" },
+                    { category: "Comment", text: "Comment" }
                 ])
             });
 } // end init
+
+// Make all ports on a node visible when the mouse is over the node
+function showPorts(node, show) {
+    var diagram = node.diagram;
+    if (!diagram || diagram.isReadOnly || !diagram.allowLink) return;
+    node.ports.each(function(port) {
+        port.stroke = (show ? "white" : null);
+    });
+}
+
+
+// Show the diagram's model in JSON format that the user may edit
+function save() {
+    document.getElementById("savedModel").value = myDiagram.model.toJson();
+    myDiagram.isModified = false;
+}
+function load() {
+    myDiagram.model = go.Model.fromJson(document.getElementById("savedModel").value);
+}
+
+// add an SVG rendering of the diagram at the end of this page
+function makeSVG() {
+    var svg = myDiagram.makeSvg({
+        scale: 0.5
+    });
+    svg.style.border = "1px solid black";
+    obj = document.getElementById("SVGArea");
+    obj.appendChild(svg);
+    if (obj.children.length > 0) {
+        obj.replaceChild(svg, obj.children[0]);
+    }
+}

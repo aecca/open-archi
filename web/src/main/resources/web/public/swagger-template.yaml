@@ -911,7 +911,7 @@ paths:
       tags:
       - Catalogs
       summary: Finds diagram's types
-      description: Returns all permitter and implemented diagram types
+      description: Returns all permitted and implemented diagram types
       operationId: get-diagram-types
       produces:
       - application/json
@@ -926,7 +926,7 @@ paths:
           description: Bad request
       security:
       - openarchi_auth:
-        - read:diagrams
+        - read:catalogs
     post:
       tags:
       - Catalogs
@@ -940,7 +940,7 @@ paths:
       parameters:
       - in: body
         name: body
-        description: Model object that needs to be added
+        description: Diagram type that needs to be added
         required: true
         schema:
           type: string
@@ -951,16 +951,140 @@ paths:
           description: Not implemented
       security:
       - openarchi_auth:
-        - write:diagram
-        - read:diagrams
+        - write:catalogs
+        - read:catalogs
+  "/catalogs/prototype-names":
+    options:
+      tags:
+      - Catalogs
+      summary: Shows options for catalogs of prototype names
+      operationId: options-catalogs-prototype-names
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            allOf:
+            - $ref: "#/definitions/Options_Get_Id_Name_Collection"
+            - $ref: "#/definitions/Options_Post_String"
+    get:
+      tags:
+      - Catalogs
+      summary: Finds prototype's names
+      description: Returns all permitted and implemented prototype's names
+      operationId: get-prototypes-names
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              type: string
+        '400':
+          description: Bad request
+      security:
+      - openarchi_auth:
+        - read:catalogs
+    post:
+      tags:
+      - Catalogs
+      summary: Request for the addition of a new prototype name
+      description: ''
+      operationId: post-prototype-name
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: Prototype name that needs to be added
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Accepted
+        '501':
+          description: Not implemented
+      security:
+      - openarchi_auth:
+        - write:catalogs
+        - read:catalogs
+  "/catalogs/diagram-names":
+    options:
+      tags:
+      - Catalogs
+      summary: Shows options for catalogs of diagram names
+      operationId: options-catalogs-diagram-names
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            allOf:
+            - $ref: "#/definitions/Options_Get_Id_Name_Collection"
+            - $ref: "#/definitions/Options_Post_String"
+    get:
+      tags:
+      - Catalogs
+      summary: Finds diagram's names
+      description: Returns all permitted and implemented diagram's names
+      operationId: get-diagrams-names
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              type: string
+        '400':
+          description: Bad request
+      security:
+      - openarchi_auth:
+        - read:catalogs
+    post:
+      tags:
+      - Catalogs
+      summary: Request for the addition of a new diagram name
+      description: ''
+      operationId: post-diagram-name
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: Diagram name that needs to be added
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Accepted
+        '501':
+          description: Not implemented
+      security:
+      - openarchi_auth:
+        - write:catalogs
+        - read:catalogs
 securityDefinitions:
   openarchi_auth:
     type: oauth2
     authorizationUrl: https://@HOST@/oauth/dialog
     flow: implicit
     scopes:
-      write:model: modify a model
-      read:models: read your models
+      write:model: Modify or add a model
+      read:models: Read models
+      write:catalogs: Modify or add a catalog
+      read:catalogs: Read catalogs
   api_key:
     type: apiKey
     name: api_key
@@ -2404,6 +2528,13 @@ definitions:
             $ref: "#/definitions/Gantt_Relationship"
       required:
       - kind
+  Generic_Id_Name:
+    type: object
+    properties:
+      id:
+        type: string
+      name:
+        type: string
   Item:
     type: object
     description: Abstract item object
@@ -2843,6 +2974,11 @@ definitions:
     properties:
       input:
         type: object
+  Options_Input_Id_Name_Item:
+    type: object
+    properties:
+      input:
+        $ref: '#/definitions/Generic_Id_Name'
   Options_Output_Item:
     type: object
     properties:
@@ -2862,6 +2998,13 @@ definitions:
         type: array
         items:
           type: object
+  Options_Output_Collection_Id_Name_Item:
+    type: object
+    properties:
+      output:
+        type: array
+        items:
+          $ref: '#/definitions/Generic_Id_Name'
   Options_Get_String_Collection:
     description: Generic object to expose endpoint functionalitites
     properties:
@@ -2872,6 +3015,11 @@ definitions:
     properties:
       get:
         $ref: '#/definitions/Options_Output_Collection_Item'
+  Options_Get_Id_Name_Collection:
+    description: Generic object to expose endpoint functionalitites
+    properties:
+      get:
+        $ref: '#/definitions/Options_Output_Collection_Id_Name_Item'
   Options_Get:
     description: Generic object to expose endpoint functionalitites
     properties:
@@ -2882,6 +3030,11 @@ definitions:
     properties:
       post:
         $ref: '#/definitions/Options_Input_Item'
+  Options_Post_Id_Name:
+    description: Generic object to expose endpoint functionalitites
+    properties:
+      post:
+        $ref: '#/definitions/Options_Input_Id_Name_Item'
   Options_Post_String:
     description: Generic object to expose endpoint functionalitites
     properties:

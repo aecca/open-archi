@@ -138,7 +138,8 @@ class JsonParserSpecification {
             String newElement_ = newElement.toString();
             if (value_.startsWith("*") && value_.endsWith("*")) {
                 CharSequence obj = value_.subSequence(1, value_.length() - 1);
-                return newElement_.matches(String.valueOf(obj));
+                String regex = "(?i:.*" + String.valueOf(obj) + ".*)";
+                return newElement_.matches(regex);
             }
             if (value_.endsWith("*")) {
                 return newElement_.startsWith(value_);

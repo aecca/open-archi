@@ -16,11 +16,20 @@ import java.util.Set;
 @NamedQueries({@NamedQuery(name = Item.GET_ALL_CHILDREN,
         query = "select a.children from Item a where a.id=:id"),
         @NamedQuery(name = Item.GET_META_DATA,
-                query = "select a.metaData from Item a where a.id=:id")})
+                query = "select a.metaData from Item a where a.id=:id"),
+        @NamedQuery(name = Item.GET_ALL_PROTOTYPES,
+                query = "select a.metaData from Item a where a.prototype=true"),
+        @NamedQuery(name = Item.GET_ALL_PROTOTYPE_NAMES,
+                query = "select a.id, a.name from Item a where a.prototype=true"),
+        @NamedQuery(name = Item.GET_ALL_DIAGRAM_NAMES,
+                query = "select a.id, a.name from Item a")})
 public class Item extends Taggable {
 
     public static final String GET_ALL_CHILDREN = "get.all.children";
     public static final String GET_META_DATA = "get.meta.data";
+    public static final String GET_ALL_PROTOTYPES = "get.all.prototypes";
+    public static final String GET_ALL_PROTOTYPE_NAMES = "get.all.prototype.names";
+    public static final String GET_ALL_DIAGRAM_NAMES = "get.all.diagram.names";
 
     @Column
     protected String name;
@@ -68,6 +77,9 @@ public class Item extends Taggable {
     @OneToOne(cascade = CascadeType.REMOVE)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     protected MetaData metaData;
+
+    @Column
+    protected boolean prototype;
 
     public Item() {
     }
@@ -142,5 +154,13 @@ public class Item extends Taggable {
 
     public void setChildren(Set<CompositeElement> children) {
         this.children = children;
+    }
+
+    public boolean isPrototype() {
+        return prototype;
+    }
+
+    public void setPrototype(boolean prototype) {
+        this.prototype = prototype;
     }
 }

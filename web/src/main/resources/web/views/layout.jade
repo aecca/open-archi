@@ -1,11 +1,13 @@
 doctype html
 html
     head
+        meta(name="viewport", content="width=device-width, initial-scale=1")
+        meta(charset="UTF-8")
         title= title
+        block meta
         link(rel='stylesheet', type='text/css', href='/stylesheets/style.css')
         link(rel='stylesheet', type='text/css', href='/stylesheets/jquery.json-view.min.css')
         link(rel='stylesheet', type='text/css', href='https://fonts.googleapis.com/css?family=Open+Sans:400,700|Source+Code+Pro:300,600|Titillium+Web:400,600,700')
-        link(rel='stylesheet', type='text/css', href='/stylesheets/swagger-ui.css')
         style.
             html {
                 box-sizing: border-box;
@@ -55,9 +57,11 @@ html
                 padding-left: 50px;
                 padding-top: 20px;
             }
-        script(src='/javascripts/jquery-3.1.1.min.js')
+        script(src='/javascripts/jquery-3.3.1.min.js')
         script(src='/javascripts/commons.js')
         script(src='/javascripts/jquery.json-view.min.js')
+        script(src='/javascripts/highlight.js')
+        script(src='/javascripts/bootstrap.min.js')
         block scripts
     body
         div
