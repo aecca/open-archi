@@ -473,10 +473,10 @@ paths:
       - openarchi_auth:
         - write:model
         - read:models
-  "/models/architectures":
+  "/diagrams/architectures":
     options:
       tags:
-      - Models
+      - Diagrams
       summary: Shows options for architecture diagram
       operationId: options-architecture
       produces:
@@ -490,7 +490,7 @@ paths:
             - $ref: "#/definitions/Options_Post"
     get:
       tags:
-      - Models
+      - Diagrams
       summary: Finds models of the type architecture
       description: This service supports query by using RSQL expressions
       operationId: get-architecture-models
@@ -516,7 +516,7 @@ paths:
         - read:models
     post:
       tags:
-      - Models
+      - Diagrams
       summary: Add a new model of the type architecture
       description: ''
       operationId: add-architecture-model
@@ -542,10 +542,10 @@ paths:
       - openarchi_auth:
         - write:model
         - read:models
-  "/models/architectures/:model-id/relationships":
+  "/diagrams/architectures/:model-id/relationships":
     options:
       tags:
-      - Models
+      - Diagrams
       summary: Shows options for the relationships of a specific model
       operationId: options-model-relationships
       produces:
@@ -557,10 +557,10 @@ paths:
             allOf:
             - $ref: "#/definitions/Options_Get_Collection"
             - $ref: "#/definitions/Options_Put"
-  "/models/architectures/{model-id}/relationships":
+  "/diagrams/architectures/{model-id}/relationships":
     get:
       tags:
-      - Models
+      - Diagrams
       summary: Get the model's relationships
       description: Gets the full relationships info related to the model
       operationId: get-model-relationships
@@ -586,7 +586,7 @@ paths:
         - read:models
     put:
       tags:
-      - Models
+      - Diagrams
       summary: Add a relationship to the current model
       description: Add a relationship to the current model
       operationId: add-relationship
@@ -617,10 +617,10 @@ paths:
       - openarchi_auth:
         - write:model
         - read:models
-  "/models/bpms":
+  "/diagrams/bpms":
     options:
       tags:
-      - Models
+      - Diagrams
       summary: Shows options for BPM diagram
       operationId: options-bpm
       produces:
@@ -634,7 +634,7 @@ paths:
             - $ref: "#/definitions/Options_Post"
     get:
       tags:
-      - Models
+      - Diagrams
       summary: Finds models of the type bpm
       description: This service supports query by using RSQL expressions
       operationId: get-bpm-models
@@ -660,7 +660,7 @@ paths:
         - read:models
     post:
       tags:
-      - Models
+      - Diagrams
       summary: Add a new model of the type bpm
       description: ''
       operationId: add-bpm-model
@@ -686,10 +686,10 @@ paths:
       - openarchi_auth:
         - write:model
         - read:models
-  "/models/flowcharts":
+  "/diagrams/flowcharts":
     options:
       tags:
-      - Models
+      - Diagrams
       summary: Shows options for flowcharts diagram
       operationId: options-flowcharts
       produces:
@@ -703,7 +703,7 @@ paths:
             - $ref: "#/definitions/Options_Post"
     get:
       tags:
-      - Models
+      - Diagrams
       summary: Finds models of the type flowchart
       description: This service supports query by using RSQL expressions
       operationId: get-flowchart-models
@@ -729,7 +729,7 @@ paths:
         - read:models
     post:
       tags:
-      - Models
+      - Diagrams
       summary: Add a new model of the type flowchart
       description: ''
       operationId: add-flowchart-model
@@ -755,10 +755,10 @@ paths:
       - openarchi_auth:
         - write:model
         - read:models
-  "/models/gantts":
+  "/diagrams/gantts":
     options:
       tags:
-      - Models
+      - Diagrams
       summary: Shows options for gantts diagram
       operationId: options-gantt
       produces:
@@ -772,7 +772,7 @@ paths:
             - $ref: "#/definitions/Options_Post"
     get:
       tags:
-      - Models
+      - Diagrams
       summary: Finds models of the type gantt
       description: This service supports query by using RSQL expressions
       operationId: get-gantt-models
@@ -798,7 +798,7 @@ paths:
         - read:models
     post:
       tags:
-      - Models
+      - Diagrams
       summary: Add a new model of the type gantt
       description: ''
       operationId: add-gantt-model
@@ -824,10 +824,10 @@ paths:
       - openarchi_auth:
         - write:model
         - read:models
-  "/models/sequences":
+  "/diagrams/sequences":
     options:
       tags:
-      - Models
+      - Diagrams
       summary: Shows options for sequences diagram
       operationId: options-sequence
       produces:
@@ -841,7 +841,7 @@ paths:
             - $ref: "#/definitions/Options_Post"
     get:
       tags:
-      - Models
+      - Diagrams
       summary: Finds models of the type sequence
       description: This service supports query by using RSQL expressions
       operationId: get-sequence-models
@@ -867,7 +867,7 @@ paths:
         - read:models
     post:
       tags:
-      - Models
+      - Diagrams
       summary: Add a new model of the type sequence
       description: ''
       operationId: add-sequence-model
@@ -2535,6 +2535,16 @@ definitions:
         type: string
       name:
         type: string
+      type:
+        type: string
+        enum:
+        - GANTT_MODEL
+        - ARCHITECTURE_MODEL
+        - SEQUENCE_MODEL
+        - BPM_MODEL
+        - BPM_MODEL
+        - FLOWCHART_MODEL
+        - ENTITY_RELATIONSHIP_MODEL
   Item:
     type: object
     description: Abstract item object
@@ -2594,6 +2604,9 @@ definitions:
         metaData:
           $ref: "#/definitions/Meta_Data"
           description: Meta data associated with the model
+        prototype:
+          type: boolean
+          description: Flag that indicates this item is a prototype
       discriminator: kind
   Item_Create:
     type: object
@@ -2654,6 +2667,9 @@ definitions:
         metaData:
           $ref: "#/definitions/Meta_Data_Create"
           description: Meta data associated with the model
+        prototype:
+          type: boolean
+          description: Flag that indicates this item is a prototype
       discriminator: kind
   Items:
     type: object
@@ -2704,6 +2720,9 @@ definitions:
         metaData:
           $ref: "#/definitions/Meta_Data_List"
           description: Meta data associated with the model
+        prototype:
+          type: boolean
+          description: Flag that indicates this item is a prototype
       discriminator: kind
   Lane:
     description: Pool's lane

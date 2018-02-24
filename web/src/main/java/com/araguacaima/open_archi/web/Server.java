@@ -299,12 +299,248 @@ public class Server {
                     return new ModelAndView(mapEditor, "editor");
                 }, engine);
             });
+            before("/api/*", (req, res) -> log.info("Received api call to " + req.requestMethod() + " " + req.pathInfo()));
             path("/api", () -> {
                 Map<String, Object> mapApi = new HashMap<>();
                 exception(Exception.class, exceptionHandler);
-                before("/api/*", (req, res) -> log.info("Received api call to " + req.requestMethod() + " " + req.pathInfo()));
                 mapApi.put("title", "OpenArchi API");
                 get("/", (req, res) -> new ModelAndView(mapApi, "apis"), engine);
+                options("/diagrams/architectures", (request, response) -> {
+                    setCORS(request, response);
+                    Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledArchitectureModelCollection, deeplyFulfilledArchitectureModel, HttpMethod.get, HttpMethod.post);
+                    return getOptions(request, response, output);
+                });
+                get("/diagrams/architectures", (request, response) -> {
+                    Map<String, Object> params = new HashMap<>();
+                    params.put("modelType", com.araguacaima.open_archi.persistence.diagrams.architectural.Model.class);
+                    response.type(JSON_CONTENT_TYPE);
+                    return getList(request, response, Taggable.GET_MODELS_BY_TYPE, params, null);
+                });
+                post("/diagrams/architectures", (request, response) -> {
+                    try {
+                        com.araguacaima.open_archi.persistence.diagrams.architectural.Model model = jsonUtils.fromJSON(request.body(), com.araguacaima.open_archi.persistence.diagrams.architectural.Model.class);
+                        if (model == null) {
+                            throw new Exception("Invalid model");
+                        }
+                        if (model.getKind() != ElementKind.ARCHITECTURE_MODEL) {
+                            throw new Exception("Invalid kind of model '" + model.getKind() + "'. It should be '" + ElementKind.ARCHITECTURE_MODEL + "'");
+                        }
+                        model.validateCreation();
+                        Util.populate(model);
+                        response.status(HTTP_CREATED);
+                        response.type(JSON_CONTENT_TYPE);
+                        response.header("Location", request.pathInfo() + "/models/" + model.getId());
+                        return EMPTY_RESPONSE;
+                    } catch (Throwable ex) {
+                        return throwError(response, ex);
+                    }
+                });
+                options("/diagrams/architectures/:uuid/relationships", (request, response) -> {
+                    setCORS(request, response);
+                    Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledArchitectureRelationshipCollection, deeplyFulfilledArchitectureRelationship, HttpMethod.get, HttpMethod.put);
+                    return getOptions(request, response, output);
+                });
+                get("/diagrams/architectures/:uuid/relationships", (request, response) -> {
+                    Map<String, Object> params = new HashMap<>();
+                    params.put("id", request.params(":uuid"));
+                    return getList(request, response, com.araguacaima.open_archi.persistence.diagrams.architectural.Model.GET_ALL_RELATIONSHIPS, params, Collection.class);
+                });
+                put("/diagrams/architectures/:uuid/relationships", (request, response) -> {
+                    try {
+                        com.araguacaima.open_archi.persistence.diagrams.architectural.Relationship feature = jsonUtils.fromJSON(request.body(), com.araguacaima.open_archi.persistence.diagrams.architectural.Relationship.class);
+                        if (feature == null) {
+                            throw new Exception("Invalid kind of relationship");
+                        }
+                        feature.validateCreation();
+                        Util.populate(feature);
+                        response.status(HTTP_CREATED);
+                        response.type(JSON_CONTENT_TYPE);
+                        response.header("Location", request.pathInfo() + "/models/" + feature.getId());
+                        return EMPTY_RESPONSE;
+                    } catch (Throwable ex) {
+                        return throwError(response, ex);
+                    }
+                });
+                options("/diagrams/bpms", (request, response) -> {
+                    setCORS(request, response);
+                    Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledBpmModelCollection, deeplyFulfilledBpmModel, HttpMethod.get, HttpMethod.post);
+                    return getOptions(request, response, output);
+                });
+                get("/diagrams/bpms", (request, response) -> {
+                    Map<String, Object> params = new HashMap<>();
+                    params.put("modelType", com.araguacaima.open_archi.persistence.diagrams.bpm.Model.class);
+                    response.type(JSON_CONTENT_TYPE);
+                    return getList(request, response, Taggable.GET_MODELS_BY_TYPE, params, null);
+                });
+                post("/diagrams/bpms", (request, response) -> {
+                    try {
+                        com.araguacaima.open_archi.persistence.diagrams.bpm.Model model = jsonUtils.fromJSON(request.body(), com.araguacaima.open_archi.persistence.diagrams.bpm.Model.class);
+                        if (model == null) {
+                            throw new Exception("Invalid model");
+                        }
+                        if (model.getKind() != ElementKind.BPM_MODEL) {
+                            throw new Exception("Invalid kind of model '" + model.getKind() + "'. It should be '" + ElementKind.BPM_MODEL + "'");
+                        }
+                        model.validateCreation();
+                        Util.populate(model);
+                        response.status(HTTP_CREATED);
+                        response.type(JSON_CONTENT_TYPE);
+                        response.header("Location", request.pathInfo() + "/diagrams/" + model.getId());
+                        return EMPTY_RESPONSE;
+                    } catch (Throwable ex) {
+                        return throwError(response, ex);
+                    }
+                });
+                options("/diagrams/ers", (request, response) -> {
+                    setCORS(request, response);
+                    Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledERModelCollection, deeplyFulfilledERModel, HttpMethod.get, HttpMethod.post);
+                    return getOptions(request, response, output);
+                });
+                get("/diagrams/ers", (request, response) -> {
+                    Map<String, Object> params = new HashMap<>();
+                    params.put("modelType", com.araguacaima.open_archi.persistence.diagrams.er.Model.class);
+                    response.type(JSON_CONTENT_TYPE);
+                    return getList(request, response, Taggable.GET_MODELS_BY_TYPE, params, null);
+                });
+                post("/diagrams/ers", (request, response) -> {
+                    try {
+                        com.araguacaima.open_archi.persistence.diagrams.er.Model model = jsonUtils.fromJSON(request.body(), com.araguacaima.open_archi.persistence.diagrams.er.Model.class);
+                        if (model == null) {
+                            throw new Exception("Invalid model");
+                        }
+                        if (model.getKind() != ElementKind.ENTITY_RELATIONSHIP_MODEL) {
+                            throw new Exception("Invalid kind of model '" + model.getKind() + "'. It should be '" + ElementKind.ENTITY_RELATIONSHIP_MODEL + "'");
+                        }
+                        model.validateCreation();
+                        Util.populate(model);
+                        response.status(HTTP_CREATED);
+                        response.type(JSON_CONTENT_TYPE);
+                        response.header("Location", request.pathInfo() + "/diagrams/" + model.getId());
+                        return EMPTY_RESPONSE;
+                    } catch (Throwable ex) {
+                        return throwError(response, ex);
+                    }
+                });
+                options("/diagrams/flowcharts", (request, response) -> {
+                    setCORS(request, response);
+                    Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledFlowchartModelCollection, deeplyFulfilledFlowchartModel, HttpMethod.get, HttpMethod.post);
+                    return getOptions(request, response, output);
+                });
+                get("/diagrams/flowcharts", (request, response) -> {
+                    Map<String, Object> params = new HashMap<>();
+                    params.put("modelType", com.araguacaima.open_archi.persistence.diagrams.flowchart.Model.class);
+                    response.type(JSON_CONTENT_TYPE);
+                    return getList(request, response, Taggable.GET_MODELS_BY_TYPE, params, null);
+                });
+                post("/diagrams/flowcharts", (request, response) -> {
+                    try {
+                        com.araguacaima.open_archi.persistence.diagrams.flowchart.Model model = jsonUtils.fromJSON(request.body(), com.araguacaima.open_archi.persistence.diagrams.flowchart.Model.class);
+                        if (model == null) {
+                            throw new Exception("Invalid model");
+                        }
+                        if (model.getKind() != ElementKind.FLOWCHART_MODEL) {
+                            throw new Exception("Invalid kind of model '" + model.getKind() + "'. It should be '" + ElementKind.FLOWCHART_MODEL + "'");
+                        }
+                        model.validateCreation();
+                        Util.populate(model);
+                        response.status(HTTP_CREATED);
+                        response.type(JSON_CONTENT_TYPE);
+                        response.header("Location", request.pathInfo() + "/diagrams/" + model.getId());
+                        return EMPTY_RESPONSE;
+                    } catch (Throwable ex) {
+                        return throwError(response, ex);
+                    }
+                });
+                options("/diagrams/gantts", (request, response) -> {
+                    setCORS(request, response);
+                    Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledGanttModelCollection, deeplyFulfilledGanttModel, HttpMethod.get, HttpMethod.post);
+                    return getOptions(request, response, output);
+                });
+                get("/diagrams/gantts", (request, response) -> {
+                    Map<String, Object> params = new HashMap<>();
+                    params.put("modelType", com.araguacaima.open_archi.persistence.diagrams.gantt.Model.class);
+                    response.type(JSON_CONTENT_TYPE);
+                    return getList(request, response, Taggable.GET_MODELS_BY_TYPE, params, null);
+                });
+                post("/diagrams/gantts", (request, response) -> {
+                    try {
+                        com.araguacaima.open_archi.persistence.diagrams.gantt.Model model = jsonUtils.fromJSON(request.body(), com.araguacaima.open_archi.persistence.diagrams.gantt.Model.class);
+                        if (model == null) {
+                            throw new Exception("Invalid model");
+                        }
+                        if (model.getKind() != ElementKind.GANTT_MODEL) {
+                            throw new Exception("Invalid kind of model '" + model.getKind() + "'. It should be '" + ElementKind.GANTT_MODEL + "'");
+                        }
+                        model.validateCreation();
+                        Util.populate(model);
+                        response.status(HTTP_CREATED);
+                        response.type(JSON_CONTENT_TYPE);
+                        response.header("Location", request.pathInfo() + "/diagrams/" + model.getId());
+                        return EMPTY_RESPONSE;
+                    } catch (Throwable ex) {
+                        return throwError(response, ex);
+                    }
+                });
+                options("/diagrams/sequences", (request, response) -> {
+                    setCORS(request, response);
+                    Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledSequenceModelCollection, deeplyFulfilledSequenceModel, HttpMethod.get, HttpMethod.post);
+                    return getOptions(request, response, output);
+                });
+                get("/diagrams/sequences", (request, response) -> {
+                    Map<String, Object> params = new HashMap<>();
+                    params.put("modelType", com.araguacaima.open_archi.persistence.diagrams.sequence.Model.class);
+                    response.type(JSON_CONTENT_TYPE);
+                    return getList(request, response, Taggable.GET_MODELS_BY_TYPE, params, null);
+                });
+                post("/diagrams/sequences", (request, response) -> {
+                    try {
+                        com.araguacaima.open_archi.persistence.diagrams.sequence.Model model = jsonUtils.fromJSON(request.body(), com.araguacaima.open_archi.persistence.diagrams.sequence.Model.class);
+                        if (model == null) {
+                            throw new Exception("Invalid model");
+                        }
+                        if (model.getKind() != ElementKind.SEQUENCE_MODEL) {
+                            throw new Exception("Invalid kind of model '" + model.getKind() + "'. It should be '" + ElementKind.SEQUENCE_MODEL + "'");
+                        }
+                        model.validateCreation();
+                        Util.populate(model);
+                        response.status(HTTP_CREATED);
+                        response.type(JSON_CONTENT_TYPE);
+                        response.header("Location", request.pathInfo() + "/diagrams/" + model.getId());
+                        return EMPTY_RESPONSE;
+                    } catch (Throwable ex) {
+                        return throwError(response, ex);
+                    }
+                });
+                options("/diagrams/classes", (request, response) -> {
+                    setCORS(request, response);
+                    Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledClassesModelCollection, deeplyFulfilledClassesModel, HttpMethod.get, HttpMethod.post);
+                    return getOptions(request, response, output);
+                });
+                get("/diagrams/classes", (request, response) -> {
+                    Map<String, Object> params = new HashMap<>();
+                    params.put("modelType", com.araguacaima.open_archi.persistence.diagrams.classes.Model.class);
+                    response.type(JSON_CONTENT_TYPE);
+                    return getList(request, response, Taggable.GET_MODELS_BY_TYPE, params, null);
+                });
+                post("/diagrams/classes", (request, response) -> {
+                    try {
+                        com.araguacaima.open_archi.persistence.diagrams.classes.Model model = jsonUtils.fromJSON(request.body(), com.araguacaima.open_archi.persistence.diagrams.classes.Model.class);
+                        if (model == null) {
+                            throw new Exception("Invalid model");
+                        }
+                        if (model.getKind() != ElementKind.UML_CLASS_MODEL) {
+                            throw new Exception("Invalid kind of model '" + model.getKind() + "'. It should be '" + ElementKind.UML_CLASS_MODEL + "'");
+                        }
+                        model.validateCreation();
+                        Util.populate(model);
+                        response.status(HTTP_CREATED);
+                        response.type(JSON_CONTENT_TYPE);
+                        response.header("Location", request.pathInfo() + "/models/" + model.getId());
+                        return EMPTY_RESPONSE;
+                    } catch (Throwable ex) {
+                        return throwError(response, ex);
+                    }
+                });
                 options("/models", (request, response) -> {
                     setCORS(request, response);
                     Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledParentModelCollection, deeplyFulfilledParentModel, HttpMethod.get, HttpMethod.post);
@@ -351,7 +587,9 @@ public class Server {
                     try {
                         String id = request.params(":uuid");
                         Taggable model = JPAEntityManagerUtils.find(Taggable.class, id);
-                        model.validateRequest();
+                        if (model != null) {
+                            model.validateRequest();
+                        }
                         response.status(HTTP_OK);
                         response.type(JSON_CONTENT_TYPE);
                         return jsonUtils.toJSON(model);
@@ -454,242 +692,6 @@ public class Server {
                         return throwError(response, ex);
                     }
                 });
-                options("/models/architectures", (request, response) -> {
-                    setCORS(request, response);
-                    Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledArchitectureModelCollection, deeplyFulfilledArchitectureModel, HttpMethod.get, HttpMethod.post);
-                    return getOptions(request, response, output);
-                });
-                get("/models/architectures", (request, response) -> {
-                    Map<String, Object> params = new HashMap<>();
-                    params.put("modelType", "ArchitectureModel");
-                    response.type(JSON_CONTENT_TYPE);
-                    return jsonUtils.toJSON(getList(request, response, Taggable.GET_MODELS_BY_TYPE, params, null));
-                });
-                post("/models/architectures", (request, response) -> {
-                    try {
-                        com.araguacaima.open_archi.persistence.diagrams.architectural.Model model = jsonUtils.fromJSON(request.body(), com.araguacaima.open_archi.persistence.diagrams.architectural.Model.class);
-                        if (model == null) {
-                            throw new Exception("Invalid model");
-                        }
-                        if (model.getKind() != ElementKind.ARCHITECTURE_MODEL) {
-                            throw new Exception("Invalid kind of model '" + model.getKind() + "'. It should be '" + ElementKind.ARCHITECTURE_MODEL + "'");
-                        }
-                        model.validateCreation();
-                        Util.populate(model);
-                        response.status(HTTP_CREATED);
-                        response.type(JSON_CONTENT_TYPE);
-                        response.header("Location", request.pathInfo() + "/models/" + model.getId());
-                        return EMPTY_RESPONSE;
-                    } catch (Throwable ex) {
-                        return throwError(response, ex);
-                    }
-                });
-                options("/models/architectures/:uuid/relationships", (request, response) -> {
-                    setCORS(request, response);
-                    Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledArchitectureRelationshipCollection, deeplyFulfilledArchitectureRelationship, HttpMethod.get, HttpMethod.put);
-                    return getOptions(request, response, output);
-                });
-                get("/models/architectures/:uuid/relationships", (request, response) -> {
-                    Map<String, Object> params = new HashMap<>();
-                    params.put("id", request.params(":uuid"));
-                    return getList(request, response, com.araguacaima.open_archi.persistence.diagrams.architectural.Model.GET_ALL_RELATIONSHIPS, params, Collection.class);
-                });
-                put("/models/architectures/:uuid/relationships", (request, response) -> {
-                    try {
-                        com.araguacaima.open_archi.persistence.diagrams.architectural.Relationship feature = jsonUtils.fromJSON(request.body(), com.araguacaima.open_archi.persistence.diagrams.architectural.Relationship.class);
-                        if (feature == null) {
-                            throw new Exception("Invalid kind of relationship");
-                        }
-                        feature.validateCreation();
-                        Util.populate(feature);
-                        response.status(HTTP_CREATED);
-                        response.type(JSON_CONTENT_TYPE);
-                        response.header("Location", request.pathInfo() + "/models/" + feature.getId());
-                        return EMPTY_RESPONSE;
-                    } catch (Throwable ex) {
-                        return throwError(response, ex);
-                    }
-                });
-                options("/models/bpms", (request, response) -> {
-                    setCORS(request, response);
-                    Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledBpmModelCollection, deeplyFulfilledBpmModel, HttpMethod.get, HttpMethod.post);
-                    return getOptions(request, response, output);
-                });
-                get("/models/bpms", (request, response) -> {
-                    Map<String, Object> params = new HashMap<>();
-                    params.put("modelType", "BpmModel");
-                    response.type(JSON_CONTENT_TYPE);
-                    return jsonUtils.toJSON(getList(request, response, Taggable.GET_MODELS_BY_TYPE, params, null));
-                });
-                post("/models/bpms", (request, response) -> {
-                    try {
-                        com.araguacaima.open_archi.persistence.diagrams.bpm.Model model = jsonUtils.fromJSON(request.body(), com.araguacaima.open_archi.persistence.diagrams.bpm.Model.class);
-                        if (model == null) {
-                            throw new Exception("Invalid model");
-                        }
-                        if (model.getKind() != ElementKind.BPM_MODEL) {
-                            throw new Exception("Invalid kind of model '" + model.getKind() + "'. It should be '" + ElementKind.BPM_MODEL + "'");
-                        }
-                        model.validateCreation();
-                        Util.populate(model);
-                        response.status(HTTP_CREATED);
-                        response.type(JSON_CONTENT_TYPE);
-                        response.header("Location", request.pathInfo() + "/models/" + model.getId());
-                        return EMPTY_RESPONSE;
-                    } catch (Throwable ex) {
-                        return throwError(response, ex);
-                    }
-                });
-                options("/models/ers", (request, response) -> {
-                    setCORS(request, response);
-                    Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledERModelCollection, deeplyFulfilledERModel, HttpMethod.get, HttpMethod.post);
-                    return getOptions(request, response, output);
-                });
-                get("/models/ers", (request, response) -> {
-                    Map<String, Object> params = new HashMap<>();
-                    params.put("modelType", "ERModel");
-                    response.type(JSON_CONTENT_TYPE);
-                    return jsonUtils.toJSON(getList(request, response, Taggable.GET_MODELS_BY_TYPE, params, null));
-                });
-                post("/models/ers", (request, response) -> {
-                    try {
-                        com.araguacaima.open_archi.persistence.diagrams.er.Model model = jsonUtils.fromJSON(request.body(), com.araguacaima.open_archi.persistence.diagrams.er.Model.class);
-                        if (model == null) {
-                            throw new Exception("Invalid model");
-                        }
-                        if (model.getKind() != ElementKind.ENTITY_RELATIONSHIP_MODEL) {
-                            throw new Exception("Invalid kind of model '" + model.getKind() + "'. It should be '" + ElementKind.ENTITY_RELATIONSHIP_MODEL + "'");
-                        }
-                        model.validateCreation();
-                        Util.populate(model);
-                        response.status(HTTP_CREATED);
-                        response.type(JSON_CONTENT_TYPE);
-                        response.header("Location", request.pathInfo() + "/models/" + model.getId());
-                        return EMPTY_RESPONSE;
-                    } catch (Throwable ex) {
-                        return throwError(response, ex);
-                    }
-                });
-                options("/models/flowcharts", (request, response) -> {
-                    setCORS(request, response);
-                    Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledFlowchartModelCollection, deeplyFulfilledFlowchartModel, HttpMethod.get, HttpMethod.post);
-                    return getOptions(request, response, output);
-                });
-                get("/models/flowcharts", (request, response) -> {
-                    Map<String, Object> params = new HashMap<>();
-                    params.put("modelType", "FlowchartModel");
-                    response.type(JSON_CONTENT_TYPE);
-                    return jsonUtils.toJSON(getList(request, response, Taggable.GET_MODELS_BY_TYPE, params, null));
-                });
-                post("/models/flowcharts", (request, response) -> {
-                    try {
-                        com.araguacaima.open_archi.persistence.diagrams.flowchart.Model model = jsonUtils.fromJSON(request.body(), com.araguacaima.open_archi.persistence.diagrams.flowchart.Model.class);
-                        if (model == null) {
-                            throw new Exception("Invalid model");
-                        }
-                        if (model.getKind() != ElementKind.FLOWCHART_MODEL) {
-                            throw new Exception("Invalid kind of model '" + model.getKind() + "'. It should be '" + ElementKind.FLOWCHART_MODEL + "'");
-                        }
-                        model.validateCreation();
-                        Util.populate(model);
-                        response.status(HTTP_CREATED);
-                        response.type(JSON_CONTENT_TYPE);
-                        response.header("Location", request.pathInfo() + "/models/" + model.getId());
-                        return EMPTY_RESPONSE;
-                    } catch (Throwable ex) {
-                        return throwError(response, ex);
-                    }
-                });
-                options("/models/gantts", (request, response) -> {
-                    setCORS(request, response);
-                    Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledGanttModelCollection, deeplyFulfilledGanttModel, HttpMethod.get, HttpMethod.post);
-                    return getOptions(request, response, output);
-                });
-                get("/models/gantts", (request, response) -> {
-                    Map<String, Object> params = new HashMap<>();
-                    params.put("modelType", "GanttModel");
-                    response.type(JSON_CONTENT_TYPE);
-                    return jsonUtils.toJSON(getList(request, response, Taggable.GET_MODELS_BY_TYPE, params, null));
-                });
-                post("/models/gantts", (request, response) -> {
-                    try {
-                        com.araguacaima.open_archi.persistence.diagrams.gantt.Model model = jsonUtils.fromJSON(request.body(), com.araguacaima.open_archi.persistence.diagrams.gantt.Model.class);
-                        if (model == null) {
-                            throw new Exception("Invalid model");
-                        }
-                        if (model.getKind() != ElementKind.GANTT_MODEL) {
-                            throw new Exception("Invalid kind of model '" + model.getKind() + "'. It should be '" + ElementKind.GANTT_MODEL + "'");
-                        }
-                        model.validateCreation();
-                        Util.populate(model);
-                        response.status(HTTP_CREATED);
-                        response.type(JSON_CONTENT_TYPE);
-                        response.header("Location", request.pathInfo() + "/models/" + model.getId());
-                        return EMPTY_RESPONSE;
-                    } catch (Throwable ex) {
-                        return throwError(response, ex);
-                    }
-                });
-                options("/models/sequences", (request, response) -> {
-                    setCORS(request, response);
-                    Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledSequenceModelCollection, deeplyFulfilledSequenceModel, HttpMethod.get, HttpMethod.post);
-                    return getOptions(request, response, output);
-                });
-                get("/models/sequences", (request, response) -> {
-                    Map<String, Object> params = new HashMap<>();
-                    params.put("modelType", "SequenceModel");
-                    response.type(JSON_CONTENT_TYPE);
-                    return jsonUtils.toJSON(getList(request, response, Taggable.GET_MODELS_BY_TYPE, params, null));
-                });
-                post("/models/sequences", (request, response) -> {
-                    try {
-                        com.araguacaima.open_archi.persistence.diagrams.sequence.Model model = jsonUtils.fromJSON(request.body(), com.araguacaima.open_archi.persistence.diagrams.sequence.Model.class);
-                        if (model == null) {
-                            throw new Exception("Invalid model");
-                        }
-                        if (model.getKind() != ElementKind.SEQUENCE_MODEL) {
-                            throw new Exception("Invalid kind of model '" + model.getKind() + "'. It should be '" + ElementKind.SEQUENCE_MODEL + "'");
-                        }
-                        model.validateCreation();
-                        Util.populate(model);
-                        response.status(HTTP_CREATED);
-                        response.type(JSON_CONTENT_TYPE);
-                        response.header("Location", request.pathInfo() + "/models/" + model.getId());
-                        return EMPTY_RESPONSE;
-                    } catch (Throwable ex) {
-                        return throwError(response, ex);
-                    }
-                });
-                options("/models/classes", (request, response) -> {
-                    setCORS(request, response);
-                    Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledClassesModelCollection, deeplyFulfilledClassesModel, HttpMethod.get, HttpMethod.post);
-                    return getOptions(request, response, output);
-                });
-                get("/models/classes", (request, response) -> {
-                    Map<String, Object> params = new HashMap<>();
-                    params.put("modelType", "ClassesModel");
-                    response.type(JSON_CONTENT_TYPE);
-                    return jsonUtils.toJSON(getList(request, response, Taggable.GET_MODELS_BY_TYPE, params, null));
-                });
-                post("/models/classes", (request, response) -> {
-                    try {
-                        com.araguacaima.open_archi.persistence.diagrams.classes.Model model = jsonUtils.fromJSON(request.body(), com.araguacaima.open_archi.persistence.diagrams.classes.Model.class);
-                        if (model == null) {
-                            throw new Exception("Invalid model");
-                        }
-                        if (model.getKind() != ElementKind.UML_CLASS_MODEL) {
-                            throw new Exception("Invalid kind of model '" + model.getKind() + "'. It should be '" + ElementKind.UML_CLASS_MODEL + "'");
-                        }
-                        model.validateCreation();
-                        Util.populate(model);
-                        response.status(HTTP_CREATED);
-                        response.type(JSON_CONTENT_TYPE);
-                        response.header("Location", request.pathInfo() + "/models/" + model.getId());
-                        return EMPTY_RESPONSE;
-                    } catch (Throwable ex) {
-                        return throwError(response, ex);
-                    }
-                });
                 options("/catalogs/diagram-types", (request, response) -> {
                     setCORS(request, response);
                     Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledDiagramTypesCollection, deeplyFulfilledDiagramType, HttpMethod.get, HttpMethod.post);
@@ -713,18 +715,7 @@ public class Server {
                 });
                 get("/catalogs/diagram-names", (request, response) -> {
                     String diagramNames = (String) getList(request, response, Item.GET_ALL_DIAGRAM_NAMES, null, IdName.class);
-                    List diagramNamesList = jsonUtils.fromJSON(diagramNames, List.class);
-                    CollectionUtils.filter(diagramNamesList, (Predicate<Map<String, String>>) map -> {
-                        String className = map.get("clazz");
-                        Class<?> clazz;
-                        try {
-                            clazz = Class.forName(className);
-                            return DiagramableElement.class.isAssignableFrom(clazz);
-                        } catch (ClassNotFoundException e) {
-                            e.printStackTrace();
-                        }
-                        return false;
-                    });
+                    List diagramNamesList = getListIdName(diagramNames);
                     return getList(request, response, diagramNamesList);
                 });
                 options("/catalogs/prototype-names", (request, response) -> {
@@ -737,9 +728,34 @@ public class Server {
                     response.type(JSON_CONTENT_TYPE);
                     return EMPTY_RESPONSE;
                 });
-                get("/catalogs/prototype-names", (request, response) -> getList(request, response, Item.GET_ALL_PROTOTYPE_NAMES, null, IdName.class));
+                get("/catalogs/prototype-names", (request, response) -> {
+                    String diagramNames = (String) getList(request, response, Item.GET_ALL_PROTOTYPE_NAMES, null, IdName.class);
+                    List diagramNamesList = getListIdName(diagramNames);
+                    return getList(request, response, diagramNamesList);
+                });
             });
         });
+    }
+
+    private static List getListIdName(String diagramNames) throws IOException {
+        List diagramNamesList = jsonUtils.fromJSON(diagramNames, List.class);
+        CollectionUtils.filter(diagramNamesList, (Predicate<Map<String, String>>) map -> {
+            String className = map.get("clazz");
+            Class<?> clazz;
+            try {
+                clazz = Class.forName(className);
+                boolean assignableFrom = DiagramableElement.class.isAssignableFrom(clazz);
+                if (assignableFrom) {
+                    map.put("type", ((DiagramableElement) clazz.newInstance()).getKind().name());
+                    map.remove("clazz");
+                }
+                return assignableFrom;
+            } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+            return false;
+        });
+        return diagramNamesList;
     }
 
     private static Map<HttpMethod, Map<InputOutput, Object>> setOptionsOutputStructure(
