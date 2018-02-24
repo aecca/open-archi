@@ -713,13 +713,17 @@ public class Server {
                 });
                 get("/catalogs/diagram-names", (request, response) -> {
                     String diagramNames = (String) getList(request, response, Item.GET_ALL_DIAGRAM_NAMES, null, IdName.class);
-                    List<IdName> diagramNamesList = (List<IdName>) jsonUtils.fromJSON(diagramNames, List.class);
-                    CollectionUtils.filter(diagramNamesList, new Predicate<IdName>() {
-                        @Override
-                        public boolean evaluate(IdName object) {
-                            Class<?> clazz = object.getClazz();
-                            return clazz.isAssignableFrom(DiagramableElement.class);
+                    List diagramNamesList = jsonUtils.fromJSON(diagramNames, List.class);
+                    CollectionUtils.filter(diagramNamesList, (Predicate<Map<String, String>>) map -> {
+                        String className = map.get("clazz");
+                        Class<?> clazz;
+                        try {
+                            clazz = Class.forName(className);
+                            return DiagramableElement.class.isAssignableFrom(clazz);
+                        } catch (ClassNotFoundException e) {
+                            e.printStackTrace();
                         }
+                        return false;
                     });
                     return getList(request, response, diagramNamesList);
                 });
