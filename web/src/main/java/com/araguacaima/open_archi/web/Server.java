@@ -268,8 +268,7 @@ public class Server {
         JPAEntityManagerUtils.getEntityManager();
     }
 
-    public static void main(String[] args)
-            throws GeneralSecurityException {
+    public static void main(String[] args) throws GeneralSecurityException {
 
         int assignedPort = getAssignedPort();
         port(assignedPort);
@@ -710,7 +709,7 @@ public class Server {
                     response.type(JSON_CONTENT_TYPE);
                     return EMPTY_RESPONSE;
                 });
-                get("/catalogs/diagram-names", (request, response) -> getList(request, response, Item.GET_ALL_PROTOTYPE_NAMES, null, Item.class));
+                get("/catalogs/diagram-names", (request, response) -> getList(request, response, Item.GET_ALL_DIAGRAM_NAMES, null, Item.class));
                 options("/catalogs/prototype-names", (request, response) -> {
                     setCORS(request, response);
                     Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledIdValueCollection, deeplyFulfilledIdValue, HttpMethod.get, HttpMethod.post);
@@ -786,7 +785,12 @@ public class Server {
     private static Object getList(Request request, Response response, String query, Map<String, Object> params, Class type) throws IOException, URISyntaxException {
         response.status(HTTP_OK);
 
-        List<Taggable> models = JPAEntityManagerUtils.executeQuery(type == null ? Taggable.class : type, query, params);
+        List models;
+        try {
+            models = JPAEntityManagerUtils.executeQuery(type == null ? Taggable.class : type, query, params);
+        } catch (IllegalArgumentException ignored) {
+            models = JPAEntityManagerUtils.executeQuery(Object[].class, query, params);
+        }
         String jsonObjects = jsonUtils.toJSON(models);
         Object filter_ = filter(request.queryParams("$filter"), jsonObjects);
         String json = request.pathInfo().replaceFirst("/api/models", "");
@@ -818,7 +822,6 @@ public class Server {
             return filter_.getClass().equals(String.class) ? filter_ : jsonUtils.toJSON(filter_);
         }
     }
-
 
     private static Object getElement(Request request, Response response, String query, Map<String, Object> params, Class type) throws IOException, URISyntaxException {
         response.status(HTTP_OK);
@@ -852,8 +855,7 @@ public class Server {
         return 4567;
     }
 
-    private static Object filter(String query, String json)
-            throws IOException, URISyntaxException {
+    private static Object filter(String query, String json) throws IOException, URISyntaxException {
 
         if (query == null) {
             return json;
@@ -866,8 +868,7 @@ public class Server {
         return engine.render(new ModelAndView(model, templatePath));
     }
 
-    private static String read(InputStream input)
-            throws IOException {
+    private static String read(InputStream input) throws IOException {
         try (BufferedReader buffer = new BufferedReader(new InputStreamReader(input))) {
             return buffer.lines().collect(Collectors.joining("\n"));
         }
