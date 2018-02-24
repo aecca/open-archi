@@ -3,6 +3,7 @@ package com.araguacaima.open_archi.web;
 import com.araguacaima.commons.utils.EnumsUtils;
 import com.araguacaima.commons.utils.JsonUtils;
 import com.araguacaima.commons.utils.ReflectionUtils;
+import com.araguacaima.open_archi.persistence.commons.IdName;
 import com.araguacaima.open_archi.persistence.diagrams.core.*;
 import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
 import com.araguacaima.open_archi.web.wrapper.RsqlJsonFilter;
@@ -12,6 +13,7 @@ import de.neuland.jade4j.JadeConfiguration;
 import de.neuland.jade4j.template.TemplateLoader;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.IterableUtils;
+import org.apache.commons.collections4.Predicate;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.reflections.Reflections;
@@ -709,7 +711,18 @@ public class Server {
                     response.type(JSON_CONTENT_TYPE);
                     return EMPTY_RESPONSE;
                 });
-                get("/catalogs/diagram-names", (request, response) -> getList(request, response, Item.GET_ALL_DIAGRAM_NAMES, null, Item.class));
+                get("/catalogs/diagram-names", (request, response) -> {
+                    String diagramNames = (String) getList(request, response, Item.GET_ALL_DIAGRAM_NAMES, null, IdName.class);
+                    List<IdName> diagramNamesList = (List<IdName>) jsonUtils.fromJSON(diagramNames, List.class);
+                    CollectionUtils.filter(diagramNamesList, new Predicate<IdName>() {
+                        @Override
+                        public boolean evaluate(IdName object) {
+                            Class<?> clazz = object.getClazz();
+                            return clazz.isAssignableFrom(DiagramableElement.class);
+                        }
+                    });
+                    return getList(request, response, diagramNamesList);
+                });
                 options("/catalogs/prototype-names", (request, response) -> {
                     setCORS(request, response);
                     Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledIdValueCollection, deeplyFulfilledIdValue, HttpMethod.get, HttpMethod.post);
@@ -720,7 +733,7 @@ public class Server {
                     response.type(JSON_CONTENT_TYPE);
                     return EMPTY_RESPONSE;
                 });
-                get("/catalogs/prototype-names", (request, response) -> getList(request, response, Item.GET_ALL_PROTOTYPE_NAMES, null, Item.class));
+                get("/catalogs/prototype-names", (request, response) -> getList(request, response, Item.GET_ALL_PROTOTYPE_NAMES, null, IdName.class));
             });
         });
     }
@@ -786,12 +799,15 @@ public class Server {
         response.status(HTTP_OK);
 
         List models;
+        String jsonObjects;
         try {
             models = JPAEntityManagerUtils.executeQuery(type == null ? Taggable.class : type, query, params);
+            jsonObjects = jsonUtils.toJSON(models);
         } catch (IllegalArgumentException ignored) {
             models = JPAEntityManagerUtils.executeQuery(Object[].class, query, params);
+            jsonObjects = jsonUtils.toJSON(models);
         }
-        String jsonObjects = jsonUtils.toJSON(models);
+
         Object filter_ = filter(request.queryParams("$filter"), jsonObjects);
         String json = request.pathInfo().replaceFirst("/api/models", "");
         String contentType = getContentType(request);

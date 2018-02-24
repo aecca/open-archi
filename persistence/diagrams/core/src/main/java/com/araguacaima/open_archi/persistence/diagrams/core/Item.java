@@ -20,9 +20,9 @@ import java.util.Set;
         @NamedQuery(name = Item.GET_ALL_PROTOTYPES,
                 query = "select a.metaData from Item a where a.prototype=true"),
         @NamedQuery(name = Item.GET_ALL_PROTOTYPE_NAMES,
-                query = "select a.id, a.name from Item a where a.prototype=true"),
+                query = "select new com.araguacaima.open_archi.persistence.commons.IdName(a.id, a.name, TYPE(a)) from Item a where a.prototype=true"),
         @NamedQuery(name = Item.GET_ALL_DIAGRAM_NAMES,
-                query = "select a.id, a.name from Item a")})
+                query = "select new com.araguacaima.open_archi.persistence.commons.IdName(a.id, a.name, TYPE(a)) from Item a")})
 public class Item extends Taggable {
 
     public static final String GET_ALL_CHILDREN = "get.all.children";
