@@ -83,7 +83,7 @@ var mySampleMenu = '\
       <div id="DiagramNavbarExamples" class="collapse">\
         <ul id="sections" class="classList nav navbar-nav">\
           <li><a onclick="openContent(this);" resource="/diagrams/basic.html">Basic</a></li>\
-          <li><a onclick="openContent(this);" resource="/diagrams/CheckBoxes.html">CheckBoxes</a></li>\
+          <li><a onclick="openContent(this);" resource="/diagrams/checkBoxes.html">CheckBoxes</a></li>\
           <li><a onclick="openContent(this);" resource="/diagrams/ColumnResizing.html">Column Resizing</a></li>\
           <li><a onclick="openContent(this);" resource="/diagrams/comments.html">Comments</a></li>\
           <li><a onclick="openContent(this);" resource="/diagrams/customContextMenu.html">Context Menu</a></li>\
