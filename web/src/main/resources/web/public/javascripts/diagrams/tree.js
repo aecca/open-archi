@@ -1,4 +1,3 @@
-
 var mainTreeGraph;
 var leafTreeGraph;
 var mainTreeDiagram;

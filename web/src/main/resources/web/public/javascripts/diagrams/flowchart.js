@@ -1,5 +1,5 @@
 function initFlowchart() {
-    
+
     var $ = go.GraphObject.make;  // for conciseness in defining templates
 
     myDiagram =
@@ -204,7 +204,7 @@ function initFlowchart() {
 
     // initialize the Palette that is on the left side of the page
     myPalette =
-        $(go.Palette, "myPaletteDiv",  // must name or refer to the DIV HTML element
+        $(go.Palette, "paletteDiv",  // must name or refer to the DIV HTML element
             {
                 scrollsPageOnFocus: false,
                 nodeTemplateMap: myDiagram.nodeTemplateMap,  // share the templates used by myDiagram
