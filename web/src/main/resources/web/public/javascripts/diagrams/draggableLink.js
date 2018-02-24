@@ -1,16 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Draggable Link</title>
-<meta name="description" content="Drag a link to reconnect it. Nodes have custom Adornments for selection, resizing, and reshaping." />
-<!-- Copyright 1998-2018 by Northwoods Software Corporation. -->
-<meta charset="UTF-8">
-<script src="../release/go.js"></script>
-<script src="../assets/js/goSamples.js"></script>  <!-- this is only for the GoJS Samples framework -->
-<script id="code">
-  function init() {
-    if (window.goSamples) goSamples();  // init for these samples -- you don't need to call this
+
+  function initDraggableLink() {
+    
     var $ = go.GraphObject.make;  // for conciseness in defining templates
 
     myDiagram =
@@ -280,54 +270,3 @@
     var pos = myDiagram.model.modelData.position;
     if (pos) myDiagram.initialPosition = go.Point.parse(pos);
   }
-</script>
-</head>
-<body onload="init()">
-<div id="sample">
-  <div style="width: 100%; display: flex; justify-content: space-between">
-    <div id="myPaletteDiv" style="width: 105px; margin-right: 2px; background-color: whitesmoke; border: solid 1px black"></div>
-    <div id=diagramDiv style="flex-grow: 1; height: 620px; border: solid 1px black"></div>
-  </div>
-  <p>
-    This sample demonstrates the ability for the user to drag around a Link as if it were a Node.
-    When either end of the link passes over a valid port, the port is highlighted.
-  </p>
-  <p>
-    The link-dragging functionality is enabled by setting some or all of the following properties:
-    <a>DraggingTool.dragsLink</a>, <a>LinkingTool.isUnconnectedLinkValid</a>, and
-    <a>RelinkingTool.isUnconnectedLinkValid</a>.
-  </p>
-  <p>
-    Note that a Link is present in the <a>Palette</a> so that it too can be dragged out and onto
-    the main Diagram.  Because links are not automatically routed when either end is not connected
-    with a Node, the route is provided explicitly when that Palette item is defined.
-  </p>
-  <p>
-    This also demonstrates several custom Adornments:
-    <a>Part.selectionAdornmentTemplate</a>, <a>Part.resizeAdornmentTemplate</a>, and
-    <a>Part.rotateAdornmentTemplate</a>.
-  </p>
-  <p>
-    Finally this sample demonstrates saving and restoring the <a>Diagram.position</a> as a property
-    on the <a>Model.modelData</a> object that is automatically saved and restored when calling <a>Model.toJson</a>
-    and <a>Model.fromJson</a>.
-  </p>
-  <div>
-    <div>
-      <button id="SaveButton" onclick="save()">Save</button>
-      <button onclick="load()">Load</button>
-      Diagram Model saved in JSON format:
-    </div>
-    <textarea id="modelToSaveOrLoad" style="width:100%;height:300px">
-{ "class": "go.GraphLinksModel",
-  "linkFromPortIdProperty": "fromPort",
-  "linkToPortIdProperty": "toPort",
-  "nodeDataArray": [
- ],
-  "linkDataArray": [
- ]}
-    </textarea>
-  </div>
-</div>
-</body>
-</html>

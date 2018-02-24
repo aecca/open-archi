@@ -1,16 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Gantt chart</title>
-<meta name="description" content="A Gantt chart that supports zooming into the timeline." />
-  <!-- Copyright 1998-2018 by Northwoods Software Corporation. -->
-  <meta charset="UTF-8">
-  <script src="../release/go.js"></script>
-    <script src="../assets/js/goSamples.js"></script>  <!-- this is only for the GoJS Samples framework -->
-  <script id="code">
-    function init() {
-      if (window.goSamples) goSamples();  // init for these samples -- you don't need to call this
+
+    function initGantt() {
+      
       var $ = go.GraphObject.make;  // for conciseness in defining templates
 
       myDiagram =
@@ -155,23 +145,3 @@
       if (width < 70) dateScale.findObject("labels").interval = 4;
       myDiagram.commitTransaction("rescale");
     }
-  </script>
-</head>
-<body onload="init()">
-<div id="sample">
-  <div id=diagramDiv style="height:600px;width:100%;border:1px solid black"></div>
-  <div id="slider">
-    <label>Spacing:</label>
-    <input id="widthSlider" type="range" min="2" max="90" value="30" onchange="rescale()"/>
-  </div>
-  <p>
-    This sample demonstrates a simple Gantt chart. Gantt charts are used to illustrate project schedules, denoting the start and end dates for terminal and summary elements of the project.
-  </p>
-  <p>
-    You can zoom in on the diagram by changing the "Spacing" value,
-    which scales the diagram using a data binding function for nodes' widths and locations.
-    This is in place of changing the <a>Diagram.scale</a>.
-  </p>
-</div>
-</body>
-</html>

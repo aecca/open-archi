@@ -1,14 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Swim Lanes</title>
-<meta name="description" content="Horizontal swim lanes and pools with collapsible lanes and limited dragging." />
-<!-- Copyright 1998-2018 by Northwoods Software Corporation. -->
-<meta charset="UTF-8">
-<script src="../release/go.js"></script>
-<script src="../assets/js/goSamples.js"></script>  <!-- this is only for the GoJS Samples framework -->
-<script id="code">
   // These parameters need to be set before defining the templates.
   var MINLENGTH = 200;  // this controls the minimum length of any swimlane
   var MINBREADTH = 20;  // this controls the minimum breadth of any non-collapsed swimlane
@@ -170,8 +159,8 @@
   // end PoolLayout class
 
 
-  function init() {
-    if (window.goSamples) goSamples();  // init for these samples -- you don't need to call this
+  function initSwimLanes() {
+    
     var $ = go.GraphObject.make;
 
     myDiagram =
@@ -451,53 +440,3 @@
     myDiagram.model = go.Model.fromJson(document.getElementById("modelToSaveOrLoad").value);
     myDiagram.delayInitialization(relayoutDiagram);
   }
-</script>
-</head>
-<body onload="init()">
-<div id="sample">
-  <div id=diagramDiv style="border: solid 1px black; width:100%; height:700px;"></div>
-  <p>
-    In this design each swimlane is implemented by a <a>Group</a>, and all lanes are inside a "Pool" Group.
-    Each lane Group has its own <a>Group.layout</a>, which in this case is a <a>LayeredDigraphLayout</a>.
-    Each pool Group has its own custom <a>GridLayout</a> that arranges all of its lanes in a vertical stack.
-    That custom layout makes sure all of the pool's lanes have the same length.
-  </p>
-  <p>
-    When dragging nodes note that the nodes are limited to stay within the lanes.
-    This is implemented by a custom <a>Part.dragComputation</a> function, here named <b>stayInGroup</b>.
-    Hold down the Shift key while dragging simple nodes to move the selection to another lane.
-    Lane groups cannot be moved between pool groups.
-  </p>
-  <p>
-    A Group (i.e. swimlane) is movable but not copyable.
-    When the user moves a lane up or down the lanes automatically re-order.
-    You can prevent lanes from being moved and thus re-ordered by setting Group.movable to false.
-  </p>
-  <p>
-    Each Group is collapsible.
-    The previous breadth of that lane is saved in the _savedBreadth property, to be restored when expanded.
-  </p>
-  <p>
-    When a Group/lane is selected, its custom <a>Part.resizeAdornmentTemplate</a>
-    gives it a broad resize handle at the bottom of the Group
-    and a broad resize handle at the right side of the Group.
-    This allows the user to resize the "breadth" of the selected lane
-    as well as the "length" of all of the lanes.
-    However, the custom <a>ResizingTool</a> prevents the lane from being too narrow
-    to hold the <a>Group.placeholder</a> that represents the subgraph,
-    and it prevents the lane from being too short to hold any of the contents of the lanes.
-    Each Group/lane is also has a <a>GraphObject.minSize</a> to keep it from
-    being too narrow even if there are no member <a>Part</a>s at all.
-  </p>
-  <p>
-    A different sample has its swim lanes vertically oriented: <a href="swimLanesVertical.html">Swim Lanes (vertical)</a>.
-  </p>
-  <button onclick="relayoutLanes()">Layout</button>
-  <button id="SaveButton" onclick="save()">Save</button>
-  <button onclick="load()">Load</button>
-  Diagram Model saved in JSON format:
-  <br />
-  <textarea id="modelToSaveOrLoad" style="width:100%;height:300px"></textarea>
-</div>
-</body>
-</html>

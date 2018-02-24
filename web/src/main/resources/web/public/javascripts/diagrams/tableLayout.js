@@ -1,33 +1,5 @@
 "use strict";
-/*
-*  Copyright (C) 1998-2018 by Northwoods Software Corporation. All Rights Reserved.
-*/
 
-// This layout is patterned after the "Table" Panel layout.
-
-/**
-* @constructor
-* @extends Layout
-* @class
-* This Layout positions non-Link Parts into a table according to the values of
-* GraphObject.row, GraphObject.column, GraphObject.rowSpan, GraphObject.columnSpan,
-* GraphObject.alignment, GraphObject.stretch.
-* If the value of GraphObject.stretch is not go.GraphObject.None, the Part will be sized
-* according to the available space in the cell(s).
-* <p>
-* You can specify constraints for whole rows or columns by calling
-* getRowDefinition(row) or getColumnDefinition(col) and setting one of the following properties:
-* RowColumnDefinition.alignment, RowColumnDefinition.height, RowColumnDefinition.width,
-* RowColumnDefinition.maximum, RowColumnDefinition.minimum, RowColumnDefinition.stretch.
-* <p>
-* The defaultAlignment and defaultStretch properties apply to all parts if not specified
-* on the individual Part or in the corresponding row or column definition.
-* <p>
-* At the current time, there is no support for separator lines
-* (RowColumnDefinition.separatorStroke, separatorStrokeWidth, and separatorDashArray properties)
-* nor background (RowColumnDefinition.background and coversSeparators properties).
-* There is no support for RowColumnDefinition.sizing, either.
-*/
 function TableLayout() {
   go.Layout.call(this);
   /** @type {Spot} */

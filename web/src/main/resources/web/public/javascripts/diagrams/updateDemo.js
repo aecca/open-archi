@@ -1,16 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Update Demo GoJS Sample</title>
-<meta name="description" content="Show the ChangedEvents that occur as the user modifies diagrams that share a single model, and the state of the UndoManager." />
-<!-- Copyright 1998-2018 by Northwoods Software Corporation. -->
-<meta charset="UTF-8">
-<script src="../release/go.js"></script>
-<script src="../assets/js/goSamples.js"></script>  <!-- this is only for the GoJS Samples framework -->
-<script id="code">
-function init() {
-  if (window.goSamples) goSamples();  // init for these samples -- you don't need to call this
+function initUpdateDemo() {
+  
   var $ = go.GraphObject.make;  // for conciseness in defining templates
 
   blueDiagram =
@@ -239,76 +228,3 @@ function init() {
 function clearLog() {
   var div = document.getElementById("modelChangedLog").innerHTML = "";
 }
-</script>
-</head>
-<body onload="init()">
-<div id="sample">
-  <p>Update Demo <b>GoJS</b> Sample</p>
-  <!-- The DIV for the Diagram needs an explicit size or else we won't see anything.
-       Also add a border to help see the edges. -->
-  <div style="width:100%; white-space:nowrap">
-    <div style="display: inline-block; vertical-align: top; width:50%">
-      <div id="blueDiagram" style="border: solid 1px blue; width:100%; height:300px;"></div>
-      <div style="width:100%; height:20px"></div>
-      <div id="greenDiagram" style="border: solid 1px green; width:100%; height:300px"></div>
-    </div>
-    <div style="display: inline-block; vertical-align: top; width:50%">
-      <div style="width:100%; height:300px">
-        <input type="button" onclick="clearLog()" style="height:20px; font-size: 11px;" value="Clear Model log" />
-        <div id="modelChangedLog" style="height:280px;border: solid 1px gray; font-family:Monospace; font-size:11px; overflow:scroll"></div>
-      </div>
-      <div style="width:100%; height:20px"></div>
-      <div style="">
-        <input type="button" onclick="blueDiagram.commandHandler.undo()" style="height:20px; font-size: 11px;" value="Undo" />
-        <input type="button" onclick="blueDiagram.commandHandler.redo()" style="height:20px; font-size: 11px;" value="Redo" />
-        <div id="undoDisplay" style="height:280px; border: solid 1px gray"></div>
-      </div>
-    </div>
-  </div>
-  <p>
-  This sample has two Diagrams, named "blueDiagram" and "greenDiagram", that display the same Model.
-  Each diagram uses its own templates for its nodes and links, causing the appearance of each diagram to be different.
-  However making a change in one diagram that changes the model causes those model changes to be reflected in the other diagram.
-  </p>
-  <p>
-  This sample also shows, next to the blue diagram, almost all of the <a>ChangedEvent</a>s that the shared model undergoes.
-  (For clarity it leaves out some of the Transaction-oriented events.)
-  The model Changed listener adds a line for each ChangedEvent to the "modelChangedLog" DIV.
-  Transaction notification events start with an asterisk "*",
-  while property changes and collection insertions and removals start with an exclamation mark "!".
-  </p>
-  <p>
-  Next to the green diagram there is a tree view display of the <a>UndoManager</a>'s history.
-  The <a>UndoManager.history</a> is a <a>List</a> of <a>Transaction</a>s,
-  where each <a>Transaction.changes</a> property holds all of the ChangedEvents that occurred due to some command or tool operation.
-  These ChangedEvents are reflective of both changes to the model (prefixed with "!m") and to the diagram (prefixed with "!d").
-  You will note that there are often several diagram changes for each model change.
-  </p>
-  <p>
-  This demo is different from the <a href="twoDiagrams.html">Two Diagrams</a> sample, which is an example of two Diagrams,
-  each sharing/showing a different <a>Model</a>, but sharing the same <a>UndoManager</a>.
-  </p>
-  <p>
-  Many of the other samples demonstrate saving the whole model by calling <a>Model.toJson</a>.
-  If you want to save incrementally, you should do so at the end of each transaction, when <a>ChangedEvent.isTransactionFinished</a>.
-  The <a>ChangedEvent.object</a> may be a <a>Transaction</a>.
-  Look through the <a>Transaction.changes</a> list for the model changes that you want to save.
-  This code demonstrates the basic idea:
-  </p>
-  <pre>
-  model.addChangedListener(function(e) {
-    if (e.isTransactionFinished) {
-      var tx = e.object;
-      if (tx instanceof go.Transaction && window.console) {
-            window.console.log(tx.toString());
-        tx.changes.each(function(c) {
-          // consider which ChangedEvents to record
-          if (c.model) window.console.log("  " + c.toString());
-        });
-      }
-    }
-  });
-  </pre>
-</div>
-</body>
-</html>

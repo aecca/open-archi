@@ -1,16 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Kanban Board</title>
-<meta name="description" content="An interactive Kanban board editor, a visual control used for organizing work items." />
-<!-- Copyright 1998-2018 by Northwoods Software Corporation. -->
-<meta charset="UTF-8">
-<script src="../release/go.js"></script>
-<link href='https://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
-<script src="../assets/js/goSamples.js"></script>  <!-- this is only for the GoJS Samples framework -->
-<script id="code">
-  // For the layout
   var MINLENGTH = 200;  // this controls the minimum length of any swimlane
   var MINBREADTH = 100;  // this controls the minimum breadth of any non-collapsed swimlane
 
@@ -100,8 +87,8 @@
   // end PoolLayout class
 
 
-  function init() {
-    if (window.goSamples) goSamples();  // init for these samples -- you don't need to call this
+  function initKanban() {
+    
     var $ = go.GraphObject.make;
 
     myDiagram =
@@ -332,59 +319,3 @@
     myDiagram.model = go.Model.fromJson(document.getElementById("modelToSaveOrLoad").value);
     myDiagram.delayInitialization(relayoutDiagram);
   }
-</script>
-</head>
-<body onload="init()">
-<div id="sample">
-  <div id=diagramDiv style="border: solid 1px black; width:100%; height:500px;"></div>
-  <p>A Kanban board is a work and workflow visualization used to communicate the status and progress of work items. Click on the color of a note to cycle through colors.</p>
-  <p>
-    This design and implementation were adapted from the <a href="swimLanesVertical.html">Swim Lanes (vertical)</a> sample.
-    Unlike that sample:
-    <ul>
-      <li>there are no Links</li>
-      <li>lanes cannot be nested into "pools"</li>
-      <li>lanes cannot be resized</li>
-      <li>the user cannot drop tasks into the diagram's background</li>
-      <li>all tasks are ordered within a single column; the user can rearrange the order</li>
-      <li>tasks can freely be moved into other lanes</li>
-      <li>lanes are not movable or copyable or deletable</li>
-    </ul>
-  </p>
-  <button id="SaveButton" onclick="save()">Save</button>
-  <button onclick="load()">Load</button>
-  Diagram Model saved in JSON format:
-  <br />
-  <textarea id="modelToSaveOrLoad" style="width:100%;height:300px">
-{ "class": "go.GraphLinksModel",
-  "nodeDataArray": [
-{"key":"Problems", "text":"Problems", "isGroup":true, "loc":"0 23.52284749830794" },
-{"key":"Reproduced", "text":"Reproduced", "isGroup":true, "color":"0", "loc":"109 23.52284749830794" },
-{"key":"Identified", "text":"Identified", "isGroup":true, "color":"0", "loc":"235 23.52284749830794" },
-{"key":"Fixing", "text":"Fixing", "isGroup":true, "color":"0", "loc":"343 23.52284749830794" },
-{"key":"Reviewing", "text":"Reviewing", "isGroup":true, "color":"0", "loc":"451 23.52284749830794"},
-{"key":"Testing", "text":"Testing", "isGroup":true, "color":"0", "loc":"562 23.52284749830794" },
-{"key":"Customer", "text":"Customer", "isGroup":true, "color":"0", "loc":"671 23.52284749830794" },
-{"key":-1, "group":"Problems", "category":"newbutton",  "loc":"12 35.52284749830794" },
-{"key":1, "text":"text for oneA", "group":"Problems", "color":"0", "loc":"12 35.52284749830794"},
-{"key":2, "text":"text for oneB", "group":"Problems", "color":"1", "loc":"12 65.52284749830794"},
-{"key":3, "text":"text for oneC", "group":"Problems", "color":"0", "loc":"12 95.52284749830794"},
-{"key":4, "text":"text for oneD", "group":"Problems", "color":"1", "loc":"12 125.52284749830794"},
-{"key":5, "text":"text for twoA", "group":"Reproduced", "color":"1", "loc":"121 35.52284749830794"},
-{"key":6, "text":"text for twoB", "group":"Reproduced", "color":"1", "loc":"121 65.52284749830794"},
-{"key":7, "text":"text for twoC", "group":"Identified", "color":"0", "loc":"247 35.52284749830794"},
-{"key":8, "text":"text for twoD", "group":"Fixing", "color":"0", "loc":"355 35.52284749830794"},
-{"key":9, "text":"text for twoE", "group":"Reviewing", "color":"0", "loc":"463 35.52284749830794"},
-{"key":10, "text":"text for twoF", "group":"Reviewing", "color":"1", "loc":"463 65.52284749830794"},
-{"key":11, "text":"text for twoG", "group":"Testing", "color":"0", "loc":"574 35.52284749830794"},
-{"key":12, "text":"text for fourA", "group":"Customer", "color":"1", "loc":"683 35.52284749830794"},
-{"key":13, "text":"text for fourB", "group":"Customer", "color":"1", "loc":"683 65.52284749830794"},
-{"key":14, "text":"text for fourC", "group":"Customer", "color":"1", "loc":"683 95.52284749830794"},
-{"key":15, "text":"text for fourD", "group":"Customer", "color":"0", "loc":"683 125.52284749830794"},
-{"key":16, "text":"text for fiveA", "group":"Customer", "color":"0", "loc":"683 155.52284749830795"}
-],
-  "linkDataArray": []}
-  </textarea>
-</div>
-</body>
-</html>

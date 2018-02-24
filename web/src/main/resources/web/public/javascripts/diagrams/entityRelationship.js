@@ -1,16 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Entity Relationship</title>
-<meta name="description" content="Interactive entity-relationship diagram or data model diagram implemented by GoJS in JavaScript for HTML." />
-<!-- Copyright 1998-2018 by Northwoods Software Corporation. -->
-<meta charset="UTF-8">
-<script src="../release/go.js"></script>
-<script src="../assets/js/goSamples.js"></script>  <!-- this is only for the GoJS Samples framework -->
-<script id="code">
-  function init() {
-    if (window.goSamples) goSamples();  // init for these samples -- you don't need to call this
+
+  function initEntityRelationship() {
+    
     var $ = go.GraphObject.make;  // for conciseness in defining templates
 
     myDiagram =
@@ -155,15 +145,3 @@
     ];
     myDiagram.model = new go.GraphLinksModel(nodeDataArray, linkDataArray);
   }
-</script>
-</head>
-<body onload="init()">
-<div id="sample">
-  <div id=diagramDiv style="background-color: white; border: solid 1px black; width: 100%; height: 700px"></div>
-  <p>Sample for representing the relationship between various entities.  Try dragging the nodes -- their links will avoid other nodes, by virtue of the <a>Link.AvoidsNodes</a> property assigned to the
-    custom link template's <a>Link.routing</a>. Also note the use of <a href="../intro/buttons.html" target="_blank">Panel Expander Buttons</a> to allow for expandable/collapsible node data.
-  </p>
-  <p>Buttons are defined in <a href="../extensions/Buttons.js">Buttons.js</a>.</p>
-</div>
-</body>
-</html>

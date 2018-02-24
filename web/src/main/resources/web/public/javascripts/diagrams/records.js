@@ -1,16 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Record Mapper</title>
-<meta name="description" content="A diagram for displaying and editing the N to M relationships from one set of objects to another set of objects." />
-  <!-- Copyright 1998-2018 by Northwoods Software Corporation. -->
-  <meta charset="UTF-8">
-  <script src="../release/go.js"></script>
-    <script src="../assets/js/goSamples.js"></script>  <!-- this is only for the GoJS Samples framework -->
-  <script id="code">
-    function init() {
-      if (window.goSamples) goSamples();  // init for these samples -- you don't need to call this
+    function initRecords() {
+      
       var $ = go.GraphObject.make;  // for conciseness in defining templates
 
       myDiagram =
@@ -139,23 +128,3 @@
         document.getElementById("modelToSaveOrLoad").textContent = myDiagram.model.toJson();
       }
     }
-  </script>
-</head>
-<body onload="init()">
-<div id="sample">
-  <div id=diagramDiv style="border: solid 1px black; width:100%; height:300px"></div>
-  <p>This record mapper shows a number of "fields" for each "record" and how they are mapped between each other.</p>
-  <p>
-    Draw new links by dragging from the background of any field.
-    Reconnect a selected link by dragging its diamond-shaped handle.
-    The "record" Nodes use a <a>Panel.Table</a> to place the various fields into rows.
-    Records are not movable or copyable or deletable.
-  </p>
-  <p>For a variation on this sample with selectable fields in the record nodes, see the <a href="selectableFields.html">selectable fields</a> sample.</p>
-  <div>
-    Diagram Model saved in JSON format, automatically updated after each change or undo or redo:
-    <textarea id="modelToSaveOrLoad" style="width:100%;height:250px"></textarea>
-  </div>
-</div>
-</body>
-</html>

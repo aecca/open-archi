@@ -1,17 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Resizing Columns in a Table Panel</title>
-  <!-- Copyright 1998-2018 by Northwoods Software Corporation. -->
-  <meta charset="UTF-8">
-  <script src="../release/go.js"></script>
-    <script src="../assets/js/goSamples.js"></script>  <!-- this is only for the GoJS Samples framework -->
-  <script src="ColumnResizingTool.js"></script>
-  <script src="RowResizingTool.js"></script>
-  <script id="code">
-    function init() {
-      if (window.goSamples) goSamples();  // init for these samples -- you don't need to call this
+
+    function initColumnResizing() {
+      
       var $ = go.GraphObject.make;  // for conciseness in defining templates
 
       myDiagram =
@@ -186,25 +175,3 @@
         document.getElementById("modelToSaveOrLoad").textContent = myDiagram.model.toJson();
       }
     }
-  </script>
-</head>
-<body onload="init()">
-<div id="sample">
-  <div id=diagramDiv style="border: solid 1px black; width:100%; height:400px"></div>
-  <p>
-    This makes use of two tools, defined in their own files: <a href="ColumnResizingTool.js">ColumnResizingTool.js</a> and <a href="RowResizingTool.js">RowResizingTool.js</a>.
-    Each tool adds an <a>Adornment</a> to a selected node that has a resize handle for each column or each row of a "Table" <a>Panel</a>.
-    While resizing, you can press the Tab or the Delete key in order to stop the tool and restore the column or row to its natural size.
-  </p>
-  <p>
-    This sample also adds TwoWay Bindings to the <a>RowColumnDefinition.width</a> property for the columns.
-    Each column width is stored in the corresponding index of the node data's "widths" property, which must be an Array of numbers.
-    The default value is NaN, allowing the column to occupy its natural width.
-    Note that there are <b>no</b> Bindings for the row heights.
-  </p>
-  <p>The model data, automatically updated after each change or undo or redo:</p>
-  <textarea id="modelToSaveOrLoad" style="width:100%;height:300px"></textarea>
-  <p>See also the <a href="../samples/addRemoveColumns.html">Add & Remove Rows & Columns</a> sample.</p>
-</div>
-</body>
-</html>

@@ -1,29 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Org Chart Static</title>
-<meta name="description" content="A larger org chart with an Overview and searching capability." />
-<!-- Copyright 1998-2018 by Northwoods Software Corporation. -->
-<meta charset="UTF-8">
-<style type="text/css">
-  #myOverviewDiv {
-    position: absolute;
-    width:200px;
-    height:100px;
-    top: 10px;
-    left: 10px;
-    background-color: aliceblue;
-    z-index: 300; /* make sure its in front */
-    border: solid 1px blue;
-  }
-</style>
-<script src="../release/go.js"></script>
-<link href='https://fonts.googleapis.com/css?family=Roboto:400,500' rel='stylesheet' type='text/css'>
-<script src="../assets/js/goSamples.js"></script>  <!-- this is only for the GoJS Samples framework -->
-<script id="code">
-  function init() {
-    if (window.goSamples) goSamples();  // init for these samples -- you don't need to call this
+
+  function initOrgChartStatic() {
+    
     var $ = go.GraphObject.make;  // for conciseness in defining templates
 
     myDiagram =
@@ -210,31 +187,3 @@
 
     myDiagram.commitTransaction("highlight search");
   }
-</script>
-</head>
-<body onload="init()">
-<div id="sample" style="position: relative;">
-  <div id=diagramDiv style="background-color: white; border: solid 1px black; width: 100%; height: 700px"></div>
-  <div id="myOverviewDiv"></div> <!-- Styled in a <style> tag at the top of the html page -->
-  <p>
-  This sample shows an organizational chart diagram and uses an in-laid GoJS <a>Overview</a> to aid the user in navigation.
-  The diagram uses a <a>TreeLayout</a> featuring <a>TreeLayout.StyleLastParents</a> to allow for different alignments on the last parents.
-  The data was taken from the UN web site in August 2009.
-  </p>
-  <p>
-  A search box demonstrates one way of finding and highlighting nodes whose data includes particular strings.
-  Note that one can see all of the highlighted nodes in the Overview.
-  </p>
-  <input type="search" id="mySearch" onkeypress="if (event.keyCode === 13) searchDiagram()" />
-  <button onclick="searchDiagram()">Search</button>
-  <p>
-    To learn how to build an org chart from scratch with GoJS, see the <a href="../learn/index.html">Getting Started tutorial</a>.
-  </p>
-  <p>
-    If you want to have some "assistant" nodes on the side, above the regular reports,
-    see the <a href="orgChartAssistants.html">Org Chart Assistants</a> sample, which is a copy of this sample
-    that uses a custom <a>TreeLayout</a> to position "assistants" that way.
-  </p>
-</div>
-</body>
-</html>

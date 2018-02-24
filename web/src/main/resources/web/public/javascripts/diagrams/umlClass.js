@@ -1,16 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>UML Class Nodes</title>
-<meta name="description" content="UML Class-like nodes showing two collapsible lists of items." />
-<!-- Copyright 1998-2018 by Northwoods Software Corporation. -->
-<meta charset="UTF-8">
-<script src="../release/go.js"></script>
-<script src="../assets/js/goSamples.js"></script>  <!-- this is only for the GoJS Samples framework -->
-<script id="code">
-  function init() {
-    if (window.goSamples) goSamples();  // init for these samples -- you don't need to call this
+  function initUmlClass() {
+    
     var $ = go.GraphObject.make;
 
     myDiagram =
@@ -252,25 +241,3 @@
         linkDataArray: linkdata
       });
   }
-</script>
-</head>
-<body onload="init()">
-<div id="sample">
-  <div id=diagramDiv style="border: solid 1px black; width:100%; height:600px"></div>
-    <p>
-        This sample demonstrates one way of defining a UML (Inified Modeling Language) Class Diagram.
-        Note the use of a separate Panel for the properties and one for the methods,
-        allowing for an item template for properties and a separate item template for methods. <a href="../intro/buttons.html#panelExpanderButton" target="_blank">PanelExpanderButton</a>s are used to hide/show class properties and methods.
-    </p>
-    <p>
-        In this example, symbol prefixes indicate the visibility of methods and properties.  The three possibilities are:
-        <ul>
-            <li>+ (Public)</li>
-            <li>- (Private)</li>
-            <li># (Protected)</li>
-        </ul>
-        Additionally, the ~ symbol is used to indicate an item is a package.
-    </p>
-</div>
-</body>
-</html>

@@ -1,15 +1,5 @@
 "use strict";
-/*
-*  Copyright (C) 1998-2018 by Northwoods Software Corporation. All Rights Reserved.
-*/
 
-/**
-* @constructor
-* @extends DraggingTool
-* @class
-* This draggingTool class makes guidelines visible as the parts are dragged around a diagram
-* when the selected part is nearly aligned with another part.
-*/
 function GuidedDraggingTool() {
   go.DraggingTool.call(this);
 

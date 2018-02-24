@@ -1,16 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Process Flow</title>
-<meta name="description" content="A simple process flow or SCADA diagram editor, simulating equipment monitoring and control." />
-<!-- Copyright 1998-2018 by Northwoods Software Corporation. -->
-<meta charset="UTF-8">
-<script src="../release/go.js"></script>
-<script src="../assets/js/goSamples.js"></script>  <!-- this is only for the GoJS Samples framework -->
-<script id="code">
-  function init() {
-    if (window.goSamples) goSamples();  // init for these samples -- you don't need to call this
+  function initProcessFlow() {
+    
     var $ = go.GraphObject.make;  // for more concise visual tree definitions
 
     myDiagram =
@@ -115,57 +104,3 @@
   function load() {
     myDiagram.model = go.Model.fromJson(document.getElementById("modelToSaveOrLoad").value);
   }
-</script>
-
-</head>
-<body onload="init()">
-<div id="sample">
-  <div id=diagramDiv style="border: solid 1px black; width:100%; height:500px"></div>
-  <p>
-    A <em>process flow diagram</em> is commonly used in chemical and process engineering to indicate the general flow of plant processes and equipment.
-    A simple SCADA diagram, with animation of the flow along the pipes, is implemented here.
-  </p>
-  <p>
-    The diagram displays the background grid layer by setting <b>grid.visible</b> to true,
-    and also allows snapping to the grid using <a>DraggingTool.isGridSnapEnabled</a>,
-    <a>ResizingTool.isGridSnapEnabled</a>, and <a>RotatingTool.snapAngleMultiple</a> alongside <a>RotatingTool.snapAngleEpsilon</a>.
-  </p>
-  <p>
-    The diagram also uses the <b>loop</b> function to animate the links by adjusting the <a>Shape.strokeDashOffset</a> every 100 ms.
-  </p>
-  <div>
-    <div>
-      <button id="SaveButton" onclick="save()">Save</button>
-      <button onclick="load()">Load</button>
-      Diagram Model saved in JSON format:
-    </div>
-    <textarea id="modelToSaveOrLoad" style="width:100%;height:300px">
-{ "class": "go.GraphLinksModel",
-  "nodeDataArray": [
-{"key":"P1", "category":"Process", "pos":"150 120", "text":"Process"},
-{"key":"P2", "category":"Process", "pos":"330 320", "text":"Tank"},
-{"key":"V1", "category":"Valve", "pos":"270 120", "text":"V1"},
-{"key":"P3", "category":"Process", "pos":"150 420", "text":"Pump"},
-{"key":"V2", "category":"Valve", "pos":"150 280", "text":"VM", "angle":270},
-{"key":"V3", "category":"Valve", "pos":"270 420", "text":"V2", "angle":180},
-{"key":"P4", "category":"Process", "pos":"450 140", "text":"Reserve Tank"},
-{"key":"V4", "category":"Valve", "pos":"390 60", "text":"VA"},
-{"key":"V5", "category":"Valve", "pos":"450 260", "text":"VB", "angle":90}
- ],
-  "linkDataArray": [
-{"from":"P1", "to":"V1"},
-{"from":"P3", "to":"V2"},
-{"from":"V2", "to":"P1"},
-{"from":"P2", "to":"V3"},
-{"from":"V3", "to":"P3"},
-{"from":"V1", "to":"V4"},
-{"from":"V4", "to":"P4"},
-{"from":"V1", "to":"P2"},
-{"from":"P4", "to":"V5"},
-{"from":"V5", "to":"P2"}
- ]}
-    </textarea>
-  </div>
-</div>
-</body>
-</html>

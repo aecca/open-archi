@@ -1,17 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Guided Dragging</title>
-<meta name="description" content="A demonstration of the GuidedDraggingTool extension." />
-<!-- Copyright 1998-2018 by Northwoods Software Corporation. -->
-<meta charset="UTF-8">
-<script src="../release/go.js"></script>
-<script src="../assets/js/goSamples.js"></script>  <!-- this is only for the GoJS Samples framework -->
-<script src="GuidedDraggingTool.js"></script>
-<script id="code">
-  function init() {
-    if (window.goSamples) goSamples();  // init for these samples -- you don't need to call this
+  function initGuidedDragging() {
+    
 
     var $ = go.GraphObject.make;  // for conciseness in defining templates
 
@@ -56,20 +44,3 @@
       { from: "Delta", to: "Alpha" }
     ]);
   }
-</script>
-</head>
-<body onload="init()">
-<div id="sample">
-  <!-- The DIV for the Diagram needs an explicit size or else we won't see anything.
-       Also add a border to help see the edges. -->
-  <div id=diagramDiv style="border: solid 1px black; width:400px; height:400px"></div>
-  <p>
-    This custom <a>DraggingTool</a> class makes guidelines visible as a Part is dragged around a Diagram and is nearly aligned with another Part.
-    It is defined in its own file, as <a href="GuidedDraggingTool.js">GuidedDraggingTool.js</a>.
-  </p>
-  <p>
-    Usage can also be seen in the <a href="FloorPlanEditor.html">Floor Plan Editor</a> sample.
-  </p>
-</div>
-</body>
-</html>

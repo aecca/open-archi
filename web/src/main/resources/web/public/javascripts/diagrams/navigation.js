@@ -1,16 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Navigation of Graphs</title>
-  <meta name="description" content="Show the relationships of nodes and links and groups." />
-  <!-- Copyright 1998-2018 by Northwoods Software Corporation. -->
-  <meta charset="UTF-8">
-  <script src="../release/go.js"></script>
-    <script src="../assets/js/goSamples.js"></script>  <!-- this is only for the GoJS Samples framework -->
-  <script id="code">
-    function init() {
-      if (window.goSamples) goSamples();  // init for these samples -- you don't need to call this
+    function initNavigation() {
+      
       var $ = go.GraphObject.make;  // for conciseness in defining templates
 
       myDiagram =
@@ -440,56 +429,3 @@
       }
       return text;
     }
-  </script>
-</head>
-<body onload="init()">
-<div id="sample">
-  <div id="displays" style="width:100%; white-space:nowrap;">
-      <div id=diagramDiv style="border: solid 1px black; height: 560px; display: inline-block; vertical-align: top; width: 70%"></div>
-      <div id="controls" style="border: solid 1px black; height: 560px; width: 200px; display: inline-block; vertical-align: top;">
-        <div id="buttons" style="border-radius: 10px; border: solid 1px gray; background-color: #eaeaea; margin: 5px;">
-          <b style="margin: 5px">Related Parts Highlighted</b> <br />
-          <label><input type="radio" name="highlight" onclick="updateHighlights(this)" id="None" checked="checked">Unhighlight All</label><br />
-          <label><input type="radio" name="highlight" onclick="updateHighlights(this)" id="linksIn">Links Into</label><br />
-          <label><input type="radio" name="highlight" onclick="updateHighlights(this)" id="linksOut">Links Out Of</label><br />
-          <label><input type="radio" name="highlight" onclick="updateHighlights(this)" id="linksAll">Links Connected</label><br />
-          <label><input type="radio" name="highlight" onclick="updateHighlights(this)" id="nodesIn">Nodes Into</label><br />
-          <label><input type="radio" name="highlight" onclick="updateHighlights(this)" id="nodesOut">Nodes Out Of</label><br />
-          <label><input type="radio" name="highlight" onclick="updateHighlights(this)" id="nodesConnect">Nodes Connected</label><br />
-          <label><input type="radio" name="highlight" onclick="updateHighlights(this)" id="nodesReach">Nodes Reachable</label><br />
-          <label><input type="radio" name="highlight" onclick="updateHighlights(this)" id="group">Containing Group (Parent)</label><br />
-          <label><input type="radio" name="highlight" onclick="updateHighlights(this)" id="groupsAll">Containing Groups (All)</label><br />
-          <label><input type="radio" name="highlight" onclick="updateHighlights(this)" id="nodesMember">Member Nodes (Children)</label><br />
-          <label><input type="radio" name="highlight" onclick="updateHighlights(this)" id="nodesMembersAll">Member Nodes (All)</label><br />
-          <label><input type="radio" name="highlight" onclick="updateHighlights(this)" id="linksMember">Member Links (Children)</label><br />
-          <label><input type="radio" name="highlight" onclick="updateHighlights(this)" id="linksMembersAll">Member Links (All)</label><br />
-        </div>
-        <div id="colorKey" style="border-radius: 10px; border: solid 1px gray; background-color: #eaeaea; margin: 5px;">
-          <b style="margin: 5px">Relationship Colors</b>
-          <table>
-            <tr><td><div style="float: left; margin: 5px; height: 20px; width: 20px; background-color: black;"></div> </td>
-                <td>Not related            </td></tr>
-            <tr><td><div style="float: left; margin: 5px; height: 20px; width: 20px; background-color: blue;"></div>  </td>
-                <td>Directly related       </td></tr>
-            <tr><td><div style="float: left; margin: 5px; height: 20px; width: 20px; background-color: green;"></div> </td>
-                <td>2 relationships apart  </td></tr>
-            <tr><td><div style="float: left; margin: 5px; height: 20px; width: 20px; background-color: orange;"></div></td>
-                <td>3 relationships apart  </td></tr>
-            <tr><td><div style="float: left; margin: 5px; height: 20px; width: 20px; background-color: red;"></div>   </td>
-                <td>4 relationships apart  </td></tr>
-            <tr><td><div style="float: left; margin: 5px; height: 20px; width: 20px; background-color: purple;"></div></td>
-                <td>Very indirectly related</td></tr>
-          </table>
-        </div>
-      </div>
-  </div>
-  <div>
-    <p>This sample displays relationships between different parts of a diagram.</p>
-    <p>
-      Select a node or link and one of the radio buttons to highlight parts with a certain relationship to the one selected.
-      The highlighting color depends on the "distance" between the parts.
-    </p>
-  </div>
-</div>
-</body>
-</html>

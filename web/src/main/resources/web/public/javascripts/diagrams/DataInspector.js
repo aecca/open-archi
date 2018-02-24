@@ -1,19 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Data Inspector</title>
-<!-- Copyright 1998-2018 by Northwoods Software Corporation. -->
-<meta charset="UTF-8">
-<script src="../release/go.js"></script>
-<script src="../assets/js/goSamples.js"></script>  <!-- this is only for the GoJS Samples framework -->
-
-<link rel='stylesheet' href='DataInspector.css' />
-<script src="DataInspector.js"></script>
-
-<script id="code">
-  function init() {
-    if (window.goSamples) goSamples();  // init for these samples -- you don't need to call this
+  function initDataInspector() {
+    
     var $ = go.GraphObject.make;  // for conciseness in defining templates
 
     myDiagram =
@@ -179,36 +165,4 @@
       });
     inspector3.inspectObject(myDiagram.model.modelData);
   }
-</script>
-</head>
-<body onload="init()">
-  <div id="sample">
-    <span style="display: inline-block; vertical-align: top;">
-      <div style="margin-left: 10px;">
-        <div id=diagramDiv style="border: solid 1px black; width:400px; height:400px;"></div>
-      </div>
-    </span>
-    <span style="display: inline-block; vertical-align: top;">
-      Selected Part:<br/>
-      <div id="myInspectorDiv" class="inspector"> </div><br/>
-      First Node's data:<br />
-      <div id="myInspectorDiv2" class="inspector"> </div><br />
-      Model.modelData:<br />
-      <div id="myInspectorDiv3" class="inspector"> </div><br />
-    </span>
-    <div>
-      <p>An HTML-based inspector that displays and allows editing of data for the selected Part (if any),
-        or for a particular JavaScript object, or for the shared <a>Model.modelData</a> object,
-        which exists even if there are no nodes or links.
 
-      <p>The inspector code lies in <a href="DataInspector.js">DataInspector.js</a> and <a href="DataInspector.css">DataInspector.css</a>. This code is meant to be a starting point for making your own model data inspector.
-
-      <p>On browsers that support it, color types display a color picker. There are various plugins and polyfills for this functionaltiy if you wish to extend the data inspector.
-
-      <p>
-        This shows the contents of the model after each transaction:
-        <pre id="savedModel" />
-    </div>
-  </div>
-</body>
-</html>

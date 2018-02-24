@@ -1,16 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Grouping</title>
-  <meta name="description" content="A diagram holding groups that incrementally grow the diagram as groups are expanded." />
-  <!-- Copyright 1998-2018 by Northwoods Software Corporation. -->
-  <meta charset="UTF-8">
-  <script src="../release/go.js"></script>
-    <script src="../assets/js/goSamples.js"></script>  <!-- this is only for the GoJS Samples framework -->
-  <script id="code">
-    function init() {
-      if (window.goSamples) goSamples();  // init for these samples -- you don't need to call this
+    function initGrouping() {
+      
       var $ = go.GraphObject.make;  // for conciseness in defining templates
 
       myDiagram =
@@ -125,24 +114,3 @@
       }
       myDiagram.commitTransaction("addGroupContents");
     }
-  </script>
-</head>
-<body onload="init()">
-<div id="sample">
-  <div id=diagramDiv style="height:600px;width:100%;border:1px solid black"></div>
-  <p>
-  This sample demonstrates subgraphs that are created only as groups are expanded.
-  </p>
-  <p>
-  The model is initially a random number of nodes, including some groups, in a tree layout.
-  When a group is expanded, the <a>Group.subGraphExpandedChanged</a> event handler calls a function to generate a random number of nodes
-  in a tree layout inside the group if it did not contain none any.
-  Each non-group node added has a unique random color, and links are added by giving each node one link to another node.
-  </p>
-  <p>
-  The addition of nodes and links is performed within a transaction to ensure that the diagram updates itself properly.
-  The diagram's tree layout and the tree layouts within each group are performed again when a sub-graph is expanded or collapsed.
-  </p>
-</div>
-</body>
-</html>

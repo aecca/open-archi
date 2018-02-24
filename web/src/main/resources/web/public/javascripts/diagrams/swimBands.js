@@ -1,15 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Layer Bands using a Background Part</title>
-<meta name="description" content="Showing bands for the layers in a diagram." />
-<!-- Copyright 1998-2018 by Northwoods Software Corporation. -->
-<meta charset="UTF-8">
-<script src="../release/go.js"></script>
-<script src="../assets/js/goSamples.js"></script>  <!-- this is only for the GoJS Samples framework -->
-<script id="code">
-
   // this controls whether the layout is horizontal and the layer bands are vertical, or vice-versa:
   var HORIZONTAL = true;  // this constant parameter can only be set here, not dynamically
 
@@ -48,8 +36,8 @@
   // end BandedTreeLayout
 
 
-  function init() {
-    if (window.goSamples) goSamples();  // init for these samples -- you don't need to call this
+  function initSwimBands() {
+    
     var $ = go.GraphObject.make;
 
     myDiagram = $(go.Diagram, diagramDiv,
@@ -154,26 +142,3 @@
 
     myDiagram.model = new go.TreeModel(nodearray);
   }
-</script>
-</head>
-<body onload="init()">
-<div id="sample">
-  <div id=diagramDiv style="border: solid 1px black; width:100%; height:600px;"></div>
-  <p>
-    Unlike swim lane diagrams where the nodes are supposed to stay in their lanes,
-    layer bands run perpendicular to the growth direction of the layout.
-  </p>
-  <p>
-    This sample uses a custom <a>TreeLayout</a> that overrides the <a>TreeLayout.commitLayers</a> method
-    in order to specify the position and size of each "band" that surrounds a layer of the tree.
-    The "bands" are held in a single Part that is bound to a particular node data object whose key is "_BANDS".
-    The headers, and potentially any other information that you might want to display in the headers,
-    are stored in this "_BANDS" object in an Array.
-  </p>
-  <p>
-    This sample can be adapted to use a <a>GraphLinksModel</a> instead of a <a>TreeModel</a>
-    and a <a>LayeredDigraphLayout</a> instead of a <a>TreeLayout</a>.
-  </p>
-</div>
-</body>
-</html>

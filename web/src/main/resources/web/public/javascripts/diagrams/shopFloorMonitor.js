@@ -1,16 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Shop Floor Monitor</title>
-  <meta name="description" content="A state monitoring diagram." />
-  <!-- Copyright 1998-2018 by Northwoods Software Corporation. -->
-  <meta charset="UTF-8">
-  <script src="../release/go.js"></script>
-    <script src="../assets/js/goSamples.js"></script>  <!-- this is only for the GoJS Samples framework -->
-  <script id="code">
-    function init() {
-      if (window.goSamples) goSamples();  // init for these samples -- you don't need to call this
+    function initShopFloorMonitor() {
+      
       var $ = go.GraphObject.make;  // for conciseness in defining templates
 
       myDiagram =
@@ -130,40 +119,3 @@
     function load() {
       myDiagram.model = go.Model.fromJson(document.getElementById("modelToSaveOrLoad").value);
     }
-  </script>
-</head>
-<body onload="init()">
-<div id="sample">
-  <div id=diagramDiv style="border: solid 1px black; width:80%; height:400px"></div>
-  <p>
-    This monitoring diagram continuously shows the state of a number of stations on an imaginary shop floor.
-    Every two seconds it updates the display, showing some random problems via highlighting.
-    You can add nodes and links by adding data to the model text below and then clicking "Load".
-  </p>
-  <button onclick="load()">Load</button>
-  <br />
-  <textarea id="modelToSaveOrLoad" style="width:100%;height:300px">
-{ "nodeDataArray": [
-{"key":"1", "text":"Switch 23", "type":"S2", "loc":"195 225"},
-{"key":"2", "text":"Machine 17", "type":"M4", "loc":"183.5 94"},
-{"key":"3", "text":"Panel 7", "type":"P2", "loc":"75 211.5"},
-{"key":"4", "text":"Switch 24", "type":"S3", "loc":"306 225"},
-{"key":"5", "text":"Machine 18", "type":"M5", "loc":"288.5 95"},
-{"key":"6", "text":"Panel 9", "type":"P1", "loc":"426 211"},
-{"key":"7", "text":"Instr 3", "type":"I1", "loc":"-50 218"} ],
-  "linkDataArray": [
-{"from":"1", "to":"2"},
-{"from":"1", "to":"3"},
-{"from":"1", "to":"4"},
-{"from":"4", "to":"5"},
-{"from":"4", "to":"6"},
-{"from":"7", "to":"2"},
-{"from":"7", "to":"3"}
- ]}
- </textarea>
-    <p>
-        For another monitoring example, see the <a href="kittenMonitor.html">Kitten Monitor</a> sample.
-    </p>
-</div>
-</body>
-</html>

@@ -1,17 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Drag Creating Tool</title>
-  <!-- Copyright 1998-2018 by Northwoods Software Corporation. -->
-  <meta charset="UTF-8">
-  <script src="../release/go.js"></script>
-    <script src="../assets/js/goSamples.js"></script>  <!-- this is only for the GoJS Samples framework -->
-  <script src="DragCreatingTool.js"></script>
-
-  <script id="code">
-    function init() {
-      if (window.goSamples) goSamples();  // init for these samples -- you don't need to call this
+    function initDragCreating() {
+      
       var $ = go.GraphObject.make;  // for conciseness in defining templates
 
       myDiagram =
@@ -71,20 +59,3 @@
       var tool = myDiagram.toolManager.findTool("DragCreating");
       if (tool !== null) tool.isEnabled = enable;
     }
-  </script>
-</head>
-<body onload="init()">
-<div id="sample">
-  <div id=diagramDiv style="background-color: white; border: solid 1px black; width: 100%;height: 800px"></div>
-  <label><input id="ToolEnabled" type="checkbox" checked="checked" onclick="toolEnabled()" />DragCreatingTool enabled</label>
-  <p>
-  This sample demonstrates the DragCreatingTool, which replaces the standard DragSelectingTool. It is defined in its own file, as <a href="DragCreatingTool.js">DragCreatingTool.js</a>.
-  </p>
-  <p>
-  Press in the background and then drag to show the area to be occupied by the new node.
-  The mouse-up event will add a copy of the DragCreatingTool.archetypeNodeData object, causing a new node to be created.
-  The tool will assign its <a>GraphObject.position</a> and <a>GraphObject.desiredSize</a>.
-  </p>
-</div>
-</body>
-</html>

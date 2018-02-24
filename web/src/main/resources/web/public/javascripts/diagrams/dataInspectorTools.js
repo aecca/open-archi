@@ -1,56 +1,5 @@
 "use strict";
-/*
-*  Copyright (C) 1998-2018 by Northwoods Software Corporation. All Rights Reserved.
-*/
 
-/**
-  This class implements an inspector for GoJS model data objects.
-  The constructor takes three arguments:
-    {string} divid a string referencing the HTML ID of the to-be inspector's div.
-    {Diagram} diagram a reference to a GoJS Diagram.
-    {Object} options An optional JS Object describing options for the inspector.
-
-  Options:
-    inspectSelection {boolean} Default true, whether to automatically show and populate the Inspector
-                               with the currently selected Diagram Part. If set to false, the inspector won't show anything
-                               until you call Inspector.inspectObject(object) with a Part or JavaScript object as the argument.
-    includesOwnProperties {boolean} Default true, whether to list all properties currently on the inspected data object.
-    properties {Object} An object of string:Object pairs representing propertyName:propertyOptions.
-                        Can be used to include or exclude additional properties.
-    propertyModified function(propertyName, newValue) a callback
-
-  Options for properties:
-    show: {boolean|function} a boolean value to show or hide the property from the inspector, or a predicate function to show conditionally.
-    readOnly: {boolean|function} whether or not the property is read-only
-    type: {string} a string describing the data type. Supported values: "string|number|boolean|color|arrayofnumber|point|rect|size|spot|margin|select"
-    defaultValue: {*} a default value for the property. Defaults to the empty string.
-    choices: {Array|function} when type == "select", the Array of choices to use or a function that returns the Array of choices.
-
-  Example usage of Inspector:
-
-  var inspector = new Inspector("myInspector", myDiagram,
-    {
-      includesOwnProperties: false,
-      properties: {
-        "key": { show: Inspector.showIfPresent, readOnly: true },
-        "comments": { show: Inspector.showIfNode  },
-        "LinkComments": { show: Inspector.showIfLink },
-        "chosen": { show: Inspector.showIfNode, type: "checkbox" },
-        "state": { show: Inspector.showIfNode, type: "select", choices: ["Stopped", "Parked", "Moving"] }
-      }
-    });
-
-  This is the basic HTML Structure that the Inspector creates within the given DIV element:
-
-  <div id="divid" class="inspector">
-    <tr>
-      <td>propertyName</td>
-      <td><input value=propertyValue /></td>
-    </tr>
-    ...
-  </div>
-
-*/
 function Inspector(divid, diagram, options) {
   var mainDiv = document.getElementById(divid);
   mainDiv.className = "inspector";

@@ -1,17 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sequence Diagram</title>
-<meta name="description" content="A sequence diagram editor." />
-<!-- Copyright 1998-2018 by Northwoods Software Corporation. -->
-<meta charset="UTF-8">
-<script src="../release/go.js"></script>
-<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
-<script src="../assets/js/goSamples.js"></script>  <!-- this is only for the GoJS Samples framework -->
-<script id="code">
-  function init() {
-    if (window.goSamples) goSamples();  // init for these samples -- you don't need to call this
+  function initSequenceDiagram() {
+    
     var $ = go.GraphObject.make;
 
     myDiagram =
@@ -319,52 +307,3 @@
   function load() {
     myDiagram.model = go.Model.fromJson(document.getElementById("modelToSaveOrLoad").value);
   }
-</script>
-</head>
-<body onload="init()" >
-<div id="sample">
-  <div id=diagramDiv style="border: solid 1px black; width: 100%; height: 400px"></div>
-  <p>
-    A <em>sequence diagram</em> is an interaction diagram that shows how entities operate with one another and in what order.
-    In this sample, we show the interaction between different people in a restaurant.
-  </p>
-  <p>
-    The diagram uses the <a>Diagram.groupTemplate</a> for "lifelines,"
-    <a>Diagram.nodeTemplate</a> for "activities," and <a>Diagram.linkTemplate</a> for "messages" between the entities.
-    Also featured are a custom Link class and custom <a>LinkingTool</a> to draw links
-    between lifelines and create activities at the end of the new link. Nodes use a binding function on the location
-    property to ensure they are anchored to their lifeline.
-  </p>
-  <div>
-    <div>
-      <button id="SaveButton" onclick="save()">Save</button>
-      <button onclick="load()">Load</button>
-      Diagram Model saved in JSON format:
-    </div>
-    <textarea id="modelToSaveOrLoad" style="width:100%;height:240px">
-{ "class": "go.GraphLinksModel",
-  "nodeDataArray": [
-{"key":"Fred", "text":"Fred: Patron", "isGroup":true, "loc":"0 0", "duration":9},
-{"key":"Bob", "text":"Bob: Waiter", "isGroup":true, "loc":"100 0", "duration":9},
-{"key":"Hank", "text":"Hank: Cook", "isGroup":true, "loc":"200 0", "duration":9},
-{"key":"Renee", "text":"Renee: Cashier", "isGroup":true, "loc":"300 0", "duration":9},
-{"group":"Bob", "start":1, "duration":2},
-{"group":"Hank", "start":2, "duration":3},
-{"group":"Fred", "start":3, "duration":1},
-{"group":"Bob", "start":5, "duration":1},
-{"group":"Fred", "start":6, "duration":2},
-{"group":"Renee", "start":8, "duration":1}
- ],
-  "linkDataArray": [
-{"from":"Fred", "to":"Bob", "text":"order", "time":1},
-{"from":"Bob", "to":"Hank", "text":"order food", "time":2},
-{"from":"Bob", "to":"Fred", "text":"serve drinks", "time":3},
-{"from":"Hank", "to":"Bob", "text":"finish cooking", "time":5},
-{"from":"Bob", "to":"Fred", "text":"serve food", "time":6},
-{"from":"Fred", "to":"Renee", "text":"pay", "time":8}
- ]}
-    </textarea>
-  </div>
-</div>
-</body>
-</html>

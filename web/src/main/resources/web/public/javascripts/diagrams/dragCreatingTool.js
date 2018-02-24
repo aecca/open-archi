@@ -1,40 +1,5 @@
 "use strict";
-/*
-*  Copyright (C) 1998-2018 by Northwoods Software Corporation. All Rights Reserved.
-*/
 
-// A custom Tool for creating a new Node with custom size by dragging its outline in the background.
-
-/**
-* @constructor
-* @extends Tool
-* @class
-* The DragCreatingTool lets the user create a new node by dragging in the background
-* to indicate its size and position.
-* <p/>
-* The default drag selection box is a magenta rectangle.
-* You can modify the {@link #box} to customize its appearance.
-* <p/>
-* This tool will not be able to start running unless you have set the
-* {@link #archetypeNodeData} property to an object that can be copied and added to the diagram's model.
-* <p/>
-* You can use this tool in a modal manner by executing:
-* <pre><code>
-*   diagram.currentTool = new DragCreatingTool();
-* </code></pre>
-* <p/>
-* Use this tool in a mode-less manner by executing:
-* <pre><code>
-*   myDiagram.toolManager.mouseMoveTools.insertAt(2, new DragCreatingTool());
-* </code></pre>
-* However when used mode-lessly as a mouse-move tool, in {@link ToolManager#mouseMoveTools},
-* this cannot start running unless there has been a motionless delay
-* after the mouse-down event of at least {@link #delay} milliseconds.
-* <p/>
-* This tool does not utilize any {@link Adornment}s or tool handles,
-* but it does temporarily add the {@link #box} Part to the diagram.
-* This tool does conduct a transaction when inserting the new node.
-*/
 function DragCreatingTool() {
   go.Tool.call(this);
   this.name = "DragCreating";

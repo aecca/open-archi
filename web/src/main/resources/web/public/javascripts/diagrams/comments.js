@@ -1,17 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Comments</title>
-<meta name="description" content="A tree-structured diagram annotated with balloon comments, automatically laid out." />
-<!-- Copyright 1998-2018 by Northwoods Software Corporation. -->
-<meta charset="UTF-8">
-<script src="../release/go.js"></script>
-<script src="../extensions/BalloonLink.js"></script>
-<script src="../assets/js/goSamples.js"></script>  <!-- this is only for the GoJS Samples framework -->
-<script id="code">
-  function init() {
-    if (window.goSamples) goSamples();  // init for these samples -- you don't need to call this
+  function initComments() {
+    
     var $ = go.GraphObject.make;
 
     myDiagram =
@@ -109,27 +97,3 @@
     // show the model in JSON format
     document.getElementById("savedModel").textContent = myDiagram.model.toJson();
   }
-</script>
-</head>
-<body onload="init()">
-  <div id="sample">
-    <div id=diagramDiv style="border: solid 1px black; width:100%; height:400px;"></div>
-    <p>
-      <b>GoJS</b> supports the notion of "Comment"s.
-      A "Comment" is a node that is linked with another node but is positioned by some layouts to go along with that other node,
-      rather than be laid out like a regular node and link.
-    </p>
-    <p>
-      In this sample there are three "Comment" nodes, connected with regular nodes by three "Comment" links.
-      Node and link data are marked as "Comment"s by specifying "Comment" as the category.
-      But the "Comment" nodes and links have a different default template, and thus a different appearance, than regular nodes and links.
-      You can specify your own templates for "Comment" nodes and "Comment" links.
-      The "Comment" link template defined here uses the <code>BalloonLink</code> class defined in <a href="../extensions/BalloonLink.js">BalloonLink.js</a> in the Extensions directory.
-    </p>
-    <div style="display: inline">
-      Initial Diagram.model saved in JSON format:<br />
-      <pre id="savedModel"></pre>
-    </div>
-  </div>
-</body>
-</html>

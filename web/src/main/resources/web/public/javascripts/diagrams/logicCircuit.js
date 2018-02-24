@@ -1,20 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Logic Circuit</title>
-<meta name="description" content="A simple logic circuit editor and simulator." />
-  <!-- Copyright 1998-2018 by Northwoods Software Corporation. -->
-  <meta charset="UTF-8">
-  <script src="../release/go.js"></script>
-    <script src="../assets/js/goSamples.js"></script>  <!-- this is only for the GoJS Samples framework -->
-  <script id="code">
-
     var red = "orangered";  // 0 or false
     var green = "forestgreen";  // 1 or true
 
-    function init() {
-      if (window.goSamples) goSamples();  // init for these samples -- you don't need to call this
+    function initLogicCircuit() {
+      
       var $ = go.GraphObject.make;  // for conciseness in defining templates
 
       myDiagram =
@@ -331,63 +319,3 @@
     function load() {
       myDiagram.model = go.Model.fromJson(document.getElementById("modelToSaveOrLoad").value);
     }
-  </script>
-</head>
-<body onload="init()">
-<div id="sample">
-  <div style="width:100%; white-space:nowrap;">
-    <span style="display: inline-block; vertical-align: top; width:100px">
-      <div id="palette" style="border: solid 1px black; height: 500px"></div>
-    </span>
-    <span style="display: inline-block; vertical-align: top; width:80%">
-      <div id=diagramDiv style="border: solid 1px black; height: 500px"></div>
-    </span>
-  </div>
-  <p>
-    The Logic Circuit sample allows the user to make circuits using gates and wires,
-    which are updated whenever a Link is modified and at intervals by a looped setTimeout function.
-  </p>
-  <p>
-    The <b>updateStates</b> function calls a function to update each node according to type,
-    which uses the color of the links into the node to determine the color of those exiting it.
-    Red means zero or false; green means one or true. Double-clicking an input node will toggle true/false.
-  </p>
-  <p>
-    Mouse over a node to see its category, displayed using a shared <a>Adornment</a> set as the tooltip.
-    A <a>Palette</a> to the left of the main diagram allows the user to drag and drop new nodes.
-    These nodes can then be linked using ports which are defined on the various node templates.
-    Each input port can only have one input link, while output ports can have many output links.
-    This is controlled by the <a>GraphObject.toMaxLinks</a> property.
-  </p>
-  <div>
-    <div>
-      <button id="saveModel" onclick="save()">Save</button>
-      <button onclick="load()">Load</button>
-      Diagram Model saved in JSON format:
-    </div>
-    <textarea id="modelToSaveOrLoad" style="width:100%;height:200px">
-{ "class": "go.GraphLinksModel",
-  "linkFromPortIdProperty": "fromPort",
-  "linkToPortIdProperty": "toPort",
-  "nodeDataArray": [
-{"category":"input", "key":"input1", "loc":"-150 -80" },
-{"category":"or", "key":"or1", "loc":"-70 0" },
-{"category":"not", "key":"not1", "loc":"10 0" },
-{"category":"xor", "key":"xor1", "loc":"100 0" },
-{"category":"or", "key":"or2", "loc":"200 0" },
-{"category":"output", "key":"output1", "loc":"200 -100" }
- ],
-  "linkDataArray": [
-{"from":"input1", "fromPort":"out", "to":"or1", "toPort":"in1"},
-{"from":"or1", "fromPort":"out", "to":"not1", "toPort":"in"},
-{"from":"not1", "fromPort":"out", "to":"or1", "toPort":"in2"},
-{"from":"not1", "fromPort":"out", "to":"xor1", "toPort":"in1"},
-{"from":"xor1", "fromPort":"out", "to":"or2", "toPort":"in1"},
-{"from":"or2", "fromPort":"out", "to":"xor1", "toPort":"in2"},
-{"from":"xor1", "fromPort":"out", "to":"output1", "toPort":""}
- ]}
-    </textarea>
-  </div>
-</div>
-</body>
-</html>

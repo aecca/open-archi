@@ -1,16 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Table Layout</title>
-<!-- Copyright 1998-2018 by Northwoods Software Corporation. -->
-<meta charset="UTF-8">
-<script src="../release/go.js"></script>
-<script src="../assets/js/goSamples.js"></script>  <!-- this is only for the GoJS Samples framework -->
-<script src="TableLayout.js"></script>
-
-<script id="code">
-  // define a custom ResizingTool to limit how far one can shrink a row or column
   function LaneResizingTool() {
     go.ResizingTool.call(this);
   }
@@ -61,8 +48,8 @@
   };
   // end LaneResizingTool class
 
-  function init() {
-    if (window.goSamples) goSamples();  // init for these samples -- you don't need to call this
+  function initTable() {
+    
     var $ = go.GraphObject.make;
 
     myDiagram =
@@ -281,38 +268,3 @@
           ]
         });
   }
-</script>
-</head>
-<body onload="init()">
-<div id="sample">
-  <div>
-    <span style="display:inline-block; vertical-align:top; width:120px">
-      <div id="myPaletteDiv" style="border: solid 1px black; height:600px"></div>
-    </span>
-    <span style="display:inline-block; vertical-align:top; width:80%">
-      <div id=diagramDiv style="border: solid 1px black; height:600px"></div>
-    </span>
-  </div>
-  <p>
-  This sample demonstrates a custom Layout, TableLayout, that is very much like a simplified "Table" Panel layout,
-  but working on non-Link Parts in a Diagram or a Group rather than on GraphObjects in a Panel.
-  The layout is defined in its own file, as <a href="TableLayout.js">TableLayout.js</a>.
-  </p>
-  <p>
-  You can drag-and-drop nodes from the Palette into any Group.
-  Dragging into a Group highlights the Group.
-  Drops must occur inside Groups; otherwise the action is cancelled.
-  </p>
-  <p>
-  Each row and each column is <a>Part.resizable</a> and has a custom <a>Part.resizeAdornmentTemplate</a>
-  showing a single resize handle on the right side or on the bottom.
-  There is a custom LaneResizingTool to provide a minimum width or height based on the contents of all of the
-  groups (cells) in that column or row.
-  </p>
-  <p>
-  This example assumes the Groups are predefined and exist in each cell at a particular row/column,
-  but this sample could be extended to allow adding and removing rows and/or columns.
-  </p>
-</div>
-</body>
-</html>
