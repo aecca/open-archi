@@ -293,7 +293,10 @@ public class Server {
                 exception(Exception.class, exceptionHandler);
                 mapEditor.put("title", "OpenArchi Editor");
                 mapEditor.put("diagramTypes", deeplyFulfilledDiagramTypesCollection);
-                get("/", (req, res) -> new ModelAndView(mapEditor, "editor"), engine);
+                get("/", (req, res) -> {
+                    mapEditor.put("showMenu", StringUtils.isNotBlank(req.queryParams("showMenu")));
+                    return new ModelAndView(mapEditor, "editor");
+                }, engine);
             });
             path("/api", () -> {
                 Map<String, Object> mapApi = new HashMap<>();

@@ -12,5 +12,12 @@ block scripts
     script(type='text/javascript', src='/javascripts/diagrams/flowchart.js')
     script(type='text/javascript', src='/javascripts/jquery-ui.js')
     script#code(type="text/javascript")
+    script.
+        $(function () {
+            var showMenu = !{showMenu};
+            if (showMenu !== undefined && showMenu !== null && showMenu) {
+                showMenu();
+            }
+        });
 block content
     div#sample
