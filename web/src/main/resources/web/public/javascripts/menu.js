@@ -1,39 +1,3 @@
-// Load necessary scripts:
-if (window.require) {
-  // declare required libraries and ensure Bootstrap's dependency on jQuery
-  require.config({
-    paths: {
-      "jquery": "./jquery-3.3.1.min"
-    },
-    shim: {
-      "bootstrap": ["jquery"]
-    }
-  });
-  require(["jquery"], function() {});
-} else {
-  function goLoadSrc(filenames) {
-    var scripts = document.getElementsByTagName("script");
-    var script = null;
-    for (var i = 0; i < scripts.length; i++) {
-      if (scripts[i].src.indexOf("menu") > 0) {
-        script = scripts[i];
-        break;
-      }
-    }
-    for (var i = 0; i < arguments.length; i++) {
-      var filename = arguments[i];
-      if (!filename) continue;
-      var selt = document.createElement("script");
-      selt.async = false;
-      selt.defer = false;
-      selt.src = "/javascripts/" + filename;
-      script.parentNode.insertBefore(selt, script.nextSibling);
-      script = selt;
-    }
-  }
-  goLoadSrc("highlight.js", (window.jQuery ? "" : "jquery-3.3.1.min.js"), "bootstrap.min.js");
-}
-
 var head = document.getElementsByTagName("head")[0];
 
 var link = document.createElement("link");
@@ -55,64 +19,56 @@ link.href = "/stylesheets/main.css";
 head.appendChild(link);
 
 function showMenu() {
-  // determine if it's an extension
-  var isExtension = (location.pathname.split('/').slice(-2)[0].indexOf("extensions") >= 0);
-  var isTS = (location.pathname.split('/').slice(-2)[0].indexOf("TS") > 0);
 
-  // save the body for goViewSource() before we modify it
-  window.bodyHTML = document.body.innerHTML;
-  window.bodyHTML = window.bodyHTML.replace(/</g, "&lt;");
-  window.bodyHTML = window.bodyHTML.replace(/>/g, "&gt;");
+    // wrap the sample div and sidebar in a fluid container
+    var container = document.createElement('div');
+    container.className = "container-fluid";
+    document.body.appendChild(container);
 
-  // wrap the sample div and sidebar in a fluid container
-  var container = document.createElement('div');
-  container.className = "container-fluid";
-  document.body.appendChild(container);
+    // sample content
+    var samplediv = document.getElementById('sample') || document.body.firstChild;
+    samplediv.className = "col-md-10";
+    container.appendChild(samplediv);
 
-  // sample content
-  var samplediv = document.getElementById('sample') || document.body.firstChild;
-  samplediv.className = "col-md-10";
-  container.appendChild(samplediv);
+    // side navigation
+    var navindex = document.createElement('div');
+    navindex.id = "navindex";
+    navindex.className = "col-md-2";
+    navindex.innerHTML = mySampleMenu;
+    container.insertBefore(navindex, samplediv);
 
-  // side navigation
-  var navindex = document.createElement('div');
-  navindex.id = "navindex";
-  navindex.className = "col-md-2";
-  navindex.innerHTML = mySampleMenu;
-  container.insertBefore(navindex, samplediv);
-
-  // when the page loads, change the class of navigation LI's
-  var url = window.location.href;
-  var lindex = url.lastIndexOf('/');
-  url = url.slice(lindex+1).toLowerCase();  // include "/" to avoid matching prefixes
-  var lis = document.getElementById("sections").getElementsByTagName("li");
-  var l = lis.length;
-  var listed = false;
-  for (var i = 0; i < l; i++) {
-    var anchor = lis[i].childNodes[0];
-    // ....../samples/X.html becomes X.html becomes X
-    var split = anchor.href.split('/').pop().split('.');
-    var imgname = split[0];
-    if (imgname === "index" || imgname === "all") continue;
-    var imgtype = split[1];
-    if (imgtype === "js") continue;
-    var span = document.createElement('span');
-    span.className = "samplespan";
-    var img = document.createElement('img');
-    img.height = "200";
-    img.src = "../images/screenshots/" + imgname + ".png";
-    span.appendChild(img);
-    anchor.appendChild(span);
-    if (!anchor.href) continue;
-    var lowerhref = anchor.href.toLowerCase();
-    if (!listed && lowerhref.indexOf('/' + url) !== -1) {
-      anchor.className = "selected";
-      listed = true;
+    // when the page loads, change the class of navigation LI's
+    var url = window.location.href;
+    var lindex = url.lastIndexOf('/');
+    url = url.slice(lindex + 1).toLowerCase();  // include "/" to avoid matching prefixes
+    var lis = document.getElementById("sections").getElementsByTagName("li");
+    var l = lis.length;
+    var listed = false;
+    for (var i = 0; i < l; i++) {
+        var anchor = lis[i].childNodes[0];
+        // ....../samples/X.html becomes X.html becomes X
+        var split = anchor.href.split('/').pop().split('.');
+        var imgname = split[0];
+        if (imgname === "index" || imgname === "all") continue;
+        var imgtype = split[1];
+        if (imgtype === "js") continue;
+        var span = document.createElement('span');
+        span.className = "samplespan";
+        var img = document.createElement('img');
+        img.height = "200";
+        img.src = "../images/screenshots/" + imgname + ".png";
+        span.appendChild(img);
+        anchor.appendChild(span);
+        if (!anchor.href) continue;
+        var lowerhref = anchor.href.toLowerCase();
+        if (!listed && lowerhref.indexOf('/' + url) !== -1) {
+            anchor.className = "selected";
+            listed = true;
+        }
     }
-  }
-  if (!listed) {
-    lis[lis.length -1].childNodes[0].className = "selected";
-  }
+    if (!listed) {
+        lis[lis.length - 1].childNodes[0].className = "selected";
+    }
 
 }
 

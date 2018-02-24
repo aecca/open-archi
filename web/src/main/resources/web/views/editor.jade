@@ -5,7 +5,6 @@ block scripts
     link(rel='stylesheet', type='text/css', href='/stylesheets/jquery-ui.css')
     link(rel='stylesheet', type='text/css', href='/stylesheets/autocomplete.css')
     script(src='/javascripts/go.js')
-    script(src='/javascripts/menu.js')
     script(type='text/javascript', src='/javascripts/diagrams/er.js')
     script(type='text/javascript', src='/javascripts/diagrams/tree.js')
     script(type='text/javascript', src='/javascripts/diagrams/components.js')
@@ -14,9 +13,14 @@ block scripts
     script#code(type="text/javascript")
     script.
         $(function () {
-            var showMenu = !{showMenu};
-            if (showMenu !== undefined && showMenu !== null && showMenu) {
-                showMenu();
+            var showMenuFlag = !{showMenu};
+            if (showMenuFlag !== undefined && showMenuFlag !== null && showMenuFlag) {
+                $.getScript("/javascripts/menu.js").done(function (script, textStatus) {
+                    console.log(textStatus);
+                    showMenu();
+                }).fail(function (jqxhr, settings, exception) {
+                        $("div.log").text("Triggered ajaxError handler.");
+                });
             }
         });
 block content
