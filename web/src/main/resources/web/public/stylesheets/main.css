@@ -166,6 +166,8 @@ h1 {
   padding-right: inherit;*/
   padding-left: 0;
   padding-right: 0;
+  margin-left: 0;
+  margin-right: 0;
 }
 .container-fluid>.navbar-header {
   margin-left: inherit;
@@ -249,24 +251,24 @@ p.box {
 }
 
 /* Samples, override Bootstrap settings for certain elements */
-#sample {
+#diagramsCanvas {
   padding-top: 15px;
 }
-#sample input[type=radio] {
+#diagramsCanvas input[type=radio] {
   margin: 3px 3px 0px 5px;
 }
-#sample input[type=range] {
+#diagramsCanvas input[type=range] {
   display: inline-block;
   width: auto;
 }
-#sample label {
+#diagramsCanvas label {
   margin-bottom: 0px;
   font-weight: normal;
 }
-#sample pre {
+#diagramsCanvas pre {
   font-size : 9pt;
 }
-#sample textarea {
+#diagramsCanvas textarea {
   font-family: monospace;
   font-size: 9pt;
 }
