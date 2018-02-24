@@ -2,7 +2,7 @@ function initBasic() {
     var $ = go.GraphObject.make;  // for conciseness in defining templates
 
     myDiagram =
-        $(go.Diagram, "myDiagramDiv",  // create a Diagram for the DIV HTML element
+        $(go.Diagram, diagramDiv,  // create a Diagram for the DIV HTML element
             {
                 // position the graph in the middle of the diagram
                 initialContentAlignment: go.Spot.Center,

@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Record Mapper</title>
-<meta name="description" content="A diagram for displaying and editing the N to M relationships from one set of objects to another set of objects." />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Resizing Columns in a Table Panel</title>
   <!-- Copyright 1998-2018 by Northwoods Software Corporation. -->
   <meta charset="UTF-8">
   <script src="../release/go.js"></script>
     <script src="../assets/js/goSamples.js"></script>  <!-- this is only for the GoJS Samples framework -->
+  <script src="ColumnResizingTool.js"></script>
+  <script src="RowResizingTool.js"></script>
   <script id="code">
     function init() {
       if (window.goSamples) goSamples();  // init for these samples -- you don't need to call this
@@ -18,54 +19,91 @@
           {
             initialContentAlignment: go.Spot.Center,
             validCycle: go.Diagram.CycleNotDirected,  // don't allow loops
-            // For this sample, automatically show the state of the diagram's model on the page
-            "ModelChanged": function(e) {
-                if (e.isTransactionFinished) showModel();
-              },
             "undoManager.isEnabled": true
           });
+
+      myDiagram.toolManager.mouseDownTools.add(new RowResizingTool());
+      myDiagram.toolManager.mouseDownTools.add(new ColumnResizingTool());
 
       // This template is a Panel that is used to represent each item in a Panel.itemArray.
       // The Panel is data bound to the item object.
       var fieldTemplate =
         $(go.Panel, "TableRow",  // this Panel is a row in the containing Table
           new go.Binding("portId", "name"),  // this Panel is a "port"
-          {
-            background: "transparent",  // so this port's background can be picked by the mouse
+          { background: "transparent",  // so this port's background can be picked by the mouse
             fromSpot: go.Spot.Right,  // links only go from the right side to the left side
             toSpot: go.Spot.Left,
             // allow drawing links from or to this port:
-            fromLinkable: true, toLinkable: true
-          },
+            fromLinkable: true, toLinkable: true },
           $(go.Shape,
-            { width: 12, height: 12, column: 0, strokeWidth: 2, margin: 4,
+            {
+              column: 0,
+              width: 12, height: 12, margin: 4,
               // but disallow drawing links from or to this shape:
-              fromLinkable: false, toLinkable: false },
+              fromLinkable: false, toLinkable: false
+            },
             new go.Binding("figure", "figure"),
             new go.Binding("fill", "color")),
           $(go.TextBlock,
-            { margin: new go.Margin(0, 5), column: 1, font: "bold 13px sans-serif",
-              alignment: go.Spot.Left,
+            {
+              column: 1,
+              margin: new go.Margin(0, 2),
+              stretch: go.GraphObject.Horizontal,
+              font: "bold 13px sans-serif",
+              wrap: go.TextBlock.None,
+              overflow: go.TextBlock.OverflowEllipsis, 
               // and disallow drawing links from or to this text:
-              fromLinkable: false, toLinkable: false },
+              fromLinkable: false, toLinkable: false
+            },
             new go.Binding("text", "name")),
           $(go.TextBlock,
-            { margin: new go.Margin(0, 5), column: 2, font: "13px sans-serif", alignment: go.Spot.Left },
-            new go.Binding("text", "info"))
+            {
+              column: 2,
+              margin: new go.Margin(0, 2),
+              stretch: go.GraphObject.Horizontal,
+              font: "13px sans-serif",
+              maxLines: 3,
+              overflow: go.TextBlock.OverflowEllipsis,
+              editable: true
+            },
+            new go.Binding("text", "info").makeTwoWay())
         );
+
+      // Return initialization for a RowColumnDefinition, specifying a particular column
+      // and adding a Binding of RowColumnDefinition.width to the IDX'th number in the data.widths Array
+      function makeWidthBinding(idx) {
+        // These two conversion functions are closed over the IDX variable.
+        // This source-to-target conversion extracts a number from the Array at the given index.
+        function getColumnWidth(arr) {
+          if (Array.isArray(arr) && idx < arr.length) return arr[idx];
+          return NaN;
+        }
+        // This target-to-source conversion sets a number in the Array at the given index.
+        function setColumnWidth(w, data) {
+          var arr = data.widths;
+          if (!arr) arr = [];
+          if (idx >= arr.length) {
+            for (var i = arr.length; i <= idx; i++) arr[i] = NaN;  // default to NaN
+          }
+          arr[idx] = w;
+          return arr;  // need to return the Array (as the value of data.widths)
+        }
+        return [
+          { column: idx },
+          new go.Binding("width", "widths", getColumnWidth).makeTwoWay(setColumnWidth)
+        ]
+      }
 
       // This template represents a whole "record".
       myDiagram.nodeTemplate =
         $(go.Node, "Auto",
-          { movable: false,
-            copyable: false,
-            deletable: false },
           new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
           // this rectangular shape surrounds the content of the node
           $(go.Shape,
             { fill: "#EEEEEE" }),
           // the content consists of a header and a list of items
           $(go.Panel, "Vertical",
+            { stretch: go.GraphObject.Horizontal, alignment: go.Spot.TopLeft },
             // this is the header for the whole node
             $(go.Panel, "Auto",
               { stretch: go.GraphObject.Horizontal },  // as wide as the whole node
@@ -84,11 +122,17 @@
             // each item Panel is defined by the itemTemplate to be a TableRow in this Table
             $(go.Panel, "Table",
               {
-                padding: 2,
+                name: "TABLE", stretch: go.GraphObject.Horizontal,
                 minSize: new go.Size(100, 10),
+                defaultAlignment: go.Spot.Left,
                 defaultStretch: go.GraphObject.Horizontal,
+                defaultColumnSeparatorStroke: "gray",
+                defaultRowSeparatorStroke: "gray",
                 itemTemplate: fieldTemplate
               },
+              $(go.RowColumnDefinition, makeWidthBinding(0)),
+              $(go.RowColumnDefinition, makeWidthBinding(1)),
+              $(go.RowColumnDefinition, makeWidthBinding(2)),
               new go.Binding("itemArray", "fields")
             )  // end Table Panel of items
           )  // end Vertical Panel
@@ -96,10 +140,7 @@
 
       myDiagram.linkTemplate =
         $(go.Link,
-          {
-            relinkableFrom: true, relinkableTo: true, // let user reconnect links
-            toShortLength: 4,  fromShortLength: 2
-          },
+          { relinkableFrom: true, relinkableTo: true, toShortLength: 4 },  // let user reconnect links
           $(go.Shape, { strokeWidth: 1.5 }),
           $(go.Shape, { toArrow: "Standard", stroke: null })
         );
@@ -109,15 +150,21 @@
           {
             linkFromPortIdProperty: "fromPort",
             linkToPortIdProperty: "toPort",
+            // automatically update the model that is shown on this page
+            "Changed": function(e) {
+                if (e.isTransactionFinished) showModel();
+              },
             nodeDataArray: [
               { key: "Record1",
+                widths: [ NaN, NaN, 60 ],
                 fields: [
-                  { name: "field1", info: "", color: "#F7B84B", figure: "Ellipse" },
+                  { name: "field1", info: "first field", color: "#F7B84B", figure: "Ellipse" },
                   { name: "field2", info: "the second one", color: "#F25022", figure: "Ellipse" },
                   { name: "fieldThree", info: "3rd", color: "#00BCF2" }
                 ],
                 loc: "0 0" },
               { key: "Record2",
+                widths: [NaN, NaN, NaN],
                 fields: [
                   { name: "fieldA", info: "",       color: "#FFB900", figure: "Diamond" },
                   { name: "fieldB", info: "",       color: "#F25022", figure: "Rectangle" },
@@ -143,19 +190,21 @@
 </head>
 <body onload="init()">
 <div id="sample">
-  <div id=diagramDiv style="border: solid 1px black; width:100%; height:300px"></div>
-  <p>This record mapper shows a number of "fields" for each "record" and how they are mapped between each other.</p>
+  <div id=diagramDiv style="border: solid 1px black; width:100%; height:400px"></div>
   <p>
-    Draw new links by dragging from the background of any field.
-    Reconnect a selected link by dragging its diamond-shaped handle.
-    The "record" Nodes use a <a>Panel.Table</a> to place the various fields into rows.
-    Records are not movable or copyable or deletable.
+    This makes use of two tools, defined in their own files: <a href="ColumnResizingTool.js">ColumnResizingTool.js</a> and <a href="RowResizingTool.js">RowResizingTool.js</a>.
+    Each tool adds an <a>Adornment</a> to a selected node that has a resize handle for each column or each row of a "Table" <a>Panel</a>.
+    While resizing, you can press the Tab or the Delete key in order to stop the tool and restore the column or row to its natural size.
   </p>
-  <p>For a variation on this sample with selectable fields in the record nodes, see the <a href="selectableFields.html">selectable fields</a> sample.</p>
-  <div>
-    Diagram Model saved in JSON format, automatically updated after each change or undo or redo:
-    <textarea id="modelToSaveOrLoad" style="width:100%;height:250px"></textarea>
-  </div>
+  <p>
+    This sample also adds TwoWay Bindings to the <a>RowColumnDefinition.width</a> property for the columns.
+    Each column width is stored in the corresponding index of the node data's "widths" property, which must be an Array of numbers.
+    The default value is NaN, allowing the column to occupy its natural width.
+    Note that there are <b>no</b> Bindings for the row heights.
+  </p>
+  <p>The model data, automatically updated after each change or undo or redo:</p>
+  <textarea id="modelToSaveOrLoad" style="width:100%;height:300px"></textarea>
+  <p>See also the <a href="../samples/addRemoveColumns.html">Add & Remove Rows & Columns</a> sample.</p>
 </div>
 </body>
 </html>

@@ -6,35 +6,20 @@
     </script>
 </head>
 <body>
-<div id="myDiagramDiv" style="border: solid 1px black; width:400px; height:400px"></div>
+<h2 style="margin-top: 0; padding-top: 0; margin-bottom: 30px;">
+    Propuesta para diagrama básico de componentes - Primer nivel
+</h2>
 <p>
-    This sample demonstrates tooltips and context menus for all parts and for the diagram background,
-    as well as several other powerful diagram editing abilities.
+    Sencillo, pero fácil de adaptar para construir modelos de solución a alto nivel. Intuitivo y fácil de usar.
 </p>
+    <ul>
+        <li>Con doble-click en cualquier área vacía del canvas se crea un nuevo componente (siempre será una cajita)</li>
+        <li>Con doble-click en cualquier componente (cajita) se editará su nombre</li>
+        <li>Al hacer click en el borde de un componente se puede crear conectores (flechas) hacia cualquier componente</li>
+    </ul>
 <p>
-    Unlike the <a href="minimal.html">Minimal</a> sample, this sample has templates for Links and for Groups,
-    plus tooltips and context menus for Nodes, for Links, for Groups, and for the Diagram.
+    Como todo, se pueden combinar éstas caractrísticas con las presentes en otros ejemplos para crear capacidades más complejas
 </p>
-<p>This sample has all of the functionality of the Minimal sample, but additionally allows the user to:</p>
-<ul>
-    <li>create new nodes: double-click in the background of the diagram</li>
-    <li>edit text: select the node and then click on the text, or select the node and press F2</li>
-    <li>draw new links: drag from the inner edge of the node's or the group's shape</li>
-    <li>reconnect existing links: select the link and then drag the diamond-shaped handle at either end of the
-        link
-    </li>
-    <li>group nodes and links: select some nodes and links and then type Ctrl-G (or invoke via context menu)</li>
-    <li>ungroup an existing group: select a group and then type Ctrl-Shift-G (or invoke via context menu)</li>
-</ul>
-<p>
-    GoJS contains many other possible commands, which can be invoked by either mouse/keyboard/touch or
-    programatically.
-    <a href="../intro/commands.html">See an overview of possible commands here.</a>
-    On a Mac, use CMD instead of Ctrl.
-</p>
-<p>
-    On touch devices, hold your finger stationary to bring up a context menu.
-    The default context menu supports most of the standard commands that are enabled at that time for that object.
-</p>
+<div id=diagramDiv style="border: 0; width: 100%; height:400px; overflow: scroll;"></div>
 </body>
 </html>
