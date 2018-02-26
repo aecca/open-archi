@@ -1,6 +1,6 @@
 function initDraggableLink() {
 
-    var $ = go.GraphObject.make;  // for conciseness in defining templates
+    const $ = go.GraphObject.make;  // for conciseness in defining templates
 
     myDiagram =
         $(go.Diagram, diagramDiv,  // must name or refer to the DIV HTML element
@@ -44,9 +44,9 @@ function initDraggableLink() {
 
     // when the document is modified, add a "*" to the title and enable the "Save" button
     myDiagram.addDiagramListener("Modified", function (e) {
-        var button = document.getElementById("SaveButton");
+        const button = document.getElementById("SaveButton");
         if (button) button.disabled = !myDiagram.isModified;
-        var idx = document.title.indexOf("*");
+        const idx = document.title.indexOf("*");
         if (myDiagram.isModified) {
             if (idx < 0) document.title += "*";
         } else {
@@ -74,13 +74,13 @@ function initDraggableLink() {
             });
     }
 
-    var nodeSelectionAdornmentTemplate =
+    const nodeSelectionAdornmentTemplate =
         $(go.Adornment, "Auto",
             $(go.Shape, {fill: null, stroke: "deepskyblue", strokeWidth: 1.5, strokeDashArray: [4, 2]}),
             $(go.Placeholder)
         );
 
-    var nodeResizeAdornmentTemplate =
+    const nodeResizeAdornmentTemplate =
         $(go.Adornment, "Spot",
             {locationSpot: go.Spot.Right},
             $(go.Placeholder),
@@ -144,7 +144,7 @@ function initDraggableLink() {
             })
         );
 
-    var nodeRotateAdornmentTemplate =
+    const nodeRotateAdornmentTemplate =
         $(go.Adornment,
             {locationSpot: go.Spot.Center, locationObjectName: "CIRCLE"},
             $(go.Shape, "Circle", {
@@ -217,7 +217,7 @@ function initDraggableLink() {
         });
     }
 
-    var linkSelectionAdornmentTemplate =
+    const linkSelectionAdornmentTemplate =
         $(go.Adornment, "Link",
             $(go.Shape,
                 // isPanelMain declares that this Shape shares the Link.geometry
@@ -314,7 +314,7 @@ go.Diagram.inherit(TopRotatingTool, go.RotatingTool);
 /** @override */
 TopRotatingTool.prototype.updateAdornments = function (part) {
     go.RotatingTool.prototype.updateAdornments.call(this, part);
-    var adornment = part.findAdornment("Rotating");
+    const adornment = part.findAdornment("Rotating");
     if (adornment !== null) {
         adornment.location = part.rotateObject.getDocumentPoint(new go.Spot(0.5, 0, 0, -30));  // above middle top
     }
@@ -345,6 +345,6 @@ function saveDiagramProperties() {
 
 function loadDiagramProperties(e) {
     // set Diagram.initialPosition, not Diagram.position, to handle initialization side-effects
-    var pos = myDiagram.model.modelData.position;
+    const pos = myDiagram.model.modelData.position;
     if (pos) myDiagram.initialPosition = go.Point.parse(pos);
 }

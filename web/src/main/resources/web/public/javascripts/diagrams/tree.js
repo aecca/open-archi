@@ -1,7 +1,7 @@
-var mainTreeGraph;
-var leafTreeGraph;
-var mainTreeDiagram;
-var leafTreeDiagram;
+let mainTreeGraph;
+let leafTreeGraph;
+let mainTreeDiagram;
+let leafTreeDiagram;
 
 function initTreeDiagram() {
     mainTreeGraph = go.GraphObject.make;
@@ -14,14 +14,14 @@ function initTreeDiagram() {
 
     mainTreeDiagram.addDiagramListener("ChangedSelection",
         function (e) {
-            var position = e.diagram.firstInput.documentPoint;
+            const position = e.diagram.firstInput.documentPoint;
             position.y = position.y - 50;
             mainTreeDiagram.position = position;
         });
 
     mainTreeDiagram.toolManager.hoverDelay = 75;
 
-    var colorsBar = mainTreeGraph(go.Panel, "Table",
+    const colorsBar = mainTreeGraph(go.Panel, "Table",
 
         mainTreeGraph(go.Shape, "RoundedRectangle", {
                 fill: "#F39C11",
@@ -35,20 +35,20 @@ function initTreeDiagram() {
                     mainTreeGraph(go.TextBlock,
                         {margin: 5, font: "bold 15px Helvetica, bold Arial, sans-serif"},
                         new go.Binding("text", "usedBy", function (s) {
-                            var i;
+                            let i;
                             for (i = 0; i < s.length; i++) {
-                                var origin = s[i].countryName;
-                                if (origin == "CORPORATE") {
+                                const origin = s[i].countryName;
+                                if (origin === "CORPORATE") {
                                     return origin;
                                 }
                             }
                         })))
             },
             new go.Binding("visible", "usedBy", function (s) {
-                var i;
+                let i;
                 for (i = 0; i < s.length; i++) {
-                    var origin = s[i].countryName;
-                    if (origin == "CORPORATE") {
+                    const origin = s[i].countryName;
+                    if (origin === "CORPORATE") {
                         return true;
                     }
                 }
@@ -67,20 +67,20 @@ function initTreeDiagram() {
                     mainTreeGraph(go.TextBlock,
                         {margin: 5, font: "bold 15px Helvetica, bold Arial, sans-serif"},
                         new go.Binding("text", "usedBy", function (s) {
-                            var i;
+                            let i;
                             for (i = 0; i < s.length; i++) {
-                                var origin = s[i].countryName;
-                                if (origin == "ES") {
+                                const origin = s[i].countryName;
+                                if (origin === "ES") {
                                     return origin;
                                 }
                             }
                         })))
             },
             new go.Binding("visible", "usedBy", function (s) {
-                var i;
+                let i;
                 for (i = 0; i < s.length; i++) {
-                    var origin = s[i].countryName;
-                    if (origin == "ES") {
+                    const origin = s[i].countryName;
+                    if (origin === "ES") {
                         return true;
                     }
                 }
@@ -99,20 +99,20 @@ function initTreeDiagram() {
                     mainTreeGraph(go.TextBlock,
                         {margin: 5, font: "bold 15px Helvetica, bold Arial, sans-serif"},
                         new go.Binding("text", "usedBy", function (s) {
-                            var i;
+                            let i;
                             for (i = 0; i < s.length; i++) {
-                                var origin = s[i].countryName;
-                                if (origin == "MX") {
+                                const origin = s[i].countryName;
+                                if (origin === "MX") {
                                     return origin;
                                 }
                             }
                         })))
             },
             new go.Binding("visible", "usedBy", function (s) {
-                var i;
+                let i;
                 for (i = 0; i < s.length; i++) {
-                    var origin = s[i].countryName;
-                    if (origin == "MX") {
+                    const origin = s[i].countryName;
+                    if (origin === "MX") {
                         return true;
                     }
                 }
@@ -131,20 +131,20 @@ function initTreeDiagram() {
                     mainTreeGraph(go.TextBlock,
                         {margin: 5, font: "bold 15px Helvetica, bold Arial, sans-serif"},
                         new go.Binding("text", "usedBy", function (s) {
-                            var i;
+                            let i;
                             for (i = 0; i < s.length; i++) {
-                                var origin = s[i].countryName;
-                                if (origin == "CO") {
+                                const origin = s[i].countryName;
+                                if (origin === "CO") {
                                     return origin;
                                 }
                             }
                         })))
             },
             new go.Binding("visible", "usedBy", function (s) {
-                var i;
+                let i;
                 for (i = 0; i < s.length; i++) {
-                    var origin = s[i].countryName;
-                    if (origin == "CO") {
+                    const origin = s[i].countryName;
+                    if (origin === "CO") {
                         return true;
                     }
                 }
@@ -163,20 +163,20 @@ function initTreeDiagram() {
                     mainTreeGraph(go.TextBlock,
                         {margin: 5, font: "bold 15px Helvetica, bold Arial, sans-serif"},
                         new go.Binding("text", "usedBy", function (s) {
-                            var i;
+                            let i;
                             for (i = 0; i < s.length; i++) {
-                                var origin = s[i].countryName;
-                                if (origin == "CL") {
+                                const origin = s[i].countryName;
+                                if (origin === "CL") {
                                     return origin;
                                 }
                             }
                         })))
             },
             new go.Binding("visible", "usedBy", function (s) {
-                var i;
+                let i;
                 for (i = 0; i < s.length; i++) {
-                    var origin = s[i].countryName;
-                    if (origin == "CL") {
+                    const origin = s[i].countryName;
+                    if (origin === "CL") {
                         return true;
                     }
                 }
@@ -195,20 +195,20 @@ function initTreeDiagram() {
                     mainTreeGraph(go.TextBlock,
                         {margin: 5, font: "bold 15px Helvetica, bold Arial, sans-serif"},
                         new go.Binding("text", "usedBy", function (s) {
-                            var i;
+                            let i;
                             for (i = 0; i < s.length; i++) {
-                                var origin = s[i].countryName;
-                                if (origin == "PE") {
+                                const origin = s[i].countryName;
+                                if (origin === "PE") {
                                     return origin;
                                 }
                             }
                         })))
             },
             new go.Binding("visible", "usedBy", function (s) {
-                var i;
+                let i;
                 for (i = 0; i < s.length; i++) {
-                    var origin = s[i].countryName;
-                    if (origin == "PE") {
+                    const origin = s[i].countryName;
+                    if (origin === "PE") {
                         return true;
                     }
                 }
@@ -227,20 +227,20 @@ function initTreeDiagram() {
                     mainTreeGraph(go.TextBlock,
                         {margin: 5, font: "bold 15px Helvetica, bold Arial, sans-serif"},
                         new go.Binding("text", "usedBy", function (s) {
-                            var i;
+                            let i;
                             for (i = 0; i < s.length; i++) {
-                                var origin = s[i].countryName;
-                                if (origin == "AR") {
+                                const origin = s[i].countryName;
+                                if (origin === "AR") {
                                     return origin;
                                 }
                             }
                         })))
             },
             new go.Binding("visible", "usedBy", function (s) {
-                var i;
+                let i;
                 for (i = 0; i < s.length; i++) {
-                    var origin = s[i].countryName;
-                    if (origin == "AR") {
+                    const origin = s[i].countryName;
+                    if (origin === "AR") {
                         return true;
                     }
                 }
@@ -259,20 +259,20 @@ function initTreeDiagram() {
                     mainTreeGraph(go.TextBlock,
                         {margin: 5, font: "bold 15px Helvetica, bold Arial, sans-serif"},
                         new go.Binding("text", "usedBy", function (s) {
-                            var i;
+                            let i;
                             for (i = 0; i < s.length; i++) {
-                                var origin = s[i].countryName;
-                                if (origin == "VE") {
+                                const origin = s[i].countryName;
+                                if (origin === "VE") {
                                     return origin;
                                 }
                             }
                         })))
             },
             new go.Binding("visible", "usedBy", function (s) {
-                var i;
+                let i;
                 for (i = 0; i < s.length; i++) {
-                    var origin = s[i].countryName;
-                    if (origin == "VE") {
+                    const origin = s[i].countryName;
+                    if (origin === "VE") {
                         return true;
                     }
                 }
@@ -291,20 +291,20 @@ function initTreeDiagram() {
                     mainTreeGraph(go.TextBlock,
                         {margin: 5, font: "bold 15px Helvetica, bold Arial, sans-serif"},
                         new go.Binding("text", "usedBy", function (s) {
-                            var i;
+                            let i;
                             for (i = 0; i < s.length; i++) {
-                                var origin = s[i].countryName;
-                                if (origin == "USA") {
+                                const origin = s[i].countryName;
+                                if (origin === "USA") {
                                     return origin;
                                 }
                             }
                         })))
             },
             new go.Binding("visible", "usedBy", function (s) {
-                var i;
+                let i;
                 for (i = 0; i < s.length; i++) {
-                    var origin = s[i].countryName;
-                    if (origin == "USA") {
+                    const origin = s[i].countryName;
+                    if (origin === "USA") {
                         return true;
                     }
                 }

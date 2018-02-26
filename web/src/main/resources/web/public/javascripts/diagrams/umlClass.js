@@ -1,6 +1,6 @@
 function initUmlClass() {
 
-    var $ = go.GraphObject.make;
+    const $ = go.GraphObject.make;
 
     myDiagram =
         $(go.Diagram, diagramDiv,
@@ -35,7 +35,7 @@ function initUmlClass() {
     }
 
     // the item template for properties
-    var propertyTemplate =
+    const propertyTemplate =
         $(go.Panel, "Horizontal",
             // property visibility/access
             $(go.TextBlock,
@@ -65,7 +65,7 @@ function initUmlClass() {
         );
 
     // the item template for methods
-    var methodTemplate =
+    const methodTemplate =
         $(go.Panel, "Horizontal",
             // method visibility/access
             $(go.TextBlock,
@@ -82,9 +82,9 @@ function initUmlClass() {
             $(go.TextBlock, "()",
                 // this does not permit adding/editing/removing of parameters via inplace edits
                 new go.Binding("text", "parameters", function (parr) {
-                    var s = "(";
-                    for (var i = 0; i < parr.length; i++) {
-                        var param = parr[i];
+                    let s = "(";
+                    for (let i = 0; i < parr.length; i++) {
+                        const param = parr[i];
                         if (i > 0) s += ", ";
                         s += param.name + ": " + param.type;
                     }
@@ -197,7 +197,7 @@ function initUmlClass() {
         );
 
     // setup a few example class nodes and relationships
-    var nodedata = [
+    const nodedata = [
         {
             key: 1,
             name: "BankAccount",
@@ -256,7 +256,7 @@ function initUmlClass() {
             ]
         }
     ];
-    var linkdata = [
+    const linkdata = [
         {from: 12, to: 11, relationship: "generalization"},
         {from: 13, to: 11, relationship: "generalization"},
         {from: 14, to: 13, relationship: "aggregation"}

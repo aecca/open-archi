@@ -1,6 +1,6 @@
 function initFlowchart() {
 
-    var $ = go.GraphObject.make;  // for conciseness in defining templates
+    const $ = go.GraphObject.make;  // for conciseness in defining templates
 
     myDiagram =
         $(go.Diagram, "myDiagramDiv",  // must name or refer to the DIV HTML element
@@ -15,9 +15,9 @@ function initFlowchart() {
 
     // when the document is modified, add a "*" to the title and enable the "Save" button
     myDiagram.addDiagramListener("Modified", function (e) {
-        var button = document.getElementById("SaveButton");
+        const button = document.getElementById("SaveButton");
         if (button) button.disabled = !myDiagram.isModified;
-        var idx = document.title.indexOf("*");
+        const idx = document.title.indexOf("*");
         if (myDiagram.isModified) {
             if (idx < 0) document.title += "*";
         } else {
@@ -71,7 +71,7 @@ function initFlowchart() {
 
     // define the Node templates for regular nodes
 
-    var lightText = 'whitesmoke';
+    const lightText = 'whitesmoke';
 
     myDiagram.nodeTemplateMap.add("",  // the default category
         $(go.Node, "Spot", nodeStyle(),
@@ -192,7 +192,7 @@ function initFlowchart() {
     // Make link labels visible if coming out of a "conditional" node.
     // This listener is called by the "LinkDrawn" and "LinkRelinked" DiagramEvents.
     function showLinkLabel(e) {
-        var label = e.subject.findObject("LABEL");
+        const label = e.subject.findObject("LABEL");
         if (label !== null) label.visible = (e.subject.fromNode.data.figure === "Diamond");
     }
 
@@ -220,7 +220,7 @@ function initFlowchart() {
 
 // Make all ports on a node visible when the mouse is over the node
 function showPorts(node, show) {
-    var diagram = node.diagram;
+    let diagram = node.diagram;
     if (!diagram || diagram.isReadOnly || !diagram.allowLink) return;
     node.ports.each(function (port) {
         port.stroke = (show ? "white" : null);
@@ -240,7 +240,7 @@ function load() {
 
 // add an SVG rendering of the diagram at the end of this page
 function makeSVG() {
-    var svg = myDiagram.makeSvg({
+    const svg = myDiagram.makeSvg({
         scale: 0.5
     });
     svg.style.border = "1px solid black";

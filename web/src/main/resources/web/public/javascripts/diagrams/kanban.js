@@ -1,5 +1,5 @@
-var MINLENGTH = 200;  // this controls the minimum length of any swimlane
-var MINBREADTH = 100;  // this controls the minimum breadth of any non-collapsed swimlane
+const MINLENGTH = 200;  // this controls the minimum length of any swimlane
+const MINBREADTH = 100;  // this controls the minimum breadth of any non-collapsed swimlane
 
 // some shared functions
 
@@ -13,14 +13,14 @@ function relayoutDiagram() {
 
 // compute the minimum size of the whole diagram needed to hold all of the Lane Groups
 function computeMinPoolSize() {
-    var len = MINLENGTH;
+    let len = MINLENGTH;
     myDiagram.findTopLevelGroups().each(function (lane) {
-        var holder = lane.placeholder;
+        const holder = lane.placeholder;
         if (holder !== null) {
-            var sz = holder.actualBounds;
+            const sz = holder.actualBounds;
             len = Math.max(len, sz.height);
         }
-        var box = lane.selectionObject;
+        const box = lane.selectionObject;
         // naturalBounds instead of actualBounds to disregard the shape's stroke width
         len = Math.max(len, box.naturalBounds.height);
     });
@@ -30,16 +30,16 @@ function computeMinPoolSize() {
 // compute the minimum size for a particular Lane Group
 function computeLaneSize(lane) {
     // assert(lane instanceof go.Group);
-    var sz = computeMinLaneSize(lane);
+    const sz = computeMinLaneSize(lane);
     if (lane.isSubGraphExpanded) {
-        var holder = lane.placeholder;
+        const holder = lane.placeholder;
         if (holder !== null) {
-            var hsz = holder.actualBounds;
+            const hsz = holder.actualBounds;
             sz.width = Math.max(sz.width, hsz.width);
         }
     }
     // minimum breadth needs to be big enough to hold the header
-    var hdr = lane.findObject("HEADER");
+    const hdr = lane.findObject("HEADER");
     if (hdr !== null) sz.width = Math.max(sz.width, hdr.actualBounds.width);
     return sz;
 }
@@ -66,19 +66,19 @@ go.Diagram.inherit(PoolLayout, go.GridLayout);
 
 /** @override */
 PoolLayout.prototype.doLayout = function (coll) {
-    var diagram = this.diagram;
+    const diagram = this.diagram;
     if (diagram === null) return;
     diagram.startTransaction("PoolLayout");
     // make sure all of the Group Shapes are big enough
-    var minsize = computeMinPoolSize();
+    const minsize = computeMinPoolSize();
     diagram.findTopLevelGroups().each(function (lane) {
         if (!(lane instanceof go.Group)) return;
-        var shape = lane.selectionObject;
+        const shape = lane.selectionObject;
         if (shape !== null) {  // change the desiredSize to be big enough in both directions
-            var sz = computeLaneSize(lane);
+            const sz = computeLaneSize(lane);
             shape.width = (!isNaN(shape.width)) ? Math.max(shape.width, sz.width) : sz.width;
             shape.height = (isNaN(shape.height) ? minsize.height : Math.max(shape.height, minsize.height));
-            var cell = lane.resizeCellSize;
+            const cell = lane.resizeCellSize;
             if (!isNaN(shape.width) && !isNaN(cell.width) && cell.width > 0) shape.width = Math.ceil(shape.width / cell.width) * cell.width;
             if (!isNaN(shape.height) && !isNaN(cell.height) && cell.height > 0) shape.height = Math.ceil(shape.height / cell.height) * cell.height;
         }
@@ -93,7 +93,7 @@ PoolLayout.prototype.doLayout = function (coll) {
 
 function initKanban() {
 
-    var $ = go.GraphObject.make;
+    const $ = go.GraphObject.make;
 
     myDiagram =
         $(go.Diagram, diagramDiv,
@@ -121,15 +121,15 @@ function initKanban() {
         go.DraggingTool.prototype.doActivate.call(this);
         this.currentPart.opacity = 0.7;
         this.currentPart.layerName = "Foreground";
-    }
+    };
     myDiagram.toolManager.draggingTool.doDeactivate = function () {
         this.currentPart.opacity = 1;
         this.currentPart.layerName = "";
         go.DraggingTool.prototype.doDeactivate.call(this);
-    }
+    };
 
     // There are only three note colors by default, blue, red, and yellow but you could add more here:
-    var noteColors = ['#009CCC', '#CC293D', '#FFD700'];
+    const noteColors = ['#009CCC', '#CC293D', '#FFD700'];
 
     function getNoteColor(num) {
         return noteColors[Math.min(num, noteColors.length - 1)];
@@ -144,7 +144,7 @@ function initKanban() {
                     // if a user clicks the colored portion of a node, cycle through colors
                     click: function (e, obj) {
                         myDiagram.startTransaction("Update node color");
-                        var newColor = parseInt(obj.part.data.color) + 1;
+                        let newColor = parseInt(obj.part.data.color) + 1;
                         if (newColor > noteColors.length - 1) newColor = 0;
                         myDiagram.model.setDataProperty(obj.part.data, "color", newColor);
                         myDiagram.commitTransaction("Update node color");
@@ -176,7 +176,7 @@ function initKanban() {
                 selectable: false,
                 click: function (e, node) {
                     myDiagram.startTransaction('add node');
-                    var newdata = {
+                    const newdata = {
                         group: "Problems",
                         loc: "0 50",
                         text: "New item " + node.containingGroup.memberParts.count,
@@ -208,7 +208,7 @@ function initKanban() {
     // While dragging, highlight the dragged-over group
     function highlightGroup(grp, show) {
         if (show) {
-            var part = myDiagram.toolManager.draggingTool.currentPart;
+            const part = myDiagram.toolManager.draggingTool.currentPart;
             if (part.containingGroup !== grp) {
                 grp.isHighlighted = true;
                 return;
@@ -230,8 +230,8 @@ function initKanban() {
                         spacing: new go.Size(5, 5),
                         alignment: go.GridLayout.Position,
                         comparer: function (a, b) {  // can re-order tasks within a lane
-                            var ay = a.location.y;
-                            var by = b.location.y;
+                            const ay = a.location.y;
+                            const by = b.location.y;
                             if (isNaN(ay) || isNaN(by)) return 0;
                             if (ay < by) return -1;
                             if (ay > by) return 1;
@@ -254,12 +254,12 @@ function initKanban() {
                     if (e.diagram.selection.all(function (n) {
                             return !(n instanceof go.Group);
                         })) {
-                        var ok = grp.addMembers(grp.diagram.selection, true);
+                        let ok = grp.addMembers(grp.diagram.selection, true);
                         if (!ok) grp.diagram.currentTool.doCancel();
                     }
                 },
                 subGraphExpandedChanged: function (grp) {
-                    var shp = grp.selectionObject;
+                    const shp = grp.selectionObject;
                     if (grp.diagram.undoManager.isUndoingRedoing) return;
                     if (grp.isSubGraphExpanded) {
                         shp.width = grp._savedBreadth;

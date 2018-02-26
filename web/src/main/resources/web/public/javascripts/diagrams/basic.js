@@ -1,5 +1,5 @@
 function initBasic() {
-    var $ = go.GraphObject.make;  // for conciseness in defining templates
+    const $ = go.GraphObject.make;  // for conciseness in defining templates
 
     myDiagram =
         $(go.Diagram, diagramDiv,  // create a Diagram for the DIV HTML element
@@ -33,12 +33,12 @@ function initBasic() {
     }
 
     // a context menu is an Adornment with a bunch of buttons in them
-    var partContextMenu =
+    const partContextMenu =
         $(go.Adornment, "Vertical",
             makeButton("Properties",
                 function (e, obj) {  // OBJ is this Button
-                    var contextmenu = obj.part;  // the Button is in the context menu Adornment
-                    var part = contextmenu.adornedPart;  // the adornedPart is the Part that the context menu adorns
+                    const contextmenu = obj.part;  // the Button is in the context menu Adornment
+                    const part = contextmenu.adornedPart;  // the adornedPart is the Part that the context menu adorns
                     // now can do something with PART, or with its data, or with the Adornment (the context menu)
                     if (part instanceof go.Link) alert(linkInfo(part.data));
                     else if (part instanceof go.Group) alert(groupInfo(contextmenu));
@@ -103,7 +103,7 @@ function initBasic() {
         );
 
     function nodeInfo(d) {  // Tooltip info for a node data object
-        var str = "Node " + d.key + ": " + d.text + "\n";
+        let str = "Node " + d.key + ": " + d.text + "\n";
         if (d.group)
             str += "member of " + d.group;
         else
@@ -179,9 +179,9 @@ function initBasic() {
     // Define the appearance and behavior for Groups:
 
     function groupInfo(adornment) {  // takes the tooltip or context menu, not a group node data object
-        var g = adornment.adornedPart;  // get the Group that the tooltip adorns
-        var mems = g.memberParts.count;
-        var links = 0;
+        const g = adornment.adornedPart;  // get the Group that the tooltip adorns
+        const mems = g.memberParts.count;
+        let links = 0;
         g.memberParts.each(function (part) {
             if (part instanceof go.Link) links++;
         });
@@ -270,14 +270,14 @@ function initBasic() {
         );
 
     // Create the Diagram's Model:
-    var nodeDataArray = [
+    const nodeDataArray = [
         {key: 1, text: "Alpha", color: "lightblue"},
         {key: 2, text: "Beta", color: "orange"},
         {key: 3, text: "Gamma", color: "lightgreen", group: 5},
         {key: 4, text: "Delta", color: "pink", group: 5},
         {key: 5, text: "Epsilon", color: "green", isGroup: true}
     ];
-    var linkDataArray = [
+    const linkDataArray = [
         {from: 1, to: 2, color: "blue"},
         {from: 2, to: 2},
         {from: 3, to: 4, color: "green"},

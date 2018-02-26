@@ -5,13 +5,10 @@ block scripts
     link(rel='stylesheet', type='text/css', href='/stylesheets/jquery-ui.css')
     link(rel='stylesheet', type='text/css', href='/stylesheets/autocomplete.css')
     script(src='/javascripts/go.js')
-    script(type='text/javascript', src='/javascripts/diagrams/er.js')
-    script(type='text/javascript', src='/javascripts/diagrams/tree.js')
-    script(type='text/javascript', src='/javascripts/diagrams/components.js')
-    script(type='text/javascript', src='/javascripts/diagrams/flowchart.js')
     script(type='text/javascript', src='/javascripts/jquery-ui.js')
     script#code(type="text/javascript")
     script.
+        let myDiagram;
         $(function () {
             var showMenuFlag = !{showMenu};
             if (showMenuFlag !== undefined && showMenuFlag !== null && showMenuFlag) {

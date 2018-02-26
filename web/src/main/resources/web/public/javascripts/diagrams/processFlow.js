@@ -1,6 +1,6 @@
 function initProcessFlow() {
 
-    var $ = go.GraphObject.make;  // for more concise visual tree definitions
+    const $ = go.GraphObject.make;  // for more concise visual tree definitions
 
     myDiagram =
         $(go.Diagram, diagramDiv,
@@ -16,9 +16,9 @@ function initProcessFlow() {
 
     // when the document is modified, add a "*" to the title and enable the "Save" button
     myDiagram.addDiagramListener("Modified", function (e) {
-        var button = document.getElementById("SaveButton");
+        const button = document.getElementById("SaveButton");
         if (button) button.disabled = !myDiagram.isModified;
-        var idx = document.title.indexOf("*");
+        const idx = document.title.indexOf("*");
         if (myDiagram.isModified) {
             if (idx < 0) document.title += "*";
         } else {
@@ -96,13 +96,13 @@ function initProcessFlow() {
 }
 
 function loop() {
-    var diagram = myDiagram;
+    const diagram = myDiagram;
     setTimeout(function () {
-        var oldskips = diagram.skipsUndoManager;
+        const oldskips = diagram.skipsUndoManager;
         diagram.skipsUndoManager = true;
         diagram.links.each(function (link) {
-            var shape = link.findObject("PIPE");
-            var off = shape.strokeDashOffset - 2;
+            const shape = link.findObject("PIPE");
+            const off = shape.strokeDashOffset - 2;
             shape.strokeDashOffset = (off <= 0) ? 20 : off;
         });
         diagram.skipsUndoManager = oldskips;

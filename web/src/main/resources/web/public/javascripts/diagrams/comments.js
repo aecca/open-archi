@@ -1,6 +1,6 @@
 function initComments() {
 
-    var $ = go.GraphObject.make;
+    let $ = go.GraphObject.make;
 
     myDiagram =
         $(go.Diagram, diagramDiv,  // create a Diagram for the DIV HTML element
@@ -16,12 +16,12 @@ function initComments() {
                 // When a Node is deleted by the user, also delete all of its Comment Nodes.
                 // When a Comment Link is deleted, also delete the corresponding Comment Node.
                 "SelectionDeleting": function (e) {
-                    var parts = e.subject;  // the collection of Parts to be deleted, the Diagram.selection
+                    const parts = e.subject;  // the collection of Parts to be deleted, the Diagram.selection
                     // iterate over a copy of this collection,
                     // because we may add to the collection by selecting more Parts
                     parts.copy().each(function (p) {
                         if (p instanceof go.Node) {
-                            var node = p;
+                            const node = p;
                             node.findNodesConnected().each(function (n) {
                                 // remove every Comment Node that is connected with this node
                                 if (n.category === "Comment") {
@@ -29,8 +29,8 @@ function initComments() {
                                 }
                             });
                         } else if (p instanceof go.Link && p.category === "Comment") {
-                            var comlink = p;  // a "Comment" Link
-                            var comnode = comlink.fromNode;
+                            const comlink = p;  // a "Comment" Link
+                            const comnode = comlink.fromNode;
                             // remove the Comment Node that is associated with this Comment Link,
                             if (comnode.category === "Comment") {
                                 comnode.isSelected = true;  // include in normal deletion process

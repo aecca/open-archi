@@ -1,6 +1,6 @@
 function initShapes() {
 
-    var $ = go.GraphObject.make;  // for conciseness in defining templates
+    const $ = go.GraphObject.make;  // for conciseness in defining templates
 
     myDiagram =
         $(go.Diagram, diagramDiv,  // create the Diagram for the HTML DIV element

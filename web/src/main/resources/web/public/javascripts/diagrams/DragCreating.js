@@ -7,10 +7,10 @@ function DragCreatingTool() {
     /** @type {Object} */
     this._archetypeNodeData = null;
 
-    var b = new go.Part();
+    const b = new go.Part();
     b.layerName = "Tool";
     b.selectable = false;
-    var r = new go.Shape();
+    const r = new go.Shape();
     r.name = "SHAPE";
     r.figure = "Rectangle";
     r.fill = null;
@@ -41,13 +41,13 @@ DragCreatingTool.prototype.canStart = function () {
     // gotta have some node data that can be copied
     if (this.archetypeNodeData === null) return false;
 
-    var diagram = this.diagram;
+    const diagram = this.diagram;
     if (diagram === null) return false;
     // heed IsReadOnly & AllowInsert
     if (diagram.isReadOnly || diagram.isModelReadOnly) return false;
     if (!diagram.allowInsert) return false;
 
-    var e = diagram.lastInput;
+    const e = diagram.lastInput;
     // require left button & that it has moved far enough away from the mouse down point, so it isn't a click
     if (!e.left) return false;
     // don't include the following checks when this tool is running modally
@@ -64,7 +64,7 @@ DragCreatingTool.prototype.canStart = function () {
  * @this {DragCreatingTool}
  */
 DragCreatingTool.prototype.doActivate = function () {
-    var diagram = this.diagram;
+    const diagram = this.diagram;
     if (diagram === null) return;
     this.isActive = true;
     diagram.isMouseCaptured = true;
@@ -77,7 +77,7 @@ DragCreatingTool.prototype.doActivate = function () {
  * @this {DragCreatingTool}
  */
 DragCreatingTool.prototype.doDeactivate = function () {
-    var diagram = this.diagram;
+    const diagram = this.diagram;
     if (diagram === null) return;
     diagram.remove(this.box);
     diagram.isMouseCaptured = false;
@@ -90,11 +90,11 @@ DragCreatingTool.prototype.doDeactivate = function () {
  * @this {DragCreatingTool}
  */
 DragCreatingTool.prototype.doMouseMove = function () {
-    var diagram = this.diagram;
+    const diagram = this.diagram;
     if (diagram === null) return;
     if (this.isActive && this.box !== null) {
-        var r = this.computeBoxBounds();
-        var shape = this.box.findObject("SHAPE");
+        const r = this.computeBoxBounds();
+        let shape = this.box.findObject("SHAPE");
         if (shape === null) shape = this.box.findMainElement();
         shape.desiredSize = r.size;
         this.box.position = r.position;
@@ -107,7 +107,7 @@ DragCreatingTool.prototype.doMouseMove = function () {
  */
 DragCreatingTool.prototype.doMouseUp = function () {
     if (this.isActive) {
-        var diagram = this.diagram;
+        const diagram = this.diagram;
         diagram.remove(this.box);
         try {
             diagram.currentCursor = "wait";
@@ -127,10 +127,10 @@ DragCreatingTool.prototype.doMouseUp = function () {
  * @return {Rect} a {@link Rect} in document coordinates.
  */
 DragCreatingTool.prototype.computeBoxBounds = function () {
-    var diagram = this.diagram;
+    const diagram = this.diagram;
     if (diagram === null) return new go.Rect(0, 0, 0, 0);
-    var start = diagram.firstInput.documentPoint;
-    var latest = diagram.lastInput.documentPoint;
+    const start = diagram.firstInput.documentPoint;
+    const latest = diagram.lastInput.documentPoint;
     return new go.Rect(start, latest);
 };
 
@@ -147,15 +147,15 @@ DragCreatingTool.prototype.computeBoxBounds = function () {
  * @return {Part} the newly created Part, or null if it failed.
  */
 DragCreatingTool.prototype.insertPart = function (bounds) {
-    var diagram = this.diagram;
+    const diagram = this.diagram;
     if (diagram === null) return null;
-    var arch = this.archetypeNodeData;
+    const arch = this.archetypeNodeData;
     if (arch === null) return null;
 
     this.startTransaction(this.name);
-    var part = null;
+    let part = null;
     if (arch !== null) {
-        var data = diagram.model.copyNodeData(arch);
+        const data = diagram.model.copyNodeData(arch);
         if (data) {
             diagram.model.addNodeData(data);
             part = diagram.findPartForData(data);
@@ -240,7 +240,7 @@ Object.defineProperty(DragCreatingTool.prototype, "archetypeNodeData", {
 
 function initDragCreating() {
 
-    var $ = go.GraphObject.make;  // for conciseness in defining templates
+    const $ = go.GraphObject.make;  // for conciseness in defining templates
 
     myDiagram =
         $(go.Diagram, diagramDiv,
@@ -297,7 +297,7 @@ function initDragCreating() {
 }
 
 function toolEnabled() {
-    var enable = document.getElementById("ToolEnabled").checked;
-    var tool = myDiagram.toolManager.findTool("DragCreating");
+    const enable = document.getElementById("ToolEnabled").checked;
+    const tool = myDiagram.toolManager.findTool("DragCreating");
     if (tool !== null) tool.isEnabled = enable;
 }

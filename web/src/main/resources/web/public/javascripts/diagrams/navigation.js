@@ -1,6 +1,6 @@
 function initNavigation() {
 
-    var $ = go.GraphObject.make;  // for conciseness in defining templates
+    const $ = go.GraphObject.make;  // for conciseness in defining templates
 
     myDiagram =
         $(go.Diagram, diagramDiv,  // Diagram refers to its DIV HTML element by id
@@ -159,7 +159,7 @@ function updateHighlights(e) {
     });
 
     // Get the selected GraphObject and run the appropriate method
-    var sel = myDiagram.selection.first();
+    const sel = myDiagram.selection.first();
     if (sel !== null) {
         switch (e.id) {
             case "linksIn":
@@ -207,16 +207,16 @@ function updateHighlights(e) {
     // Give everything the appropriate highlighting ( color and width of stroke )
     // nodes, including groups
     myDiagram.nodes.each(function (node) {
-        var shp = node.findObject("OBJSHAPE");
-        var grp = node.findObject("GROUPTEXT");
-        var hl = node.highlight;
+        const shp = node.findObject("OBJSHAPE");
+        const grp = node.findObject("GROUPTEXT");
+        const hl = node.highlight;
         highlight(shp, grp, hl);
     });
     // links
     myDiagram.links.each(function (link) {
-        var hl = link.highlight;
-        var shp = link.findObject("OBJSHAPE");
-        var arw = link.findObject("ARWSHAPE");
+        const hl = link.highlight;
+        const shp = link.findObject("OBJSHAPE");
+        const arw = link.findObject("ARWSHAPE");
         highlight(shp, arw, hl);
     });
 }
@@ -256,7 +256,7 @@ function linksAll(x, i) {
 // Otherwise highlight the fromNode of each link coming into the selected node.
 // Return a List of the keys of the nodes.
 function nodesTo(x, i) {
-    var nodesToList = new go.List("string");
+    const nodesToList = new go.List("string");
     if (x instanceof go.Link) {
         x.fromNode.highlight = i;
         nodesToList.add(x.data.from);
@@ -271,7 +271,7 @@ function nodesTo(x, i) {
 
 // same as nodesTo, but 'from' instead of 'to'
 function nodesFrom(x, i) {
-    var nodesFromList = new go.List("string");
+    const nodesFromList = new go.List("string");
     if (x instanceof go.Link) {
         x.toNode.highlight = i;
         nodesFromList.add(x.data.to);
@@ -317,7 +317,7 @@ function nodesConnect(x, i) {
 // highlights the group containing this object, specific method for links
 // returns the containing group of x
 function containing(x, i) {
-    var container = x.containingGroup;
+    const container = x.containingGroup;
     if (container !== null) container.highlight = i;
     return container;
 }
@@ -327,13 +327,13 @@ function containing(x, i) {
 // Calling containing(x,i) highlights each group the appropriate color
 function containingAll(x, i) {
     containing(x, i);
-    var container = x.containingGroup;
+    const container = x.containingGroup;
     if (container !== null) containingAll(container, i + 1);
 }
 
 // if the Node"s containingGroup is x, highlight it
 function childNodes(x, i) {
-    var childLst = new go.List("string");
+    const childLst = new go.List("string");
     if (x instanceof go.Group) {
         myDiagram.nodes.each(function (node) {
             if (node.containingGroup === x) {
@@ -359,7 +359,7 @@ function allMemberNodes(x, i) {
 
 // if the link"s containing Group is x, highlight it
 function childLinks(x, i) {
-    var childLst = new go.List(go.Link);
+    const childLst = new go.List(go.Link);
     myDiagram.links.each(function (link) {
         if (link.containingGroup === x) {
             link.highlight = i;
@@ -381,8 +381,8 @@ function allMemberLinks(x, i) {
 
 // perform the actual highlighting
 function highlight(shp, obj2, hl) {
-    var color;
-    var width = 3;
+    let color;
+    let width = 3;
     if (hl === 0) {
         color = "black";
         width = 1;
@@ -412,19 +412,19 @@ function highlight(shp, obj2, hl) {
 
 // return the selected radio button in "highlight"
 function getRadioButton() {
-    var radio = document.getElementsByName("highlight");
-    for (var i = 0; i < radio.length; i++)
+    const radio = document.getElementsByName("highlight");
+    for (let i = 0; i < radio.length; i++)
         if (radio[i].checked) return radio[i];
 }
 
 // returns the text for a tooltip, param obj is the text itself
 function getInfo(model, obj) {
-    var x = obj.panel.adornedPart; // the object that the mouse is over
-    var text = ""; // what will be displayed
+    const x = obj.panel.adornedPart; // the object that the mouse is over
+    let text = ""; // what will be displayed
     if (x instanceof go.Node) {
         if (x instanceof go.Group) text += "Group: "; else text += "Node: ";
         text += x.data.key;
-        var toLst = nodesTo(x, 0); // display names of nodes going into this node
+        const toLst = nodesTo(x, 0); // display names of nodes going into this node
         if (toLst.count > 0) {
             toLst.sort(function (a, b) {
                 return a < b ? -1 : 1
@@ -437,7 +437,7 @@ function getInfo(model, obj) {
             });
             text = text.substring(0, text.length - 2);
         }
-        var frLst = nodesFrom(x, 0); // display names of nodes coming out of this node
+        const frLst = nodesFrom(x, 0); // display names of nodes coming out of this node
         if (frLst.count > 0) {
             frLst.sort(function (a, b) {
                 return a < b ? -1 : 1
@@ -450,12 +450,12 @@ function getInfo(model, obj) {
             });
             text = text.substring(0, text.length - 2);
         }
-        var grpC = containing(x, 0); // if the node is in a group, display its name
+        const grpC = containing(x, 0); // if the node is in a group, display its name
         if (grpC !== null) text += "\nContaining SubGraph: " + grpC.data.key;
         if (x instanceof go.Group) {
             // if it"s a group, also display nodes and links contained in it
             text += "\nMember nodes: ";
-            var children = childNodes(x, 0);
+            const children = childNodes(x, 0);
             children.sort(function (a, b) {
                 return a < b ? -1 : 1
             });
@@ -466,10 +466,10 @@ function getInfo(model, obj) {
             });
             text = text.substring(0, text.length - 2);
 
-            var linkChildren = childLinks(x, 0);
+            const linkChildren = childLinks(x, 0);
             if (linkChildren.count > 0) {
                 text += "\nMember links: ";
-                var linkStrings = new go.List("string");
+                const linkStrings = new go.List("string");
                 linkChildren.each(function (link) {
                     linkStrings.add(link.data.from + " --> " + link.data.to);
                 });
@@ -486,7 +486,7 @@ function getInfo(model, obj) {
         // if it"s a link, display its to and from nodes
         text += "Link: " + x.data.from + " --> " + x.data.to +
             "\nNode To: " + x.data.to + "\nNode From: " + x.data.from;
-        var grp = containing(x, 0); // and containing group, if it has one
+        const grp = containing(x, 0); // and containing group, if it has one
         if (grp !== null) text += "\nContaining SubGraph: " + grp.data.key;
     }
     return text;

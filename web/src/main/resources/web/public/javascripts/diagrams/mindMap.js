@@ -1,6 +1,6 @@
 function initMindMap() {
 
-    var $ = go.GraphObject.make;
+    const $ = go.GraphObject.make;
 
     myDiagram =
         $(go.Diagram, diagramDiv,
@@ -15,9 +15,9 @@ function initMindMap() {
 
     // when the document is modified, add a "*" to the title and enable the "Save" button
     myDiagram.addDiagramListener("Modified", function (e) {
-        var button = document.getElementById("SaveButton");
+        const button = document.getElementById("SaveButton");
         if (button) button.disabled = !myDiagram.isModified;
-        var idx = document.title.indexOf("*");
+        const idx = document.title.indexOf("*");
         if (myDiagram.isModified) {
             if (idx < 0) document.title += "*";
         } else {
@@ -111,7 +111,7 @@ function initMindMap() {
                 $(go.TextBlock, "Layout"),
                 {
                     click: function (e, obj) {
-                        var adorn = obj.part;
+                        const adorn = obj.part;
                         adorn.diagram.startTransaction("Subtree Layout");
                         layoutTree(adorn.adornedPart);
                         adorn.diagram.commitTransaction("Subtree Layout");
@@ -177,10 +177,10 @@ function initMindMap() {
         );
 
     myDiagram.addDiagramListener("SelectionMoved", function (e) {
-        var rootX = myDiagram.findNodeForKey(0).location.x;
+        const rootX = myDiagram.findNodeForKey(0).location.x;
         myDiagram.selection.each(function (node) {
             if (node.data.parent !== 0) return; // Only consider nodes connected to the root
-            var nodeX = node.location.x;
+            const nodeX = node.location.x;
             if (rootX < nodeX && node.data.dir !== "right") {
                 updateNodeDirection(node, "right");
             } else if (rootX > nodeX && node.data.dir !== "left") {
@@ -203,21 +203,21 @@ function spotConverter(dir, from) {
 }
 
 function changeTextSize(obj, factor) {
-    var adorn = obj.part;
+    const adorn = obj.part;
     adorn.diagram.startTransaction("Change Text Size");
-    var node = adorn.adornedPart;
-    var tb = node.findObject("TEXT");
+    const node = adorn.adornedPart;
+    const tb = node.findObject("TEXT");
     tb.scale *= factor;
     adorn.diagram.commitTransaction("Change Text Size");
 }
 
 function toggleTextWeight(obj) {
-    var adorn = obj.part;
+    const adorn = obj.part;
     adorn.diagram.startTransaction("Change Text Weight");
-    var node = adorn.adornedPart;
-    var tb = node.findObject("TEXT");
+    const node = adorn.adornedPart;
+    const tb = node.findObject("TEXT");
     // assume "bold" is at the start of the font specifier
-    var idx = tb.font.indexOf("bold");
+    const idx = tb.font.indexOf("bold");
     if (idx < 0) {
         tb.font = "bold " + tb.font;
     } else {
@@ -229,20 +229,20 @@ function toggleTextWeight(obj) {
 function updateNodeDirection(node, dir) {
     myDiagram.model.setDataProperty(node.data, "dir", dir);
     // recursively update the direction of the child nodes
-    var chl = node.findTreeChildrenNodes(); // gives us an iterator of the child nodes related to this particular node
+    const chl = node.findTreeChildrenNodes(); // gives us an iterator of the child nodes related to this particular node
     while (chl.next()) {
         updateNodeDirection(chl.value, dir);
     }
 }
 
 function addNodeAndLink(e, obj) {
-    var adorn = obj.part;
-    var diagram = adorn.diagram;
+    const adorn = obj.part;
+    const diagram = adorn.diagram;
     diagram.startTransaction("Add Node");
-    var oldnode = adorn.adornedPart;
-    var olddata = oldnode.data;
+    const oldnode = adorn.adornedPart;
+    const olddata = oldnode.data;
     // copy the brush and direction to the new node data
-    var newdata = {text: "idea", brush: olddata.brush, dir: olddata.dir, parent: olddata.key};
+    const newdata = {text: "idea", brush: olddata.brush, dir: olddata.dir, parent: olddata.key};
     diagram.model.addNodeData(newdata);
     layoutTree(oldnode);
     diagram.commitTransaction("Add Node");
@@ -252,13 +252,13 @@ function layoutTree(node) {
     if (node.data.key === 0) {  // adding to the root?
         layoutAll();  // lay out everything
     } else {  // otherwise lay out only the subtree starting at this parent node
-        var parts = node.findTreeParts();
+        const parts = node.findTreeParts();
         layoutAngle(parts, node.data.dir === "left" ? 180 : 0);
     }
 }
 
 function layoutAngle(parts, angle) {
-    var layout = go.GraphObject.make(go.TreeLayout,
+    const layout = go.GraphObject.make(go.TreeLayout,
         {
             angle: angle,
             arrangement: go.TreeLayout.ArrangementFixedRoots,
@@ -271,14 +271,14 @@ function layoutAngle(parts, angle) {
 }
 
 function layoutAll() {
-    var root = myDiagram.findNodeForKey(0);
+    const root = myDiagram.findNodeForKey(0);
     if (root === null) return;
     myDiagram.startTransaction("Layout");
     // split the nodes and links into two collections
-    var rightward = new go.Set(go.Part);
-    var leftward = new go.Set(go.Part);
+    const rightward = new go.Set(go.Part);
+    const leftward = new go.Set(go.Part);
     root.findLinksConnected().each(function (link) {
-        var child = link.toNode;
+        const child = link.toNode;
         if (child.data.dir === "left") {
             leftward.add(root);  // the root node is in both collections
             leftward.add(link);

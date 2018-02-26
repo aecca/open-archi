@@ -1,6 +1,6 @@
 function initCheckBoxes() {
 
-    var $ = go.GraphObject.make;  // for conciseness in defining templates
+    const $ = go.GraphObject.make;  // for conciseness in defining templates
 
     myDiagram = $(go.Diagram, diagramDiv,  // create a Diagram for the DIV HTML element
         {

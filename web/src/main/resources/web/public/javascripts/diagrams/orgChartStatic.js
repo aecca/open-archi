@@ -1,6 +1,6 @@
 function initOrgChartStatic() {
 
-    var $ = go.GraphObject.make;  // for conciseness in defining templates
+    const $ = go.GraphObject.make;  // for conciseness in defining templates
 
     myDiagram =
         $(go.Diagram, diagramDiv,  // the DIV HTML element
@@ -39,11 +39,11 @@ function initOrgChartStatic() {
     }
 
     function theInfoTextConverter(info) {
-        var str = "";
+        let str = "";
         if (info.title) str += "Title: " + info.title;
         if (info.headOf) str += "\n\nHead of: " + info.headOf;
         if (typeof info.boss === "number") {
-            var bossinfo = myDiagram.model.findNodeDataForKey(info.boss);
+            const bossinfo = myDiagram.model.findNodeDataForKey(info.boss);
             if (bossinfo !== null) {
                 str += "\n\nReporting to: " + bossinfo.name;
             }
@@ -111,7 +111,7 @@ function initOrgChartStatic() {
 
 
     // set up the nodeDataArray, describing each person/position
-    var nodeDataArray = [
+    const nodeDataArray = [
         {
             key: 0,
             name: "Ban Ki-moon 반기문",
@@ -368,7 +368,7 @@ function initOrgChartStatic() {
 
 // the Search functionality highlights all of the nodes that have at least one data property match a RegExp
 function searchDiagram() {  // called by button
-    var input = document.getElementById("mySearch");
+    let input = document.getElementById("mySearch");
     if (!input) return;
     input.focus();
 
@@ -377,8 +377,8 @@ function searchDiagram() {  // called by button
     if (input.value) {
         // search four different data properties for the string, any of which may match for success
         // create a case insensitive RegExp from what the user typed
-        var regex = new RegExp(input.value, "i");
-        var results = myDiagram.findNodesByExample({name: regex},
+        const regex = new RegExp(input.value, "i");
+        const results = myDiagram.findNodesByExample({name: regex},
             {nation: regex},
             {title: regex},
             {headOf: regex});

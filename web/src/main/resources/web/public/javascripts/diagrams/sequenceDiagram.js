@@ -1,6 +1,6 @@
 function initSequenceDiagram() {
 
-    var $ = go.GraphObject.make;
+    const $ = go.GraphObject.make;
 
     myDiagram =
         $(go.Diagram, diagramDiv, // must be the ID or reference to an HTML DIV
@@ -19,9 +19,9 @@ function initSequenceDiagram() {
 
     // when the document is modified, add a "*" to the title and enable the "Save" button
     myDiagram.addDiagramListener("Modified", function (e) {
-        var button = document.getElementById("SaveButton");
+        const button = document.getElementById("SaveButton");
         if (button) button.disabled = !myDiagram.isModified;
-        var idx = document.title.indexOf("*");
+        const idx = document.title.indexOf("*");
         if (myDiagram.isModified) {
             if (idx < 0) document.title += "*";
         } else {
@@ -130,17 +130,17 @@ function initSequenceDiagram() {
 
 function ensureLifelineHeights(e) {
     // iterate over all Activities (ignore Groups)
-    var arr = myDiagram.model.nodeDataArray;
-    var max = -1;
+    const arr = myDiagram.model.nodeDataArray;
+    let max = -1;
     for (var i = 0; i < arr.length; i++) {
-        var act = arr[i];
+        const act = arr[i];
         if (act.isGroup) continue;
         max = Math.max(max, act.start + act.duration);
     }
     if (max > 0) {
         // now iterate over only Groups
         for (var i = 0; i < arr.length; i++) {
-            var gr = arr[i];
+            const gr = arr[i];
             if (!gr.isGroup) continue;
             if (max > gr.duration) {  // this only extends, never shrinks
                 myDiagram.model.setDataProperty(gr, "duration", max);
@@ -151,21 +151,21 @@ function ensureLifelineHeights(e) {
 
 // some parameters
 var LinePrefix = 20;  // vertical starting point in document for all Messages and Activations
-var LineSuffix = 30;  // vertical length beyond the last message time
+const LineSuffix = 30;  // vertical length beyond the last message time
 var MessageSpacing = 20;  // vertical distance between Messages at different steps
 var ActivityWidth = 10;  // width of each vertical activity bar
 var ActivityStart = 5;  // height before start message time
-var ActivityEnd = 5;  // height beyond end message time
+const ActivityEnd = 5;  // height beyond end message time
 
 function computeLifelineHeight(duration) {
     return LinePrefix + duration * MessageSpacing + LineSuffix;
 }
 
 function computeActivityLocation(act) {
-    var groupdata = myDiagram.model.findNodeDataForKey(act.group);
+    const groupdata = myDiagram.model.findNodeDataForKey(act.group);
     if (groupdata === null) return new go.Point();
     // get location of Lifeline's starting point
-    var grouploc = go.Point.parse(groupdata.loc);
+    const grouploc = go.Point.parse(groupdata.loc);
     return new go.Point(grouploc.x, convertTimeToY(act.start) - ActivityStart);
 }
 
@@ -202,26 +202,26 @@ go.Diagram.inherit(MessageLink, go.Link);
 
 /** @override */
 MessageLink.prototype.getLinkPoint = function (node, port, spot, from, ortho, othernode, otherport) {
-    var p = port.getDocumentPoint(go.Spot.Center);
-    var r = new go.Rect(port.getDocumentPoint(go.Spot.TopLeft),
+    const p = port.getDocumentPoint(go.Spot.Center);
+    const r = new go.Rect(port.getDocumentPoint(go.Spot.TopLeft),
         port.getDocumentPoint(go.Spot.BottomRight));
-    var op = otherport.getDocumentPoint(go.Spot.Center);
+    const op = otherport.getDocumentPoint(go.Spot.Center);
 
-    var data = this.data;
-    var time = data !== null ? data.time : this.time;  // if not bound, assume this has its own "time" property
+    const data = this.data;
+    const time = data !== null ? data.time : this.time;  // if not bound, assume this has its own "time" property
 
-    var aw = this.findActivityWidth(node, time);
-    var x = (op.x > p.x ? p.x + aw / 2 : p.x - aw / 2);
-    var y = convertTimeToY(time);
+    const aw = this.findActivityWidth(node, time);
+    const x = (op.x > p.x ? p.x + aw / 2 : p.x - aw / 2);
+    const y = convertTimeToY(time);
     return new go.Point(x, y);
 };
 
 MessageLink.prototype.findActivityWidth = function (node, time) {
-    var aw = ActivityWidth;
+    let aw = ActivityWidth;
     if (node instanceof go.Group) {
         // see if there is an Activity Node at this point -- if not, connect the link directly with the Group's lifeline
         if (!node.memberParts.any(function (mem) {
-                var act = mem.data;
+                const act = mem.data;
                 return (act !== null && act.start <= time && time <= act.start + act.duration);
             })) {
             aw = 0;
@@ -232,22 +232,22 @@ MessageLink.prototype.findActivityWidth = function (node, time) {
 
 /** @override */
 MessageLink.prototype.getLinkDirection = function (node, port, linkpoint, spot, from, ortho, othernode, otherport) {
-    var p = port.getDocumentPoint(go.Spot.Center);
-    var op = otherport.getDocumentPoint(go.Spot.Center);
-    var right = op.x > p.x;
+    const p = port.getDocumentPoint(go.Spot.Center);
+    const op = otherport.getDocumentPoint(go.Spot.Center);
+    const right = op.x > p.x;
     return right ? 0 : 180;
 };
 
 /** @override */
 MessageLink.prototype.computePoints = function () {
     if (this.fromNode === this.toNode) {  // also handle a reflexive link as a simple orthogonal loop
-        var data = this.data;
-        var time = data !== null ? data.time : this.time;  // if not bound, assume this has its own "time" property
-        var p = this.fromNode.port.getDocumentPoint(go.Spot.Center);
-        var aw = this.findActivityWidth(this.fromNode, time);
+        const data = this.data;
+        const time = data !== null ? data.time : this.time;  // if not bound, assume this has its own "time" property
+        const p = this.fromNode.port.getDocumentPoint(go.Spot.Center);
+        const aw = this.findActivityWidth(this.fromNode, time);
 
-        var x = p.x + aw / 2;
-        var y = convertTimeToY(time);
+        const x = p.x + aw / 2;
+        const y = convertTimeToY(time);
         this.clearPoints();
         this.addPoint(new go.Point(x, y));
         this.addPoint(new go.Point(x + 50, y));
@@ -257,7 +257,7 @@ MessageLink.prototype.computePoints = function () {
     } else {
         return go.Link.prototype.computePoints.call(this);
     }
-}
+};
 
 // end MessageLink
 
@@ -266,7 +266,7 @@ MessageLink.prototype.computePoints = function () {
 // for both the temporaryLink and the actual newly created Link
 function MessagingTool() {
     go.LinkingTool.call(this);
-    var $ = go.GraphObject.make;
+    const $ = go.GraphObject.make;
     this.temporaryLink =
         $(MessageLink,
             $(go.Shape, "Rectangle",
@@ -279,22 +279,22 @@ go.Diagram.inherit(MessagingTool, go.LinkingTool);
 /** @override */
 MessagingTool.prototype.doActivate = function () {
     go.LinkingTool.prototype.doActivate.call(this);
-    var time = convertYToTime(this.diagram.firstInput.documentPoint.y);
+    const time = convertYToTime(this.diagram.firstInput.documentPoint.y);
     this.temporaryLink.time = Math.ceil(time);  // round up to an integer value
 };
 
 /** @override */
 MessagingTool.prototype.insertLink = function (fromnode, fromport, tonode, toport) {
-    var newlink = go.LinkingTool.prototype.insertLink.call(this, fromnode, fromport, tonode, toport);
+    const newlink = go.LinkingTool.prototype.insertLink.call(this, fromnode, fromport, tonode, toport);
     if (newlink !== null) {
-        var model = this.diagram.model;
+        const model = this.diagram.model;
         // specify the time of the message
-        var start = this.temporaryLink.time;
-        var duration = 1;
+        const start = this.temporaryLink.time;
+        const duration = 1;
         newlink.data.time = start;
         model.setDataProperty(newlink.data, "text", "msg");
         // and create a new Activity node data in the "to" group data
-        var newact = {
+        const newact = {
             group: newlink.data.to,
             start: start,
             duration: duration

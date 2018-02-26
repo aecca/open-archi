@@ -1,6 +1,6 @@
 function initEntityRelationship() {
 
-    var $ = go.GraphObject.make;  // for conciseness in defining templates
+    const $ = go.GraphObject.make;  // for conciseness in defining templates
 
     myDiagram =
         $(go.Diagram, diagramDiv,  // must name or refer to the DIV HTML element
@@ -13,14 +13,14 @@ function initEntityRelationship() {
             });
 
     // define several shared Brushes
-    var bluegrad = $(go.Brush, "Linear", {0: "rgb(150, 150, 250)", 0.5: "rgb(86, 86, 186)", 1: "rgb(86, 86, 186)"});
-    var greengrad = $(go.Brush, "Linear", {0: "rgb(158, 209, 159)", 1: "rgb(67, 101, 56)"});
-    var redgrad = $(go.Brush, "Linear", {0: "rgb(206, 106, 100)", 1: "rgb(180, 56, 50)"});
-    var yellowgrad = $(go.Brush, "Linear", {0: "rgb(254, 221, 50)", 1: "rgb(254, 182, 50)"});
-    var lightgrad = $(go.Brush, "Linear", {1: "#E6E6FA", 0: "#FFFAF0"});
+    const bluegrad = $(go.Brush, "Linear", {0: "rgb(150, 150, 250)", 0.5: "rgb(86, 86, 186)", 1: "rgb(86, 86, 186)"});
+    const greengrad = $(go.Brush, "Linear", {0: "rgb(158, 209, 159)", 1: "rgb(67, 101, 56)"});
+    const redgrad = $(go.Brush, "Linear", {0: "rgb(206, 106, 100)", 1: "rgb(180, 56, 50)"});
+    const yellowgrad = $(go.Brush, "Linear", {0: "rgb(254, 221, 50)", 1: "rgb(254, 182, 50)"});
+    const lightgrad = $(go.Brush, "Linear", {1: "#E6E6FA", 0: "#FFFAF0"});
 
     // the template for each attribute in a node's array of item data
-    var itemTempl =
+    const itemTempl =
         $(go.Panel, "Horizontal",
             $(go.Shape,
                 {desiredSize: new go.Size(10, 10)},
@@ -120,7 +120,7 @@ function initEntityRelationship() {
         );
 
     // create the model for the E-R diagram
-    var nodeDataArray = [
+    const nodeDataArray = [
         {
             key: "Products",
             items: [{name: "ProductID", iskey: true, figure: "Decision", color: yellowgrad},
@@ -151,7 +151,7 @@ function initEntityRelationship() {
                 {name: "Discount", iskey: false, figure: "MagneticData", color: greengrad}]
         },
     ];
-    var linkDataArray = [
+    const linkDataArray = [
         {from: "Products", to: "Suppliers", text: "0..N", toText: "1"},
         {from: "Products", to: "Categories", text: "0..N", toText: "1"},
         {from: "Order Details", to: "Products", text: "0..N", toText: "1"}

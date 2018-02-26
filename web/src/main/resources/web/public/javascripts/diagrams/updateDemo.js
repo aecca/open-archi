@@ -1,6 +1,6 @@
 function initUpdateDemo() {
 
-    var $ = go.GraphObject.make;  // for conciseness in defining templates
+    const $ = go.GraphObject.make;  // for conciseness in defining templates
 
     blueDiagram =
         $(go.Diagram, "blueDiagram",
@@ -75,7 +75,7 @@ function initUpdateDemo() {
 
 
     // create the model data that will be represented in both diagrams simultaneously
-    var model = new go.GraphLinksModel(
+    const model = new go.GraphLinksModel(
         [
             {key: 1, text: "Alpha", loc: new go.Point(20, 20)},
             {key: 2, text: "Beta", loc: new go.Point(160, 120)}
@@ -98,7 +98,7 @@ function initUpdateDemo() {
     // in the UndoManager history.
     // **********************************************************
 
-    var undoDisplay =
+    const undoDisplay =
         $(go.Diagram, "undoDisplay",
             {
                 allowMove: false,
@@ -135,7 +135,7 @@ function initUpdateDemo() {
 
     undoDisplay.linkTemplate = $(go.Link);  // not really used
 
-    var undoModel =
+    const undoModel =
         $(go.TreeModel,  // initially empty
             {isReadOnly: true});
     undoDisplay.model = undoModel;
@@ -144,9 +144,9 @@ function initUpdateDemo() {
     // Add an undo listener to the main model
     // ******************************************************
 
-    var changedLog = document.getElementById("modelChangedLog");
-    var editToRedo = null; // a node in the undoDisplay
-    var editList = [];
+    const changedLog = document.getElementById("modelChangedLog");
+    let editToRedo = null; // a node in the undoDisplay
+    let editList = [];
 
     model.addChangedListener(function (e) {
         // do not display some uninteresting kinds of transaction notifications
@@ -157,7 +157,7 @@ function initUpdateDemo() {
         }  // You will probably want to use e.isTransactionFinished instead
 
         // Add entries into the log
-        var changes = e.toString();
+        let changes = e.toString();
         if (changes[0] !== "*") changes = "&nbsp;&nbsp;" + changes;
         changedLog.innerHTML += changes + "<br/>";
         changedLog.scrollTop = changedLog.scrollHeight;
@@ -166,46 +166,46 @@ function initUpdateDemo() {
         if (e.propertyName === "CommittedTransaction") {
             if (editToRedo != null) {
                 // remove from the undo display diagram all nodes after editToRedo
-                for (var i = editToRedo.data.index + 1; i < editList.length; i++) {
+                for (let i = editToRedo.data.index + 1; i < editList.length; i++) {
                     undoDisplay.remove(editList[i]);
                 }
                 editList = editList.slice(0, editToRedo.data.index);
                 editToRedo = null;
             }
 
-            var tx = e.object;
-            var txname = (tx !== null ? e.object.name : "");
-            var parentData = {text: txname, tag: e.object, index: editList.length - 1};
-            undoModel.addNodeData(parentData)
-            var parentKey = undoModel.getKeyForNodeData(parentData);
-            var parentNode = undoDisplay.findNodeForKey(parentKey);
+            const tx = e.object;
+            const txname = (tx !== null ? e.object.name : "");
+            const parentData = {text: txname, tag: e.object, index: editList.length - 1};
+            undoModel.addNodeData(parentData);
+            const parentKey = undoModel.getKeyForNodeData(parentData);
+            const parentNode = undoDisplay.findNodeForKey(parentKey);
             editList.push(parentNode);
             if (tx !== null) {
-                var allChanges = tx.changes;
-                var odd = true;
+                const allChanges = tx.changes;
+                let odd = true;
                 allChanges.each(function (change) {
-                    var childData = {
+                    const childData = {
                         color: (odd ? "white" : "#E0FFED"),
                         text: change.toString(),
                         parent: parentKey
                     };
-                    undoModel.addNodeData(childData)
+                    undoModel.addNodeData(childData);
                     odd = !odd;
                 });
                 undoDisplay.commandHandler.collapseTree(parentNode);
             }
         } else if (e.propertyName === "FinishedUndo" || e.propertyName === "FinishedRedo") {
-            var undoManager = model.undoManager;
+            const undoManager = model.undoManager;
             if (editToRedo !== null) {
                 editToRedo.isSelected = false;
                 editToRedo = null;
             }
             // Find the node that represents the undo or redo state and select it
-            var nextEdit = undoManager.transactionToRedo;
+            const nextEdit = undoManager.transactionToRedo;
             if (nextEdit !== null) {
-                var itr = undoDisplay.nodes;
+                const itr = undoDisplay.nodes;
                 while (itr.next()) {
-                    var node = itr.value;
+                    const node = itr.value;
                     if (node.data.tag === nextEdit) {
                         node.isSelected = true;
                         editToRedo = node;
@@ -218,7 +218,7 @@ function initUpdateDemo() {
 
     model.addChangedListener(function (e) {
         if (e.isTransactionFinished) {
-            var tx = e.object;
+            const tx = e.object;
             if (tx instanceof go.Transaction && window.console) {
                 window.console.log(tx.toString());
                 tx.changes.each(function (c) {
@@ -230,5 +230,5 @@ function initUpdateDemo() {
 } // end init
 
 function clearLog() {
-    var div = document.getElementById("modelChangedLog").innerHTML = "";
+    const div = document.getElementById("modelChangedLog").innerHTML = "";
 }

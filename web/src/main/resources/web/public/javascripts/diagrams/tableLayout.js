@@ -75,9 +75,9 @@ Object.defineProperty(TableLayout.prototype, "defaultStretch", {
 TableLayout.prototype.getRowDefinition = function (idx) {
     if (idx < 0) throw new Error("Row index must be non-negative, not: " + idx);
     idx = Math.round(idx);
-    var defs = this._rowDefs;
+    const defs = this._rowDefs;
 
-    var d = defs[idx];
+    let d = defs[idx];
     if (d === undefined) {
         d = new go.RowColumnDefinition();
         // .panel remains null
@@ -115,11 +115,11 @@ Object.defineProperty(TableLayout.prototype, "rowCount", {
 TableLayout.prototype.findRowForDocumentY = function (y) {
     y -= this.arrangementOrigin.y;
     if (y < 0) return -1;
-    var total = 0.0;
-    var it = this._rowDefs;
-    var l = it.length;
+    let total = 0.0;
+    const it = this._rowDefs;
+    const l = it.length;
     for (var i = 0; i < l; i++) {
-        var def = it[i];
+        const def = it[i];
         if (def === undefined) continue;
         total += def.total;
         if (y < total) {
@@ -141,9 +141,9 @@ TableLayout.prototype.findRowForDocumentY = function (y) {
 TableLayout.prototype.getColumnDefinition = function (idx) {
     if (idx < 0) throw new Error("Column index must be non-negative, not: " + idx);
     idx = Math.round(idx);
-    var defs = this._colDefs;
+    const defs = this._colDefs;
 
-    var d = defs[idx];
+    let d = defs[idx];
     if (d === undefined) {
         d = new go.RowColumnDefinition();
         // .panel remains null
@@ -181,11 +181,11 @@ Object.defineProperty(TableLayout.prototype, "columnCount", {
 TableLayout.prototype.findColumnForDocumentX = function (x) {
     x -= this.arrangementOrigin.x;
     if (x < 0) return -1;
-    var total = 0.0;
-    var it = this._colDefs;
-    var l = it.length;
+    let total = 0.0;
+    const it = this._colDefs;
+    const l = it.length;
     for (var i = 0; i < l; i++) {
-        var def = it[i];
+        const def = it[i];
         if (def === undefined) continue;
         total += def.total;
         if (x < total) {
@@ -205,12 +205,12 @@ TableLayout.prototype.findColumnForDocumentX = function (x) {
  * @return {EnumValue}
  */
 TableLayout.prototype.getEffectiveTableStretch = function (child, row, col) {
-    var effectivestretch = child.stretch;
+    const effectivestretch = child.stretch;
     if (effectivestretch !== go.GraphObject.Default) return effectivestretch;
     // which directions are we stretching?
     // undefined = default
-    var horizontal = undefined;
-    var vertical = undefined;
+    let horizontal = undefined;
+    let vertical = undefined;
     switch (row.stretch) {
         case go.GraphObject.Default:
         case go.GraphObject.Horizontal:
@@ -234,7 +234,7 @@ TableLayout.prototype.getEffectiveTableStretch = function (child, row, col) {
             break;
     }
 
-    var str = this.defaultStretch;
+    const str = this.defaultStretch;
     if (horizontal === undefined && (str === go.GraphObject.Horizontal || str === go.GraphObject.Fill)) {
         horizontal = true;
     } else {
@@ -259,7 +259,7 @@ TableLayout.prototype.getEffectiveTableStretch = function (child, row, col) {
 TableLayout.prototype.doLayout = function (coll) {
     this.arrangementOrigin = this.initialOrigin(this.arrangementOrigin);
     // put all eligible Parts that are not Links into an Array
-    var parts = new go.List(go.Part);
+    const parts = new go.List(go.Part);
     this.collectParts(coll).each(function (p) {
         if (!(p instanceof go.Link)) {
             parts.add(p);
@@ -267,9 +267,9 @@ TableLayout.prototype.doLayout = function (coll) {
     });
 
     this.diagram.startTransaction("TableLayout");
-    var union = new go.Size();
+    const union = new go.Size();
     // this calls .beforeMeasure(parts, rowcol)
-    var rowcol = this.measureTable(Infinity, Infinity, parts, union, 0, 0);
+    const rowcol = this.measureTable(Infinity, Infinity, parts, union, 0, 0);
     this.arrangeTable(parts, union, rowcol);
     this.afterArrange(parts, rowcol);
     this.diagram.commitTransaction("TableLayout");
@@ -301,9 +301,9 @@ TableLayout.prototype.afterArrange = function (parts, rowcol) {
  * @this {TableLayout}
  */
 TableLayout.prototype.measureTable = function (width, height, children, union, minw, minh) {
-    var l = children.length;
+    let l = children.length;
     // Make the array that holds [rows][cols] of the table
-    var rowcol = []; // saved (so no temp array) starts as an array of rows, will end up [row][col][cell]
+    const rowcol = []; // saved (so no temp array) starts as an array of rows, will end up [row][col][cell]
     for (var i = 0; i < l; i++) {
         var child = children.elt(i);
         if (!rowcol[child.row]) {
@@ -318,19 +318,19 @@ TableLayout.prototype.measureTable = function (width, height, children, union, m
     this.beforeMeasure(children, rowcol);
 
     // Reset the row/col definitions because the ones from last measure are irrelevant
-    var resetCols = [];  // keep track of which columns we've already reset
+    const resetCols = [];  // keep track of which columns we've already reset
 
     // Objects that span multiple columns and
-    var spanners = [];
-    var nosize = [];
+    const spanners = [];
+    const nosize = [];
     // These hashes are used to tally the number of rows and columns that do not have a size
-    var nosizeCols = {'count': 0};
-    var nosizeRows = {'count': 0};
+    const nosizeCols = {'count': 0};
+    const nosizeRows = {'count': 0};
 
-    var colleft = width;
-    var rowleft = height;
+    let colleft = width;
+    let rowleft = height;
 
-    var defs = this._rowDefs;
+    let defs = this._rowDefs;
     l = defs.length;
     for (var i = 0; i < l; i++) {
         var def = defs[i];
@@ -344,15 +344,15 @@ TableLayout.prototype.measureTable = function (width, height, children, union, m
         if (def !== undefined) def.actual = 0;
     }
 
-    var lrow = rowcol.length; //number of rows
-    var lcol = 0;
+    let lrow = rowcol.length; //number of rows
+    let lcol = 0;
     for (var i = 0; i < lrow; i++) {
         if (!rowcol[i]) continue;
         lcol = Math.max(lcol, rowcol[i].length); // column length in this row
     }
 
     // Go through each cell (first pass)
-    var amt = 0.0;
+    let amt = 0.0;
     lrow = rowcol.length; //number of rows
     for (var i = 0; i < lrow; i++) {
         if (!rowcol[i]) continue;
@@ -368,14 +368,14 @@ TableLayout.prototype.measureTable = function (width, height, children, union, m
                 resetCols[j] = true;
             }
 
-            var cell = rowcol[i][j];
-            var len = cell.length;
-            for (var k = 0; k < len; k++) {
+            const cell = rowcol[i][j];
+            const len = cell.length;
+            for (let k = 0; k < len; k++) {
                 //foreach element in cell, measure
                 var child = cell[k];
 
                 // Skip children that span more than one row or column or do not have a set size
-                var spanner = (child.rowSpan > 1 || child.columnSpan > 1);
+                let spanner = (child.rowSpan > 1 || child.columnSpan > 1);
                 if (spanner) {
                     spanners.push(child);
                     // We used to not measure spanners twice, but now we do
@@ -390,10 +390,10 @@ TableLayout.prototype.measureTable = function (width, height, children, union, m
                 var margh = marg.top + marg.bottom;
 
                 var stretch = this.getEffectiveTableStretch(child, rowHerald, colHerald);
-                var dsize = child.resizeObject.desiredSize;
-                var realwidth = !(isNaN(dsize.width));
-                var realheight = !(isNaN(dsize.height));
-                var realsize = realwidth && realheight;
+                const dsize = child.resizeObject.desiredSize;
+                const realwidth = !(isNaN(dsize.width));
+                const realheight = !(isNaN(dsize.height));
+                let realsize = realwidth && realheight;
                 if (!spanner && stretch !== go.GraphObject.None && !realsize) {
                     if (nosizeCols[j] === undefined && (stretch === go.GraphObject.Fill || stretch === go.GraphObject.Horizontal)) {
                         nosizeCols[j] = -1;
@@ -407,7 +407,7 @@ TableLayout.prototype.measureTable = function (width, height, children, union, m
                 }
 
                 if (stretch !== go.GraphObject.None) {
-                    var unrestrictedSize = new go.Size(NaN, NaN);
+                    const unrestrictedSize = new go.Size(NaN, NaN);
                     //if (stretch !== go.GraphObject.Horizontal) unrestrictedSize.height = rowHerald.minimum;
                     //if (stretch !== go.GraphObject.Vertical) unrestrictedSize.width = colHerald.minimum;
                     //??? allow resizing during measure phase
@@ -444,8 +444,8 @@ TableLayout.prototype.measureTable = function (width, height, children, union, m
 
     // For objects of no desired size we allocate what is left as we go,
     // or else what is already in the column
-    var totalColWidth = 0.0;
-    var totalRowHeight = 0.0;
+    let totalColWidth = 0.0;
+    let totalRowHeight = 0.0;
     l = this.columnCount;
     for (var i = 0; i < l; i++) {
         if (this._colDefs[i] === undefined) continue;
@@ -458,8 +458,8 @@ TableLayout.prototype.measureTable = function (width, height, children, union, m
     }
     colleft = Math.max(width - totalColWidth, 0);
     rowleft = Math.max(height - totalRowHeight, 0);
-    var originalrowleft = rowleft;
-    var originalcolleft = colleft;
+    const originalrowleft = rowleft;
+    const originalcolleft = colleft;
 
     // Determine column sizes for the yet-to-be-sized columns
     l = nosize.length;
@@ -468,7 +468,7 @@ TableLayout.prototype.measureTable = function (width, height, children, union, m
         var rowHerald = this.getRowDefinition(child.row);
         var colHerald = this.getColumnDefinition(child.column);
         // We want to gather the largest difference between desired and expected col/row sizes
-        var mb = child.actualBounds;
+        const mb = child.actualBounds;
         var marg = child.margin;
         var margw = marg.right + marg.left;
         var margh = marg.top + marg.bottom;
@@ -486,8 +486,8 @@ TableLayout.prototype.measureTable = function (width, height, children, union, m
     }
     // we now have the size that all these columns prefer to be
     // we also have the amount left over
-    var desiredRowTotal = 0.0;
-    var desiredColTotal = 0.0;
+    let desiredRowTotal = 0.0;
+    let desiredColTotal = 0.0;
     for (i in nosizeRows) {
         if (i !== 'count') desiredRowTotal += nosizeRows[i]
     }
@@ -495,7 +495,7 @@ TableLayout.prototype.measureTable = function (width, height, children, union, m
         if (i !== 'count') desiredColTotal += nosizeCols[i]
     }
 
-    var allowedSize = new go.Size(); // used in stretch and span loops
+    const allowedSize = new go.Size(); // used in stretch and span loops
 
     // Deal with objects that have a stretch
     for (var i = 0; i < l; i++) {
@@ -503,7 +503,7 @@ TableLayout.prototype.measureTable = function (width, height, children, union, m
         var rowHerald = this.getRowDefinition(child.row);
         var colHerald = this.getColumnDefinition(child.column);
 
-        var w = 0.0;
+        let w = 0.0;
         if (isFinite(colHerald.width)) {
             w = colHerald.width;
         } else {
@@ -518,7 +518,7 @@ TableLayout.prototype.measureTable = function (width, height, children, union, m
             }
             w = Math.max(0, w - colHerald.computeEffectiveSpacing());
         }
-        var h = 0.0;
+        let h = 0.0;
         if (isFinite(rowHerald.height)) {
             h = rowHerald.height;
         } else {
@@ -561,7 +561,7 @@ TableLayout.prototype.measureTable = function (width, height, children, union, m
         if (isFinite(colleft)) mwidth = Math.min(mwidth, allowedSize.width);
         if (isFinite(rowleft)) mheight = Math.min(mheight, allowedSize.height);
 
-        var oldAmount = 0.0;
+        let oldAmount = 0.0;
 
         oldAmount = rowHerald.actual;
         rowHerald.actual = Math.max(rowHerald.actual, mheight);
@@ -575,7 +575,7 @@ TableLayout.prototype.measureTable = function (width, height, children, union, m
     } // end no fixed size objects
 
     // Go through each object that spans multiple rows or columns
-    var additionalSpan = new go.Size();
+    const additionalSpan = new go.Size();
     l = spanners.length;
     if (l !== 0) {
         // record the actual sizes of every row/column before measuring spanners
@@ -630,7 +630,7 @@ TableLayout.prototype.measureTable = function (width, height, children, union, m
         var mwidth = Math.max(m.width + margw, 0);
         var mheight = Math.max(m.height + margh, 0);
 
-        var totalRow = 0.0;
+        let totalRow = 0.0;
         for (var n = 0; n < child.rowSpan; n++) {
             if (child.row + n >= this.rowCount) break; // if the row exists at all
             def = this.getRowDefinition(child.row + n);
@@ -650,7 +650,7 @@ TableLayout.prototype.measureTable = function (width, height, children, union, m
             }
         }
 
-        var totalCol = 0.0;
+        let totalCol = 0.0;
         for (var n = 0; n < child.columnSpan; n++) {
             if (child.column + n >= this.columnCount) break; // if the col exists at all
             def = this.getColumnDefinition(child.column + n);
@@ -704,37 +704,37 @@ TableLayout.prototype.measureTable = function (width, height, children, union, m
  * @this {TableLayout}
  */
 TableLayout.prototype.arrangeTable = function (children, union, rowcol) {
-    var l = children.length;
-    var originx = this.arrangementOrigin.x;
-    var originy = this.arrangementOrigin.y;
-    var x = 0.0;
-    var y = 0.0;
+    const l = children.length;
+    const originx = this.arrangementOrigin.x;
+    const originy = this.arrangementOrigin.y;
+    let x = 0.0;
+    let y = 0.0;
 
-    var lrow = rowcol.length; //number of rows
-    var lcol = 0;
+    const lrow = rowcol.length; //number of rows
+    let lcol = 0;
     for (var i = 0; i < lrow; i++) {
         if (!rowcol[i]) continue;
         lcol = Math.max(lcol, rowcol[i].length); // column length in this row
     }
 
-    var additionalSpan = new go.Size();
+    const additionalSpan = new go.Size();
     // Find cell space and arrange objects:
     for (var i = 0; i < lrow; i++) {
         if (!rowcol[i]) continue;
         lcol = rowcol[i].length; // column length in this row
-        var rowHerald = this.getRowDefinition(i);
+        const rowHerald = this.getRowDefinition(i);
         y = originy + rowHerald.position + rowHerald.computeEffectiveSpacingTop();
-        for (var j = 0; j < lcol; j++) {
+        for (let j = 0; j < lcol; j++) {
             //foreach column j in row i...
             if (!rowcol[i][j]) continue;
-            var colHerald = this.getColumnDefinition(j);
+            const colHerald = this.getColumnDefinition(j);
             x = originx + colHerald.position + colHerald.computeEffectiveSpacingTop();
-            var cell = rowcol[i][j];
-            var len = cell.length;
+            const cell = rowcol[i][j];
+            const len = cell.length;
 
-            for (var k = 0; k < len; k++) {
+            for (let k = 0; k < len; k++) {
                 //foreach element in cell
-                var child = cell[k];
+                const child = cell[k];
 
                 // add to layoutWidth/Height any additional span
                 additionalSpan.setTo(0, 0);
@@ -742,35 +742,35 @@ TableLayout.prototype.arrangeTable = function (children, union, rowcol) {
                 for (var n = 1; n < child.rowSpan; n++) {
                     // if the row exists at all
                     if (i + n >= this.rowCount) break;
-                    var rh = this.getRowDefinition(i + n);
+                    const rh = this.getRowDefinition(i + n);
                     additionalSpan.height += rh.total;
                 }
 
                 for (var n = 1; n < child.columnSpan; n++) {
                     // if the col exists at all
                     if (j + n >= this.columnCount) break;
-                    var ch = this.getColumnDefinition(j + n);
+                    const ch = this.getColumnDefinition(j + n);
                     additionalSpan.width += ch.total;
                 }
 
                 // Construct containing rect (cell):
 
                 // total width and height of the cell that an object could possibly be created in
-                var colwidth = colHerald.actual + additionalSpan.width;
-                var rowheight = rowHerald.actual + additionalSpan.height;
+                const colwidth = colHerald.actual + additionalSpan.width;
+                const rowheight = rowHerald.actual + additionalSpan.height;
 
                 // construct a rect that represents the total cell size allowed for this object
-                var ar = new go.Rect();
+                const ar = new go.Rect();
                 ar.x = x;
                 ar.y = y;
                 ar.width = colwidth;
                 ar.height = rowheight;
 
                 // Also keep them for clip values
-                var cellx = x;
-                var celly = y;
-                var cellw = colwidth;
-                var cellh = rowheight;
+                const cellx = x;
+                const celly = y;
+                let cellw = colwidth;
+                let cellh = rowheight;
                 // Ending rows/col might have actual spaces that are larger than the remaining space
                 // Modify them for clipping regions
                 if (x + colwidth > union.width) cellw = Math.max(union.width - x, 0);
@@ -778,11 +778,11 @@ TableLayout.prototype.arrangeTable = function (children, union, rowcol) {
 
 
                 // Construct alignment:
-                var align = child.alignment;
-                var alignx = 0.0;
-                var aligny = 0.0;
-                var alignoffsetX = 0.0;
-                var alignoffsetY = 0.0;
+                let align = child.alignment;
+                let alignx = 0.0;
+                let aligny = 0.0;
+                let alignoffsetX = 0.0;
+                let alignoffsetY = 0.0;
                 if (align.isDefault()) {
                     align = this.defaultAlignment;
                     if (!align.isSpot()) align = go.Spot.Center;
@@ -790,8 +790,8 @@ TableLayout.prototype.arrangeTable = function (children, union, rowcol) {
                     aligny = align.y;
                     alignoffsetX = align.offsetX;
                     alignoffsetY = align.offsetY;
-                    var ca = colHerald.alignment;
-                    var ra = rowHerald.alignment;
+                    const ca = colHerald.alignment;
+                    const ra = rowHerald.alignment;
                     if (ca.isSpot()) {
                         alignx = ca.x;
                         alignoffsetX = ca.offsetX;
@@ -815,13 +815,13 @@ TableLayout.prototype.arrangeTable = function (children, union, rowcol) {
                     alignoffsetY = 0;
                 }
 
-                var width = 0.0;
-                var height = 0.0;
+                let width = 0.0;
+                let height = 0.0;
 
-                var marg = child.margin;
-                var margw = marg.left + marg.right;
-                var margh = marg.top + marg.bottom;
-                var stretch = this.getEffectiveTableStretch(child, rowHerald, colHerald);
+                const marg = child.margin;
+                const margw = marg.left + marg.right;
+                const margh = marg.top + marg.bottom;
+                const stretch = this.getEffectiveTableStretch(child, rowHerald, colHerald);
                 if (/* isNaN(child.resizeObject.desiredSize.width) && */ (stretch === go.GraphObject.Fill || stretch === go.GraphObject.Horizontal))
                     width = Math.max(colwidth - margw, 0);
                 else
@@ -832,15 +832,15 @@ TableLayout.prototype.arrangeTable = function (children, union, rowcol) {
                     height = child.actualBounds.height;
 
                 // min and max override any stretch values
-                var max = child.maxSize;
-                var min = child.minSize;
+                const max = child.maxSize;
+                const min = child.minSize;
                 width = Math.min(max.width, width);
                 height = Math.min(max.height, height);
                 width = Math.max(min.width, width);
                 height = Math.max(min.height, height);
 
-                var widthmarg = width + margw;
-                var heightmarg = height + margh;
+                const widthmarg = width + margw;
+                const heightmarg = height + margh;
 
                 ar.x += (ar.width * alignx) - (widthmarg * alignx) + alignoffsetX + marg.left;
                 ar.y += (ar.height * aligny) - (heightmarg * aligny) + alignoffsetY + marg.top;

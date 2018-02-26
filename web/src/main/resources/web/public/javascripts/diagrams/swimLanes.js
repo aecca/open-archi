@@ -1,6 +1,6 @@
 // These parameters need to be set before defining the templates.
-var MINLENGTH = 200;  // this controls the minimum length of any swimlane
-var MINBREADTH = 20;  // this controls the minimum breadth of any non-collapsed swimlane
+const MINLENGTH = 200;  // this controls the minimum length of any swimlane
+const MINBREADTH = 20;  // this controls the minimum breadth of any non-collapsed swimlane
 
 // some shared functions
 
@@ -26,13 +26,13 @@ function relayoutDiagram() {
 // compute the minimum size of a Pool Group needed to hold all of the Lane Groups
 function computeMinPoolSize(pool) {
     // assert(pool instanceof go.Group && pool.category === "Pool");
-    var len = MINLENGTH;
+    let len = MINLENGTH;
     pool.memberParts.each(function (lane) {
         // pools ought to only contain lanes, not plain Nodes
         if (!(lane instanceof go.Group)) return;
-        var holder = lane.placeholder;
+        const holder = lane.placeholder;
         if (holder !== null) {
-            var sz = holder.actualBounds;
+            const sz = holder.actualBounds;
             len = Math.max(len, sz.width);
         }
     });
@@ -42,16 +42,16 @@ function computeMinPoolSize(pool) {
 // compute the minimum size for a particular Lane Group
 function computeLaneSize(lane) {
     // assert(lane instanceof go.Group && lane.category !== "Pool");
-    var sz = computeMinLaneSize(lane);
+    const sz = computeMinLaneSize(lane);
     if (lane.isSubGraphExpanded) {
-        var holder = lane.placeholder;
+        const holder = lane.placeholder;
         if (holder !== null) {
-            var hsz = holder.actualBounds;
+            const hsz = holder.actualBounds;
             sz.height = Math.max(sz.height, hsz.height);
         }
     }
     // minimum breadth needs to be big enough to hold the header
-    var hdr = lane.findObject("HEADER");
+    const hdr = lane.findObject("HEADER");
     if (hdr !== null) sz.height = Math.max(sz.height, hdr.actualBounds.height);
     return sz;
 }
@@ -76,9 +76,9 @@ LaneResizingTool.prototype.isLengthening = function () {
 
 /** @override */
 LaneResizingTool.prototype.computeMinSize = function () {
-    var lane = this.adornedObject.part;
+    const lane = this.adornedObject.part;
     // assert(lane instanceof go.Group && lane.category !== "Pool");
-    var msz = computeMinLaneSize(lane);  // get the absolute minimum size
+    const msz = computeMinLaneSize(lane);  // get the absolute minimum size
     if (this.isLengthening()) {  // compute the minimum length of all lanes
         var sz = computeMinPoolSize(lane.containingGroup);
         msz.width = Math.max(msz.width, sz.width);
@@ -92,11 +92,11 @@ LaneResizingTool.prototype.computeMinSize = function () {
 
 /** @override */
 LaneResizingTool.prototype.resize = function (newr) {
-    var lane = this.adornedObject.part;
+    const lane = this.adornedObject.part;
     if (this.isLengthening()) {  // changing the length of all of the lanes
         lane.containingGroup.memberParts.each(function (lane) {
             if (!(lane instanceof go.Group)) return;
-            var shape = lane.resizeObject;
+            const shape = lane.resizeObject;
             if (shape !== null) {  // set its desiredSize length, but leave each breadth alone
                 shape.width = newr.width;
             }
@@ -121,8 +121,8 @@ function PoolLayout() {
     // This sorts based on the location of each Group.
     // This is useful when Groups can be moved up and down in order to change their order.
     this.comparer = function (a, b) {
-        var ay = a.location.y;
-        var by = b.location.y;
+        const ay = a.location.y;
+        const by = b.location.y;
         if (isNaN(ay) || isNaN(by)) return 0;
         if (ay < by) return -1;
         if (ay > by) return 1;
@@ -134,22 +134,22 @@ go.Diagram.inherit(PoolLayout, go.GridLayout);
 
 /** @override */
 PoolLayout.prototype.doLayout = function (coll) {
-    var diagram = this.diagram;
+    const diagram = this.diagram;
     if (diagram === null) return;
     diagram.startTransaction("PoolLayout");
-    var pool = this.group;
+    const pool = this.group;
     if (pool !== null && pool.category === "Pool") {
         // make sure all of the Group Shapes are big enough
-        var minsize = computeMinPoolSize(pool);
+        const minsize = computeMinPoolSize(pool);
         pool.memberParts.each(function (lane) {
             if (!(lane instanceof go.Group)) return;
             if (lane.category !== "Pool") {
-                var shape = lane.resizeObject;
+                const shape = lane.resizeObject;
                 if (shape !== null) {  // change the desiredSize to be big enough in both directions
-                    var sz = computeLaneSize(lane);
+                    const sz = computeLaneSize(lane);
                     shape.width = (isNaN(shape.width) ? minsize.width : Math.max(shape.width, minsize.width));
                     shape.height = (!isNaN(shape.height)) ? Math.max(shape.height, sz.height) : sz.height;
-                    var cell = lane.resizeCellSize;
+                    const cell = lane.resizeCellSize;
                     if (!isNaN(shape.width) && !isNaN(cell.width) && cell.width > 0) shape.width = Math.ceil(shape.width / cell.width) * cell.width;
                     if (!isNaN(shape.height) && !isNaN(cell.height) && cell.height > 0) shape.height = Math.ceil(shape.height / cell.height) * cell.height;
                 }
@@ -166,7 +166,7 @@ PoolLayout.prototype.doLayout = function (coll) {
 
 function initSwimLanes() {
 
-    var $ = go.GraphObject.make;
+    const $ = go.GraphObject.make;
 
     myDiagram =
         $(go.Diagram, diagramDiv,
@@ -205,22 +205,22 @@ function initSwimLanes() {
     // this is a Part.dragComputation function for limiting where a Node may be dragged
     function stayInGroup(part, pt, gridpt) {
         // don't constrain top-level nodes
-        var grp = part.containingGroup;
+        const grp = part.containingGroup;
         if (grp === null) return pt;
         // try to stay within the background Shape of the Group
-        var back = grp.resizeObject;
+        const back = grp.resizeObject;
         if (back === null) return pt;
         // allow dragging a Node out of a Group if the Shift key is down
         if (part.diagram.lastInput.shift) return pt;
-        var p1 = back.getDocumentPoint(go.Spot.TopLeft);
-        var p2 = back.getDocumentPoint(go.Spot.BottomRight);
-        var b = part.actualBounds;
-        var loc = part.location;
+        const p1 = back.getDocumentPoint(go.Spot.TopLeft);
+        const p2 = back.getDocumentPoint(go.Spot.BottomRight);
+        const b = part.actualBounds;
+        const loc = part.location;
         // find the padding inside the group's placeholder that is around the member parts
-        var m = grp.placeholder.padding;
+        const m = grp.placeholder.padding;
         // now limit the location appropriately
-        var x = Math.max(p1.x + m.left, Math.min(pt.x, p2.x - m.right - b.width - 1)) + (loc.x - b.x);
-        var y = Math.max(p1.y + m.top, Math.min(pt.y, p2.y - m.bottom - b.height - 1)) + (loc.y - b.y);
+        const x = Math.max(p1.x + m.left, Math.min(pt.x, p2.x - m.right - b.width - 1)) + (loc.x - b.x);
+        const y = Math.max(p1.y + m.top, Math.min(pt.y, p2.y - m.bottom - b.height - 1)) + (loc.y - b.y);
         return new go.Point(x, y);
     }
 
@@ -280,7 +280,7 @@ function initSwimLanes() {
                     if (!e.diagram.selection.any(function (n) {
                             return n instanceof go.Group;
                         })) {
-                        var ok = grp.addMembers(grp.diagram.selection, true);
+                        const ok = grp.addMembers(grp.diagram.selection, true);
                         if (ok) {
                             updateCrossLaneLinks(grp);
                         } else {
@@ -291,7 +291,7 @@ function initSwimLanes() {
                     }
                 },
                 subGraphExpandedChanged: function (grp) {
-                    var shp = grp.resizeObject;
+                    const shp = grp.resizeObject;
                     if (grp.diagram.undoManager.isUndoingRedoing) return;
                     if (grp.isSubGraphExpanded) {
                         shp.height = grp._savedBreadth;

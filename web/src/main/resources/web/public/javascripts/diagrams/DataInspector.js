@@ -1,7 +1,5 @@
-"use strict";
-
 function Inspector(divid, diagram, options) {
-    var mainDiv = document.getElementById(divid);
+    const mainDiv = document.getElementById(divid);
     mainDiv.className = "inspector";
     mainDiv.innerHTML = "";
     this._div = mainDiv;
@@ -24,7 +22,7 @@ function Inspector(divid, diagram, options) {
         if (options["propertyModified"] !== undefined) this.propertyModified = options["propertyModified"];
     }
 
-    var self = this;
+    const self = this;
     diagram.addModelChangedListener(function (e) {
         if (e.isTransactionFinished) self.inspectObject();
     });
@@ -58,7 +56,7 @@ Inspector.showIfPresent = function (data, propname) {
  *                        set {@link #inspectedObject} and show and edit that object's properties.
  */
 Inspector.prototype.inspectObject = function (object) {
-    var inspectedObject = object;
+    let inspectedObject = object;
     if (inspectedObject === undefined) {
         if (this.inspectsSelection)
             inspectedObject = this._diagram.selection.first();
@@ -74,24 +72,24 @@ Inspector.prototype.inspectObject = function (object) {
 
     this.inspectedObject = inspectedObject;
     if (inspectedObject === null) return;
-    var mainDiv = this._div;
+    const mainDiv = this._div;
     mainDiv.innerHTML = "";
 
     // use either the Part.data or the object itself (for model.modelData)
-    var data = (inspectedObject instanceof go.Part) ? inspectedObject.data : inspectedObject;
+    let data = (inspectedObject instanceof go.Part) ? inspectedObject.data : inspectedObject;
     if (!data) return;
     // Build table:
-    var table = document.createElement("table");
-    var tbody = document.createElement("tbody");
+    const table = document.createElement("table");
+    const tbody = document.createElement("tbody");
     this._inspectedProperties = {};
     this.tabIndex = 0;
-    var declaredProperties = this.declaredProperties;
+    const declaredProperties = this.declaredProperties;
 
     // Go through all the properties passed in to the inspector and show them, if appropriate:
     for (var k in declaredProperties) {
-        var val = declaredProperties[k];
+        const val = declaredProperties[k];
         if (!this.canShowProperty(k, val, inspectedObject)) continue;
-        var defaultValue = "";
+        let defaultValue = "";
         if (val.defaultValue !== undefined) defaultValue = val.defaultValue;
         if (data[k] !== undefined) defaultValue = data[k];
         tbody.appendChild(this.buildPropertyRow(k, defaultValue || ""));
@@ -125,7 +123,7 @@ Inspector.prototype.canShowProperty = function (propertyName, propertyDesc, insp
     // if "show" is a predicate, make sure it passes or do not show this property
     if (typeof propertyDesc.show === "function") return propertyDesc.show(inspectedObject, propertyName);
     return true;
-}
+};
 
 /**
  * @ignore
@@ -140,8 +138,8 @@ Inspector.prototype.canShowProperty = function (propertyName, propertyDesc, insp
 Inspector.prototype.canEditProperty = function (propertyName, propertyDesc, inspectedObject) {
     if (this._diagram.isReadOnly || this._diagram.isModelReadOnly) return false;
     // assume property values that are functions of Objects cannot be edited
-    var data = (inspectedObject instanceof go.Part) ? inspectedObject.data : inspectedObject;
-    var valtype = typeof data[propertyName];
+    const data = (inspectedObject instanceof go.Part) ? inspectedObject.data : inspectedObject;
+    const valtype = typeof data[propertyName];
     if (valtype === "function") return false;
     if (propertyDesc) {
         if (propertyDesc.readOnly === true) return false;
@@ -149,7 +147,7 @@ Inspector.prototype.canEditProperty = function (propertyName, propertyDesc, insp
         if (typeof propertyDesc.readOnly === "function") return !propertyDesc.readOnly(inspectedObject, propertyName);
     }
     return true;
-}
+};
 
 /**
  * @ignore
@@ -163,17 +161,17 @@ Inspector.prototype.canEditProperty = function (propertyName, propertyDesc, insp
  * @return the table row
  */
 Inspector.prototype.buildPropertyRow = function (propertyName, propertyValue) {
-    var mainDiv = this._div;
-    var tr = document.createElement("tr");
+    const mainDiv = this._div;
+    const tr = document.createElement("tr");
 
-    var td1 = document.createElement("td");
+    const td1 = document.createElement("td");
     td1.textContent = propertyName;
     tr.appendChild(td1);
 
-    var td2 = document.createElement("td");
-    var decProp = this.declaredProperties[propertyName];
-    var input = null;
-    var self = this;
+    const td2 = document.createElement("td");
+    const decProp = this.declaredProperties[propertyName];
+    let input = null;
+    const self = this;
 
     function updateall() {
         self.updateAllProperties();
@@ -188,7 +186,7 @@ Inspector.prototype.buildPropertyRow = function (propertyName, propertyValue) {
 
         input.value = this.convertToString(propertyValue);
         if (decProp) {
-            var t = decProp.type;
+            const t = decProp.type;
             if (t !== 'string' && t !== 'number' && t !== 'boolean' &&
                 t !== 'arrayofnumber' && t !== 'point' && t !== 'size' &&
                 t !== 'rect' && t !== 'spot' && t !== 'margin') {
@@ -229,7 +227,7 @@ Inspector.prototype.buildPropertyRow = function (propertyName, propertyValue) {
  * @return {string}
  */
 Inspector.prototype.convertToColor = function (propertyValue) {
-    var ctx = document.createElement("canvas").getContext("2d");
+    const ctx = document.createElement("canvas").getContext("2d");
     ctx.fillStyle = propertyValue;
     return ctx.fillStyle;
 };
@@ -241,10 +239,10 @@ Inspector.prototype.convertToColor = function (propertyValue) {
  */
 Inspector.prototype.convertToArrayOfNumber = function (propertyValue) {
     if (propertyValue === "null") return null;
-    var split = propertyValue.split(' ');
-    var arr = [];
-    for (var i = 0; i < split.length; i++) {
-        var str = split[i];
+    const split = propertyValue.split(' ');
+    const arr = [];
+    for (let i = 0; i < split.length; i++) {
+        let str = split[i];
         if (!str) continue;
         arr.push(parseFloat(str));
     }
@@ -266,10 +264,10 @@ Inspector.prototype.convertToString = function (x) {
     if (x instanceof go.Margin) return go.Margin.stringify(x);
     if (x instanceof go.List) return this.convertToString(x.toArray());
     if (Array.isArray(x)) {
-        var str = "";
-        for (var i = 0; i < x.length; i++) {
+        let str = "";
+        for (let i = 0; i < x.length; i++) {
             if (i > 0) str += " ";
-            var v = x[i];
+            const v = x[i];
             str += this.convertToString(v);
         }
         return str;
@@ -282,10 +280,10 @@ Inspector.prototype.convertToString = function (x) {
  * Update all of the HTML in this Inspector.
  */
 Inspector.prototype.updateAllHTML = function () {
-    var inspectedProps = this._inspectedProperties;
-    var diagram = this._diagram;
-    var isPart = this.inspectedObject instanceof go.Part;
-    var data = isPart ? this.inspectedObject.data : this.inspectedObject;
+    const inspectedProps = this._inspectedProperties;
+    const diagram = this._diagram;
+    const isPart = this.inspectedObject instanceof go.Part;
+    let data = isPart ? this.inspectedObject.data : this.inspectedObject;
     if (!data) {  // clear out all of the fields
         for (var name in inspectedProps) {
             var input = inspectedProps[name];
@@ -303,9 +301,9 @@ Inspector.prototype.updateAllHTML = function () {
     } else {
         for (var name in inspectedProps) {
             var input = inspectedProps[name];
-            var propertyValue = data[name];
+            let propertyValue = data[name];
             if (input instanceof HTMLSelectElement) {
-                var decProp = this.declaredProperties[name];
+                const decProp = this.declaredProperties[name];
                 this.updateSelect(decProp, input, name, propertyValue);
             } else if (input.type === "color") {
                 input.value = this.convertToColor(propertyValue);
@@ -316,7 +314,7 @@ Inspector.prototype.updateAllHTML = function () {
             }
         }
     }
-}
+};
 
 /**
  * @ignore
@@ -324,18 +322,18 @@ Inspector.prototype.updateAllHTML = function () {
  */
 Inspector.prototype.updateSelect = function (decProp, select, propertyName, propertyValue) {
     select.innerHTML = "";  // clear out anything that was there
-    var choices = decProp.choices;
+    let choices = decProp.choices;
     if (typeof choices === "function") choices = choices(this.inspectedObject, propertyName);
     if (!Array.isArray(choices)) choices = [];
     decProp.choicesArray = choices;  // remember list of actual choice values (not strings)
-    for (var i = 0; i < choices.length; i++) {
-        var choice = choices[i];
-        var opt = document.createElement("option");
+    for (let i = 0; i < choices.length; i++) {
+        const choice = choices[i];
+        const opt = document.createElement("option");
         opt.text = this.convertToString(choice);
         select.add(opt, null);
     }
     select.value = this.convertToString(propertyValue);
-}
+};
 
 /**
  * @ignore
@@ -343,29 +341,29 @@ Inspector.prototype.updateSelect = function (decProp, select, propertyName, prop
  * current values held in the HTML input elements.
  */
 Inspector.prototype.updateAllProperties = function () {
-    var inspectedProps = this._inspectedProperties;
-    var diagram = this._diagram;
-    var isPart = this.inspectedObject instanceof go.Part;
-    var data = isPart ? this.inspectedObject.data : this.inspectedObject;
+    const inspectedProps = this._inspectedProperties;
+    const diagram = this._diagram;
+    const isPart = this.inspectedObject instanceof go.Part;
+    let data = isPart ? this.inspectedObject.data : this.inspectedObject;
     if (!data) return;  // must not try to update data when there's no data!
 
     diagram.startTransaction("set all properties");
-    for (var name in inspectedProps) {
-        var input = inspectedProps[name];
-        var value = input.value;
+    for (let name in inspectedProps) {
+        const input = inspectedProps[name];
+        let value = input.value;
 
         // don't update "readOnly" data properties
-        var decProp = this.declaredProperties[name];
+        const decProp = this.declaredProperties[name];
         if (!this.canEditProperty(name, decProp, this.inspectedObject)) continue;
 
         // If it's a boolean, or if its previous value was boolean,
         // parse the value to be a boolean and then update the input.value to match
-        var type = "";
+        let type = "";
         if (decProp !== undefined && decProp.type !== undefined) {
             type = decProp.type;
         }
         if (type === "") {
-            var oldval = data[name];
+            let oldval = data[name];
             if (typeof oldval === "boolean") type = "boolean"; // infer boolean
             else if (typeof oldval === "number") type = "number";
             else if (oldval instanceof go.Point) type = "point";
@@ -425,7 +423,7 @@ Inspector.prototype.updateAllProperties = function () {
 
 function initDataInspector() {
 
-    var $ = go.GraphObject.make;  // for conciseness in defining templates
+    let $ = go.GraphObject.make;  // for conciseness in defining templates
 
     myDiagram =
         $(go.Diagram, diagramDiv,  // create a Diagram for the DIV HTML element
@@ -513,14 +511,14 @@ function initDataInspector() {
         );
 
     // Create the Diagram's Model:
-    var nodeDataArray = [
+    const nodeDataArray = [
         {key: 1, text: "Alpha", color: "#B2DFDB", state: "one"},
         {key: 2, text: "Beta", color: "#B2B2DB", state: "two", password: "1234"},
         {key: 3, text: "Gamma", color: "#1DE9B6", state: 2, group: 5, flag: false, choices: [1, 2, 3, 4, 5]},
         {key: 4, text: "Delta", color: "#00BFA5", state: "three", group: 5, flag: true},
         {key: 5, text: "Epsilon", color: "#00BFA5", isGroup: true}
     ];
-    var linkDataArray = [
+    const linkDataArray = [
         {from: 1, to: 2, color: "#5E35B1"},
         {from: 2, to: 2, color: "#5E35B1"},
         {from: 3, to: 4, color: "#6200EA"},
@@ -539,7 +537,7 @@ function initDataInspector() {
     // By default, all properties on the model data objects are shown unless the inspector option "includesOwnProperties" is set to false.
 
     // Show the primary selection's data, or blanks if no Part is selected:
-    var inspector = new Inspector('myInspectorDiv', myDiagram,
+    const inspector = new Inspector('myInspectorDiv', myDiagram,
         {
             // uncomment this line to only inspect the named properties below instead of all properties on each object:
             // includesOwnProperties: false,
@@ -569,7 +567,7 @@ function initDataInspector() {
         });
 
     // Always show the first Node:
-    var inspector2 = new Inspector('myInspectorDiv2', myDiagram,
+    const inspector2 = new Inspector('myInspectorDiv2', myDiagram,
         {
             // By default the inspector works on the Diagram selection.
             // This property lets us inspect a specific object by calling Inspector.inspectObject.
@@ -586,7 +584,7 @@ function initDataInspector() {
     inspector2.inspectObject(myDiagram.nodes.first().data);
 
     // Always show the model.modelData:
-    var inspector3 = new Inspector('myInspectorDiv3', myDiagram,
+    const inspector3 = new Inspector('myInspectorDiv3', myDiagram,
         {
             inspectSelection: false
         });

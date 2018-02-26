@@ -2,24 +2,24 @@ function initHtmlInteraction() {
 
 
     // Note that we do not use $ here as an alias for go.GraphObject.make because we are using $ for jQuery
-    var GO = go.GraphObject.make;  // for conciseness in defining templates
+    const GO = go.GraphObject.make;  // for conciseness in defining templates
 
     myDiagram =
         GO(go.Diagram, diagramDiv,  // must name or refer to the DIV HTML element
             {allowDrop: true});  // must be true to accept drops from the Palette
 
     // define several shared Brushes
-    var fill1 = "rgb(105,210,231)"
-    var brush1 = "rgb(65,180,181)";
+    const fill1 = "rgb(105,210,231)";
+    const brush1 = "rgb(65,180,181)";
 
-    var fill2 = "rgb(167,219,216)"
-    var brush2 = "rgb(127,179,176)";
+    const fill2 = "rgb(167,219,216)";
+    const brush2 = "rgb(127,179,176)";
 
-    var fill3 = "rgb(224,228,204)"
-    var brush3 = "rgb(184,188,164)";
+    const fill3 = "rgb(224,228,204)";
+    const brush3 = "rgb(184,188,164)";
 
-    var fill4 = "rgb(243,134,48)"
-    var brush4 = "rgb(203,84,08)";
+    const fill4 = "rgb(243,134,48)";
+    const brush4 = "rgb(203,84,08)";
 
     myDiagram.nodeTemplateMap.add("", // default category
         GO(go.Node, "Auto",
@@ -45,7 +45,7 @@ function initHtmlInteraction() {
 
     // On selection changed, make sure infoDraggable will resize as necessary
     myDiagram.addDiagramListener("ChangedSelection", function (diagramEvent) {
-        var idrag = document.getElementById("infoDraggable");
+        const idrag = document.getElementById("infoDraggable");
         idrag.style.width = "";
         idrag.style.height = "";
     });
@@ -62,8 +62,8 @@ function initHtmlInteraction() {
     ]);
 
     myPalette.addDiagramListener("InitialLayoutCompleted", function (diagramEvent) {
-        var pdrag = document.getElementById("paletteDraggable");
-        var palette = diagramEvent.diagram;
+        const pdrag = document.getElementById("paletteDraggable");
+        const palette = diagramEvent.diagram;
         pdrag.style.width = palette.documentBounds.width + 28 + "px"; // account for padding/borders
         pdrag.style.height = palette.documentBounds.height + 38 + "px";
     });
@@ -80,7 +80,7 @@ function initHtmlInteraction() {
         $("#infoDraggable").draggable({handle: "#infoDraggableHandle"});
 
 
-        var inspector = new Inspector('myInfo', myDiagram,
+        const inspector = new Inspector('myInfo', myDiagram,
             {
                 properties: {
                     // key would be automatically added for nodes, but we want to declare it read-only also:

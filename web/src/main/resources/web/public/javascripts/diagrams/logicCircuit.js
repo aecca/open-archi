@@ -1,9 +1,9 @@
-var red = "orangered";  // 0 or false
-var green = "forestgreen";  // 1 or true
+const red = "orangered";  // 0 or false
+const green = "forestgreen";  // 1 or true
 
 function initLogicCircuit() {
 
-    var $ = go.GraphObject.make;  // for conciseness in defining templates
+    const $ = go.GraphObject.make;  // for conciseness in defining templates
 
     myDiagram =
         $(go.Diagram, diagramDiv,  // create a new Diagram in the HTML DIV element diagramDiv
@@ -16,9 +16,9 @@ function initLogicCircuit() {
 
     // when the document is modified, add a "*" to the title and enable the "Save" button
     myDiagram.addDiagramListener("Modified", function (e) {
-        var button = document.getElementById("saveModel");
+        const button = document.getElementById("saveModel");
         if (button) button.disabled = !myDiagram.isModified;
-        var idx = document.title.indexOf("*");
+        const idx = document.title.indexOf("*");
         if (myDiagram.isModified) {
             if (idx < 0) document.title += "*";
         } else {
@@ -26,7 +26,7 @@ function initLogicCircuit() {
         }
     });
 
-    var palette = new go.Palette("palette");  // create a new Palette in the HTML DIV element "palette"
+    const palette = new go.Palette("palette");  // create a new Palette in the HTML DIV element "palette"
 
     // creates relinkable Links that will avoid crossing Nodes when possible and will jump over other Links in their paths
     myDiagram.linkTemplate =
@@ -44,7 +44,7 @@ function initLogicCircuit() {
                 {name: "SHAPE", strokeWidth: 2, stroke: red}));
 
     // node template helpers
-    var sharedToolTip =
+    const sharedToolTip =
         $(go.Adornment, "Auto",
             $(go.Shape, "RoundedRectangle", {fill: "lightyellow"}),
             $(go.TextBlock, {margin: 2},
@@ -89,7 +89,7 @@ function initLogicCircuit() {
     }
 
     // define templates for each type of node
-    var inputTemplate =
+    const inputTemplate =
         $(go.Node, "Spot", nodeStyle(),
             $(go.Shape, "Circle", shapeStyle(),
                 {fill: red}),  // override the default fill (from shapeStyle()) to be red
@@ -98,7 +98,7 @@ function initLogicCircuit() {
             { // if double-clicked, an input node will change its value, represented by the color.
                 doubleClick: function (e, obj) {
                     e.diagram.startTransaction("Toggle Input");
-                    var shp = obj.findObject("NODESHAPE");
+                    const shp = obj.findObject("NODESHAPE");
                     shp.fill = (shp.fill === green) ? red : green;
                     updateStates();
                     e.diagram.commitTransaction("Toggle Input");
@@ -106,7 +106,7 @@ function initLogicCircuit() {
             }
         );
 
-    var outputTemplate =
+    const outputTemplate =
         $(go.Node, "Spot", nodeStyle(),
             $(go.Shape, "Rectangle", shapeStyle(),
                 {fill: green}),  // override the default fill (from shapeStyle()) to be green
@@ -114,7 +114,7 @@ function initLogicCircuit() {
                 {portId: "", alignment: new go.Spot(0, 0.5)})
         );
 
-    var andTemplate =
+    const andTemplate =
         $(go.Node, "Spot", nodeStyle(),
             $(go.Shape, "AndGate", shapeStyle()),
             $(go.Shape, "Rectangle", portStyle(true),
@@ -125,7 +125,7 @@ function initLogicCircuit() {
                 {portId: "out", alignment: new go.Spot(1, 0.5)})
         );
 
-    var orTemplate =
+    const orTemplate =
         $(go.Node, "Spot", nodeStyle(),
             $(go.Shape, "OrGate", shapeStyle()),
             $(go.Shape, "Rectangle", portStyle(true),
@@ -136,7 +136,7 @@ function initLogicCircuit() {
                 {portId: "out", alignment: new go.Spot(1, 0.5)})
         );
 
-    var xorTemplate =
+    const xorTemplate =
         $(go.Node, "Spot", nodeStyle(),
             $(go.Shape, "XorGate", shapeStyle()),
             $(go.Shape, "Rectangle", portStyle(true),
@@ -147,7 +147,7 @@ function initLogicCircuit() {
                 {portId: "out", alignment: new go.Spot(1, 0.5)})
         );
 
-    var norTemplate =
+    const norTemplate =
         $(go.Node, "Spot", nodeStyle(),
             $(go.Shape, "NorGate", shapeStyle()),
             $(go.Shape, "Rectangle", portStyle(true),
@@ -158,7 +158,7 @@ function initLogicCircuit() {
                 {portId: "out", alignment: new go.Spot(1, 0.5)})
         );
 
-    var xnorTemplate =
+    const xnorTemplate =
         $(go.Node, "Spot", nodeStyle(),
             $(go.Shape, "XnorGate", shapeStyle()),
             $(go.Shape, "Rectangle", portStyle(true),
@@ -169,7 +169,7 @@ function initLogicCircuit() {
                 {portId: "out", alignment: new go.Spot(1, 0.5)})
         );
 
-    var nandTemplate =
+    const nandTemplate =
         $(go.Node, "Spot", nodeStyle(),
             $(go.Shape, "NandGate", shapeStyle()),
             $(go.Shape, "Rectangle", portStyle(true),
@@ -180,7 +180,7 @@ function initLogicCircuit() {
                 {portId: "out", alignment: new go.Spot(1, 0.5)})
         );
 
-    var notTemplate =
+    const notTemplate =
         $(go.Node, "Spot", nodeStyle(),
             $(go.Shape, "Inverter", shapeStyle()),
             $(go.Shape, "Rectangle", portStyle(true),
@@ -232,7 +232,7 @@ function loop() {
 
 // update the value and appearance of each node according to its type and input values
 function updateStates() {
-    var oldskip = myDiagram.skipsUndoManager;
+    const oldskip = myDiagram.skipsUndoManager;
     myDiagram.skipsUndoManager = true;
     // do all "input" nodes first
     myDiagram.nodes.each(function (node) {
@@ -295,45 +295,45 @@ function doInput(node) {
 }
 
 function doAnd(node) {
-    var color = node.findLinksInto().all(linkIsTrue) ? green : red;
+    const color = node.findLinksInto().all(linkIsTrue) ? green : red;
     setOutputLinks(node, color);
 }
 
 function doNand(node) {
-    var color = !node.findLinksInto().all(linkIsTrue) ? green : red;
+    const color = !node.findLinksInto().all(linkIsTrue) ? green : red;
     setOutputLinks(node, color);
 }
 
 function doNot(node) {
-    var color = !node.findLinksInto().all(linkIsTrue) ? green : red;
+    const color = !node.findLinksInto().all(linkIsTrue) ? green : red;
     setOutputLinks(node, color);
 }
 
 function doOr(node) {
-    var color = node.findLinksInto().any(linkIsTrue) ? green : red;
+    const color = node.findLinksInto().any(linkIsTrue) ? green : red;
     setOutputLinks(node, color);
 }
 
 function doNor(node) {
-    var color = !node.findLinksInto().any(linkIsTrue) ? green : red;
+    const color = !node.findLinksInto().any(linkIsTrue) ? green : red;
     setOutputLinks(node, color);
 }
 
 function doXor(node) {
-    var truecount = 0;
+    let truecount = 0;
     node.findLinksInto().each(function (link) {
         if (linkIsTrue(link)) truecount++;
     });
-    var color = truecount % 2 === 0 ? green : red;
+    const color = truecount % 2 === 0 ? green : red;
     setOutputLinks(node, color);
 }
 
 function doXnor(node) {
-    var truecount = 0;
+    let truecount = 0;
     node.findLinksInto().each(function (link) {
         if (linkIsTrue(link)) truecount++;
     });
-    var color = truecount % 2 !== 0 ? green : red;
+    const color = truecount % 2 !== 0 ? green : red;
     setOutputLinks(node, color);
 }
 

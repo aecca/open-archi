@@ -1,6 +1,6 @@
 function initRecords() {
 
-    var $ = go.GraphObject.make;  // for conciseness in defining templates
+    const $ = go.GraphObject.make;  // for conciseness in defining templates
 
     myDiagram =
         $(go.Diagram, diagramDiv,
@@ -16,7 +16,7 @@ function initRecords() {
 
     // This template is a Panel that is used to represent each item in a Panel.itemArray.
     // The Panel is data bound to the item object.
-    var fieldTemplate =
+    const fieldTemplate =
         $(go.Panel, "TableRow",  // this Panel is a row in the containing Table
             new go.Binding("portId", "name"),  // this Panel is a "port"
             {

@@ -6,14 +6,14 @@ go.Diagram.inherit(LaneResizingTool, go.ResizingTool);
 
 /** @override */
 LaneResizingTool.prototype.computeMinSize = function () {
-    var diagram = this.diagram;
-    var lane = this.adornedObject.part;  // might be row or column
-    var horiz = (lane.category === "Column Header");  // or "Row Header"
-    var margin = diagram.nodeTemplate.margin;
-    var bounds = new go.Rect();
+    const diagram = this.diagram;
+    const lane = this.adornedObject.part;  // might be row or column
+    const horiz = (lane.category === "Column Header");  // or "Row Header"
+    const margin = diagram.nodeTemplate.margin;
+    let bounds = new go.Rect();
     diagram.findTopLevelGroups().each(function (g) {
         if (horiz ? (g.column === lane.column) : (g.row === lane.row)) {
-            var b = diagram.computePartsBounds(g.memberParts);
+            const b = diagram.computePartsBounds(g.memberParts);
             if (b.isEmpty()) return;  // nothing in there?  ignore it
             b.unionPoint(g.location);  // keep any empty space on the left and top
             b.addMargin(margin);  // assume the same node margin applies to all nodes
@@ -26,23 +26,23 @@ LaneResizingTool.prototype.computeMinSize = function () {
     });
 
     // limit the result by the standard value of computeMinSize
-    var msz = go.ResizingTool.prototype.computeMinSize.call(this);
+    const msz = go.ResizingTool.prototype.computeMinSize.call(this);
     if (bounds.isEmpty()) return msz;
     return new go.Size(Math.max(msz.width, bounds.width), Math.max(msz.height, bounds.height));
 };
 
 /** @override */
 LaneResizingTool.prototype.resize = function (newr) {
-    var lane = this.adornedObject.part;
-    var horiz = (lane.category === "Column Header");
-    var lay = this.diagram.layout;  // the TableLayout
+    const lane = this.adornedObject.part;
+    const horiz = (lane.category === "Column Header");
+    const lay = this.diagram.layout;  // the TableLayout
     if (horiz) {
-        var col = lane.column;
-        var coldef = lay.getColumnDefinition(col);
+        const col = lane.column;
+        const coldef = lay.getColumnDefinition(col);
         coldef.width = newr.width;
     } else {
-        var row = lane.row;
-        var rowdef = lay.getRowDefinition(row);
+        const row = lane.row;
+        const rowdef = lay.getRowDefinition(row);
         rowdef.height = newr.height;
     }
     lay.invalidateLayout();
@@ -52,7 +52,7 @@ LaneResizingTool.prototype.resize = function (newr) {
 
 function initTable() {
 
-    var $ = go.GraphObject.make;
+    const $ = go.GraphObject.make;
 
     myDiagram =
         $(go.Diagram, diagramDiv,
@@ -211,11 +211,11 @@ function initTable() {
                     // if any dropped part wasn't already a member of this group, we'll want to let the group's row
                     // column allow themselves to be resized automatically, in case the row height or column width
                     // had been set manually by the LaneResizingTool
-                    var anynew = e.diagram.selection.any(function (p) {
+                    const anynew = e.diagram.selection.any(function (p) {
                         return p.containingGroup !== group;
                     });
                     // Don't allow headers/siders to be dropped
-                    var anyHeadersSiders = e.diagram.selection.any(function (p) {
+                    let anyHeadersSiders = e.diagram.selection.any(function (p) {
                         return p.category === "Column Header" || p.category === "Row Sider";
                     });
                     if (!anyHeadersSiders && group.addMembers(e.diagram.selection, true)) {

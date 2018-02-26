@@ -1,15 +1,15 @@
 function initIcons() {
 
-    var $ = go.GraphObject.make;  // for conciseness in defining templates
+    const $ = go.GraphObject.make;  // for conciseness in defining templates
 
     // a collection of colors
-    var colors = {
+    const colors = {
         blue: "#00B5CB",
         orange: "#F47321",
         green: "#C8DA2B",
         gray: "#888",
         white: "#F5F5F5"
-    }
+    };
 
     // The first Diagram showcases what the Nodes might look like "in action"
     myDiagram = $(go.Diagram, diagramDiv,
@@ -25,7 +25,7 @@ function initIcons() {
     // This assumes that all icons want to be filled.
     // This caches the Geometry, because the Geometry may be shared by multiple Shapes.
     function geoFunc(geoname) {
-        var geo = icons[geoname];
+        let geo = icons[geoname];
         if (geo === undefined) geo = "heart";  // use this for an unknown icon name
         if (typeof geo === "string") {
             geo = icons[geoname] = go.Geometry.parse(geo, true);  // fill each geometry
@@ -90,8 +90,8 @@ function initIcons() {
         });
 
     // Convert the icons collection into an Array of JavaScript objects
-    var nodeArray = [];
-    for (var k in icons) {
+    const nodeArray = [];
+    for (let k in icons) {
         nodeArray.push({geo: k, color: colors["blue"]});
     }
     myDiagram2.model.nodeDataArray = nodeArray;

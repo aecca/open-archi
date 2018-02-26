@@ -4,9 +4,9 @@ function GuidedDraggingTool() {
     go.DraggingTool.call(this);
 
     // temporary parts for horizonal guidelines
-    var $ = go.GraphObject.make;
-    var partProperties = {layerName: "Tool", isInDocumentBounds: false};
-    var shapeProperties = {stroke: "gray", isGeometryPositioned: true};
+    const $ = go.GraphObject.make;
+    const partProperties = {layerName: "Tool", isInDocumentBounds: false};
+    const shapeProperties = {stroke: "gray", isGeometryPositioned: true};
     /** @ignore */
     this.guidelineHtop =
         $(go.Part, partProperties,
@@ -65,7 +65,7 @@ GuidedDraggingTool.prototype.clearGuidelines = function () {
     this.diagram.remove(this.guidelineVleft);
     this.diagram.remove(this.guidelineVright);
     this.diagram.remove(this.guidelineVcenter);
-}
+};
 
 /**
  * Calls the base method from {@link DraggingTool#doDeactivate}
@@ -83,14 +83,14 @@ GuidedDraggingTool.prototype.doDragOver = function (pt, obj) {
     this.clearGuidelines();
 
     // gets the selected part
-    var partItr = (this.copiedParts || this.draggedParts).iterator;
+    const partItr = (this.copiedParts || this.draggedParts).iterator;
     if (partItr.next()) {
-        var part = partItr.key;
+        const part = partItr.key;
 
         this.showHorizontalMatches(part, this.isGuidelineEnabled, false);
         this.showVerticalMatches(part, this.isGuidelineEnabled, false);
     }
-}
+};
 
 /**
  * On a mouse-up, snaps the selected part to the nearest guideline.
@@ -101,18 +101,18 @@ GuidedDraggingTool.prototype.doDragOver = function (pt, obj) {
 GuidedDraggingTool.prototype.doDropOnto = function (pt, obj) {
     this.clearGuidelines();
     // gets the selected (perhaps copied) Part
-    var partItr = (this.copiedParts || this.draggedParts).iterator;
+    const partItr = (this.copiedParts || this.draggedParts).iterator;
     if (partItr.next()) {
-        var part = partItr.key;
+        const part = partItr.key;
 
         // snaps only when the mouse is released without shift modifier
-        var e = this.diagram.lastInput;
-        var snap = this.isGuidelineSnapEnabled && !e.shift;
+        const e = this.diagram.lastInput;
+        const snap = this.isGuidelineSnapEnabled && !e.shift;
 
         this.showHorizontalMatches(part, false, snap);  // false means don't show guidelines
         this.showVerticalMatches(part, false, snap);
     }
-}
+};
 
 /**
  * When nodes are shifted due to being guided upon a drop, make sure all connected link routes are invalidated,
@@ -122,7 +122,7 @@ GuidedDraggingTool.prototype.doDropOnto = function (pt, obj) {
  */
 GuidedDraggingTool.prototype.invalidateLinks = function (node) {
     if (node instanceof go.Node) node.invalidateConnectedLinks();
-}
+};
 
 /**
  * This finds parts that are aligned near the selected part along horizontal lines. It compares the selected
@@ -135,17 +135,17 @@ GuidedDraggingTool.prototype.invalidateLinks = function (node) {
  * @param {boolean} snap if true, snap the part to where the guideline would be
  */
 GuidedDraggingTool.prototype.showHorizontalMatches = function (part, guideline, snap) {
-    var partBounds = part.actualBounds;
-    var p0 = partBounds.y;
-    var p1 = partBounds.y + partBounds.height / 2;
-    var p2 = partBounds.y + partBounds.height;
+    const partBounds = part.actualBounds;
+    const p0 = partBounds.y;
+    const p1 = partBounds.y + partBounds.height / 2;
+    const p2 = partBounds.y + partBounds.height;
 
-    var marginOfError = this.guidelineSnapDistance;
-    var distance = this.searchDistance;
+    const marginOfError = this.guidelineSnapDistance;
+    const distance = this.searchDistance;
     // compares with parts within narrow vertical area
-    var area = partBounds.copy();
+    const area = partBounds.copy();
     area.inflate(distance, marginOfError + 1);
-    var otherParts = this.diagram.findObjectsIn(area,
+    const otherParts = this.diagram.findObjectsIn(area,
         function (obj) {
             return obj.part;
         },
@@ -154,18 +154,18 @@ GuidedDraggingTool.prototype.showHorizontalMatches = function (part, guideline, 
         },
         true);
 
-    var bestDiff = marginOfError;
-    var bestPart = null;
-    var bestSpot;
-    var bestOtherSpot;
+    let bestDiff = marginOfError;
+    let bestPart = null;
+    let bestSpot;
+    let bestOtherSpot;
     // horizontal line -- comparing y-values
     otherParts.each(function (other) {
         if (other === part) return; // ignore itself
 
-        var otherBounds = other.actualBounds;
-        var q0 = otherBounds.y;
-        var q1 = otherBounds.y + otherBounds.height / 2;
-        var q2 = otherBounds.y + otherBounds.height;
+        const otherBounds = other.actualBounds;
+        const q0 = otherBounds.y;
+        const q1 = otherBounds.y + otherBounds.height / 2;
+        const q2 = otherBounds.y + otherBounds.height;
 
         // compare center with center of OTHER part
         if (Math.abs(p1 - q1) < bestDiff) {
@@ -205,12 +205,12 @@ GuidedDraggingTool.prototype.showHorizontalMatches = function (part, guideline, 
     });
 
     if (bestPart !== null) {
-        var bestBounds = bestPart.actualBounds;
+        const bestBounds = bestPart.actualBounds;
         // line extends from x0 to x2
-        var x0 = Math.min(partBounds.x, bestBounds.x) - 10;
-        var x2 = Math.max(partBounds.x + partBounds.width, bestBounds.x + bestBounds.width) + 10;
+        const x0 = Math.min(partBounds.x, bestBounds.x) - 10;
+        const x2 = Math.max(partBounds.x + partBounds.width, bestBounds.x + bestBounds.width) + 10;
         // find bestPart's desired Y
-        var bestPoint = new go.Point().setRectSpot(bestBounds, bestOtherSpot);
+        const bestPoint = new go.Point().setRectSpot(bestBounds, bestOtherSpot);
         if (bestSpot === go.Spot.Center) {
             if (snap) {
                 // call Part.move in order to automatically move member Parts of Groups
@@ -244,7 +244,7 @@ GuidedDraggingTool.prototype.showHorizontalMatches = function (part, guideline, 
             }
         }
     }
-}
+};
 
 /**
  * This finds parts that are aligned near the selected part along vertical lines. It compares the selected
@@ -257,17 +257,17 @@ GuidedDraggingTool.prototype.showHorizontalMatches = function (part, guideline, 
  * @param {boolean} snap if true, don't show guidelines but just snap the part to where the guideline would be
  */
 GuidedDraggingTool.prototype.showVerticalMatches = function (part, guideline, snap) {
-    var partBounds = part.actualBounds;
-    var p0 = partBounds.x;
-    var p1 = partBounds.x + partBounds.width / 2;
-    var p2 = partBounds.x + partBounds.width;
+    const partBounds = part.actualBounds;
+    const p0 = partBounds.x;
+    const p1 = partBounds.x + partBounds.width / 2;
+    const p2 = partBounds.x + partBounds.width;
 
-    var marginOfError = this.guidelineSnapDistance;
-    var distance = this.searchDistance;
+    const marginOfError = this.guidelineSnapDistance;
+    const distance = this.searchDistance;
     // compares with parts within narrow vertical area
-    var area = partBounds.copy();
+    const area = partBounds.copy();
     area.inflate(marginOfError + 1, distance);
-    var otherParts = this.diagram.findObjectsIn(area,
+    const otherParts = this.diagram.findObjectsIn(area,
         function (obj) {
             return obj.part;
         },
@@ -276,18 +276,18 @@ GuidedDraggingTool.prototype.showVerticalMatches = function (part, guideline, sn
         },
         true);
 
-    var bestDiff = marginOfError;
-    var bestPart = null;
-    var bestSpot;
-    var bestOtherSpot;
+    let bestDiff = marginOfError;
+    let bestPart = null;
+    let bestSpot;
+    let bestOtherSpot;
     // vertical line -- comparing x-values
     otherParts.each(function (other) {
         if (other === part) return; // ignore itself
 
-        var otherBounds = other.actualBounds;
-        var q0 = otherBounds.x;
-        var q1 = otherBounds.x + otherBounds.width / 2;
-        var q2 = otherBounds.x + otherBounds.width;
+        const otherBounds = other.actualBounds;
+        const q0 = otherBounds.x;
+        const q1 = otherBounds.x + otherBounds.width / 2;
+        const q2 = otherBounds.x + otherBounds.width;
 
         // compare center with center of OTHER part
         if (Math.abs(p1 - q1) < bestDiff) {
@@ -327,12 +327,12 @@ GuidedDraggingTool.prototype.showVerticalMatches = function (part, guideline, sn
     });
 
     if (bestPart !== null) {
-        var bestBounds = bestPart.actualBounds;
+        const bestBounds = bestPart.actualBounds;
         // line extends from y0 to y2
-        var y0 = Math.min(partBounds.y, bestBounds.y) - 10;
-        var y2 = Math.max(partBounds.y + partBounds.height, bestBounds.y + bestBounds.height) + 10;
+        const y0 = Math.min(partBounds.y, bestBounds.y) - 10;
+        const y2 = Math.max(partBounds.y + partBounds.height, bestBounds.y + bestBounds.height) + 10;
         // find bestPart's desired X
-        var bestPoint = new go.Point().setRectSpot(bestBounds, bestOtherSpot);
+        const bestPoint = new go.Point().setRectSpot(bestBounds, bestOtherSpot);
         if (bestSpot === go.Spot.Center) {
             if (snap) {
                 // call Part.move in order to automatically move member Parts of Groups
@@ -366,7 +366,7 @@ GuidedDraggingTool.prototype.showVerticalMatches = function (part, guideline, sn
             }
         }
     }
-}
+};
 
 /**
  * Gets or sets the margin of error for which guidelines show up.
@@ -534,7 +534,7 @@ Object.defineProperty(GuidedDraggingTool.prototype, "isGuidelineSnapEnabled", {
 function initGuidedDragging() {
 
 
-    var $ = go.GraphObject.make;  // for conciseness in defining templates
+    const $ = go.GraphObject.make;  // for conciseness in defining templates
 
     myDiagram = $(go.Diagram, diagramDiv,  // create a Diagram for the DIV HTML element
         {

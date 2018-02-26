@@ -1,6 +1,6 @@
 function initGrouping() {
 
-    var $ = go.GraphObject.make;  // for conciseness in defining templates
+    const $ = go.GraphObject.make;  // for conciseness in defining templates
 
     myDiagram =
         $(go.Diagram, diagramDiv,  // Diagram refers to its DIV HTML element by id
@@ -77,24 +77,24 @@ function initGrouping() {
 function randomGroup(group) {
     // all modification to the diagram is within this transaction
     myDiagram.startTransaction("addGroupContents");
-    var addedKeys = [];  // this will contain the keys of all nodes created
-    var groupCount = 0;  // the number of groups in the diagram, to determine the numbers in the keys of new groups
+    const addedKeys = [];  // this will contain the keys of all nodes created
+    let groupCount = 0;  // the number of groups in the diagram, to determine the numbers in the keys of new groups
     myDiagram.nodes.each(function (node) {
         if (node instanceof go.Group) groupCount++;
     });
     // create a random number of groups
     // ensure there are at least 10 groups in the diagram
-    var groups = Math.floor(Math.random() * 2);
+    let groups = Math.floor(Math.random() * 2);
     if (groupCount < 10) groups += 1;
     for (var i = 0; i < groups; i++) {
-        var name = "group" + (i + groupCount);
+        const name = "group" + (i + groupCount);
         myDiagram.model.addNodeData({key: name, isGroup: true, group: group});
         addedKeys.push(name);
     }
-    var nodes = Math.floor(Math.random() * 3) + 2;
+    const nodes = Math.floor(Math.random() * 3) + 2;
     // create a random number of non-group nodes
     for (var i = 0; i < nodes; i++) {
-        var color = go.Brush.randomColor();
+        const color = go.Brush.randomColor();
         // make sure the color, which will be the node's key, is unique in the diagram before adding the new node
         if (myDiagram.findPartForKey(color) === null) {
             myDiagram.model.addNodeData({key: color, group: group});
@@ -103,13 +103,13 @@ function randomGroup(group) {
     }
     // add at least one link from each node to another
     // this could result in clusters of nodes unreachable from each other, but no lone nodes
-    var arr = [];
-    for (var x in addedKeys) arr.push(addedKeys[x]);
+    const arr = [];
+    for (let x in addedKeys) arr.push(addedKeys[x]);
     arr.sort(function (x, y) {
         return Math.random(2) - 1;
     });
     for (var i = 0; i < arr.length; i++) {
-        var from = Math.floor(Math.random() * (arr.length - i)) + i;
+        const from = Math.floor(Math.random() * (arr.length - i)) + i;
         if (from !== i) {
             myDiagram.model.addLinkData({from: arr[from], to: arr[i]});
         }

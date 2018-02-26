@@ -1,6 +1,6 @@
 function initShopFloorMonitor() {
 
-    var $ = go.GraphObject.make;  // for conciseness in defining templates
+    const $ = go.GraphObject.make;  // for conciseness in defining templates
 
     myDiagram =
         $(go.Diagram, diagramDiv,
@@ -30,7 +30,7 @@ function initShopFloorMonitor() {
             default:
                 return "images/pc.jpg";
         }
-        if (type.charAt(0) === "S") return
+        if (type.charAt(0) === "S") return;
         if (type.charAt(0) === "P") return "images/general processor.jpg";
         if (type.charAt(0) === "M")
             return "images/pc.jpg";
@@ -105,9 +105,9 @@ function initShopFloorMonitor() {
 
     // simulate some real-time problem monitoring, once every two seconds:
     function randomProblems() {
-        var model = myDiagram.model;
+        const model = myDiagram.model;
         // update all nodes
-        var arr = model.nodeDataArray;
+        let arr = model.nodeDataArray;
         for (var i = 0; i < arr.length; i++) {
             data = arr[i];
             data.problem = (Math.random() < 0.8) ? "" : "Power loss due to ...";

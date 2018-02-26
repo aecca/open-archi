@@ -1,5 +1,5 @@
 // this controls whether the layout is horizontal and the layer bands are vertical, or vice-versa:
-var HORIZONTAL = true;  // this constant parameter can only be set here, not dynamically
+const HORIZONTAL = true;  // this constant parameter can only be set here, not dynamically
 
 // Perform a TreeLayout where commitLayers is overridden to modify the background Part whose key is "_BANDS".
 function BandedTreeLayout() {
@@ -12,22 +12,22 @@ go.Diagram.inherit(BandedTreeLayout, go.TreeLayout);
 /** @override */
 BandedTreeLayout.prototype.commitLayers = function (layerRects, offset) {
     // update the background object holding the visual "bands"
-    var bands = this.diagram.findPartForKey("_BANDS");
+    const bands = this.diagram.findPartForKey("_BANDS");
     if (bands) {
-        var model = this.diagram.model;
+        const model = this.diagram.model;
         bands.location = this.arrangementOrigin.copy().add(offset);
 
         // make each band visible or not, depending on whether there is a layer for it
-        for (var it = bands.elements; it.next();) {
-            var idx = it.key;
-            var elt = it.value;  // the item panel representing a band
+        for (const it = bands.elements; it.next();) {
+            const idx = it.key;
+            const elt = it.value;  // the item panel representing a band
             elt.visible = idx < layerRects.length;
         }
 
         // set the bounds of each band via data binding of the "bounds" property
-        var arr = bands.data.itemArray;
-        for (var i = 0; i < layerRects.length; i++) {
-            var itemdata = arr[i];
+        const arr = bands.data.itemArray;
+        for (let i = 0; i < layerRects.length; i++) {
+            const itemdata = arr[i];
             if (itemdata) {
                 model.setDataProperty(itemdata, "bounds", layerRects[i]);
             }
@@ -40,7 +40,7 @@ BandedTreeLayout.prototype.commitLayers = function (layerRects, offset) {
 
 function initSwimBands() {
 
-    var $ = go.GraphObject.make;
+    const $ = go.GraphObject.make;
 
     myDiagram = $(go.Diagram, diagramDiv,
         {
@@ -124,7 +124,7 @@ function initSwimBands() {
             $(go.Shape));  // simple black line, no arrowhead needed
 
     // define the tree node data
-    var nodearray = [
+    const nodearray = [
         { // this is the information needed for the headers of the bands
             key: "_BANDS",
             category: "Bands",

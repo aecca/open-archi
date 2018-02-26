@@ -86,7 +86,7 @@ var mySampleMenu = '\
           <li><a onclick="openContent(this);" resource="/diagrams/checkBoxes.html">CheckBoxes</a></li>\
           <li><a onclick="openContent(this);" resource="/diagrams/ColumnResizing.html">Column Resizing</a></li>\
           <li><a onclick="openContent(this);" resource="/diagrams/comments.html">Comments</a></li>\
-          <li><a onclick="openContent(this);" resource="/diagrams/customContextMenu.html">Context Menu</a></li>\
+          <li><a onclick="openContent(this);" resource="/diagrams/contextMenu.html">Context Menu</a></li>\
           <li><a onclick="openContent(this);" resource="/diagrams/DataInspector.html">Data Inspector</a></li>\
           <li><a onclick="openContent(this);" resource="/diagrams/DragCreating.html">Drag Creating</a></li>\
           <li><a onclick="openContent(this);" resource="/diagrams/draggableLink.html">Draggable Link</a></li>\

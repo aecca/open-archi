@@ -1,6 +1,6 @@
 function initGantt() {
 
-    var $ = go.GraphObject.make;  // for conciseness in defining templates
+    const $ = go.GraphObject.make;  // for conciseness in defining templates
 
     myDiagram =
         $(go.Diagram, diagramDiv,  // Diagram refers to its DIV HTML element by id
@@ -114,10 +114,10 @@ function initGantt() {
                     font: "10pt sans-serif",
                     alignmentFocus: new go.Spot(0, 0, -3, -3),
                     graduatedFunction: function (v) {
-                        var d = new Date(2017, 6, 23);
+                        const d = new Date(2017, 6, 23);
                         d.setDate(d.getDate() + v * 7);
                         // format date output to string
-                        var options = {month: "short", day: "2-digit"};
+                        const options = {month: "short", day: "2-digit"};
                         return d.toLocaleDateString("en-US", options);
                     }
                 }
@@ -135,13 +135,13 @@ function scaleWidth(num) {
 // then update Bindings to scale the widths and positions of nodes,
 // as well as the width of the date scale
 function rescale() {
-    var val = parseFloat(document.getElementById("widthSlider").value);
+    const val = parseFloat(document.getElementById("widthSlider").value);
     myDiagram.startTransaction("rescale");
     myDiagram.grid.gridCellSize = new go.Size(val, 150);
     myDiagram._widthFactor = val / 30;
     myDiagram.updateAllTargetBindings();
     // update width of date scale and maybe change interval of labels if too small
-    var width = scaleWidth(450);
+    const width = scaleWidth(450);
     dateScale.findObject("line").geometryString = "M0 0 H" + width;
     if (width >= 140) dateScale.findObject("labels").interval = 1;
     if (width < 140) dateScale.findObject("labels").interval = 2;
