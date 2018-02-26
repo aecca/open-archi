@@ -1,9 +1,9 @@
-"use strict";
+
 
 function DragCreatingTool() {
     go.Tool.call(this);
     this.name = "DragCreating";
-
+    this.isEnabled = true;
     /** @type {Object} */
     this._archetypeNodeData = null;
 
@@ -265,9 +265,7 @@ function initDragCreating() {
 
     myDiagram.add(
         $(go.Part,
-            {layerName: "Grid", location: new go.Point(0, 0)},
-            $(go.TextBlock, "Mouse-down and then drag in the background\nto add a Node there with the drawn size.",
-                {stroke: "brown"})
+            {layerName: "Grid", location: new go.Point(0, 0)}
         ));
 
     // Add an instance of the custom tool defined in DragCreatingTool.js.
@@ -294,10 +292,4 @@ function initDragCreating() {
                     return DragCreatingTool.prototype.insertPart.call(this, bounds);
                 }
             }));
-}
-
-function toolEnabled() {
-    const enable = document.getElementById("ToolEnabled").checked;
-    const tool = myDiagram.toolManager.findTool("DragCreating");
-    if (tool !== null) tool.isEnabled = enable;
 }

@@ -59,14 +59,14 @@ function showMenu() {
         anchor.appendChild(span);
         if (!anchor.href) continue;
         var lowerhref = anchor.href.toLowerCase();
-        if (!listed && lowerhref.indexOf('/' + url) !== -1) {
+/*        if (!listed && lowerhref.indexOf('/' + url) !== -1) {
             anchor.className = "selected";
             listed = true;
-        }
+        }*/
     }
-    if (!listed) {
+/*    if (!listed) {
         lis[lis.length - 1].childNodes[0].className = "selected";
-    }
+    }*/
 
 }
 
