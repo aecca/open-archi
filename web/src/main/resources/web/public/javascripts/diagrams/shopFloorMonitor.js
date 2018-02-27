@@ -14,21 +14,21 @@ function initShopFloorMonitor() {
     function nodeTypeImage(type) {
         switch (type) {
             case "S2":
-                return "images/voice atm switch.jpg";
+                return "/images/diagrams/voice atm switch.jpg";
             case "S3":
-                return "images/server switch.jpg";
+                return "/images/diagrams/server switch.jpg";
             case "P1":
-                return "images/general processor.jpg";
+                return "/images/diagrams/general processor.jpg";
             case "P2":
-                return "images/storage array.jpg";
+                return "/images/diagrams/storage array.jpg";
             case "M4":
-                return "images/iptv broadcast server.jpg";
+                return "/images/diagrams/iptv broadcast server.jpg";
             case "M5":
-                return "images/content engine.jpg";
+                return "/images/diagrams/content engine.jpg";
             case "I1":
-                return "images/pc.jpg";
+                return "/images/diagrams/pc.jpg";
             default:
-                return "images/pc.jpg";
+                return "/images/diagrams/pc.jpg";
         }
         if (type.charAt(0) === "S") return;
         if (type.charAt(0) === "P") return "images/general processor.jpg";

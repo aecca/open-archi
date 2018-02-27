@@ -1,30 +1,30 @@
 <html>
 <head>
     <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
-    <script src="/javascripts/diagrams/sequenceDiagrams.js"></script>
+    <script src="/javascripts/diagrams/sequenceDiagram.js"></script>
     <script id="code">
-        initSequenceDiagrams();
+        initSequenceDiagram();
     </script>
 </head>
 <body>
-<div id=diagramDiv style="border: solid 1px black; width: 100%; height: 400px"></div>
+<h2 style="margin-top: 0; padding-top: 0; margin-bottom: 30px;">
+    Diagrama de secuencias
+</h2>
 <p>
-    A <em>sequence diagram</em> is an interaction diagram that shows how entities operate with one another and in what
-    order.
-    In this sample, we show the interaction between different people in a restaurant.
+    Un <em> diagrama de secuencia </em> es un diagrama de interacción que muestra cómo las entidades operan entre sí y en qué orden.
 </p>
 <p>
-    The diagram uses the <a>Diagram.groupTemplate</a> for "lifelines,"
-    <a>Diagram.nodeTemplate</a> for "activities," and <a>Diagram.linkTemplate</a> for "messages" between the entities.
-    Also featured are a custom Link class and custom <a>LinkingTool</a> to draw links
-    between lifelines and create activities at the end of the new link. Nodes use a binding function on the location
-    property to ensure they are anchored to their lifeline.
+    Hay muchos precedentes de soluciones en donde la determinicaicón del orden y el flujo de intearcción entre componentes condicionan el modelo de solución. Esta es una solución clásica utilizando un digrama UML de secuancias convencional para describir, a petición, el flujo de interacción entre los componentes de un modelo.
+</p>
+<div id=diagramDiv style="border: solid 1px black; width: 100%; height: 400px"></div>
+<p>
+    Aquí se pueden visualizar los datos que permiten almacenar y/o recuperar el diagrama expuesto arriba (Utilizando las
+    APIs definidas en: /open-archi/api), en formato JSON
 </p>
 <div>
     <div>
         <button id="SaveButton" onclick="save()">Save</button>
         <button onclick="load()">Load</button>
-        Diagram Model saved in JSON format:
     </div>
     <textarea id="modelToSaveOrLoad" style="width:100%;height:240px">
 { "class": "go.GraphLinksModel",

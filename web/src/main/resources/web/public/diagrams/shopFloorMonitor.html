@@ -2,16 +2,23 @@
 <head>
     <script src="/javascripts/diagrams/shopFloorMonitor.js"></script>
     <script id="code">
-        function initShopFloorMonitor();
+        initShopFloorMonitor();
     </script>
 </head>
 
 <body>
+<h2 style="margin-top: 0; padding-top: 0; margin-bottom: 30px;">
+    Otro modo de visualizar secuencias y flujos
+</h2>
+<p>
+    Este ejemplo muestra un monitoreo contínuo del estado de un número de componentes.
+    Cada dos segundos actualiza la pantalla, mostrando algunos problemas aleatorios resaltando el componente donde se halló la falla.
+    Si lograramos incorporar información de reliability podríamos representar posibles lack, cuellos de botella y casos bordes en tiempo de diseño.
+</p>
 <div id=diagramDiv style="border: solid 1px black; width:80%; height:400px"></div>
 <p>
-    This monitoring diagram continuously shows the state of a number of stations on an imaginary shop floor.
-    Every two seconds it updates the display, showing some random problems via highlighting.
-    You can add nodes and links by adding data to the model text below and then clicking "Load".
+    Aquí se pueden visualizar los datos que permiten almacenar y/o recuperar el diagrama expuesto arriba (Utilizando las
+    APIs definidas en: /open-archi/api), en formato JSON
 </p>
 <button onclick="load()">Load</button>
 <br/>
@@ -34,9 +41,6 @@
 {"from":"7", "to":"3"}
  ]}
  </textarea>
-<p>
-    For another monitoring example, see the <a href="kittenMonitor.html">Kitten Monitor</a> sample.
-</p>
-</div>
+
 </body>
 </html>

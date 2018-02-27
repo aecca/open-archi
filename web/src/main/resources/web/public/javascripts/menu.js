@@ -104,7 +104,6 @@ var mySampleMenu = '\
           <li><a onclick="openContent(this);" resource="/diagrams/orgChartStatic.html">OrgChart (Static)</a></li>\
           <li><a onclick="openContent(this);" resource="/diagrams/records.html">Record Mapper</a></li>\
           <li><a onclick="openContent(this);" resource="/diagrams/sequenceDiagram.html">Sequence Diagram</a></li>\
-          <li><a onclick="openContent(this);" resource="/diagrams/shapes.html">Shapes</a></li>\
           <li><a onclick="openContent(this);" resource="/diagrams/shopFloorMonitor.html">Shop Floor Monitor</a></li>\
           <li><a onclick="openContent(this);" resource="/diagrams/swimBands.html">Layer Bands</a></li>\
           <li><a onclick="openContent(this);" resource="/diagrams/swimLanes.html">Swim Lanes</a></li>\
