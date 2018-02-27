@@ -1,5 +1,5 @@
-const red = "orangered";  // 0 or false
-const green = "forestgreen";  // 1 or true
+red = "orangered";  // 0 or false
+green = "forestgreen";  // 1 or true
 
 function initLogicCircuit() {
 

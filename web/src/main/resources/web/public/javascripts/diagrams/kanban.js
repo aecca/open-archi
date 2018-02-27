@@ -1,5 +1,5 @@
-const MINLENGTH = 200;  // this controls the minimum length of any swimlane
-const MINBREADTH = 100;  // this controls the minimum breadth of any non-collapsed swimlane
+MINLENGTH = 200;  // this controls the minimum length of any swimlane
+MINBREADTH = 100;  // this controls the minimum breadth of any non-collapsed swimlane
 
 // some shared functions
 

@@ -1,5 +1,3 @@
-
-
 function DragCreatingTool() {
     go.Tool.call(this);
     this.name = "DragCreating";

@@ -84,17 +84,17 @@ var mySampleMenu = '\
         <ul id="sections" class="classList nav navbar-nav">\
           <li><a onclick="openContent(this);" resource="/diagrams/basic.html">Basic</a></li>\
           <li><a onclick="openContent(this);" resource="/diagrams/checkBoxes.html">CheckBoxes</a></li>\
-          <li><a onclick="openContent(this);" resource="/diagrams/ColumnResizing.html">Column Resizing</a></li>\
+          <li><a onclick="openContent(this);" resource="/diagrams/columnResizing.html">Column Resizing</a></li>\
           <li><a onclick="openContent(this);" resource="/diagrams/comments.html">Comments</a></li>\
           <li><a onclick="openContent(this);" resource="/diagrams/contextMenu.html">Context Menu</a></li>\
-          <li><a onclick="openContent(this);" resource="/diagrams/DataInspector.html">Data Inspector</a></li>\
-          <li><a onclick="openContent(this);" resource="/diagrams/DragCreating.html">Drag Creating</a></li>\
+          <li><a onclick="openContent(this);" resource="/diagrams/dataInspector.html">Data Inspector</a></li>\
+          <li><a onclick="openContent(this);" resource="/diagrams/dragCreating.html">Drag Creating</a></li>\
           <li><a onclick="openContent(this);" resource="/diagrams/draggableLink.html">Draggable Link</a></li>\
           <li><a onclick="openContent(this);" resource="/diagrams/entityRelationship.html">Entity Relationship</a></li>\
           <li><a onclick="openContent(this);" resource="/diagrams/flowchart.html">Flowchart</a></li>\
           <li><a onclick="openContent(this);" resource="/diagrams/gantt.html">Gantt</a></li>\
           <li><a onclick="openContent(this);" resource="/diagrams/grouping.html">Grouping</a></li>\
-          <li><a onclick="openContent(this);" resource="/diagrams/GuidedDragging.html">Guided Dragging</a></li>\
+          <li><a onclick="openContent(this);" resource="/diagrams/guidedDragging.html">Guided Dragging</a></li>\
           <li><a onclick="openContent(this);" resource="/diagrams/htmlInteraction.html">HTML Interaction</a></li>\
           <li><a onclick="openContent(this);" resource="/diagrams/icons.html">SVG Icons</a></li>\
           <li><a onclick="openContent(this);" resource="/diagrams/kanban.html">Kanban Board</a></li>\
@@ -107,7 +107,6 @@ var mySampleMenu = '\
           <li><a onclick="openContent(this);" resource="/diagrams/shopFloorMonitor.html">Shop Floor Monitor</a></li>\
           <li><a onclick="openContent(this);" resource="/diagrams/swimBands.html">Layer Bands</a></li>\
           <li><a onclick="openContent(this);" resource="/diagrams/swimLanes.html">Swim Lanes</a></li>\
-          <li><a onclick="openContent(this);" resource="/diagrams/Table.html">Table Layout</a></li>\
           <li><a onclick="openContent(this);" resource="/diagrams/umlClass.html">UML Class</a></li>\
           <li><a onclick="openContent(this);" resource="/diagrams/updateDemo.html">Update Demo</a></li>\
         </ul>\

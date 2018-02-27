@@ -1,6 +1,6 @@
 // These parameters need to be set before defining the templates.
-const MINLENGTH = 200;  // this controls the minimum length of any swimlane
-const MINBREADTH = 20;  // this controls the minimum breadth of any non-collapsed swimlane
+MINLENGTH = 200;  // this controls the minimum length of any swimlane
+MINBREADTH = 20;  // this controls the minimum breadth of any non-collapsed swimlane
 
 // some shared functions
 

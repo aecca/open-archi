@@ -1,5 +1,5 @@
 // this controls whether the layout is horizontal and the layer bands are vertical, or vice-versa:
-const HORIZONTAL = true;  // this constant parameter can only be set here, not dynamically
+HORIZONTAL = true;  // this constant parameter can only be set here, not dynamically
 
 // Perform a TreeLayout where commitLayers is overridden to modify the background Part whose key is "_BANDS".
 function BandedTreeLayout() {

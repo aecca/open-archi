@@ -6,22 +6,12 @@
 </head>
 
 <body>
+<h2 style="margin-top: 0; padding-top: 0; margin-bottom: 30px;">
+    Release planning
+</h2>
 <div id=diagramDiv style="border: solid 1px black; width:100%; height:600px;"></div>
 <p>
-    Unlike swim lane diagrams where the nodes are supposed to stay in their lanes,
-    layer bands run perpendicular to the growth direction of the layout.
+    Una visual sencilla para representar un eventual release planning de un conkunto de features de algún componente concreto
 </p>
-<p>
-    This sample uses a custom <a>TreeLayout</a> that overrides the <a>TreeLayout.commitLayers</a> method
-    in order to specify the position and size of each "band" that surrounds a layer of the tree.
-    The "bands" are held in a single Part that is bound to a particular node data object whose key is "_BANDS".
-    The headers, and potentially any other information that you might want to display in the headers,
-    are stored in this "_BANDS" object in an Array.
-</p>
-<p>
-    This sample can be adapted to use a <a>GraphLinksModel</a> instead of a <a>TreeModel</a>
-    and a <a>LayeredDigraphLayout</a> instead of a <a>TreeLayout</a>.
-</p>
-</div>
 </body>
 </html>
