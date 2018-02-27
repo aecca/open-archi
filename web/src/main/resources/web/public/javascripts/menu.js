@@ -102,7 +102,6 @@ var mySampleMenu = '\
           <li><a onclick="openContent(this);" resource="/diagrams/mindMap.html">Mind Map</a></li>\
           <li><a onclick="openContent(this);" resource="/diagrams/navigation.html">Navigation</a></li>\
           <li><a onclick="openContent(this);" resource="/diagrams/orgChartStatic.html">OrgChart (Static)</a></li>\
-          <li><a onclick="openContent(this);" resource="/diagrams/processFlow.html">Process Flow</a></li>\
           <li><a onclick="openContent(this);" resource="/diagrams/records.html">Record Mapper</a></li>\
           <li><a onclick="openContent(this);" resource="/diagrams/sequenceDiagram.html">Sequence Diagram</a></li>\
           <li><a onclick="openContent(this);" resource="/diagrams/shapes.html">Shapes</a></li>\
