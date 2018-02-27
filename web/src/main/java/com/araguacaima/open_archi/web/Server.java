@@ -292,7 +292,7 @@ public class Server {
             path("/editor", () -> {
                 Map<String, Object> mapEditor = new HashMap<>();
                 exception(Exception.class, exceptionHandler);
-                mapEditor.put("title", "OpenArchi Editor");
+                mapEditor.put("title", "Editor");
                 mapEditor.put("diagramTypes", deeplyFulfilledDiagramTypesCollection);
                 get("/", (req, res) -> {
                     mapEditor.put("showMenu", StringUtils.isNotBlank(req.queryParams("showMenu")));
@@ -303,7 +303,7 @@ public class Server {
             path("/api", () -> {
                 Map<String, Object> mapApi = new HashMap<>();
                 exception(Exception.class, exceptionHandler);
-                mapApi.put("title", "OpenArchi API");
+                mapApi.put("title", "API");
                 get("/", (req, res) -> new ModelAndView(mapApi, "apis"), engine);
                 options("/diagrams/architectures", (request, response) -> {
                     setCORS(request, response);

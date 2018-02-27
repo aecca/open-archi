@@ -3,7 +3,7 @@ function initDraggableLink() {
     const $ = go.GraphObject.make;  // for conciseness in defining templates
 
     myDiagram =
-        $(go.Diagram, diagramDiv,  // must name or refer to the DIV HTML element
+        $(go.Diagram, diagramDiv,  // must name or refer to the DIV HTML element<
             {
                 grid: $(go.Panel, "Grid",
                     $(go.Shape, "LineH", {stroke: "lightgray", strokeWidth: 0.5}),

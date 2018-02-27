@@ -1,6 +1,7 @@
 <html>
 <head>
-    <link rel='stylesheet' href='../extensions/DataInspector.css'/>
+    <link rel='stylesheet' href='/stylesheets/dataInspector.css'/>
+    <script src="/javascripts/diagrams/dataInspector.js"></script>
     <script src="/javascripts/diagrams/htmlInteraction.js"></script>
     <script id="code">
         initHtmlInteraction();
@@ -58,8 +59,17 @@
 </head>
 
 <body>
+<h2 style="margin-top: 0; padding-top: 0; margin-bottom: 30px;">
+    Integración con tecnologías de front
+</h2>
 
-<div id="paletteDraggable" class="draggable" style="height: 300px;">
+<p>
+    Este ejemplo contiene un elemento HTML que se puede arrastrar (utilizando jQuery UI), que contiene una paleta provista por OpenArchi.
+</p>
+<p>
+    La interacción puede corroborarse por la visualización de las propiedades en el panel de la derecha
+</p>
+<div id="paletteDraggable" class="draggable" style="height: 300px; position: relative">
     <div id="paletteDraggableHandle" class="handle">Palette</div>
     <div id="paletteContainer">
         <div id="paletteDiv"></div>
@@ -67,7 +77,7 @@
 </div>
 
 <div id="infoDraggable" class="draggable"
-     style="display: inline-block; vertical-align: top; padding: 5px; top: 20px; left: 380px;">
+     style="display: inline-block; vertical-align: top; padding: 5px; top: 20px; left: 380px; position: relative">
     <div id="infoDraggableHandle" class="handle">Info</div>
     <div>
         <div id="myInfo"></div>
@@ -79,15 +89,5 @@
 </div>
 
 
-<p>
-    This sample contains a draggable HTML element (using jQuery UI), which houses a GoJS Palette.
-</p>
-<p>
-    A DIV to the right of the diagram houses the <a href="../extensions/DataInspector.html">GoJS Data inspector
-    extension</a>,
-    which displays some editable information about each Node.
-</p>
-
-</div>
 </body>
 </html>
