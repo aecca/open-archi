@@ -54,7 +54,34 @@ function getJsonContent(url, callback) {
 
 function openModel(model) {
     let graphicalModel = OpenArchiWrapper.toDiagram(model);
-    initEditor(graphicalModel.nodes, graphicalModel.links);
+    const type = model.kind;
+    switch (type) {
+        case "FLOWCHART_MODEL":
+            getPageContent("/diagrams/flowchart.html");
+            break;
+        case "SEQUENCE_MODEL":
+            getPageContent("/diagrams/sequenceDiagram.html");
+            break;
+        case "GANTT_MODEL":
+            getPageContent("/diagrams/gantt.html");
+            break;
+        case "ENTITY_RELATIONSHIP_MODEL":
+            getPageContent("/diagrams/entityRelationship.html");
+            break;
+        case "UML_CLASS_MODEL":
+            getPageContent("/diagrams/umlClass.html");
+            break;
+        case "BPM_MODEL":
+            getPageContent("/diagrams/swimLanes.html");
+            break;
+        case "ARCHITECTURE_MODEL":
+            $.getScript("/javascripts/diagrams/basic.js").done(function (script, textStatus) {
+                initBasic(graphicalModel.nodes, graphicalModel.links);
+            });
+            break;
+        default:
+            console.log("Still not implemented");
+    }
 }
 
 function openSVG() {
@@ -68,7 +95,7 @@ function openSVG() {
     newDocument.body.appendChild(svg);
 }
 
-function initEditor(nodeDataArray, linkDataArray) {
+function initArchitectureDiagram(nodeDataArray, linkDataArray) {
     const editor = go.GraphObject.make;  // for conciseness in defining templates
     if (myDiagram !== undefined) {
         myDiagram.clear();

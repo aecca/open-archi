@@ -1,6 +1,9 @@
-function initBasic() {
+function initBasic(nodeDataArray, linkDataArray) {
     const $ = go.GraphObject.make;  // for conciseness in defining templates
-
+    if (myDiagram !== undefined) {
+        myDiagram.clear();
+        myDiagram.div = null;
+    }
     myDiagram =
         $(go.Diagram, diagramDiv,  // create a Diagram for the DIV HTML element
             {
@@ -269,19 +272,5 @@ function initBasic() {
                 })
         );
 
-    // Create the Diagram's Model:
-    const nodeDataArray = [
-        {key: 1, text: "Alpha", color: "lightblue"},
-        {key: 2, text: "Beta", color: "orange"},
-        {key: 3, text: "Gamma", color: "lightgreen", group: 5},
-        {key: 4, text: "Delta", color: "pink", group: 5},
-        {key: 5, text: "Epsilon", color: "green", isGroup: true}
-    ];
-    const linkDataArray = [
-        {from: 1, to: 2, color: "blue"},
-        {from: 2, to: 2},
-        {from: 3, to: 4, color: "green"},
-        {from: 3, to: 1, color: "purple"}
-    ];
     myDiagram.model = new go.GraphLinksModel(nodeDataArray, linkDataArray);
 }
