@@ -8,13 +8,17 @@ function architectureModelToDiagram(model) {
         return diagram;
     }
 
-    const consumers = diagram.consumers;
+    const consumers = model.consumers;
     if (consumers !== undefined && consumers !== null) {
-        let groupConsumers = {key: key, text: "groupConsumers", color: "green", isGroup: true};
+        let groupConsumers = {key: key, text: "Consumers", color: "green", isGroup: true};
+        diagram.nodes.push(groupConsumers);
         consumers.forEach(function (consumer) {
-            diagram.nodes.push({key: consumer.id, text: consumer.name, color: "lightgreen", group: groupConsumers.key})
+            diagram.nodes.push({key: consumer.id, text: consumer.name, color: "lightgreen", group: groupConsumers.key});
+
         })
     }
+    diagram.links.push({from: 0, to: model.id, color: "blue"});
+    diagram.nodes.push({key: model.id, text: model.name, color: "orange"});
     return diagram;
 }
 

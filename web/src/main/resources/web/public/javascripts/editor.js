@@ -33,8 +33,7 @@ function getPageContent(url) {
 
 function openLoadedModel(url) {
     getJsonContent(url, function (model) {
-        let graphicalModel = OpenArchiWrapper.toDiagram(model);
-        initEditor(graphicalModel.nodes, graphicalModel.links);
+        openModel(model);
     });
 }
 
@@ -53,40 +52,9 @@ function getJsonContent(url, callback) {
     });
 }
 
-function openModel(type) {
-    switch (type) {
-        case "FLOWCHART_MODEL":
-            getPageContent("/diagrams/flowchart.html");
-            return true;
-            break;
-        case "SEQUENCE_MODEL":
-            getPageContent("/diagrams/sequenceDiagram.html");
-            return true;
-            break;
-        case "GANTT_MODEL":
-            getPageContent("/diagrams/gantt.html");
-            return true;
-            break;
-        case "ENTITY_RELATIONSHIP_MODEL":
-            getPageContent("/diagrams/entityRelationship.html");
-            return true;
-            break;
-        case "UML_CLASS_MODEL":
-            getPageContent("/diagrams/umlClass.html");
-            return true;
-            break;
-        case "BPM_MODEL":
-            getPageContent("/diagrams/swimLanes.html");
-            return true;
-            break;
-        case "ARCHITECTURE_MODEL":
-            getPageContent("/diagrams/basic.html");
-            return true;
-            break;
-        default:
-            console.log("Still not implemented");
-            return false;
-    }
+function openModel(model) {
+    let graphicalModel = OpenArchiWrapper.toDiagram(model);
+    initEditor(graphicalModel.nodes, graphicalModel.links);
 }
 
 function openSVG() {
@@ -102,10 +70,10 @@ function openSVG() {
 
 function initEditor(nodeDataArray, linkDataArray) {
     const editor = go.GraphObject.make;  // for conciseness in defining templates
-    let $diagramDiv = $("#diagramDiv");
-    $diagramDiv.val(null);
-    $diagramDiv.html("");
-    $diagramDiv.html(null);
+    if (myDiagram !== undefined) {
+        myDiagram.clear();
+        myDiagram.div = null;
+    }
     myDiagram =
         editor(go.Diagram, "diagramDiv",  // create a Diagram for the DIV HTML element
             {
