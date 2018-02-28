@@ -40,7 +40,7 @@ function showMenu() {
     let url = window.location.href;
     const lindex = url.lastIndexOf('/');
     url = url.slice(lindex + 1).toLowerCase();  // include "/" to avoid matching prefixes
-    const lis = document.getElementById("sections").getElementsByTagName("li");
+    const lis = document.getElementById("sectionsExamples").getElementsByTagName("li");
     const l = lis.length;
     for (let i = 0; i < l; i++) {
         const anchor = lis[i].childNodes[0];
@@ -57,6 +57,29 @@ function showMenu() {
         span.appendChild(img);
         anchor.appendChild(span);
     }
+
+    $.ajax({
+        url: "/open-archi/api/catalogs/diagram-names",
+        beforeSend: function (xhr) {
+            xhr.overrideMimeType("application/json; charset=utf-8");
+        }
+    }).done(function (data) {
+        data.forEach(function (model) {
+            $("#sectionsModels").append("<li><a onclick=\"openUrlContent('/open-archi/api/models/' + model.id);\">" + model.name + "</a></li>");
+        });
+
+    });
+
+    $.ajax({
+        url: "/open-archi/api/catalogs/prototype-names",
+        beforeSend: function (xhr) {
+            xhr.overrideMimeType("application/json; charset=utf-8");
+        }
+    }).done(function (data) {
+        data.forEach(function (model) {
+            $("#sectionsPrototype").append("<li><a onclick=\"openUrlContent('/open-archi/api/models/' + model.id);\">" + model.name + "</a></li>");
+        });
+    });
 }
 
 let mySampleMenu = '\
@@ -70,7 +93,7 @@ let mySampleMenu = '\
         </div>\
       </div>\
       <div id="DiagramNavbarExamples" class="collapse">\
-        <ul id="sections" class="classList nav navbar-nav">\
+        <ul id="sectionsExamples" class="classList nav navbar-nav">\
           <li><a onclick="openContent(this);" resource="/diagrams/basic.html">Basic</a></li>\
           <li><a onclick="openContent(this);" resource="/diagrams/checkBoxes.html">CheckBoxes</a></li>\
           <li><a onclick="openContent(this);" resource="/diagrams/columnResizing.html">Column Resizing</a></li>\
@@ -110,10 +133,7 @@ let mySampleMenu = '\
         </div>\
       </div>\
       <div id="DiagramNavbarModels" class="collapse">\
-        <ul id="sections" class="classList nav navbar-nav">\
-          <li><a href="#">Ejemplo Modelo 1</a></li>\
-          <li><a href="#">Ejemplo Modelo 2</a></li>\
-          <li><a href="#">Ejemplo Modelo 3</a></li>\
+        <ul id="sectionsModels" class="classList nav navbar-nav">\
         </ul>\
       </div>\
     </div>\
@@ -126,9 +146,7 @@ let mySampleMenu = '\
         </div>\
       </div>\
       <div id="DiagramNavbarPrototypes" class="collapse">\
-        <ul id="sections" class="classList nav navbar-nav">\
-          <li><a href="#">Ejemplo Prototipo 1</a></li>\
-          <li><a href="#">Ejemplo Prototipo 2</a></li>\
+        <ul id="sectionsPrototype" class="classList nav navbar-nav">\
         </ul>\
       </div>\
     </div>\
