@@ -1,6 +1,6 @@
-var head = document.getElementsByTagName("head")[0];
+const head = document.getElementsByTagName("head")[0];
 
-var link = document.createElement("link");
+let link = document.createElement("link");
 link.type = "text/css";
 link.rel = "stylesheet";
 link.href = "/stylesheets/bootstrap.min.css";
@@ -20,57 +20,46 @@ head.appendChild(link);
 
 function showMenu() {
 
-    var container = document.createElement('div');
+    const container = document.createElement('div');
     container.className = "container-fluid";
     document.body.appendChild(container);
 
     // sample content
-    var diagramsCanvasDiv = document.getElementById('diagramsCanvas') || document.body.firstChild;
+    const diagramsCanvasDiv = document.getElementById('diagramsCanvas') || document.body.firstChild;
     diagramsCanvasDiv.className = "col-md-10";
     container.appendChild(diagramsCanvasDiv);
 
     // side navigation
-    var navindex = document.createElement('div');
+    const navindex = document.createElement('div');
     navindex.id = "navindex";
     navindex.className = "col-md-2";
     navindex.innerHTML = mySampleMenu;
     container.insertBefore(navindex, diagramsCanvasDiv);
 
     // when the page loads, change the class of navigation LI's
-    var url = window.location.href;
-    var lindex = url.lastIndexOf('/');
+    let url = window.location.href;
+    const lindex = url.lastIndexOf('/');
     url = url.slice(lindex + 1).toLowerCase();  // include "/" to avoid matching prefixes
-    var lis = document.getElementById("sections").getElementsByTagName("li");
-    var l = lis.length;
-    var listed = false;
-    for (var i = 0; i < l; i++) {
-        var anchor = lis[i].childNodes[0];
-        var split = anchor.getAttribute("resource").split('/').pop().split('.');
-        var imgname = split[0];
+    const lis = document.getElementById("sections").getElementsByTagName("li");
+    const l = lis.length;
+    for (let i = 0; i < l; i++) {
+        const anchor = lis[i].childNodes[0];
+        const split = anchor.getAttribute("resource").split('/').pop().split('.');
+        const imgname = split[0];
         if (imgname === "index" || imgname === "all") continue;
-        var imgtype = split[1];
+        const imgtype = split[1];
         if (imgtype === "js") continue;
-        var span = document.createElement('span');
+        const span = document.createElement('span');
         span.className = "samplespan";
-        var img = document.createElement('img');
+        const img = document.createElement('img');
         img.height = "200";
         img.src = "/images/screenshots/" + imgname + ".png";
         span.appendChild(img);
         anchor.appendChild(span);
-        if (!anchor.href) continue;
-        var lowerhref = anchor.href.toLowerCase();
-/*        if (!listed && lowerhref.indexOf('/' + url) !== -1) {
-            anchor.className = "selected";
-            listed = true;
-        }*/
     }
-/*    if (!listed) {
-        lis[lis.length - 1].childNodes[0].className = "selected";
-    }*/
-
 }
 
-var mySampleMenu = '\
+let mySampleMenu = '\
   <div class="sidebar-nav">\
     <div class="navbar navbar-default" role="navigation">\
       <div class="navbar-header" style="width: 100%;">\
@@ -144,15 +133,3 @@ var mySampleMenu = '\
       </div>\
     </div>\
   </div>';
-
-function openContent(element) {
-    var url = element.getAttribute("resource");
-    $.ajax({
-        url: url,
-        beforeSend: function (xhr) {
-            xhr.overrideMimeType("text/html; charset=utf-8");
-        }
-    }).done(function (data) {
-        $("#diagramsCanvas").html(data);
-    });
-}

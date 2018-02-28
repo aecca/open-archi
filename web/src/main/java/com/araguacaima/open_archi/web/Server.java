@@ -415,7 +415,7 @@ public class Server {
                         Util.populate(model);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
-                        response.header("Location", request.pathInfo() + "/diagrams/" + model.getId());
+                        response.header("Location", request.pathInfo() + model.getId());
                         return EMPTY_RESPONSE;
                     } catch (Throwable ex) {
                         return throwError(response, ex);
@@ -445,7 +445,7 @@ public class Server {
                         Util.populate(model);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
-                        response.header("Location", request.pathInfo() + "/diagrams/" + model.getId());
+                        response.header("Location", request.pathInfo() + model.getId());
                         return EMPTY_RESPONSE;
                     } catch (Throwable ex) {
                         return throwError(response, ex);
@@ -475,7 +475,7 @@ public class Server {
                         Util.populate(model);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
-                        response.header("Location", request.pathInfo() + "/diagrams/" + model.getId());
+                        response.header("Location", request.pathInfo() + model.getId());
                         return EMPTY_RESPONSE;
                     } catch (Throwable ex) {
                         return throwError(response, ex);
@@ -505,7 +505,7 @@ public class Server {
                         Util.populate(model);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
-                        response.header("Location", request.pathInfo() + "/diagrams/" + model.getId());
+                        response.header("Location", request.pathInfo() + model.getId());
                         return EMPTY_RESPONSE;
                     } catch (Throwable ex) {
                         return throwError(response, ex);
@@ -535,7 +535,7 @@ public class Server {
                         Util.populate(model);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
-                        response.header("Location", request.pathInfo() + "/models/" + model.getId());
+                        response.header("Location", request.pathInfo() + model.getId());
                         return EMPTY_RESPONSE;
                     } catch (Throwable ex) {
                         return throwError(response, ex);

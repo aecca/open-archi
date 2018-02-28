@@ -652,7 +652,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: "#/definitions/Architecture_Model"
+              $ref: "#/definitions/BPM_Model"
         '400':
           description: Bad request
       security:
@@ -674,7 +674,7 @@ paths:
         description: Bpm Model object that needs to be added
         required: true
         schema:
-          $ref: "#/definitions/Architecture_Model_Create"
+          $ref: "#/definitions/BPM_Model_Create"
       responses:
         '200':
           description: Accepted
@@ -721,7 +721,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: "#/definitions/Architecture_Model"
+              $ref: "#/definitions/Flowchart_Model"
         '400':
           description: Bad request
       security:
@@ -743,7 +743,7 @@ paths:
         description: Flowchart Model object that needs to be added
         required: true
         schema:
-          $ref: "#/definitions/Architecture_Model_Create"
+          $ref: "#/definitions/Flowchart_Model_Create"
       responses:
         '200':
           description: Accepted
@@ -790,7 +790,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: "#/definitions/Architecture_Model"
+              $ref: "#/definitions/Gantt_Model"
         '400':
           description: Bad request
       security:
@@ -812,7 +812,7 @@ paths:
         description: Gantt Model object that needs to be added
         required: true
         schema:
-          $ref: "#/definitions/Architecture_Model_Create"
+          $ref: "#/definitions/Gantt_Model_Create"
       responses:
         '200':
           description: Accepted
@@ -859,7 +859,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: "#/definitions/Architecture_Model"
+              $ref: "#/definitions/Sequence_Model"
         '400':
           description: Bad request
       security:
@@ -881,7 +881,7 @@ paths:
         description: Sequence Model object that needs to be added
         required: true
         schema:
-          $ref: "#/definitions/Architecture_Model_Create"
+          $ref: "#/definitions/Sequence_Model_Create"
       responses:
         '200':
           description: Accepted

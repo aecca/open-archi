@@ -36,7 +36,7 @@ block scripts
                 {from: 3, to: 4, color: "green"},
                 {from: 3, to: 1, color: "purple"}
             ];
-
+            var dataArray;
             $("#diagramId").autocomplete({
                 minLength: 3,
                 source: function (request, response) {
@@ -56,9 +56,10 @@ block scripts
                 },
                 select: function (event, element) {
                     var id = element.item.id;
-                    $("#modelToSaveOrLoad").html(JSON.stringify(dataArray.find(function (model) {
+                    var model = dataArray.find(function (model) {
                         return model.id === id;
-                    })));
+                    });
+                    $("#modelToSaveOrLoad").html(JSON.stringify(model));
                     initEditor(nodeDataArray, linkDataArray);
                 },
                 // optional (if other layers overlap autocomplete list)
@@ -69,6 +70,48 @@ block scripts
                 $(this).select();
             });
         });
+
+        function openContent(element) {
+            const url = element.getAttribute("resource");
+            openUrlContent(url);
+        }
+
+        function openUrlContent(url) {
+            $.ajax({
+                url: url,
+                beforeSend: function (xhr) {
+                    xhr.overrideMimeType("text/html; charset=utf-8");
+                }
+            }).done(function (data) {
+                $("#diagramsCanvas").html(data);
+            });
+        }
+
+        function openModel(type) {
+            switch (type) {
+                case "FLOWCHART_MODEL":
+                    openUrlContent("/diagrams/flowchart.html");
+                    break;
+                case "SEQUENCE_MODEL":
+                    openUrlContent("/diagrams/sequenceDiagram.html");
+                    break;
+                case "GANTT_MODEL":
+                    openUrlContent("/diagrams/gantt.html");
+                    break;
+                case "ENTITY_RELATIONSHIP_MODEL":
+                    openUrlContent("/diagrams/entityRelationship.html");
+                    break;
+                case "UML_CLASS_MODEL":
+                    openUrlContent("/diagrams/umlClass.html");
+                    break;
+                case "BPM_MODEL":
+                    openUrlContent("/diagrams/swimLanes.html");
+                    break;
+                case "ARCHITECTURE_MODEL":
+                default:
+                    console.log("stil not implemented");
+            }
+        }
 block content
     div(style="padding-bottom: 15px;")
         //select#diagram-types-combo
@@ -83,8 +126,8 @@ block content
     div#diagramsCanvas
         div#diagramDiv(style="border: 0; width: 100%; height:400px; overflow: scroll;")
         div
-           button#SaveButton(onclick="save()") Guardar
-           | &nbsp;
-           button#LoadButton(onclick="load()") Cargar
+            button#SaveButton(onclick="save()") Guardar
+            | &nbsp;
+            button#LoadButton(onclick="load()") Cargar
         div(style="display: inline")
             textarea#modelToSaveOrLoad(style="width:100%;height:300px")
