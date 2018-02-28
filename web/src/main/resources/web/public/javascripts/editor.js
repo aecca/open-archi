@@ -7,16 +7,92 @@ function save() {
 }
 
 function load() {
-    var model = document.getElementById("modelToSaveOrLoad").value;
+    const model = document.getElementById("modelToSaveOrLoad").value;
     //TODO: Construir y llamar a función wrapper para pasar de OpenArchi al modelo
     myDiagram.model = go.Model.fromJson(model);
 }
 
+function openContent(element) {
+    const url = element.getAttribute("resource");
+    getPageContent(url);
+}
+
+function getPageContent(url) {
+    $.ajax({
+        url: url,
+        beforeSend: function (xhr) {
+            xhr.overrideMimeType("text/html; charset=utf-8");
+        }
+    }).done(function (data) {
+        $("#diagramsCanvas").html(data);
+    });
+}
+
+function getJsonContent(url) {
+    $.ajax({
+        url: url,
+        beforeSend: function (xhr) {
+            xhr.overrideMimeType("application/json; charset=utf-8");
+        }
+    }).done(function (data) {
+        $("#modelToSaveOrLoad").val(JSON.stringify(data));
+    });
+}
+
+function openModel(type) {
+    switch (type) {
+        case "FLOWCHART_MODEL":
+            getPageContent("/diagrams/flowchart.html");
+            return true;
+            break;
+        case "SEQUENCE_MODEL":
+            getPageContent("/diagrams/sequenceDiagram.html");
+            return true;
+            break;
+        case "GANTT_MODEL":
+            getPageContent("/diagrams/gantt.html");
+            return true;
+            break;
+        case "ENTITY_RELATIONSHIP_MODEL":
+            getPageContent("/diagrams/entityRelationship.html");
+            return true;
+            break;
+        case "UML_CLASS_MODEL":
+            getPageContent("/diagrams/umlClass.html");
+            return true;
+            break;
+        case "BPM_MODEL":
+            getPageContent("/diagrams/swimLanes.html");
+            return true;
+            break;
+        case "ARCHITECTURE_MODEL":
+        default:
+            console.log("Still not implemented");
+            return false;
+    }
+}
+
+function openSVG() {
+    let newWindow = window.open("", "newWindow");
+    if (!newWindow) return;
+    const newDocument = newWindow.document;
+    const svg = myDiagram.makeSvg({
+        document: newDocument,  // create SVG DOM in new document context
+        scale: 1.5,
+        maxSize: new go.Size(600, NaN)
+    });
+    newDocument.body.appendChild(svg);
+}
+
 function initEditor(nodeDataArray, linkDataArray) {
-    const $ = go.GraphObject.make;  // for conciseness in defining templates
-    diagramDiv.div = null;
+    const editor = go.GraphObject.make;  // for conciseness in defining templates
+    let $diagramDiv = $("#diagramDiv");
+    $diagramDiv.val(null);
+    $diagramDiv.value(null);
+    $diagramDiv.html("");
+    $diagramDiv.html(null);
     myDiagram =
-        $(go.Diagram, diagramDiv,  // create a Diagram for the DIV HTML element
+        editor(go.Diagram, "diagramDiv",  // create a Diagram for the DIV HTML element
             {
                 // position the graph in the middle of the diagram
                 initialContentAlignment: go.Spot.Center,
@@ -37,8 +113,8 @@ function initEditor(nodeDataArray, linkDataArray) {
 
     // To simplify this code we define a function for creating a context menu button:
     function makeButton(text, action, visiblePredicate) {
-        return $("ContextMenuButton",
-            $(go.TextBlock, text),
+        return editor("ContextMenuButton",
+            editor(go.TextBlock, text),
             {click: action},
             // don't bother with binding GraphObject.visible if there's no predicate
             visiblePredicate ? new go.Binding("visible", "", function (o, e) {
@@ -48,7 +124,7 @@ function initEditor(nodeDataArray, linkDataArray) {
 
     // a context menu is an Adornment with a bunch of buttons in them
     const partContextMenu =
-        $(go.Adornment, "Vertical",
+        editor(go.Adornment, "Vertical",
             makeButton("Properties",
                 function (e, obj) {  // OBJ is this Button
                     const contextmenu = obj.part;  // the Button is in the context menu Adornment
@@ -130,9 +206,9 @@ function initEditor(nodeDataArray, linkDataArray) {
     // The user can drag a node by dragging its TextBlock label.
     // Dragging from the Shape will start drawing a new link.
     myDiagram.nodeTemplate =
-        $(go.Node, "Auto",
+        editor(go.Node, "Auto",
             {locationSpot: go.Spot.Center},
-            $(go.Shape, "RoundedRectangle",
+            editor(go.Shape, "RoundedRectangle",
                 {
                     fill: "white", // the default fill, if there is no data bound value
                     portId: "", cursor: "pointer",  // the Shape is the port, not the whole Node
@@ -141,7 +217,7 @@ function initEditor(nodeDataArray, linkDataArray) {
                     toLinkable: true, toLinkableSelfNode: true, toLinkableDuplicates: true
                 },
                 new go.Binding("fill", "color")),
-            $(go.TextBlock,
+            editor(go.TextBlock,
                 {
                     font: "bold 14px sans-serif",
                     stroke: '#333',
@@ -152,9 +228,9 @@ function initEditor(nodeDataArray, linkDataArray) {
                 new go.Binding("text", "text").makeTwoWay()),  // the label shows the node data's text
             { // this tooltip Adornment is shared by all nodes
                 toolTip:
-                    $(go.Adornment, "Auto",
-                        $(go.Shape, {fill: "#FFFFCC"}),
-                        $(go.TextBlock, {margin: 4},  // the tooltip shows the result of calling nodeInfo(data)
+                    editor(go.Adornment, "Auto",
+                        editor(go.Shape, {fill: "#FFFFCC"}),
+                        editor(go.TextBlock, {margin: 4},  // the tooltip shows the result of calling nodeInfo(data)
                             new go.Binding("text", "", nodeInfo))
                     ),
                 // this context menu Adornment is shared by all nodes
@@ -170,19 +246,19 @@ function initEditor(nodeDataArray, linkDataArray) {
 
     // The link shape and arrowhead have their stroke brush data bound to the "color" property
     myDiagram.linkTemplate =
-        $(go.Link,
+        editor(go.Link,
             {toShortLength: 3, relinkableFrom: true, relinkableTo: true},  // allow the user to relink existing links
-            $(go.Shape,
+            editor(go.Shape,
                 {strokeWidth: 2},
                 new go.Binding("stroke", "color")),
-            $(go.Shape,
+            editor(go.Shape,
                 {toArrow: "Standard", stroke: null},
                 new go.Binding("fill", "color")),
             { // this tooltip Adornment is shared by all links
                 toolTip:
-                    $(go.Adornment, "Auto",
-                        $(go.Shape, {fill: "#FFFFCC"}),
-                        $(go.TextBlock, {margin: 4},  // the tooltip shows the result of calling linkInfo(data)
+                    editor(go.Adornment, "Auto",
+                        editor(go.Shape, {fill: "#FFFFCC"}),
+                        editor(go.TextBlock, {margin: 4},  // the tooltip shows the result of calling linkInfo(data)
                             new go.Binding("text", "", linkInfo))
                     ),
                 // the same context menu Adornment is shared by all links
@@ -205,12 +281,12 @@ function initEditor(nodeDataArray, linkDataArray) {
     // Groups consist of a title in the color given by the group node data
     // above a translucent gray rectangle surrounding the member parts
     myDiagram.groupTemplate =
-        $(go.Group, "Vertical",
+        editor(go.Group, "Vertical",
             {
                 selectionObjectName: "PANEL",  // selection handle goes around shape, not label
                 ungroupable: true
             },  // enable Ctrl-Shift-G to ungroup a selected Group
-            $(go.TextBlock,
+            editor(go.TextBlock,
                 {
                     font: "bold 19px sans-serif",
                     isMultiline: false,  // don't allow newlines in text
@@ -218,9 +294,9 @@ function initEditor(nodeDataArray, linkDataArray) {
                 },
                 new go.Binding("text", "text").makeTwoWay(),
                 new go.Binding("stroke", "color")),
-            $(go.Panel, "Auto",
+            editor(go.Panel, "Auto",
                 {name: "PANEL"},
-                $(go.Shape, "Rectangle",  // the rectangular shape around the members
+                editor(go.Shape, "Rectangle",  // the rectangular shape around the members
                     {
                         fill: "rgba(128,128,128,0.2)", stroke: "gray", strokeWidth: 3,
                         portId: "", cursor: "pointer",  // the Shape is the port, not the whole Node
@@ -228,13 +304,13 @@ function initEditor(nodeDataArray, linkDataArray) {
                         fromLinkable: true, fromLinkableSelfNode: true, fromLinkableDuplicates: true,
                         toLinkable: true, toLinkableSelfNode: true, toLinkableDuplicates: true
                     }),
-                $(go.Placeholder, {margin: 10, background: "transparent"})  // represents where the members are
+                editor(go.Placeholder, {margin: 10, background: "transparent"})  // represents where the members are
             ),
             { // this tooltip Adornment is shared by all groups
                 toolTip:
-                    $(go.Adornment, "Auto",
-                        $(go.Shape, {fill: "#FFFFCC"}),
-                        $(go.TextBlock, {margin: 4},
+                    editor(go.Adornment, "Auto",
+                        editor(go.Shape, {fill: "#FFFFCC"}),
+                        editor(go.TextBlock, {margin: 4},
                             // bind to tooltip, not to Group.data, to allow access to Group properties
                             new go.Binding("text", "", groupInfo).ofObject())
                     ),
@@ -251,15 +327,15 @@ function initEditor(nodeDataArray, linkDataArray) {
 
     // provide a tooltip for the background of the Diagram, when not over any Part
     myDiagram.toolTip =
-        $(go.Adornment, "Auto",
-            $(go.Shape, {fill: "#FFFFCC"}),
-            $(go.TextBlock, {margin: 4},
+        editor(go.Adornment, "Auto",
+            editor(go.Shape, {fill: "#FFFFCC"}),
+            editor(go.TextBlock, {margin: 4},
                 new go.Binding("text", "", diagramInfo))
         );
 
     // provide a context menu for the background of the Diagram, when not over any Part
     myDiagram.contextMenu =
-        $(go.Adornment, "Vertical",
+        editor(go.Adornment, "Vertical",
             makeButton("Paste",
                 function (e, obj) {
                     e.diagram.commandHandler.pasteSelection(e.diagram.lastInput.documentPoint);

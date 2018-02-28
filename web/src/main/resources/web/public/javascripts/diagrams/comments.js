@@ -97,5 +97,5 @@ function initComments() {
             });
 
     // show the model in JSON format
-    document.getElementById("savedModel").textContent = myDiagram.model.toJson();
+    document.getElementById("modelToSaveOrLoad").textContent = myDiagram.model.toJson();
 }

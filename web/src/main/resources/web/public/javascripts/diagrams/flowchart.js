@@ -227,26 +227,3 @@ function showPorts(node, show) {
     });
 }
 
-
-// Show the diagram's model in JSON format that the user may edit
-function save() {
-    document.getElementById("mySavedModel").value = myDiagram.model.toJson();
-    myDiagram.isModified = false;
-}
-
-function load() {
-    myDiagram.model = go.Model.fromJson(document.getElementById("mySavedModel").value);
-}
-
-// add an SVG rendering of the diagram at the end of this page
-function makeSVG() {
-    const svg = myDiagram.makeSvg({
-        scale: 0.5
-    });
-    svg.style.border = "1px solid black";
-    obj = document.getElementById("SVGArea");
-    obj.appendChild(svg);
-    if (obj.children.length > 0) {
-        obj.replaceChild(svg, obj.children[0]);
-    }
-}

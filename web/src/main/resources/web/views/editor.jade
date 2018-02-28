@@ -74,65 +74,6 @@ block scripts
             });
         });
 
-        function openContent(element) {
-            const url = element.getAttribute("resource");
-            getPageContent(url);
-        }
-
-        function getPageContent(url) {
-            $.ajax({
-                url: url,
-                beforeSend: function (xhr) {
-                    xhr.overrideMimeType("text/html; charset=utf-8");
-                }
-            }).done(function (data) {
-                $("#diagramsCanvas").html(data);
-            });
-        }
-
-        function getJsonContent(url) {
-            $.ajax({
-                url: url,
-                beforeSend: function (xhr) {
-                    xhr.overrideMimeType("application/json; charset=utf-8");
-                }
-            }).done(function (data) {
-                $("#modelToSaveOrLoad").val(JSON.stringify(data));
-            });
-        }
-
-        function openModel(type) {
-            switch (type) {
-                case "FLOWCHART_MODEL":
-                    getPageContent("/diagrams/flowchart.html");
-                    return true;
-                    break;
-                case "SEQUENCE_MODEL":
-                    getPageContent("/diagrams/sequenceDiagram.html");
-                    return true;
-                    break;
-                case "GANTT_MODEL":
-                    getPageContent("/diagrams/gantt.html");
-                    return true;
-                    break;
-                case "ENTITY_RELATIONSHIP_MODEL":
-                    getPageContent("/diagrams/entityRelationship.html");
-                    return true;
-                    break;
-                case "UML_CLASS_MODEL":
-                    getPageContent("/diagrams/umlClass.html");
-                    return true;
-                    break;
-                case "BPM_MODEL":
-                    getPageContent("/diagrams/swimLanes.html");
-                    return true;
-                    break;
-                case "ARCHITECTURE_MODEL":
-                default:
-                    console.log("Still not implemented");
-                    return false;
-            }
-        }
 block content
     div(style="padding-bottom: 15px;")
         //select#diagram-types-combo
@@ -144,11 +85,13 @@ block content
         //    option(value="TREE") Tree
         //    option(value="ER") ER
         input#diagramId(name='diagramId', placeholder='Nombre del diagrama...')
-    div#diagramsCanvas
-        div#diagramDiv(style="border: 0; width: 100%; height:400px; overflow: scroll;")
-        div(style="padding-bottom: 15px; padding-top: 15px")
+        div(style="padding-top: 15px")
             button#SaveButton(onclick="save()") Guardar
             | &nbsp;
             button#LoadButton(onclick="load()") Cargar
+            | &nbsp;
+            button#OpenSVGButton(onclick="openSVG()") Exportar como SVG
+    div#diagramsCanvas
+        div#diagramDiv(style="border: 0; width: 100%; height:400px; overflow: scroll;")
         div(style="display: inline")
             textarea#modelToSaveOrLoad(style="width:100%;height:300px")
