@@ -2,6 +2,7 @@
 function save() {
     document.getElementById("modelToSaveOrLoad").value = myDiagram.model.toJson();
     myDiagram.isModified = false;
+    myDiagram.model.modelData.position = go.Point.stringify(myDiagram.position);
     //TODO: Construir y llamar a función wrapper para pasar del modelo a OpenArchi
     //TODO: LLamar al API de OPenArchi para guardar el modelo
 }
@@ -10,6 +11,8 @@ function load() {
     const model = document.getElementById("modelToSaveOrLoad").value;
     //TODO: Construir y llamar a función wrapper para pasar de OpenArchi al modelo
     myDiagram.model = go.Model.fromJson(model);
+    const pos = myDiagram.model.modelData.position;
+    if (pos) myDiagram.initialPosition = go.Point.parse(pos);
 }
 
 function openContent(element) {
@@ -29,22 +32,24 @@ function getPageContent(url) {
 }
 
 function openLoadedModel(url) {
-    getJsonContent(url);
-    let graphicalModel = {};
-    graphicalModel.nodes = [];
-    graphicalModel.links = [];
-
-    initEditor(graphicalModel.nodes, graphicalModel.links);
+    getJsonContent(url, function (model) {
+        let graphicalModel = OpenArchiWrapper.toDiagram(model);
+        initEditor(graphicalModel.nodes, graphicalModel.links);
+    });
 }
 
-function getJsonContent(url) {
+function getJsonContent(url, callback) {
     $.ajax({
         url: url,
         beforeSend: function (xhr) {
             xhr.overrideMimeType("application/json; charset=utf-8");
         }
     }).done(function (data) {
-        $("#modelToSaveOrLoad").val(JSON.stringify(data));
+        let jsonData = JSON.stringify(data);
+        $("#modelToSaveOrLoad").val(jsonData);
+        if (callback !== undefined && (typeof callback === "function")) {
+            callback(data)
+        }
     });
 }
 
@@ -75,6 +80,9 @@ function openModel(type) {
             return true;
             break;
         case "ARCHITECTURE_MODEL":
+            getPageContent("/diagrams/basic.html");
+            return true;
+            break;
         default:
             console.log("Still not implemented");
             return false;
@@ -87,8 +95,7 @@ function openSVG() {
     const newDocument = newWindow.document;
     const svg = myDiagram.makeSvg({
         document: newDocument,  // create SVG DOM in new document context
-        scale: 1.5,
-        maxSize: new go.Size(600, NaN)
+        scale: 1.5
     });
     newDocument.body.appendChild(svg);
 }

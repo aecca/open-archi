@@ -65,7 +65,7 @@ function showMenu() {
         }
     }).done(function (data) {
         data.forEach(function (model) {
-            $("#sectionsModels").append("<li><a onclick=\"getJsonContent('/open-archi/api/models/" + model.id + "');\">" + model.name + "</a></li>");
+            $("#sectionsModels").append("<li><a onclick=\"openLoadedModel('/open-archi/api/models/" + model.id + "');\">" + model.name + "</a></li>");
         });
 
     });
@@ -77,7 +77,7 @@ function showMenu() {
         }
     }).done(function (data) {
         data.forEach(function (model) {
-            $("#sectionsPrototype").append("<li><a onclick=\"getJsonContent('/open-archi/api/models/" + model.id + "');\">" + model.name + "</a></li>");
+            $("#sectionsPrototype").append("<li><a onclick=\"openLoadedModel('/open-archi/api/models/" + model.id + "');\">" + model.name + "</a></li>");
         });
     });
 }

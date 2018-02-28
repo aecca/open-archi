@@ -326,6 +326,7 @@ TopRotatingTool.prototype.rotate = function (newangle) {
 };
 // end of TopRotatingTool class
 
+/*
 
 // Show the diagram's model in JSON format that the user may edit
 function save() {
@@ -347,4 +348,4 @@ function loadDiagramProperties(e) {
     // set Diagram.initialPosition, not Diagram.position, to handle initialization side-effects
     const pos = myDiagram.model.modelData.position;
     if (pos) myDiagram.initialPosition = go.Point.parse(pos);
-}
+}*/
