@@ -28,6 +28,15 @@ function getPageContent(url) {
     });
 }
 
+function openLoadedModel(url) {
+    getJsonContent(url);
+    let graphicalModel = {};
+    graphicalModel.nodes = [];
+    graphicalModel.links = [];
+
+    initEditor(graphicalModel.nodes, graphicalModel.links);
+}
+
 function getJsonContent(url) {
     $.ajax({
         url: url,
@@ -88,7 +97,6 @@ function initEditor(nodeDataArray, linkDataArray) {
     const editor = go.GraphObject.make;  // for conciseness in defining templates
     let $diagramDiv = $("#diagramDiv");
     $diagramDiv.val(null);
-    $diagramDiv.value(null);
     $diagramDiv.html("");
     $diagramDiv.html(null);
     myDiagram =

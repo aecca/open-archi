@@ -62,6 +62,7 @@ block scripts
                     });
                     $("#modelToSaveOrLoad").html(JSON.stringify(model));
                     if (!openModel(model.kind)) {
+
                         initEditor(nodeDataArray, linkDataArray);
                     }
                 },
