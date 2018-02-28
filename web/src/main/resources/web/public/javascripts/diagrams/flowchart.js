@@ -1,9 +1,12 @@
-function initFlowchart() {
+function initFlowchart(nodeDataArray, linkDataArray) {
 
     const $ = go.GraphObject.make;  // for conciseness in defining templates
-
+    if (myDiagram !== undefined) {
+        myDiagram.clear();
+        myDiagram.div = null;
+    }
     myDiagram =
-        $(go.Diagram, "myDiagramDiv",  // must name or refer to the DIV HTML element
+        $(go.Diagram, "diagramDiv",  // must name or refer to the DIV HTML element
             {
                 initialContentAlignment: go.Spot.Center,
                 allowDrop: true,  // must be true to accept drops from the Palette
@@ -200,7 +203,7 @@ function initFlowchart() {
     myDiagram.toolManager.linkingTool.temporaryLink.routing = go.Link.Orthogonal;
     myDiagram.toolManager.relinkingTool.temporaryLink.routing = go.Link.Orthogonal;
 
-    load();  // load an initial diagram from some JSON text
+    myDiagram.model = new go.GraphLinksModel(nodeDataArray, linkDataArray);
 
     // initialize the Palette that is on the left side of the page
     myPalette =

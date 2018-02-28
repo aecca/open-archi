@@ -57,7 +57,9 @@ function openModel(model) {
     const type = model.kind;
     switch (type) {
         case "FLOWCHART_MODEL":
-            getPageContent("/diagrams/flowchart.html");
+            $.getScript("/javascripts/diagrams/flowchart.js").done(function (script, textStatus) {
+                initFlowchart(graphicalModel.nodes, graphicalModel.links);
+            });
             break;
         case "SEQUENCE_MODEL":
             getPageContent("/diagrams/sequenceDiagram.html");

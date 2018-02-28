@@ -22,6 +22,19 @@ function architectureModelToDiagram(model) {
     return diagram;
 }
 
+function flowchartModelToDiagram(model) {
+    let diagram = {};
+    diagram.nodes = [];
+    diagram.links = [];
+    let key = 0;
+    diagram.nodes.push({key: -1, category: "Start", loc: "175 0", text: "Start"});
+    diagram.links.push({from: -1, to: model.id, fromPort: "B", toPort: "T"});
+    diagram.nodes.push({key: model.id, loc: "175 100", text: model.name});
+    diagram.links.push({from: model.id, to: -2, fromPort: "B", toPort: "T"});
+    diagram.nodes.push({key: -2, category: "End", loc: "175 200", text: "End!"});
+    return diagram;
+}
+
 class OpenArchiWrapper {
 
     static toDiagram(model) {
@@ -33,7 +46,7 @@ class OpenArchiWrapper {
 
         switch (type) {
             case "FLOWCHART_MODEL":
-                getPageContent("/diagrams/flowchart.html");
+                diagram = flowchartModelToDiagram(model);
                 break;
             case "SEQUENCE_MODEL":
                 getPageContent("/diagrams/sequenceDiagram.html");
