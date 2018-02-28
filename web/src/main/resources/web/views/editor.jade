@@ -6,6 +6,7 @@ block scripts
     link(rel='stylesheet', type='text/css', href='/stylesheets/autocomplete.css')
     script(src='/javascripts/go.js')
     script(type='text/javascript', src='/javascripts/jquery-ui.js')
+    script(type='text/javascript', src='/javascripts/editor.js')
     script#code(type="text/javascript")
     script.
         let myDiagram;
@@ -60,7 +61,9 @@ block scripts
                         return model.id === id;
                     });
                     $("#modelToSaveOrLoad").html(JSON.stringify(model));
-                    initEditor(nodeDataArray, linkDataArray);
+                    if (!openModel(model.kind)) {
+                        initEditor(nodeDataArray, linkDataArray);
+                    }
                 },
                 // optional (if other layers overlap autocomplete list)
                 open: function (event, ui) {
@@ -91,25 +94,32 @@ block scripts
             switch (type) {
                 case "FLOWCHART_MODEL":
                     openUrlContent("/diagrams/flowchart.html");
+                    return true;
                     break;
                 case "SEQUENCE_MODEL":
                     openUrlContent("/diagrams/sequenceDiagram.html");
+                    return true;
                     break;
                 case "GANTT_MODEL":
                     openUrlContent("/diagrams/gantt.html");
+                    return true;
                     break;
                 case "ENTITY_RELATIONSHIP_MODEL":
                     openUrlContent("/diagrams/entityRelationship.html");
+                    return true;
                     break;
                 case "UML_CLASS_MODEL":
                     openUrlContent("/diagrams/umlClass.html");
+                    return true;
                     break;
                 case "BPM_MODEL":
                     openUrlContent("/diagrams/swimLanes.html");
+                    return true;
                     break;
                 case "ARCHITECTURE_MODEL":
                 default:
                     console.log("stil not implemented");
+                    return false;
             }
         }
 block content

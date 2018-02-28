@@ -14,7 +14,7 @@ function load() {
 
 function initEditor(nodeDataArray, linkDataArray) {
     const $ = go.GraphObject.make;  // for conciseness in defining templates
-
+    diagramDiv.div = null;
     myDiagram =
         $(go.Diagram, diagramDiv,  // create a Diagram for the DIV HTML element
             {
