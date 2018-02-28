@@ -76,10 +76,10 @@ block scripts
 
         function openContent(element) {
             const url = element.getAttribute("resource");
-            openUrlContent(url);
+            getPageContent(url);
         }
 
-        function openUrlContent(url) {
+        function getPageContent(url) {
             $.ajax({
                 url: url,
                 beforeSend: function (xhr) {
@@ -90,35 +90,46 @@ block scripts
             });
         }
 
+        function getJsonContent(url) {
+            $.ajax({
+                url: url,
+                beforeSend: function (xhr) {
+                    xhr.overrideMimeType("application/json; charset=utf-8");
+                }
+            }).done(function (data) {
+                $("#modelToSaveOrLoad").val(JSON.stringify(data));
+            });
+        }
+
         function openModel(type) {
             switch (type) {
                 case "FLOWCHART_MODEL":
-                    openUrlContent("/diagrams/flowchart.html");
+                    getPageContent("/diagrams/flowchart.html");
                     return true;
                     break;
                 case "SEQUENCE_MODEL":
-                    openUrlContent("/diagrams/sequenceDiagram.html");
+                    getPageContent("/diagrams/sequenceDiagram.html");
                     return true;
                     break;
                 case "GANTT_MODEL":
-                    openUrlContent("/diagrams/gantt.html");
+                    getPageContent("/diagrams/gantt.html");
                     return true;
                     break;
                 case "ENTITY_RELATIONSHIP_MODEL":
-                    openUrlContent("/diagrams/entityRelationship.html");
+                    getPageContent("/diagrams/entityRelationship.html");
                     return true;
                     break;
                 case "UML_CLASS_MODEL":
-                    openUrlContent("/diagrams/umlClass.html");
+                    getPageContent("/diagrams/umlClass.html");
                     return true;
                     break;
                 case "BPM_MODEL":
-                    openUrlContent("/diagrams/swimLanes.html");
+                    getPageContent("/diagrams/swimLanes.html");
                     return true;
                     break;
                 case "ARCHITECTURE_MODEL":
                 default:
-                    console.log("stil not implemented");
+                    console.log("Still not implemented");
                     return false;
             }
         }
