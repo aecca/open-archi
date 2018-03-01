@@ -347,7 +347,8 @@ function doOutput(node) {
 
 // save a model to and load a model from JSON text, displayed below the Diagram
 function save() {
-    document.getElementById("modelToSaveOrLoad").value = myDiagram.model.toJson();
+    document.getElementById("modelToSaveOrLoad").value = JSON.stringify(myDiagram.model, null, 2);
+    let textContent = myDiagram.model.toJson();
     myDiagram.isModified = false;
 }
 

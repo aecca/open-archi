@@ -11,6 +11,9 @@ block scripts
     script#code(type="text/javascript")
     script.
         let myDiagram;
+        let myPalette;
+        let nodeDataArray;
+        let linkDataArray;
         let MINLENGTH;  // this controls the minimum length of any swimlane
         let MINBREADTH;  // this controls the minimum breadth of any non-collapsed swimlane
         let HORIZONTAL;  // this constant parameter can only be set here, not dynamically
@@ -47,7 +50,7 @@ block scripts
                     var model = dataArray.find(function (model) {
                         return model.id === id;
                     });
-                    $("#modelToSaveOrLoad").html(JSON.stringify(model));
+                    $("#modelToSaveOrLoad").html(JSON.stringify(model, null, 2));
                     openModel(model);
                 },
                 // optional (if other layers overlap autocomplete list)
@@ -76,8 +79,8 @@ block content
             button#LoadButton(onclick="load()") Cargar
             | &nbsp;
             button#OpenSVGButton(onclick="openSVG()") Exportar como SVG
-    div#diagramsCanvas
-        div#paletteDiv(style="width: 100px; margin-right: 2px; background-color: whitesmoke; border: solid 0")
+    div#diagramsCanvas(style="justify-content: space-between")
+        div#paletteDiv(style="width: 100px; margin-right: 2px; border: solid 0")
         div#diagramDiv(style="border: 0; width: 100%; height:400px; overflow: scroll;")
-        div(style="display: inline")
+        div(style="display: inline; min-width: 300px;")
             textarea#modelToSaveOrLoad(style="width:100%;height:300px")

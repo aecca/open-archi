@@ -135,6 +135,7 @@ function initRecords() {
     showModel();  // show the diagram's initial model
 
     function showModel() {
-        document.getElementById("modelToSaveOrLoad").textContent = myDiagram.model.toJson();
+        document.getElementById("modelToSaveOrLoad").textContent = JSON.stringify(myDiagram.model, null, 2);
+        let textContent = myDiagram.model.toJson();
     }
 }

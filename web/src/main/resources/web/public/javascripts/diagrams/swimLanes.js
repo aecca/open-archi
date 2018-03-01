@@ -450,7 +450,8 @@ function initSwimLanes() {
 
 // Show the diagram's model in JSON format
 function save() {
-    document.getElementById("modelToSaveOrLoad").value = myDiagram.model.toJson();
+    document.getElementById("modelToSaveOrLoad").value = JSON.stringify(myDiagram.model, null, 2);
+    let textContent = myDiagram.model.toJson();
     myDiagram.isModified = false;
 }
 

@@ -205,6 +205,11 @@ function initFlowchart(nodeDataArray, linkDataArray) {
 
     myDiagram.model = new go.GraphLinksModel(nodeDataArray, linkDataArray);
 
+    if (myPalette !== undefined) {
+        myPalette.clear();
+        myPalette.div = null;
+    }
+
     // initialize the Palette that is on the left side of the page
     myPalette =
         $(go.Palette, "paletteDiv",  // must name or refer to the DIV HTML element

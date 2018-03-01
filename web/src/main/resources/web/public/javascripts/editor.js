@@ -54,6 +54,7 @@ function getJsonContent(url, callback) {
 
 function openModel(model) {
     let graphicalModel = OpenArchiWrapper.toDiagram(model);
+    $( "#explanation" ).remove();
     const type = model.kind;
     switch (type) {
         case "FLOWCHART_MODEL":
