@@ -3,6 +3,7 @@ function Inspector(divid, diagram, options) {
     mainDiv.className = "inspector";
     mainDiv.innerHTML = "";
     this._div = mainDiv;
+    this._div = mainDiv;
     this._diagram = diagram;
     this._inspectedProperties = {};
 
@@ -440,7 +441,7 @@ function initDataInspector() {
                 // automatically show the state of the diagram's model on the page
                 "ModelChanged": function (e) {
                     if (e.isTransactionFinished) {
-                        document.getElementById("savedModel").textContent = myDiagram.model.toJson();
+                        document.getElementById("modelToSaveOrLoad").textContent = myDiagram.model.toJson();
                     }
                 }
             });
