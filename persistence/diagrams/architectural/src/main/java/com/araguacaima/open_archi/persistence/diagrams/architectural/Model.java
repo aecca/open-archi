@@ -36,7 +36,7 @@ public class Model extends Element implements DiagramableElement {
     private ElementKind kind = ElementKind.ARCHITECTURE_MODEL;
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",
-            name = "Architecture_Model_Consumer",
+            name = "Architecture_Model_Consumers",
             joinColumns = {@JoinColumn(name = "Architecture_Model_Id",
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Consumer_Id",

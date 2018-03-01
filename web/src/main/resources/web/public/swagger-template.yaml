@@ -621,7 +621,7 @@ paths:
   "/diagrams/architectures/:model-id/consumers":
     options:
       tags:
-      - Models
+      - Diagrams
       summary: Shows options for the consumers of a specific model
       operationId: options-model-consumers
       produces:
@@ -636,7 +636,7 @@ paths:
   "/diagrams/architectures/{model-id}/consumers":
     get:
       tags:
-      - Models
+      - Diagrams
       summary: Finds consumers of a model
       description: This service supports query by using RSQL expressions
       operationId: get-model-consumers
@@ -667,7 +667,7 @@ paths:
         - read:models
     put:
       tags:
-      - Models
+      - Diagrams
       summary: Add a new consumer to the model
       description: If the consumer object does not exists previously, it will be created.
       operationId: add-model-consumer
