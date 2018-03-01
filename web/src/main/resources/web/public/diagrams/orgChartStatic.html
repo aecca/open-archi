@@ -20,20 +20,24 @@
     </script>
 </head>
 <body>
-<h2 style="margin-top: 0; padding-top: 0; margin-bottom: 30px;">
-    Zooming
-</h2>
-<p>
-    Una forma alternativa de hacer zoom sobre una porción de un diseño de gran tamaño. Con esto, no hace falta reducir
-    los componentes ni sobreponerlos para que quepan en determinada región finita de espacio.
-</p>
-
+<div id="explanation">
+    <h2 style="margin-top: 0; padding-top: 0; margin-bottom: 30px;">
+        Zooming
+    </h2>
+    <p>
+        Una forma alternativa de hacer zoom sobre una porción de un diseño de gran tamaño. Con esto, no hace falta
+        reducir
+        los componentes ni sobreponerlos para que quepan en determinada región finita de espacio.
+    </p>
+</div>
 <div id="sample" style="position: relative;">
     <div id=diagramDiv style="background-color: white; border: solid 1px black; width: 100%; height: 700px"></div>
     <div id="myOverviewDiv"></div>
 
     <p>
-        Dado que el modelo es grande puede hacerse uso de un cuadro de búsqueda para encontrar y resaltar los nodos cuyos datos incluyen cadenas particulares. Tenga en cuenta que se pueden ver todos los nodos resaltados en la Descripción general.
+        Dado que el modelo es grande puede hacerse uso de un cuadro de búsqueda para encontrar y resaltar los nodos
+        cuyos datos incluyen cadenas particulares. Tenga en cuenta que se pueden ver todos los nodos resaltados en la
+        Descripción general.
     </p>
 
     <input type="search" id="mySearch" onkeypress="if (event.keyCode === 13) searchDiagram()"/>

@@ -150,12 +150,12 @@ function ensureLifelineHeights(e) {
 }
 
 // some parameters
-var LinePrefix = 20;  // vertical starting point in document for all Messages and Activations
-const LineSuffix = 30;  // vertical length beyond the last message time
-var MessageSpacing = 20;  // vertical distance between Messages at different steps
-var ActivityWidth = 10;  // width of each vertical activity bar
-var ActivityStart = 5;  // height before start message time
-const ActivityEnd = 5;  // height beyond end message time
+LinePrefix = 20;  // vertical starting point in document for all Messages and Activations
+LineSuffix = 30;  // vertical length beyond the last message time
+MessageSpacing = 20;  // vertical distance between Messages at different steps
+ActivityWidth = 10;  // width of each vertical activity bar
+ActivityStart = 5;  // height before start message time
+ActivityEnd = 5;  // height beyond end message time
 
 function computeLifelineHeight(duration) {
     return LinePrefix + duration * MessageSpacing + LineSuffix;

@@ -35,6 +35,41 @@ function flowchartModelToDiagram(model) {
     return diagram;
 }
 
+function sequenceModelToDiagram(model) {
+    let diagram = {};
+    diagram.nodes = [];
+    diagram.links = [];
+    return diagram;
+}
+
+function ganttModelToDiagram(model) {
+    let diagram = {};
+    diagram.nodes = [];
+    diagram.links = [];
+    return diagram;
+}
+
+function entityRelationshipModelToDiagram(model) {
+    let diagram = {};
+    diagram.nodes = [];
+    diagram.links = [];
+    return diagram;
+}
+
+function umlModelToDiagram(model) {
+    let diagram = {};
+    diagram.nodes = [];
+    diagram.links = [];
+    return diagram;
+}
+
+function bpmModelToDiagram(model) {
+    let diagram = {};
+    diagram.nodes = [];
+    diagram.links = [];
+    return diagram;
+}
+
 class OpenArchiWrapper {
 
     static toDiagram(model) {
@@ -43,25 +78,24 @@ class OpenArchiWrapper {
         diagram.nodes = [];
         diagram.links = [];
 
-
         switch (type) {
             case "FLOWCHART_MODEL":
                 diagram = flowchartModelToDiagram(model);
                 break;
             case "SEQUENCE_MODEL":
-                getPageContent("/diagrams/sequenceDiagram.html");
+                diagram = sequenceModelToDiagram(model);
                 break;
             case "GANTT_MODEL":
-                getPageContent("/diagrams/gantt.html");
+                diagram = ganttModelToDiagram(model);
                 break;
             case "ENTITY_RELATIONSHIP_MODEL":
-                getPageContent("/diagrams/entityRelationship.html");
+                diagram = entityRelationshipModelToDiagram(model);
                 break;
             case "UML_CLASS_MODEL":
-                getPageContent("/diagrams/umlClass.html");
+                diagram = umlModelToDiagram(model);
                 break;
             case "BPM_MODEL":
-                getPageContent("/diagrams/swimLanes.html");
+                diagram = bpmModelToDiagram(model);
                 break;
             case "ARCHITECTURE_MODEL":
                 diagram = architectureModelToDiagram(model);
@@ -74,7 +108,6 @@ class OpenArchiWrapper {
 
     static fromDiagram(diagram) {
         let model = {};
-
         return model;
     };
 }

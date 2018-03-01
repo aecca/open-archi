@@ -299,6 +299,36 @@ public class Server {
                     return new ModelAndView(mapEditor, "editor");
                 }, engine);
             });
+            path("/samples", () -> {
+                get("/basic", (request, response) -> {
+                    Map<String, Object> map = new HashMap<>();
+                    List nodeDataArray = jsonUtils.fromJSON("[\n" +
+                            "                    {key: 1, text: \"Alpha\", color: \"lightblue\"},\n" +
+                            "                    {key: 2, text: \"Beta\", color: \"orange\"},\n" +
+                            "                    {key: 3, text: \"Gamma\", color: \"lightgreen\", group: 5},\n" +
+                            "                    {key: 4, text: \"Delta\", color: \"pink\", group: 5},\n" +
+                            "                    {key: 5, text: \"Epsilon\", color: \"green\", isGroup: true}\n" +
+                            "        ]", List.class);
+                    List linkDataArray = jsonUtils.fromJSON("[\n" +
+                            "                    {from: 1, to: 2, color: \"blue\"},\n" +
+                            "                    {from: 2, to: 2},\n" +
+                            "                    {from: 3, to: 4, color: \"green\"},\n" +
+                            "                    {from: 3, to: 1, color: \"purple\"}\n" +
+                            "        ]", List.class);
+                    map.put("nodeDataArray", nodeDataArray);
+                    map.put("linkDataArray", linkDataArray);
+                    map.put("source", "basic");
+                    map.put("mainTitle", "Propuesta para diagrama básico de componentes - Primer nivel");
+                    map.put("caption", "¡Leyendo ya desde Open Archi!");
+                    map.put("fullDescription","Sencillo, pero fácil de adaptar para construir modelos de solución a alto nivel. Intuitivo y fácil de usar.");
+                    List<String> steps = new ArrayList<>();
+                    steps.add("Con doble-click en cualquier área vacía del canvas se crea un nuevo componente (siempre será una cajita)");
+                    steps.add("Con doble-click en cualquier componente (cajita) se editará su nombre");
+                    steps.add("Al hacer click en el borde de un componente se puede crear conectores (flechas) hacia cualquier componente");
+                    map.put("steps", steps);
+                    return new ModelAndView(map, "editor");
+                });
+            });
             before("/api/*", (req, res) -> log.info("Received api call to " + req.requestMethod() + " " + req.pathInfo()));
             path("/api", () -> {
                 Map<String, Object> mapApi = new HashMap<>();

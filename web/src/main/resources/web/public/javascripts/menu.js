@@ -94,33 +94,33 @@ let mySampleMenu = '\
       </div>\
       <div id="DiagramNavbarExamples" class="collapse">\
         <ul id="sectionsExamples" class="classList nav navbar-nav">\
-          <li><a onclick="openContent(this);" resource="/diagrams/basic.html">Basic</a></li>\
-          <li><a onclick="openContent(this);" resource="/diagrams/checkBoxes.html">CheckBoxes</a></li>\
-          <li><a onclick="openContent(this);" resource="/diagrams/columnResizing.html">Column Resizing</a></li>\
-          <li><a onclick="openContent(this);" resource="/diagrams/comments.html">Comments</a></li>\
-          <li><a onclick="openContent(this);" resource="/diagrams/contextMenu.html">Context Menu</a></li>\
-          <li><a onclick="openContent(this);" resource="/diagrams/dataInspector.html">Data Inspector</a></li>\
-          <li><a onclick="openContent(this);" resource="/diagrams/dragCreating.html">Drag Creating</a></li>\
-          <li><a onclick="openContent(this);" resource="/diagrams/draggableLink.html">Draggable Link</a></li>\
-          <li><a onclick="openContent(this);" resource="/diagrams/entityRelationship.html">Entity Relationship</a></li>\
-          <li><a onclick="openContent(this);" resource="/diagrams/flowchart.html">Flowchart</a></li>\
-          <li><a onclick="openContent(this);" resource="/diagrams/gantt.html">Gantt</a></li>\
-          <li><a onclick="openContent(this);" resource="/diagrams/grouping.html">Grouping</a></li>\
-          <li><a onclick="openContent(this);" resource="/diagrams/guidedDragging.html">Guided Dragging</a></li>\
-          <li><a onclick="openContent(this);" resource="/diagrams/htmlInteraction.html">HTML Interaction</a></li>\
-          <li><a onclick="openContent(this);" resource="/diagrams/icons.html">SVG Icons</a></li>\
-          <li><a onclick="openContent(this);" resource="/diagrams/kanban.html">Kanban Board</a></li>\
-          <li><a onclick="openContent(this);" resource="/diagrams/logicCircuit.html">Logic Circuit</a></li>\
-          <li><a onclick="openContent(this);" resource="/diagrams/mindMap.html">Mind Map</a></li>\
-          <li><a onclick="openContent(this);" resource="/diagrams/navigation.html">Navigation</a></li>\
-          <li><a onclick="openContent(this);" resource="/diagrams/orgChartStatic.html">OrgChart (Static)</a></li>\
-          <li><a onclick="openContent(this);" resource="/diagrams/records.html">Record Mapper</a></li>\
-          <li><a onclick="openContent(this);" resource="/diagrams/sequenceDiagram.html">Sequence Diagram</a></li>\
-          <li><a onclick="openContent(this);" resource="/diagrams/shopFloorMonitor.html">Shop Floor Monitor</a></li>\
-          <li><a onclick="openContent(this);" resource="/diagrams/swimBands.html">Layer Bands</a></li>\
-          <li><a onclick="openContent(this);" resource="/diagrams/swimLanes.html">Swim Lanes</a></li>\
-          <li><a onclick="openContent(this);" resource="/diagrams/umlClass.html">UML Class</a></li>\
-          <li><a onclick="openContent(this);" resource="/diagrams/updateDemo.html">Update Demo</a></li>\
+          <li><a onclick="openContent(this);" resource="/diagrams/basic.html">Diagrama Básico</a></li>\
+          <li><a onclick="openContent(this);" resource="/diagrams/checkBoxes.html">Features (checkbox)</a></li>\
+          <li><a onclick="openContent(this);" resource="/diagrams/columnResizing.html">Ajuste de tamaños</a></li>\
+          <li><a onclick="openContent(this);" resource="/diagrams/comments.html">Comentarios</a></li>\
+          <li><a onclick="openContent(this);" resource="/diagrams/contextMenu.html">Menú Contextual</a></li>\
+          <li><a onclick="openContent(this);" resource="/diagrams/dataInspector.html">Meta Datos</a></li>\
+          <li><a onclick="openContent(this);" resource="/diagrams/dragCreating.html">Creación Ágil</a></li>\
+          <li><a onclick="openContent(this);" resource="/diagrams/draggableLink.html">Constraints</a></li>\
+          <li><a onclick="openContent(this);" resource="/diagrams/entityRelationship.html">Entidad Relación</a></li>\
+          <li><a onclick="openContent(this);" resource="/diagrams/flowchart.html">Flujo de Secuencia</a></li>\
+          <li><a onclick="openContent(this);" resource="/diagrams/gantt.html">Diagramas Gantt</a></li>\
+          <li><a onclick="openContent(this);" resource="/diagrams/grouping.html">Expansión</a></li>\
+          <li><a onclick="openContent(this);" resource="/diagrams/guidedDragging.html">Guías visuales</a></li>\
+          <li><a onclick="openContent(this);" resource="/diagrams/htmlInteraction.html">Interoperatividad HTML</a></li>\
+          <li><a onclick="openContent(this);" resource="/diagrams/icons.html">Iconos SVG</a></li>\
+          <li><a onclick="openContent(this);" resource="/diagrams/kanban.html">Tablero Kanban</a></li>\
+          <li><a onclick="openContent(this);" resource="/diagrams/logicCircuit.html">Flujo y Secuencia 1</a></li>\
+          <li><a onclick="openContent(this);" resource="/diagrams/mindMap.html">Mapas Estratégico</a></li>\
+          <li><a onclick="openContent(this);" resource="/diagrams/navigation.html">Seguimiento de Flujos</a></li>\
+          <li><a onclick="openContent(this);" resource="/diagrams/orgChartStatic.html">Zooming</a></li>\
+          <li><a onclick="openContent(this);" resource="/diagrams/records.html">Mapeo de Features</a></li>\
+          <li><a onclick="openContent(this);" resource="/diagrams/sequenceDiagram.html">UML de Secuencia</a></li>\
+          <li><a onclick="openContent(this);" resource="/diagrams/shopFloorMonitor.html">Flujo y Secuencia 2</a></li>\
+          <li><a onclick="openContent(this);" resource="/diagrams/swimBands.html">Release Planning</a></li>\
+          <li><a onclick="openContent(this);" resource="/diagrams/swimLanes.html">Diagrama de Procesos</a></li>\
+          <li><a onclick="openContent(this);" resource="/diagrams/umlClass.html">UML de Clases</a></li>\
+          <li><a onclick="openContent(this);" resource="/diagrams/updateDemo.html">Actualización Realtime</a></li>\
         </ul>\
       </div>\
     </div>\
