@@ -617,6 +617,87 @@ paths:
       - openarchi_auth:
         - write:model
         - read:models
+
+  "/diagrams/architectures/:model-id/consumers":
+    options:
+      tags:
+      - Models
+      summary: Shows options for the consumers of a specific model
+      operationId: options-model-consumers
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            allOf:
+            - $ref: "#/definitions/Options_Get_Collection"
+            - $ref: "#/definitions/Options_Put"
+  "/diagrams/architectures/{model-id}/consumers":
+    get:
+      tags:
+      - Models
+      summary: Finds consumers of a model
+      description: This service supports query by using RSQL expressions
+      operationId: get-model-consumers
+      produces:
+      - application/json
+      parameters:
+      - name: model-id
+        in: path
+        description: ID of the model to return
+        required: true
+        type: string
+      - name: "$filter"
+        in: query
+        description: Filter consumers of a model according to an RSQL expression
+        required: false
+        type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Consumers"
+        '400':
+          description: Bad request
+      security:
+      - openarchi_auth:
+        - read:models
+    put:
+      tags:
+      - Models
+      summary: Add a new consumer to the model
+      description: If the consumer object does not exists previously, it will be created.
+      operationId: add-model-consumer
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: model-id
+        in: path
+        description: ID of the model to return
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Model object that needs to be added
+        required: true
+        schema:
+          $ref: "#/definitions/Consumer_Create"
+      responses:
+        '200':
+          description: Accepted
+        '201':
+          description: Created
+        '405':
+          description: Invalid input
+      security:
+      - openarchi_auth:
+        - write:model
+        - read:models
   "/diagrams/bpms":
     options:
       tags:

@@ -17,10 +17,10 @@ import java.util.Set;
         name = Model.FIND_BY_NAME,
         query = "select m from Model m JOIN FETCH Item i where m.id = i.id and i.name = :" + Model.PARAM_NAME),*/
         @NamedQuery(name = Model.GET_MODELS_COUNT,
-                query = "select count(a) from Model a"),
+                query = "select count(a) from com.araguacaima.open_archi.persistence.diagrams.sequence.Model a"),
         @NamedQuery(
                 name = Model.GET_ALL_SEQUENCE_MODELS,
-                query = "select a from Model a")})
+                query = "select a from com.araguacaima.open_archi.persistence.diagrams.sequence.Model a")})
 public class Model extends Element implements DiagramableElement {
 
     public static final String FIND_BY_NAME = "SequenceModel.findByName";

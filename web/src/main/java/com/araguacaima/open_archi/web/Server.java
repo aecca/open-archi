@@ -359,7 +359,7 @@ public class Server {
                         Util.populate(model);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
-                        response.header("Location", request.pathInfo() + "/models/" + model.getId());
+                        response.header("Location", request.pathInfo() + "/diagrams/architectures/" + model.getId());
                         return EMPTY_RESPONSE;
                     } catch (Throwable ex) {
                         return throwError(response, ex);
@@ -385,7 +385,33 @@ public class Server {
                         Util.populate(feature);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
-                        response.header("Location", request.pathInfo() + "/models/" + feature.getId());
+                        response.header("Location", request.pathInfo() + "/diagrams/architectures/" + feature.getId());
+                        return EMPTY_RESPONSE;
+                    } catch (Throwable ex) {
+                        return throwError(response, ex);
+                    }
+                });
+                options("/diagrams/architectures/:uuid/consumers", (request, response) -> {
+                    setCORS(request, response);
+                    Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledParentModelCollection, deeplyFulfilledParentModel, HttpMethod.get, HttpMethod.put);
+                    return getOptions(request, response, output);
+                });
+                get("/diagrams/architectures/:uuid/consumers", (request, response) -> {
+                    Map<String, Object> params = new HashMap<>();
+                    params.put("id", request.params(":uuid"));
+                    return getList(request, response, com.araguacaima.open_archi.persistence.diagrams.architectural.Model.GET_ALL_CONSUMERS, params, Collection.class);
+                });
+                put("/diagrams/architectures/:uuid/consumers", (request, response) -> {
+                    try {
+                        com.araguacaima.open_archi.persistence.diagrams.architectural.Relationship feature = jsonUtils.fromJSON(request.body(), com.araguacaima.open_archi.persistence.diagrams.architectural.Relationship.class);
+                        if (feature == null) {
+                            throw new Exception("Invalid kind of relationship");
+                        }
+                        feature.validateCreation();
+                        Util.populate(feature);
+                        response.status(HTTP_CREATED);
+                        response.type(JSON_CONTENT_TYPE);
+                        response.header("Location", request.pathInfo() + "/diagrams/architectures/" + feature.getId());
                         return EMPTY_RESPONSE;
                     } catch (Throwable ex) {
                         return throwError(response, ex);
