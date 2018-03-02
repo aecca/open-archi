@@ -72,7 +72,7 @@ public class JPAEntityManagerUtils {
         }
         try {
             return namedQuery.getSingleResult();
-        }catch (javax.persistence.NoResultException ignored) {
+        } catch (javax.persistence.NoResultException ignored) {
             return null;
         }
     }
@@ -91,6 +91,14 @@ public class JPAEntityManagerUtils {
 
     public static void delete(Object entity, boolean autocommit) {
         entityManager.remove(entity);
+        entityManager.detach(entity);
+    }
+
+    public static void detach(Object entity) {
+        detach(entity, true);
+    }
+
+    public static void detach(Object entity, boolean autocommit) {
         entityManager.detach(entity);
     }
 

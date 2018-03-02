@@ -66,4 +66,11 @@ public class Element extends Item {
     public void setFeatures(Set<Feature> features) {
         this.features = features;
     }
+
+    public void copy(Element source) {
+        super.copy(source);
+        this.url = source.getUrl();
+        this.properties = source.getProperties();
+        this.features = source.getFeatures();
+    }
 }

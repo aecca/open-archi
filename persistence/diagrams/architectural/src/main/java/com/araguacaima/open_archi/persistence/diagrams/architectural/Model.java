@@ -17,7 +17,7 @@ import java.util.Set;
 @NamedQueries({@NamedQuery(name = Model.GET_ALL_RELATIONSHIPS,
         query = "select a.relationships from com.araguacaima.open_archi.persistence.diagrams.architectural.Model a where a.id=:id"),
         @NamedQuery(name = Model.GET_ALL_CONSUMERS,
-        query = "select a.consumers from com.araguacaima.open_archi.persistence.diagrams.architectural.Model a where a.id=:id")})
+                query = "select a.consumers from com.araguacaima.open_archi.persistence.diagrams.architectural.Model a where a.id=:id")})
 public class Model extends Element implements DiagramableElement {
 
 
@@ -64,6 +64,15 @@ public class Model extends Element implements DiagramableElement {
 
     public ElementKind getKind() {
         return kind;
+    }
+
+    public void copy(Model source) {
+        super.copy(source);
+        this.relationships = source.getRelationships();
+        this.consumers = source.getConsumers();
+        this.softwareSystems = source.getSoftwareSystems();
+        this.deploymentNodes = source.getDeploymentNodes();
+
     }
 
     public void setKind(ElementKind kind) {

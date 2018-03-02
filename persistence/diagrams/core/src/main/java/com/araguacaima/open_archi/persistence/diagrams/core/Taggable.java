@@ -10,7 +10,7 @@ import java.util.Set;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @PersistenceUnit(unitName = "open-archi")
-@Table(name = "Models", schema = "DIAGRAMS")
+@Table(name = "Models", schema = "DIAGRAMS", uniqueConstraints= @UniqueConstraint(columnNames={"name", "modelType"}))
 @DiscriminatorColumn(name = "modelType", discriminatorType = DiscriminatorType.STRING)
 @NamedQueries({@NamedQuery(name = Taggable.GET_ALL_MODELS,
         query = "select a from Taggable a "), @NamedQuery(name = Taggable.GET_MODELS_BY_TYPE,
@@ -30,5 +30,10 @@ public class Taggable extends BaseEntity {
 
     public void setTags(Set<String> tags) {
         this.tags = tags;
+    }
+
+    public void copy(Taggable source) {
+        super.copy(source);
+        this.tags = source.getTags();
     }
 }
