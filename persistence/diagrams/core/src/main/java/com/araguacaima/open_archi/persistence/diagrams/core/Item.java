@@ -13,16 +13,24 @@ import java.util.Set;
 
 @Entity
 @PersistenceUnit(unitName = "open-archi")
-@NamedQueries({@NamedQuery(name = Item.GET_ALL_CHILDREN,
-        query = "select a.children from Item a where a.id=:id"),
+@NamedQueries({@NamedQuery(name = Item.GET_ITEM_BY_NAME,
+        query = "select a " +
+                "from com.araguacaima.open_archi.persistence.diagrams.core.Item a where a.name=:name"),
+        @NamedQuery(name = Item.GET_ALL_CHILDREN,
+                query = "select a.children " +
+                        "from com.araguacaima.open_archi.persistence.diagrams.core.Item a where a.id=:id"),
         @NamedQuery(name = Item.GET_META_DATA,
-                query = "select a.metaData from Item a where a.id=:id"),
+                query = "select a.metaData " +
+                        "from com.araguacaima.open_archi.persistence.diagrams.core.Item a where a.id=:id"),
         @NamedQuery(name = Item.GET_ALL_PROTOTYPES,
-                query = "select a.metaData from Item a where a.prototype=true"),
+                query = "select a.metaData " +
+                        "from com.araguacaima.open_archi.persistence.diagrams.core.Item a where a.prototype=true"),
         @NamedQuery(name = Item.GET_ALL_PROTOTYPE_NAMES,
-                query = "select new com.araguacaima.open_archi.persistence.commons.IdName(a.id, a.name, TYPE(a)) from Item a where a.prototype=true"),
+                query = "select new com.araguacaima.open_archi.persistence.commons.IdName(a.id, a.name, TYPE(a)) " +
+                        "from com.araguacaima.open_archi.persistence.diagrams.core.Item a where a.prototype=true"),
         @NamedQuery(name = Item.GET_ALL_DIAGRAM_NAMES,
-                query = "select new com.araguacaima.open_archi.persistence.commons.IdName(a.id, a.name, TYPE(a)) from Item a where a.prototype=false")})
+                query = "select new com.araguacaima.open_archi.persistence.commons.IdName(a.id, a.name, TYPE(a)) " +
+                        "from com.araguacaima.open_archi.persistence.diagrams.core.Item a where a.prototype=false")})
 public class Item extends Taggable {
 
     public static final String GET_ALL_CHILDREN = "get.all.children";
@@ -30,8 +38,9 @@ public class Item extends Taggable {
     public static final String GET_ALL_PROTOTYPES = "get.all.prototypes";
     public static final String GET_ALL_PROTOTYPE_NAMES = "get.all.prototype.names";
     public static final String GET_ALL_DIAGRAM_NAMES = "get.all.diagram.names";
+    public static final String GET_ITEM_BY_NAME = "get.item.by.name";
 
-    @Column
+    @Column(unique = true)
     protected String name;
     @Column
     protected String description;

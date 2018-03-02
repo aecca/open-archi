@@ -2,6 +2,7 @@
 package com.araguacaima.open_archi.web;
 
 import com.araguacaima.commons.utils.ReflectionUtils;
+import com.araguacaima.open_archi.persistence.diagrams.core.Item;
 import com.araguacaima.open_archi.persistence.meta.BasicEntity;
 import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
 import io.github.benas.randombeans.EnhancedRandomBuilder;
@@ -72,7 +73,7 @@ public class Util {
             JPAEntityManagerUtils.rollback();
         } finally {
             JPAEntityManagerUtils.commit();
-//            JPAEntityManagerUtils.closeAll();
+
         }
     }
 
@@ -102,7 +103,22 @@ public class Util {
             process(field.getType(), object_, entitiesForReattempt);
         }, Util::filterMethod);
         try {
-            JPAEntityManagerUtils.persist(entity);
+            if (Item.class.isAssignableFrom(entity.getClass())) {
+                Map<String, Object> params = new HashMap<>();
+                Field field = reflectionUtils.getField(Item.class, "name");
+                field.setAccessible(true);
+                String name = (String) field.get(entity);
+                params.put("name", name);
+                Item item = JPAEntityManagerUtils.find(Item.class, Item.GET_ITEM_BY_NAME, params);
+                if (item == null) {
+                    JPAEntityManagerUtils.persist(entity);
+                } else {
+                    Object result = reflectionUtils.mergeObjects(entity, item);
+                    JPAEntityManagerUtils.update(result);
+                }
+            } else {
+                JPAEntityManagerUtils.persist(entity);
+            }
         } catch (Throwable t) {
             entitiesForReattempt.put(entity.getClass(), entity);
         }

@@ -45,7 +45,6 @@ public class JPAEntityManagerUtils {
         return entityManager.find(clazz, key);
     }
 
-
     public static <T> List<T> executeQuery(Class<T> clazz, String query) {
         return executeQuery(clazz, query, null);
     }
@@ -58,6 +57,24 @@ public class JPAEntityManagerUtils {
             }
         }
         return namedQuery.getResultList();
+    }
+
+    public static <T> T find(Class<T> clazz, String query) {
+        return find(clazz, query, null);
+    }
+
+    public static <T> T find(Class<T> clazz, String query, Map<String, Object> params) {
+        TypedQuery<T> namedQuery = entityManager.createNamedQuery(query, clazz);
+        if (params != null) {
+            for (Map.Entry<String, Object> param : params.entrySet()) {
+                namedQuery.setParameter(param.getKey(), param.getValue());
+            }
+        }
+        try {
+            return namedQuery.getSingleResult();
+        }catch (javax.persistence.NoResultException ignored) {
+            return null;
+        }
     }
 
     public static void persist(Object entity) {
