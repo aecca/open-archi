@@ -320,7 +320,7 @@ public class Server {
                     map.put("source", "basic");
                     map.put("mainTitle", "Propuesta para diagrama básico de componentes - Primer nivel");
                     map.put("caption", "¡Leyendo ya desde Open Archi!");
-                    map.put("fullDescription","Sencillo, pero fácil de adaptar para construir modelos de solución a alto nivel. Intuitivo y fácil de usar.");
+                    map.put("fullDescription", "Sencillo, pero fácil de adaptar para construir modelos de solución a alto nivel. Intuitivo y fácil de usar.");
                     List<String> steps = new ArrayList<>();
                     steps.add("Con doble-click en cualquier área vacía del canvas se crea un nuevo componente (siempre será una cajita)");
                     steps.add("Con doble-click en cualquier componente (cajita) se editará su nombre");
@@ -359,7 +359,7 @@ public class Server {
                         Util.populate(model);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
-                        response.header("Location", request.pathInfo() +  model.getId());
+                        response.header("Location", request.pathInfo() + "/" + model.getId());
                         return EMPTY_RESPONSE;
                     } catch (Throwable ex) {
                         return throwError(response, ex);
@@ -385,7 +385,7 @@ public class Server {
                         Util.populate(feature);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
-                        response.header("Location", request.pathInfo() + "/diagrams/architectures/" + feature.getId());
+                        response.header("Location", request.pathInfo() + "/" + feature.getId());
                         return EMPTY_RESPONSE;
                     } catch (Throwable ex) {
                         return throwError(response, ex);
@@ -411,7 +411,7 @@ public class Server {
                         Util.populate(feature);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
-                        response.header("Location", request.pathInfo() + "/diagrams/architectures/" + feature.getId());
+                        response.header("Location", request.pathInfo() + "/" + feature.getId());
                         return EMPTY_RESPONSE;
                     } catch (Throwable ex) {
                         return throwError(response, ex);
@@ -441,7 +441,7 @@ public class Server {
                         Util.populate(model);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
-                        response.header("Location", request.pathInfo() + model.getId());
+                        response.header("Location", request.pathInfo() + "/" + model.getId());
                         return EMPTY_RESPONSE;
                     } catch (Throwable ex) {
                         return throwError(response, ex);
@@ -471,7 +471,7 @@ public class Server {
                         Util.populate(model);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
-                        response.header("Location", request.pathInfo() + model.getId());
+                        response.header("Location", request.pathInfo() + "/" + model.getId());
                         return EMPTY_RESPONSE;
                     } catch (Throwable ex) {
                         return throwError(response, ex);
@@ -501,7 +501,7 @@ public class Server {
                         Util.populate(model);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
-                        response.header("Location", request.pathInfo() + model.getId());
+                        response.header("Location", request.pathInfo() + "/" + model.getId());
                         return EMPTY_RESPONSE;
                     } catch (Throwable ex) {
                         return throwError(response, ex);
@@ -531,7 +531,7 @@ public class Server {
                         Util.populate(model);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
-                        response.header("Location", request.pathInfo() + model.getId());
+                        response.header("Location", request.pathInfo() +"/" + model.getId());
                         return EMPTY_RESPONSE;
                     } catch (Throwable ex) {
                         return throwError(response, ex);
@@ -561,7 +561,7 @@ public class Server {
                         Util.populate(model);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
-                        response.header("Location", request.pathInfo() + model.getId());
+                        response.header("Location", request.pathInfo() + "/" + model.getId());
                         return EMPTY_RESPONSE;
                     } catch (Throwable ex) {
                         return throwError(response, ex);
@@ -591,7 +591,7 @@ public class Server {
                         Util.populate(model);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
-                        response.header("Location", request.pathInfo() + model.getId());
+                        response.header("Location", request.pathInfo() + "/" + model.getId());
                         return EMPTY_RESPONSE;
                     } catch (Throwable ex) {
                         return throwError(response, ex);
@@ -627,7 +627,7 @@ public class Server {
                         Util.populate(model);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
-                        response.header("Location", request.pathInfo() + model.getId());
+                        response.header("Location", request.pathInfo() + "/" + model.getId());
                         return EMPTY_RESPONSE;
                     } catch (Throwable ex) {
                         return throwError(response, ex);
@@ -689,7 +689,7 @@ public class Server {
                         Util.populate(model);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
-                        response.header("Location", request.pathInfo() + "/models/" + model.getId());
+                        response.header("Location", request.pathInfo() + "/" + model.getId());
                         return EMPTY_RESPONSE;
                     } catch (Throwable ex) {
                         return throwError(response, ex);
@@ -715,7 +715,7 @@ public class Server {
                         Util.populate(metaData);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
-                        response.header("Location", request.pathInfo() + "/models/" + request.params(":uuid") + "/meta-data");
+                        response.header("Location", request.pathInfo() + "/" +  request.params(":uuid") + "/meta-data");
                         return EMPTY_RESPONSE;
                     } catch (Throwable ex) {
                         return throwError(response, ex);
@@ -742,7 +742,7 @@ public class Server {
                         Util.populate(feature);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
-                        response.header("Location", request.pathInfo() + "/models/" + feature.getId());
+                        response.header("Location", request.pathInfo() + "/" + feature.getId());
                         return EMPTY_RESPONSE;
                     } catch (Throwable ex) {
                         return throwError(response, ex);
