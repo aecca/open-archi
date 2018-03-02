@@ -14,9 +14,10 @@ public class Sequence extends Item {
     private int start;
     @Column
     private int duration;
-    @Column
-    @Enumerated(EnumType.STRING)
-    private ElementKind kind = ElementKind.SEQUENCE_MODEL;
+
+    public Sequence() {
+        setKind(ElementKind.SEQUENCE);
+    }
 
     public int getStart() {
         return start;

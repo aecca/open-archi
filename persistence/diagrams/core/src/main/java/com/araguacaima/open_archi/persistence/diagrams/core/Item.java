@@ -40,7 +40,7 @@ public class Item extends Taggable {
     public static final String GET_ALL_DIAGRAM_NAMES = "get.all.diagram.names";
     public static final String GET_ITEM_ID_BY_NAME = "get.item.id.by.name";
 
-    @Column(unique = true)
+    @Column
     protected String name;
 
     @Column

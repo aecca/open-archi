@@ -12,16 +12,7 @@ import javax.persistence.*;
 @PersistenceUnit(unitName = "open-archi")
 public abstract class UmlItem extends Item {
 
-    @Column
-    @Enumerated(EnumType.STRING)
-    private ElementKind kind = ElementKind.UML_CLASS_MODEL;
-
-    public ElementKind getKind() {
-        return kind;
+    public UmlItem() {
+        setKind(ElementKind.UML_CLASS);
     }
-
-    public void setKind(ElementKind kind) {
-        this.kind = kind;
-    }
-
 }

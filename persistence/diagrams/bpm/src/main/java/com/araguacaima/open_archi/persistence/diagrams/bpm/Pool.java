@@ -19,9 +19,9 @@ public class Pool extends Item {
                     referencedColumnName = "Id")})
     private Collection<Lane> lanes;
 
-    @Column
-    @Enumerated(EnumType.STRING)
-    private ElementKind kind;
+    public Pool() {
+        setKind(ElementKind.BPM);
+    }
 
     public Collection<Lane> getLanes() {
         return lanes;
@@ -31,11 +31,4 @@ public class Pool extends Item {
         this.lanes = lanes;
     }
 
-    public ElementKind getKind() {
-        return kind;
-    }
-
-    public void setKind(ElementKind kind) {
-        this.kind = kind;
-    }
 }

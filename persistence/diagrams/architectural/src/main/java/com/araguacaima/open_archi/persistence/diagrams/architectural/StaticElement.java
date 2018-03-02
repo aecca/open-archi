@@ -13,18 +13,8 @@ import javax.persistence.*;
 @PersistenceUnit(unitName = "open-archi")
 public abstract class StaticElement extends Element {
 
-    @Column
-    @Enumerated(EnumType.STRING)
-    private ElementKind kind = ElementKind.COMPONENT;
-
     public StaticElement() {
+        setKind(ElementKind.COMPONENT);
     }
 
-    public ElementKind getKind() {
-        return kind;
-    }
-
-    public void setKind(ElementKind kind) {
-        this.kind = kind;
-    }
 }

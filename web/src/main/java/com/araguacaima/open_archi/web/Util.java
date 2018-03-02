@@ -2,7 +2,7 @@
 package com.araguacaima.open_archi.web;
 
 import com.araguacaima.commons.utils.ReflectionUtils;
-import com.araguacaima.open_archi.persistence.commons.IdName;
+import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 import com.araguacaima.open_archi.persistence.diagrams.core.Item;
 import com.araguacaima.open_archi.persistence.meta.BasicEntity;
 import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
@@ -65,7 +65,8 @@ public class Util {
                     ReflectionUtils.doWithFields(clazz, field -> {
                         field.setAccessible(true);
                         Object object_ = field.get(entity);
-                        process(field.getType(), object_);
+                        Object result = process(field.getType(), object_);
+                        field.set(object_, result);
                     }, Util::filterMethod);
                     JPAEntityManagerUtils.persist(entity);
                 }
@@ -84,7 +85,8 @@ public class Util {
             ReflectionUtils.doWithFields(clazz, field -> {
                 field.setAccessible(true);
                 Object object_ = field.get(entity);
-                process(field.getType(), object_);
+                Object result = process(field.getType(), object_);
+                field.set(entity, result);
             }, Util::filterMethod);
             JPAEntityManagerUtils.persist(entity);
         } catch (Throwable t) {
@@ -95,24 +97,19 @@ public class Util {
         }
     }
 
-    private static void innerPopulation(Object entity) {
+    private static Object innerPopulation(Object entity) {
         ReflectionUtils.doWithFields(entity.getClass(), field -> {
             field.setAccessible(true);
             Object object_ = field.get(entity);
-            process(field.getType(), object_);
+            Object result = process(field.getType(), object_);
+            field.set(entity, result);
         }, Util::filterMethod);
         try {
             if (Item.class.isAssignableFrom(entity.getClass())) {
                 Map<String, Object> params = new HashMap<>();
-                Field fieldName = reflectionUtils.getField(Item.class, "name");
-                fieldName.setAccessible(true);
-                String name = (String) fieldName.get(entity);
-                fieldName.setAccessible(false);
+                String name = (String) reflectionUtils.invokeGetter(entity, "name");
                 params.put("name", name);
-                Field fieldKind = reflectionUtils.getField(Item.class, "name");
-                fieldKind.setAccessible(true);
-                String kind = (String) fieldKind.get(entity);
-                fieldKind.setAccessible(false);
+                ElementKind kind = (ElementKind) reflectionUtils.invokeGetter(entity, "kind");
                 params.put("kind", kind);
                 Item item = JPAEntityManagerUtils.find(Item.class, Item.GET_ITEM_ID_BY_NAME, params);
                 if (item == null) {
@@ -120,6 +117,7 @@ public class Util {
                 } else {
                     item.copy((Item) entity);
                     JPAEntityManagerUtils.update(item);
+                    return item;
                 }
             } else {
                 JPAEntityManagerUtils.persist(entity);
@@ -127,6 +125,7 @@ public class Util {
         } catch (Throwable t) {
             t.printStackTrace();
         }
+        return entity;
     }
 
     private static boolean filterMethod(Field field) {
@@ -139,21 +138,30 @@ public class Util {
         return aClass == null || reflectionUtils.getFullyQualifiedJavaTypeOrNull(aClass) == null;
     }
 
-    private static void process(Class<?> type, Object object_) {
+    private static Object process(Class<?> type, Object object_) {
         if (object_ != null) {
             if (ReflectionUtils.isCollectionImplementation(type)) {
+                Collection<Object> valuesToRemove = new ArrayList<>();
                 for (Object innerCollection : (Collection) object_) {
-                    innerPopulation(innerCollection);
+                    Object value = innerPopulation(innerCollection);
+                    if (!value.equals(innerCollection)) {
+                        valuesToRemove.add(innerCollection);
+                    }
                 }
+                ((Collection) object_).removeAll(valuesToRemove);
+                return object_;
             } else if (ReflectionUtils.isMapImplementation(type)) {
-                for (Object innerMapValues : ((Map) object_).values()) {
-                    innerPopulation(innerMapValues);
+                Map<Object, Object> map = (Map<Object, Object>) object_;
+                Set<Map.Entry<Object, Object>> set = map.entrySet();
+                for (Map.Entry innerMapValues : set) {
+                    map.put(innerMapValues.getKey(), innerPopulation(innerMapValues.getValue()));
                 }
+                return map;
             } else {
                 if (reflectionUtils.getFullyQualifiedJavaTypeOrNull(type) == null && !type.isEnum() && !Enum.class.isAssignableFrom(type)) {
                     if (BasicEntity.class.isAssignableFrom(type) || type.getAnnotation(Entity.class) != null) {
                         try {
-                            innerPopulation(object_);
+                            return innerPopulation(object_);
                         } catch (Throwable t) {
                             t.printStackTrace();
                         }
@@ -161,5 +169,6 @@ public class Util {
                 }
             }
         }
+        return object_;
     }
 }

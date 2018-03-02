@@ -19,11 +19,8 @@ public class Consumer extends StaticElement {
     @Enumerated(EnumType.STRING)
     private Scope scope = Scope.Unspecified;
 
-    @Column
-    @Enumerated(EnumType.STRING)
-    private ElementKind kind = ElementKind.CONSUMER;
-
     public Consumer() {
+        setKind(ElementKind.CONSUMER);
     }
 
     public Scope getScope() {
@@ -34,13 +31,4 @@ public class Consumer extends StaticElement {
         this.scope = scope;
     }
 
-    @Override
-    public ElementKind getKind() {
-        return kind;
-    }
-
-    @Override
-    public void setKind(ElementKind kind) {
-        this.kind = kind;
-    }
 }

@@ -1,5 +1,7 @@
 package com.araguacaima.open_archi.persistence.diagrams.architectural;
 
+import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
+
 import javax.persistence.*;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -31,6 +33,7 @@ public class Container extends StaticElement {
     private Set<Component> components = new LinkedHashSet<>();
 
     public Container() {
+        setKind(ElementKind.CONTAINER);
     }
 
     public String getTechnology() {

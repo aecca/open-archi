@@ -1,5 +1,7 @@
 package com.araguacaima.open_archi.persistence.diagrams.architectural;
 
+import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.PersistenceUnit;
@@ -24,6 +26,7 @@ public class Component extends StaticElement {
     private long size;
 
     public Component() {
+        setKind(ElementKind.COMPONENT);
     }
 
     public String getTechnology() {
