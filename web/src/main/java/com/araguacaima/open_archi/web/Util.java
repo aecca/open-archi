@@ -2,8 +2,8 @@
 package com.araguacaima.open_archi.web;
 
 import com.araguacaima.commons.utils.ReflectionUtils;
+import com.araguacaima.open_archi.persistence.commons.IdName;
 import com.araguacaima.open_archi.persistence.diagrams.core.Item;
-import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 import com.araguacaima.open_archi.persistence.meta.BasicEntity;
 import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
 import io.github.benas.randombeans.EnhancedRandomBuilder;
@@ -104,12 +104,17 @@ public class Util {
         try {
             if (Item.class.isAssignableFrom(entity.getClass())) {
                 Map<String, Object> params = new HashMap<>();
-                Field field = reflectionUtils.getField(Item.class, "name");
-                field.setAccessible(true);
-                String name = (String) field.get(entity);
-                field.setAccessible(false);
+                Field fieldName = reflectionUtils.getField(Item.class, "name");
+                fieldName.setAccessible(true);
+                String name = (String) fieldName.get(entity);
+                fieldName.setAccessible(false);
                 params.put("name", name);
-                Item item = JPAEntityManagerUtils.find(Item.class, Item.GET_ITEM_BY_NAME, params);
+                Field fieldKind = reflectionUtils.getField(Item.class, "name");
+                fieldKind.setAccessible(true);
+                String kind = (String) fieldKind.get(entity);
+                fieldKind.setAccessible(false);
+                params.put("kind", kind);
+                Item item = JPAEntityManagerUtils.find(Item.class, Item.GET_ITEM_ID_BY_NAME, params);
                 if (item == null) {
                     JPAEntityManagerUtils.persist(entity);
                 } else {

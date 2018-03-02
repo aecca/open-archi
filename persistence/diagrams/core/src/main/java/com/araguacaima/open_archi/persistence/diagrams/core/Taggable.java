@@ -10,7 +10,7 @@ import java.util.Set;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @PersistenceUnit(unitName = "open-archi")
-@Table(name = "Models", schema = "DIAGRAMS", uniqueConstraints= @UniqueConstraint(columnNames={"name", "modelType"}))
+@Table(name = "Models", schema = "DIAGRAMS", uniqueConstraints= @UniqueConstraint(columnNames={"name", "kind"}))
 @DiscriminatorColumn(name = "modelType", discriminatorType = DiscriminatorType.STRING)
 @NamedQueries({@NamedQuery(name = Taggable.GET_ALL_MODELS,
         query = "select a from Taggable a "), @NamedQuery(name = Taggable.GET_MODELS_BY_TYPE,

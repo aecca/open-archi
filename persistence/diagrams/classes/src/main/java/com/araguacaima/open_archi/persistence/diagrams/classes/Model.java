@@ -22,7 +22,7 @@ public class Model extends Element implements DiagramableElement {
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Relationship_Id",
                     referencedColumnName = "Id")})
-    protected Set<Relationship> relationships = new LinkedHashSet<>();
+    private Set<Relationship> relationships = new LinkedHashSet<>();
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",
             name = "Model_Classes",
@@ -31,9 +31,10 @@ public class Model extends Element implements DiagramableElement {
             inverseJoinColumns = {@JoinColumn(name = "Class_Id",
                     referencedColumnName = "Id")})
     private Collection<UmlClass> classes;
-    @Column
-    @Enumerated(EnumType.STRING)
-    private ElementKind kind = ElementKind.BPM_MODEL;
+
+    public Model() {
+        setKind(ElementKind.UML_CLASS_MODEL);
+    }
 
     public Collection<UmlClass> getClasses() {
         return classes;
@@ -41,14 +42,6 @@ public class Model extends Element implements DiagramableElement {
 
     public void setClasses(Collection<UmlClass> classes) {
         this.classes = classes;
-    }
-
-    public ElementKind getKind() {
-        return kind;
-    }
-
-    public void setKind(ElementKind kind) {
-        this.kind = kind;
     }
 
     public Set<Relationship> getRelationships() {

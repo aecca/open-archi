@@ -31,9 +31,7 @@ public class Model extends Element implements DiagramableElement {
             inverseJoinColumns = {@JoinColumn(name = "Relationship_Id",
                     referencedColumnName = "Id")})
     private Set<Relationship> relationships = new LinkedHashSet<>();
-    @Column
-    @Enumerated(EnumType.STRING)
-    private ElementKind kind = ElementKind.ARCHITECTURE_MODEL;
+
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",
             name = "Architecture_Model_Consumers",
@@ -60,10 +58,7 @@ public class Model extends Element implements DiagramableElement {
     private Set<DeploymentNode> deploymentNodes = new LinkedHashSet<>();
 
     public Model() {
-    }
-
-    public ElementKind getKind() {
-        return kind;
+        setKind(ElementKind.ARCHITECTURE_MODEL);
     }
 
     public void copy(Model source) {
@@ -73,10 +68,6 @@ public class Model extends Element implements DiagramableElement {
         this.softwareSystems = source.getSoftwareSystems();
         this.deploymentNodes = source.getDeploymentNodes();
 
-    }
-
-    public void setKind(ElementKind kind) {
-        this.kind = kind;
     }
 
     public Set<Consumer> getConsumers() {
