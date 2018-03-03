@@ -2,13 +2,14 @@ package com.araguacaima.open_archi.persistence.asm;
 
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 
 @Entity
 @PersistenceUnit(unitName = "open-archi")
-@Table(name = "Database",
-        schema = "ASM")
+@Table(name = "Database", schema = "ASM")
+@DynamicUpdate
 public class Database extends BaseEntity {
     public static Measurable DEFAULT_BIG = new Measurable(new Range<StorageUnit>(StorageUnit.GB, 251, 500));
     public static Measurable DEFAULT_HUGE = new Measurable(new Range<StorageUnit>(StorageUnit.GB, 501, null));

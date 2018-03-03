@@ -1,12 +1,14 @@
 package com.araguacaima.open_archi.persistence.diagrams.core;
 
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 
 @Entity
 @PersistenceUnit(unitName = "open-archi")
 @Table(name = "Shape", schema = "DIAGRAMS")
+@DynamicUpdate
 public class Shape extends BaseEntity {
 
     @Column

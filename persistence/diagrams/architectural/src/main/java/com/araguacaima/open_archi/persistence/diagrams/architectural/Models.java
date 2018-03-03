@@ -29,13 +29,13 @@ public class Models extends Elements {
     @Column
     @Enumerated(EnumType.STRING)
     private ElementKind kind = ElementKind.ARCHITECTURE_MODEL;
-    @OneToMany
+    @ManyToMany
     @JoinTable(schema = "DIAGRAMS",
             name = "Architecture_Model_People",
             joinColumns = {@JoinColumn(name = "Architecture_Model_Consumer_Id",
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Consumer_Id",
-                    referencedColumnName = "Id")})
+                    referencedColumnName = "Id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))})
     private Set<Consumers> consumers = new LinkedHashSet<>();
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",

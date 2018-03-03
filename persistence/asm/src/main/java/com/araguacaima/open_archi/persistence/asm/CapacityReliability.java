@@ -1,13 +1,14 @@
 package com.araguacaima.open_archi.persistence.asm;
 
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 
 @Entity
 @PersistenceUnit(unitName = "open-archi")
-@Table(schema = "ASM",
-        name = "CapacityReliability")
+@Table(schema = "ASM", name = "CapacityReliability")
+@DynamicUpdate
 
 public class CapacityReliability extends AbstractReliability implements IVolumetricReliability {
 

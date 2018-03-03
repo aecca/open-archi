@@ -59,11 +59,11 @@ public class JPAEntityManagerUtils {
         return namedQuery.getResultList();
     }
 
-    public static <T> T find(Class<T> clazz, String query) {
-        return find(clazz, query, null);
+    public static <T> T findByQuery(Class<T> clazz, String query) {
+        return findByQuery(clazz, query, null);
     }
 
-    public static <T> T find(Class<T> clazz, String query, Map<String, Object> params) {
+    public static <T> T findByQuery(Class<T> clazz, String query, Map<String, Object> params) {
         TypedQuery<T> namedQuery = entityManager.createNamedQuery(query, clazz);
         if (params != null) {
             for (Map.Entry<String, Object> param : params.entrySet()) {
@@ -75,6 +75,15 @@ public class JPAEntityManagerUtils {
         } catch (javax.persistence.NoResultException ignored) {
             return null;
         }
+    }
+
+
+    public static void merge(Object entity) {
+        merge(entity, getAutocommit());
+    }
+
+    public static void merge(Object entity, boolean autocommit) {
+        entityManager.merge(entity);
     }
 
     public static void persist(Object entity) {

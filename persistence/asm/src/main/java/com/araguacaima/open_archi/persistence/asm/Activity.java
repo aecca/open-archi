@@ -2,12 +2,14 @@ package com.araguacaima.open_archi.persistence.asm;
 
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 
 @Entity
 @PersistenceUnit(unitName = "open-archi")
 @Table(name = "Activity", schema = "ASM")
+@DynamicUpdate
 public class Activity extends BaseEntity {
 
     public static Measurable DEFAULT_BIG = new Measurable(new Range<Requests>(Requests.REQUESTS_PER_MONTH,

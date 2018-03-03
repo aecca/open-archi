@@ -1,6 +1,7 @@
 package com.araguacaima.open_archi.persistence.persons;
 
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,8 +10,8 @@ import javax.persistence.Table;
 
 @PersistenceUnit(unitName = "open-archi")
 @Entity
-@Table(schema = "PERSONS",
-        name = "Person")
+@Table(schema = "PERSONS", name = "Person")
+@DynamicUpdate
 public class Person extends BaseEntity {
 
     @Column

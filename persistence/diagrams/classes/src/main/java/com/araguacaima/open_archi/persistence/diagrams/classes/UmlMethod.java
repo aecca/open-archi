@@ -1,6 +1,7 @@
 package com.araguacaima.open_archi.persistence.diagrams.classes;
 
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -8,6 +9,7 @@ import java.util.Collection;
 @Entity
 @PersistenceUnit(unitName = "open-archi")
 @Table(name = "UmlMethod", schema = "DIAGRAMS")
+@DynamicUpdate
 public class UmlMethod extends BaseEntity {
     @Column
     private String name;

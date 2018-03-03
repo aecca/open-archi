@@ -1,6 +1,7 @@
 package com.araguacaima.open_archi.persistence.diagrams.er;
 
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +11,7 @@ import javax.persistence.Table;
 @Entity
 @PersistenceUnit(unitName = "open-archi")
 @Table(name = "Attribute", schema = "DIAGRAMS")
+@DynamicUpdate
 public class Attribute extends BaseEntity {
     @Column
     private String name;

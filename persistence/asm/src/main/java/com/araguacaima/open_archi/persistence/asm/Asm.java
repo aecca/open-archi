@@ -3,6 +3,7 @@ package com.araguacaima.open_archi.persistence.asm;
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 import com.araguacaima.open_archi.persistence.persons.Responsible;
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -13,8 +14,8 @@ import java.util.Set;
 
 @Entity
 @PersistenceUnit(unitName = "open-archi")
-@Table(schema = "ASM",
-        name = "Asm")
+@Table(schema = "ASM", name = "Asm")
+@DynamicUpdate
 @NamedQueries(value = {@NamedQuery(name = "Asm.getAll",
         query = "SELECT asm FROM Asm asm"), @NamedQuery(name = "Asm.getById",
         query = "SELECT asm FROM Asm asm WHERE Asm.id=:id")})

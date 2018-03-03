@@ -1,12 +1,14 @@
 package com.araguacaima.open_archi.persistence.diagrams.classes;
 
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 
 @Entity
 @PersistenceUnit(unitName = "open-archi")
 @Table(name = "UmlField", schema = "DIAGRAMS")
+@DynamicUpdate
 public class UmlField extends BaseEntity {
 
     @Column

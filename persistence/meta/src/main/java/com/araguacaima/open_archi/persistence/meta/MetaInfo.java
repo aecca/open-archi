@@ -3,6 +3,7 @@ package com.araguacaima.open_archi.persistence.meta;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -16,6 +17,7 @@ import java.util.UUID;
 @PersistenceUnit(unitName = "open-archi")
 @Entity
 @Table(schema = "META", name = "MetaInfo")
+@DynamicUpdate
 @NamedQueries(value = {@NamedQuery(name = MetaInfo.COUNT_ALL_META_INFO,
         query = "select count(a) from MetaInfo a"), @NamedQuery(
         name = MetaInfo.GET_ALL_META_INFO,

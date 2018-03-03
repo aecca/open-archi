@@ -2,13 +2,14 @@ package com.araguacaima.open_archi.persistence.asm;
 
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 
 @Entity
 @PersistenceUnit(unitName = "open-archi")
-@Table(name = "Concurrency",
-        schema = "ASM")
+@Table(name = "Concurrency", schema = "ASM")
+@DynamicUpdate
 public class Concurrency extends BaseEntity {
     public static Measurable HIGH = new Measurable(new Range<ConcurrencyUnit>(ConcurrencyUnit
             .NUMBER_OF_CONCURRENT_USERS,

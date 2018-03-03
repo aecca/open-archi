@@ -2,6 +2,7 @@ package com.araguacaima.open_archi.persistence.diagrams.core.reliability;
 
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -9,8 +10,8 @@ import java.util.Set;
 
 @Entity
 @PersistenceUnit(unitName = "open-archi")
-@Table(name = "Database",
-        schema = "DIAGRAMS")
+@Table(name = "Database", schema = "DIAGRAMS")
+@DynamicUpdate
 public class Database extends BaseEntity implements MeasurableRange {
     private static final Set<Measurable> RANGE = new HashSet<Measurable>() {{
         add(DEFAULT_BIG);

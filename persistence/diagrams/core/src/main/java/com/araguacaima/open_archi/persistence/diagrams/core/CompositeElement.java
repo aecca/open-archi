@@ -8,6 +8,7 @@ import com.araguacaima.specification.Specification;
 import com.araguacaima.specification.util.SpecificationMap;
 import com.araguacaima.specification.util.SpecificationMapBuilder;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -19,6 +20,7 @@ import java.util.ResourceBundle;
 @Entity
 @PersistenceUnit(unitName = "open-archi")
 @Table(name = "CompositeElement", schema = "DIAGRAMS")
+@DynamicUpdate
 public class CompositeElement<T extends ElementKind> implements Valuable {
 
 

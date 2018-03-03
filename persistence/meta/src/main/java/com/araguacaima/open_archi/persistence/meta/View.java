@@ -2,6 +2,7 @@ package com.araguacaima.open_archi.persistence.meta;
 
 
 import com.araguacaima.open_archi.persistence.commons.exceptions.EntityError;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,6 +12,7 @@ import javax.persistence.Table;
 @Entity
 @PersistenceUnit(unitName = "open-archi")
 @Table(name = "View", schema = "META")
+@DynamicUpdate
 public class View extends BaseEntity {
 
     @Column

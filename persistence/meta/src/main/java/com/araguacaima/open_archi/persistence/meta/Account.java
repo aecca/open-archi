@@ -2,6 +2,7 @@ package com.araguacaima.open_archi.persistence.meta;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -14,6 +15,7 @@ import java.util.UUID;
 @PersistenceUnit(unitName = "open-archi")
 @Entity
 @Table(schema = "META", name = "Account")
+@DynamicUpdate
 @NamedQueries(value = {@NamedQuery(name = Account.FIND_BY_EMAIL,
         query = "select a from Account a where a.email = :"
                 + Account.PARAM_EMAIL), @NamedQuery(name = Account.FIND_BY_LOGIN,

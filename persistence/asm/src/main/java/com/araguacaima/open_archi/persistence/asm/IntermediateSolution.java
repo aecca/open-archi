@@ -2,14 +2,15 @@ package com.araguacaima.open_archi.persistence.asm;
 
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.Collection;
 
 @Entity
 @PersistenceUnit(unitName = "open-archi")
-@Table(schema = "ASM",
-        name = "IntermediateSolution")
+@Table(schema = "ASM", name = "IntermediateSolution")
+@DynamicUpdate
 public class IntermediateSolution extends BaseEntity {
 
     @OneToOne(cascade = CascadeType.REMOVE)

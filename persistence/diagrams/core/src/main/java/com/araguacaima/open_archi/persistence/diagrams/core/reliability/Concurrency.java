@@ -2,6 +2,7 @@ package com.araguacaima.open_archi.persistence.diagrams.core.reliability;
 
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -9,8 +10,8 @@ import java.util.Set;
 
 @Entity
 @PersistenceUnit(unitName = "open-archi")
-@Table(name = "Concurrency",
-        schema = "DIAGRAMS")
+@Table(name = "Concurrency", schema = "DIAGRAMS")
+@DynamicUpdate
 public class Concurrency extends BaseEntity implements MeasurableRange {
     public static Measurable HIGH = new Measurable(new Range(ConcurrencyUnit
             .NUMBER_OF_CONCURRENT_CONSUMERS.name(),

@@ -4,14 +4,15 @@ import com.araguacaima.open_archi.persistence.commons.exceptions.EntityError;
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 import com.araguacaima.open_archi.persistence.persons.Responsible;
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @PersistenceUnit(unitName = "open-archi")
-@Table(schema = "ASM",
-        name = "VersionControl")
+@Table(schema = "ASM", name = "VersionControl")
+@DynamicUpdate
 public class VersionControl extends BaseEntity {
 
     @Column

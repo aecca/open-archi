@@ -1,6 +1,8 @@
 package com.araguacaima.open_archi.persistence.diagrams.core;
 
 
+import org.hibernate.annotations.DynamicUpdate;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.UUID;
@@ -8,6 +10,7 @@ import java.util.UUID;
 @Entity
 @PersistenceUnit(unitName = "open-archi")
 @Table(name = "ConnectTrigger", schema = "DIAGRAMS")
+@DynamicUpdate
 public class ConnectTrigger {
 
     @Id

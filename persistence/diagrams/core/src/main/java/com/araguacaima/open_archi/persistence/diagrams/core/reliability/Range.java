@@ -1,6 +1,7 @@
 package com.araguacaima.open_archi.persistence.diagrams.core.reliability;
 
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,8 +10,8 @@ import javax.persistence.Table;
 
 @Entity
 @PersistenceUnit(unitName = "open-archi")
-@Table(schema = "DIAGRAMS",
-        name = "Range")
+@Table(schema = "DIAGRAMS", name = "Range")
+@DynamicUpdate
 public class Range extends BaseEntity {
 
     @Column

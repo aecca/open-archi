@@ -3,6 +3,7 @@ package com.araguacaima.open_archi.persistence.meta;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -12,6 +13,7 @@ import java.util.UUID;
 @PersistenceUnit(unitName = "open-archi")
 @Entity
 @Table(schema = "META", name = "Version")
+@DynamicUpdate
 @NamedQueries(value = {@NamedQuery(name = Version.COUNT_ALL_VERSIONS,
         query = "select count(a) from Version a"), @NamedQuery(name = Version.GET_DEFAULT_VERSION,
         query = "select a from Version a where a.major = 1 and a.minor = 0 and a.build = 0"), @NamedQuery(

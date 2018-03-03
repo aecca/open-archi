@@ -356,7 +356,7 @@ public class Server {
                             throw new Exception("Invalid kind of model '" + model.getKind() + "'. It should be '" + ElementKind.ARCHITECTURE_MODEL + "'");
                         }
                         model.validateCreation();
-                        Util.populate(model);
+                        DBUtil.populate(model);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
                         response.header("Location", request.pathInfo() + "/" + model.getId());
@@ -382,7 +382,7 @@ public class Server {
                             throw new Exception("Invalid kind of relationship");
                         }
                         feature.validateCreation();
-                        Util.populate(feature);
+                        DBUtil.populate(feature);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
                         response.header("Location", request.pathInfo() + "/" + feature.getId());
@@ -408,7 +408,7 @@ public class Server {
                             throw new Exception("Invalid kind of relationship");
                         }
                         feature.validateCreation();
-                        Util.populate(feature);
+                        DBUtil.populate(feature);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
                         response.header("Location", request.pathInfo() + "/" + feature.getId());
@@ -438,7 +438,7 @@ public class Server {
                             throw new Exception("Invalid kind of model '" + model.getKind() + "'. It should be '" + ElementKind.BPM_MODEL + "'");
                         }
                         model.validateCreation();
-                        Util.populate(model);
+                        DBUtil.populate(model);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
                         response.header("Location", request.pathInfo() + "/" + model.getId());
@@ -468,7 +468,7 @@ public class Server {
                             throw new Exception("Invalid kind of model '" + model.getKind() + "'. It should be '" + ElementKind.ENTITY_RELATIONSHIP_MODEL + "'");
                         }
                         model.validateCreation();
-                        Util.populate(model);
+                        DBUtil.populate(model);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
                         response.header("Location", request.pathInfo() + "/" + model.getId());
@@ -498,7 +498,7 @@ public class Server {
                             throw new Exception("Invalid kind of model '" + model.getKind() + "'. It should be '" + ElementKind.FLOWCHART_MODEL + "'");
                         }
                         model.validateCreation();
-                        Util.populate(model);
+                        DBUtil.populate(model);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
                         response.header("Location", request.pathInfo() + "/" + model.getId());
@@ -528,7 +528,7 @@ public class Server {
                             throw new Exception("Invalid kind of model '" + model.getKind() + "'. It should be '" + ElementKind.GANTT_MODEL + "'");
                         }
                         model.validateCreation();
-                        Util.populate(model);
+                        DBUtil.populate(model);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
                         response.header("Location", request.pathInfo() +"/" + model.getId());
@@ -558,7 +558,7 @@ public class Server {
                             throw new Exception("Invalid kind of model '" + model.getKind() + "'. It should be '" + ElementKind.SEQUENCE_MODEL + "'");
                         }
                         model.validateCreation();
-                        Util.populate(model);
+                        DBUtil.populate(model);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
                         response.header("Location", request.pathInfo() + "/" + model.getId());
@@ -588,7 +588,7 @@ public class Server {
                             throw new Exception("Invalid kind of model '" + model.getKind() + "'. It should be '" + ElementKind.UML_CLASS_MODEL + "'");
                         }
                         model.validateCreation();
-                        Util.populate(model);
+                        DBUtil.populate(model);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
                         response.header("Location", request.pathInfo() + "/" + model.getId());
@@ -624,7 +624,7 @@ public class Server {
                             throw new Exception("Invalid kind of model '" + kind + "'");
                         }
                         model.validateCreation();
-                        Util.populate(model);
+                        DBUtil.populate(model);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
                         response.header("Location", request.pathInfo() + "/" + model.getId());
@@ -686,7 +686,7 @@ public class Server {
                         } catch (Throwable t) {
                             throw new Exception("Invalid kind of parent model info due: '" + t.getMessage() + "'");
                         }
-                        Util.populate(model);
+                        DBUtil.populate(model);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
                         response.header("Location", request.pathInfo() + "/" + model.getId());
@@ -712,7 +712,7 @@ public class Server {
                             throw new Exception("Invalid metadata");
                         }
                         metaData.validateCreation();
-                        Util.populate(metaData);
+                        DBUtil.populate(metaData);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
                         response.header("Location", request.pathInfo() + "/" +  request.params(":uuid") + "/meta-data");
@@ -739,7 +739,7 @@ public class Server {
                             throw new Exception("Invalid kind of feature");
                         }
                         feature.validateCreation();
-                        Util.populate(feature);
+                        DBUtil.populate(feature);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
                         response.header("Location", request.pathInfo() + "/" + feature.getId());

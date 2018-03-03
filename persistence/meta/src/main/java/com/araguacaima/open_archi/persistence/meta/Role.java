@@ -2,6 +2,7 @@ package com.araguacaima.open_archi.persistence.meta;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -15,6 +16,7 @@ import java.util.UUID;
 @PersistenceUnit(unitName = "open-archi")
 @Entity
 @Table(schema = "META", name = "Role")
+@DynamicUpdate
 @NamedQueries(value = {@NamedQuery(name = Role.FIND_BY_PRIORITY,
         query = "select a from Role a where a.priority = :"
                 + Role.PARAM_PRIORITY), @NamedQuery(name = Role.FIND_BY_ID,

@@ -4,6 +4,7 @@ import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 import com.araguacaima.open_archi.persistence.meta.View;
 import com.araguacaima.open_archi.persistence.persons.Responsible;
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -11,6 +12,7 @@ import java.util.Collection;
 @Entity
 @PersistenceUnit(unitName = "open-archi")
 @Table(name = "MetaData", schema = "DIAGRAMS")
+@DynamicUpdate
 public class MetaData extends BaseEntity {
 
     @OneToMany(cascade = CascadeType.REMOVE)

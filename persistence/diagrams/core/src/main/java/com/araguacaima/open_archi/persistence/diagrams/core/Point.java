@@ -2,6 +2,7 @@ package com.araguacaima.open_archi.persistence.diagrams.core;
 
 
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,6 +20,7 @@ import java.io.Serializable;
 @Entity
 @PersistenceUnit(unitName = "open-archi")
 @Table(name = "Point", schema = "DIAGRAMS")
+@DynamicUpdate
 public class Point extends BaseEntity implements Serializable, Cloneable {
 
     private static final long serialVersionUID = -5276940640259749850L;

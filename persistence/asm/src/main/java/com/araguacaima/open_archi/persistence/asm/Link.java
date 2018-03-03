@@ -1,13 +1,14 @@
 package com.araguacaima.open_archi.persistence.asm;
 
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 
 @Entity
 @PersistenceUnit(unitName = "open-archi")
-@Table(schema = "ASM",
-        name = "Link")
+@Table(schema = "ASM", name = "Link")
+@DynamicUpdate
 public class Link extends BaseEntity {
 
     @Column

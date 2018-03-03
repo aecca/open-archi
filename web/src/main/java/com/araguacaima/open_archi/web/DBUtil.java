@@ -20,7 +20,7 @@ import java.util.*;
 import static java.nio.charset.Charset.forName;
 
 
-public class Util {
+public class DBUtil {
 
     private static Logger log = LoggerFactory.getLogger(Server.class);
     private static Set<Class> classes = new HashSet<>();
@@ -31,7 +31,7 @@ public class Util {
     private static LocalDate dateLower = LocalDate.of(2000, 1, 1);
     private static LocalDate dateUpper = LocalDate.of(2040, 12, 31);
 
-    public Util() {
+    public DBUtil() {
     }
 
     static {
@@ -62,13 +62,7 @@ public class Util {
                 int next = new Random().nextInt((4 - 1) + 1) + 1;
                 for (int i = 0; i < next; i++) {
                     Object entity = enhancedRandom.nextObject(clazz);
-                    ReflectionUtils.doWithFields(clazz, field -> {
-                        field.setAccessible(true);
-                        Object object_ = field.get(entity);
-                        Object result = process(field.getType(), object_);
-                        field.set(object_, result);
-                    }, Util::filterMethod);
-                    JPAEntityManagerUtils.persist(entity);
+                    process(entity, clazz);
                 }
             }
         } catch (Throwable ignored) {
@@ -80,15 +74,10 @@ public class Util {
 
     public static void populate(Object entity) throws Throwable {
         JPAEntityManagerUtils.begin();
+        flatten(entity);
         try {
             Class clazz = entity.getClass();
-            ReflectionUtils.doWithFields(clazz, field -> {
-                field.setAccessible(true);
-                Object object_ = field.get(entity);
-                Object result = process(field.getType(), object_);
-                field.set(entity, result);
-            }, Util::filterMethod);
-            JPAEntityManagerUtils.persist(entity);
+            process(entity, clazz);
         } catch (Throwable t) {
             JPAEntityManagerUtils.rollback();
             throw t;
@@ -97,31 +86,25 @@ public class Util {
         }
     }
 
+    private static void process(Object entity, Class clazz) {
+        ReflectionUtils.doWithFields(clazz, field -> {
+            field.setAccessible(true);
+            Object object_ = field.get(entity);
+            Object result = process(field.getType(), object_);
+            field.set(entity, result);
+        }, DBUtil::filterMethod);
+        JPAEntityManagerUtils.persist(entity);
+    }
+
     private static Object innerPopulation(Object entity) {
         ReflectionUtils.doWithFields(entity.getClass(), field -> {
             field.setAccessible(true);
             Object object_ = field.get(entity);
             Object result = process(field.getType(), object_);
             field.set(entity, result);
-        }, Util::filterMethod);
+        }, DBUtil::filterMethod);
         try {
-            if (Item.class.isAssignableFrom(entity.getClass())) {
-                Map<String, Object> params = new HashMap<>();
-                String name = (String) reflectionUtils.invokeGetter(entity, "name");
-                params.put("name", name);
-                ElementKind kind = (ElementKind) reflectionUtils.invokeGetter(entity, "kind");
-                params.put("kind", kind);
-                Item item = JPAEntityManagerUtils.find(Item.class, Item.GET_ITEM_ID_BY_NAME, params);
-                if (item == null) {
-                    JPAEntityManagerUtils.persist(entity);
-                } else {
-                    item.copy((Item) entity);
-                    JPAEntityManagerUtils.update(item);
-                    return item;
-                }
-            } else {
-                JPAEntityManagerUtils.persist(entity);
-            }
+            JPAEntityManagerUtils.persist(entity);
         } catch (Throwable t) {
             t.printStackTrace();
         }
@@ -154,14 +137,92 @@ public class Util {
                 Map<Object, Object> map = (Map<Object, Object>) object_;
                 Set<Map.Entry<Object, Object>> set = map.entrySet();
                 for (Map.Entry innerMapValues : set) {
-                    map.put(innerMapValues.getKey(), innerPopulation(innerMapValues.getValue()));
+                    Object value = innerPopulation(innerMapValues.getValue());
+                    map.put(innerMapValues.getKey(), value);
                 }
                 return map;
             } else {
                 if (reflectionUtils.getFullyQualifiedJavaTypeOrNull(type) == null && !type.isEnum() && !Enum.class.isAssignableFrom(type)) {
                     if (BasicEntity.class.isAssignableFrom(type) || type.getAnnotation(Entity.class) != null) {
                         try {
-                            return innerPopulation(object_);
+                            Object value = innerPopulation(object_);
+                            return value;
+                        } catch (Throwable t) {
+                            t.printStackTrace();
+                        }
+                    }
+                }
+            }
+        }
+        return object_;
+    }
+
+    public static void flatten(Object entity) throws Throwable {
+        Class clazz = entity.getClass();
+        processFlatten(entity, clazz);
+    }
+
+    private static void processFlatten(Object entity, Class clazz) {
+        ReflectionUtils.doWithFields(clazz, field -> {
+            field.setAccessible(true);
+            Object object_ = field.get(entity);
+            Object result = processFlatten(field.getType(), object_);
+            field.set(entity, result);
+        }, DBUtil::filterMethod);
+    }
+
+    private static Object innerFlatten(Object entity) {
+        ReflectionUtils.doWithFields(entity.getClass(), field -> {
+            field.setAccessible(true);
+            Object object_ = field.get(entity);
+            Object result = processFlatten(field.getType(), object_);
+            field.set(entity, result);
+        }, DBUtil::filterMethod);
+        try {
+            if (Item.class.isAssignableFrom(entity.getClass())) {
+                Map<String, Object> params = new HashMap<>();
+                String name = (String) reflectionUtils.invokeGetter(entity, "name");
+                params.put("name", name);
+                ElementKind kind = (ElementKind) reflectionUtils.invokeGetter(entity, "kind");
+                params.put("kind", kind);
+                Item item = JPAEntityManagerUtils.findByQuery(Item.class, Item.GET_ITEM_ID_BY_NAME, params);
+                if (item != null) {
+                    item.copy((Item) entity);
+                    return item;
+                }
+            }
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+        return entity;
+    }
+
+    private static Object processFlatten(Class<?> type, Object object_) {
+        if (object_ != null) {
+            if (ReflectionUtils.isCollectionImplementation(type)) {
+                Collection<Object> valuesToRemove = new ArrayList<>();
+                Collection<Object> valuesToAdd = new ArrayList<>();
+                for (Object innerCollection : (Collection) object_) {
+                    Object value = innerFlatten(innerCollection);
+                    valuesToRemove.add(innerCollection);
+                    valuesToAdd.add(value);
+                }
+                ((Collection) object_).removeAll(valuesToRemove);
+                ((Collection) object_).addAll(valuesToAdd);
+                return object_;
+            } else if (ReflectionUtils.isMapImplementation(type)) {
+                Map<Object, Object> map = (Map<Object, Object>) object_;
+                Set<Map.Entry<Object, Object>> set = map.entrySet();
+                for (Map.Entry innerMapValues : set) {
+                    Object value = innerFlatten(innerMapValues.getValue());
+                    map.put(innerMapValues.getKey(), value);
+                }
+                return map;
+            } else {
+                if (reflectionUtils.getFullyQualifiedJavaTypeOrNull(type) == null && !type.isEnum() && !Enum.class.isAssignableFrom(type)) {
+                    if (BasicEntity.class.isAssignableFrom(type) || type.getAnnotation(Entity.class) != null) {
+                        try {
+                            return innerFlatten(object_);
                         } catch (Throwable t) {
                             t.printStackTrace();
                         }

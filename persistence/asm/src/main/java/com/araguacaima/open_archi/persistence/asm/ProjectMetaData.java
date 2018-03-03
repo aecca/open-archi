@@ -3,14 +3,15 @@ package com.araguacaima.open_archi.persistence.asm;
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 import com.araguacaima.open_archi.persistence.persons.Person;
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.Collection;
 
 @Entity
 @PersistenceUnit(unitName = "open-archi")
-@Table(schema = "ASM",
-        name = "ProjectMetaData")
+@Table(schema = "ASM", name = "ProjectMetaData")
+@DynamicUpdate
 public class ProjectMetaData extends BaseEntity {
 
     @Column

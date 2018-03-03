@@ -32,7 +32,7 @@ public class Model extends Element implements DiagramableElement {
                     referencedColumnName = "Id")})
     private Set<Relationship> relationships = new LinkedHashSet<>();
 
-    @OneToMany
+    @ManyToMany
     @JoinTable(schema = "DIAGRAMS",
             name = "Architecture_Model_Consumers",
             joinColumns = {@JoinColumn(name = "Architecture_Model_Id",
@@ -40,6 +40,7 @@ public class Model extends Element implements DiagramableElement {
             inverseJoinColumns = {@JoinColumn(name = "Consumer_Id",
                     referencedColumnName = "Id")})
     private Set<Consumer> consumers = new LinkedHashSet<>();
+
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",
             name = "Architecture_Model_SoftwareSystems",
@@ -48,6 +49,7 @@ public class Model extends Element implements DiagramableElement {
             inverseJoinColumns = {@JoinColumn(name = "SoftwareSystem_Id",
                     referencedColumnName = "Id")})
     private Set<SoftwareSystem> softwareSystems = new LinkedHashSet<>();
+
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",
             name = "Architecture_Model_DeploymentNodes",

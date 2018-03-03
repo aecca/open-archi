@@ -2,6 +2,7 @@ package com.araguacaima.open_archi.persistence.diagrams.core.reliability;
 
 import com.araguacaima.open_archi.persistence.commons.exceptions.EntityError;
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -9,8 +10,8 @@ import java.util.Set;
 
 @Entity
 @PersistenceUnit(unitName = "open-archi")
-@Table(schema = "DIAGRAMS",
-        name = "Constraint")
+@Table(schema = "DIAGRAMS", name = "Constraint")
+@DynamicUpdate
 public class Constraint extends BaseEntity {
 
     @OneToMany
