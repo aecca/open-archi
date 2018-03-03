@@ -18,20 +18,20 @@ schemes:
 - https
 paths:
   "/models":
-    options:
-      tags:
-      - Models
-      summary: Shows options for models object
-      operationId: options-models
-      produces:
-      - application/json
-      responses:
-        '200':
-          description: OK
-          schema:
-            allOf:
-            - $ref: "#/definitions/Options_Get_Collection"
-            - $ref: "#/definitions/Options_Post"
+#    options:
+#      tags:
+#      - Models
+#      summary: Shows options for models object
+#      operationId: options-models
+#      produces:
+#      - application/json
+#      responses:
+#        '200':
+#          description: OK
+#          schema:
+#            allOf:
+#            - $ref: "#/definitions/Options_Get_Collection"
+#            - $ref: "#/definitions/Options_Post"
     get:
       tags:
       - Models
@@ -135,19 +135,19 @@ paths:
       - openarchi_auth:
         - write:model
         - read:models
-  "/models/:model-id":
-    options:
-      tags:
-      - Models
-      summary: Shows options for a specific model object
-      operationId: options-model
-      produces:
-      - application/json
-      responses:
-        '200':
-          description: OK
-          schema:
-            $ref: "#/definitions/Options_Get"
+#  "/models/:model-id":
+#    options:
+#      tags:
+#      - Models
+#      summary: Shows options for a specific model object
+#      operationId: options-model
+#      produces:
+#      - application/json
+#      responses:
+#        '200':
+#          description: OK
+#          schema:
+#            $ref: "#/definitions/Options_Get"
   "/models/{model-id}":
     get:
       tags:
@@ -172,21 +172,21 @@ paths:
           description: Invalid ID supplied
         '404':
           description: Model not found
-  "/models/:model-id/children":
-    options:
-      tags:
-      - Models
-      summary: Shows options for the children objects of a specific model
-      operationId: options-model-children
-      produces:
-      - application/json
-      responses:
-        '200':
-          description: OK
-          schema:
-            allOf:
-            - $ref: "#/definitions/Options_Get_Collection"
-            - $ref: "#/definitions/Options_Put"
+#  "/models/:model-id/children":
+#    options:
+#      tags:
+#      - Models
+#      summary: Shows options for the children objects of a specific model
+#      operationId: options-model-children
+#      produces:
+#      - application/json
+#      responses:
+#        '200':
+#          description: OK
+#          schema:
+#            allOf:
+#            - $ref: "#/definitions/Options_Get_Collection"
+#            - $ref: "#/definitions/Options_Put"
   "/models/{model-id}/children":
     get:
       tags:
@@ -252,21 +252,21 @@ paths:
       - openarchi_auth:
         - write:model
         - read:models
-  "/models/:model-id/parent":
-    options:
-      tags:
-      - Models
-      summary: Shows options for the parent object of a specific model
-      operationId: options-model-parent
-      produces:
-      - application/json
-      responses:
-        '200':
-          description: OK
-          schema:
-            allOf:
-            - $ref: "#/definitions/Options_Get"
-            - $ref: "#/definitions/Options_Post"
+#  "/models/:model-id/parent":
+#    options:
+#      tags:
+#      - Models
+#      summary: Shows options for the parent object of a specific model
+#      operationId: options-model-parent
+#      produces:
+#      - application/json
+#      responses:
+#        '200':
+#          description: OK
+#          schema:
+#            allOf:
+#            - $ref: "#/definitions/Options_Get"
+#            - $ref: "#/definitions/Options_Post"
   "/models/{model-id}/parent":
     get:
       tags:
@@ -325,21 +325,21 @@ paths:
       - openarchi_auth:
         - write:model
         - read:models
-  "/models/:model-id/meta-data":
-    options:
-      tags:
-      - Models
-      summary: Shows options for the meta data info of a specific model
-      operationId: options-model-meta-data
-      produces:
-      - application/json
-      responses:
-        '200':
-          description: OK
-          schema:
-            allOf:
-            - $ref: "#/definitions/Options_Get"
-            - $ref: "#/definitions/Options_Post"
+#  "/models/:model-id/meta-data":
+#    options:
+#      tags:
+#      - Models
+#      summary: Shows options for the meta data info of a specific model
+#      operationId: options-model-meta-data
+#      produces:
+#      - application/json
+#      responses:
+#        '200':
+#          description: OK
+#          schema:
+#            allOf:
+#            - $ref: "#/definitions/Options_Get"
+#            - $ref: "#/definitions/Options_Post"
   "/models/{model-id}/meta-data":
     get:
       tags:
@@ -398,21 +398,21 @@ paths:
       - openarchi_auth:
         - write:model
         - read:models
-  "/models/:model-id/features":
-    options:
-      tags:
-      - Models
-      summary: Shows options for the features of a specific model
-      operationId: options-model-features
-      produces:
-      - application/json
-      responses:
-        '200':
-          description: OK
-          schema:
-            allOf:
-            - $ref: "#/definitions/Options_Get_Collection"
-            - $ref: "#/definitions/Options_Put"
+#  "/models/:model-id/features":
+#    options:
+#      tags:
+#      - Models
+#      summary: Shows options for the features of a specific model
+#      operationId: options-model-features
+#      produces:
+#      - application/json
+#      responses:
+#        '200':
+#          description: OK
+#          schema:
+#            allOf:
+#            - $ref: "#/definitions/Options_Get_Collection"
+#            - $ref: "#/definitions/Options_Put"
   "/models/{model-id}/features":
     get:
       tags:
@@ -542,21 +542,21 @@ paths:
       - openarchi_auth:
         - write:model
         - read:models
-  "/diagrams/architectures/:model-id/relationships":
-    options:
-      tags:
-      - Diagrams
-      summary: Shows options for the relationships of a specific model
-      operationId: options-model-relationships
-      produces:
-      - application/json
-      responses:
-        '200':
-          description: OK
-          schema:
-            allOf:
-            - $ref: "#/definitions/Options_Get_Collection"
-            - $ref: "#/definitions/Options_Put"
+#  "/diagrams/architectures/:model-id/relationships":
+#    options:
+#      tags:
+#      - Diagrams
+#      summary: Shows options for the relationships of a specific model
+#      operationId: options-model-relationships
+#      produces:
+#      - application/json
+#      responses:
+#        '200':
+#          description: OK
+#          schema:
+#            allOf:
+#            - $ref: "#/definitions/Options_Get_Collection"
+#            - $ref: "#/definitions/Options_Put"
   "/diagrams/architectures/{model-id}/relationships":
     get:
       tags:
@@ -617,22 +617,21 @@ paths:
       - openarchi_auth:
         - write:model
         - read:models
-
-  "/diagrams/architectures/:model-id/consumers":
-    options:
-      tags:
-      - Diagrams
-      summary: Shows options for the consumers of a specific model
-      operationId: options-model-consumers
-      produces:
-      - application/json
-      responses:
-        '200':
-          description: OK
-          schema:
-            allOf:
-            - $ref: "#/definitions/Options_Get_Collection"
-            - $ref: "#/definitions/Options_Put"
+#  "/diagrams/architectures/:model-id/consumers":
+#    options:
+#      tags:
+#      - Diagrams
+#      summary: Shows options for the consumers of a specific model
+#      operationId: options-model-consumers
+#      produces:
+#      - application/json
+#      responses:
+#        '200':
+#          description: OK
+#          schema:
+#            allOf:
+#            - $ref: "#/definitions/Options_Get_Collection"
+#            - $ref: "#/definitions/Options_Put"
   "/diagrams/architectures/{model-id}/consumers":
     get:
       tags:
@@ -699,20 +698,20 @@ paths:
         - write:model
         - read:models
   "/diagrams/bpms":
-    options:
-      tags:
-      - Diagrams
-      summary: Shows options for BPM diagram
-      operationId: options-bpm
-      produces:
-      - application/json
-      responses:
-        '200':
-          description: OK
-          schema:
-            allOf:
-            - $ref: "#/definitions/Options_Get_Collection"
-            - $ref: "#/definitions/Options_Post"
+#    options:
+#      tags:
+#      - Diagrams
+#      summary: Shows options for BPM diagram
+#      operationId: options-bpm
+#      produces:
+#      - application/json
+#      responses:
+#        '200':
+#          description: OK
+#          schema:
+#            allOf:
+#            - $ref: "#/definitions/Options_Get_Collection"
+#            - $ref: "#/definitions/Options_Post"
     get:
       tags:
       - Diagrams
@@ -768,20 +767,20 @@ paths:
         - write:model
         - read:models
   "/diagrams/flowcharts":
-    options:
-      tags:
-      - Diagrams
-      summary: Shows options for flowcharts diagram
-      operationId: options-flowcharts
-      produces:
-      - application/json
-      responses:
-        '200':
-          description: OK
-          schema:
-            allOf:
-            - $ref: "#/definitions/Options_Get_Collection"
-            - $ref: "#/definitions/Options_Post"
+#    options:
+#      tags:
+#      - Diagrams
+#      summary: Shows options for flowcharts diagram
+#      operationId: options-flowcharts
+#      produces:
+#      - application/json
+#      responses:
+#        '200':
+#          description: OK
+#          schema:
+#            allOf:
+#            - $ref: "#/definitions/Options_Get_Collection"
+#            - $ref: "#/definitions/Options_Post"
     get:
       tags:
       - Diagrams
@@ -837,20 +836,20 @@ paths:
         - write:model
         - read:models
   "/diagrams/gantts":
-    options:
-      tags:
-      - Diagrams
-      summary: Shows options for gantts diagram
-      operationId: options-gantt
-      produces:
-      - application/json
-      responses:
-        '200':
-          description: OK
-          schema:
-            allOf:
-            - $ref: "#/definitions/Options_Get_Collection"
-            - $ref: "#/definitions/Options_Post"
+#    options:
+#      tags:
+#      - Diagrams
+#      summary: Shows options for gantts diagram
+#      operationId: options-gantt
+#      produces:
+#      - application/json
+#      responses:
+#        '200':
+#          description: OK
+#          schema:
+#            allOf:
+#            - $ref: "#/definitions/Options_Get_Collection"
+#            - $ref: "#/definitions/Options_Post"
     get:
       tags:
       - Diagrams
@@ -906,20 +905,20 @@ paths:
         - write:model
         - read:models
   "/diagrams/sequences":
-    options:
-      tags:
-      - Diagrams
-      summary: Shows options for sequences diagram
-      operationId: options-sequence
-      produces:
-      - application/json
-      responses:
-        '200':
-          description: OK
-          schema:
-            allOf:
-            - $ref: "#/definitions/Options_Get_Collection"
-            - $ref: "#/definitions/Options_Post"
+#    options:
+#      tags:
+#      - Diagrams
+#      summary: Shows options for sequences diagram
+#      operationId: options-sequence
+#      produces:
+#      - application/json
+#      responses:
+#        '200':
+#          description: OK
+#          schema:
+#            allOf:
+#            - $ref: "#/definitions/Options_Get_Collection"
+#            - $ref: "#/definitions/Options_Post"
     get:
       tags:
       - Diagrams
@@ -973,21 +972,183 @@ paths:
       security:
       - openarchi_auth:
         - read:models
-  "/catalogs/diagram-types":
-    options:
+#  "/consumers/:model-id":
+#    options:
+#      tags:
+#      - Consumers
+#      summary: Shows options for the consumers
+#      operationId: options-consumers
+#      produces:
+#      - application/json
+#      responses:
+#        '200':
+#          description: OK
+#          schema:
+#            allOf:
+#            - $ref: "#/definitions/Options_Get_Collection"
+#            - $ref: "#/definitions/Options_Put"
+  "/consumers":
+    get:
       tags:
-      - Catalogs
-      summary: Shows options for catalogs of diagram types
-      operationId: options-catalogs-diagram-types
+      - Consumers
+      summary: Finds consumers
+      description: This service supports query by using RSQL expressions
+      operationId: get-consumers
       produces:
       - application/json
+      parameters:
+      - name: "$filter"
+        in: query
+        description: Filter consumers according to an RSQL expression
+        required: false
+        type: string
       responses:
         '200':
           description: OK
           schema:
-            allOf:
-            - $ref: "#/definitions/Options_Get_String_Collection"
-            - $ref: "#/definitions/Options_Post_String"
+            type: array
+            items:
+              $ref: "#/definitions/Consumers"
+        '400':
+          description: Bad request
+      security:
+      - openarchi_auth:
+        - read:models
+    post:
+      tags:
+      - Consumers
+      summary: Add a new consumer
+      description: If the consumer object exists previously an error will be raised.
+      operationId: add-consumer
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: Consumer object that needs to be added
+        required: true
+        schema:
+          $ref: "#/definitions/Consumer_Create"
+      responses:
+        '200':
+          description: Accepted
+        '201':
+          description: Created
+        '405':
+          description: Invalid input
+      security:
+      - openarchi_auth:
+        - write:model
+        - read:models
+  "/consumers/{consumer-id}":
+    get:
+      tags:
+      - Consumers
+      summary: Find a consumer by ID
+      description: Returns a single consumer
+      operationId: get-consumer-by-id
+      produces:
+      - application/json
+      parameters:
+      - name: consumer-id
+        in: path
+        description: ID of the consumer to return
+        required: true
+        type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: "#/definitions/Consumer"
+        '404':
+          description: Consumer not found
+    patch:
+      tags:
+      - Consumers
+      summary: Partially update an existent consumer
+      description: If the consumer object does not exists previously an error will be raised. Only incoming attributes will be affected. All preexisting values for non-requested fields will keep its current storaged values.
+      operationId: partially-update-consumer
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: consumer-id
+        in: path
+        description: ID of the consumer to update
+        required: true
+        type: string
+      - name: body
+        in: body
+        description: Consumer object that needs to be partially updated
+        required: true
+        schema:
+          $ref: "#/definitions/Consumer_Create"
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Consumer not found
+        '405':
+          description: Invalid input
+      security:
+      - openarchi_auth:
+        - write:model
+        - read:models
+    put:
+      tags:
+      - Consumers
+      summary: Completelly update an existent consumer
+      description: If the consumer object does not exists previously, it won't be created, instead, an error will be raised. The existent consumer will be deleted completelly before updating, so the default values will be taken for any non-existent value in the request of this mmethod.
+      operationId: completelly-update-consumer
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: consumer-id
+        in: path
+        description: ID of the consumer to replace
+        required: true
+        type: string
+      - name: body
+        in: body
+        description: Consumer object that needs to be replaced
+        required: true
+        schema:
+          $ref: "#/definitions/Consumer_Create"
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Consumer not found
+        '405':
+          description: Invalid input
+      security:
+      - openarchi_auth:
+        - write:model
+        - read:models
+  "/catalogs/diagram-types":
+#    options:
+#      tags:
+#      - Catalogs
+#      summary: Shows options for catalogs of diagram types
+#      operationId: options-catalogs-diagram-types
+#      produces:
+#      - application/json
+#      responses:
+#        '200':
+#          description: OK
+#          schema:
+#            allOf:
+#            - $ref: "#/definitions/Options_Get_String_Collection"
+#            - $ref: "#/definitions/Options_Post_String"
     get:
       tags:
       - Catalogs
@@ -1035,20 +1196,20 @@ paths:
         - write:catalogs
         - read:catalogs
   "/catalogs/prototype-names":
-    options:
-      tags:
-      - Catalogs
-      summary: Shows options for catalogs of prototype names
-      operationId: options-catalogs-prototype-names
-      produces:
-      - application/json
-      responses:
-        '200':
-          description: OK
-          schema:
-            allOf:
-            - $ref: "#/definitions/Options_Get_Id_Name_Collection"
-            - $ref: "#/definitions/Options_Post_String"
+#    options:
+#      tags:
+#      - Catalogs
+#      summary: Shows options for catalogs of prototype names
+#      operationId: options-catalogs-prototype-names
+#      produces:
+#      - application/json
+#      responses:
+#        '200':
+#          description: OK
+#          schema:
+#            allOf:
+#            - $ref: "#/definitions/Options_Get_Id_Name_Collection"
+#            - $ref: "#/definitions/Options_Post_String"
     get:
       tags:
       - Catalogs
@@ -1096,20 +1257,20 @@ paths:
         - write:catalogs
         - read:catalogs
   "/catalogs/diagram-names":
-    options:
-      tags:
-      - Catalogs
-      summary: Shows options for catalogs of diagram names
-      operationId: options-catalogs-diagram-names
-      produces:
-      - application/json
-      responses:
-        '200':
-          description: OK
-          schema:
-            allOf:
-            - $ref: "#/definitions/Options_Get_Id_Name_Collection"
-            - $ref: "#/definitions/Options_Post_String"
+#    options:
+#      tags:
+#      - Catalogs
+#      summary: Shows options for catalogs of diagram names
+#      operationId: options-catalogs-diagram-names
+#      produces:
+#      - application/json
+#      responses:
+#        '200':
+#          description: OK
+#          schema:
+#            allOf:
+#            - $ref: "#/definitions/Options_Get_Id_Name_Collection"
+#            - $ref: "#/definitions/Options_Post_String"
     get:
       tags:
       - Catalogs
@@ -1144,6 +1305,67 @@ paths:
       - in: body
         name: body
         description: Diagram name that needs to be added
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Accepted
+        '501':
+          description: Not implemented
+      security:
+      - openarchi_auth:
+        - write:catalogs
+        - read:catalogs
+  "/catalogs/consumer-names":
+#    options:
+#      tags:
+#      - Catalogs
+#      summary: Shows options for catalogs of consumer names
+#      operationId: options-catalogs-consumer-names
+#      produces:
+#      - application/json
+#      responses:
+#        '200':
+#          description: OK
+#          schema:
+#            allOf:
+#            - $ref: "#/definitions/Options_Get_Id_Name_Collection"
+#            - $ref: "#/definitions/Options_Post_String"
+    get:
+      tags:
+      - Catalogs
+      summary: Finds consumer's names
+      description: Returns all permitted and implemented consumer's names
+      operationId: get-consumers-names
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              type: string
+        '400':
+          description: Bad request
+      security:
+      - openarchi_auth:
+        - read:catalogs
+    post:
+      tags:
+      - Catalogs
+      summary: Request for the addition of a new consumer name
+      description: ''
+      operationId: post-consumer-name
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: Consumer name that needs to be added
         required: true
         schema:
           type: string

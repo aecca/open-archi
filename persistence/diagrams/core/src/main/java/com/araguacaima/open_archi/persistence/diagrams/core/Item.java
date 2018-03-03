@@ -14,7 +14,7 @@ import java.util.Set;
 @Entity
 @PersistenceUnit(unitName = "open-archi")
 @NamedQueries({@NamedQuery(name = Item.GET_ITEM_ID_BY_NAME,
-        query = "select a "+
+        query = "select a " +
                 "from com.araguacaima.open_archi.persistence.diagrams.core.Item a where a.name=:name and a.kind=:kind"),
         @NamedQuery(name = Item.GET_ALL_CHILDREN,
                 query = "select a.children " +
@@ -28,9 +28,15 @@ import java.util.Set;
         @NamedQuery(name = Item.GET_ALL_PROTOTYPE_NAMES,
                 query = "select new com.araguacaima.open_archi.persistence.commons.IdName(a.id, a.name, TYPE(a)) " +
                         "from com.araguacaima.open_archi.persistence.diagrams.core.Item a where a.prototype=true"),
+        @NamedQuery(name = Item.GET_ALL_CONSUMER_NAMES,
+                query = "select new com.araguacaima.open_archi.persistence.commons.IdName(a.id, a.name, TYPE(a)) " +
+                        "from com.araguacaima.open_archi.persistence.diagrams.core.Item a where a.kind='CONSUMER'"),
         @NamedQuery(name = Item.GET_ALL_DIAGRAM_NAMES,
                 query = "select new com.araguacaima.open_archi.persistence.commons.IdName(a.id, a.name, TYPE(a)) " +
-                        "from com.araguacaima.open_archi.persistence.diagrams.core.Item a where a.prototype=false")})
+                        "from com.araguacaima.open_archi.persistence.diagrams.core.Item a where a.prototype=false"),
+        @NamedQuery(name = Item.GET_ALL_CONSUMERS,
+                query = "select a " +
+                        "from com.araguacaima.open_archi.persistence.diagrams.core.Item a where a.kind='CONSUMER'")})
 public class Item extends Taggable {
 
     public static final String GET_ALL_CHILDREN = "get.all.children";
@@ -39,6 +45,8 @@ public class Item extends Taggable {
     public static final String GET_ALL_PROTOTYPE_NAMES = "get.all.prototype.names";
     public static final String GET_ALL_DIAGRAM_NAMES = "get.all.diagram.names";
     public static final String GET_ITEM_ID_BY_NAME = "get.item.id.by.name";
+    public static final String GET_ALL_CONSUMER_NAMES = "get.all.conmsumer.names";
+    public static final String GET_ALL_CONSUMERS = "get.all.consumers";
 
     @Column
     protected String name;

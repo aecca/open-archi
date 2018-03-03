@@ -4,6 +4,7 @@ import com.araguacaima.commons.utils.EnumsUtils;
 import com.araguacaima.commons.utils.JsonUtils;
 import com.araguacaima.commons.utils.ReflectionUtils;
 import com.araguacaima.open_archi.persistence.commons.IdName;
+import com.araguacaima.open_archi.persistence.diagrams.architectural.Consumer;
 import com.araguacaima.open_archi.persistence.diagrams.core.*;
 import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
 import com.araguacaima.open_archi.web.wrapper.RsqlJsonFilter;
@@ -23,6 +24,7 @@ import spark.*;
 import spark.template.jade.JadeTemplateEngine;
 import spark.template.jade.loader.SparkClasspathTemplateLoader;
 
+import javax.persistence.EntityNotFoundException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -531,7 +533,7 @@ public class Server {
                         DBUtil.populate(model);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
-                        response.header("Location", request.pathInfo() +"/" + model.getId());
+                        response.header("Location", request.pathInfo() + "/" + model.getId());
                         return EMPTY_RESPONSE;
                     } catch (Throwable ex) {
                         return throwError(response, ex);
@@ -686,7 +688,7 @@ public class Server {
                         } catch (Throwable t) {
                             throw new Exception("Invalid kind of parent model info due: '" + t.getMessage() + "'");
                         }
-                        DBUtil.populate(model);
+                        DBUtil.persist(model);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
                         response.header("Location", request.pathInfo() + "/" + model.getId());
@@ -715,7 +717,7 @@ public class Server {
                         DBUtil.populate(metaData);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
-                        response.header("Location", request.pathInfo() + "/" +  request.params(":uuid") + "/meta-data");
+                        response.header("Location", request.pathInfo() + "/" + request.params(":uuid") + "/meta-data");
                         return EMPTY_RESPONSE;
                     } catch (Throwable ex) {
                         return throwError(response, ex);
@@ -739,7 +741,7 @@ public class Server {
                             throw new Exception("Invalid kind of feature");
                         }
                         feature.validateCreation();
-                        DBUtil.populate(feature);
+                        DBUtil.persist(feature);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
                         response.header("Location", request.pathInfo() + "/" + feature.getId());
@@ -788,6 +790,96 @@ public class Server {
                     String diagramNames = (String) getList(request, response, Item.GET_ALL_PROTOTYPE_NAMES, null, IdName.class);
                     List diagramNamesList = getListIdName(diagramNames);
                     return getList(request, response, diagramNamesList);
+                });
+                options("/catalogs/consumer-names", (request, response) -> {
+                    setCORS(request, response);
+                    Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledIdValueCollection, deeplyFulfilledIdValue, HttpMethod.get, HttpMethod.post);
+                    return getOptions(request, response, output);
+                });
+                post("/catalogs/consumer-names", (request, response) -> {
+                    response.status(HTTP_NOT_IMPLEMENTED);
+                    response.type(JSON_CONTENT_TYPE);
+                    return EMPTY_RESPONSE;
+                });
+                get("/catalogs/consumer-names", (request, response) -> {
+                    String diagramNames = (String) getList(request, response, Item.GET_ALL_CONSUMER_NAMES, null, IdName.class);
+                    List diagramNamesList = getListIdName(diagramNames);
+                    return getList(request, response, diagramNamesList);
+                });
+                get("/consumers", (request, response) -> getList(request, response, Item.GET_ALL_CONSUMERS, null, null));
+                post("/consumers", (request, response) -> {
+                    try {
+                        Consumer consumer = jsonUtils.fromJSON(request.body(), Consumer.class);
+                        if (consumer == null) {
+                            throw new Exception("Invalid kind for consumer");
+                        }
+                        consumer.validateCreation();
+                        DBUtil.populate(consumer);
+                        response.status(HTTP_CREATED);
+                        response.type(JSON_CONTENT_TYPE);
+                        response.header("Location", request.pathInfo() + "/" + consumer.getId());
+                        return EMPTY_RESPONSE;
+                    } catch (Throwable ex) {
+                        return throwError(response, ex);
+                    }
+                });
+                get("/consumers/:uuid", (request, response) -> {
+                    try {
+                        String id = request.params(":uuid");
+                        Consumer consumer = JPAEntityManagerUtils.find(Consumer.class, id);
+                        if (consumer != null) {
+                            consumer.validateRequest();
+                        }
+                        response.status(HTTP_OK);
+                        response.type(JSON_CONTENT_TYPE);
+                        return jsonUtils.toJSON(consumer);
+                    } catch (Exception ex) {
+                        return throwError(response, ex);
+                    }
+                });
+                put("/consumers/:uuid", (request, response) -> {
+                    try {
+                        Consumer consumer = jsonUtils.fromJSON(request.body(), Consumer.class);
+                        if (consumer == null) {
+                            throw new Exception("Invalid kind of consumer");
+                        }
+                        String id = request.params(":uuid");
+                        consumer.setId(id);
+                        consumer.validateCreation();
+                        DBUtil.replace(consumer);
+                        response.status(HTTP_OK);
+                        response.type(JSON_CONTENT_TYPE);
+                        response.header("Location", request.pathInfo() + "/" + consumer.getId());
+                        return EMPTY_RESPONSE;
+                    } catch (EntityNotFoundException ex) {
+                        response.status(HTTP_NOT_FOUND);
+                        response.type(JSON_CONTENT_TYPE);
+                        return EMPTY_RESPONSE;
+                    } catch (Throwable ex) {
+                        return throwError(response, ex);
+                    }
+                });
+                patch("/consumers/:uuid", (request, response) -> {
+                    try {
+                        Consumer consumer = jsonUtils.fromJSON(request.body(), Consumer.class);
+                        if (consumer == null) {
+                            throw new Exception("Invalid kind of consumer");
+                        }
+                        String id = request.params(":uuid");
+                        consumer.setId(id);
+                        consumer.validateCreation();
+                        DBUtil.update(consumer);
+                        response.status(HTTP_OK);
+                        response.type(JSON_CONTENT_TYPE);
+                        response.header("Location", request.pathInfo() + "/" + consumer.getId());
+                        return EMPTY_RESPONSE;
+                    } catch (EntityNotFoundException ex) {
+                        response.status(HTTP_NOT_FOUND);
+                        response.type(JSON_CONTENT_TYPE);
+                        return EMPTY_RESPONSE;
+                    } catch (Throwable ex) {
+                        return throwError(response, ex);
+                    }
                 });
             });
         });

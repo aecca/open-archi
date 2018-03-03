@@ -105,14 +105,6 @@ public class Asm extends BaseEntity {
         this.expirationDate = expirationDate;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public Initiative getInitiative() {
         return initiative;
     }

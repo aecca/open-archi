@@ -9,7 +9,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
- * A software architecture model.
+ * An architecture model.
  */
 @Entity
 @PersistenceUnit(unitName = "open-archi")
@@ -20,9 +20,9 @@ import java.util.Set;
                 query = "select a.consumers from com.araguacaima.open_archi.persistence.diagrams.architectural.Model a where a.id=:id")})
 public class Model extends Element implements DiagramableElement {
 
-
     public static final String GET_ALL_RELATIONSHIPS = "get.all.relationships";
     public static final String GET_ALL_CONSUMERS = "get.all.consumers";
+
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",
             name = "Architecture_Model_Relationships",
@@ -41,7 +41,7 @@ public class Model extends Element implements DiagramableElement {
                     referencedColumnName = "Id")})
     private Set<Consumer> consumers = new LinkedHashSet<>();
 
-    @OneToMany
+    @ManyToMany
     @JoinTable(schema = "DIAGRAMS",
             name = "Architecture_Model_SoftwareSystems",
             joinColumns = {@JoinColumn(name = "Architecture_Model_Id",
@@ -50,7 +50,7 @@ public class Model extends Element implements DiagramableElement {
                     referencedColumnName = "Id")})
     private Set<SoftwareSystem> softwareSystems = new LinkedHashSet<>();
 
-    @OneToMany
+    @ManyToMany
     @JoinTable(schema = "DIAGRAMS",
             name = "Architecture_Model_DeploymentNodes",
             joinColumns = {@JoinColumn(name = "Architecture_Model_Id",

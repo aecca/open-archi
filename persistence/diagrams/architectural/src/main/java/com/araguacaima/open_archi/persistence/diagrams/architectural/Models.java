@@ -14,7 +14,7 @@ import java.util.Set;
 @PersistenceUnit(unitName = "open-archi")
 @DiscriminatorValue(value = "ArchitectureModels")
 @NamedQueries({@NamedQuery(name = Models.GET_ALL_RELATIONSHIPS,
-        query = "select a.relationships from Model a where a.id=:id"),})
+        query = "select a.relationships from Models a where a.id=:id"),})
 public class Models extends Elements {
 
     public static final String GET_ALL_RELATIONSHIPS = "get.all.relationships_list";

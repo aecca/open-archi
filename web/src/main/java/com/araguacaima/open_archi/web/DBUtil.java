@@ -2,9 +2,13 @@
 package com.araguacaima.open_archi.web;
 
 import com.araguacaima.commons.utils.ReflectionUtils;
+import com.araguacaima.open_archi.persistence.diagrams.architectural.Consumer;
+import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 import com.araguacaima.open_archi.persistence.diagrams.core.Item;
+import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 import com.araguacaima.open_archi.persistence.meta.BasicEntity;
+import com.araguacaima.open_archi.persistence.meta.Valuable;
 import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
 import io.github.benas.randombeans.EnhancedRandomBuilder;
 import io.github.benas.randombeans.api.EnhancedRandom;
@@ -12,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityNotFoundException;
 import java.lang.reflect.Field;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -23,7 +28,7 @@ import static java.nio.charset.Charset.forName;
 public class DBUtil {
 
     private static Logger log = LoggerFactory.getLogger(Server.class);
-    private static Set<Class> classes = new HashSet<>();
+    private static Set<Class<? extends BaseEntity>> classes = new HashSet<>();
     private static ReflectionUtils reflectionUtils = new ReflectionUtils(null);
     private static EnhancedRandomBuilder randomBuilder;
     private static LocalTime timeLower = LocalTime.of(0, 0);
@@ -58,10 +63,10 @@ public class DBUtil {
         JPAEntityManagerUtils.begin();
         try {
             EnhancedRandom enhancedRandom = randomBuilder.build();
-            for (Class<?> clazz : classes) {
+            for (Class<? extends BaseEntity> clazz : classes) {
                 int next = new Random().nextInt((4 - 1) + 1) + 1;
                 for (int i = 0; i < next; i++) {
-                    Object entity = enhancedRandom.nextObject(clazz);
+                    BaseEntity entity = enhancedRandom.nextObject(clazz);
                     process(entity, clazz);
                 }
             }
@@ -72,7 +77,7 @@ public class DBUtil {
         }
     }
 
-    public static void populate(Object entity) throws Throwable {
+    public static void populate(BaseEntity entity) throws Throwable {
         JPAEntityManagerUtils.begin();
         flatten(entity);
         try {
@@ -86,7 +91,7 @@ public class DBUtil {
         }
     }
 
-    private static void process(Object entity, Class clazz) {
+    private static void process(BaseEntity entity, Class clazz) {
         ReflectionUtils.doWithFields(clazz, field -> {
             field.setAccessible(true);
             Object object_ = field.get(entity);
@@ -231,5 +236,67 @@ public class DBUtil {
             }
         }
         return object_;
+    }
+
+    public static void replace(BaseEntity entity) throws Throwable {
+        JPAEntityManagerUtils.begin();
+        Class<?> clazz = entity.getClass();
+        Object persistedEntity = JPAEntityManagerUtils.find(clazz, entity.getId());
+        try {
+            if (persistedEntity == null) {
+                throw new EntityNotFoundException("Can not replace due object with id '" + entity.getId() + "' does not exists");
+            }
+            JPAEntityManagerUtils.delete(persistedEntity);
+            JPAEntityManagerUtils.detach(persistedEntity);
+            JPAEntityManagerUtils.detach(entity);
+            JPAEntityManagerUtils.persist(entity);
+        } catch (Throwable t) {
+            JPAEntityManagerUtils.rollback();
+            throw t;
+        } finally {
+            JPAEntityManagerUtils.commit();
+        }
+    }
+
+    public static void update(BaseEntity entity) throws Throwable {
+        JPAEntityManagerUtils.begin();
+        Class<?> clazz = entity.getClass();
+        Object persistedEntity = JPAEntityManagerUtils.find(clazz, entity.getId());
+        try {
+            if (persistedEntity == null) {
+                throw new EntityNotFoundException("Can not replace due object with id '" + entity.getId() + "' does not exists");
+            }
+            JPAEntityManagerUtils.update(entity);
+        } catch (Throwable t) {
+            JPAEntityManagerUtils.rollback();
+            throw t;
+        } finally {
+            JPAEntityManagerUtils.commit();
+        }
+    }
+
+
+    private static void processUpdate(Object entity, Class clazz) {
+        ReflectionUtils.doWithFields(clazz, field -> {
+            field.setAccessible(true);
+            Object object_ = field.get(entity);
+            Object result = process(field.getType(), object_);
+            field.set(entity, result);
+        }, DBUtil::filterMethod);
+        JPAEntityManagerUtils.delete(entity);
+        JPAEntityManagerUtils.detach(entity);
+        JPAEntityManagerUtils.persist(entity);
+    }
+
+    public static void persist(CompositeElement compositeElement) {
+        JPAEntityManagerUtils.begin();
+        try {
+            JPAEntityManagerUtils.persist(compositeElement);
+        } catch (Throwable t) {
+            JPAEntityManagerUtils.rollback();
+            throw t;
+        } finally {
+            JPAEntityManagerUtils.commit();
+        }
     }
 }

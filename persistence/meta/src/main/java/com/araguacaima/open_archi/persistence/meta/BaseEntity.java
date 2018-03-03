@@ -108,4 +108,8 @@ public abstract class BaseEntity implements Serializable, BasicEntity, Cloneable
     public void copy(BaseEntity source) {
         this.meta = source.getMeta();
     }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 }
