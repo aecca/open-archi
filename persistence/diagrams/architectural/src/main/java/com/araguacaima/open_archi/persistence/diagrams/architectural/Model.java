@@ -16,12 +16,12 @@ import java.util.Set;
 @DiscriminatorValue(value = "ArchitectureModel")
 @NamedQueries({@NamedQuery(name = Model.GET_ALL_RELATIONSHIPS,
         query = "select a.relationships from com.araguacaima.open_archi.persistence.diagrams.architectural.Model a where a.id=:id"),
-        @NamedQuery(name = Model.GET_ALL_CONSUMERS,
+        @NamedQuery(name = Model.GET_ALL_CONSUMERS_FOR_MODEL,
                 query = "select a.consumers from com.araguacaima.open_archi.persistence.diagrams.architectural.Model a where a.id=:id")})
 public class Model extends Element implements DiagramableElement {
 
     public static final String GET_ALL_RELATIONSHIPS = "get.all.relationships";
-    public static final String GET_ALL_CONSUMERS = "get.all.consumers";
+    public static final String GET_ALL_CONSUMERS_FOR_MODEL = "get.all.consumers.for.model";
 
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",

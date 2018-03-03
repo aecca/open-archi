@@ -401,7 +401,7 @@ public class Server {
                 get("/diagrams/architectures/:uuid/consumers", (request, response) -> {
                     Map<String, Object> params = new HashMap<>();
                     params.put("id", request.params(":uuid"));
-                    return getList(request, response, com.araguacaima.open_archi.persistence.diagrams.architectural.Model.GET_ALL_CONSUMERS, params, Collection.class);
+                    return getList(request, response, com.araguacaima.open_archi.persistence.diagrams.architectural.Model.GET_ALL_CONSUMERS_FOR_MODEL, params, Collection.class);
                 });
                 put("/diagrams/architectures/:uuid/consumers", (request, response) -> {
                     try {
