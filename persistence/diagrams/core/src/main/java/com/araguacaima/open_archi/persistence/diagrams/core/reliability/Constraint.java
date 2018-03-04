@@ -14,7 +14,7 @@ import java.util.Set;
 @DynamicUpdate
 public class Constraint extends BaseEntity {
 
-    @OneToMany
+    @ManyToMany
     @JoinTable(schema = "DIAGRAMS",
             name = "Constraint_Activities",
             joinColumns = {@JoinColumn(name = "Constraint_Id",
@@ -22,7 +22,8 @@ public class Constraint extends BaseEntity {
             inverseJoinColumns = {@JoinColumn(name = "Activities_Id",
                     referencedColumnName = "Id")})
     private Set<Activity> activities;
-    @OneToMany
+
+    @ManyToMany
     @JoinTable(schema = "DIAGRAMS",
             name = "Constraint_BatchProcessing",
             joinColumns = {@JoinColumn(name = "Constraint_Id",
@@ -30,7 +31,8 @@ public class Constraint extends BaseEntity {
             inverseJoinColumns = {@JoinColumn(name = "BatchProcessing_Id",
                     referencedColumnName = "Id")})
     private Set<BatchProcessing> batchProcessing;
-    @OneToMany
+
+    @ManyToMany
     @JoinTable(schema = "DIAGRAMS",
             name = "Constraint_BulkProcessing",
             joinColumns = {@JoinColumn(name = "Constraint_Id",
@@ -38,7 +40,8 @@ public class Constraint extends BaseEntity {
             inverseJoinColumns = {@JoinColumn(name = "BulkProcessing_Id",
                     referencedColumnName = "Id")})
     private Set<BulkProcessing> bulkProcessing;
-    @OneToMany
+
+    @ManyToMany
     @JoinTable(schema = "DIAGRAMS",
             name = "Constraint_Concurrency",
             joinColumns = {@JoinColumn(name = "Constraint_Id",
@@ -46,7 +49,8 @@ public class Constraint extends BaseEntity {
             inverseJoinColumns = {@JoinColumn(name = "Concurrency_Id",
                     referencedColumnName = "Id")})
     private Set<Concurrency> concurrencies;
-    @OneToMany
+
+    @ManyToMany
     @JoinTable(schema = "DIAGRAMS",
             name = "Constraint_Database",
             joinColumns = {@JoinColumn(name = "Constraint_Id",
@@ -54,7 +58,8 @@ public class Constraint extends BaseEntity {
             inverseJoinColumns = {@JoinColumn(name = "Database_Id",
                     referencedColumnName = "Id")})
     private Set<Database> dataBase;
-    @OneToMany
+
+    @ManyToMany
     @JoinTable(schema = "DIAGRAMS",
             name = "Constraint_FileTransfer",
             joinColumns = {@JoinColumn(name = "Constraint_Id",
@@ -62,7 +67,8 @@ public class Constraint extends BaseEntity {
             inverseJoinColumns = {@JoinColumn(name = "FileTransfer_Id",
                     referencedColumnName = "Id")})
     private Set<FileTransfer> fileTransfers;
-    @OneToMany
+
+    @ManyToMany
     @JoinTable(schema = "DIAGRAMS",
             name = "Constraint_Rate",
             joinColumns = {@JoinColumn(name = "Constraint_Id",

@@ -66,7 +66,7 @@ public class Item extends Taggable {
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     protected CompositeElement parent;
 
-    @OneToMany
+    @ManyToMany
     @JoinTable(schema = "DIAGRAMS",
             name = "Item_Children_Ids",
             joinColumns = {@JoinColumn(name = "Item_Id",
@@ -79,7 +79,7 @@ public class Item extends Taggable {
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     protected Shape shape;
 
-    @OneToMany
+    @ManyToMany
     @JoinTable(schema = "DIAGRAMS",
             name = "Item_Can_Be_Connected_From_Ids",
             joinColumns = {@JoinColumn(name = "Item_Id",
@@ -88,7 +88,7 @@ public class Item extends Taggable {
                     referencedColumnName = "Id")})
     protected Set<ConnectTrigger> canBeConnectedFrom;
 
-    @OneToMany
+    @ManyToMany
     @JoinTable(schema = "DIAGRAMS",
             name = "Item_Can_Be_Connected_To_Ids",
             joinColumns = {@JoinColumn(name = "Item_Id",

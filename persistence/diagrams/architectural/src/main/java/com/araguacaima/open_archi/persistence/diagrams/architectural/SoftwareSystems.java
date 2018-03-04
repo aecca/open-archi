@@ -21,7 +21,7 @@ public class SoftwareSystems extends StaticElements {
     @Enumerated(EnumType.STRING)
     private Scope scope = Scope.Unspecified;
 
-    @OneToMany
+    @ManyToMany
     @JoinTable(schema = "DIAGRAMS",
             name = "SoftwareSystem_Containers",
             joinColumns = {@JoinColumn(name = "SoftwareSystem_Id",

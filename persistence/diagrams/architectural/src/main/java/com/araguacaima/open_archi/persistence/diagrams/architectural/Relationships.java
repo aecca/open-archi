@@ -14,9 +14,11 @@ public class Relationships extends com.araguacaima.open_archi.persistence.diagra
 
     @Column
     private String technology;
+
     @Column
     @Enumerated(EnumType.STRING)
     private InteractionStyle interactionStyle = InteractionStyle.SYNCHRONOUS;
+
     @Column
     @Enumerated(EnumType.STRING)
     private RelationshipType type;

@@ -10,7 +10,7 @@ import java.util.Collection;
 @PersistenceUnit(unitName = "open-archi")
 public class Pool extends Item {
 
-    @OneToMany
+    @ManyToMany
     @JoinTable(schema = "DIAGRAMS",
             name = "Pool_Lanes",
             joinColumns = {@JoinColumn(name = "Pool_Id",

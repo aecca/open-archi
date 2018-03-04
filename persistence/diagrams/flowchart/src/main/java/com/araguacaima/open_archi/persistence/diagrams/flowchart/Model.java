@@ -22,7 +22,8 @@ public class Model extends Element implements DiagramableElement {
             inverseJoinColumns = {@JoinColumn(name = "Relationship_Id",
                     referencedColumnName = "Id")})
     private Set<Relationship> relationships = new LinkedHashSet<>();
-    @OneToMany
+
+    @ManyToMany
     @JoinTable(schema = "DIAGRAMS",
             name = "Flowchart_Model_Flowcharts",
             joinColumns = {@JoinColumn(name = "Flowchart_Model_Id",

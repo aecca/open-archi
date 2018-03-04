@@ -33,7 +33,7 @@ public class Items extends Taggable {
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     protected CompositeElement parent;
 
-    @OneToMany
+    @ManyToMany
     @JoinTable(schema = "DIAGRAMS",
             name = "Item_Children_Ids",
             joinColumns = {@JoinColumn(name = "Item_Id",

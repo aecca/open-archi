@@ -30,9 +30,11 @@ public class Rate extends BaseEntity implements MeasurableRange {
             250));
     public static Measurable DEFAULT_MINIMAL = new Measurable(new Range(Requests.REQUESTS_PER_SECOND.name(), 0, 50));
     public static Measurable DEFAULT_SMALL = new Measurable(new Range(Requests.REQUESTS_PER_SECOND.name(), 51, 100));
+
     @Column
     @Enumerated(EnumType.STRING)
     private RequestTarget target;
+
     @OneToOne(cascade = CascadeType.REMOVE)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private Measurable value;

@@ -36,7 +36,7 @@ public class DeploymentNode extends Element {
     @Enumerated(EnumType.STRING)
     private ElementKind kind = ElementKind.DEPLOYMENT;
 
-    @OneToMany
+    @ManyToMany
     @JoinTable(schema = "DIAGRAMS",
             name = "DeploymentNode_ContainerInstances",
             joinColumns = {@JoinColumn(name = "DeploymentNode_Id",

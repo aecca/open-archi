@@ -190,7 +190,7 @@ public class DBUtil {
                 params.put("kind", kind);
                 Item item = JPAEntityManagerUtils.findByQuery(Item.class, Item.GET_ITEM_ID_BY_NAME, params);
                 if (item != null) {
-                    item.copy((Item) entity);
+                    item.override((Item) entity);
                     return item;
                 }
             }
@@ -236,7 +236,7 @@ public class DBUtil {
         return object_;
     }
 
-    public static void replace(Item entity) throws Throwable {
+    public static void replace(BaseEntity entity) throws Throwable {
         JPAEntityManagerUtils.begin();
         Class<?> clazz = entity.getClass();
         Object persistedEntity = JPAEntityManagerUtils.find(clazz, entity.getId());
@@ -256,7 +256,7 @@ public class DBUtil {
         }
     }
 
-    public static void update(Item entity) throws Throwable {
+    public static void update(BaseEntity entity) throws Throwable {
         JPAEntityManagerUtils.begin();
         Class<?> clazz = entity.getClass();
         Object persistedEntity = JPAEntityManagerUtils.find(clazz, entity.getId());
@@ -264,7 +264,7 @@ public class DBUtil {
             if (persistedEntity == null) {
                 throw new EntityNotFoundException("Can not replace due object with id '" + entity.getId() + "' does not exists");
             }
-            ((Item) persistedEntity).copy(entity);
+            ((BaseEntity) persistedEntity).copyNonEmpty(entity);
             JPAEntityManagerUtils.update(entity);
         } catch (Throwable t) {
             JPAEntityManagerUtils.rollback();

@@ -16,18 +16,24 @@ public class Relationship extends Taggable {
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     @JsonIgnore
     private Taggable source;
+
     @Column
     private String sourceId;
+
     @OneToOne(targetEntity = Taggable.class, cascade = CascadeType.REMOVE)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     @JsonIgnore
     private Taggable destination;
+
     @Column
     private String destinationId;
+
     @Column
     private String description;
+
     @Column
     private String sourcePort;
+
     @Column
     private String destinationPort;
 

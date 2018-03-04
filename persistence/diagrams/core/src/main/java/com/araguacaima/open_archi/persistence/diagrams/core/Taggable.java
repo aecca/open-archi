@@ -22,6 +22,7 @@ public class Taggable extends BaseEntity {
 
     public static final String GET_ALL_MODELS = "get.all.models";
     public static final String GET_MODELS_BY_TYPE = "get.models.by.type";
+
     @ElementCollection
     @CollectionTable(name = "Tags", schema = "DIAGRAMS")
     protected Set<String> tags = new LinkedHashSet<>();

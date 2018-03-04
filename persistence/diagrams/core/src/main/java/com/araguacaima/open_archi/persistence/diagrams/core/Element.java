@@ -17,6 +17,7 @@ import java.util.Set;
 public class Element extends Item {
 
     public static final String GET_ALL_FEATURES = "get.all.features";
+
     @Column
     protected String url;
 
@@ -26,7 +27,7 @@ public class Element extends Item {
     @CollectionTable(schema = "DIAGRAMS", name = "Element_Properties", joinColumns = @JoinColumn(name = "Property_Id"))
     protected Map<String, String> properties = new HashMap<>();
 
-    @OneToMany
+    @ManyToMany
     @JoinTable(schema = "DIAGRAMS",
             name = "Element_FeatureIds",
             joinColumns = {@JoinColumn(name = "Architecture_Model_Id",

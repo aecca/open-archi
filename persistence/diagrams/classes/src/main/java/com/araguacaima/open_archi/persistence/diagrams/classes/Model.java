@@ -23,7 +23,7 @@ public class Model extends Element implements DiagramableElement {
             inverseJoinColumns = {@JoinColumn(name = "Relationship_Id",
                     referencedColumnName = "Id")})
     private Set<Relationship> relationships = new LinkedHashSet<>();
-    @OneToMany
+    @ManyToMany
     @JoinTable(schema = "DIAGRAMS",
             name = "Model_Classes",
             joinColumns = {@JoinColumn(name = "Classes_Model_Id",

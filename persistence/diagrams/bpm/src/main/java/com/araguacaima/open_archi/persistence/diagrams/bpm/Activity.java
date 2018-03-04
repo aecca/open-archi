@@ -9,7 +9,7 @@ import javax.persistence.PersistenceUnit;
 @PersistenceUnit(unitName = "open-archi")
 public class Activity extends Item {
 
-
+    //TODO Completar
     public void override(Activity source) {
         super.override(source);
     }

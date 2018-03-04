@@ -12,7 +12,7 @@ import java.util.Collection;
 @DynamicUpdate
 public class Lane extends BaseEntity {
 
-    @OneToMany
+    @ManyToMany
     @JoinTable(schema = "DIAGRAMS",
             name = "Lane_Activities",
             joinColumns = {@JoinColumn(name = "Lane_Id",

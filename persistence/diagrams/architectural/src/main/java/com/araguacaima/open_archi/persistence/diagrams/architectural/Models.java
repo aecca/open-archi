@@ -18,6 +18,7 @@ import java.util.Set;
 public class Models extends Elements {
 
     public static final String GET_ALL_RELATIONSHIPS = "get.all.relationships_list";
+
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",
             name = "Architecture_Model_Relationships",
@@ -26,18 +27,21 @@ public class Models extends Elements {
             inverseJoinColumns = {@JoinColumn(name = "Relationship_Id",
                     referencedColumnName = "Id")})
     protected Set<Relationships> relationships = new LinkedHashSet<>();
+
     @Column
     @Enumerated(EnumType.STRING)
     private ElementKind kind = ElementKind.ARCHITECTURE_MODEL;
+
     @ManyToMany
     @JoinTable(schema = "DIAGRAMS",
             name = "Architecture_Model_People",
             joinColumns = {@JoinColumn(name = "Architecture_Model_Consumer_Id",
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Consumer_Id",
-                    referencedColumnName = "Id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))})
+                    referencedColumnName = "Id")})
     private Set<Consumers> consumers = new LinkedHashSet<>();
-    @OneToMany
+
+    @ManyToMany
     @JoinTable(schema = "DIAGRAMS",
             name = "Architecture_Model_SoftwareSystems",
             joinColumns = {@JoinColumn(name = "Architecture_Model_Id",
@@ -45,7 +49,8 @@ public class Models extends Elements {
             inverseJoinColumns = {@JoinColumn(name = "SoftwareSystem_Id",
                     referencedColumnName = "Id")})
     private Set<SoftwareSystems> softwareSystems = new LinkedHashSet<>();
-    @OneToMany
+
+    @ManyToMany
     @JoinTable(schema = "DIAGRAMS",
             name = "Architecture_Model_DeploymentNodes",
             joinColumns = {@JoinColumn(name = "Architecture_Model_Id",

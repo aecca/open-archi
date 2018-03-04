@@ -15,6 +15,7 @@ public class Sequence extends Item {
 
     @Column
     private int start;
+
     @Column
     private int duration;
 

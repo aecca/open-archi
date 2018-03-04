@@ -11,6 +11,7 @@ import javax.persistence.*;
 @PersistenceUnit(unitName = "open-archi")
 @DiscriminatorValue("FlowchartRelationship")
 public class Relationship extends com.araguacaima.open_archi.persistence.diagrams.core.Relationship {
+
     @Column
     @Enumerated(EnumType.STRING)
     private RelationshipType type;

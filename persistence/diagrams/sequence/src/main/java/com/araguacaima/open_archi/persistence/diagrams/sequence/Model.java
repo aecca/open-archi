@@ -27,6 +27,7 @@ public class Model extends Element implements DiagramableElement {
     public static final String GET_MODELS_COUNT = "SequenceModel.getModelsCount";
     public static final String GET_ALL_SEQUENCE_MODELS = "SequenceModel.getAllModels";
     public static final String PARAM_NAME = "name";
+
     @OneToMany
     @JoinTable(schema = "DIAGRAMS",
             name = "Sequence_Model_Relationships",
@@ -36,7 +37,7 @@ public class Model extends Element implements DiagramableElement {
                     referencedColumnName = "Id")})
     private Set<Relationship> relationships = new LinkedHashSet<>();
 
-    @OneToMany
+    @ManyToMany
     @JoinTable(schema = "DIAGRAMS",
             name = "Sequence_Model_Sequences",
             joinColumns = {@JoinColumn(name = "Sequence_Model_Id",

@@ -23,7 +23,7 @@ public class Container extends StaticElement {
     @Column
     private String technology;
 
-    @OneToMany
+    @ManyToMany
     @JoinTable(schema = "DIAGRAMS",
             name = "Container_Components",
             joinColumns = {@JoinColumn(name = "Container_Id",

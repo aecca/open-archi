@@ -8,9 +8,11 @@ import javax.persistence.*;
 @Entity
 @PersistenceUnit(unitName = "open-archi")
 public class Flowchart extends Item {
+
     @Column
     @Enumerated(EnumType.STRING)
     private Category category;
+
     @Column
     @Enumerated(EnumType.STRING)
     private ElementKind kind = ElementKind.FLOWCHART;

@@ -15,10 +15,11 @@ import java.util.Set;
 public class Elements extends Items {
 
     public static final String GET_ALL_FEATURES = "get.all.features_list";
+
     @Column
     protected String url;
 
-    @OneToMany
+    @ManyToMany
     @JoinTable(schema = "DIAGRAMS",
             name = "Element_FeatureIds",
             joinColumns = {@JoinColumn(name = "Architecture_Model_Id",

@@ -8,13 +8,17 @@ import javax.persistence.*;
 @Entity
 @PersistenceUnit(unitName = "open-archi")
 public class Gantt extends Item {
+
     @Column
     @Enumerated(EnumType.STRING)
     private Category category;
+
     @Column
     private int diagramStart;
+
     @Column
     private int diagramEnd;
+
     @Column
     @Enumerated(EnumType.STRING)
     private ElementKind kind = ElementKind.GANTT;

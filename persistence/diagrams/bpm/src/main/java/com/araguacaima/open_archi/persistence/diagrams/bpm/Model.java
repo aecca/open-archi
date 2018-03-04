@@ -23,7 +23,7 @@ public class Model extends Element implements DiagramableElement {
                     referencedColumnName = "Id")})
     private Set<Relationship> relationships = new LinkedHashSet<>();
 
-    @OneToMany
+    @ManyToMany
     @JoinTable(schema = "DIAGRAMS",
             name = "Model_Pools",
             joinColumns = {@JoinColumn(name = "Bpm_Model_Id",

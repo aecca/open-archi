@@ -15,7 +15,7 @@ import java.util.Collection;
 @DynamicUpdate
 public class MetaData extends BaseEntity {
 
-    @OneToMany(cascade = CascadeType.REMOVE)
+    @ManyToMany(cascade = CascadeType.REMOVE)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     @JoinTable(schema = "DIAGRAMS",
             name = "MetaData_Responsibles",
@@ -25,7 +25,7 @@ public class MetaData extends BaseEntity {
                     referencedColumnName = "Id")})
     private Collection<Responsible> responsibles;
 
-    @OneToMany(cascade = CascadeType.REMOVE)
+    @ManyToMany(cascade = CascadeType.REMOVE)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     @JoinTable(schema = "DIAGRAMS",
             name = "MetaData_Collaborators",
@@ -35,7 +35,7 @@ public class MetaData extends BaseEntity {
                     referencedColumnName = "Id")})
     private Collection<Responsible> collaborators;
 
-    @OneToMany(cascade = CascadeType.REMOVE)
+    @ManyToMany(cascade = CascadeType.REMOVE)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     @JoinTable(schema = "DIAGRAMS",
             name = "MetaData_RelatedWith",
@@ -45,7 +45,7 @@ public class MetaData extends BaseEntity {
                     referencedColumnName = "Id")})
     private Collection<Taggable> relatedWith;
 
-    @OneToMany(cascade = CascadeType.REMOVE)
+    @ManyToMany(cascade = CascadeType.REMOVE)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     @JoinTable(schema = "DIAGRAMS",
             name = "MetaData_UsedIn",
@@ -55,7 +55,7 @@ public class MetaData extends BaseEntity {
                     referencedColumnName = "Id")})
     private Collection<Taggable> usedIn;
 
-    @OneToMany(cascade = CascadeType.REMOVE)
+    @ManyToMany(cascade = CascadeType.REMOVE)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     @JoinTable(schema = "DIAGRAMS",
             name = "MetaData_Views",

@@ -15,6 +15,7 @@ public class Measurable extends BaseEntity {
     @OneToOne(cascade = CascadeType.REMOVE)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private Range range;
+
     @Column
     private double value;
 

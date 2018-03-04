@@ -16,8 +16,10 @@ public class Range extends BaseEntity {
 
     @Column
     private String unit;
+
     @Column
     private Integer lower;
+
     @Column
     private Integer upper;
 
