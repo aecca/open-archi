@@ -14,4 +14,7 @@ public interface Valuable {
 
     @JsonIgnore
     void validateModification() throws EntityError;
+
+    @JsonIgnore
+    void validateReplacement() throws EntityError;
 }

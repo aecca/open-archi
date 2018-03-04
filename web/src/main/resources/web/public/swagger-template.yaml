@@ -91,18 +91,18 @@ paths:
         - write:model
         - read:models
   "/models/batch":
-    options:
-      tags:
-      - Models
-      summary: Shows options for batch models objects processing
-      operationId: options-models-batch
-      produces:
-      - application/json
-      responses:
-        '200':
-          description: OK
-          schema:
-            $ref: "#/definitions/Options_Post_Collection"
+#    options:
+#      tags:
+#      - Models
+#      summary: Shows options for batch models objects processing
+#      operationId: options-models-batch
+#      produces:
+#      - application/json
+#      responses:
+#        '200':
+#          description: OK
+#          schema:
+#            $ref: "#/definitions/Options_Post_Collection"
     post:
       tags:
       - Models
@@ -172,6 +172,72 @@ paths:
           description: Invalid ID supplied
         '404':
           description: Model not found
+    patch:
+      tags:
+      - Models
+      summary: Partially update an existent model
+      description: If the model object does not exists previously, an error will be raised. Only incoming attributes will be affected. All preexisting values for non-requested fields will keep its current stored values.
+      operationId: partially-update-model
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: model-id
+        in: path
+        description: ID of the model to update
+        required: true
+        type: string
+      - name: body
+        in: body
+        description: Model object that needs to be partially updated
+        required: true
+        schema:
+          $ref: "#/definitions/Model_Create"
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Invalid model id supplied
+        '404':
+          description: Model not found
+      security:
+      - openarchi_auth:
+        - write:model
+        - read:models
+    put:
+      tags:
+      - Models
+      summary: Completelly replace an existent model
+      description: If the model object does not exists previously, it won't be created, instead, an error will be raised. The existent model will be deleted completelly before updating, so the default values will be taken for any non-existent value in the request of this mmethod.
+      operationId: completelly-update-model
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: model-id
+        in: path
+        description: ID of the model to replace
+        required: true
+        type: string
+      - name: body
+        in: body
+        description: Model object that needs to be replaced
+        required: true
+        schema:
+          $ref: "#/definitions/Model_Create"
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Model not found
+      security:
+      - openarchi_auth:
+        - write:model
+        - read:models          
 #  "/models/:model-id/children":
 #    options:
 #      tags:
@@ -474,20 +540,20 @@ paths:
         - write:model
         - read:models
   "/diagrams/architectures":
-    options:
-      tags:
-      - Diagrams
-      summary: Shows options for architecture diagram
-      operationId: options-architecture
-      produces:
-      - application/json
-      responses:
-        '200':
-          description: OK
-          schema:
-            allOf:
-            - $ref: "#/definitions/Options_Get_Collection"
-            - $ref: "#/definitions/Options_Post"
+#    options:
+#      tags:
+#      - Diagrams
+#      summary: Shows options for architecture diagram
+#      operationId: options-architecture
+#      produces:
+#      - application/json
+#      responses:
+#        '200':
+#          description: OK
+#          schema:
+#            allOf:
+#            - $ref: "#/definitions/Options_Get_Collection"
+#            - $ref: "#/definitions/Options_Post"
     get:
       tags:
       - Diagrams
@@ -691,6 +757,87 @@ paths:
           description: Accepted
         '201':
           description: Created
+        '405':
+          description: Invalid input
+      security:
+      - openarchi_auth:
+        - write:model
+        - read:models
+  "/diagrams/architectures/{model-id}/consumers/{consumer-id}":
+    patch:
+      tags:
+      - Diagrams
+      summary: Partially update an existent model's consumer
+      description: If the consumer object does not exists previously, or it doesn't belongs to the provided model, an error will be raised. Only incoming attributes will be affected. All preexisting values for non-requested fields will keep its current stored values.
+      operationId: partially-update-model-consumer
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: model-id
+        in: path
+        description: ID of the model to which the consumer belongs
+        required: true
+        type: string
+      - name: consumer-id
+        in: path
+        description: ID of the consumer to update
+        required: true
+        type: string
+      - name: body
+        in: body
+        description: Consumer object that needs to be partially updated
+        required: true
+        schema:
+          $ref: "#/definitions/Consumer_Create"
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Invalid model id supplied
+        '404':
+          description: Consumer not found
+        '405':
+          description: Consumer does not belongs to model
+      security:
+      - openarchi_auth:
+        - write:model
+        - read:models
+    put:
+      tags:
+      - Diagrams
+      summary: Completelly update an existent model's consumer
+      description: If the consumer object does not exists previously, or it doesn't belongs to the provided model, it won't be created, instead, an error will be raised. The existent consumer will be deleted completelly before updating, so the default values will be taken for any non-existent value in the request of this mmethod.
+      operationId: completelly-update-model-consumer
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: model-id
+        in: path
+        description: ID of the model to which the consumer belongs
+        required: true
+        type: string
+      - name: consumer-id
+        in: path
+        description: ID of the consumer to replace
+        required: true
+        type: string
+      - name: body
+        in: body
+        description: Consumer object that needs to be replaced
+        required: true
+        schema:
+          $ref: "#/definitions/Consumer_Create"
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Consumer not found
         '405':
           description: Invalid input
       security:
@@ -1068,7 +1215,7 @@ paths:
       tags:
       - Consumers
       summary: Partially update an existent consumer
-      description: If the consumer object does not exists previously an error will be raised. Only incoming attributes will be affected. All preexisting values for non-requested fields will keep its current storaged values.
+      description: If the consumer object does not exists previously an error will be raised. Only incoming attributes will be affected. All preexisting values for non-requested fields will keep its current stored values.
       operationId: partially-update-consumer
       consumes:
       - application/json
@@ -1230,32 +1377,6 @@ paths:
       security:
       - openarchi_auth:
         - read:catalogs
-    post:
-      tags:
-      - Catalogs
-      summary: Request for the addition of a new prototype name
-      description: ''
-      operationId: post-prototype-name
-      consumes:
-      - application/json
-      produces:
-      - application/json
-      parameters:
-      - in: body
-        name: body
-        description: Prototype name that needs to be added
-        required: true
-        schema:
-          type: string
-      responses:
-        '200':
-          description: Accepted
-        '501':
-          description: Not implemented
-      security:
-      - openarchi_auth:
-        - write:catalogs
-        - read:catalogs
   "/catalogs/diagram-names":
 #    options:
 #      tags:
@@ -1291,32 +1412,6 @@ paths:
       security:
       - openarchi_auth:
         - read:catalogs
-    post:
-      tags:
-      - Catalogs
-      summary: Request for the addition of a new diagram name
-      description: ''
-      operationId: post-diagram-name
-      consumes:
-      - application/json
-      produces:
-      - application/json
-      parameters:
-      - in: body
-        name: body
-        description: Diagram name that needs to be added
-        required: true
-        schema:
-          type: string
-      responses:
-        '200':
-          description: Accepted
-        '501':
-          description: Not implemented
-      security:
-      - openarchi_auth:
-        - write:catalogs
-        - read:catalogs
   "/catalogs/consumer-names":
 #    options:
 #      tags:
@@ -1351,32 +1446,6 @@ paths:
           description: Bad request
       security:
       - openarchi_auth:
-        - read:catalogs
-    post:
-      tags:
-      - Catalogs
-      summary: Request for the addition of a new consumer name
-      description: ''
-      operationId: post-consumer-name
-      consumes:
-      - application/json
-      produces:
-      - application/json
-      parameters:
-      - in: body
-        name: body
-        description: Consumer name that needs to be added
-        required: true
-        schema:
-          type: string
-      responses:
-        '200':
-          description: Accepted
-        '501':
-          description: Not implemented
-      security:
-      - openarchi_auth:
-        - write:catalogs
         - read:catalogs
 securityDefinitions:
   openarchi_auth:

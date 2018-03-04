@@ -91,8 +91,35 @@ public class CompositeElement<T extends ElementKind> implements Valuable {
 
     @Override
     public void validateModification() throws EntityError {
-        if (id != null) {
-            throw new EntityError(resourceBundle.getString(this.getClass().getName() + "-" + "entity.identifier.cannot.be.modified"));
+        try {
+            SpecificationMap specificationMap = specificationMapBuilder.getInstance(this.getClass(), true);
+            Specification specification = specificationMap.getSpecificationFromMethod("validateModification");
+            if (specification != null) {
+                Map map = new HashMap<>();
+                if (!specification.isSatisfiedBy(this, map)) {
+                    throw new EntityError(map.get("ERROR").toString());
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new EntityError(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public void validateReplacement() throws EntityError {
+        try {
+            SpecificationMap specificationMap = specificationMapBuilder.getInstance(this.getClass(), true);
+            Specification specification = specificationMap.getSpecificationFromMethod("validateReplacement");
+            if (specification != null) {
+                Map map = new HashMap<>();
+                if (!specification.isSatisfiedBy(this, map)) {
+                    throw new EntityError(map.get("ERROR").toString());
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new EntityError(e.getMessage(), e);
         }
     }
 }

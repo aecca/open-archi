@@ -655,6 +655,44 @@ public class Server {
                         return throwError(response, ex);
                     }
                 });
+                put("/models/:uuid", (request, response) -> {
+                    try {
+                        Taggable model = jsonUtils.fromJSON(request.body(), Taggable.class);
+                        if (model == null) {
+                            throw new Exception("Invalid kind of model");
+                        }
+                        String id = request.params(":uuid");
+                        model.setId(id);
+                        model.validateCreation();
+                        DBUtil.replace(model);
+                        response.status(HTTP_OK);
+                        return EMPTY_RESPONSE;
+                    } catch (EntityNotFoundException ex) {
+                        response.status(HTTP_NOT_FOUND);
+                        return EMPTY_RESPONSE;
+                    } catch (Throwable ex) {
+                        return throwError(response, ex);
+                    }
+                });
+                patch("/models/:uuid", (request, response) -> {
+                    try {
+                        Taggable model = jsonUtils.fromJSON(request.body(), Taggable.class);
+                        if (model == null) {
+                            throw new Exception("Invalid kind of model");
+                        }
+                        String id = request.params(":uuid");
+                        model.setId(id);
+                        model.validateCreation();
+                        DBUtil.update(model);
+                        response.status(HTTP_OK);
+                        return EMPTY_RESPONSE;
+                    } catch (EntityNotFoundException ex) {
+                        response.status(HTTP_NOT_FOUND);
+                        return EMPTY_RESPONSE;
+                    } catch (Throwable ex) {
+                        return throwError(response, ex);
+                    }
+                });
                 options("/models/:uuid/children", (request, response) -> {
                     setCORS(request, response);
                     Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledParentModelCollection, deeplyFulfilledParentModel, HttpMethod.get, HttpMethod.put);
