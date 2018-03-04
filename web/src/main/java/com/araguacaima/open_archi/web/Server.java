@@ -690,7 +690,6 @@ public class Server {
                         }
                         DBUtil.persist(model);
                         response.status(HTTP_CREATED);
-                        response.type(JSON_CONTENT_TYPE);
                         response.header("Location", request.pathInfo() + "/" + model.getId());
                         return EMPTY_RESPONSE;
                     } catch (Throwable ex) {
@@ -716,7 +715,6 @@ public class Server {
                         metaData.validateCreation();
                         DBUtil.populate(metaData);
                         response.status(HTTP_CREATED);
-                        response.type(JSON_CONTENT_TYPE);
                         response.header("Location", request.pathInfo() + "/" + request.params(":uuid") + "/meta-data");
                         return EMPTY_RESPONSE;
                     } catch (Throwable ex) {
@@ -743,7 +741,6 @@ public class Server {
                         feature.validateCreation();
                         DBUtil.persist(feature);
                         response.status(HTTP_CREATED);
-                        response.type(JSON_CONTENT_TYPE);
                         response.header("Location", request.pathInfo() + "/" + feature.getId());
                         return EMPTY_RESPONSE;
                     } catch (Throwable ex) {
@@ -848,12 +845,9 @@ public class Server {
                         consumer.validateCreation();
                         DBUtil.replace(consumer);
                         response.status(HTTP_OK);
-                        response.type(JSON_CONTENT_TYPE);
-                        response.header("Location", request.pathInfo() + "/" + consumer.getId());
                         return EMPTY_RESPONSE;
                     } catch (EntityNotFoundException ex) {
                         response.status(HTTP_NOT_FOUND);
-                        response.type(JSON_CONTENT_TYPE);
                         return EMPTY_RESPONSE;
                     } catch (Throwable ex) {
                         return throwError(response, ex);
@@ -870,12 +864,9 @@ public class Server {
                         consumer.validateCreation();
                         DBUtil.update(consumer);
                         response.status(HTTP_OK);
-                        response.type(JSON_CONTENT_TYPE);
-                        response.header("Location", request.pathInfo() + "/" + consumer.getId());
                         return EMPTY_RESPONSE;
                     } catch (EntityNotFoundException ex) {
                         response.status(HTTP_NOT_FOUND);
-                        response.type(JSON_CONTENT_TYPE);
                         return EMPTY_RESPONSE;
                     } catch (Throwable ex) {
                         return throwError(response, ex);

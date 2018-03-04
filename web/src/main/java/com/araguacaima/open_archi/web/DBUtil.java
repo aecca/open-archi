@@ -2,13 +2,11 @@
 package com.araguacaima.open_archi.web;
 
 import com.araguacaima.commons.utils.ReflectionUtils;
-import com.araguacaima.open_archi.persistence.diagrams.architectural.Consumer;
 import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 import com.araguacaima.open_archi.persistence.diagrams.core.Item;
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 import com.araguacaima.open_archi.persistence.meta.BasicEntity;
-import com.araguacaima.open_archi.persistence.meta.Valuable;
 import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
 import io.github.benas.randombeans.EnhancedRandomBuilder;
 import io.github.benas.randombeans.api.EnhancedRandom;
@@ -238,7 +236,7 @@ public class DBUtil {
         return object_;
     }
 
-    public static void replace(BaseEntity entity) throws Throwable {
+    public static void replace(Item entity) throws Throwable {
         JPAEntityManagerUtils.begin();
         Class<?> clazz = entity.getClass();
         Object persistedEntity = JPAEntityManagerUtils.find(clazz, entity.getId());
@@ -246,11 +244,10 @@ public class DBUtil {
             if (persistedEntity == null) {
                 throw new EntityNotFoundException("Can not replace due object with id '" + entity.getId() + "' does not exists");
             }
-            JPAEntityManagerUtils.delete(persistedEntity);
             JPAEntityManagerUtils.detach(persistedEntity);
-            JPAEntityManagerUtils.flush();
             JPAEntityManagerUtils.detach(entity);
-            JPAEntityManagerUtils.persist(entity);
+            persistedEntity = entity;
+            JPAEntityManagerUtils.update(persistedEntity);
         } catch (Throwable t) {
             JPAEntityManagerUtils.rollback();
             throw t;
@@ -259,7 +256,7 @@ public class DBUtil {
         }
     }
 
-    public static void update(BaseEntity entity) throws Throwable {
+    public static void update(Item entity) throws Throwable {
         JPAEntityManagerUtils.begin();
         Class<?> clazz = entity.getClass();
         Object persistedEntity = JPAEntityManagerUtils.find(clazz, entity.getId());
@@ -267,6 +264,7 @@ public class DBUtil {
             if (persistedEntity == null) {
                 throw new EntityNotFoundException("Can not replace due object with id '" + entity.getId() + "' does not exists");
             }
+            ((Item) persistedEntity).copy(entity);
             JPAEntityManagerUtils.update(entity);
         } catch (Throwable t) {
             JPAEntityManagerUtils.rollback();
@@ -276,23 +274,10 @@ public class DBUtil {
         }
     }
 
-
-    private static void processUpdate(Object entity, Class clazz) {
-        ReflectionUtils.doWithFields(clazz, field -> {
-            field.setAccessible(true);
-            Object object_ = field.get(entity);
-            Object result = process(field.getType(), object_);
-            field.set(entity, result);
-        }, DBUtil::filterMethod);
-        JPAEntityManagerUtils.delete(entity);
-        JPAEntityManagerUtils.detach(entity);
-        JPAEntityManagerUtils.persist(entity);
-    }
-
-    public static void persist(CompositeElement compositeElement) {
+    public static void persist(Object entity) {
         JPAEntityManagerUtils.begin();
         try {
-            JPAEntityManagerUtils.persist(compositeElement);
+            JPAEntityManagerUtils.persist(entity);
         } catch (Throwable t) {
             JPAEntityManagerUtils.rollback();
             throw t;
