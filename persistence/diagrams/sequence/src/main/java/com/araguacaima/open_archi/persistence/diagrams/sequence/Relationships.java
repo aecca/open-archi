@@ -9,7 +9,7 @@ import javax.persistence.*;
  */
 @Entity
 @PersistenceUnit(unitName = "open-archi")
-@DiscriminatorValue(value = "SequenceRelationship")
+@DiscriminatorValue(value = "SequenceRelationships")
 public class Relationships extends com.araguacaima.open_archi.persistence.diagrams.core.Relationships {
 
     @Column

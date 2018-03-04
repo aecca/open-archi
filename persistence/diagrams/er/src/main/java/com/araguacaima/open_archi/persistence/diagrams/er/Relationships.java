@@ -10,7 +10,7 @@ import javax.persistence.*;
 
 @javax.persistence.Entity
 @PersistenceUnit(unitName = "open-archi")
-@DiscriminatorValue("ErRelationship")
+@DiscriminatorValue("ErRelationships")
 public class Relationships extends com.araguacaima.open_archi.persistence.diagrams.core.Relationships {
     @Column
     @Enumerated(EnumType.STRING)
