@@ -142,4 +142,8 @@ public class JPAEntityManagerUtils {
     public static void setAutocommit(boolean autocommit) {
         JPAEntityManagerUtils.autocommit = autocommit;
     }
+
+    public static void flush() {
+        entityManager.flush();
+    }
 }

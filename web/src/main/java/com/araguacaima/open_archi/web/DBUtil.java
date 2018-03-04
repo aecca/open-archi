@@ -248,6 +248,7 @@ public class DBUtil {
             }
             JPAEntityManagerUtils.delete(persistedEntity);
             JPAEntityManagerUtils.detach(persistedEntity);
+            JPAEntityManagerUtils.flush();
             JPAEntityManagerUtils.detach(entity);
             JPAEntityManagerUtils.persist(entity);
         } catch (Throwable t) {
