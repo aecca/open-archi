@@ -383,7 +383,7 @@ public class Server {
                         if (feature == null) {
                             throw new Exception("Invalid kind of relationship");
                         }
-                        feature.validateCreation();
+                        feature.validateReplacement();
                         DBUtil.populate(feature);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
@@ -409,7 +409,7 @@ public class Server {
                         if (feature == null) {
                             throw new Exception("Invalid kind of relationship");
                         }
-                        feature.validateCreation();
+                        feature.validateReplacement();
                         DBUtil.populate(feature);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
@@ -663,7 +663,7 @@ public class Server {
                         }
                         String id = request.params(":uuid");
                         model.setId(id);
-                        model.validateCreation();
+                        model.validateReplacement();
                         DBUtil.replace(model);
                         response.status(HTTP_OK);
                         return EMPTY_RESPONSE;
@@ -682,7 +682,7 @@ public class Server {
                         }
                         String id = request.params(":uuid");
                         model.setId(id);
-                        model.validateCreation();
+                        model.validateModification();
                         DBUtil.update(model);
                         response.status(HTTP_OK);
                         return EMPTY_RESPONSE;
@@ -776,7 +776,7 @@ public class Server {
                         if (feature == null) {
                             throw new Exception("Invalid kind of feature");
                         }
-                        feature.validateCreation();
+                        feature.validateReplacement();
                         DBUtil.persist(feature);
                         response.status(HTTP_CREATED);
                         response.header("Location", request.pathInfo() + "/" + feature.getId());
@@ -880,7 +880,7 @@ public class Server {
                         }
                         String id = request.params(":uuid");
                         consumer.setId(id);
-                        consumer.validateCreation();
+                        consumer.validateReplacement();
                         DBUtil.replace(consumer);
                         response.status(HTTP_OK);
                         return EMPTY_RESPONSE;
@@ -899,7 +899,7 @@ public class Server {
                         }
                         String id = request.params(":uuid");
                         consumer.setId(id);
-                        consumer.validateCreation();
+                        consumer.validateModification();
                         DBUtil.update(consumer);
                         response.status(HTTP_OK);
                         return EMPTY_RESPONSE;

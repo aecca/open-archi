@@ -23,7 +23,6 @@ import java.util.ResourceBundle;
 @DynamicUpdate
 public class CompositeElement<T extends ElementKind> implements Valuable {
 
-
     @Transient
     @JsonIgnore
     protected static final ResourceBundle resourceBundle = ResourceBundle.getBundle(Constants.BUNDLE_NAME);
