@@ -195,8 +195,8 @@ public class Item extends Taggable {
         this.prototype = prototype;
     }
 
-    public void copy(Item source) {
-        super.copy(source);
+    public void override(Item source) {
+        super.override(source);
         this.name = source.getName();
         this.description = source.getDescription();
         this.location = source.getLocation();
@@ -207,6 +207,39 @@ public class Item extends Taggable {
         this.canBeConnectedTo = source.getCanBeConnectedTo();
         this.metaData = source.getMetaData();
         this.prototype = source.isPrototype();
+    }
+
+    public void copyNonEmpty(Item source) {
+        super.copyNonEmpty(source);
+        if (source.getName() != null) {
+            this.name = source.getName();
+        }
+        if (source.getDescription() != null) {
+            this.description = source.getDescription();
+        }
+        if (source.getLocation() != null) {
+            this.location = source.getLocation();
+        }
+        if (source.getParent() != null) {
+            this.parent = source.getParent();
+        }
+        if (source.getChildren() != null && !source.getChildren().isEmpty()) {
+            this.children = source.getChildren();
+        }
+        if (source.getShape() != null) {
+            this.shape = source.getShape();
+        }
+        if (source.getCanBeConnectedFrom() != null && !source.getCanBeConnectedFrom().isEmpty()) {
+            this.canBeConnectedFrom = source.getCanBeConnectedFrom();
+        }
+        if (source.getCanBeConnectedTo() != null && !source.getCanBeConnectedTo().isEmpty()) {
+            this.canBeConnectedTo = source.getCanBeConnectedTo();
+        }
+        if (source.getMetaData() != null) {
+            this.metaData = source.getMetaData();
+        }
+        this.prototype = source.isPrototype();
+
     }
 
     @Override

@@ -41,4 +41,20 @@ public class UmlClass extends UmlItem {
         this.methods = methods;
     }
 
+    public void override(UmlClass source) {
+        super.override(source);
+        this.fields = source.getFields();
+        this.methods = source.getMethods();
+    }
+
+    public void copyNonEmpty(UmlClass source) {
+        super.copyNonEmpty(source);
+        if (source.getFields() != null && !source.getFields().isEmpty()) {
+            this.fields = source.getFields();
+        }
+        if (source.getMethods() != null && !source.getMethods().isEmpty()) {
+            this.methods = source.getMethods();
+        }
+    }
+
 }

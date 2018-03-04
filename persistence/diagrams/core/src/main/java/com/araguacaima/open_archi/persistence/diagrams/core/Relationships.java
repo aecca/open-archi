@@ -64,4 +64,33 @@ public class Relationships extends Taggable {
     public void setDestinationPort(String destinationPort) {
         this.destinationPort = destinationPort;
     }
+
+    public void override(Relationships source) {
+        super.override(source);
+        this.sourceId = source.getSourceId();
+        this.destinationId = source.getDestinationId();
+        this.description = source.getDescription();
+        this.sourcePort = source.getSourcePort();
+        this.destinationPort = source.getDestinationPort();
+    }
+
+    public void copyNonEmpty(Relationships source) {
+        super.copyNonEmpty(source);
+        if (source.getSourceId() != null) {
+            this.sourceId = source.getSourceId();
+        }
+        if (source.getDestinationId() != null) {
+            this.destinationId = source.getDestinationId();
+        }
+        if (source.getDescription() != null) {
+            this.description = source.getDescription();
+        }
+        if (source.getSourcePort() != null) {
+            this.sourcePort = source.getSourcePort();
+        }
+        if (source.getDestinationPort() != null) {
+            this.destinationPort = source.getDestinationPort();
+        }
+    }
+
 }

@@ -50,4 +50,24 @@ public class Gantt extends Item {
     public void setKind(ElementKind kind) {
         this.kind = kind;
     }
+
+    public void override(Gantt source) {
+        super.override(source);
+        this.setCategory(source.getCategory());
+        this.setDiagramStart(source.getDiagramStart());
+        this.setDiagramEnd(source.getDiagramEnd());
+    }
+
+    public void copyNonEmpty(Gantt source) {
+        super.copyNonEmpty(source);
+        if (source.getCategory() != null) {
+            this.setCategory(source.getCategory());
+        }
+        if (source.getDiagramStart() != 0) {
+            this.setDiagramStart(source.getDiagramStart());
+        }
+        if (source.getDiagramEnd() != 0) {
+            this.setDiagramEnd(source.getDiagramEnd());
+        }
+    }
 }

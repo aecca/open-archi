@@ -30,4 +30,17 @@ public class Flowchart extends Item {
     public void setKind(ElementKind kind) {
         this.kind = kind;
     }
+
+
+    public void override(Flowchart source) {
+        super.override(source);
+        this.setCategory(source.getCategory());
+    }
+
+    public void copyNonEmpty(Flowchart source) {
+        super.copyNonEmpty(source);
+        if (source.getCategory() != null) {
+            this.setCategory(source.getCategory());
+        }
+    }
 }

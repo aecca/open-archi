@@ -17,4 +17,11 @@ public abstract class StaticElement extends Element {
         setKind(ElementKind.COMPONENT);
     }
 
+    public void override(StaticElement source) {
+        super.override(source);
+    }
+
+    public void copyNonEmpty(StaticElement source) {
+        super.copyNonEmpty(source);
+    }
 }

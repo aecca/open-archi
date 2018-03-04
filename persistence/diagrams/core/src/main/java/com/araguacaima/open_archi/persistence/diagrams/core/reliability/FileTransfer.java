@@ -12,4 +12,12 @@ import javax.persistence.Table;
 @Table(name = "FileTransfer", schema = "DIAGRAMS")
 @DynamicUpdate
 public class FileTransfer extends BaseEntity {
+
+    public void override(FileTransfer source) {
+        super.override(source);
+    }
+
+    public void copyNonEmpty(FileTransfer source) {
+        super.copyNonEmpty(source);
+    }
 }

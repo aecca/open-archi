@@ -59,4 +59,21 @@ public class UmlMethod extends BaseEntity {
         this.visibility = visibility;
     }
 
+
+    public void override(UmlMethod source) {
+        super.override(source);
+        this.name = source.getName();
+        this.type = source.getType();
+    }
+
+    public void copyNonEmpty(UmlMethod source) {
+        super.copyNonEmpty(source);
+        if (source.getName() != null) {
+            this.name = source.getName();
+        }
+        if (source.getType() != null) {
+            this.type = source.getType();
+        }
+    }
+
 }

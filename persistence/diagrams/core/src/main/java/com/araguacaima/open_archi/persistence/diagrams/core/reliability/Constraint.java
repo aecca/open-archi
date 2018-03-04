@@ -146,4 +146,42 @@ public class Constraint extends BaseEntity {
             throw new EntityError(resourceBundle.getString(getModificationErrorMessageKey()));
         }
     }
+
+    public void override(Constraint source) {
+        super.override(source);
+        this.setActivities(source.getActivities());
+        this.setBatchProcessing(source.getBatchProcessing());
+        this.setBulkProcessing(source.getBulkProcessing());
+        this.setConcurrencies(source.getConcurrencies());
+        this.setDataBase(source.getDataBase());
+        this.setFileTransfers(source.getFileTransfers());
+        this.setRates(source.getRates());
+
+    }
+
+    public void copyNonEmpty(Constraint source) {
+        super.copyNonEmpty(source);
+        if (source.getActivities() != null && !source.getActivities().isEmpty()) {
+            this.setActivities(source.getActivities());
+        }
+        if (source.getActivities() != null && !source.getActivities().isEmpty()) {
+            this.setActivities(source.getActivities());
+        }
+        if (source.getActivities() != null && !source.getActivities().isEmpty()) {
+            this.setActivities(source.getActivities());
+        }
+        if (source.getActivities() != null && !source.getActivities().isEmpty()) {
+            this.setActivities(source.getActivities());
+        }
+        if (source.getActivities() != null && !source.getActivities().isEmpty()) {
+            this.setActivities(source.getActivities());
+        }
+
+        this.setBatchProcessing(source.getBatchProcessing());
+        this.setBulkProcessing(source.getBulkProcessing());
+        this.setConcurrencies(source.getConcurrencies());
+        this.setDataBase(source.getDataBase());
+        this.setFileTransfers(source.getFileTransfers());
+        this.setRates(source.getRates());
+    }
 }

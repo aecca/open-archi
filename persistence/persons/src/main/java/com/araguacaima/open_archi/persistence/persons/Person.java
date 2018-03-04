@@ -35,4 +35,21 @@ public class Person extends BaseEntity {
         this.names = names;
     }
 
+
+    public void override(Person source) {
+        super.override(source);
+        this.names = source.getNames();
+        this.lastNames = source.getLastNames();
+    }
+
+    public void copyNonEmpty(Person source) {
+        super.copyNonEmpty(source);
+        if (source.getNames() != null) {
+            this.names = source.getNames();
+        }
+        if (source.getLastNames() != null) {
+            this.lastNames = source.getLastNames();
+        }
+    }
+
 }

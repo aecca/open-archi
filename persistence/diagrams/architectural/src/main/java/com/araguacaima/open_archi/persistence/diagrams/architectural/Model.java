@@ -63,13 +63,28 @@ public class Model extends Element implements DiagramableElement {
         setKind(ElementKind.ARCHITECTURE_MODEL);
     }
 
-    public void copy(Model source) {
-        super.copy(source);
+    public void override(Model source) {
+        super.override(source);
         this.relationships = source.getRelationships();
         this.consumers = source.getConsumers();
         this.softwareSystems = source.getSoftwareSystems();
         this.deploymentNodes = source.getDeploymentNodes();
+    }
 
+    public void copyNonEmpty(Model source) {
+        super.copyNonEmpty(source);
+        if (source.getRelationships() != null && !source.getRelationships().isEmpty()) {
+            this.relationships = source.getRelationships();
+        }
+        if (source.getConsumers() != null && !source.getConsumers().isEmpty()) {
+            this.consumers = source.getConsumers();
+        }
+        if (source.getSoftwareSystems() != null && !source.getSoftwareSystems().isEmpty()) {
+            this.softwareSystems = source.getSoftwareSystems();
+        }
+        if (source.getDeploymentNodes() != null && !source.getDeploymentNodes().isEmpty()) {
+            this.deploymentNodes = source.getDeploymentNodes();
+        }
     }
 
     public Set<Consumer> getConsumers() {

@@ -82,4 +82,29 @@ public class Features extends Items {
     public void setKind(ElementKind kind) {
         this.kind = kind;
     }
+
+    public void override(Features source) {
+        super.override(source);
+        this.setRole(source.getRole());
+        this.setUrl(source.getUrl());
+        this.setCategory(source.getCategory());
+        this.setVisibility(source.getVisibility());
+    }
+
+    public void copyNonEmpty(Features source) {
+        super.copyNonEmpty(source);
+        if (source.getRole() != null) {
+            this.setRole(source.getRole());
+        }
+        if (source.getUrl() != null) {
+            this.setUrl(source.getUrl());
+        }
+        if (source.getCategory() != null) {
+            this.setCategory(source.getCategory());
+        }
+        if (source.getVisibility() != null) {
+            this.setVisibility(source.getVisibility());
+        }
+    }
+
 }

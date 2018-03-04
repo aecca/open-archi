@@ -26,4 +26,16 @@ public class Relationship extends com.araguacaima.open_archi.persistence.diagram
     public void setType(RelationshipType type) {
         this.type = type;
     }
+
+    public void override(Relationship source) {
+        super.override(source);
+        this.type = source.getType();
+    }
+
+    public void copyNonEmpty(Relationship source) {
+        super.copyNonEmpty(source);
+        if (source.getType() != null) {
+            this.type = source.getType();
+        }
+    }
 }

@@ -40,4 +40,16 @@ public class Measurable extends BaseEntity {
     public void setValue(double value) {
         this.value = value;
     }
+
+    public void override(Measurable source) {
+        super.override(source);
+        this.setValue(source.getValue());
+    }
+
+    public void copyNonEmpty(Measurable source) {
+        super.copyNonEmpty(source);
+        if (source.getValue() != 0) {
+            this.setValue(source.getValue());
+        }
+    }
 }

@@ -96,4 +96,37 @@ public class Items extends Taggable {
     public void setChildren(Set<CompositeElement> children) {
         this.children = children;
     }
+
+    public void override(Item source) {
+        super.override(source);
+        this.name = source.getName();
+        this.description = source.getDescription();
+        this.location = source.getLocation();
+        this.parent = source.getParent();
+        this.children = source.getChildren();
+        this.shape = source.getShape();
+    }
+
+    public void copyNonEmpty(Item source) {
+        super.copyNonEmpty(source);
+        if (source.getName() != null) {
+            this.name = source.getName();
+        }
+        if (source.getDescription() != null) {
+            this.description = source.getDescription();
+        }
+        if (source.getLocation() != null) {
+            this.location = source.getLocation();
+        }
+        if (source.getParent() != null) {
+            this.parent = source.getParent();
+        }
+        if (source.getChildren() != null && !source.getChildren().isEmpty()) {
+            this.children = source.getChildren();
+        }
+        if (source.getShape() != null) {
+            this.shape = source.getShape();
+        }
+    }
+
 }

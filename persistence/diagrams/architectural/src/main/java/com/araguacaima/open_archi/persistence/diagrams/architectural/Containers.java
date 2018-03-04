@@ -48,4 +48,22 @@ public class Containers extends StaticElements {
     public void setComponents(Set<Components> components) {
         this.components = components;
     }
+
+
+    public void override(Containers source) {
+        super.override(source);
+        this.setTechnology(source.getTechnology());
+        this.setComponents(source.getComponents());
+    }
+
+    public void copyNonEmpty(Containers source) {
+        super.copyNonEmpty(source);
+        if (source.getTechnology() != null) {
+            this.setTechnology(source.getTechnology());
+        }
+        if (source.getComponents() != null && !source.getComponents().isEmpty()) {
+            this.setComponents(source.getComponents());
+        }
+    }
+
 }

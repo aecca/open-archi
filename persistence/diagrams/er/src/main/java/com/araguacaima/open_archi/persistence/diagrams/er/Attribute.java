@@ -43,4 +43,23 @@ public class Attribute extends BaseEntity {
     public void setType(String type) {
         this.type = type;
     }
+
+
+    public void override(Attribute source) {
+        super.override(source);
+        this.setName(source.getName());
+        this.setType(source.getType());
+        this.setKey(source.isKey());
+    }
+
+    public void copyNonEmpty(Attribute source) {
+        super.copyNonEmpty(source);
+        if (source.getName() != null) {
+            this.setName(source.getName());
+        }
+        if (source.getType() != null) {
+            this.setType(source.getType());
+        }
+        this.setKey(source.isKey());
+    }
 }

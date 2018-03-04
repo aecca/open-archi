@@ -59,4 +59,20 @@ public class Database extends BaseEntity implements MeasurableRange {
     public Set<Measurable> getRanges() {
         return RANGE;
     }
+
+    public void override(Database source) {
+        super.override(source);
+        this.setValue(source.getValue());
+        this.setType(source.getType());
+    }
+
+    public void copyNonEmpty(Database source) {
+        super.copyNonEmpty(source);
+        if (source.getValue() != null) {
+            this.setValue(source.getValue());
+        }
+        if (source.getType() != null) {
+            this.setType(source.getType());
+        }
+    }
 }

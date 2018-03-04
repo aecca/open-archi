@@ -108,4 +108,23 @@ public class Point extends BaseEntity implements Serializable, Cloneable {
     }
 
 
+    public void override(Point source) {
+        super.override(source);
+        this.x = source.getX();
+        this.y = source.getY();
+        this.z = source.getZ();
+    }
+
+    public void copyNonEmpty(Point source) {
+        super.copyNonEmpty(source);
+        if (source.getX() != 0) {
+            this.x = source.getX();
+        }
+        if (source.getY() != 0) {
+            this.y = source.getY();
+        }
+        if (source.getZ() != 0) {
+            this.z = source.getZ();
+        }
+    }
 }

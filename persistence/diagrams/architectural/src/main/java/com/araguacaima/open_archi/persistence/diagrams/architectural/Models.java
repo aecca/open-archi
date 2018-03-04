@@ -96,4 +96,28 @@ public class Models extends Elements {
     public void setRelationships(Set<Relationships> relationships) {
         this.relationships = relationships;
     }
+
+    public void override(Models source) {
+        super.override(source);
+        this.relationships = source.getRelationships();
+        this.consumers = source.getConsumers();
+        this.softwareSystems = source.getSoftwareSystems();
+        this.deploymentNodes = source.getDeploymentNodes();
+    }
+
+    public void copyNonEmpty(Models source) {
+        super.copyNonEmpty(source);
+        if (source.getRelationships() != null && !source.getRelationships().isEmpty()) {
+            this.relationships = source.getRelationships();
+        }
+        if (source.getConsumers() != null && !source.getConsumers().isEmpty()) {
+            this.consumers = source.getConsumers();
+        }
+        if (source.getSoftwareSystems() != null && !source.getSoftwareSystems().isEmpty()) {
+            this.softwareSystems = source.getSoftwareSystems();
+        }
+        if (source.getDeploymentNodes() != null && !source.getDeploymentNodes().isEmpty()) {
+            this.deploymentNodes = source.getDeploymentNodes();
+        }
+    }
 }

@@ -64,4 +64,20 @@ public class Model extends Element implements DiagramableElement {
     public void setRelationships(Set<Relationship> relationships) {
         this.relationships = relationships;
     }
+
+    public void override(Model source) {
+        super.override(source);
+        this.setSequences(source.getSequences());
+        this.setRelationships(source.getRelationships());
+    }
+
+    public void copyNonEmpty(Model source) {
+        super.copyNonEmpty(source);
+        if (source.getSequences() != null && !source.getSequences().isEmpty()) {
+            this.setSequences(source.getSequences());
+        }
+        if (source.getRelationships() != null && !source.getRelationships().isEmpty()) {
+            this.setRelationships(source.getRelationships());
+        }
+    }
 }

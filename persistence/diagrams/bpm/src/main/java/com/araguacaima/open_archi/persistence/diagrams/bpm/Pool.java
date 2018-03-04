@@ -31,4 +31,16 @@ public class Pool extends Item {
         this.lanes = lanes;
     }
 
+    public void override(Pool source) {
+        super.override(source);
+        this.setLanes(source.getLanes());
+    }
+
+    public void copyNonEmpty(Pool source) {
+        super.copyNonEmpty(source);
+        if (source.getLanes() != null && !source.getLanes().isEmpty()) {
+            this.setLanes(source.getLanes());
+        }
+    }
+
 }

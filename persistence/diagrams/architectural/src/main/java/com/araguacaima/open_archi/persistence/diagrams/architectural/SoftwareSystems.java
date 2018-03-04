@@ -48,4 +48,20 @@ public class SoftwareSystems extends StaticElements {
     public void setContainers(Set<Containers> containers) {
         this.containers = containers;
     }
+
+    public void override(SoftwareSystems source) {
+        super.override(source);
+        this.setScope(source.getScope());
+        this.setContainers(source.getContainers());
+    }
+
+    public void copyNonEmpty(SoftwareSystems source) {
+        super.copyNonEmpty(source);
+        if (source.getScope() != null) {
+            this.setScope(source.getScope());
+        }
+        if (source.getContainers() != null && !source.getContainers().isEmpty()) {
+            this.setContainers(source.getContainers());
+        }
+    }
 }

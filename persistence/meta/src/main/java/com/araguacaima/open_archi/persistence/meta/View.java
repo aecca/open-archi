@@ -48,4 +48,16 @@ public class View extends BaseEntity {
             throw new EntityError(resourceBundle.getString(getModificationErrorMessageKey()));
         }
     }
+
+    public void override(View source) {
+        super.override(source);
+        this.setName(source.getName());
+    }
+
+    public void copyNonEmpty(View source) {
+        super.copyNonEmpty(source);
+        if (source.getName() != null) {
+            this.setName(source.getName());
+        }
+    }
 }

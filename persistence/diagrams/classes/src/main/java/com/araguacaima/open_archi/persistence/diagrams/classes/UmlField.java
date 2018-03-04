@@ -42,4 +42,21 @@ public class UmlField extends BaseEntity {
     public void setVisibility(Visibility visibility) {
         this.visibility = visibility;
     }
+
+
+    public void override(UmlField source) {
+        super.override(source);
+        this.name = source.getName();
+        this.type = source.getType();
+    }
+
+    public void copyNonEmpty(UmlField source) {
+        super.copyNonEmpty(source);
+        if (source.getName() != null) {
+            this.name = source.getName();
+        }
+        if (source.getType() != null) {
+            this.type = source.getType();
+        }
+    }
 }

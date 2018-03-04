@@ -28,4 +28,16 @@ public class Lane extends BaseEntity {
     public void setActivities(Collection<Activity> activities) {
         this.activities = activities;
     }
+
+    public void override(Lane source) {
+        super.override(source);
+        this.activities = source.getActivities();
+    }
+
+    public void copyNonEmpty(Lane source) {
+        super.copyNonEmpty(source);
+        if (source.getActivities() != null && !source.getActivities().isEmpty()) {
+            this.activities = source.getActivities();
+        }
+    }
 }

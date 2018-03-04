@@ -10,4 +10,12 @@ import javax.persistence.PersistenceUnit;
 public class Activity extends Item {
 
 
+    public void override(Activity source) {
+        super.override(source);
+    }
+
+    public void copyNonEmpty(Activity source) {
+        super.copyNonEmpty(source);
+    }
+
 }

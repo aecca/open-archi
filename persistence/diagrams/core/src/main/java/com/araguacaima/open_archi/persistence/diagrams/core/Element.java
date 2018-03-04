@@ -67,10 +67,23 @@ public class Element extends Item {
         this.features = features;
     }
 
-    public void copy(Element source) {
-        super.copy(source);
+    public void override(Element source) {
+        super.override(source);
         this.url = source.getUrl();
         this.properties = source.getProperties();
         this.features = source.getFeatures();
+    }
+
+    public void copyNonEmpty(Element source) {
+        super.copyNonEmpty(source);
+        if (source.getUrl() != null) {
+            this.url = source.getUrl();
+        }
+        if (source.getProperties() != null && !source.getProperties().isEmpty()) {
+            this.properties = source.getProperties();
+        }
+        if (source.getFeatures() != null && !source.getFeatures().isEmpty()) {
+            this.features = source.getFeatures();
+        }
     }
 }

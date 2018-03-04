@@ -50,4 +50,21 @@ public class Elements extends Items {
     public void setFeatures(Set<Features> features) {
         this.features = features;
     }
+
+
+    public void override(Elements source) {
+        super.override(source);
+        this.url = source.getUrl();
+        this.features = source.getFeatures();
+    }
+
+    public void copyNonEmpty(Elements source) {
+        super.copyNonEmpty(source);
+        if (source.getUrl() != null) {
+            this.url = source.getUrl();
+        }
+        if (source.getFeatures() != null && !source.getFeatures().isEmpty()) {
+            this.features = source.getFeatures();
+        }
+    }
 }

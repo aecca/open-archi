@@ -31,4 +31,17 @@ public class Consumer extends StaticElement {
         this.scope = scope;
     }
 
+    public void override(Consumer source) {
+        super.override(source);
+        this.setScope(source.getScope());
+    }
+
+    public void copyNonEmpty(Consumer source) {
+        super.copyNonEmpty(source);
+        if (source.getScope() != null) {
+            this.setScope(source.getScope());
+        }
+    }
+
+
 }

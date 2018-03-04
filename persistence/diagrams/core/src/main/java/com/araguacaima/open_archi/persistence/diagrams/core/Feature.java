@@ -120,4 +120,36 @@ public class Feature extends Item {
     public void setKind(ElementKind kind) {
         this.kind = kind;
     }
+
+    public void override(Feature source) {
+        super.override(source);
+        this.setRole(source.getRole());
+        this.setUrl(source.getUrl());
+        this.setCategory(source.getCategory());
+        this.setVisibility(source.getVisibility());
+        this.setIncomingConstraints(source.getIncomingConstraints());
+        this.setOutgoingConstraints(source.getOutgoingConstraints());
+    }
+
+    public void copyNonEmpty(Feature source) {
+        super.copyNonEmpty(source);
+        if (source.getRole() != null) {
+            this.setRole(source.getRole());
+        }
+        if (source.getUrl() != null) {
+            this.setUrl(source.getUrl());
+        }
+        if (source.getCategory() != null) {
+            this.setCategory(source.getCategory());
+        }
+        if (source.getVisibility() != null) {
+            this.setVisibility(source.getVisibility());
+        }
+        if (source.getIncomingConstraints() != null && !source.getIncomingConstraints().isEmpty()) {
+            this.setIncomingConstraints(source.getIncomingConstraints());
+        }
+        if (source.getOutgoingConstraints() != null && !source.getOutgoingConstraints().isEmpty()) {
+            this.setOutgoingConstraints(source.getOutgoingConstraints());
+        }
+    }
 }

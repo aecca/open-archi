@@ -11,7 +11,7 @@ import java.util.Set;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @PersistenceUnit(unitName = "open-archi")
-@Table(name = "Models", schema = "DIAGRAMS", uniqueConstraints= @UniqueConstraint(columnNames={"name", "kind"}))
+@Table(name = "Models", schema = "DIAGRAMS", uniqueConstraints = @UniqueConstraint(columnNames = {"name", "kind"}))
 @DynamicUpdate
 @DiscriminatorColumn(name = "modelType", discriminatorType = DiscriminatorType.STRING)
 @NamedQueries({@NamedQuery(name = Taggable.GET_ALL_MODELS,
@@ -34,8 +34,16 @@ public class Taggable extends BaseEntity {
         this.tags = tags;
     }
 
-    public void copy(Taggable source) {
-        super.copy(source);
+    public void override(Taggable source) {
+        super.override(source);
         this.tags = source.getTags();
+    }
+
+    public void copyNonEmpty(Taggable source) {
+        super.copyNonEmpty(source);
+        if (source.getTags() != null && !source.getTags().isEmpty()) {
+            this.tags = source.getTags();
+        }
+
     }
 }

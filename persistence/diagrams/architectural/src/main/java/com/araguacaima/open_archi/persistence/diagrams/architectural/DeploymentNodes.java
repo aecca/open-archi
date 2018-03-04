@@ -36,15 +36,6 @@ public class DeploymentNodes extends Elements {
     @Enumerated(EnumType.STRING)
     private ElementKind kind = ElementKind.DEPLOYMENT;
 
-    @OneToMany
-    @JoinTable(schema = "DIAGRAMS",
-            name = "DeploymentNode_ContainerInstances",
-            joinColumns = {@JoinColumn(name = "DeploymentNode_Id",
-                    referencedColumnName = "Id")},
-            inverseJoinColumns = {@JoinColumn(name = "ContainerInstance_Id",
-                    referencedColumnName = "Id")})
-    private Set<ContainerInstances> containerInstances = new HashSet<>();
-
     public String getTechnology() {
         return technology;
     }
@@ -69,11 +60,19 @@ public class DeploymentNodes extends Elements {
         this.kind = kind;
     }
 
-    public Set<ContainerInstances> getContainerInstances() {
-        return containerInstances;
+    public void override(DeploymentNodes source) {
+        super.override(source);
+        this.setInstances(source.getInstances());
+        this.setTechnology(source.getTechnology());
     }
 
-    public void setContainerInstances(Set<ContainerInstances> containerInstances) {
-        this.containerInstances = containerInstances;
+    public void copyNonEmpty(DeploymentNodes source) {
+        super.copyNonEmpty(source);
+        if (source.getInstances() != 0) {
+            this.setInstances(source.getInstances());
+        }
+        if (source.getTechnology() != null) {
+            this.setTechnology(source.getTechnology());
+        }
     }
 }

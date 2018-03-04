@@ -36,4 +36,16 @@ public class Entity extends Element {
     public void setAttributes(Collection<Attribute> attributes) {
         this.attributes = attributes;
     }
+
+    public void override(Entity source) {
+        super.override(source);
+        this.setAttributes(source.getAttributes());
+    }
+
+    public void copyNonEmpty(Entity source) {
+        super.copyNonEmpty(source);
+        if (source.getAttributes() != null && !source.getAttributes().isEmpty()) {
+            this.setAttributes(source.getAttributes());
+        }
+    }
 }

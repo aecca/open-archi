@@ -11,7 +11,7 @@ import javax.persistence.*;
 @javax.persistence.Entity
 @PersistenceUnit(unitName = "open-archi")
 @DiscriminatorValue("ErRelationship")
-public class Relationship extends com.araguacaima.open_archi.persistence.diagrams.core.Relationship {
+public class Relationships extends com.araguacaima.open_archi.persistence.diagrams.core.Relationships {
     @Column
     @Enumerated(EnumType.STRING)
     private RelationshipType type;
@@ -20,7 +20,7 @@ public class Relationship extends com.araguacaima.open_archi.persistence.diagram
     @Column
     private String destinationText;
 
-    public Relationship() {
+    public Relationships() {
     }
 
     public RelationshipType getType() {
@@ -47,14 +47,14 @@ public class Relationship extends com.araguacaima.open_archi.persistence.diagram
         this.destinationText = destinationText;
     }
 
-    public void override(Relationship source) {
+    public void override(Relationships source) {
         super.override(source);
         this.type = source.getType();
         this.sourceText = source.getSourceText();
         this.destinationText = source.getDestinationText();
     }
 
-    public void copyNonEmpty(Relationship source) {
+    public void copyNonEmpty(Relationships source) {
         super.copyNonEmpty(source);
         if (source.getType() != null) {
             this.type = source.getType();

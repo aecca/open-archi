@@ -35,4 +35,21 @@ public class UmlParameter extends BaseEntity {
         this.type = type;
     }
 
+
+    public void override(UmlParameter source) {
+        super.override(source);
+        this.name = source.getName();
+        this.type = source.getType();
+    }
+
+    public void copyNonEmpty(UmlParameter source) {
+        super.copyNonEmpty(source);
+        if (source.getName() != null) {
+            this.name = source.getName();
+        }
+        if (source.getType() != null) {
+            this.type = source.getType();
+        }
+    }
+
 }

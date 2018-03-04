@@ -30,7 +30,7 @@ public class DeploymentNode extends Element {
     private String technology;
 
     @Column
-    private int instances = 1;
+    private int instances = 0;
 
     @Column
     @Enumerated(EnumType.STRING)
@@ -75,5 +75,25 @@ public class DeploymentNode extends Element {
 
     public void setContainerInstances(Set<ContainerInstance> containerInstances) {
         this.containerInstances = containerInstances;
+    }
+
+    public void override(DeploymentNode source) {
+        super.override(source);
+        this.setInstances(source.getInstances());
+        this.setTechnology(source.getTechnology());
+        this.setContainerInstances(source.getContainerInstances());
+    }
+
+    public void copyNonEmpty(DeploymentNode source) {
+        super.copyNonEmpty(source);
+        if (source.getInstances() != 0) {
+            this.setInstances(source.getInstances());
+        }
+        if (source.getTechnology() != null) {
+            this.setTechnology(source.getTechnology());
+        }
+        if (source.getContainerInstances() != null && !source.getContainerInstances().isEmpty()) {
+            this.setContainerInstances(source.getContainerInstances());
+        }
     }
 }

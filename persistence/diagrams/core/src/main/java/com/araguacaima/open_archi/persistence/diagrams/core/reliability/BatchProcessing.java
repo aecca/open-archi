@@ -12,4 +12,13 @@ import javax.persistence.Table;
 @Table(name = "BatchProcessing", schema = "DIAGRAMS")
 @DynamicUpdate
 public class BatchProcessing extends BaseEntity {
+
+    public void override(BatchProcessing source) {
+        super.override(source);
+    }
+
+    public void copyNonEmpty(BatchProcessing source) {
+        super.copyNonEmpty(source);
+
+    }
 }

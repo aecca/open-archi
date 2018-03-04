@@ -43,4 +43,18 @@ public class Consumers extends StaticElements {
     public void setKind(ElementKind kind) {
         this.kind = kind;
     }
+
+
+    public void override(Consumers source) {
+        super.override(source);
+        this.setScope(source.getScope());
+    }
+
+    public void copyNonEmpty(Consumers source) {
+        super.copyNonEmpty(source);
+        if (source.getScope() != null) {
+            this.setScope(source.getScope());
+        }
+    }
+
 }

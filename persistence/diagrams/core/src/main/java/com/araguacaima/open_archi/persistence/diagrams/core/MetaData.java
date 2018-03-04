@@ -54,14 +54,6 @@ public class MetaData extends BaseEntity {
             inverseJoinColumns = {@JoinColumn(name = "UsedIn_Id",
                     referencedColumnName = "Id")})
     private Collection<Taggable> usedIn;
-/*
-    @OneToOne(cascade = CascadeType.REMOVE)
-    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
-    @JoinTable(schema = "META",
-            name = "MetaData_Version",
-            joinColumns = {@JoinColumn(name = "MetaData_Id", referencedColumnName = "Id")},
-            inverseJoinColumns = {@JoinColumn(name = "Version_Id", referencedColumnName = "Id")})
-    private Version version;*/
 
     @OneToMany(cascade = CascadeType.REMOVE)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
@@ -105,19 +97,39 @@ public class MetaData extends BaseEntity {
         this.usedIn = usedId;
     }
 
-/*    public Version getVersion() {
-        return version;
-    }
-
-    public void setVersion(Version version) {
-        this.version = version;
-    }*/
-
     public Collection<View> getViews() {
         return views;
     }
 
     public void setViews(Collection<View> views) {
         this.views = views;
+    }
+
+    public void override(MetaData source) {
+        super.override(source);
+        this.responsibles = source.getResponsibles();
+        this.collaborators = source.getCollaborators();
+        this.relatedWith = source.getRelatedWith();
+        this.usedIn = source.getUsedIn();
+        this.views = source.getViews();
+    }
+
+    public void copyNonEmpty(MetaData source) {
+        super.copyNonEmpty(source);
+        if (source.getResponsibles() != null && !source.getResponsibles().isEmpty()) {
+            this.responsibles = source.getResponsibles();
+        }
+        if (source.getCollaborators() != null && !source.getCollaborators().isEmpty()) {
+            this.collaborators = source.getCollaborators();
+        }
+        if (source.getRelatedWith() != null && !source.getRelatedWith().isEmpty()) {
+            this.relatedWith = source.getRelatedWith();
+        }
+        if (source.getUsedIn() != null && !source.getUsedIn().isEmpty()) {
+            this.usedIn = source.getUsedIn();
+        }
+        if (source.getViews() != null && !source.getViews().isEmpty()) {
+            this.views = source.getViews();
+        }
     }
 }
