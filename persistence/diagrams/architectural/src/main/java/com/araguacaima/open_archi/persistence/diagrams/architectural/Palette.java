@@ -15,18 +15,18 @@ public class Palette implements Palettable {
 
     public Palette() {
         PaletteItem box = new PaletteItem();
-        box.setShapeType(ShapeType.ROUNDED_BOX);
+        box.setShapeType(ShapeType.RoundedRectangle);
         box.setRank(0);
         box.setName("Element");
         basicElements.add(box);
         PaletteItem person = new PaletteItem();
-        person.setShapeType(ShapeType.PERSON);
+        person.setShapeType(ShapeType.Person);
         person.setRank(1);
         person.setName("Person");
         person.setKind(ElementKind.CONSUMER);
         basicElements.add(person);
         PaletteItem consumer = new PaletteItem();
-        consumer.setShapeType(ShapeType.CONSUMER);
+        consumer.setShapeType(ShapeType.Consumer);
         consumer.setRank(2);
         consumer.setName("Consumer");
         consumer.setKind(ElementKind.CONSUMER);

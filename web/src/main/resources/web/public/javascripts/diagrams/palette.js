@@ -1,15 +1,15 @@
+const $ = go.GraphObject.make;
 function showPaletteByType(paletteData) {
     switch (paletteData.type) {
         case "ARCHITECTURE":
             // initialize the Palette that is on the left side of the page
+            // noinspection JSUndeclaredVariable
             myPalette =
                 $(go.Palette, "paletteDiv",  // must name or refer to the DIV HTML element
                     {
                         scrollsPageOnFocus: false
                     });
-
             let paletteModelArray = [];
-
             let templateMap =
                 $(go.Node, "Spot", nodeStyle(),
                     // the main object is a Panel that surrounds a TextBlock with a rectangular Shape
@@ -36,10 +36,10 @@ function showPaletteByType(paletteData) {
                 );
 
             paletteData.basicElements.forEach(function (data) {
-                var shapeType = capitalize(data.shapeType);
+                const shapeType = capitalize(data.shapeType);
                 const input = data.input;
                 const output = data.output;
-                let paletteModel = {}
+                let paletteModel = {};
                 paletteModel.category = data.name;
                 paletteModel.text = data.name;
                 paletteModel.figure = shapeType;
@@ -67,10 +67,10 @@ function showPaletteByType(paletteData) {
             });
             if (paletteData.softwareSystems) {
                 paletteData.softwareSystems.forEach(function (data) {
-                    var shapeType = capitalize(data.shapeType);
+                    const shapeType = capitalize(data.shapeType);
                     const input = data.input;
                     const output = data.output;
-                    let paletteModel = {}
+                    let paletteModel = {};
                     paletteModel.category = data.name;
                     paletteModel.text = data.name;
                     paletteModel.figure = shapeType;
@@ -99,10 +99,10 @@ function showPaletteByType(paletteData) {
             }
             if (paletteData.containers) {
                 paletteData.containers.forEach(function (data) {
-                    var shapeType = capitalize(data.shapeType);
+                    const shapeType = capitalize(data.shapeType);
                     const input = data.input;
                     const output = data.output;
-                    let paletteModel = {}
+                    let paletteModel = {};
                     paletteModel.category = data.name;
                     paletteModel.text = data.name;
                     paletteModel.figure = shapeType;
@@ -132,10 +132,10 @@ function showPaletteByType(paletteData) {
             if (paletteData.components) {
 
                 paletteData.components.forEach(function (data) {
-                    var shapeType = capitalize(data.shapeType);
+                    const shapeType = capitalize(data.shapeType);
                     const input = data.input;
                     const output = data.output;
-                    let paletteModel = {}
+                    let paletteModel = {};
                     paletteModel.category = data.name;
                     paletteModel.text = data.name;
                     paletteModel.figure = shapeType;

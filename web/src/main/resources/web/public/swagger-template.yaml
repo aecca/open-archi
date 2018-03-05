@@ -2207,7 +2207,7 @@ definitions:
         kind:
           type: string
           enum:
-          - CONSUMER
+          - Consumer
   Consumer_Create:
     type: object
     allOf:
@@ -2224,7 +2224,7 @@ definitions:
         kind:
           type: string
           enum:
-          - CONSUMER
+          - Consumer
   Consumers:
     type: object
     allOf:
@@ -2241,7 +2241,7 @@ definitions:
         kind:
           type: string
           enum:
-          - CONSUMER
+          - Consumer
   Container:
     type: object
     description: Container
@@ -3775,12 +3775,12 @@ definitions:
           type: string
           description: Type of palette item
           enum:
-          - PERSON
-          - ROUNDED_BOX
-          - BOX
-          - DIAMOND
-          - CIRCLE
-          - CONSUMER
+          - Person
+          - RoundedRectangle
+          - Rectangle
+          - Diamond
+          - Ellipse
+          - Consumer
         rank:
           type: integer
           format: int32
@@ -3795,12 +3795,12 @@ definitions:
           type: string
           description: Type of palette item
           enum:
-          - PERSON
-          - ROUNDED_BOX
-          - BOX
-          - DIAMOND
-          - CIRCLE
-          - CONSUMER
+          - Person
+          - RoundedRectangle
+          - Rectangle
+          - Diamond
+          - Ellipse
+          - Consumer
         rank:
           type: integer
           format: int32
@@ -3830,7 +3830,7 @@ definitions:
         - UML_CLASS
         - FEATURE
         - COMPONENT
-        - CONSUMER
+        - Consumer
         - CONTAINER
         - DEPLOYMENT
         - BPM
@@ -3858,7 +3858,7 @@ definitions:
         - UML_CLASS
         - FEATURE
         - COMPONENT
-        - CONSUMER
+        - Consumer
         - CONTAINER
         - DEPLOYMENT
         - BPM
@@ -4164,11 +4164,11 @@ definitions:
         type: string
         description: Shape type
         enum:
-        - PERSON
-        - ROUNDED_BOX
-        - BOX
-        - DIAMOND
-        - CIRCLE
+        - Person
+        - RoundedRectangle
+        - Rectangle
+        - Diamond
+        - Ellipse
     required:
     - id
     - type
@@ -4183,11 +4183,11 @@ definitions:
         type: string
         description: Shape type
         enum:
-        - PERSON
-        - ROUNDED_BOX
-        - BOX
-        - DIAMOND
-        - CIRCLE
+        - Person
+        - RoundedRectangle
+        - Rectangle
+        - Diamond
+        - Ellipse
     required:
     - id
     - type
@@ -4202,11 +4202,11 @@ definitions:
         type: string
         description: Shape type
         enum:
-        - PERSON
-        - ROUNDED_BOX
-        - BOX
-        - DIAMOND
-        - CIRCLE
+        - Person
+        - RoundedRectangle
+        - Rectangle
+        - Diamond
+        - Ellipse
     required:
     - id
     - type

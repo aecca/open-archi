@@ -997,7 +997,7 @@ public class Server {
             item.setRank(rank);
             item.setKind(ElementKind.ARCHITECTURE_MODEL);
             item.setName(model.getName());
-            item.setShapeType(ShapeType.ROUNDED_BOX);
+            item.setShapeType(ShapeType.RoundedRectangle);
             item.setId(model.getId());
             item.setSize(new Size(40,40));
             item.setFill("#01203A");
@@ -1013,7 +1013,7 @@ public class Server {
             item.setRank(rank);
             item.setKind(ElementKind.ARCHITECTURE_MODEL);
             item.setName(model.getName());
-            item.setShapeType(ShapeType.ROUNDED_BOX);
+            item.setShapeType(ShapeType.RoundedRectangle);
             item.setId(model.getId());
             item.setSize(new Size(40,40));
             item.setFill("#08427B");
@@ -1029,7 +1029,7 @@ public class Server {
             item.setRank(rank);
             item.setKind(ElementKind.ARCHITECTURE_MODEL);
             item.setName(model.getName());
-            item.setShapeType(ShapeType.ROUNDED_BOX);
+            item.setShapeType(ShapeType.RoundedRectangle);
             item.setId(model.getId());
             item.setSize(new Size(40,40));
             item.setFill("#1368BD");

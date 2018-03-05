@@ -30,7 +30,7 @@ import java.util.Set;
                         "from com.araguacaima.open_archi.persistence.diagrams.core.Item a where a.prototype=true"),
         @NamedQuery(name = Item.GET_ALL_CONSUMER_NAMES,
                 query = "select new com.araguacaima.open_archi.persistence.commons.IdName(a.id, a.name, TYPE(a)) " +
-                        "from com.araguacaima.open_archi.persistence.diagrams.core.Item a where a.kind='CONSUMER'"),
+                        "from com.araguacaima.open_archi.persistence.diagrams.core.Item a where a.kind=Consumer"),
         @NamedQuery(name = Item.GET_ALL_DIAGRAM_NAMES,
                 query = "select new com.araguacaima.open_archi.persistence.commons.IdName(a.id, a.name, TYPE(a)) " +
                         "from com.araguacaima.open_archi.persistence.diagrams.core.Item a where a.prototype=false"),
