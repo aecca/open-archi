@@ -26,7 +26,7 @@ block scripts
         let ActivityStart = '!{ActivityStart}';  // height before start message time
         let ActivityEnd = '!{ActivityEnd}';  // height beyond end message time
         let source = '!{source}';
-        let paletteDataArray = '!{palette}';
+        let paletteData = !{palette};
         let lightText = 'whitesmoke';
 
         // Define a function for creating a "port" that is normally transparent.
@@ -85,8 +85,8 @@ block scripts
             return text.substr(1).toUpperCase() + text.substr(2, text.length).toLowerCase();
         }
 
-        function showPaletteByType(paletteDataArray) {
-            switch (paletteDataArray.kind) {
+        function showPaletteByType(paletteData) {
+            switch (paletteData.type) {
                 case "ARCHITECTURE":
                     // initialize the Palette that is on the left side of the page
                     myPalette =
@@ -122,7 +122,100 @@ block scripts
                             makePort("B", go.Spot.Bottom, true, true)
                         );
 
-                    paletteDataArray.forEach(function (data) {
+                    paletteData.basicElements.forEach(function (data) {
+                        var shapeType = capitalize(data.shapeType);
+                        const input = data.input;
+                        const output = data.output;
+                        let paletteModel = {}
+                        paletteModel.category = data.name;
+                        paletteModel.text = data.name;
+                        paletteModel.figure = shapeType;
+                        paletteModelArray.push(paletteModel);
+                        templateMap.add(data.name,
+                            $(go.Node, "Spot", nodeStyle(),
+                                $(go.Panel, "Auto",
+                                    $(go.Shape, shapeType,
+                                        {
+                                            minSize: new go.Size(data.size.width, data.size.height),
+                                            fill: data.fill,
+                                            stroke: data.stroke
+                                        }),
+                                    $(go.TextBlock, data.name,
+                                        {font: "bold 11pt Helvetica, Arial, sans-serif", stroke: lightText},
+                                        new go.Binding("text"))
+                                ),
+                                // three named ports, one on each side except the top, all output only:
+                                // four named ports, one on each side:
+                                makePort("T", go.Spot.Top, input, output),
+                                makePort("L", go.Spot.Left, input, output),
+                                makePort("R", go.Spot.Right, input, output),
+                                makePort("B", go.Spot.Bottom, input, output)
+                            ));
+                    });
+
+                    paletteData.softwareSystems.forEach(function (data) {
+                        var shapeType = capitalize(data.shapeType);
+                        const input = data.input;
+                        const output = data.output;
+                        let paletteModel = {}
+                        paletteModel.category = data.name;
+                        paletteModel.text = data.name;
+                        paletteModel.figure = shapeType;
+                        paletteModelArray.push(paletteModel);
+                        templateMap.add(data.name,
+                            $(go.Node, "Spot", nodeStyle(),
+                                $(go.Panel, "Auto",
+                                    $(go.Shape, shapeType,
+                                        {
+                                            minSize: new go.Size(data.size.width, data.size.height),
+                                            fill: data.fill,
+                                            stroke: data.stroke
+                                        }),
+                                    $(go.TextBlock, data.name,
+                                        {font: "bold 11pt Helvetica, Arial, sans-serif", stroke: lightText},
+                                        new go.Binding("text"))
+                                ),
+                                // three named ports, one on each side except the top, all output only:
+                                // four named ports, one on each side:
+                                makePort("T", go.Spot.Top, input, output),
+                                makePort("L", go.Spot.Left, input, output),
+                                makePort("R", go.Spot.Right, input, output),
+                                makePort("B", go.Spot.Bottom, input, output)
+                            ));
+                    });
+
+                    paletteData.containers.forEach(function (data) {
+                        var shapeType = capitalize(data.shapeType);
+                        const input = data.input;
+                        const output = data.output;
+                        let paletteModel = {}
+                        paletteModel.category = data.name;
+                        paletteModel.text = data.name;
+                        paletteModel.figure = shapeType;
+                        paletteModelArray.push(paletteModel);
+                        templateMap.add(data.name,
+                            $(go.Node, "Spot", nodeStyle(),
+                                $(go.Panel, "Auto",
+                                    $(go.Shape, shapeType,
+                                        {
+                                            minSize: new go.Size(data.size.width, data.size.height),
+                                            fill: data.fill,
+                                            stroke: data.stroke
+                                        }),
+                                    $(go.TextBlock, data.name,
+                                        {font: "bold 11pt Helvetica, Arial, sans-serif", stroke: lightText},
+                                        new go.Binding("text"))
+                                ),
+                                // three named ports, one on each side except the top, all output only:
+                                // four named ports, one on each side:
+                                makePort("T", go.Spot.Top, input, output),
+                                makePort("L", go.Spot.Left, input, output),
+                                makePort("R", go.Spot.Right, input, output),
+                                makePort("B", go.Spot.Bottom, input, output)
+                            ));
+                    });
+
+                    paletteData.components.forEach(function (data) {
                         var shapeType = capitalize(data.shapeType);
                         const input = data.input;
                         const output = data.output;
@@ -190,8 +283,8 @@ block scripts
                     console.log("Still not implemented");
             }
 
-            if (paletteDataArray !== '') {
-                showPaletteByType(paletteDataArray);
+            if (paletteData !== '') {
+                showPaletteByType(paletteData);
             }
 
             var dataArray;

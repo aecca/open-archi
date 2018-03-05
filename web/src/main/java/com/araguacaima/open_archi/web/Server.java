@@ -296,8 +296,8 @@ public class Server {
                 exception(Exception.class, exceptionHandler);
                 mapEditor.put("title", "Editor");
                 mapEditor.put("diagramTypes", deeplyFulfilledDiagramTypesCollection);
-                mapEditor.put("palette", getArchitecturePalette());
                 get("/", (req, res) -> {
+                    mapEditor.put("palette", jsonUtils.toJSON(getArchitecturePalette()));
                     mapEditor.put("showMenu", StringUtils.isNotBlank(req.queryParams("showMenu")));
                     return new ModelAndView(mapEditor, "editor");
                 }, engine);

@@ -35,7 +35,7 @@ public class Palette implements Palettable {
 
     @Override
     public PaletteKind getType() {
-        return this.kind;
+        return kind;
     }
 
     @Override
