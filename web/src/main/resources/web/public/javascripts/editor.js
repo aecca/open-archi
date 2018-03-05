@@ -100,13 +100,12 @@ function openSVG() {
 }
 
 function initArchitectureDiagram(nodeDataArray, linkDataArray) {
-    const editor = go.GraphObject.make;  // for conciseness in defining templates
     if (myDiagram !== undefined) {
         myDiagram.clear();
         myDiagram.div = null;
     }
     myDiagram =
-        editor(go.Diagram, "diagramDiv",  // create a Diagram for the DIV HTML element
+        gojs(go.Diagram, "diagramDiv",  // create a Diagram for the DIV HTML element
             {
                 // position the graph in the middle of the diagram
                 initialContentAlignment: go.Spot.Center,
@@ -127,8 +126,8 @@ function initArchitectureDiagram(nodeDataArray, linkDataArray) {
 
     // To simplify this code we define a function for creating a context menu button:
     function makeButton(text, action, visiblePredicate) {
-        return editor("ContextMenuButton",
-            editor(go.TextBlock, text),
+        return gojs("ContextMenuButton",
+            gojs(go.TextBlock, text),
             {click: action},
             // don't bother with binding GraphObject.visible if there's no predicate
             visiblePredicate ? new go.Binding("visible", "", function (o, e) {
@@ -138,7 +137,7 @@ function initArchitectureDiagram(nodeDataArray, linkDataArray) {
 
     // a context menu is an Adornment with a bunch of buttons in them
     const partContextMenu =
-        editor(go.Adornment, "Vertical",
+        gojs(go.Adornment, "Vertical",
             makeButton("Properties",
                 function (e, obj) {  // OBJ is this Button
                     const contextmenu = obj.part;  // the Button is in the context menu Adornment
@@ -220,9 +219,9 @@ function initArchitectureDiagram(nodeDataArray, linkDataArray) {
     // The user can drag a node by dragging its TextBlock label.
     // Dragging from the Shape will start drawing a new link.
     myDiagram.nodeTemplate =
-        editor(go.Node, "Auto",
+        gojs(go.Node, "Auto",
             {locationSpot: go.Spot.Center},
-            editor(go.Shape, "RoundedRectangle",
+            gojs(go.Shape, "RoundedRectangle",
                 {
                     fill: "white", // the default fill, if there is no data bound value
                     portId: "", cursor: "pointer",  // the Shape is the port, not the whole Node
@@ -231,7 +230,7 @@ function initArchitectureDiagram(nodeDataArray, linkDataArray) {
                     toLinkable: true, toLinkableSelfNode: true, toLinkableDuplicates: true
                 },
                 new go.Binding("fill", "color")),
-            editor(go.TextBlock,
+            gojs(go.TextBlock,
                 {
                     font: "bold 14px sans-serif",
                     stroke: '#333',
@@ -242,9 +241,9 @@ function initArchitectureDiagram(nodeDataArray, linkDataArray) {
                 new go.Binding("text", "text").makeTwoWay()),  // the label shows the node data's text
             { // this tooltip Adornment is shared by all nodes
                 toolTip:
-                    editor(go.Adornment, "Auto",
-                        editor(go.Shape, {fill: "#FFFFCC"}),
-                        editor(go.TextBlock, {margin: 4},  // the tooltip shows the result of calling nodeInfo(data)
+                    gojs(go.Adornment, "Auto",
+                        gojs(go.Shape, {fill: "#FFFFCC"}),
+                        gojs(go.TextBlock, {margin: 4},  // the tooltip shows the result of calling nodeInfo(data)
                             new go.Binding("text", "", nodeInfo))
                     ),
                 // this context menu Adornment is shared by all nodes
@@ -260,19 +259,19 @@ function initArchitectureDiagram(nodeDataArray, linkDataArray) {
 
     // The link shape and arrowhead have their stroke brush data bound to the "color" property
     myDiagram.linkTemplate =
-        editor(go.Link,
+        gojs(go.Link,
             {toShortLength: 3, relinkableFrom: true, relinkableTo: true},  // allow the user to relink existing links
-            editor(go.Shape,
+            gojs(go.Shape,
                 {strokeWidth: 2},
                 new go.Binding("stroke", "color")),
-            editor(go.Shape,
+            gojs(go.Shape,
                 {toArrow: "Standard", stroke: null},
                 new go.Binding("fill", "color")),
             { // this tooltip Adornment is shared by all links
                 toolTip:
-                    editor(go.Adornment, "Auto",
-                        editor(go.Shape, {fill: "#FFFFCC"}),
-                        editor(go.TextBlock, {margin: 4},  // the tooltip shows the result of calling linkInfo(data)
+                    gojs(go.Adornment, "Auto",
+                        gojs(go.Shape, {fill: "#FFFFCC"}),
+                        gojs(go.TextBlock, {margin: 4},  // the tooltip shows the result of calling linkInfo(data)
                             new go.Binding("text", "", linkInfo))
                     ),
                 // the same context menu Adornment is shared by all links
@@ -295,12 +294,12 @@ function initArchitectureDiagram(nodeDataArray, linkDataArray) {
     // Groups consist of a title in the color given by the group node data
     // above a translucent gray rectangle surrounding the member parts
     myDiagram.groupTemplate =
-        editor(go.Group, "Vertical",
+        gojs(go.Group, "Vertical",
             {
                 selectionObjectName: "PANEL",  // selection handle goes around shape, not label
                 ungroupable: true
             },  // enable Ctrl-Shift-G to ungroup a selected Group
-            editor(go.TextBlock,
+            gojs(go.TextBlock,
                 {
                     font: "bold 19px sans-serif",
                     isMultiline: false,  // don't allow newlines in text
@@ -308,9 +307,9 @@ function initArchitectureDiagram(nodeDataArray, linkDataArray) {
                 },
                 new go.Binding("text", "text").makeTwoWay(),
                 new go.Binding("stroke", "color")),
-            editor(go.Panel, "Auto",
+            gojs(go.Panel, "Auto",
                 {name: "PANEL"},
-                editor(go.Shape, "Rectangle",  // the rectangular shape around the members
+                gojs(go.Shape, "Rectangle",  // the rectangular shape around the members
                     {
                         fill: "rgba(128,128,128,0.2)", stroke: "gray", strokeWidth: 3,
                         portId: "", cursor: "pointer",  // the Shape is the port, not the whole Node
@@ -318,13 +317,13 @@ function initArchitectureDiagram(nodeDataArray, linkDataArray) {
                         fromLinkable: true, fromLinkableSelfNode: true, fromLinkableDuplicates: true,
                         toLinkable: true, toLinkableSelfNode: true, toLinkableDuplicates: true
                     }),
-                editor(go.Placeholder, {margin: 10, background: "transparent"})  // represents where the members are
+                gojs(go.Placeholder, {margin: 10, background: "transparent"})  // represents where the members are
             ),
             { // this tooltip Adornment is shared by all groups
                 toolTip:
-                    editor(go.Adornment, "Auto",
-                        editor(go.Shape, {fill: "#FFFFCC"}),
-                        editor(go.TextBlock, {margin: 4},
+                    gojs(go.Adornment, "Auto",
+                        gojs(go.Shape, {fill: "#FFFFCC"}),
+                        gojs(go.TextBlock, {margin: 4},
                             // bind to tooltip, not to Group.data, to allow access to Group properties
                             new go.Binding("text", "", groupInfo).ofObject())
                     ),
@@ -341,15 +340,15 @@ function initArchitectureDiagram(nodeDataArray, linkDataArray) {
 
     // provide a tooltip for the background of the Diagram, when not over any Part
     myDiagram.toolTip =
-        editor(go.Adornment, "Auto",
-            editor(go.Shape, {fill: "#FFFFCC"}),
-            editor(go.TextBlock, {margin: 4},
+        gojs(go.Adornment, "Auto",
+            gojs(go.Shape, {fill: "#FFFFCC"}),
+            gojs(go.TextBlock, {margin: 4},
                 new go.Binding("text", "", diagramInfo))
         );
 
     // provide a context menu for the background of the Diagram, when not over any Part
     myDiagram.contextMenu =
-        editor(go.Adornment, "Vertical",
+        gojs(go.Adornment, "Vertical",
             makeButton("Paste",
                 function (e, obj) {
                     e.diagram.commandHandler.pasteSelection(e.diagram.lastInput.documentPoint);

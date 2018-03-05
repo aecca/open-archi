@@ -14,21 +14,27 @@ public class Palette implements Palettable {
     private static PaletteKind kind = PaletteKind.ARCHITECTURE;
 
     public Palette() {
-        PaletteItem box = new PaletteItem();
-        box.setShapeType(ShapeType.RoundedRectangle);
-        box.setRank(0);
-        box.setName("Element");
-        basicElements.add(box);
+        PaletteItem element = new PaletteItem();
+        element.setShapeType(ShapeType.RoundedRectangle);
+        element.setRank(0);
+        element.setName("Element");
+        element.setFill("#F0AD4B");
+        element.setSize(new Size(40,40));
+        basicElements.add(element);
         PaletteItem person = new PaletteItem();
         person.setShapeType(ShapeType.Triangle);
         person.setRank(1);
         person.setName("Person");
+        person.setFill("#ED5656");
+        person.setSize(new Size(40,40));
         person.setKind(ElementKind.CONSUMER);
         basicElements.add(person);
         PaletteItem consumer = new PaletteItem();
         consumer.setShapeType(ShapeType.Diamond);
         consumer.setRank(2);
         consumer.setName("Consumer");
+        consumer.setFill("#49CC90");
+        consumer.setSize(new Size(40,40));
         consumer.setKind(ElementKind.CONSUMER);
         basicElements.add(consumer);
     }

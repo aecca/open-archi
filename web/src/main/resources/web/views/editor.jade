@@ -28,6 +28,7 @@ block scripts
         let source = '!{source}';
         let paletteData = !{palette};
         let lightText = 'whitesmoke';
+        const gojs = go.GraphObject.make;
 
         function capitalize(text) {
             return text.substr(0, 1).toUpperCase() + text.substr(2, text.length).toLowerCase();
@@ -53,6 +54,18 @@ block scripts
             if (paletteData !== '') {
                 $.getScript("/javascripts/diagrams/palette.js").done(function (script, textStatus) {
                     showPaletteByType(paletteData);
+                    myDiagram =
+                        gojs(go.Diagram, "diagramDiv",  // create a Diagram for the DIV HTML element
+                            {
+                                // position the graph in the middle of the diagram
+                                initialContentAlignment: go.Spot.Center,
+                                // allow double-click in background to create a new node
+                                "clickCreatingTool.archetypeNodeData": {text: "Node", color: "white"},
+                                // allow Ctrl-G to call groupSelection()
+                                "commandHandler.archetypeGroupData": {text: "Group", isGroup: true, color: "blue"},
+                                // enable undo & redo
+                                "undoManager.isEnabled": true
+                            });
                 });
             }
 

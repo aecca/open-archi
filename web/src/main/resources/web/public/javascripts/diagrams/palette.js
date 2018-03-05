@@ -1,24 +1,22 @@
-const $ = go.GraphObject.make;
-
 function showPaletteByType(paletteData) {
     switch (paletteData.type) {
         case "ARCHITECTURE":
             // initialize the Palette that is on the left side of the page
             // noinspection JSUndeclaredVariable
             myPalette =
-                $(go.Palette, "paletteDiv",  // must name or refer to the DIV HTML element
+                gojs(go.Palette, "paletteDiv",  // must name or refer to the DIV HTML element
                     {
                         scrollsPageOnFocus: false
                     });
             let paletteModelArray = [];
             myPalette.nodeTemplateMap.add("",
-                $(go.Node, "Spot", nodeStyle(),
+                gojs(go.Node, "Spot", nodeStyle(),
                     // the main object is a Panel that surrounds a TextBlock with a rectangular Shape
-                    $(go.Panel, "Auto",
-                        $(go.Shape, "Rectangle",
+                    gojs(go.Panel, "Auto",
+                        gojs(go.Shape, "Rectangle",
                             {fill: "#00A9C9", stroke: null},
                             new go.Binding("figure", "figure")),
-                        $(go.TextBlock,
+                        gojs(go.TextBlock,
                             {
                                 font: "bold 11pt Helvetica, Arial, sans-serif",
                                 stroke: lightText,
@@ -46,15 +44,15 @@ function showPaletteByType(paletteData) {
                 paletteModel.figure = shapeType;
                 paletteModelArray.push(paletteModel);
                 myPalette.nodeTemplateMap.add(data.name,
-                    $(go.Node, "Spot", nodeStyle(),
-                        $(go.Panel, "Auto",
-                            $(go.Shape, shapeType,
+                    gojs(go.Node, "Spot", nodeStyle(),
+                        gojs(go.Panel, "Auto",
+                            gojs(go.Shape, shapeType,
                                 {
                                     minSize: new go.Size(data.size.width, data.size.height),
                                     fill: data.fill,
                                     stroke: data.stroke
                                 }),
-                            $(go.TextBlock, data.name,
+                            gojs(go.TextBlock, data.name,
                                 {font: "bold 11pt Helvetica, Arial, sans-serif", stroke: lightText},
                                 new go.Binding("text"))
                         ),
@@ -77,15 +75,15 @@ function showPaletteByType(paletteData) {
                     paletteModel.figure = shapeType;
                     paletteModelArray.push(paletteModel);
                     myPalette.nodeTemplateMap.add(data.name,
-                        $(go.Node, "Spot", nodeStyle(),
-                            $(go.Panel, "Auto",
-                                $(go.Shape, shapeType,
+                        gojs(go.Node, "Spot", nodeStyle(),
+                            gojs(go.Panel, "Auto",
+                                gojs(go.Shape, shapeType,
                                     {
                                         minSize: new go.Size(data.size.width, data.size.height),
                                         fill: data.fill,
                                         stroke: data.stroke
                                     }),
-                                $(go.TextBlock, data.name,
+                                gojs(go.TextBlock, data.name,
                                     {font: "bold 11pt Helvetica, Arial, sans-serif", stroke: lightText},
                                     new go.Binding("text"))
                             ),
@@ -109,15 +107,15 @@ function showPaletteByType(paletteData) {
                     paletteModel.figure = shapeType;
                     paletteModelArray.push(paletteModel);
                     myPalette.nodeTemplateMap.add(data.name,
-                        $(go.Node, "Spot", nodeStyle(),
-                            $(go.Panel, "Auto",
-                                $(go.Shape, shapeType,
+                        gojs(go.Node, "Spot", nodeStyle(),
+                            gojs(go.Panel, "Auto",
+                                gojs(go.Shape, shapeType,
                                     {
                                         minSize: new go.Size(data.size.width, data.size.height),
                                         fill: data.fill,
                                         stroke: data.stroke
                                     }),
-                                $(go.TextBlock, data.name,
+                                gojs(go.TextBlock, data.name,
                                     {font: "bold 11pt Helvetica, Arial, sans-serif", stroke: lightText},
                                     new go.Binding("text"))
                             ),
@@ -142,15 +140,15 @@ function showPaletteByType(paletteData) {
                     paletteModel.figure = shapeType;
                     paletteModelArray.push(paletteModel);
                     myPalette.nodeTemplateMap.add(data.name,
-                        $(go.Node, "Spot", nodeStyle(),
-                            $(go.Panel, "Auto",
-                                $(go.Shape, shapeType,
+                        gojs(go.Node, "Spot", nodeStyle(),
+                            gojs(go.Panel, "Auto",
+                                gojs(go.Shape, shapeType,
                                     {
                                         minSize: new go.Size(data.size.width, data.size.height),
                                         fill: data.fill,
                                         stroke: data.stroke
                                     }),
-                                $(go.TextBlock, data.name,
+                                gojs(go.TextBlock, data.name,
                                     {font: "bold 11pt Helvetica, Arial, sans-serif", stroke: lightText},
                                     new go.Binding("text"))
                             ),
@@ -188,7 +186,7 @@ function showPaletteByType(paletteData) {
 // control whether the user can draw links from or to the port.
 function makePort(name, spot, output, input) {
     // the port is basically just a small circle that has a white stroke when it is made visible
-    return $(go.Shape, "Circle",
+    return gojs(go.Shape, "Circle",
         {
             fill: "transparent",
             stroke: null,  // this is changed to "white" in the showPorts function
