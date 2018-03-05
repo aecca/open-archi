@@ -4,7 +4,7 @@ import com.araguacaima.commons.utils.EnumsUtils;
 import com.araguacaima.commons.utils.JsonUtils;
 import com.araguacaima.commons.utils.ReflectionUtils;
 import com.araguacaima.open_archi.persistence.commons.IdName;
-import com.araguacaima.open_archi.persistence.diagrams.architectural.Consumer;
+import com.araguacaima.open_archi.persistence.diagrams.architectural.*;
 import com.araguacaima.open_archi.persistence.diagrams.core.*;
 import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
 import com.araguacaima.open_archi.web.wrapper.RsqlJsonFilter;
@@ -909,6 +909,120 @@ public class Server {
                     } catch (Throwable ex) {
                         return throwError(response, ex);
                     }
+                });
+                get("/palette/architectures", (request, response) -> {
+                    try {
+                        com.araguacaima.open_archi.persistence.diagrams.architectural.Palette palette = new com.araguacaima.open_archi.persistence.diagrams.architectural.Palette();
+                        Map<String, Object> params = new HashMap<>();
+                        params.put("type", SoftwareSystem.class);
+                        List<IdName> models;
+                        models = JPAEntityManagerUtils.executeQuery(IdName.class, Item.GET_ALL_MODEL_NAMES_BY_TYPE, params);
+                        int rank = 0;
+                        for (IdName model: models) {
+                            PaletteItem item = new PaletteItem();
+                            item.setRank(rank);
+                            item.setKind(ElementKind.ARCHITECTURE_MODEL);
+                            item.setName(model.getName());
+                            item.setShapeType(ShapeType.ROUNDED_BOX);
+                            item.setId(model.getId());
+                            palette.getSoftwareSystems().add(item);
+                            rank++;
+                        }
+
+                        params.put("type", Container.class);
+                        models = JPAEntityManagerUtils.executeQuery(IdName.class, Item.GET_ALL_MODEL_NAMES_BY_TYPE, params);
+                        rank = 0;
+                        for (IdName model: models) {
+                            PaletteItem item = new PaletteItem();
+                            item.setRank(rank);
+                            item.setKind(ElementKind.ARCHITECTURE_MODEL);
+                            item.setName(model.getName());
+                            item.setShapeType(ShapeType.ROUNDED_BOX);
+                            item.setId(model.getId());
+                            palette.getContainers().add(item);
+                            rank++;
+                        }
+
+                        params.put("type", Component.class);
+                        models = JPAEntityManagerUtils.executeQuery(IdName.class, Item.GET_ALL_MODEL_NAMES_BY_TYPE, params);
+                        rank = 0;
+                        for (IdName model: models) {
+                            PaletteItem item = new PaletteItem();
+                            item.setRank(rank);
+                            item.setKind(ElementKind.ARCHITECTURE_MODEL);
+                            item.setName(model.getName());
+                            item.setShapeType(ShapeType.ROUNDED_BOX);
+                            item.setId(model.getId());
+                            palette.getComponents().add(item);
+                            rank++;
+                        }
+
+                        response.status(HTTP_OK);
+                        response.type(JSON_CONTENT_TYPE);
+                        return jsonUtils.toJSON(palette);
+                    } catch (Exception ex) {
+                        return throwError(response, ex);
+                    }
+                });
+                post("/palette/architectures", (request, response) -> {
+                    response.status(HTTP_NOT_IMPLEMENTED);
+                    return EMPTY_RESPONSE;
+                });
+                get("/palette/bpms", (request, response) -> {
+                    try {
+                        com.araguacaima.open_archi.persistence.diagrams.bpm.Palette palette = new com.araguacaima.open_archi.persistence.diagrams.bpm.Palette();
+                        response.status(HTTP_OK);
+                        response.type(JSON_CONTENT_TYPE);
+                        return jsonUtils.toJSON(palette);
+                    } catch (Exception ex) {
+                        return throwError(response, ex);
+                    }
+                });
+                post("/palette/bpms", (request, response) -> {
+                    response.status(HTTP_NOT_IMPLEMENTED);
+                    return EMPTY_RESPONSE;
+                });
+                get("/palette/flowcharts", (request, response) -> {
+                    try {
+                        com.araguacaima.open_archi.persistence.diagrams.flowchart.Palette palette = new com.araguacaima.open_archi.persistence.diagrams.flowchart.Palette();
+                        response.status(HTTP_OK);
+                        response.type(JSON_CONTENT_TYPE);
+                        return jsonUtils.toJSON(palette);
+                    } catch (Exception ex) {
+                        return throwError(response, ex);
+                    }
+                });
+                post("/palette/flowcharts", (request, response) -> {
+                    response.status(HTTP_NOT_IMPLEMENTED);
+                    return EMPTY_RESPONSE;
+                });
+                get("/palette/gantts", (request, response) -> {
+                    try {
+                        com.araguacaima.open_archi.persistence.diagrams.gantt.Palette palette = new com.araguacaima.open_archi.persistence.diagrams.gantt.Palette();
+                        response.status(HTTP_OK);
+                        response.type(JSON_CONTENT_TYPE);
+                        return jsonUtils.toJSON(palette);
+                    } catch (Exception ex) {
+                        return throwError(response, ex);
+                    }
+                });
+                post("/palette/gantts", (request, response) -> {
+                    response.status(HTTP_NOT_IMPLEMENTED);
+                    return EMPTY_RESPONSE;
+                });
+                get("/palette/sequences", (request, response) -> {
+                    try {
+                        com.araguacaima.open_archi.persistence.diagrams.sequence.Palette palette = new com.araguacaima.open_archi.persistence.diagrams.sequence.Palette();
+                        response.status(HTTP_OK);
+                        response.type(JSON_CONTENT_TYPE);
+                        return jsonUtils.toJSON(palette);
+                    } catch (Exception ex) {
+                        return throwError(response, ex);
+                    }
+                });
+                post("/palette/sequences", (request, response) -> {
+                    response.status(HTTP_NOT_IMPLEMENTED);
+                    return EMPTY_RESPONSE;
                 });
             });
         });

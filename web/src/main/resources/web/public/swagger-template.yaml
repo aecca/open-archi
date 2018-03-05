@@ -1447,6 +1447,231 @@ paths:
       security:
       - openarchi_auth:
         - read:catalogs
+  "/palette/architectures":
+    get:
+      tags:
+      - Palettes
+      summary: Finds elements belonging the palette of architecture models
+      description: Returns an empty array if no elements can be found
+      operationId: get-architecture-model-palette
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Architecture_Model_Palette"
+      security:
+      - openarchi_auth:
+        - read:models
+    post:
+      tags:
+      - Palettes
+      summary: Add a new element to the palette for architecture models
+      description: ''Every request for addition of a new element to the pallete should be approved administrativelly before it could be used
+      operationId: add-architecture-model-palette
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: Palette element for the Architecture Model that needs to be added
+        required: true
+        schema:
+          $ref: "#/definitions/Architecture_Model_Palette_Create"
+      responses:
+        '201':
+          description: Created
+        '405':
+          description: Invalid input
+      security:
+      - openarchi_auth:
+        - write:palette
+        - read:palettes
+  "/palette/bpms":
+    get:
+      tags:
+      - Palettes
+      summary: Finds elements belonging the palette of bpm models
+      description: Returns an empty array if no elements can be found
+      operationId: get-bpm-model-palette
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/BPM_Model_Palette"
+      security:
+      - openarchi_auth:
+        - read:models
+    post:
+      tags:
+      - Palettes
+      summary: Add a new element to the palette for bpm models
+      description: ''Every request for addition of a new element to the pallete should be approved administrativelly before it could be used
+      operationId: add-bpm-model-palette
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: Palette element for the Bpm Model that needs to be added
+        required: true
+        schema:
+          $ref: "#/definitions/BPM_Model_Palette_Create"
+      responses:
+        '201':
+          description: Created
+        '405':
+          description: Invalid input
+      security:
+      - openarchi_auth:
+        - write:palette
+        - read:palettes
+  "/palette/flowcharts":
+    get:
+      tags:
+      - Palettes
+      summary: Finds elements belonging the palette of flowchart models
+      description: Returns an empty array if no elements can be found
+      operationId: get-flowchart-model-palette
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Flowchart_Model_Palette"
+      security:
+      - openarchi_auth:
+        - read:models
+    post:
+      tags:
+      - Palettes
+      summary: Add a new element to the palette for flowchart models
+      description: ''Every request for addition of a new element to the pallete should be approved administrativelly before it could be used
+      operationId: add-flowchart-model-palette
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: Palette element for the Flowchart Model that needs to be added
+        required: true
+        schema:
+          $ref: "#/definitions/Flowchart_Model_Palette_Create"
+      responses:
+        '201':
+          description: Created
+        '405':
+          description: Invalid input
+      security:
+      - openarchi_auth:
+        - write:palette
+        - read:palettes
+  "/palette/gantts":
+    get:
+      tags:
+      - Palettes
+      summary: Finds elements belonging the palette of gantt models
+      description: Returns an empty array if no elements can be found
+      operationId: get-gantt-model-palette
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Gantt_Model_Palette"
+      security:
+      - openarchi_auth:
+        - read:models
+    post:
+      tags:
+      - Palettes
+      summary: Add a new element to the palette for gantt models
+      description: ''Every request for addition of a new element to the pallete should be approved administrativelly before it could be used
+      operationId: add-gantt-model-palette
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: Palette element for the Gantt Model that needs to be added
+        required: true
+        schema:
+          $ref: "#/definitions/Gantt_Model_Palette_Create"
+      responses:
+        '201':
+          description: Created
+        '405':
+          description: Invalid input
+      security:
+      - openarchi_auth:
+        - write:palette
+        - read:palettes
+  "/palette/sequences":
+    get:
+      tags:
+      - Palettes
+      summary: Finds elements belonging the palette of sequence models
+      description: Returns an empty array if no elements can be found
+      operationId: get-sequence-model-palette
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Sequence_Model_Palette"
+      security:
+      - openarchi_auth:
+        - read:models
+    post:
+      tags:
+      - Palettes
+      summary: Add a new element to the palette for sequence models
+      description: ''Every request for addition of a new element to the pallete should be approved administrativelly before it could be used
+      operationId: add-sequence-model-palette
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: Palette element for the Sequence Model that needs to be added
+        required: true
+        schema:
+          $ref: "#/definitions/Sequence_Model_Palette_Create"
+      responses:
+        '201':
+          description: Created
+        '405':
+          description: Invalid input
+      security:
+      - openarchi_auth:
+        - write:palette
+        - read:palettes
 securityDefinitions:
   openarchi_auth:
     type: oauth2
@@ -1457,6 +1682,8 @@ securityDefinitions:
       read:models: Read models
       write:catalogs: Modify or add a catalog
       read:catalogs: Read catalogs
+      write:palette: Modify or add an element to a palette
+      read:palettes: Read palette elements
   api_key:
     type: apiKey
     name: api_key
@@ -1678,6 +1905,34 @@ definitions:
             $ref: "#/definitions/Architecture_Relationship_Create"
       required:
       - kind
+  Architecture_Model_Palette:
+    description: Architecture model palette
+    type: object
+    properties:
+      basicElements:
+        type: array
+        items:
+          $ref: "#/definitions/Palette_Item"
+      softwareSystems:
+        type: array
+        items:
+          $ref: "#/definitions/Palette_Item"
+      containers:
+        type: array
+        items:
+          $ref: "#/definitions/Palette_Item"
+      components:
+        type: array
+        items:
+          $ref: "#/definitions/Palette_Item"
+  Architecture_Model_Palette_Create:
+    description: Architecture model palette
+    type: object
+    properties:
+      basicElements:
+        type: array
+        items:
+          $ref: "#/definitions/Palette_Item_Create"
   Architecture_Relationship:
     description: Relationship between model objects
     allOf:
@@ -1825,6 +2080,22 @@ definitions:
             $ref: "#/definitions/Architecture_Relationship_Create"
       required:
       - kind
+  BPM_Model_Palette:
+    description: BPM model palette
+    type: object
+    properties:
+      basicElements:
+        type: array
+        items:
+          $ref: "#/definitions/Palette_Item"
+  BPM_Model_Palette_Create:
+    description: BPM model palette
+    type: object
+    properties:
+      basicElements:
+        type: array
+        items:
+          $ref: "#/definitions/Palette_Item_Create"
   BPM_Relationship:
     description: Relationship between model objects
     allOf:
@@ -2521,6 +2792,22 @@ definitions:
             $ref: "#/definitions/Flowchart_Relationship_Create"
       required:
       - kind
+  Flowchart_Model_Palette:
+    description: Flowchart model palette
+    type: object
+    properties:
+      basicElements:
+        type: array
+        items:
+          $ref: "#/definitions/Palette_Item"
+  Flowchart_Model_Palette_Create:
+    description: Flowchart model palette
+    type: object
+    properties:
+      basicElements:
+        type: array
+        items:
+          $ref: "#/definitions/Palette_Item_Create"
   Flowchart_Relationship:
     type: object
     description: Relationship between model objects
@@ -2814,6 +3101,22 @@ definitions:
             $ref: "#/definitions/Gantt_Relationship"
       required:
       - kind
+  Gantt_Model_Palette:
+    description: Gantt model palette
+    type: object
+    properties:
+      basicElements:
+        type: array
+        items:
+          $ref: "#/definitions/Palette_Item_Create"
+  Gantt_Model_Palette_Create:
+    description: Gantt model palette
+    type: object
+    properties:
+      basicElements:
+        type: array
+        items:
+          $ref: "#/definitions/Palette_Item"
   Gantt_Relationship:
     description: Relationship between model objects
     allOf:
@@ -3453,6 +3756,104 @@ definitions:
     properties:
       head:
         $ref: '#/definitions/Options_Output_Item'
+  Palette_Item:
+    description: Commons palette item to all kind of palettes
+    type: object
+    allOf:
+    - $ref: "#/definitions/Palette_Info"
+    - type: object
+      properties:
+        shapeType:
+          type: string
+          description: Type of palette item
+          enum:
+          - PERSON
+          - ROUNDED_BOX
+          - BOX
+          - DIAMOND
+          - CIRCLE
+          - CONSUMER
+        rank:
+          type: integer
+          format: int32
+  Palette_Item_Create:
+    description: Commons palette item to all kind of palettes
+    type: object
+    allOf:
+    - $ref: "#/definitions/Palette_Info_Create"
+    - type: object
+      properties:
+        shapeType:
+          type: string
+          description: Type of palette item
+          enum:
+          - PERSON
+          - ROUNDED_BOX
+          - BOX
+          - DIAMOND
+          - CIRCLE
+          - CONSUMER
+        rank:
+          type: integer
+          format: int32
+  Palette_Info:
+    description: Commons palette information
+    type: object
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      kind:
+        type: string
+        enum: 
+        - ARCHITECTURE_MODEL
+        - FLOWCHART_MODEL
+        - SEQUENCE_MODEL
+        - GANTT_MODEL
+        - ENTITY_RELATIONSHIP_MODEL
+        - UML_CLASS_MODEL
+        - BPM_MODEL
+        - ARCHITECTURE
+        - FLOWCHART
+        - SEQUENCE
+        - GANTT
+        - ENTITY_RELATIONSHIP
+        - UML_CLASS
+        - FEATURE
+        - COMPONENT
+        - CONSUMER
+        - CONTAINER
+        - DEPLOYMENT
+        - BPM
+  Palette_Info_Create:
+    description: Commons palette information
+    type: object
+    properties:
+      name:
+        type: string
+      kind:
+        type: string
+        enum:
+        - ARCHITECTURE_MODEL
+        - FLOWCHART_MODEL
+        - SEQUENCE_MODEL
+        - GANTT_MODEL
+        - ENTITY_RELATIONSHIP_MODEL
+        - UML_CLASS_MODEL
+        - BPM_MODEL
+        - ARCHITECTURE
+        - FLOWCHART
+        - SEQUENCE
+        - GANTT
+        - ENTITY_RELATIONSHIP
+        - UML_CLASS
+        - FEATURE
+        - COMPONENT
+        - CONSUMER
+        - CONTAINER
+        - DEPLOYMENT
+        - BPM
   Pool:
     description: BPM's pool
     type: object
@@ -3933,6 +4334,22 @@ definitions:
             $ref: "#/definitions/Sequence_Relationship"
       required:
       - kind
+  Sequence_Model_Palette:
+    description: Sequence model palette
+    type: object
+    properties:
+      basicElements:
+        type: array
+        items:
+          $ref: "#/definitions/Palette_Item"
+  Sequence_Model_Palette_Create:
+    description: Sequence model palette
+    type: object
+    properties:
+      basicElements:
+        type: array
+        items:
+          $ref: "#/definitions/Palette_Item_Create"
   Sequence_Relationship:
     description: Relationship between model objects
     allOf:

@@ -5,6 +5,7 @@ public class IdName {
     private String id;
     private String name;
     private Class clazz;
+    private String kind;
 
     public IdName(String id, String name, Class clazz) {
         this.id = id;
@@ -12,6 +13,12 @@ public class IdName {
         this.clazz = clazz;
     }
 
+    public IdName(String id, String name, Class clazz, String kind) {
+        this.id = id;
+        this.name = name;
+        this.clazz = clazz;
+        this.kind = kind;
+    }
     public String getId() {
         return id;
     }
@@ -34,5 +41,13 @@ public class IdName {
 
     public void setClazz(Class clazz) {
         this.clazz = clazz;
+    }
+
+    public String getKind() {
+        return kind;
+    }
+
+    public void setKind(String kind) {
+        this.kind = kind;
     }
 }

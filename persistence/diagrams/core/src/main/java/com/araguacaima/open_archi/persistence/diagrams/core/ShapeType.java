@@ -6,6 +6,6 @@ public enum ShapeType {
     ROUNDED_BOX,
     BOX,
     DIAMOND,
-    CIRCLE
-
+    CIRCLE,
+    LANE, POOL, CONSUMER
 }
