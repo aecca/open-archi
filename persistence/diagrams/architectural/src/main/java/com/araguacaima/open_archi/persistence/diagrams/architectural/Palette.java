@@ -20,13 +20,13 @@ public class Palette implements Palettable {
         box.setName("Element");
         basicElements.add(box);
         PaletteItem person = new PaletteItem();
-        person.setShapeType(ShapeType.Person);
+        person.setShapeType(ShapeType.Triangle);
         person.setRank(1);
         person.setName("Person");
         person.setKind(ElementKind.CONSUMER);
         basicElements.add(person);
         PaletteItem consumer = new PaletteItem();
-        consumer.setShapeType(ShapeType.Consumer);
+        consumer.setShapeType(ShapeType.Diamond);
         consumer.setRank(2);
         consumer.setName("Consumer");
         consumer.setKind(ElementKind.CONSUMER);

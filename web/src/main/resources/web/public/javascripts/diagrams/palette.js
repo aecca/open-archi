@@ -1,4 +1,5 @@
 const $ = go.GraphObject.make;
+
 function showPaletteByType(paletteData) {
     switch (paletteData.type) {
         case "ARCHITECTURE":
@@ -10,7 +11,7 @@ function showPaletteByType(paletteData) {
                         scrollsPageOnFocus: false
                     });
             let paletteModelArray = [];
-            let templateMap =
+            myPalette.nodeTemplateMap.add("",
                 $(go.Node, "Spot", nodeStyle(),
                     // the main object is a Panel that surrounds a TextBlock with a rectangular Shape
                     $(go.Panel, "Auto",
@@ -33,10 +34,10 @@ function showPaletteByType(paletteData) {
                     makePort("L", go.Spot.Left, true, true),
                     makePort("R", go.Spot.Right, true, true),
                     makePort("B", go.Spot.Bottom, true, true)
-                );
+                ));
 
             paletteData.basicElements.forEach(function (data) {
-                const shapeType = capitalize(data.shapeType);
+                const shapeType = data.shapeType;
                 const input = data.input;
                 const output = data.output;
                 let paletteModel = {};
@@ -44,7 +45,7 @@ function showPaletteByType(paletteData) {
                 paletteModel.text = data.name;
                 paletteModel.figure = shapeType;
                 paletteModelArray.push(paletteModel);
-                templateMap.add(data.name,
+                myPalette.nodeTemplateMap.add(data.name,
                     $(go.Node, "Spot", nodeStyle(),
                         $(go.Panel, "Auto",
                             $(go.Shape, shapeType,
@@ -67,7 +68,7 @@ function showPaletteByType(paletteData) {
             });
             if (paletteData.softwareSystems) {
                 paletteData.softwareSystems.forEach(function (data) {
-                    const shapeType = capitalize(data.shapeType);
+                    const shapeType = data.shapeType;
                     const input = data.input;
                     const output = data.output;
                     let paletteModel = {};
@@ -75,7 +76,7 @@ function showPaletteByType(paletteData) {
                     paletteModel.text = data.name;
                     paletteModel.figure = shapeType;
                     paletteModelArray.push(paletteModel);
-                    templateMap.add(data.name,
+                    myPalette.nodeTemplateMap.add(data.name,
                         $(go.Node, "Spot", nodeStyle(),
                             $(go.Panel, "Auto",
                                 $(go.Shape, shapeType,
@@ -99,7 +100,7 @@ function showPaletteByType(paletteData) {
             }
             if (paletteData.containers) {
                 paletteData.containers.forEach(function (data) {
-                    const shapeType = capitalize(data.shapeType);
+                    const shapeType = data.shapeType;
                     const input = data.input;
                     const output = data.output;
                     let paletteModel = {};
@@ -107,7 +108,7 @@ function showPaletteByType(paletteData) {
                     paletteModel.text = data.name;
                     paletteModel.figure = shapeType;
                     paletteModelArray.push(paletteModel);
-                    templateMap.add(data.name,
+                    myPalette.nodeTemplateMap.add(data.name,
                         $(go.Node, "Spot", nodeStyle(),
                             $(go.Panel, "Auto",
                                 $(go.Shape, shapeType,
@@ -132,7 +133,7 @@ function showPaletteByType(paletteData) {
             if (paletteData.components) {
 
                 paletteData.components.forEach(function (data) {
-                    const shapeType = capitalize(data.shapeType);
+                    const shapeType = data.shapeType;
                     const input = data.input;
                     const output = data.output;
                     let paletteModel = {};
@@ -140,7 +141,7 @@ function showPaletteByType(paletteData) {
                     paletteModel.text = data.name;
                     paletteModel.figure = shapeType;
                     paletteModelArray.push(paletteModel);
-                    templateMap.add(data.name,
+                    myPalette.nodeTemplateMap.add(data.name,
                         $(go.Node, "Spot", nodeStyle(),
                             $(go.Panel, "Auto",
                                 $(go.Shape, shapeType,
@@ -162,8 +163,6 @@ function showPaletteByType(paletteData) {
                         ));
                 });
             }
-
-            myPalette.nodeTemplateMap = templateMap;
             myPalette.model = new go.GraphLinksModel(paletteModelArray);
             break;
         case "BPM":
@@ -201,6 +200,7 @@ function makePort(name, spot, output, input) {
             cursor: "pointer"  // show a different cursor to indicate potential link point
         });
 }
+
 // helper definitions for node templates
 
 function nodeStyle() {
