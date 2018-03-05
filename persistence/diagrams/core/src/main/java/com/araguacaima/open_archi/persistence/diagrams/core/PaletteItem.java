@@ -7,7 +7,7 @@ public class PaletteItem extends PaletteInfo {
 
     protected ShapeType shapeType;
     protected int rank;
-    protected Size size;
+    protected Size size = new Size();
     protected String fill = "#ffffff";
     protected String stroke = "#333333";
     protected boolean input = true;
