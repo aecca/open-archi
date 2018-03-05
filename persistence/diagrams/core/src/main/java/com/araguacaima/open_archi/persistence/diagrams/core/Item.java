@@ -35,7 +35,7 @@ import java.util.Set;
                 query = "select new com.araguacaima.open_archi.persistence.commons.IdName(a.id, a.name, TYPE(a)) " +
                         "from com.araguacaima.open_archi.persistence.diagrams.core.Item a where a.prototype=false"),
         @NamedQuery(name = Item.GET_ALL_MODEL_NAMES_BY_TYPE,
-                query = "select new com.araguacaima.open_archi.persistence.commons.IdName(a.id, a.name, TYPE(a), a.kind) " +
+                query = "select new com.araguacaima.open_archi.persistence.commons.IdName(a.id, a.name, TYPE(a)) " +
                         "from com.araguacaima.open_archi.persistence.diagrams.core.Item a where TYPE(a)=:type"),
         @NamedQuery(name = Item.GET_ALL_CONSUMERS,
                 query = "select a " +

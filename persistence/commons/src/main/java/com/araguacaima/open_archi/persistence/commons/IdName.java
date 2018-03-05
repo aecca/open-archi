@@ -13,12 +13,6 @@ public class IdName {
         this.clazz = clazz;
     }
 
-    public IdName(String id, String name, Class clazz, String kind) {
-        this.id = id;
-        this.name = name;
-        this.clazz = clazz;
-        this.kind = kind;
-    }
     public String getId() {
         return id;
     }

@@ -1470,7 +1470,7 @@ paths:
       tags:
       - Palettes
       summary: Add a new element to the palette for architecture models
-      description: ''Every request for addition of a new element to the pallete should be approved administrativelly before it could be used
+      description: Every request for addition of a new element to the pallete should be approved administrativelly before it could be used
       operationId: add-architecture-model-palette
       consumes:
       - application/json
@@ -1515,7 +1515,7 @@ paths:
       tags:
       - Palettes
       summary: Add a new element to the palette for bpm models
-      description: ''Every request for addition of a new element to the pallete should be approved administrativelly before it could be used
+      description: Every request for addition of a new element to the pallete should be approved administrativelly before it could be used
       operationId: add-bpm-model-palette
       consumes:
       - application/json
@@ -1560,7 +1560,7 @@ paths:
       tags:
       - Palettes
       summary: Add a new element to the palette for flowchart models
-      description: ''Every request for addition of a new element to the pallete should be approved administrativelly before it could be used
+      description: Every request for addition of a new element to the pallete should be approved administrativelly before it could be used
       operationId: add-flowchart-model-palette
       consumes:
       - application/json
@@ -1605,7 +1605,7 @@ paths:
       tags:
       - Palettes
       summary: Add a new element to the palette for gantt models
-      description: ''Every request for addition of a new element to the pallete should be approved administrativelly before it could be used
+      description: Every request for addition of a new element to the pallete should be approved administrativelly before it could be used
       operationId: add-gantt-model-palette
       consumes:
       - application/json
@@ -1650,7 +1650,7 @@ paths:
       tags:
       - Palettes
       summary: Add a new element to the palette for sequence models
-      description: ''Every request for addition of a new element to the pallete should be approved administrativelly before it could be used
+      description: Every request for addition of a new element to the pallete should be approved administrativelly before it could be used
       operationId: add-sequence-model-palette
       consumes:
       - application/json
