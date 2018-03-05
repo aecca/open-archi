@@ -296,6 +296,7 @@ public class Server {
                 exception(Exception.class, exceptionHandler);
                 mapEditor.put("title", "Editor");
                 mapEditor.put("diagramTypes", deeplyFulfilledDiagramTypesCollection);
+                mapEditor.put("palette", getArchitecturePalette());
                 get("/", (req, res) -> {
                     mapEditor.put("showMenu", StringUtils.isNotBlank(req.queryParams("showMenu")));
                     return new ModelAndView(mapEditor, "editor");
@@ -912,51 +913,7 @@ public class Server {
                 });
                 get("/palette/architectures", (request, response) -> {
                     try {
-                        com.araguacaima.open_archi.persistence.diagrams.architectural.Palette palette = new com.araguacaima.open_archi.persistence.diagrams.architectural.Palette();
-                        Map<String, Object> params = new HashMap<>();
-                        params.put("type", SoftwareSystem.class);
-                        List<IdName> models;
-                        models = JPAEntityManagerUtils.executeQuery(IdName.class, Item.GET_ALL_MODEL_NAMES_BY_TYPE, params);
-                        int rank = 0;
-                        for (IdName model: models) {
-                            PaletteItem item = new PaletteItem();
-                            item.setRank(rank);
-                            item.setKind(ElementKind.ARCHITECTURE_MODEL);
-                            item.setName(model.getName());
-                            item.setShapeType(ShapeType.ROUNDED_BOX);
-                            item.setId(model.getId());
-                            palette.getSoftwareSystems().add(item);
-                            rank++;
-                        }
-
-                        params.put("type", Container.class);
-                        models = JPAEntityManagerUtils.executeQuery(IdName.class, Item.GET_ALL_MODEL_NAMES_BY_TYPE, params);
-                        rank = 0;
-                        for (IdName model: models) {
-                            PaletteItem item = new PaletteItem();
-                            item.setRank(rank);
-                            item.setKind(ElementKind.ARCHITECTURE_MODEL);
-                            item.setName(model.getName());
-                            item.setShapeType(ShapeType.ROUNDED_BOX);
-                            item.setId(model.getId());
-                            palette.getContainers().add(item);
-                            rank++;
-                        }
-
-                        params.put("type", Component.class);
-                        models = JPAEntityManagerUtils.executeQuery(IdName.class, Item.GET_ALL_MODEL_NAMES_BY_TYPE, params);
-                        rank = 0;
-                        for (IdName model: models) {
-                            PaletteItem item = new PaletteItem();
-                            item.setRank(rank);
-                            item.setKind(ElementKind.ARCHITECTURE_MODEL);
-                            item.setName(model.getName());
-                            item.setShapeType(ShapeType.ROUNDED_BOX);
-                            item.setId(model.getId());
-                            palette.getComponents().add(item);
-                            rank++;
-                        }
-
+                        Palette palette = getArchitecturePalette();
                         response.status(HTTP_OK);
                         response.type(JSON_CONTENT_TYPE);
                         return jsonUtils.toJSON(palette);
@@ -1026,6 +983,60 @@ public class Server {
                 });
             });
         });
+    }
+
+    private static Palette getArchitecturePalette() {
+        Palette palette = new Palette();
+        Map<String, Object> params = new HashMap<>();
+        params.put("type", SoftwareSystem.class);
+        List<IdName> models;
+        models = JPAEntityManagerUtils.executeQuery(IdName.class, Item.GET_ALL_MODEL_NAMES_BY_TYPE, params);
+        int rank = 0;
+        for (IdName model: models) {
+            PaletteItem item = new PaletteItem();
+            item.setRank(rank);
+            item.setKind(ElementKind.ARCHITECTURE_MODEL);
+            item.setName(model.getName());
+            item.setShapeType(ShapeType.ROUNDED_BOX);
+            item.setId(model.getId());
+            item.setSize(new Size(40,40));
+            item.setFill("#01203A");
+            palette.getSoftwareSystems().add(item);
+            rank++;
+        }
+
+        params.put("type", Container.class);
+        models = JPAEntityManagerUtils.executeQuery(IdName.class, Item.GET_ALL_MODEL_NAMES_BY_TYPE, params);
+        rank = 0;
+        for (IdName model: models) {
+            PaletteItem item = new PaletteItem();
+            item.setRank(rank);
+            item.setKind(ElementKind.ARCHITECTURE_MODEL);
+            item.setName(model.getName());
+            item.setShapeType(ShapeType.ROUNDED_BOX);
+            item.setId(model.getId());
+            item.setSize(new Size(40,40));
+            item.setFill("#08427B");
+            palette.getContainers().add(item);
+            rank++;
+        }
+
+        params.put("type", Component.class);
+        models = JPAEntityManagerUtils.executeQuery(IdName.class, Item.GET_ALL_MODEL_NAMES_BY_TYPE, params);
+        rank = 0;
+        for (IdName model: models) {
+            PaletteItem item = new PaletteItem();
+            item.setRank(rank);
+            item.setKind(ElementKind.ARCHITECTURE_MODEL);
+            item.setName(model.getName());
+            item.setShapeType(ShapeType.ROUNDED_BOX);
+            item.setId(model.getId());
+            item.setSize(new Size(40,40));
+            item.setFill("#1368BD");
+            palette.getComponents().add(item);
+            rank++;
+        }
+        return palette;
     }
 
     private static List getListIdName(String diagramNames) throws IOException {

@@ -7,5 +7,7 @@ public enum ShapeType {
     BOX,
     DIAMOND,
     CIRCLE,
-    LANE, POOL, CONSUMER
+    LANE,
+    POOL,
+    CONSUMER
 }

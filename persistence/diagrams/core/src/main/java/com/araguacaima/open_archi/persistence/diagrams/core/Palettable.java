@@ -4,5 +4,7 @@ import java.util.Set;
 
 public interface Palettable {
 
+    PaletteKind getType();
+
     Set<PaletteItem> getBasicElements();
 }

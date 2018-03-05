@@ -1,9 +1,6 @@
 package com.araguacaima.open_archi.persistence.diagrams.architectural;
 
-import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
-import com.araguacaima.open_archi.persistence.diagrams.core.Palettable;
-import com.araguacaima.open_archi.persistence.diagrams.core.PaletteItem;
-import com.araguacaima.open_archi.persistence.diagrams.core.ShapeType;
+import com.araguacaima.open_archi.persistence.diagrams.core.*;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -14,6 +11,7 @@ public class Palette implements Palettable {
     private Set<PaletteItem> softwareSystems = new LinkedHashSet<>();
     private Set<PaletteItem> containers = new LinkedHashSet<>();
     private Set<PaletteItem> components = new LinkedHashSet<>();
+    private static PaletteKind kind = PaletteKind.ARCHITECTURE;
 
     public Palette() {
         PaletteItem box = new PaletteItem();
@@ -33,6 +31,11 @@ public class Palette implements Palettable {
         consumer.setName("Consumer");
         consumer.setKind(ElementKind.CONSUMER);
         basicElements.add(consumer);
+    }
+
+    @Override
+    public PaletteKind getType() {
+        return this.kind;
     }
 
     @Override

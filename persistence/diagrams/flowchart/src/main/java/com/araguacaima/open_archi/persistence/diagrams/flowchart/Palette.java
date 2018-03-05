@@ -1,9 +1,6 @@
 package com.araguacaima.open_archi.persistence.diagrams.flowchart;
 
-import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
-import com.araguacaima.open_archi.persistence.diagrams.core.Palettable;
-import com.araguacaima.open_archi.persistence.diagrams.core.PaletteItem;
-import com.araguacaima.open_archi.persistence.diagrams.core.ShapeType;
+import com.araguacaima.open_archi.persistence.diagrams.core.*;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -11,6 +8,7 @@ import java.util.Set;
 public class Palette implements Palettable {
 
     private Set<PaletteItem> basicElements = new LinkedHashSet<>();
+    private static PaletteKind kind = PaletteKind.FLOWCHART;
 
     public Palette() {
         PaletteItem box = new PaletteItem();
@@ -37,6 +35,11 @@ public class Palette implements Palettable {
         diamond.setName("?");
         diamond.setKind(ElementKind.FLOWCHART);
         basicElements.add(diamond);
+    }
+
+    @Override
+    public PaletteKind getType() {
+        return this.kind;
     }
 
     @Override

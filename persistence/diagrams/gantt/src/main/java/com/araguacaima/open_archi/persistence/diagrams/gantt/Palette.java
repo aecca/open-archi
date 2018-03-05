@@ -1,9 +1,6 @@
 package com.araguacaima.open_archi.persistence.diagrams.gantt;
 
-import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
-import com.araguacaima.open_archi.persistence.diagrams.core.Palettable;
-import com.araguacaima.open_archi.persistence.diagrams.core.PaletteItem;
-import com.araguacaima.open_archi.persistence.diagrams.core.ShapeType;
+import com.araguacaima.open_archi.persistence.diagrams.core.*;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -11,6 +8,7 @@ import java.util.Set;
 public class Palette implements Palettable {
 
     private Set<PaletteItem> basicElements = new LinkedHashSet<>();
+    private static PaletteKind kind = PaletteKind.GANTT;
 
     public Palette() {
         PaletteItem box = new PaletteItem();
@@ -19,6 +17,11 @@ public class Palette implements Palettable {
         box.setName("Feature");
         box.setKind(ElementKind.GANTT);
         basicElements.add(box);
+    }
+
+    @Override
+    public PaletteKind getType() {
+        return this.kind;
     }
 
     @Override
