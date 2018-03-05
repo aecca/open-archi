@@ -12,7 +12,15 @@ host: "@HOST@"
 basePath: "/open-archi/api"
 tags:
 - name: Models
-  description: Set of functionalities related to model
+  description: Set of functionalities related to model agnostically to its type
+- name: Diagrams
+  description: Specific functionalities related to each kind of to model type
+- name: Consumers
+  description: Manage every kind of possible consumer of a model
+- name: Catalogs
+  description: Manage a set of useful catalogs of common info about models, diagrams and consumers
+- name: Palettes
+  description: Expose the kind of graphical elements that can be used within models according to its type.
 schemes:
 - http
 - https
