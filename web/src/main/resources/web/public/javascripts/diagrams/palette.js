@@ -11,64 +11,58 @@ function showPaletteByType(paletteData) {
                 gojs(go.Palette, "paletteDiv",  // must name or refer to the DIV HTML element
                     {
                         scrollsPageOnFocus: false,
+
+                        // These nodes have text surrounded by a rounded rectangle
+                        // whose fill color is bound to the node data.
+                        // The user can drag a node by dragging its TextBlock label.
+                        // Dragging from the Shape will start drawing a new link.
                         nodeTemplate:
-                            gojs(go.Node, "Auto",
-                                {locationSpot: go.Spot.Center},
-                                gojs(go.Shape, "RoundedRectangle",
-                                    {
-                                        fill: "white", // the default fill, if there is no data bound value
-                                        portId: "", cursor: "pointer",  // the Shape is the port, not the whole Node
-                                        // allow all kinds of links from and to this port
-                                        fromLinkable: true, fromLinkableSelfNode: true, fromLinkableDuplicates: true,
-                                        toLinkable: true, toLinkableSelfNode: true, toLinkableDuplicates: true
-                                    },
-                                    new go.Binding("fill", "color")),
-                                gojs(go.TextBlock,
-                                    {
-                                        font: "bold 14px sans-serif",
-                                        stroke: '#333',
-                                        margin: 6,  // make some extra space for the shape around the text
-                                        isMultiline: false,  // don't allow newlines in text
-                                        editable: true  // allow in-place editing by user
-                                    },
-                                    new go.Binding("text", "text").makeTwoWay()),  // the label shows the node data's text
-                                { // this tooltip Adornment is shared by all nodes
-                                    toolTip:
-                                        gojs(go.Adornment, "Auto",
-                                            gojs(go.Shape, {fill: "#FFFFCC"}),
-                                            gojs(go.TextBlock, {margin: 4},  // the tooltip shows the result of calling nodeInfo(data)
-                                                new go.Binding("text", "", nodeInfo))
-                                        ),
-                                    // this context menu Adornment is shared by all nodes
-                                    contextMenu: partContextMenu
-                                }
+                            gojs(go.Node, "Spot", nodeStyle(),
+                                // the main object is a Panel that surrounds a TextBlock with a rectangular Shape
+                                gojs(go.Panel, "Auto",
+                                    gojs(go.Shape, "RoundedRectangle",
+                                        {
+                                            fill: "white", // the default fill, if there is no data bound value
+                                            portId: "",
+                                            cursor: "pointer",  // the Shape is the port, not the whole Node
+                                            // allow all kinds of links from and to this port
+                                            fromLinkable: true,
+                                            fromLinkableSelfNode: true,
+                                            fromLinkableDuplicates: true,
+                                            toLinkable: true,
+                                            toLinkableSelfNode: true,
+                                            toLinkableDuplicates: true
+                                        },
+                                        new go.Binding("fill", "color")),
+                                    gojs(go.TextBlock,
+                                        {
+                                            font: "bold 14px sans-serif",
+                                            stroke: '#333',
+                                            margin: 6,  // make some extra space for the shape around the text
+                                            isMultiline: false,  // don't allow newlines in text
+                                            editable: true  // allow in-place editing by user
+                                        },
+                                        new go.Binding("text", "text").makeTwoWay()),  // the label shows the node data's text
+                                    { // this tooltip Adornment is shared by all nodes
+                                        toolTip:
+                                            gojs(go.Adornment, "Auto",
+                                                gojs(go.Shape, {fill: "#FFFFCC"}),
+                                                gojs(go.TextBlock, {margin: 4},  // the tooltip shows the result of calling nodeInfo(data)
+                                                    new go.Binding("text", "", nodeInfo))
+                                            ),
+                                        // this context menu Adornment is shared by all nodes
+                                        contextMenu: partContextMenu
+                                    }
+                                ),
+                                // four named ports, one on each side:
+                                makePort("T", go.Spot.Top, true, true),
+                                makePort("L", go.Spot.Left, true, true),
+                                makePort("R", go.Spot.Right, true, true),
+                                makePort("B", go.Spot.Bottom, true, true)
                             )
                     });
+
             let paletteModelArray = [];
-            myPalette.nodeTemplateMap.add("",
-                gojs(go.Node, "Spot", nodeStyle(),
-                    // the main object is a Panel that surrounds a TextBlock with a rectangular Shape
-                    gojs(go.Panel, "Auto",
-                        gojs(go.Shape, "Rectangle",
-                            {fill: "#00A9C9", stroke: null},
-                            new go.Binding("figure", "figure")),
-                        gojs(go.TextBlock,
-                            {
-                                font: "bold 11pt Helvetica, Arial, sans-serif",
-                                stroke: lightText,
-                                margin: 8,
-                                maxSize: new go.Size(160, NaN),
-                                wrap: go.TextBlock.WrapFit,
-                                editable: true
-                            },
-                            new go.Binding("text").makeTwoWay())
-                    ),
-                    // four named ports, one on each side:
-                    makePort("T", go.Spot.Top, true, true),
-                    makePort("L", go.Spot.Left, true, true),
-                    makePort("R", go.Spot.Right, true, true),
-                    makePort("B", go.Spot.Bottom, true, true)
-                ));
 
             paletteData.basicElements.forEach(function (data) {
                 const shapeType = data.shapeType;

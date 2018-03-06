@@ -21,46 +21,8 @@ function initBasic(nodeDataArray, linkDataArray) {
                 allowDrop: true,  // must be true to accept drops from the Palette
                 // enable undo & redo
                 "undoManager.isEnabled": true,
-                nodeTemplateMap: myPalette.nodeTemplateMap,  // share the templates used by myPalette
+                nodeTemplateMap: myPalette.nodeTemplateMap  // share the templates used by myPalette
             });
-
-
-    // These nodes have text surrounded by a rounded rectangle
-    // whose fill color is bound to the node data.
-    // The user can drag a node by dragging its TextBlock label.
-    // Dragging from the Shape will start drawing a new link.
-    myDiagram.nodeTemplate =
-        gojs(go.Node, "Auto",
-            {locationSpot: go.Spot.Center},
-            gojs(go.Shape, "RoundedRectangle",
-                {
-                    fill: "white", // the default fill, if there is no data bound value
-                    portId: "", cursor: "pointer",  // the Shape is the port, not the whole Node
-                    // allow all kinds of links from and to this port
-                    fromLinkable: true, fromLinkableSelfNode: true, fromLinkableDuplicates: true,
-                    toLinkable: true, toLinkableSelfNode: true, toLinkableDuplicates: true
-                },
-                new go.Binding("fill", "color")),
-            gojs(go.TextBlock,
-                {
-                    font: "bold 14px sans-serif",
-                    stroke: '#333',
-                    margin: 6,  // make some extra space for the shape around the text
-                    isMultiline: false,  // don't allow newlines in text
-                    editable: true  // allow in-place editing by user
-                },
-                new go.Binding("text", "text").makeTwoWay()),  // the label shows the node data's text
-            { // this tooltip Adornment is shared by all nodes
-                toolTip:
-                    gojs(go.Adornment, "Auto",
-                        gojs(go.Shape, {fill: "#FFFFCC"}),
-                        gojs(go.TextBlock, {margin: 4},  // the tooltip shows the result of calling nodeInfo(data)
-                            new go.Binding("text", "", nodeInfo))
-                    ),
-                // this context menu Adornment is shared by all nodes
-                contextMenu: partContextMenu
-            }
-        );
 
 
     // The link shape and arrowhead have their stroke brush data bound to the "color" property
