@@ -1,12 +1,11 @@
 function initFlowchart(nodeDataArray, linkDataArray) {
 
-    const $ = go.GraphObject.make;  // for conciseness in defining templates
     if (myDiagram !== undefined) {
         myDiagram.clear();
         myDiagram.div = null;
     }
     myDiagram =
-        $(go.Diagram, "diagramDiv",  // must name or refer to the DIV HTML element
+        gojs(go.Diagram, "diagramDiv",  // must name or refer to the DIV HTML element
             {
                 initialContentAlignment: go.Spot.Center,
                 allowDrop: true,  // must be true to accept drops from the Palette
@@ -59,7 +58,7 @@ function initFlowchart(nodeDataArray, linkDataArray) {
     // control whether the user can draw links from or to the port.
     function makePort(name, spot, output, input) {
         // the port is basically just a small circle that has a white stroke when it is made visible
-        return $(go.Shape, "Circle",
+        return gojs(go.Shape, "Circle",
             {
                 fill: "transparent",
                 stroke: null,  // this is changed to "white" in the showPorts function
@@ -77,13 +76,13 @@ function initFlowchart(nodeDataArray, linkDataArray) {
     const lightText = 'whitesmoke';
 
     myDiagram.nodeTemplateMap.add("",  // the default category
-        $(go.Node, "Spot", nodeStyle(),
+        gojs(go.Node, "Spot", nodeStyle(),
             // the main object is a Panel that surrounds a TextBlock with a rectangular Shape
-            $(go.Panel, "Auto",
-                $(go.Shape, "Rectangle",
+            gojs(go.Panel, "Auto",
+                gojs(go.Shape, "Rectangle",
                     {fill: "#00A9C9", stroke: null},
                     new go.Binding("figure", "figure")),
-                $(go.TextBlock,
+                gojs(go.TextBlock,
                     {
                         font: "bold 11pt Helvetica, Arial, sans-serif",
                         stroke: lightText,
@@ -102,11 +101,11 @@ function initFlowchart(nodeDataArray, linkDataArray) {
         ));
 
     myDiagram.nodeTemplateMap.add("Start",
-        $(go.Node, "Spot", nodeStyle(),
-            $(go.Panel, "Auto",
-                $(go.Shape, "Circle",
+        gojs(go.Node, "Spot", nodeStyle(),
+            gojs(go.Panel, "Auto",
+                gojs(go.Shape, "Circle",
                     {minSize: new go.Size(40, 40), fill: "#79C900", stroke: null}),
-                $(go.TextBlock, "Start",
+                gojs(go.TextBlock, "Start",
                     {font: "bold 11pt Helvetica, Arial, sans-serif", stroke: lightText},
                     new go.Binding("text"))
             ),
@@ -117,11 +116,11 @@ function initFlowchart(nodeDataArray, linkDataArray) {
         ));
 
     myDiagram.nodeTemplateMap.add("End",
-        $(go.Node, "Spot", nodeStyle(),
-            $(go.Panel, "Auto",
-                $(go.Shape, "Circle",
+        gojs(go.Node, "Spot", nodeStyle(),
+            gojs(go.Panel, "Auto",
+                gojs(go.Shape, "Circle",
                     {minSize: new go.Size(40, 40), fill: "#DC3C00", stroke: null}),
-                $(go.TextBlock, "End",
+                gojs(go.TextBlock, "End",
                     {font: "bold 11pt Helvetica, Arial, sans-serif", stroke: lightText},
                     new go.Binding("text"))
             ),
@@ -132,10 +131,10 @@ function initFlowchart(nodeDataArray, linkDataArray) {
         ));
 
     myDiagram.nodeTemplateMap.add("Comment",
-        $(go.Node, "Auto", nodeStyle(),
-            $(go.Shape, "File",
+        gojs(go.Node, "Auto", nodeStyle(),
+            gojs(go.Shape, "File",
                 {fill: "#EFFAB4", stroke: null}),
-            $(go.TextBlock,
+            gojs(go.TextBlock,
                 {
                     margin: 5,
                     maxSize: new go.Size(200, NaN),
@@ -152,7 +151,7 @@ function initFlowchart(nodeDataArray, linkDataArray) {
 
     // replace the default Link template in the linkTemplateMap
     myDiagram.linkTemplate =
-        $(go.Link,  // the whole link panel
+        gojs(go.Link,  // the whole link panel
             {
                 routing: go.Link.AvoidsNodes,
                 curve: go.Link.JumpOver,
@@ -170,18 +169,18 @@ function initFlowchart(nodeDataArray, linkDataArray) {
                 }
             },
             new go.Binding("points").makeTwoWay(),
-            $(go.Shape,  // the highlight shape, normally transparent
+            gojs(go.Shape,  // the highlight shape, normally transparent
                 {isPanelMain: true, strokeWidth: 8, stroke: "transparent", name: "HIGHLIGHT"}),
-            $(go.Shape,  // the link path shape
+            gojs(go.Shape,  // the link path shape
                 {isPanelMain: true, stroke: "gray", strokeWidth: 2}),
-            $(go.Shape,  // the arrowhead
+            gojs(go.Shape,  // the arrowhead
                 {toArrow: "standard", stroke: null, fill: "gray"}),
-            $(go.Panel, "Auto",  // the link label, normally not visible
+            gojs(go.Panel, "Auto",  // the link label, normally not visible
                 {visible: false, name: "LABEL", segmentIndex: 2, segmentFraction: 0.5},
                 new go.Binding("visible", "visible").makeTwoWay(),
-                $(go.Shape, "RoundedRectangle",  // the label shape
+                gojs(go.Shape, "RoundedRectangle",  // the label shape
                     {fill: "#F8F8F8", stroke: null}),
-                $(go.TextBlock, "Yes",  // the label
+                gojs(go.TextBlock, "Yes",  // the label
                     {
                         textAlign: "center",
                         font: "10pt helvetica, arial, sans-serif",
@@ -212,7 +211,7 @@ function initFlowchart(nodeDataArray, linkDataArray) {
 
     // initialize the Palette that is on the left side of the page
     myPalette =
-        $(go.Palette, "paletteDiv",  // must name or refer to the DIV HTML element
+        gojs(go.Palette, "paletteDiv",  // must name or refer to the DIV HTML element
             {
                 scrollsPageOnFocus: false,
                 nodeTemplateMap: myDiagram.nodeTemplateMap,  // share the templates used by myDiagram

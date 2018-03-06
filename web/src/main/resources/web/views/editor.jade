@@ -1,11 +1,8 @@
-extends layout
-block meta
-    meta(name="description", content="OpenArchi Editor")
 block scripts
     link(rel='stylesheet', type='text/css', href='/stylesheets/jquery-ui.css')
     link(rel='stylesheet', type='text/css', href='/stylesheets/autocomplete.css')
-    script(src='/javascripts/go.js')
     script(type='text/javascript', src='/javascripts/jquery-ui.js')
+    script(src='/javascripts/go.js')
     script(type='text/javascript', src='/javascripts/OpenArchiWrapper.js')
     script(type='text/javascript', src='/javascripts/editor.js')
     script#code(type="text/javascript")
@@ -28,11 +25,6 @@ block scripts
         let source = '!{source}';
         let paletteData = !{palette};
         let lightText = 'whitesmoke';
-        const gojs = go.GraphObject.make;
-
-        function capitalize(text) {
-            return text.substr(0, 1).toUpperCase() + text.substr(2, text.length).toLowerCase();
-        }
 
         $(function () {
             var showMenuFlag = !{showMenu};
@@ -41,33 +33,19 @@ block scripts
                     showMenu();
                 });
             }
-            switch (source) {
-                case "basic":
-                    $.getScript("/javascripts/diagrams/basic.js").done(function (script, textStatus) {
-                        initBasic(nodeDataArray, linkDataArray);
-                    });
-                    break;
-                default:
-                    console.log("Still not implemented");
-            }
 
-            if (paletteData !== '') {
-                $.getScript("/javascripts/diagrams/palette.js").done(function (script, textStatus) {
-                    showPaletteByType(paletteData);
-                    myDiagram =
-                        gojs(go.Diagram, "diagramDiv",  // create a Diagram for the DIV HTML element
-                            {
-                                // position the graph in the middle of the diagram
-                                initialContentAlignment: go.Spot.Center,
-                                // allow double-click in background to create a new node
-                                "clickCreatingTool.archetypeNodeData": {text: "Node", color: "white"},
-                                // allow Ctrl-G to call groupSelection()
-                                "commandHandler.archetypeGroupData": {text: "Group", isGroup: true, color: "blue"},
-                                // enable undo & redo
-                                "undoManager.isEnabled": true
-                            });
-                });
-            }
+            $.getScript("/javascripts/diagrams/palette.js").done(function (script, textStatus) {
+                showPaletteByType(paletteData);
+                switch (source) {
+                    case "basic":
+                        $.getScript("/javascripts/diagrams/basic.js").done(function (script, textStatus) {
+                            initBasic(nodeDataArray, linkDataArray);
+                        });
+                        break;
+                    default:
+                        console.log("Still not implemented");
+                }
+            });
 
             var dataArray;
             $("#diagramId").autocomplete({
@@ -103,6 +81,9 @@ block scripts
                 $(this).select();
             });
         });
+extends layout
+block meta
+    meta(name="description", content="OpenArchi Editor")
 
 block content
     div#mainContainer(style="padding-bottom: 15px;")
@@ -122,16 +103,17 @@ block content
             | &nbsp;
             button#OpenSVGButton(onclick="openSVG()") Exportar como SVG
         div#diagramsCanvas(style="justify-content: space-between")
-            div#explanation
-                h2#mainTitle(style="margin-top: 0; padding-top: 0; margin-bottom: 30px;")= mainTitle
-                h2#caption(style="margin-top: 0; padding-top: 0; margin-bottom: 30px; color: red; text-align: right;")= caption
-                p= fullDescription
-                if steps
-                    ul
-                        each step in steps
-                            li= step
-                if mainTitle
-                    strong Como todos lo demás elementos, se pueden combinar éstas caractrísticas con las presentes en otros ejemplos para crear capacidades más complejas
+            if explanation
+                div#explanation
+                    h2#mainTitle(style="margin-top: 0; padding-top: 0; margin-bottom: 30px;")= mainTitle
+                    h2#caption(style="margin-top: 0; padding-top: 0; margin-bottom: 30px; color: red; text-align: right;")= caption
+                    p= fullDescription
+                    if steps
+                        ul
+                            each step in steps
+                                li= step
+                    if mainTitle
+                        strong Como todos lo demás elementos, se pueden combinar éstas caractrísticas con las presentes en otros ejemplos para crear capacidades más complejas
             div(style="width: 100%; display: flex;")
                 div#paletteDiv(style="width: 15%; height:400px; border: solid gray 1px; overflow: scroll; margin-right: 2px; ")
                 div#diagramDiv(style="width: 85%; height:400px; border: solid gray 1px; overflow: scroll; margin-right: 2px; ")

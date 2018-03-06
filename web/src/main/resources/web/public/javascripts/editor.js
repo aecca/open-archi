@@ -1,3 +1,127 @@
+const gojs = go.GraphObject.make;
+
+function capitalize(text) {
+    return text.substr(0, 1).toUpperCase() + text.substr(2, text.length).toLowerCase();
+}
+// Make link labels visible if coming out of a "conditional" node.
+// This listener is called by the "LinkDrawn" and "LinkRelinked" DiagramEvents.
+function showLinkLabel(e) {
+    const label = e.subject.findObject("LABEL");
+    if (label !== null) label.visible = (e.subject.fromNode.data.figure === "Diamond");
+}
+
+function nodeInfo(d) {  // Tooltip info for a node data object
+    let str = "Node " + d.key + ": " + d.text + "\n";
+    if (d.group)
+        str += "member of " + d.group;
+    else
+        str += "top-level node";
+    return str;
+}
+
+// Define the appearance and behavior for Links:
+
+function linkInfo(d) {  // Tooltip info for a link data object
+    return "Link:\nfrom " + d.from + " to " + d.to;
+}
+
+// Define the appearance and behavior for Groups:
+
+function groupInfo(adornment) {  // takes the tooltip or context menu, not a group node data object
+    const g = adornment.adornedPart;  // get the Group that the tooltip adorns
+    const mems = g.memberParts.count;
+    let links = 0;
+    g.memberParts.each(function (part) {
+        if (part instanceof go.Link) links++;
+    });
+    return "Group " + g.data.key + ": " + g.data.text + "\n" + mems + " members including " + links + " links";
+}
+// a context menu is an Adornment with a bunch of buttons in them
+const partContextMenu =
+    gojs(go.Adornment, "Vertical",
+        makeButton("Properties",
+            function (e, obj) {  // OBJ is this Button
+                const contextmenu = obj.part;  // the Button is in the context menu Adornment
+                const part = contextmenu.adornedPart;  // the adornedPart is the Part that the context menu adorns
+                // now can do something with PART, or with its data, or with the Adornment (the context menu)
+                if (part instanceof go.Link) alert(linkInfo(part.data));
+                else if (part instanceof go.Group) alert(groupInfo(contextmenu));
+                else alert(nodeInfo(part.data));
+            }),
+        makeButton("Cut",
+            function (e, obj) {
+                e.diagram.commandHandler.cutSelection();
+            },
+            function (o) {
+                return o.diagram.commandHandler.canCutSelection();
+            }),
+        makeButton("Copy",
+            function (e, obj) {
+                e.diagram.commandHandler.copySelection();
+            },
+            function (o) {
+                return o.diagram.commandHandler.canCopySelection();
+            }),
+        makeButton("Paste",
+            function (e, obj) {
+                e.diagram.commandHandler.pasteSelection(e.diagram.lastInput.documentPoint);
+            },
+            function (o) {
+                return o.diagram.commandHandler.canPasteSelection();
+            }),
+        makeButton("Delete",
+            function (e, obj) {
+                e.diagram.commandHandler.deleteSelection();
+            },
+            function (o) {
+                return o.diagram.commandHandler.canDeleteSelection();
+            }),
+        makeButton("Undo",
+            function (e, obj) {
+                e.diagram.commandHandler.undo();
+            },
+            function (o) {
+                return o.diagram.commandHandler.canUndo();
+            }),
+        makeButton("Redo",
+            function (e, obj) {
+                e.diagram.commandHandler.redo();
+            },
+            function (o) {
+                return o.diagram.commandHandler.canRedo();
+            }),
+        makeButton("Group",
+            function (e, obj) {
+                e.diagram.commandHandler.groupSelection();
+            },
+            function (o) {
+                return o.diagram.commandHandler.canGroupSelection();
+            }),
+        makeButton("Ungroup",
+            function (e, obj) {
+                e.diagram.commandHandler.ungroupSelection();
+            },
+            function (o) {
+                return o.diagram.commandHandler.canUngroupSelection();
+            })
+    );
+
+// Define the appearance and behavior for Nodes:
+
+// First, define the shared context menu for all Nodes, Links, and Groups.
+
+// To simplify this code we define a function for creating a context menu button:
+function makeButton(text, action, visiblePredicate) {
+    return gojs("ContextMenuButton",
+        gojs(go.TextBlock, text),
+        {click: action},
+        // don't bother with binding GraphObject.visible if there's no predicate
+        visiblePredicate ? new go.Binding("visible", "", function (o, e) {
+            return o.diagram ? visiblePredicate(o, e) : false;
+        }).ofObject() : {});
+}
+
+
 // Show the diagram's model in JSON format that the user may edit
 function save() {
     document.getElementById("modelToSaveOrLoad").value = myDiagram.model.toJson();

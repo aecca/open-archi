@@ -1,12 +1,48 @@
 function showPaletteByType(paletteData) {
     switch (paletteData.type) {
         case "ARCHITECTURE":
+            if (myPalette !== undefined) {
+                myPalette.clear();
+                myPalette.div = null;
+            }
             // initialize the Palette that is on the left side of the page
             // noinspection JSUndeclaredVariable
             myPalette =
                 gojs(go.Palette, "paletteDiv",  // must name or refer to the DIV HTML element
                     {
-                        scrollsPageOnFocus: false
+                        scrollsPageOnFocus: false,
+                        nodeTemplate:
+                            gojs(go.Node, "Auto",
+                                {locationSpot: go.Spot.Center},
+                                gojs(go.Shape, "RoundedRectangle",
+                                    {
+                                        fill: "white", // the default fill, if there is no data bound value
+                                        portId: "", cursor: "pointer",  // the Shape is the port, not the whole Node
+                                        // allow all kinds of links from and to this port
+                                        fromLinkable: true, fromLinkableSelfNode: true, fromLinkableDuplicates: true,
+                                        toLinkable: true, toLinkableSelfNode: true, toLinkableDuplicates: true
+                                    },
+                                    new go.Binding("fill", "color")),
+                                gojs(go.TextBlock,
+                                    {
+                                        font: "bold 14px sans-serif",
+                                        stroke: '#333',
+                                        margin: 6,  // make some extra space for the shape around the text
+                                        isMultiline: false,  // don't allow newlines in text
+                                        editable: true  // allow in-place editing by user
+                                    },
+                                    new go.Binding("text", "text").makeTwoWay()),  // the label shows the node data's text
+                                { // this tooltip Adornment is shared by all nodes
+                                    toolTip:
+                                        gojs(go.Adornment, "Auto",
+                                            gojs(go.Shape, {fill: "#FFFFCC"}),
+                                            gojs(go.TextBlock, {margin: 4},  // the tooltip shows the result of calling nodeInfo(data)
+                                                new go.Binding("text", "", nodeInfo))
+                                        ),
+                                    // this context menu Adornment is shared by all nodes
+                                    contextMenu: partContextMenu
+                                }
+                            )
                     });
             let paletteModelArray = [];
             myPalette.nodeTemplateMap.add("",

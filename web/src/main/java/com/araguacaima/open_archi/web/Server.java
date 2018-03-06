@@ -298,6 +298,7 @@ public class Server {
                 mapEditor.put("diagramTypes", deeplyFulfilledDiagramTypesCollection);
                 get("/", (req, res) -> {
                     mapEditor.put("palette", jsonUtils.toJSON(getArchitecturePalette()));
+                    mapEditor.put("source", "basic");
                     mapEditor.put("showMenu", StringUtils.isNotBlank(req.queryParams("showMenu")));
                     return new ModelAndView(mapEditor, "editor");
                 }, engine);
