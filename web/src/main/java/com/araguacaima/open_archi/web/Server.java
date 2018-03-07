@@ -371,6 +371,25 @@ public class Server {
                         return throwError(response, ex);
                     }
                 });
+                patch("/diagrams/architectures/:uuid", (request, response) -> {
+                    try {
+                        com.araguacaima.open_archi.persistence.diagrams.architectural.Model model = jsonUtils.fromJSON(request.body(), com.araguacaima.open_archi.persistence.diagrams.architectural.Model.class);
+                        if (model == null) {
+                            throw new Exception("Invalid kind of model");
+                        }
+                        String id = request.params(":uuid");
+                        model.setId(id);
+                        model.validateModification();
+                        DBUtil.update(model);
+                        response.status(HTTP_OK);
+                        return EMPTY_RESPONSE;
+                    } catch (EntityNotFoundException ex) {
+                        response.status(HTTP_NOT_FOUND);
+                        return EMPTY_RESPONSE;
+                    } catch (Throwable ex) {
+                        return throwError(response, ex);
+                    }
+                });
                 options("/diagrams/architectures/:uuid/relationships", (request, response) -> {
                     setCORS(request, response);
                     Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledArchitectureRelationshipCollection, deeplyFulfilledArchitectureRelationship, HttpMethod.get, HttpMethod.put);

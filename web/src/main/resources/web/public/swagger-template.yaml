@@ -180,39 +180,6 @@ paths:
           description: Invalid ID supplied
         '404':
           description: Model not found
-    patch:
-      tags:
-      - Models
-      summary: Partially update an existent model
-      description: If the model object does not exists previously, an error will be raised. Only incoming attributes will be affected. All preexisting values for non-requested fields will keep its current stored values.
-      operationId: partially-update-model
-      consumes:
-      - application/json
-      produces:
-      - application/json
-      parameters:
-      - name: model-id
-        in: path
-        description: ID of the model to update
-        required: true
-        type: string
-      - name: body
-        in: body
-        description: Model object that needs to be partially updated
-        required: true
-        schema:
-          $ref: "#/definitions/Model_Create"
-      responses:
-        '200':
-          description: OK
-        '400':
-          description: Invalid model id supplied
-        '404':
-          description: Model not found
-      security:
-      - openarchi_auth:
-        - write:model
-        - read:models
     put:
       tags:
       - Models
@@ -631,6 +598,40 @@ paths:
 #            allOf:
 #            - $ref: "#/definitions/Options_Get_Collection"
 #            - $ref: "#/definitions/Options_Put"
+  "/diagrams/architectures/{model-id}":
+    patch:
+      tags:
+      - Diagrams
+      summary: Partially update an existent architecture diagram
+      description: If the architecture diagram model does not exists previously, an error will be raised. Only incoming attributes will be affected. All preexisting values for non-requested fields will keep its current stored values.
+      operationId: partially-update-architecture-diagram
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: model-id
+        in: path
+        description: ID of the model to update
+        required: true
+        type: string
+      - name: body
+        in: body
+        description: Model object that needs to be partially updated
+        required: true
+        schema:
+          $ref: "#/definitions/Architecture_Model_Create"
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Invalid model id supplied
+        '404':
+          description: Model not found
+      security:
+      - openarchi_auth:
+        - write:model
+        - read:models
   "/diagrams/architectures/{model-id}/relationships":
     get:
       tags:
@@ -2455,6 +2456,7 @@ definitions:
         - CONTAINER
         - DEPLOYMENT
         - BPM
+        - SOFTWARE_SYSTEM
       link:
         type: string
         description: Link to the referenced element
@@ -2490,6 +2492,7 @@ definitions:
         - CONTAINER
         - DEPLOYMENT
         - BPM
+        - SOFTWARE_SYSTEM
       link:
         type: string
         description: Link to the referenced element
@@ -4188,9 +4191,27 @@ definitions:
         - Rectangle
         - Diamond
         - Ellipse
+      size:
+        $ref: "#/definitions/Size"
+      fill:
+         type: string
+         default: #ffffff
+      stroke:
+         type: string
+         default: #333333
+      input:
+         type: boolean
+         default: true
+      output:
+         type: boolean
+         default: true
     required:
     - id
     - type
+    - fill
+    - stroke
+    - input
+    - output
   Shape_Create:
     type: object
     description: Concrete shape that univocally identify o model
@@ -4207,9 +4228,43 @@ definitions:
         - Rectangle
         - Diamond
         - Ellipse
+      size:
+        $ref: "#/definitions/Size_Create"
+      fill:
+         type: string
+         default: #ffffff
+      stroke:
+         type: string
+         default: #333333
+      input:
+         type: boolean
+         default: true
+      output:
+         type: boolean
+         default: true
     required:
     - id
     - type
+  Size:
+    description: Size
+    type: object
+    properties:
+      width:
+        type: integer
+        format: int32
+      height:
+        type: integer
+        format: int32
+  Size_Create:
+    description: Size
+    type: object
+    properties:
+      width:
+        type: integer
+        format: int32
+      height:
+        type: integer
+        format: int32
   Sequence:
     description: Sequence
     type: object

@@ -1,3 +1,28 @@
+function toLocation(data, node) {
+    return new go.Point(data.x, data.y);
+}
+
+function fromLocation(loc, data, model) {
+    model.setDataProperty(data, "x", loc.x);
+    model.setDataProperty(data, "y", loc.y);
+}
+
+function toFill(data, node) {
+    return new go.Brush(data.shape.fill);
+}
+
+function fromFill(loc, data, model) {
+    model.setDataProperty(data, "fill", data.shape.fill);
+}
+
+function toText(data, node) {
+    return new go.TextBlock(data.name);
+}
+
+function fromText(loc, data, model) {
+    model.setDataProperty(data, "text", data.name);
+}
+
 function architectureModelToDiagram(model) {
     let diagram = {};
     diagram.nodes = [];

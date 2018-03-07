@@ -19,5 +19,6 @@ public enum ElementKind {
     CONSUMER,
     CONTAINER,
     DEPLOYMENT,
-    BPM
+    BPM,
+    SOFTWARE_SYSTEM
 }

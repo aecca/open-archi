@@ -265,7 +265,7 @@ public class DBUtil {
                 throw new EntityNotFoundException("Can not replace due object with id '" + entity.getId() + "' does not exists");
             }
             ((BaseEntity) persistedEntity).copyNonEmpty(entity);
-            JPAEntityManagerUtils.update(entity);
+            JPAEntityManagerUtils.update(persistedEntity);
         } catch (Throwable t) {
             JPAEntityManagerUtils.rollback();
             throw t;
