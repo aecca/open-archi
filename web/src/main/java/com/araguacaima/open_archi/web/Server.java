@@ -299,7 +299,9 @@ public class Server {
                 get("/", (req, res) -> {
                     mapEditor.put("palette", jsonUtils.toJSON(getArchitecturePalette()));
                     mapEditor.put("source", "basic");
-                    mapEditor.put("showMenu", StringUtils.isNotBlank(req.queryParams("showMenu")));
+                    mapEditor.put("examples", getExamples());
+/*                    mapEditor.put("models", getItemNames(req, res, Item.GET_ALL_DIAGRAM_NAMES, JSON_CONTENT_TYPE));
+                    mapEditor.put("prototypes", getItemNames(req, res, Item.GET_ALL_PROTOTYPE_NAMES, JSON_CONTENT_TYPE));*/
                     return new ModelAndView(mapEditor, "editor");
                 }, engine);
             });
@@ -337,7 +339,7 @@ public class Server {
             path("/api", () -> {
                 Map<String, Object> mapApi = new HashMap<>();
                 exception(Exception.class, exceptionHandler);
-                mapApi.put("title", "API");
+                mapApi.put("title", "Api");
                 get("/", (req, res) -> new ModelAndView(mapApi, "apis"), engine);
                 options("/diagrams/architectures", (request, response) -> {
                     setCORS(request, response);
@@ -808,11 +810,7 @@ public class Server {
                     response.type(JSON_CONTENT_TYPE);
                     return EMPTY_RESPONSE;
                 });
-                get("/catalogs/diagram-names", (request, response) -> {
-                    String diagramNames = (String) getList(request, response, Item.GET_ALL_DIAGRAM_NAMES, null, IdName.class);
-                    List diagramNamesList = getListIdName(diagramNames);
-                    return getList(request, response, diagramNamesList);
-                });
+                get("/catalogs/diagram-names", (request, response) -> getItemNames(request, response, Item.GET_ALL_DIAGRAM_NAMES));
                 options("/catalogs/prototype-names", (request, response) -> {
                     setCORS(request, response);
                     Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledIdValueCollection, deeplyFulfilledIdValue, HttpMethod.get, HttpMethod.post);
@@ -823,11 +821,7 @@ public class Server {
                     response.type(JSON_CONTENT_TYPE);
                     return EMPTY_RESPONSE;
                 });
-                get("/catalogs/prototype-names", (request, response) -> {
-                    String diagramNames = (String) getList(request, response, Item.GET_ALL_PROTOTYPE_NAMES, null, IdName.class);
-                    List diagramNamesList = getListIdName(diagramNames);
-                    return getList(request, response, diagramNamesList);
-                });
+                get("/catalogs/prototype-names", (request, response) -> getItemNames(request, response, Item.GET_ALL_PROTOTYPE_NAMES));
                 options("/catalogs/consumer-names", (request, response) -> {
                     setCORS(request, response);
                     Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledIdValueCollection, deeplyFulfilledIdValue, HttpMethod.get, HttpMethod.post);
@@ -986,6 +980,48 @@ public class Server {
         });
     }
 
+    private static Object getItemNames(Request request, Response response, String query) throws IOException, URISyntaxException {
+        return getItemNames(request, response, query, null);
+    }
+
+    private static Object getItemNames(Request request, Response response, String query, String contentType) throws IOException, URISyntaxException {
+        String diagramNames = (String) getList(request, response, query, null, IdName.class);
+        List diagramNamesList = getListIdName(diagramNames);
+        return getList(request, response, diagramNamesList, contentType);
+    }
+
+    private static Collection<ExampleData> getExamples() {
+        Collection<ExampleData> result = new ArrayList<>();
+        result.add(new ExampleData("/diagrams/basic.html", "Diagrama Básico"));
+        result.add(new ExampleData("/diagrams/checkBoxes.html", "Features (checkbox)"));
+        result.add(new ExampleData("/diagrams/columnResizing.html", "Ajuste de tamaños"));
+        result.add(new ExampleData("/diagrams/comments.html", "Comentarios"));
+        result.add(new ExampleData("/diagrams/contextMenu.html", "Menú Contextual"));
+        result.add(new ExampleData("/diagrams/dataInspector.html", "Meta Datos"));
+        result.add(new ExampleData("/diagrams/dragCreating.html", "Creación Ágil"));
+        result.add(new ExampleData("/diagrams/draggableLink.html", "Constraints"));
+        result.add(new ExampleData("/diagrams/entityRelationship.html", "Entidad Relación"));
+        result.add(new ExampleData("/diagrams/flowchart.html", "Flujo de Secuencia"));
+        result.add(new ExampleData("/diagrams/gantt.html", "Diagramas Gantt"));
+        result.add(new ExampleData("/diagrams/grouping.html", "Expansión"));
+        result.add(new ExampleData("/diagrams/guidedDragging.html", "Guías visuales"));
+        result.add(new ExampleData("/diagrams/htmlInteraction.html", "Interoperatividad HTML"));
+        result.add(new ExampleData("/diagrams/icons.html", "Iconos SVG"));
+        result.add(new ExampleData("/diagrams/kanban.html", "Tablero Kanban"));
+        result.add(new ExampleData("/diagrams/logicCircuit.html", "Flujo y Secuencia 1"));
+        result.add(new ExampleData("/diagrams/mindMap.html", "Mapas Estratégicos"));
+        result.add(new ExampleData("/diagrams/navigation.html", "Seguimiento de Flujos"));
+        result.add(new ExampleData("/diagrams/orgChartStatic.html", "Zooming"));
+        result.add(new ExampleData("/diagrams/records.html", "Mapeo de Features"));
+        result.add(new ExampleData("/diagrams/sequenceDiagram.html", "UML de Secuencia"));
+        result.add(new ExampleData("/diagrams/shopFloorMonitor.html", "Flujo y Secuencia 2"));
+        result.add(new ExampleData("/diagrams/swimBands.html", "Release Planning"));
+        result.add(new ExampleData("/diagrams/swimLanes.html", "Diagrama de Procesos"));
+        result.add(new ExampleData("/diagrams/umlClass.html", "UML de Clases"));
+        result.add(new ExampleData("/diagrams/updateDemo.html", "Actualización Realtime"));
+        return result;
+    }
+
     private static Palette getArchitecturePalette() {
         Palette palette = new Palette();
         Map<String, Object> params = new HashMap<>();
@@ -993,14 +1029,14 @@ public class Server {
         List<IdName> models;
         models = JPAEntityManagerUtils.executeQuery(IdName.class, Item.GET_ALL_MODEL_NAMES_BY_TYPE, params);
         int rank = 0;
-        for (IdName model: models) {
+        for (IdName model : models) {
             PaletteItem item = new PaletteItem();
             item.setRank(rank);
             item.setKind(ElementKind.ARCHITECTURE_MODEL);
             item.setName(model.getName());
             item.setShapeType(ShapeType.RoundedRectangle);
             item.setId(model.getId());
-            item.setSize(new Size(40,40));
+            item.setSize(new Size(40, 40));
             item.setFill("#01203A");
             palette.getSoftwareSystems().add(item);
             rank++;
@@ -1009,14 +1045,14 @@ public class Server {
         params.put("type", Container.class);
         models = JPAEntityManagerUtils.executeQuery(IdName.class, Item.GET_ALL_MODEL_NAMES_BY_TYPE, params);
         rank = 0;
-        for (IdName model: models) {
+        for (IdName model : models) {
             PaletteItem item = new PaletteItem();
             item.setRank(rank);
             item.setKind(ElementKind.ARCHITECTURE_MODEL);
             item.setName(model.getName());
             item.setShapeType(ShapeType.RoundedRectangle);
             item.setId(model.getId());
-            item.setSize(new Size(40,40));
+            item.setSize(new Size(40, 40));
             item.setFill("#08427B");
             palette.getContainers().add(item);
             rank++;
@@ -1025,14 +1061,14 @@ public class Server {
         params.put("type", Component.class);
         models = JPAEntityManagerUtils.executeQuery(IdName.class, Item.GET_ALL_MODEL_NAMES_BY_TYPE, params);
         rank = 0;
-        for (IdName model: models) {
+        for (IdName model : models) {
             PaletteItem item = new PaletteItem();
             item.setRank(rank);
             item.setKind(ElementKind.ARCHITECTURE_MODEL);
             item.setName(model.getName());
             item.setShapeType(ShapeType.RoundedRectangle);
             item.setId(model.getId());
-            item.setSize(new Size(40,40));
+            item.setSize(new Size(40, 40));
             item.setFill("#1368BD");
             palette.getComponents().add(item);
             rank++;
@@ -1119,6 +1155,10 @@ public class Server {
     }
 
     private static Object getList(Request request, Response response, String query, Map<String, Object> params, Class type) throws IOException, URISyntaxException {
+        return getList(request, response, query, params, type, null);
+    }
+
+    private static Object getList(Request request, Response response, String query, Map<String, Object> params, Class type, String contentType) throws IOException, URISyntaxException {
         response.status(HTTP_OK);
 
         List models;
@@ -1133,7 +1173,7 @@ public class Server {
 
         Object filter_ = filter(request.queryParams("$filter"), jsonObjects);
         String json = request.pathInfo().replaceFirst("/api/models", "");
-        String contentType = getContentType(request);
+        contentType = StringUtils.defaultString(contentType, getContentType(request));
         response.header("Content-Type", contentType);
         if (contentType.equals(HTML_CONTENT_TYPE)) {
             Map<String, Object> jsonMap = new HashMap<>();
@@ -1146,11 +1186,15 @@ public class Server {
     }
 
     private static Object getList(Request request, Response response, Collection models) throws IOException, URISyntaxException {
+        return getList(request, response, models, null);
+    }
+
+    private static Object getList(Request request, Response response, Collection models, String contentType) throws IOException, URISyntaxException {
         response.status(HTTP_OK);
         String jsonObjects = jsonUtils.toJSON(models);
         Object filter_ = filter(request.queryParams("$filter"), jsonObjects);
         String json = request.pathInfo().replaceFirst("/api/models", "");
-        String contentType = getContentType(request);
+        contentType = StringUtils.defaultString(contentType, getContentType(request));
         response.header("Content-Type", contentType);
         if (contentType.equals(HTML_CONTENT_TYPE)) {
             Map<String, Object> jsonMap = new HashMap<>();

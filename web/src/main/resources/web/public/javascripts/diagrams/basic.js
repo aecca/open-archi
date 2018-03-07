@@ -20,21 +20,99 @@ function initBasic(nodeDataArray, linkDataArray) {
                 scrollsPageOnFocus: false,
                 allowDrop: true,  // must be true to accept drops from the Palette
                 // enable undo & redo
-                "undoManager.isEnabled": true,
-                nodeTemplateMap: myPalette.nodeTemplateMap  // share the templates used by myPalette
+                "undoManager.isEnabled": true
             });
 
+    // These nodes have text surrounded by a rounded rectangle
+    // whose fill color is bound to the node data.
+    // The user can drag a node by dragging its TextBlock label.
+    // Dragging from the Shape will start drawing a new link.
+    myDiagram.nodeTemplateMap.add("",
+        gojs(go.Node, "Spot", nodeStyle(),
+            // the main object is a Panel that surrounds a TextBlock with a rectangular Shape
+            gojs(go.Panel, "Auto",
+                gojs(go.Shape, "RoundedRectangle",
+                    {
+                        fill: "white", // the default fill, if there is no data bound value
+                        portId: "",
+                        cursor: "pointer",  // the Shape is the port, not the whole Node
+                        // allow all kinds of links from and to this port
+                        fromLinkable: true,
+                        fromLinkableSelfNode: true,
+                        fromLinkableDuplicates: true,
+                        toLinkable: true,
+                        toLinkableSelfNode: true,
+                        toLinkableDuplicates: true
+                    },
+                    new go.Binding("fill", "color")),
+                gojs(go.TextBlock,
+                    {
+                        font: "12px sans-serif",
+                        stroke: '#333',
+                        margin: 6,  // make some extra space for the shape around the text
+                        isMultiline: false,  // don't allow newlines in text
+                        editable: true  // allow in-place editing by user
+                    },
+                    new go.Binding("text", "text").makeTwoWay()),  // the label shows the node data's text
+                { // this tooltip Adornment is shared by all nodes
+                    toolTip:
+                        gojs(go.Adornment, "Auto",
+                            gojs(go.Shape, {fill: "#FFFFCC"}),
+                            gojs(go.TextBlock, {margin: 4},  // the tooltip shows the result of calling nodeInfo(data)
+                                new go.Binding("text", "", nodeInfo))
+                        ),
+                    // this context menu Adornment is shared by all nodes
+                    contextMenu: partContextMenu
+                }
+            ),
+            // four named ports, one on each side:
+            makePort("T", go.Spot.Top, true, true),
+            makePort("L", go.Spot.Left, true, true),
+            makePort("R", go.Spot.Right, true, true),
+            makePort("B", go.Spot.Bottom, true, true)
+        ));
+    myDiagram.nodeTemplateMap.addAll(myPalette.nodeTemplateMap);
 
     // The link shape and arrowhead have their stroke brush data bound to the "color" property
     myDiagram.linkTemplate =
-        gojs(go.Link,
-            {toShortLength: 3, relinkableFrom: true, relinkableTo: true},  // allow the user to relink existing links
-            gojs(go.Shape,
-                {strokeWidth: 2},
-                new go.Binding("stroke", "color")),
-            gojs(go.Shape,
-                {toArrow: "Standard", stroke: null},
-                new go.Binding("fill", "color")),
+        gojs(go.Link,  // the whole link panel
+            {
+                routing: go.Link.AvoidsNodes,
+                curve: go.Link.JumpOver,
+                corner: 5, toShortLength: 4,
+                relinkableFrom: true,
+                relinkableTo: true,
+                reshapable: true,
+                resegmentable: true,
+                // mouse-overs subtly highlight links:
+                mouseEnter: function (e, link) {
+                    link.findObject("HIGHLIGHT").stroke = "rgba(30,144,255,0.2)";
+                },
+                mouseLeave: function (e, link) {
+                    link.findObject("HIGHLIGHT").stroke = "transparent";
+                }
+            },
+            new go.Binding("points").makeTwoWay(),
+            gojs(go.Shape,  // the highlight shape, normally transparent
+                {isPanelMain: true, strokeWidth: 8, stroke: "transparent", name: "HIGHLIGHT"}),
+            gojs(go.Shape,  // the link path shape
+                {isPanelMain: true, stroke: "gray", strokeWidth: 2}),
+            gojs(go.Shape,  // the arrowhead
+                {toArrow: "standard", stroke: null, fill: "gray"}),
+            gojs(go.Panel, "Auto",  // the link label, normally not visible
+                {visible: false, name: "LABEL", segmentIndex: 2, segmentFraction: 0.5},
+                new go.Binding("visible", "visible").makeTwoWay(),
+                gojs(go.Shape, "RoundedRectangle",  // the label shape
+                    {fill: "#F8F8F8", stroke: null}),
+                gojs(go.TextBlock, "Yes",  // the label
+                    {
+                        textAlign: "center",
+                        font: "10pt helvetica, arial, sans-serif",
+                        stroke: "#333333",
+                        editable: true
+                    },
+                    new go.Binding("text").makeTwoWay())
+            ),
             { // this tooltip Adornment is shared by all links
                 toolTip:
                     gojs(go.Adornment, "Auto",
@@ -131,4 +209,8 @@ function initBasic(nodeDataArray, linkDataArray) {
     if (nodeDataArray !== "") {
         myDiagram.model = new go.GraphLinksModel(nodeDataArray, linkDataArray);
     }
+
+    // temporary links used by LinkingTool and RelinkingTool are also orthogonal:
+    myDiagram.toolManager.linkingTool.temporaryLink.routing = go.Link.Orthogonal;
+    myDiagram.toolManager.relinkingTool.temporaryLink.routing = go.Link.Orthogonal;
 }

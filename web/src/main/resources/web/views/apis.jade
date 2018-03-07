@@ -5,6 +5,12 @@ block meta
 block scripts
     link(rel='stylesheet', type='text/css', href='/stylesheets/swagger-ui.css')
 block content
+    div
+        div.sticky
+            a(href="/")
+                img(src='/images/OpenArchi.png', width='90', height='50', style="float: left;")
+                h2.title= title
+    br
     svg(xmlns="http://www.w3.org/2000/svg", xmlns:xlink="http://www.w3.org/1999/xlink", style="position:absolute;width:0;height:0")
         defs
             symbol#unlocked(viewbox='0 0 20 20')

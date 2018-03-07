@@ -1,3 +1,50 @@
+function fillElement(data, paletteModelArray) {
+    const shapeType = data.shapeType;
+    const input = data.input;
+    const output = data.output;
+    let paletteModel = {};
+    paletteModel.category = data.name;
+    paletteModel.text = data.name;
+    paletteModel.figure = shapeType;
+    paletteModelArray.push(paletteModel);
+    return gojs(go.Node, "Spot", nodeStyle(),
+        gojs(go.Panel, "Auto",
+            gojs(go.Shape, shapeType,
+                {
+                    minSize: new go.Size(data.size.width, data.size.height),
+                    fill: data.fill,
+                    stroke: data.stroke
+                }),
+            gojs(go.TextBlock, data.name,
+                {
+                    font: "bold 11pt Helvetica, Arial, sans-serif",
+                    stroke: lightText,
+                    margin: 8,
+                    maxSize: new go.Size(160, NaN),
+                    wrap: go.TextBlock.WrapFit,
+                    editable: true
+                },
+                new go.Binding("text")),
+            { // this tooltip Adornment is shared by all nodes
+                toolTip:
+                    gojs(go.Adornment, "Auto",
+                        gojs(go.Shape, {fill: "#FFFFCC"}),
+                        gojs(go.TextBlock, {margin: 4},  // the tooltip shows the result of calling nodeInfo(data)
+                            new go.Binding("text", "", nodeInfo))
+                    ),
+                // this context menu Adornment is shared by all nodes
+                contextMenu: partContextMenu
+            }
+        ),
+        // three named ports, one on each side except the top, all output only:
+        // four named ports, one on each side:
+        makePort("T", go.Spot.Top, input, output),
+        makePort("L", go.Spot.Left, input, output),
+        makePort("R", go.Spot.Right, input, output),
+        makePort("B", go.Spot.Bottom, input, output)
+    );
+}
+
 function showPaletteByType(paletteData) {
     switch (paletteData.type) {
         case "ARCHITECTURE":
@@ -10,185 +57,25 @@ function showPaletteByType(paletteData) {
             myPalette =
                 gojs(go.Palette, "paletteDiv",  // must name or refer to the DIV HTML element
                     {
-                        scrollsPageOnFocus: false,
-
-                        // These nodes have text surrounded by a rounded rectangle
-                        // whose fill color is bound to the node data.
-                        // The user can drag a node by dragging its TextBlock label.
-                        // Dragging from the Shape will start drawing a new link.
-                        nodeTemplate:
-                            gojs(go.Node, "Spot", nodeStyle(),
-                                // the main object is a Panel that surrounds a TextBlock with a rectangular Shape
-                                gojs(go.Panel, "Auto",
-                                    gojs(go.Shape, "RoundedRectangle",
-                                        {
-                                            fill: "white", // the default fill, if there is no data bound value
-                                            portId: "",
-                                            cursor: "pointer",  // the Shape is the port, not the whole Node
-                                            // allow all kinds of links from and to this port
-                                            fromLinkable: true,
-                                            fromLinkableSelfNode: true,
-                                            fromLinkableDuplicates: true,
-                                            toLinkable: true,
-                                            toLinkableSelfNode: true,
-                                            toLinkableDuplicates: true
-                                        },
-                                        new go.Binding("fill", "color")),
-                                    gojs(go.TextBlock,
-                                        {
-                                            font: "bold 14px sans-serif",
-                                            stroke: '#333',
-                                            margin: 6,  // make some extra space for the shape around the text
-                                            isMultiline: false,  // don't allow newlines in text
-                                            editable: true  // allow in-place editing by user
-                                        },
-                                        new go.Binding("text", "text").makeTwoWay()),  // the label shows the node data's text
-                                    { // this tooltip Adornment is shared by all nodes
-                                        toolTip:
-                                            gojs(go.Adornment, "Auto",
-                                                gojs(go.Shape, {fill: "#FFFFCC"}),
-                                                gojs(go.TextBlock, {margin: 4},  // the tooltip shows the result of calling nodeInfo(data)
-                                                    new go.Binding("text", "", nodeInfo))
-                                            ),
-                                        // this context menu Adornment is shared by all nodes
-                                        contextMenu: partContextMenu
-                                    }
-                                ),
-                                // four named ports, one on each side:
-                                makePort("T", go.Spot.Top, true, true),
-                                makePort("L", go.Spot.Left, true, true),
-                                makePort("R", go.Spot.Right, true, true),
-                                makePort("B", go.Spot.Bottom, true, true)
-                            )
+                        scrollsPageOnFocus: false
                     });
-
             let paletteModelArray = [];
-
             paletteData.basicElements.forEach(function (data) {
-                const shapeType = data.shapeType;
-                const input = data.input;
-                const output = data.output;
-                let paletteModel = {};
-                paletteModel.category = data.name;
-                paletteModel.text = data.name;
-                paletteModel.figure = shapeType;
-                paletteModelArray.push(paletteModel);
-                myPalette.nodeTemplateMap.add(data.name,
-                    gojs(go.Node, "Spot", nodeStyle(),
-                        gojs(go.Panel, "Auto",
-                            gojs(go.Shape, shapeType,
-                                {
-                                    minSize: new go.Size(data.size.width, data.size.height),
-                                    fill: data.fill,
-                                    stroke: data.stroke
-                                }),
-                            gojs(go.TextBlock, data.name,
-                                {font: "bold 11pt Helvetica, Arial, sans-serif", stroke: lightText},
-                                new go.Binding("text"))
-                        ),
-                        // three named ports, one on each side except the top, all output only:
-                        // four named ports, one on each side:
-                        makePort("T", go.Spot.Top, input, output),
-                        makePort("L", go.Spot.Left, input, output),
-                        makePort("R", go.Spot.Right, input, output),
-                        makePort("B", go.Spot.Bottom, input, output)
-                    ));
+                myPalette.nodeTemplateMap.add(data.name, fillElement(data, paletteModelArray));
             });
             if (paletteData.softwareSystems) {
                 paletteData.softwareSystems.forEach(function (data) {
-                    const shapeType = data.shapeType;
-                    const input = data.input;
-                    const output = data.output;
-                    let paletteModel = {};
-                    paletteModel.category = data.name;
-                    paletteModel.text = data.name;
-                    paletteModel.figure = shapeType;
-                    paletteModelArray.push(paletteModel);
-                    myPalette.nodeTemplateMap.add(data.name,
-                        gojs(go.Node, "Spot", nodeStyle(),
-                            gojs(go.Panel, "Auto",
-                                gojs(go.Shape, shapeType,
-                                    {
-                                        minSize: new go.Size(data.size.width, data.size.height),
-                                        fill: data.fill,
-                                        stroke: data.stroke
-                                    }),
-                                gojs(go.TextBlock, data.name,
-                                    {font: "bold 11pt Helvetica, Arial, sans-serif", stroke: lightText},
-                                    new go.Binding("text"))
-                            ),
-                            // three named ports, one on each side except the top, all output only:
-                            // four named ports, one on each side:
-                            makePort("T", go.Spot.Top, input, output),
-                            makePort("L", go.Spot.Left, input, output),
-                            makePort("R", go.Spot.Right, input, output),
-                            makePort("B", go.Spot.Bottom, input, output)
-                        ));
+                    myPalette.nodeTemplateMap.add(data.name, fillElement(data, paletteModelArray));
                 });
             }
             if (paletteData.containers) {
                 paletteData.containers.forEach(function (data) {
-                    const shapeType = data.shapeType;
-                    const input = data.input;
-                    const output = data.output;
-                    let paletteModel = {};
-                    paletteModel.category = data.name;
-                    paletteModel.text = data.name;
-                    paletteModel.figure = shapeType;
-                    paletteModelArray.push(paletteModel);
-                    myPalette.nodeTemplateMap.add(data.name,
-                        gojs(go.Node, "Spot", nodeStyle(),
-                            gojs(go.Panel, "Auto",
-                                gojs(go.Shape, shapeType,
-                                    {
-                                        minSize: new go.Size(data.size.width, data.size.height),
-                                        fill: data.fill,
-                                        stroke: data.stroke
-                                    }),
-                                gojs(go.TextBlock, data.name,
-                                    {font: "bold 11pt Helvetica, Arial, sans-serif", stroke: lightText},
-                                    new go.Binding("text"))
-                            ),
-                            // three named ports, one on each side except the top, all output only:
-                            // four named ports, one on each side:
-                            makePort("T", go.Spot.Top, input, output),
-                            makePort("L", go.Spot.Left, input, output),
-                            makePort("R", go.Spot.Right, input, output),
-                            makePort("B", go.Spot.Bottom, input, output)
-                        ));
+                    myPalette.nodeTemplateMap.add(data.name, fillElement(data, paletteModelArray));
                 });
             }
             if (paletteData.components) {
-
                 paletteData.components.forEach(function (data) {
-                    const shapeType = data.shapeType;
-                    const input = data.input;
-                    const output = data.output;
-                    let paletteModel = {};
-                    paletteModel.category = data.name;
-                    paletteModel.text = data.name;
-                    paletteModel.figure = shapeType;
-                    paletteModelArray.push(paletteModel);
-                    myPalette.nodeTemplateMap.add(data.name,
-                        gojs(go.Node, "Spot", nodeStyle(),
-                            gojs(go.Panel, "Auto",
-                                gojs(go.Shape, shapeType,
-                                    {
-                                        minSize: new go.Size(data.size.width, data.size.height),
-                                        fill: data.fill,
-                                        stroke: data.stroke
-                                    }),
-                                gojs(go.TextBlock, data.name,
-                                    {font: "bold 11pt Helvetica, Arial, sans-serif", stroke: lightText},
-                                    new go.Binding("text"))
-                            ),
-                            // three named ports, one on each side except the top, all output only:
-                            // four named ports, one on each side:
-                            makePort("T", go.Spot.Top, input, output),
-                            makePort("L", go.Spot.Left, input, output),
-                            makePort("R", go.Spot.Right, input, output),
-                            makePort("B", go.Spot.Bottom, input, output)
-                        ));
+                    myPalette.nodeTemplateMap.add(data.name, fillElement(data, paletteModelArray));
                 });
             }
             myPalette.model = new go.GraphLinksModel(paletteModelArray);

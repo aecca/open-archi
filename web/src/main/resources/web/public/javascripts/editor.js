@@ -139,8 +139,7 @@ function load() {
     if (pos) myDiagram.initialPosition = go.Point.parse(pos);
 }
 
-function openContent(element) {
-    const url = element.getAttribute("resource");
+function openContent(url) {
     getPageContent(url);
 }
 
