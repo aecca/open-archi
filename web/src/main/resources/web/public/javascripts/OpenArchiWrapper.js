@@ -1,32 +1,6 @@
-function toLocation(data, node) {
-    return new go.Point(data.x, data.y);
-}
-
-function fromLocation(loc, data, model) {
-    model.setDataProperty(data, "x", loc.x);
-    model.setDataProperty(data, "y", loc.y);
-}
-
-function toFill(data, node) {
-    return new go.Brush(data.shape.fill);
-}
-
-function fromFill(loc, data, model) {
-    model.setDataProperty(data, "fill", data.shape.fill);
-}
-
-function toTitle(data, node) {
-    return new go.TextBlock(data.name);
-}
-
-function fromTitle(loc, data, model) {
-    model.setDataProperty(data, "text", data.name);
-}
-
 function architectureModelToDiagram(model) {
 
     let diagram = {};
-    let modelIsGroup = false;
     if (model.kind !== "ARCHITECTURE_MODEL") {
 
         return diagram;
@@ -37,73 +11,128 @@ function architectureModelToDiagram(model) {
     let key = 0;
 
     let relationships = commons.prototype.findValues(model, "relationships");
-
+    let rank = 0;
     let softwareSystems = model.softwareSystems;
-    if (softwareSystems !== undefined && !commons.prototype.isEmpty(softwareSystems)) {
-        modelIsGroup = true;
+    let hasSoftwareSystems = softwareSystems !== undefined && !commons.prototype.isEmpty(softwareSystems);
+    if (hasSoftwareSystems) {
         softwareSystems.forEach(function (softwareSystem) {
-            let groupSoftwareSystems = {
-                key: softwareSystem.id,
-                text: softwareSystem.name,
-                color: "green",
-                isGroup: true,
-                group: model.id
-            };
-            diagram.nodes.push(groupSoftwareSystems);
             let containers = softwareSystem.containers;
-            if (containers !== undefined && !commons.prototype.isEmpty(containers)) {
+            let hasContainers = containers !== undefined && !commons.prototype.isEmpty(containers);
+            if (hasContainers) {
                 diagram.nodes.push({
                     key: softwareSystem.id,
-                    text: softwareSystem.name,
+                    name: softwareSystem.name,
                     color: "lightgreen",
-                    group: "softwareSystems"
+                    group: "softwareSystems",
+                    shapeType: "RoundedRectangle",
+                    rank: rank,
+                    size: {
+                        width: 40.0,
+                        height: 40.0
+                    },
+                    fill: "#F0AD4B",
+                    stroke: "#333333",
+                    input: true,
+                    output: true
                 });
+                rank++;
                 containers.forEach(function (container) {
-                    let groupContainers = {
-                        key: container.id,
-                        text: container.name,
-                        color: "red",
-                        isGroup: true,
-                        group: softwareSystem.id
-                    };
-                    diagram.nodes.push(groupContainers);
                     let components = container.components;
-                    if (components !== undefined && !commons.prototype.isEmpty(components)) {
-                        diagram.nodes.push({key: component.id, text: component.name, color: "yellow", group: container.id});
+                    let hasComponents = components !== undefined && !commons.prototype.isEmpty(components);
+                    if (hasComponents) {
                         diagram.nodes.push({
-                            key: softwareSystem.id,
-                            text: softwareSystem.name,
-                            color: "lightgreen",
-                            group: "softwareSystems"
+                            key: container.id,
+                            name: container.name,
+                            color: "orange",
+                            fill: "orange",
+                            group: "containers",
+                            shapeType: "RoundedRectangle",
+                            rank: rank,
+                            size: {
+                                width: 40.0,
+                                height: 40.0
+                            },
+                            stroke: "#333333",
+                            input: true,
+                            output: true
                         });
+                        rank++;
                         components.forEach(function (component) {
                             let groupComponents = {
                                 key: component.id,
-                                text: component.name,
+                                name: component.name,
                                 color: "red",
+                                fill: "red",
                                 isGroup: true,
-                                group: softwareSystem.id
+                                group: container.id,
+                                shapeType: "RoundedRectangle",
+                                rank: rank,
+                                size: {
+                                    width: 40.0,
+                                    height: 40.0
+                                },
+                                stroke: "#333333",
+                                input: true,
+                                output: true
                             };
+                            rank++;
                             diagram.nodes.push(groupComponents);
                         });
                     }
+                    let groupContainers = {
+                        key: container.id,
+                        name: container.name,
+                        color: "red",
+                        fill: "red",
+                        isGroup: hasComponents,
+                        group: softwareSystem.id,
+                        shapeType: "RoundedRectangle",
+                        rank: rank,
+                        size: {
+                            width: 40.0,
+                            height: 40.0
+                        },
+                        stroke: "#333333",
+                        input: true,
+                        output: true
+                    };
+                    rank++;
+                    diagram.nodes.push(groupContainers);
                 });
             }
-
+            let groupSoftwareSystems = {
+                key: softwareSystem.id,
+                name: softwareSystem.name,
+                color: "green",
+                fill: "green",
+                isGroup: true,
+                group: model.id,
+                shapeType: "RoundedRectangle",
+                rank: rank,
+                size: {
+                    width: 40.0,
+                    height: 40.0
+                },
+                stroke: "#333333",
+                input: true,
+                output: true
+            };
+            rank++;
+            diagram.nodes.push(groupSoftwareSystems);
         });
     }
 
     const consumers = model.consumers;
     if (consumers !== undefined && consumers !== null) {
-        let groupConsumers = {key: key, text: "Consumers", color: "green", isGroup: true};
+        let groupConsumers = {key: key, name: "Consumers", color: "green", isGroup: true};
         diagram.nodes.push(groupConsumers);
         consumers.forEach(function (consumer) {
-            diagram.nodes.push({key: consumer.id, text: consumer.name, color: "lightgreen", group: groupConsumers.key});
+            diagram.nodes.push({key: consumer.id, name: consumer.name, color: "lightgreen", group: groupConsumers.key});
         })
     }
 
     diagram.links.push({from: 0, to: model.id, color: "blue"});
-    diagram.nodes.push({key: model.id, text: model.name, color: "orange", isGroup: modelIsGroup});
+    diagram.nodes.push({key: model.id, name: model.name, color: "orange", isGroup: hasSoftwareSystems});
     return diagram;
 }
 
@@ -195,4 +224,37 @@ class OpenArchiWrapper {
         let model = {};
         return model;
     };
+
+    static toLocation(data, node) {
+        return new go.Point(data.x, data.y);
+    }
+
+    static fromLocation(loc, data, model) {
+        model.setDataProperty(data, "x", loc.x);
+        model.setDataProperty(data, "y", loc.y);
+    }
+
+    static toFill(data, node) {
+        return new go.Brush(data.shape.fill);
+    }
+
+    static fromFill(loc, data, model) {
+        model.setDataProperty(data, "fill", data.shape.fill);
+    }
+
+    static toTitle(data, node) {
+        return data.name;
+    }
+
+    static fromTitle(loc, data, model) {
+        model.setDataProperty(data, "text", data.name);
+    }
+
+    static toName(data, node) {
+        return data.name;
+    }
+
+    static fromName(loc, data, model) {
+        model.setDataProperty(data, "text", data.name);
+    }
 }

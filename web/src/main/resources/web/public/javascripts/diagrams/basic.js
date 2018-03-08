@@ -33,7 +33,7 @@ function initBasic(nodeDataArray, linkDataArray) {
             gojs(go.Panel, "Auto",
                 gojs(go.Shape, "RoundedRectangle",
                     {
-                        fill: "white", // the default fill, if there is no data bound value
+                        fill: "blue", // the default fill, if there is no data bound value
                         portId: "",
                         cursor: "pointer",  // the Shape is the port, not the whole Node
                         // allow all kinds of links from and to this port
@@ -44,16 +44,16 @@ function initBasic(nodeDataArray, linkDataArray) {
                         toLinkableSelfNode: true,
                         toLinkableDuplicates: true
                     },
-                    new go.Binding("fill", "", toFill).makeTwoWay(fromFill)),
+                    new go.Binding("fill", "", OpenArchiWrapper.toFill).makeTwoWay(OpenArchiWrapper.fromFill)),
                 gojs(go.TextBlock,
                     {
-                        font: "12px sans-serif",
-                        stroke: '#333',
+                        font: "bold 12px sans-serif",
+                        stroke: 'white',
                         margin: 6,  // make some extra space for the shape around the text
                         isMultiline: false,  // don't allow newlines in text
                         editable: true  // allow in-place editing by user
                     },
-                    new go.Binding("text", "", toTitle).makeTwoWay(fromTitle)),  // the label shows the node data's text
+                    new go.Binding("text", "", OpenArchiWrapper.toTitle).makeTwoWay(OpenArchiWrapper.fromTitle)),  // the label shows the node data's text
                 { // this tooltip Adornment is shared by all nodes
                     toolTip:
                         gojs(go.Adornment, "Auto",
@@ -71,7 +71,6 @@ function initBasic(nodeDataArray, linkDataArray) {
             makePort("R", go.Spot.Right, true, true),
             makePort("B", go.Spot.Bottom, true, true)
         ));
-    myDiagram.nodeTemplateMap.addAll(myPalette.nodeTemplateMap);
 
     // The link shape and arrowhead have their stroke brush data bound to the "color" property
     myDiagram.linkTemplate =
@@ -111,7 +110,7 @@ function initBasic(nodeDataArray, linkDataArray) {
                         stroke: "#333333",
                         editable: true
                     },
-                    new go.Binding("text").makeTwoWay())
+                    new go.Binding("text", "", OpenArchiWrapper.toName).makeTwoWay(OpenArchiWrapper.fromName))
             ),
             { // this tooltip Adornment is shared by all links
                 toolTip:
@@ -140,7 +139,7 @@ function initBasic(nodeDataArray, linkDataArray) {
                     isMultiline: false,  // don't allow newlines in text
                     editable: true  // allow in-place editing by user
                 },
-                new go.Binding("text", "text").makeTwoWay(),
+                new go.Binding("text", "", OpenArchiWrapper.toName).makeTwoWay(OpenArchiWrapper.fromName),
                 new go.Binding("stroke", "color")),
             gojs(go.Panel, "Auto",
                 {name: "PANEL"},
