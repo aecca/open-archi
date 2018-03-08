@@ -1,0 +1,34 @@
+<html>
+<head>
+    <script src="/javascripts/diagrams/balloonLink.js"></script>
+    <script src="/javascripts/diagrams/comments.js"></script>
+    <script id="code">
+        initComments();
+    </script>
+</head>
+
+<body>
+<div id="explanation">
+    <h2 style="margin-top: 0; padding-top: 0; margin-bottom: 30px;">
+        Comentarios colaborativos
+    </h2>
+    <p>
+        Pensando en que Open-Archi es más que un editor, o un catálogo de componentes, sino que es más bien una <b>Red
+        Social de componentes de arquitectura</b>, la colaboratividad es crucial. Según el modelo de datos planteado,
+        cada componente tendrá un conjunto de meta data asociada, dentro de los cuales figuran un responsable y
+        eventuales interesados en el componente/modelo. Pueden diseñarse estrategias para que dicho responsable reciba
+        una notificación cada vez que algún colaborador (o integrante de la red social) haga un comentario sobre
+        determinada pieza/componente/elemento/feature dentro de un modelo
+    </p>
+    <div>
+        <div id=diagramDiv style="border: 0; width: 100%; height:400px; overflow: scroll;"></div>
+        <p>
+            Aquí se pueden visualizar los datos que permiten almacenar y/o recuperar el diagrama expuesto arriba
+            (Utilizando las
+            APIs definidas en: /open-archi/api), en formato JSON y en tiempo real
+        </p>
+        <div style="display: inline">
+            <textarea id="modelToSaveOrLoad" style="width:100%;height:300px"></textarea>
+        </div>
+</body>
+</html>

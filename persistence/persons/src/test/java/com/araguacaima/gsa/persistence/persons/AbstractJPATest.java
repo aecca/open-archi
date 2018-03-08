@@ -1,4 +1,4 @@
-package com.araguacaima.gsa.persistence.persons;
+package com.araguacaima.open_archi.persistence.persons;
 
 import org.apache.commons.io.FileUtils;
 import org.hibernate.Session;

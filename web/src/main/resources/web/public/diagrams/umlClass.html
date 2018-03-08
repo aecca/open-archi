@@ -1,0 +1,36 @@
+<html>
+<head>
+    <script src="/javascripts/diagrams/umlClass.js"></script>
+    <script id="code">
+        initUmlClass();</script>
+</head>
+
+<body>
+<div id="explanation">
+    <h2 style="margin-top: 0; padding-top: 0; margin-bottom: 30px;">
+        Diagrama de clases
+    </h2>
+    <p>
+        Un clásico. Si fuere necesario, o del interes de algún equipo de desarrollo, sería posible adjuntar el diagrama
+        de clases propuesto para la solución puntual de una pieza específica.
+    </p>
+    <p>
+        En este ejemplo, los prefijos de símbolos indican la visibilidad de los métodos y las propiedades. Las tres
+        posibilidades son:
+    <ul>
+        <li>+ (Public)</li>
+        <li>- (Private)</li>
+        <li># (Protected)</li>
+    </ul>
+    </p>
+    <div id=diagramDiv style="border: solid 1px black; width:100%; height:600px"></div>
+    <p>
+        Aquí se pueden visualizar los datos que permiten almacenar y/o recuperar el diagrama expuesto arriba (Utilizando
+        las
+        APIs definidas en: /open-archi/api), en formato JSON y en tiempo real
+    </p></div>
+<div style="display: inline">
+    <textarea id="modelToSaveOrLoad" style="width:100%;height:300px"></textarea>
+</div>
+</body>
+</html>

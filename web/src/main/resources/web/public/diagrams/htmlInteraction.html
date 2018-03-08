@@ -1,0 +1,102 @@
+<html>
+<head>
+    <link rel='stylesheet' href='/stylesheets/dataInspector.css'/>
+    <script src="/javascripts/diagrams/dataInspector.js"></script>
+    <script src="/javascripts/diagrams/htmlInteraction.js"></script>
+    <script id="code">
+        initHtmlInteraction();
+    </script>
+
+    <style type="text/css">
+        .draggable {
+            display: inline-block;
+            vertical-align: top;
+            border: 4px solid #BBB;
+            border-radius: 4px;
+            background-color: #F5F5F5;
+
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 500;
+        }
+
+        .handle {
+            background-color: lightblue;
+            cursor: move;
+            text-align: center;
+            font: bold 12px sans-serif;
+        }
+
+        #infoDraggable {
+            font: 12px helvetica, sans-serif;
+        }
+
+        #myInfo {
+            width: 100%;
+            overflow: hidden;
+        }
+
+        #paletteDiv {
+            background-color: #F5F5F5;
+            width: 100%;
+            height: 100%;
+        }
+
+        /*
+        One simple way of making a div fill its space,
+        with allowances for the title (top) and the resize handle (bottom)
+        */
+        #paletteContainer {
+            position: absolute;
+            bottom: 14px;
+            left: 0px;
+            right: 0px;
+            top: 14px;
+        }
+
+    </style>
+</head>
+
+<body>
+<div id="explanation">
+    <h2 style="margin-top: 0; padding-top: 0; margin-bottom: 30px;">
+        Integración con tecnologías de front
+    </h2>
+
+    <p>
+        Este ejemplo contiene un elemento HTML que se puede arrastrar (utilizando jQuery UI), que contiene una paleta
+        provista por OpenArchi.
+    </p>
+    <p>
+        La interacción puede corroborarse por la visualización de las propiedades en el panel de la derecha
+    </p>
+</div>
+<div id="paletteDraggable" class="draggable" style="height: 300px; position: relative">
+    <div id="paletteDraggableHandle" class="handle">Palette</div>
+    <div id="paletteContainer">
+        <div id="paletteDiv"></div>
+    </div>
+</div>
+
+<div id="infoDraggable" class="draggable"
+     style="display: inline-block; vertical-align: top; padding: 5px; top: 20px; left: 380px; position: relative">
+    <div id="infoDraggableHandle" class="handle">Info</div>
+    <div>
+        <div id="myInfo"></div>
+    </div>
+</div>
+
+<div style="display: inline-block; vertical-align: top; width:400px">
+    <div id=diagramDiv style="background-color: whitesmoke; border: solid 1px black; height: 400px"></div>
+</div>
+<p>
+    Aquí se pueden visualizar los datos que permiten almacenar y/o recuperar el diagrama expuesto arriba (Utilizando las
+    APIs definidas en: /open-archi/api), en formato JSON y en tiempo real
+</p>
+<div style="display: inline">
+    <textarea id="modelToSaveOrLoad" style="width:100%;height:300px"></textarea>
+</div>
+
+</body>
+</html>

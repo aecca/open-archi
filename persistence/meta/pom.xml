@@ -9,7 +9,7 @@
     <name>Persistence Meta</name>
 
     <parent>
-        <groupId>com.araguacaima.gsa</groupId>
+        <groupId>com.araguacaima.open_archi</groupId>
         <artifactId>persistence</artifactId>
         <version>1.0.1</version>
     </parent>
@@ -17,7 +17,7 @@
     <dependencies>
 
         <dependency>
-            <groupId>com.araguacaima.gsa</groupId>
+            <groupId>com.araguacaima.open_archi</groupId>
             <artifactId>persistence-commons</artifactId>
         </dependency>
 
@@ -57,7 +57,7 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>${org.apache.maven.plugins-maven-jar-plugin}</version>
                 <configuration>
-                    <finalName>msa-persistence</finalName>
+                    <finalName>asm-persistence</finalName>
                 </configuration>
             </plugin>
             <plugin>
@@ -83,7 +83,7 @@
                 <artifactId>maven-source-plugin</artifactId>
                 <version>${org.apache.maven.plugin-maven-source-plugin}</version>
                 <configuration>
-                    <finalName>msa-persistence</finalName>
+                    <finalName>asm-persistence</finalName>
                 </configuration>
                 <executions>
                     <execution>

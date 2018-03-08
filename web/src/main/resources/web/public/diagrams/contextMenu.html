@@ -1,0 +1,116 @@
+<html>
+<head>
+    <style type="text/css">
+        /* CSS for the traditional context menu */
+        #contextMenu {
+            z-index: 10001;
+            position: absolute;
+            left: 5px;
+            border: 1px solid #444;
+            background-color: #F5F5F5;
+            display: none;
+            box-shadow: 0 0 10px rgba(0, 0, 0, .4);
+            font-size: 12px;
+            font-family: sans-serif;
+            font-weight: bold;
+        }
+
+        #contextMenu ul {
+            list-style: none;
+            top: 0;
+            left: 0;
+            margin: 0;
+            padding: 0;
+        }
+
+        #contextMenu li a {
+            position: relative;
+            min-width: 60px;
+            color: #444;
+            display: inline-block;
+            padding: 6px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        #contextMenu li:hover {
+            background: #CEDFF2;
+            color: #EEE;
+        }
+
+        #contextMenu li ul li {
+            display: none;
+        }
+
+        #contextMenu li ul li a {
+            position: relative;
+            min-width: 60px;
+            padding: 6px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        #contextMenu li:hover ul li {
+            display: block;
+            margin-left: 0px;
+            margin-top: 0px;
+        }
+    </style>
+    <script src="/javascripts/diagrams/contextMenu.js"></script>
+    <script id="code">
+        initContextMenu();
+    </script>
+</head>
+<body>
+<div id="explanation">
+
+    <h2 style="margin-top: 0; padding-top: 0; margin-bottom: 30px;">Menú contextual</h2>
+    <p>
+        Cada elemento tendrá oportunidad de mostrar un menú contextual dependiendo de sus capacidades específicas. Cada
+        tipo
+        de elemento determinará cuále sacciones se pueden tomar. También influirá la permisología con la que cuenta el
+        usuario autenticado
+    </p>
+    <ul>
+        <li>Haga clic con el botón derecho o mantenga presionado un nodo para que aparezca un menú contextual.</li>
+        <li>Si tiene una selección copiada en el portapapeles, puede abrir un menú contextual para pegar.</li>
+    </ul>
+    <div>
+        <div>
+            <div id="diagramDiv"
+                 style="border: 0; width: 100%; height:400px; overflow: scroll; position: absolute"></div>
+            <div id="contextMenu" style="position: relative; width: 60px;">
+                <ul>
+                    <li id="cut" onclick="cxcommand(event)"><a href="#" target="_self">Cut</a></li>
+                    <li id="copy" onclick="cxcommand(event)"><a href="#" target="_self">Copy</a></li>
+                    <li id="paste" onclick="cxcommand(event)"><a href="#" target="_self">Paste</a></li>
+                    <li id="delete" onclick="cxcommand(event)"><a href="#" target="_self">Delete</a></li>
+                    <li id="color" class="hasSubMenu"><a href="#" target="_self">Color</a>
+                        <ul class="subMenu" id="colorSubMenu">
+                            <li style="background: crimson;" onclick="cxcommand(event, 'color')"><a href="#"
+                                                                                                    target="_self">Red</a>
+                            </li>
+                            <li style="background: chartreuse;" onclick="cxcommand(event, 'color')"><a href="#"
+                                                                                                       target="_self">Green</a>
+                            </li>
+                            <li style="background: aquamarine;" onclick="cxcommand(event, 'color')"><a href="#"
+                                                                                                       target="_self">Blue</a>
+                            </li>
+                            <li style="background: gold;" onclick="cxcommand(event, 'color')"><a href="#"
+                                                                                                 target="_self">Yellow</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <p>
+                Aquí se pueden visualizar los datos que permiten almacenar y/o recuperar el diagrama expuesto arriba
+                (Utilizando las
+                APIs definidas en: /open-archi/api), en formato JSON y en tiempo real
+            </p>
+            <div style="display: inline">
+                <textarea id="modelToSaveOrLoad" style="width:100%;height:300px"></textarea>
+            </div>
+        </div>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<html>
+<head>
+    <link rel='stylesheet' href='/stylesheets/dataInspector.css'/>
+    <script src="/javascripts/diagrams/dataInspector.js"></script>
+    <script id="code">
+        initDataInspector();
+    </script>
+</head>
+<body>
+<div id="explanation">
+    <h2 style="margin-top: 0; padding-top: 0; margin-bottom: 30px;">
+        Meta datos
+    </h2>
+    <p>
+        Cualquier meta dato que contenga un componente o elemento podría visualizarse así. La cantidad de meta datos
+        posibles de manejar tiene un conjunto que es común a todos los elementos que comformen un diagrama o modelo,
+        pero también cuenta con un coinjunto de propiedades específicas de acuerdo al tipo de elelemento seleccionado.
+    </p>
+
+</div>
+<div style="display: inline-block; vertical-align: top;  width: 65%; ">
+    <div id=diagramDiv style="border: 0; height:400px; overflow: scroll;"></div>
+</div>
+<div style="display: inline-block; vertical-align: top; ">
+    Selected Part:<br/>
+    <div id="myInspectorDiv" class="inspector"></div>
+    <br/>
+    First Node's data:<br/>
+    <div id="myInspectorDiv2" class="inspector"></div>
+    <br/>
+    Model.modelData:<br/>
+    <div id="myInspectorDiv3" class="inspector"></div>
+    <br/>
+</div>
+<div>
+    <p>
+        Aquí se pueden visualizar los datos que permiten almacenar y/o recuperar el diagrama expuesto arriba (Utilizando
+        las
+        APIs definidas en: /open-archi/api), en formato JSON y en tiempo real
+    </p>
+    <div style="display: inline">
+        <textarea id="modelToSaveOrLoad" style="width:100%;height:300px"></textarea>
+    </div>
+</div>
+</body>
+</html>

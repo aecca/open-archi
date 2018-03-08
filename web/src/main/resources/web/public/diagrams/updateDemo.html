@@ -1,0 +1,92 @@
+<html>
+<head>
+    <script src="/javascripts/diagrams/updateDemo.js"></script>
+    <script id="code">
+        initUpdateDemo();
+    </script>
+</head>
+
+<body>
+<div id="explanation">
+    <h2 style="margin-top: 0; padding-top: 0; margin-bottom: 30px;">
+        Seguimiento de cambios
+    </h2>
+    <p>
+        Estamos en un modelo de operaci´no colaborativa. El tracking de cambios es crucial. No sería sensato abrir la
+        operatividad yb mantenimiento de los modelos de solución a través de Open Archi, forzando a que cada quien
+        declare los cambios que ha ido haciendo. La herramienta, de manera automática deberá poder hacer un tracking de
+        cambios efectuados. incluso swería posible guardar una secuencia de estados, para volver a estados anteriores,
+        si fuere necesario.
+    </p>
+    <p>
+        Este ejemplo tiene dos diagramas, llamados "blueDiagram" y "greenDiagram", que muestran el mismo modelo.
+             Cada diagrama usa sus propias plantillas para sus nodos y enlaces, lo que hace que la apariencia de cada
+        diagrama sea diferente.
+             Sin embargo, hacer un cambio en un diagrama que cambia el modelo hace que esos cambios del modelo se vean
+        reflejados en el
+             otro diagrama
+    </p>
+    <p>
+        Esta muestra también muestra, junto al diagrama azul, casi todos los eventos que el modelo compartido
+             se somete.
+             (Para mayor claridad, se omiten algunos de los eventos orientados a transacciones particulares).
+             El oyente Modificado del modelo agrega una línea para cada evento cambiado.
+             Los eventos de notificación de transacción comienzan con un asterisco "*", mientras que los cambios de
+        propiedad y las inserciones y eliminaciones de colecciones comienzan con un signo de exclamación "!".
+    </p>
+    <p>
+        Junto al diagrama verde hay una vista en árbol del historial.
+             El history es una lista de Transacción, donde cada propiedad contiene todos los eventos que ocurrieron
+        debido a algún comando o operación de la herramienta.
+             Estos eventos son un reflejo de ambos cambios en el modelo (con el prefijo "! M") y en el diagrama
+        (prefijado con "! d").
+             Notará que a menudo hay varios cambios de diagrama para cada cambio de modelo.
+    </p></div>
+<div style="width:100%; white-space:nowrap">
+    <div style="display: inline-block; vertical-align: top; width:50%">
+        <div id="blueDiagram" style="border: solid 1px blue; width:100%; height:300px;"></div>
+        <div style="width:100%; height:20px"></div>
+        <div id="greenDiagram" style="border: solid 1px green; width:100%; height:300px"></div>
+    </div>
+    <div style="display: inline-block; vertical-align: top; width:50%">
+        <div style="width:100%; height:300px">
+            <input type="button" onclick="clearLog()" style="height:20px; font-size: 11px;" value="Clear Model log"/>
+            <div id="modelChangedLog"
+                 style="height:280px;border: solid 1px gray; font-family:Monospace; font-size:11px; overflow:scroll"></div>
+        </div>
+        <div style="width:100%; height:20px"></div>
+        <div style="">
+            <input type="button" onclick="blueDiagram.commandHandler.undo()" style="height:20px; font-size: 11px;"
+                   value="Undo"/>
+            <input type="button" onclick="blueDiagram.commandHandler.redo()" style="height:20px; font-size: 11px;"
+                   value="Redo"/>
+            <div id="undoDisplay" style="height:280px; border: solid 1px gray"></div>
+        </div>
+    </div>
+    <p>
+        Aquí se pueden visualizar los datos que permiten almacenar y/o recuperar el diagrama expuesto arriba (Utilizando
+        las
+        APIs definidas en: /open-archi/api), en formato JSON y en tiempo real
+    </p>
+    <div style="display: inline">
+        <textarea id="modelToSaveOrLoad" style="width:100%;height:300px"></textarea>
+    </div>
+</div>
+
+<pre>
+  model.addChangedListener(function(e) {
+    if (e.isTransactionFinished) {
+      var tx = e.object;
+      if (tx instanceof go.Transaction && window.console) {
+            window.console.log(tx.toString());
+        tx.changes.each(function(c) {
+          // consider which ChangedEvents to record
+          if (c.model) window.console.log("  " + c.toString());
+        });
+      }
+    }
+  });
+  </pre>
+</div>
+</body>
+</html>

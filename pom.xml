@@ -17,7 +17,7 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.araguacaima.gsa</groupId>
+    <groupId>com.araguacaima.open_archi</groupId>
     <artifactId>parent</artifactId>
     <version>1.0.1</version>
     <packaging>pom</packaging>
@@ -153,76 +153,76 @@
         <logback.version>1.1.1</logback.version>
         <org.logback-extensions-logback-ext-spring>0.1.4</org.logback-extensions-logback-ext-spring>
         <slf4j.version>1.7.7</slf4j.version>
-
+        <com.querydsl-querydsl-core>4.0.1</com.querydsl-querydsl-core>
     </properties>
 
     <dependencyManagement>
         <dependencies>
 
             <dependency>
-                <groupId>com.araguacaima.gsa.persistence</groupId>
+                <groupId>com.araguacaima.open_archi.persistence</groupId>
                 <artifactId>persistence-diagrams</artifactId>
                 <version>${project.version}</version>
                 <scope>compile</scope>
             </dependency>
 
             <dependency>
-                <groupId>com.araguacaima.gsa.persistence</groupId>
+                <groupId>com.araguacaima.open_archi.persistence</groupId>
                 <artifactId>persistence-core</artifactId>
                 <version>${project.version}</version>
                 <scope>compile</scope>
             </dependency>
 
             <dependency>
-                <groupId>com.araguacaima.gsa.persistence</groupId>
+                <groupId>com.araguacaima.open_archi.persistence</groupId>
                 <artifactId>persistence-architectural</artifactId>
                 <version>${project.version}</version>
                 <scope>compile</scope>
             </dependency>
             <dependency>
-                <groupId>com.araguacaima.gsa.persistence</groupId>
+                <groupId>com.araguacaima.open_archi.persistence</groupId>
                 <artifactId>persistence-bpm</artifactId>
                 <version>${project.version}</version>
                 <scope>compile</scope>
             </dependency>
             <dependency>
-                <groupId>com.araguacaima.gsa.persistence</groupId>
+                <groupId>com.araguacaima.open_archi.persistence</groupId>
                 <artifactId>persistence-er</artifactId>
                 <version>${project.version}</version>
                 <scope>compile</scope>
             </dependency>
             <dependency>
-                <groupId>com.araguacaima.gsa.persistence</groupId>
+                <groupId>com.araguacaima.open_archi.persistence</groupId>
                 <artifactId>persistence-flowchart</artifactId>
                 <version>${project.version}</version>
                 <scope>compile</scope>
             </dependency>
             <dependency>
-                <groupId>com.araguacaima.gsa.persistence</groupId>
+                <groupId>com.araguacaima.open_archi.persistence</groupId>
                 <artifactId>persistence-gantt</artifactId>
                 <version>${project.version}</version>
                 <scope>compile</scope>
             </dependency>
             <dependency>
-                <groupId>com.araguacaima.gsa.persistence</groupId>
+                <groupId>com.araguacaima.open_archi.persistence</groupId>
                 <artifactId>persistence-sequence</artifactId>
                 <version>${project.version}</version>
                 <scope>compile</scope>
             </dependency>
             <dependency>
-                <groupId>com.araguacaima.gsa.persistence</groupId>
+                <groupId>com.araguacaima.open_archi.persistence</groupId>
                 <artifactId>persistence-uml-classes</artifactId>
                 <version>${project.version}</version>
                 <scope>compile</scope>
             </dependency>
             <dependency>
-                <groupId>com.araguacaima.gsa</groupId>
+                <groupId>com.araguacaima.open_archi</groupId>
                 <artifactId>persistence-utils</artifactId>
                 <version>${project.version}</version>
                 <scope>compile</scope>
             </dependency>
             <dependency>
-                <groupId>com.araguacaima.gsa.persistence</groupId>
+                <groupId>com.araguacaima.open_archi.persistence</groupId>
                 <artifactId>persistence-commons</artifactId>
                 <version>${project.version}</version>
                 <scope>compile</scope>
@@ -788,6 +788,12 @@
                 <scope>compile</scope>
             </dependency>
 
+            <dependency>
+                <groupId>com.querydsl</groupId>
+                <artifactId>querydsl-core</artifactId>
+                <version>${com.querydsl-querydsl-core}</version>
+                <scope>compile</scope>
+            </dependency>
         </dependencies>
 
     </dependencyManagement>
@@ -798,7 +804,7 @@
     </modules>
 
     <build>
-        <defaultGoal>clean install</defaultGoal>
+        <defaultGoal>clean package</defaultGoal>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -819,7 +825,7 @@
                     <skipTests>${maven.skipTests}</skipTests>
                 </configuration>
             </plugin>
-            <plugin>
+<!--            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <version>${org.apache.maven.plugins-maven-dependency-plugin}</version>
@@ -834,7 +840,7 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin>-->
         </plugins>
     </build>
 </project>

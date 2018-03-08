@@ -9,7 +9,7 @@
     <name>Persistence Sequence</name>
 
     <parent>
-        <groupId>com.araguacaima.gsa.persistence</groupId>
+        <groupId>com.araguacaima.open_archi.persistence</groupId>
         <artifactId>persistence-diagrams</artifactId>
         <version>1.0.1</version>
     </parent>
@@ -17,17 +17,17 @@
     <dependencies>
 
         <dependency>
-            <groupId>com.araguacaima.gsa.persistence</groupId>
+            <groupId>com.araguacaima.open_archi.persistence</groupId>
             <artifactId>persistence-core</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.araguacaima.gsa</groupId>
+            <groupId>com.araguacaima.open_archi</groupId>
             <artifactId>persistence-utils</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.araguacaima.gsa</groupId>
+            <groupId>com.araguacaima.open_archi</groupId>
             <artifactId>persistence-persons</artifactId>
         </dependency>
 
@@ -72,7 +72,8 @@
                             <goal>unpack-dependencies</goal>
                         </goals>
                         <configuration>
-                            <includeGroupIds>com.araguacaima.gsa,com.araguacaima.gsa.persistence</includeGroupIds>
+                            <includeGroupIds>com.araguacaima.open_archi,com.araguacaima.open_archi.persistence
+                            </includeGroupIds>
                             <includeArtifactIds>persistence-core,persistence-persons,persistence-meta
                             </includeArtifactIds>
                             <outputDirectory>${project.build.directory}/classes</outputDirectory>
