@@ -15,23 +15,82 @@ function fromFill(loc, data, model) {
     model.setDataProperty(data, "fill", data.shape.fill);
 }
 
-function toText(data, node) {
+function toTitle(data, node) {
     return new go.TextBlock(data.name);
 }
 
-function fromText(loc, data, model) {
+function fromTitle(loc, data, model) {
     model.setDataProperty(data, "text", data.name);
 }
 
 function architectureModelToDiagram(model) {
+
     let diagram = {};
+    let modelIsGroup = false;
+    if (model.kind !== "ARCHITECTURE_MODEL") {
+
+        return diagram;
+    }
+
     diagram.nodes = [];
     diagram.links = [];
     let key = 0;
 
-    let tal = commons.findValues(model, "relationships");
-    if (model.kind !== "ARCHITECTURE_MODEL") {
-        return diagram;
+    let relationships = commons.prototype.findValues(model, "relationships");
+
+    let softwareSystems = model.softwareSystems;
+    if (softwareSystems !== undefined && !commons.prototype.isEmpty(softwareSystems)) {
+        modelIsGroup = true;
+        softwareSystems.forEach(function (softwareSystem) {
+            let groupSoftwareSystems = {
+                key: softwareSystem.id,
+                text: softwareSystem.name,
+                color: "green",
+                isGroup: true,
+                group: model.id
+            };
+            diagram.nodes.push(groupSoftwareSystems);
+            let containers = softwareSystem.containers;
+            if (containers !== undefined && !commons.prototype.isEmpty(containers)) {
+                diagram.nodes.push({
+                    key: softwareSystem.id,
+                    text: softwareSystem.name,
+                    color: "lightgreen",
+                    group: "softwareSystems"
+                });
+                containers.forEach(function (container) {
+                    let groupContainers = {
+                        key: container.id,
+                        text: container.name,
+                        color: "red",
+                        isGroup: true,
+                        group: softwareSystem.id
+                    };
+                    diagram.nodes.push(groupContainers);
+                    let components = container.components;
+                    if (components !== undefined && !commons.prototype.isEmpty(components)) {
+                        diagram.nodes.push({key: component.id, text: component.name, color: "yellow", group: container.id});
+                        diagram.nodes.push({
+                            key: softwareSystem.id,
+                            text: softwareSystem.name,
+                            color: "lightgreen",
+                            group: "softwareSystems"
+                        });
+                        components.forEach(function (component) {
+                            let groupComponents = {
+                                key: component.id,
+                                text: component.name,
+                                color: "red",
+                                isGroup: true,
+                                group: softwareSystem.id
+                            };
+                            diagram.nodes.push(groupComponents);
+                        });
+                    }
+                });
+            }
+
+        });
     }
 
     const consumers = model.consumers;
@@ -40,11 +99,11 @@ function architectureModelToDiagram(model) {
         diagram.nodes.push(groupConsumers);
         consumers.forEach(function (consumer) {
             diagram.nodes.push({key: consumer.id, text: consumer.name, color: "lightgreen", group: groupConsumers.key});
-
         })
     }
+
     diagram.links.push({from: 0, to: model.id, color: "blue"});
-    diagram.nodes.push({key: model.id, text: model.name, color: "orange"});
+    diagram.nodes.push({key: model.id, text: model.name, color: "orange", isGroup: modelIsGroup});
     return diagram;
 }
 

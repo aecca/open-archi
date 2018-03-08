@@ -53,7 +53,7 @@ function initBasic(nodeDataArray, linkDataArray) {
                         isMultiline: false,  // don't allow newlines in text
                         editable: true  // allow in-place editing by user
                     },
-                    new go.Binding("text", "", toText).makeTwoWay(fromText)),  // the label shows the node data's text
+                    new go.Binding("text", "", toTitle).makeTwoWay(fromTitle)),  // the label shows the node data's text
                 { // this tooltip Adornment is shared by all nodes
                     toolTip:
                         gojs(go.Adornment, "Auto",

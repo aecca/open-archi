@@ -116,7 +116,7 @@ function initEntityRelationship() {
                     segmentOffset: new go.Point(NaN, NaN),
                     segmentOrientation: go.Link.OrientUpright
                 },
-                new go.Binding("text", "toText"))
+                new go.Binding("text", "toTitle"))
         );
 
     // create the model for the E-R diagram

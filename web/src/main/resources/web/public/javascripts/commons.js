@@ -26,7 +26,11 @@
         const push_apply = Function.apply.bind([].push);
         const slice_call = Function.call.bind([].slice);
         const isEmpty = function (o) {
-            return Object.keys(o).length === 0 && o.constructor === Object
+            if (isArray(o)) {
+                return o.length === 0;
+            } else {
+                return Object.keys(o).length === 0 && o.constructor === Object
+            }
         };
         const isArray = function (o) {
             return Object.prototype.toString.call(o) === '[object Array]';
@@ -106,6 +110,7 @@
         commons.prototype.isScalar = isScalar;
         commons.prototype.isString = isString;
         commons.prototype.getObjectLength = getObjectLength;
+        commons.prototype.findValues = findValues;
 
         function traverseArray(arr, prefix) {
             const val = arr[0];
