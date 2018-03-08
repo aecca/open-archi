@@ -18,11 +18,14 @@ import java.util.Set;
 @NamedQueries({@NamedQuery(name = Model.GET_ALL_RELATIONSHIPS,
         query = "select a.relationships from com.araguacaima.open_archi.persistence.diagrams.architectural.Model a where a.id=:id"),
         @NamedQuery(name = Model.GET_ALL_CONSUMERS_FOR_MODEL,
-                query = "select a.consumers from com.araguacaima.open_archi.persistence.diagrams.architectural.Model a where a.id=:id")})
+                query = "select a.consumers from com.araguacaima.open_archi.persistence.diagrams.architectural.Model a where a.id=:id"),
+        @NamedQuery(name = Model.GET_CONSUMER_FOR_MODEL,
+                query = "select c from com.araguacaima.open_archi.persistence.diagrams.architectural.Model a JOIN a.consumers c where a.id=:id and c.id=:cid")})
 public class Model extends Element implements DiagramableElement {
 
     public static final String GET_ALL_RELATIONSHIPS = "get.all.relationships";
     public static final String GET_ALL_CONSUMERS_FOR_MODEL = "get.all.consumers.for.model";
+    public static final String GET_CONSUMER_FOR_MODEL = "get.consumer.for.model";
 
     @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinTable(schema = "DIAGRAMS",

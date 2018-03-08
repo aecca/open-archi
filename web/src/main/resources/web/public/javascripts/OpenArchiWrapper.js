@@ -29,6 +29,7 @@ function architectureModelToDiagram(model) {
     diagram.links = [];
     let key = 0;
 
+    let tal = commons.findValues(model, "relationships");
     if (model.kind !== "ARCHITECTURE_MODEL") {
         return diagram;
     }

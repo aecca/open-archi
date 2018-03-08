@@ -426,9 +426,9 @@ public class Server {
                     params.put("id", request.params(":uuid"));
                     return getList(request, response, com.araguacaima.open_archi.persistence.diagrams.architectural.Model.GET_ALL_CONSUMERS_FOR_MODEL, params, Collection.class);
                 });
-                put("/diagrams/architectures/:uuid/consumers", (request, response) -> {
+                post("/diagrams/architectures/:uuid/consumers", (request, response) -> {
                     try {
-                        com.araguacaima.open_archi.persistence.diagrams.architectural.Relationship feature = jsonUtils.fromJSON(request.body(), com.araguacaima.open_archi.persistence.diagrams.architectural.Relationship.class);
+                        com.araguacaima.open_archi.persistence.diagrams.architectural.Consumer feature = jsonUtils.fromJSON(request.body(), com.araguacaima.open_archi.persistence.diagrams.architectural.Consumer.class);
                         if (feature == null) {
                             throw new Exception("Invalid kind of relationship");
                         }
@@ -437,6 +437,126 @@ public class Server {
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
                         response.header("Location", request.pathInfo() + "/" + feature.getId());
+                        return EMPTY_RESPONSE;
+                    } catch (Throwable ex) {
+                        return throwError(response, ex);
+                    }
+                });
+                get("/diagrams/architectures/:uuid/consumers/:cuuid", (request, response) -> {
+                    Map<String, Object> params = new HashMap<>();
+                    String id = request.params(":uuid");
+                    String cid = request.params(":cuuid");
+                    params.put("id", id);
+                    params.put("cid", cid);
+                    response.type(JSON_CONTENT_TYPE);
+                    return getList(request, response, Model.GET_CONSUMER_FOR_MODEL, params, null);
+                });
+                put("/diagrams/architectures/:uuid/consumers/:cuuid", (request, response) -> {
+                    try {
+                        Taggable model = jsonUtils.fromJSON(request.body(), Taggable.class);
+                        if (model == null) {
+                            throw new Exception("Invalid kind of model");
+                        }
+                        String id = request.params(":cuuid");
+                        model.setId(id);
+                        model.validateReplacement();
+                        DBUtil.replace(model);
+                        response.status(HTTP_OK);
+                        return EMPTY_RESPONSE;
+                    } catch (EntityNotFoundException ex) {
+                        response.status(HTTP_NOT_FOUND);
+                        return EMPTY_RESPONSE;
+                    } catch (Throwable ex) {
+                        return throwError(response, ex);
+                    }
+                });
+                patch("/diagrams/architectures/:uuid/consumers/:cuuid", (request, response) -> {
+                    try {
+                        Consumer consumer = jsonUtils.fromJSON(request.body(), Consumer.class);
+                        if (consumer == null) {
+                            throw new Exception("Invalid kind of consumer");
+                        }
+                        String id = request.params(":cuuid");
+                        consumer.setId(id);
+                        consumer.validateModification();
+                        DBUtil.update(consumer);
+                        response.status(HTTP_OK);
+                        return EMPTY_RESPONSE;
+                    } catch (EntityNotFoundException ex) {
+                        response.status(HTTP_NOT_FOUND);
+                        return EMPTY_RESPONSE;
+                    } catch (Throwable ex) {
+                        return throwError(response, ex);
+                    }
+                });
+                options("/diagrams/architectures/software-systems/:uuid/containers", (request, response) -> {
+                    setCORS(request, response);
+                    Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledParentModelCollection, deeplyFulfilledParentModel, HttpMethod.get, HttpMethod.put);
+                    return getOptions(request, response, output);
+                });
+                get("/diagrams/architectures/software-systems/:uuid/containers", (request, response) -> {
+                    Map<String, Object> params = new HashMap<>();
+                    params.put("id", request.params(":uuid"));
+                    return getList(request, response, SoftwareSystem.GET_ALL_CONTAINERS, params, Collection.class);
+                });
+                post("/diagrams/architectures/software-systems/:uuid/containers", (request, response) -> {
+                    try {
+                        com.araguacaima.open_archi.persistence.diagrams.architectural.Container feature = jsonUtils.fromJSON(request.body(), com.araguacaima.open_archi.persistence.diagrams.architectural.Container.class);
+                        if (feature == null) {
+                            throw new Exception("Invalid kind of container");
+                        }
+                        feature.validateReplacement();
+                        DBUtil.populate(feature);
+                        response.status(HTTP_CREATED);
+                        response.type(JSON_CONTENT_TYPE);
+                        response.header("Location", request.pathInfo() + "/" + feature.getId());
+                        return EMPTY_RESPONSE;
+                    } catch (Throwable ex) {
+                        return throwError(response, ex);
+                    }
+                });
+                get("/diagrams/architectures/software-systems/:uuid/containers/:cuuid", (request, response) -> {
+                    Map<String, Object> params = new HashMap<>();
+                    String id = request.params(":uuid");
+                    String cid = request.params(":cuuid");
+                    params.put("id", id);
+                    params.put("cid", cid);
+                    response.type(JSON_CONTENT_TYPE);
+                    return getList(request, response, SoftwareSystem.GET_CONTAINER, params, null);
+                });
+                put("/diagrams/architectures/software-systems/:uuid/containers/:cuuid", (request, response) -> {
+                    try {
+                        Container model = jsonUtils.fromJSON(request.body(), Container.class);
+                        if (model == null) {
+                            throw new Exception("Invalid kind of model");
+                        }
+                        String id = request.params(":cuuid");
+                        model.setId(id);
+                        model.validateReplacement();
+                        DBUtil.replace(model);
+                        response.status(HTTP_OK);
+                        return EMPTY_RESPONSE;
+                    } catch (EntityNotFoundException ex) {
+                        response.status(HTTP_NOT_FOUND);
+                        return EMPTY_RESPONSE;
+                    } catch (Throwable ex) {
+                        return throwError(response, ex);
+                    }
+                });
+                patch("/diagrams/architectures/software-systems/:uuid/containers/:cuuid", (request, response) -> {
+                    try {
+                        Container container = jsonUtils.fromJSON(request.body(), Container.class);
+                        if (container == null) {
+                            throw new Exception("Invalid kind of container");
+                        }
+                        String id = request.params(":cuuid");
+                        container.setId(id);
+                        container.validateModification();
+                        DBUtil.update(container);
+                        response.status(HTTP_OK);
+                        return EMPTY_RESPONSE;
+                    } catch (EntityNotFoundException ex) {
+                        response.status(HTTP_NOT_FOUND);
                         return EMPTY_RESPONSE;
                     } catch (Throwable ex) {
                         return throwError(response, ex);

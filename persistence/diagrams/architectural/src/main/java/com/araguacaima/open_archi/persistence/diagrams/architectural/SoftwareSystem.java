@@ -17,8 +17,15 @@ import java.util.Set;
  */
 @Entity
 @PersistenceUnit(unitName = "open-archi")
+@NamedQueries({
+        @NamedQuery(name = SoftwareSystem.GET_ALL_CONTAINERS,
+                query = "select a.containers from SoftwareSystem a where a.id=:id"),
+        @NamedQuery(name = SoftwareSystem.GET_CONTAINER,
+                query = "select c from SoftwareSystem a JOIN a.containers c where a.id=:id and c.id=:cid")})
 public class SoftwareSystem extends StaticElement {
 
+    public static final String GET_ALL_CONTAINERS = "get.all.containers";
+    public static final String GET_CONTAINER = "get.container";
     @Column
     @Enumerated(EnumType.STRING)
     private Scope scope = Scope.Unspecified;
