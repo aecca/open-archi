@@ -11,11 +11,9 @@ function showLinkLabel(e) {
 }
 
 function nodeInfo(d) {  // Tooltip info for a node data object
-    let str = "Node " + d.key + ": " + d.text + "\n";
+    let str = d.description + "\n";
     if (d.group)
-        str += "member of " + d.group;
-    else
-        str += "top-level node";
+        str += "Forma parte de: " + d.group;
     return str;
 }
 

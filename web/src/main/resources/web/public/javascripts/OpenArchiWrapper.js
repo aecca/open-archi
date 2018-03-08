@@ -22,18 +22,18 @@ function architectureModelToDiagram(model) {
                 diagram.nodes.push({
                     key: softwareSystem.id,
                     name: softwareSystem.name,
-                    color: "lightgreen",
-                    group: "softwareSystems",
-                    shapeType: "RoundedRectangle",
+                    fill: softwareSystem.shape.fill,
+                    isGroup: true,
+                    group: model.id,
+                    shapeType: softwareSystem.shape.type,
                     rank: rank,
                     size: {
                         width: 40.0,
                         height: 40.0
                     },
-                    fill: "#F0AD4B",
-                    stroke: "#333333",
-                    input: true,
-                    output: true
+                    stroke: softwareSystem.shape.stroke,
+                    input: softwareSystem.shape.input,
+                    output: softwareSystem.shape.output
                 });
                 rank++;
                 containers.forEach(function (container) {
@@ -43,82 +43,43 @@ function architectureModelToDiagram(model) {
                         diagram.nodes.push({
                             key: container.id,
                             name: container.name,
-                            color: "orange",
-                            fill: "orange",
-                            group: "containers",
-                            shapeType: "RoundedRectangle",
+                            fill: container.shape.fill,
+                            isGroup: true,
+                            group: softwareSystem.id,
+                            shapeType: container.shape.type,
                             rank: rank,
                             size: {
                                 width: 40.0,
                                 height: 40.0
                             },
-                            stroke: "#333333",
-                            input: true,
-                            output: true
+                            stroke: container.shape.stroke,
+                            input: container.shape.input,
+                            output: container.shape.output
                         });
                         rank++;
                         components.forEach(function (component) {
                             let groupComponents = {
                                 key: component.id,
                                 name: component.name,
-                                color: "red",
-                                fill: "red",
+                                fill: component.shape.fill,
                                 isGroup: true,
                                 group: container.id,
-                                shapeType: "RoundedRectangle",
+                                shapeType: component.shape.type,
                                 rank: rank,
                                 size: {
                                     width: 40.0,
                                     height: 40.0
                                 },
-                                stroke: "#333333",
-                                input: true,
-                                output: true
+                                stroke: component.shape.stroke,
+                                input: component.shape.input,
+                                output: component.shape.output
                             };
                             rank++;
                             diagram.nodes.push(groupComponents);
                         });
                     }
-                    let groupContainers = {
-                        key: container.id,
-                        name: container.name,
-                        color: "red",
-                        fill: "red",
-                        isGroup: hasComponents,
-                        group: softwareSystem.id,
-                        shapeType: "RoundedRectangle",
-                        rank: rank,
-                        size: {
-                            width: 40.0,
-                            height: 40.0
-                        },
-                        stroke: "#333333",
-                        input: true,
-                        output: true
-                    };
-                    rank++;
-                    diagram.nodes.push(groupContainers);
                 });
             }
-            let groupSoftwareSystems = {
-                key: softwareSystem.id,
-                name: softwareSystem.name,
-                color: "green",
-                fill: "green",
-                isGroup: true,
-                group: model.id,
-                shapeType: "RoundedRectangle",
-                rank: rank,
-                size: {
-                    width: 40.0,
-                    height: 40.0
-                },
-                stroke: "#333333",
-                input: true,
-                output: true
-            };
-            rank++;
-            diagram.nodes.push(groupSoftwareSystems);
         });
     }
 

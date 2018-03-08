@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class Utils {
 
-    public String randomHexColor() {
+    public static String randomHexColor() {
 
         // create random object - reuse this as often as possible
         Random random = new Random();
