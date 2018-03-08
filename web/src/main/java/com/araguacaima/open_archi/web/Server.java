@@ -501,15 +501,19 @@ public class Server {
                 });
                 post("/diagrams/architectures/software-systems/:uuid/containers", (request, response) -> {
                     try {
-                        com.araguacaima.open_archi.persistence.diagrams.architectural.Container feature = jsonUtils.fromJSON(request.body(), com.araguacaima.open_archi.persistence.diagrams.architectural.Container.class);
-                        if (feature == null) {
+                        com.araguacaima.open_archi.persistence.diagrams.architectural.Container container = jsonUtils.fromJSON(request.body(), com.araguacaima.open_archi.persistence.diagrams.architectural.Container.class);
+                        if (container == null) {
                             throw new Exception("Invalid kind of container");
                         }
-                        feature.validateReplacement();
-                        DBUtil.populate(feature);
+                        String id = request.params(":uuid");
+                        container.validateCreation();
+                        SoftwareSystem softwareSystem = JPAEntityManagerUtils.find(SoftwareSystem.class, id);
+                        DBUtil.persist(container);
+                        softwareSystem.getContainers().add(container);
+                        DBUtil.update(softwareSystem);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
-                        response.header("Location", request.pathInfo() + "/" + feature.getId());
+                        response.header("Location", request.pathInfo() + "/" + container.getId());
                         return EMPTY_RESPONSE;
                     } catch (Throwable ex) {
                         return throwError(response, ex);

@@ -2450,34 +2450,43 @@ definitions:
   Container:
     type: object
     description: Container
-    properties:
-      technology:
-        type: string
-        description: Technology that underlied this container
-      components:
-        type: array
-        description: Components that conforms this container
-        items:
-          $ref: "#/definitions/Component"
+    allOf:
+    - $ref: "#/definitions/Static_Element_Create"
+    - type: object
+      properties:
+        technology:
+          type: string
+          description: Technology that underlied this container
+        components:
+          type: array
+          description: Components that conforms this container
+          items:
+            $ref: "#/definitions/Component_Create"
   Containers:
     type: object
     description: Container
-    properties:
-      technology:
-        type: string
-        description: Technology that underlied this container
+    allOf:
+    - $ref: "#/definitions/Static_Element_Create"
+    - type: object
+      properties:
+        technology:
+          type: string
+          description: Technology that underlied this container
   Container_Create:
     type: object
     description: Container
-    properties:
-      technology:
-        type: string
-        description: Technology that underlied this container
-      components:
-        type: array
-        description: Components that conforms this container
-        items:
-          $ref: "#/definitions/Component_Create"
+    allOf:
+    - $ref: "#/definitions/Static_Element_Create"
+    - type: object
+      properties:
+        technology:
+          type: string
+          description: Technology that underlied this container
+        components:
+          type: array
+          description: Components that conforms this container
+          items:
+            $ref: "#/definitions/Component_Create"
   Container_Instance:
     description: Container Instance
     type: object
