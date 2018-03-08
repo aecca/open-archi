@@ -561,7 +561,6 @@ public class Server {
                         return throwError(response, ex);
                     }
                 });
-
                 get("/diagrams/architectures/:uuid/software-systems/:suuid/containers", (request, response) -> {
                     Map<String, Object> params = new HashMap<>();
                     params.put("id", request.params(":suuid"));
