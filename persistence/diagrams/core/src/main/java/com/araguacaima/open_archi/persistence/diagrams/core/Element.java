@@ -27,7 +27,7 @@ public class Element extends Item {
     @CollectionTable(schema = "DIAGRAMS", name = "Element_Properties", joinColumns = @JoinColumn(name = "Property_Id"))
     protected Map<String, String> properties = new HashMap<>();
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
             name = "Element_FeatureIds",
             joinColumns = {@JoinColumn(name = "Architecture_Model_Id",

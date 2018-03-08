@@ -2,7 +2,6 @@
 package com.araguacaima.open_archi.web;
 
 import com.araguacaima.commons.utils.ReflectionUtils;
-import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 import com.araguacaima.open_archi.persistence.diagrams.core.Item;
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
@@ -114,6 +113,22 @@ public class DBUtil {
         return entity;
     }
 
+    private static Object innerPopulationCreateIfNotExists(Object entity) {
+        ReflectionUtils.doWithFields(entity.getClass(), field -> {
+            field.setAccessible(true);
+            Object object_ = field.get(entity);
+            processCreateIfNotExists(field.getType(), object_);
+        }, DBUtil::filterMethod);
+        try {
+            if (JPAEntityManagerUtils.find(entity.getClass(), ((BaseEntity) entity).getId()) == null) {
+                JPAEntityManagerUtils.persist(entity);
+            }
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+        return entity;
+    }
+
     private static boolean filterMethod(Field field) {
         Class aClass = null;
         try {
@@ -158,6 +173,22 @@ public class DBUtil {
             }
         }
         return object_;
+    }
+
+    private static void processCreateIfNotExists(Class<?> type, Object object_) {
+        if (object_ != null) {
+            if (ReflectionUtils.isCollectionImplementation(type)) {
+                for (Object innerCollection : (Collection) object_) {
+                    innerPopulationCreateIfNotExists(innerCollection);
+                }
+            } else if (ReflectionUtils.isMapImplementation(type)) {
+                Map<Object, Object> map = (Map<Object, Object>) object_;
+                Set<Map.Entry<Object, Object>> set = map.entrySet();
+                for (Map.Entry innerMapValues : set) {
+                    innerPopulationCreateIfNotExists(innerMapValues.getValue());
+                }
+            }
+        }
     }
 
     public static void flatten(Object entity) throws Throwable {
@@ -256,6 +287,15 @@ public class DBUtil {
         }
     }
 
+    private static void createIfNotExists(BaseEntity entity) {
+        ReflectionUtils.doWithFields(entity.getClass(), field -> {
+            field.setAccessible(true);
+            Object object_ = field.get(entity);
+            processCreateIfNotExists(field.getType(), object_);
+
+        }, DBUtil::filterMethod);
+    }
+
     public static void update(BaseEntity entity) throws Throwable {
         JPAEntityManagerUtils.begin();
         Class<?> clazz = entity.getClass();
@@ -264,7 +304,8 @@ public class DBUtil {
             if (persistedEntity == null) {
                 throw new EntityNotFoundException("Can not replace due object with id '" + entity.getId() + "' does not exists");
             }
-            ((BaseEntity) persistedEntity).copyNonEmpty(entity);
+            createIfNotExists(entity);
+            reflectionUtils.invokeMethod(persistedEntity, "copyNonEmpty", new Object[]{entity});
             JPAEntityManagerUtils.update(persistedEntity);
         } catch (Throwable t) {
             JPAEntityManagerUtils.rollback();

@@ -14,7 +14,7 @@ import java.util.Set;
 @DiscriminatorValue(value = "ERModel")
 public class Model extends Element implements DiagramableElement {
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinTable(schema = "DIAGRAMS",
             name = "ER_Model_Relationships",
             joinColumns = {@JoinColumn(name = "ER_Model_Id",
@@ -23,7 +23,7 @@ public class Model extends Element implements DiagramableElement {
                     referencedColumnName = "Id")})
     private Set<Relationship> relationships = new LinkedHashSet<>();
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
             name = "Model_Entities",
             joinColumns = {@JoinColumn(name = "ER_Model_Id",

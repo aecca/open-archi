@@ -19,7 +19,7 @@ public class Elements extends Items {
     @Column
     protected String url;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
             name = "Element_FeatureIds",
             joinColumns = {@JoinColumn(name = "Architecture_Model_Id",

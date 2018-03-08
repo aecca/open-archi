@@ -14,7 +14,7 @@ import java.util.Set;
 @DynamicUpdate
 public class Constraint extends BaseEntity {
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
             name = "Constraint_Activities",
             joinColumns = {@JoinColumn(name = "Constraint_Id",
@@ -23,7 +23,7 @@ public class Constraint extends BaseEntity {
                     referencedColumnName = "Id")})
     private Set<Activity> activities;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
             name = "Constraint_BatchProcessing",
             joinColumns = {@JoinColumn(name = "Constraint_Id",
@@ -32,7 +32,7 @@ public class Constraint extends BaseEntity {
                     referencedColumnName = "Id")})
     private Set<BatchProcessing> batchProcessing;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
             name = "Constraint_BulkProcessing",
             joinColumns = {@JoinColumn(name = "Constraint_Id",
@@ -41,7 +41,7 @@ public class Constraint extends BaseEntity {
                     referencedColumnName = "Id")})
     private Set<BulkProcessing> bulkProcessing;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
             name = "Constraint_Concurrency",
             joinColumns = {@JoinColumn(name = "Constraint_Id",
@@ -50,7 +50,7 @@ public class Constraint extends BaseEntity {
                     referencedColumnName = "Id")})
     private Set<Concurrency> concurrencies;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
             name = "Constraint_Database",
             joinColumns = {@JoinColumn(name = "Constraint_Id",
@@ -59,7 +59,7 @@ public class Constraint extends BaseEntity {
                     referencedColumnName = "Id")})
     private Set<Database> dataBase;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
             name = "Constraint_FileTransfer",
             joinColumns = {@JoinColumn(name = "Constraint_Id",
@@ -68,7 +68,7 @@ public class Constraint extends BaseEntity {
                     referencedColumnName = "Id")})
     private Set<FileTransfer> fileTransfers;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
             name = "Constraint_Rate",
             joinColumns = {@JoinColumn(name = "Constraint_Id",

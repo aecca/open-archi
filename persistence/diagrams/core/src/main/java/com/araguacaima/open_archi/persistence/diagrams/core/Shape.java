@@ -14,7 +14,7 @@ public class Shape extends BaseEntity {
     @Column
     @Enumerated(EnumType.STRING)
     private ShapeType type;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Size size = new Size();
     @Column
     private String fill = "#ffffff";

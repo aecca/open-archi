@@ -25,15 +25,15 @@ public class Items extends Taggable {
     protected String name;
     @Column
     protected String description;
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     protected Point location;
 
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     protected CompositeElement parent;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
             name = "Item_Children_Ids",
             joinColumns = {@JoinColumn(name = "Item_Id",
@@ -42,7 +42,7 @@ public class Items extends Taggable {
                     referencedColumnName = "Id")})
     protected Set<CompositeElement> children = new HashSet<>();
 
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     protected Shape shape;
 

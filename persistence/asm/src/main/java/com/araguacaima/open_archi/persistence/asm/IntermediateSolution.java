@@ -13,10 +13,10 @@ import java.util.Collection;
 @DynamicUpdate
 public class IntermediateSolution extends BaseEntity {
 
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private Markdown description;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinTable(schema = "ASM",
             name = "IntermediateSolution_Functional_Diagrams",
             joinColumns = {@JoinColumn(name = "IntermediateSolution_Id",
@@ -24,7 +24,7 @@ public class IntermediateSolution extends BaseEntity {
             inverseJoinColumns = {@JoinColumn(name = "Diagram_Id",
                     referencedColumnName = "Id")})
     private Collection<Diagram> functionals;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinTable(schema = "ASM",
             name = "IntermediateSolution_TechnicalDebts",
             joinColumns = {@JoinColumn(name = "IntermediateSolution_Id",
@@ -32,10 +32,10 @@ public class IntermediateSolution extends BaseEntity {
             inverseJoinColumns = {@JoinColumn(name = "TechnicalDebt_Id",
                     referencedColumnName = "Id")})
     private Collection<TechnicalDebt> technicalDebts;
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private TechnicalSolution technicals;
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private Asm asm;
 

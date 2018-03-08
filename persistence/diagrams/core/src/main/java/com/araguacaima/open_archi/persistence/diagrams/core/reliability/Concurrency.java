@@ -29,7 +29,7 @@ public class Concurrency extends BaseEntity implements MeasurableRange {
         add(LOW);
         add(MEDIUM);
     }};
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private Measurable value;
 

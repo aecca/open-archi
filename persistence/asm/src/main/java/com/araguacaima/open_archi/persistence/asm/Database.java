@@ -19,7 +19,7 @@ public class Database extends BaseEntity {
     @Column
     @Enumerated(EnumType.STRING)
     private DataBaseType type;
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private Measurable value;
 

@@ -3,6 +3,7 @@ package com.araguacaima.open_archi.persistence.diagrams.architectural;
 import com.araguacaima.open_archi.persistence.diagrams.core.DiagramableElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.Element;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.LinkedHashSet;
@@ -23,16 +24,17 @@ public class Model extends Element implements DiagramableElement {
     public static final String GET_ALL_RELATIONSHIPS = "get.all.relationships";
     public static final String GET_ALL_CONSUMERS_FOR_MODEL = "get.all.consumers.for.model";
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinTable(schema = "DIAGRAMS",
             name = "Architecture_Model_Relationships",
             joinColumns = {@JoinColumn(name = "Architecture_Model_Id",
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Relationship_Id",
                     referencedColumnName = "Id")})
+    @Cascade(org.hibernate.annotations.CascadeType.REMOVE)
     private Set<Relationship> relationships = new LinkedHashSet<>();
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
             name = "Architecture_Model_Consumers",
             joinColumns = {@JoinColumn(name = "Architecture_Model_Id",
@@ -41,7 +43,7 @@ public class Model extends Element implements DiagramableElement {
                     referencedColumnName = "Id")})
     private Set<Consumer> consumers = new LinkedHashSet<>();
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
             name = "Architecture_Model_SoftwareSystems",
             joinColumns = {@JoinColumn(name = "Architecture_Model_Id",
@@ -50,7 +52,7 @@ public class Model extends Element implements DiagramableElement {
                     referencedColumnName = "Id")})
     private Set<SoftwareSystem> softwareSystems = new LinkedHashSet<>();
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
             name = "Architecture_Model_DeploymentNodes",
             joinColumns = {@JoinColumn(name = "Architecture_Model_Id",

@@ -18,17 +18,17 @@ public class TechnicalDebt extends BaseEntity {
     @Column
     @Enumerated(EnumType.STRING)
     private Complexity complexity;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @CollectionTable(name = "TechnicalDebt_Descriptions",
             schema = "ASM")
     @MapKeyColumn(name = "description")
     private Map<String, Markdown> description;
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private Effort estimatedEffort;
     @ManyToOne
     private IntermediateSolution intermediateSolution;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinTable(schema = "ASM",
             name = "TechnicalDebt_Responsibles",
             joinColumns = {@JoinColumn(name = "TechnicalDebt_Id",

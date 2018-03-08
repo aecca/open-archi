@@ -12,7 +12,7 @@ import javax.persistence.*;
 
 public class CapacityReliability extends AbstractReliability implements IVolumetricReliability {
 
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private Volumetry volumetry;
 

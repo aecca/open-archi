@@ -13,11 +13,12 @@ import java.util.Set;
 @DynamicUpdate
 public class ReliabilitySolution extends BaseEntity {
 
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private Markdown description;
 
-    @OneToMany(targetEntity = AbstractReliability.class)
+    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true,targetEntity = AbstractReliability.class)
+    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private Set<IReliability> elements;
 
     public Markdown getDescription() {

@@ -36,7 +36,7 @@ public abstract class BaseEntity implements Serializable, BasicEntity, Cloneable
     @Column(name = "Id")
     protected String id;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     private MetaInfo meta;
 
     public BaseEntity() {

@@ -12,7 +12,7 @@ import java.util.Collection;
 @DynamicUpdate
 public class ArchitectSolutionModel extends BaseEntity {
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinTable(schema = "ASM",
             name = "ArchitectSolutionModel_Diagrams",
             joinColumns = {@JoinColumn(name = "ArchitectSolutionModel_Id",

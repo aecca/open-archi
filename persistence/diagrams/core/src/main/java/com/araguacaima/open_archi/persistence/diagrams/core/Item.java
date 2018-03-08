@@ -62,15 +62,13 @@ public class Item extends Taggable {
     @Column
     protected String description;
 
-    @OneToOne(cascade = CascadeType.REMOVE)
-    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     protected Point location;
 
-    @OneToOne(cascade = CascadeType.REMOVE)
-    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     protected CompositeElement parent;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
             name = "Item_Children_Ids",
             joinColumns = {@JoinColumn(name = "Item_Id",
@@ -79,11 +77,11 @@ public class Item extends Taggable {
                     referencedColumnName = "Id")})
     protected Set<CompositeElement> children = new HashSet<>();
 
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     protected Shape shape;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
             name = "Item_Can_Be_Connected_From_Ids",
             joinColumns = {@JoinColumn(name = "Item_Id",
@@ -92,7 +90,7 @@ public class Item extends Taggable {
                     referencedColumnName = "Id")})
     protected Set<ConnectTrigger> canBeConnectedFrom;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
             name = "Item_Can_Be_Connected_To_Ids",
             joinColumns = {@JoinColumn(name = "Item_Id",
@@ -101,7 +99,7 @@ public class Item extends Taggable {
                     referencedColumnName = "Id")})
     protected Set<ConnectTrigger> canBeConnectedTo;
 
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     protected MetaData metaData;
 

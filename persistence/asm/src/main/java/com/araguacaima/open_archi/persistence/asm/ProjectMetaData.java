@@ -22,7 +22,7 @@ public class ProjectMetaData extends BaseEntity {
     private String documentation;
     @Column
     private String functionalInitiativeDescription;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinTable(schema = "ASM",
             name = "ProjectMetaData_GlobalSolutionArchitects",
             joinColumns = {@JoinColumn(name = "ProjectMetaData_Id",
@@ -32,7 +32,7 @@ public class ProjectMetaData extends BaseEntity {
     private Collection<Person> globalSolutionArchitects;
     @Column
     private String initiativeName;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinTable(schema = "ASM",
             name = "ProjectMetaData_LocalSolutionArchitects",
             joinColumns = {@JoinColumn(name = "ProjectMetaData_Id",
@@ -52,7 +52,7 @@ public class ProjectMetaData extends BaseEntity {
     @Column
     @Enumerated(EnumType.STRING)
     private Segment segment;
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private Asm asm;
 

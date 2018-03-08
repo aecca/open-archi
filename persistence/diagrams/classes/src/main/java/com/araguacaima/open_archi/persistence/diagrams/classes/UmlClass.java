@@ -8,7 +8,7 @@ import java.util.Map;
 @PersistenceUnit(unitName = "open-archi")
 public class UmlClass extends UmlItem {
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
             name = "UmlClass_Fields",
             joinColumns = {@JoinColumn(name = "UmlClass_Id",
@@ -16,7 +16,7 @@ public class UmlClass extends UmlItem {
             inverseJoinColumns = {@JoinColumn(name = "Field_Id",
                     referencedColumnName = "Id")})
     private Map<String, UmlField> fields = new HashMap<>();
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
             name = "UmlClass_Methods",
             joinColumns = {@JoinColumn(name = "UmlClass_Id",

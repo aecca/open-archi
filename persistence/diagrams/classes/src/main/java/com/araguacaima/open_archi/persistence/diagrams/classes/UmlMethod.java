@@ -15,7 +15,7 @@ public class UmlMethod extends BaseEntity {
     private String name;
     @Column
     private String type;
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
             name = "UmlMethod_Parameters",
             joinColumns = {@JoinColumn(name = "UmlMethod_Id",

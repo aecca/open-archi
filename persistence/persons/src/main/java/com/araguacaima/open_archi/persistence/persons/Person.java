@@ -1,6 +1,8 @@
 package com.araguacaima.open_archi.persistence.persons;
 
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.Column;

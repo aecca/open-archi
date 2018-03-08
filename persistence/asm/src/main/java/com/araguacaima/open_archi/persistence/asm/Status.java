@@ -19,7 +19,7 @@ public class Status extends BaseEntity {
     private Date issueDate;
     @Column
     private int rank;
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private Markdown reason;
     @Column

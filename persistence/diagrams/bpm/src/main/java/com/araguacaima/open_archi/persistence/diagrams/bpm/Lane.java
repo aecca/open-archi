@@ -12,7 +12,7 @@ import java.util.Collection;
 @DynamicUpdate
 public class Lane extends BaseEntity {
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
             name = "Lane_Activities",
             joinColumns = {@JoinColumn(name = "Lane_Id",

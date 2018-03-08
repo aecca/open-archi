@@ -12,7 +12,7 @@ import javax.persistence.*;
 @PersistenceUnit(unitName = "open-archi")
 public class Relationship extends Taggable {
 
-    @OneToOne(targetEntity = Taggable.class, cascade = CascadeType.REMOVE)
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true, targetEntity = Taggable.class)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     @JsonIgnore
     private Taggable source;
@@ -20,7 +20,7 @@ public class Relationship extends Taggable {
     @Column
     private String sourceId;
 
-    @OneToOne(targetEntity = Taggable.class, cascade = CascadeType.REMOVE)
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true, targetEntity = Taggable.class)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     @JsonIgnore
     private Taggable destination;

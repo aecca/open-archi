@@ -13,10 +13,10 @@ import java.util.Collection;
 @DynamicUpdate
 public class Objectives extends BaseEntity {
 
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private Markdown currentSituation;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinTable(schema = "ASM",
             name = "Objectives_Diagrams",
             joinColumns = {@JoinColumn(name = "Objectives_Id",

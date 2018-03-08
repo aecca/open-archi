@@ -12,7 +12,7 @@ import javax.persistence.*;
 @DynamicUpdate
 public class Measurable extends BaseEntity {
 
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private Range range;
     @Column

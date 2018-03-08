@@ -39,7 +39,7 @@ public class Feature extends Item {
     @Column
     private String visibility;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
             name = "Feature_Incoming_Constraint",
             joinColumns = {@JoinColumn(name = "Feature_Id",
@@ -49,7 +49,7 @@ public class Feature extends Item {
     private Set<Constraint> incomingConstraints;
 
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
             name = "Feature_Outgoing_Constraint",
             joinColumns = {@JoinColumn(name = "Feature_Id",

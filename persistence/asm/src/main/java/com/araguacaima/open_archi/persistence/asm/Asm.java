@@ -31,10 +31,10 @@ public class Asm extends BaseEntity {
     @NotNull
     @Size(min = 1)
     private Date expirationDate;
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private Initiative initiative;
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private IntermediateSolution intermediateSolution;
     @Column(unique = false,
@@ -42,7 +42,7 @@ public class Asm extends BaseEntity {
     @NotNull
     @Size(min = 1)
     private Date issueDate;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinTable(schema = "SM",
             name = "Asm_LinksOfInterests",
             joinColumns = {@JoinColumn(name = "Asm_Id",
@@ -50,13 +50,13 @@ public class Asm extends BaseEntity {
             inverseJoinColumns = {@JoinColumn(name = "Link_Id",
                     referencedColumnName = "Id")})
     private Collection<Link> linksOfInterests;
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private ProjectMetaData projectMetaData;
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private ProposedSolution proposedSolution;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinTable(schema = "SM",
             name = "Asm_Responsibles",
             joinColumns = {@JoinColumn(name = "Asm_Id",
@@ -64,7 +64,7 @@ public class Asm extends BaseEntity {
             inverseJoinColumns = {@JoinColumn(name = "Responsible_Id",
                     referencedColumnName = "Id")})
     private Collection<Responsible> responsibles;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinTable(schema = "SM",
             name = "Asm_Statuses",
             joinColumns = {@JoinColumn(name = "Asm_Id",
@@ -72,7 +72,7 @@ public class Asm extends BaseEntity {
             inverseJoinColumns = {@JoinColumn(name = "Status_Id",
                     referencedColumnName = "Id")})
     private Set<Status> status;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinTable(schema = "SM",
             name = "Asm_VersionControls",
             joinColumns = {@JoinColumn(name = "Asm_Id",

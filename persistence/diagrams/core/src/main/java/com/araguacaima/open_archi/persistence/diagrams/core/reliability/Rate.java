@@ -35,7 +35,7 @@ public class Rate extends BaseEntity implements MeasurableRange {
     @Enumerated(EnumType.STRING)
     private RequestTarget target;
 
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private Measurable value;
 

@@ -74,7 +74,7 @@ public class Account implements Serializable {
     @NotNull
     private boolean firstAccess = true;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(
             schema = "META",
             name = "Account_Roles",

@@ -21,7 +21,7 @@ public class Containers extends StaticElements {
     @Column
     private String technology;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
             name = "Container_Components",
             joinColumns = {@JoinColumn(name = "Container_Id",

@@ -13,7 +13,7 @@ import java.util.Collection;
 @DynamicUpdate
 public class StatusLifeCycle extends BaseEntity {
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinTable(schema = "ASM",
             name = "StatusLifeCycle_Ancestors",
             joinColumns = {@JoinColumn(name = "StatusLifeCycle_Id",
@@ -21,10 +21,10 @@ public class StatusLifeCycle extends BaseEntity {
             inverseJoinColumns = {@JoinColumn(name = "Ancestor_Id",
                     referencedColumnName = "Id")})
     private Collection<Status> ancestors;
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private Status current;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinTable(schema = "ASM",
             name = "StatusLifeCycle_Descendants",
             joinColumns = {@JoinColumn(name = "StatusLifeCycle_Id",

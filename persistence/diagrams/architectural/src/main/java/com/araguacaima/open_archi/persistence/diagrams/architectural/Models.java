@@ -19,7 +19,7 @@ public class Models extends Elements {
 
     public static final String GET_ALL_RELATIONSHIPS = "get.all.relationships_list";
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinTable(schema = "DIAGRAMS",
             name = "Architecture_Model_Relationships",
             joinColumns = {@JoinColumn(name = "Architecture_Model_Id",
@@ -32,7 +32,7 @@ public class Models extends Elements {
     @Enumerated(EnumType.STRING)
     private ElementKind kind = ElementKind.ARCHITECTURE_MODEL;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
             name = "Architecture_Model_People",
             joinColumns = {@JoinColumn(name = "Architecture_Model_Consumer_Id",
@@ -41,7 +41,7 @@ public class Models extends Elements {
                     referencedColumnName = "Id")})
     private Set<Consumers> consumers = new LinkedHashSet<>();
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
             name = "Architecture_Model_SoftwareSystems",
             joinColumns = {@JoinColumn(name = "Architecture_Model_Id",
@@ -50,7 +50,7 @@ public class Models extends Elements {
                     referencedColumnName = "Id")})
     private Set<SoftwareSystems> softwareSystems = new LinkedHashSet<>();
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
             name = "Architecture_Model_DeploymentNodes",
             joinColumns = {@JoinColumn(name = "Architecture_Model_Id",

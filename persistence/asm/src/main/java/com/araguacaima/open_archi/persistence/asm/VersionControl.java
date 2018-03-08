@@ -19,7 +19,7 @@ public class VersionControl extends BaseEntity {
     private String description;
     @Column
     private Date issueDate;
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     @JoinTable(schema = "PERSONS",
             name = "VersionControl_Responsibles",

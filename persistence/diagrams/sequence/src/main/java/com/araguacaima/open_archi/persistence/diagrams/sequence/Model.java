@@ -28,7 +28,7 @@ public class Model extends Element implements DiagramableElement {
     public static final String GET_ALL_SEQUENCE_MODELS = "SequenceModel.getAllModels";
     public static final String PARAM_NAME = "name";
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinTable(schema = "DIAGRAMS",
             name = "Sequence_Model_Relationships",
             joinColumns = {@JoinColumn(name = "Sequence_Model_Id",
@@ -37,7 +37,7 @@ public class Model extends Element implements DiagramableElement {
                     referencedColumnName = "Id")})
     private Set<Relationship> relationships = new LinkedHashSet<>();
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
             name = "Sequence_Model_Sequences",
             joinColumns = {@JoinColumn(name = "Sequence_Model_Id",

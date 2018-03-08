@@ -22,7 +22,7 @@ public class Concurrency extends BaseEntity {
             .NUMBER_OF_CONCURRENT_USERS,
             31,
             null));
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private Measurable value;
 

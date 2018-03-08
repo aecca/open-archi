@@ -13,7 +13,7 @@ import java.util.Set;
 @DynamicUpdate
 public class Volumetry extends BaseEntity {
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinTable(schema = "ASM",
             name = "Volumetry_Activities",
             joinColumns = {@JoinColumn(name = "Volumetry_Id",
@@ -21,7 +21,7 @@ public class Volumetry extends BaseEntity {
             inverseJoinColumns = {@JoinColumn(name = "Activities_Id",
                     referencedColumnName = "Id")})
     private Set<Activity> activities;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinTable(schema = "ASM",
             name = "Volumetry_BatchProcessing",
             joinColumns = {@JoinColumn(name = "Volumetry_Id",
@@ -29,7 +29,7 @@ public class Volumetry extends BaseEntity {
             inverseJoinColumns = {@JoinColumn(name = "BatchProcessing_Id",
                     referencedColumnName = "Id")})
     private Set<BatchProcessing> batchProcessing;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinTable(schema = "ASM",
             name = "Volumetry_BulkProcessing",
             joinColumns = {@JoinColumn(name = "Volumetry_Id",
@@ -37,7 +37,7 @@ public class Volumetry extends BaseEntity {
             inverseJoinColumns = {@JoinColumn(name = "BulkProcessing_Id",
                     referencedColumnName = "Id")})
     private Set<BulkProcessing> bulkProcessing;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinTable(schema = "ASM",
             name = "Volumetry_Concurrency",
             joinColumns = {@JoinColumn(name = "Volumetry_Id",
@@ -45,7 +45,7 @@ public class Volumetry extends BaseEntity {
             inverseJoinColumns = {@JoinColumn(name = "Concurrency_Id",
                     referencedColumnName = "Id")})
     private Set<Concurrency> concurrencies;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinTable(schema = "ASM",
             name = "Volumetry_Database",
             joinColumns = {@JoinColumn(name = "Volumetry_Id",
@@ -53,7 +53,7 @@ public class Volumetry extends BaseEntity {
             inverseJoinColumns = {@JoinColumn(name = "Database_Id",
                     referencedColumnName = "Id")})
     private Set<Database> dataBase;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinTable(schema = "ASM",
             name = "Volumetry_FileTransfer",
             joinColumns = {@JoinColumn(name = "Volumetry_Id",
@@ -61,7 +61,7 @@ public class Volumetry extends BaseEntity {
             inverseJoinColumns = {@JoinColumn(name = "FileTransfer_Id",
                     referencedColumnName = "Id")})
     private Set<FileTransfer> fileTransfers;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinTable(schema = "ASM",
             name = "Volumetry_Rate",
             joinColumns = {@JoinColumn(name = "Volumetry_Id",
