@@ -20,12 +20,18 @@ import java.util.Set;
         @NamedQuery(name = Model.GET_ALL_CONSUMERS_FOR_MODEL,
                 query = "select a.consumers from com.araguacaima.open_archi.persistence.diagrams.architectural.Model a where a.id=:id"),
         @NamedQuery(name = Model.GET_CONSUMER_FOR_MODEL,
-                query = "select c from com.araguacaima.open_archi.persistence.diagrams.architectural.Model a JOIN a.consumers c where a.id=:id and c.id=:cid")})
+                query = "select c from com.araguacaima.open_archi.persistence.diagrams.architectural.Model a JOIN a.consumers c where a.id=:id and c.id=:cid"),
+        @NamedQuery(name = Model.GET_ALL_SOFTWARE_SYSTEMS,
+                query = "select a.softwareSystems from com.araguacaima.open_archi.persistence.diagrams.architectural.Model a where a.id=:id"),
+        @NamedQuery(name = Model.GET_SOFTWARE_SYSTEM,
+                query = "select s from com.araguacaima.open_archi.persistence.diagrams.architectural.Model a JOIN a.softwareSystems s where a.id=:id and s.id=:sid")})
 public class Model extends Element implements DiagramableElement {
 
     public static final String GET_ALL_RELATIONSHIPS = "get.all.relationships";
     public static final String GET_ALL_CONSUMERS_FOR_MODEL = "get.all.consumers.for.model";
     public static final String GET_CONSUMER_FOR_MODEL = "get.consumer.for.model";
+    public static final String GET_ALL_SOFTWARE_SYSTEMS = "get.all.software.systems";
+    public static final String GET_SOFTWARE_SYSTEM = "get.software.system";
 
     @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinTable(schema = "DIAGRAMS",

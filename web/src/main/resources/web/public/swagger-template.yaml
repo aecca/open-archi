@@ -882,7 +882,182 @@ paths:
       - openarchi_auth:
         - write:model
         - read:models
-  "/diagrams/architectures/software-systems/{model-id}/containers":
+  "/diagrams/architectures/{model-id}/software-systems":
+    get:
+      tags:
+      - Diagrams
+      summary: Finds the software systems of a model
+      description: This service supports query by using RSQL expressions
+      operationId: get-sosftware-systems
+      produces:
+      - application/json
+      parameters:
+      - name: model-id
+        in: path
+        description: ID of the model to return
+        required: true
+        type: string
+      - name: "$filter"
+        in: query
+        description: Filter containers of a software system within a model according to an RSQL expression
+        required: false
+        type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Software_Systems"
+        '400':
+          description: Bad request
+      security:
+      - openarchi_auth:
+        - read:models
+    post:
+      tags:
+      - Diagrams
+      summary: Add a new software system to the specified model
+      description: If the software system does not exists previously, it will be created, otherwise an error will be rised.
+      operationId: add-software-system
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: model-id
+        in: path
+        description: ID of the software system to which the container will be created
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Container that needs to be added
+        required: true
+        schema:
+          $ref: "#/definitions/Software_System_Create"
+      responses:
+        '200':
+          description: Accepted
+        '201':
+          description: Created
+        '405':
+          description: Invalid input
+      security:
+      - openarchi_auth:
+        - write:model
+        - read:models
+  "/diagrams/architectures/{model-id}/software-systems/{software-system-id}":
+    get:
+      tags:
+      - Diagrams
+      summary: Finds a software system of a model
+      description:
+      operationId: get-software-system
+      produces:
+      - application/json
+      parameters:
+      - name: model-id
+        in: path
+        description: ID of the model to which the container belongs
+        required: true
+        type: string
+      - name: software-system-id
+        in: path
+        description: ID of the software system to get
+        required: true
+        type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: "#/definitions/Software_System"
+        '400':
+          description: Bad request
+      security:
+      - openarchi_auth:
+        - read:models
+    patch:
+      tags:
+      - Diagrams
+      summary: Partially update an existent software system of the specified model
+      description: If the software system does not exists previously, or it doesn't belongs to the provided model, an error will be raised. Only incoming attributes will be affected. All preexisting values for non-requested fields will keep its current stored values.
+      operationId: partially-update-model-software-system
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: model-id
+        in: path
+        description: ID of the model to which the software system and the container belongs
+        required: true
+        type: string
+      - name: software-system-id
+        in: path
+        description: ID of the software system to update
+        required: true
+        type: string
+      - name: body
+        in: body
+        description: Software system object that needs to be partially updated
+        required: true
+        schema:
+          $ref: "#/definitions/Container_Create"
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Invalid model id supplied
+        '404':
+          description: Container not found
+        '405':
+          description: Container does not belongs to model
+      security:
+      - openarchi_auth:
+        - write:model
+        - read:models
+    put:
+      tags:
+      - Diagrams
+      summary: Completelly update an existent model's software system
+      description: If the software system object does not exists previously, or it doesn't belongs to the provided model, it won't be created, instead, an error will be raised. The existent container will be deleted completelly before updating, so the default values will be taken for any non-existent value in the request of this mmethod.
+      operationId: completelly-update-model-software-system
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: model-id
+        in: path
+        description: ID of the model to which the container belongs
+        required: true
+        type: string
+      - name: software-system-id
+        in: path
+        description: ID of the software system to replace
+        required: true
+        type: string
+      - name: body
+        in: body
+        description: Container object that needs to be replaced
+        required: true
+        schema:
+          $ref: "#/definitions/Software_System_Create"
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Container not found
+        '405':
+          description: Invalid input
+      security:
+      - openarchi_auth:
+        - write:model
+        - read:models
+  "/diagrams/architectures/{model-id}/software-systems/{sofware-system-id}/containers":
     get:
       tags:
       - Diagrams
@@ -895,6 +1070,11 @@ paths:
       - name: model-id
         in: path
         description: ID of the model to return
+        required: true
+        type: string
+      - name: software-system-id
+        in: path
+        description: ID of the software system
         required: true
         type: string
       - name: "$filter"
@@ -930,6 +1110,11 @@ paths:
         description: ID of the software system to which the container will be created
         required: true
         type: string
+      - name: software-system-id
+        in: path
+        description: ID of the software system
+        required: true
+        type: string
       - in: body
         name: body
         description: Container that needs to be added
@@ -947,7 +1132,7 @@ paths:
       - openarchi_auth:
         - write:model
         - read:models
-  "/diagrams/architectures/software-systems/{model-id}/containers/{container-id}":
+  "/diagrams/architectures/{model-id}/software-systems/{sofware-system-id}/containers/{container-id}":
     get:
       tags:
       - Diagrams
@@ -960,6 +1145,11 @@ paths:
       - name: model-id
         in: path
         description: ID of the model to which the container belongs
+        required: true
+        type: string
+      - name: software-system-id
+        in: path
+        description: ID of the software system
         required: true
         type: string
       - name: container-id
@@ -991,6 +1181,11 @@ paths:
       - name: model-id
         in: path
         description: ID of the model to which the software system and the container belongs
+        required: true
+        type: string
+      - name: software-system-id
+        in: path
+        description: ID of the software system
         required: true
         type: string
       - name: container-id
@@ -1031,6 +1226,11 @@ paths:
       - name: model-id
         in: path
         description: ID of the model to which the container belongs
+        required: true
+        type: string
+      - name: software-system-id
+        in: path
+        description: ID of the software system
         required: true
         type: string
       - name: container-id

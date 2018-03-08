@@ -489,50 +489,45 @@ public class Server {
                         return throwError(response, ex);
                     }
                 });
-                options("/diagrams/architectures/software-systems/:uuid/containers", (request, response) -> {
-                    setCORS(request, response);
-                    Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledParentModelCollection, deeplyFulfilledParentModel, HttpMethod.get, HttpMethod.put);
-                    return getOptions(request, response, output);
-                });
-                get("/diagrams/architectures/software-systems/:uuid/containers", (request, response) -> {
+                get("/diagrams/architectures/:uuid/software-systems", (request, response) -> {
                     Map<String, Object> params = new HashMap<>();
                     params.put("id", request.params(":uuid"));
-                    return getList(request, response, SoftwareSystem.GET_ALL_CONTAINERS, params, Collection.class);
+                    return getList(request, response, com.araguacaima.open_archi.persistence.diagrams.architectural.Model.GET_ALL_SOFTWARE_SYSTEMS, params, Collection.class);
                 });
-                post("/diagrams/architectures/software-systems/:uuid/containers", (request, response) -> {
+                post("/diagrams/architectures/:uuid/software-systems", (request, response) -> {
                     try {
-                        com.araguacaima.open_archi.persistence.diagrams.architectural.Container container = jsonUtils.fromJSON(request.body(), com.araguacaima.open_archi.persistence.diagrams.architectural.Container.class);
-                        if (container == null) {
+                        com.araguacaima.open_archi.persistence.diagrams.architectural.SoftwareSystem softwareSystem = jsonUtils.fromJSON(request.body(), com.araguacaima.open_archi.persistence.diagrams.architectural.SoftwareSystem.class);
+                        if (softwareSystem == null) {
                             throw new Exception("Invalid kind of container");
                         }
                         String id = request.params(":uuid");
-                        container.validateCreation();
-                        SoftwareSystem softwareSystem = JPAEntityManagerUtils.find(SoftwareSystem.class, id);
-                        DBUtil.persist(container);
-                        softwareSystem.getContainers().add(container);
-                        DBUtil.update(softwareSystem);
+                        softwareSystem.validateCreation();
+                        Model model = JPAEntityManagerUtils.find(com.araguacaima.open_archi.persistence.diagrams.architectural.Model.class, id);
+                        DBUtil.persist(softwareSystem);
+                        model.getSoftwareSystems().add(softwareSystem);
+                        DBUtil.update(model);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
-                        response.header("Location", request.pathInfo() + "/" + container.getId());
+                        response.header("Location", request.pathInfo() + "/" + softwareSystem.getId());
                         return EMPTY_RESPONSE;
                     } catch (Throwable ex) {
                         return throwError(response, ex);
                     }
                 });
-                get("/diagrams/architectures/software-systems/:uuid/containers/:cuuid", (request, response) -> {
+                get("/diagrams/architectures/:uuid/software-systems/:suuid", (request, response) -> {
                     Map<String, Object> params = new HashMap<>();
                     String id = request.params(":uuid");
-                    String cid = request.params(":cuuid");
+                    String sid = request.params(":suuid");
                     params.put("id", id);
-                    params.put("cid", cid);
+                    params.put("sid", sid);
                     response.type(JSON_CONTENT_TYPE);
-                    return getList(request, response, SoftwareSystem.GET_CONTAINER, params, null);
+                    return getList(request, response, com.araguacaima.open_archi.persistence.diagrams.architectural.Model.GET_SOFTWARE_SYSTEM, params, null);
                 });
-                put("/diagrams/architectures/software-systems/:uuid/containers/:cuuid", (request, response) -> {
+                put("/diagrams/architectures/:uuid/software-systems/:suuid", (request, response) -> {
                     try {
                         Container model = jsonUtils.fromJSON(request.body(), Container.class);
                         if (model == null) {
-                            throw new Exception("Invalid kind of model");
+                            throw new Exception("Invalid kind of container");
                         }
                         String id = request.params(":cuuid");
                         model.setId(id);
@@ -547,7 +542,80 @@ public class Server {
                         return throwError(response, ex);
                     }
                 });
-                patch("/diagrams/architectures/software-systems/:uuid/containers/:cuuid", (request, response) -> {
+                patch("/diagrams/architectures/:uuid/software-systems/:suuid", (request, response) -> {
+                    try {
+                        Container container = jsonUtils.fromJSON(request.body(), Container.class);
+                        if (container == null) {
+                            throw new Exception("Invalid kind of container");
+                        }
+                        String id = request.params(":cuuid");
+                        container.setId(id);
+                        container.validateModification();
+                        DBUtil.update(container);
+                        response.status(HTTP_OK);
+                        return EMPTY_RESPONSE;
+                    } catch (EntityNotFoundException ex) {
+                        response.status(HTTP_NOT_FOUND);
+                        return EMPTY_RESPONSE;
+                    } catch (Throwable ex) {
+                        return throwError(response, ex);
+                    }
+                });
+
+                get("/diagrams/architectures/:uuid/software-systems/:suuid/containers", (request, response) -> {
+                    Map<String, Object> params = new HashMap<>();
+                    params.put("id", request.params(":suuid"));
+                    return getList(request, response, SoftwareSystem.GET_ALL_CONTAINERS, params, Collection.class);
+                });
+                post("/diagrams/architectures/:uuid/software-systems/:suuid/containers", (request, response) -> {
+                    try {
+                        com.araguacaima.open_archi.persistence.diagrams.architectural.Container container = jsonUtils.fromJSON(request.body(), com.araguacaima.open_archi.persistence.diagrams.architectural.Container.class);
+                        if (container == null) {
+                            throw new Exception("Invalid kind of container");
+                        }
+                        String id = request.params(":suuid");
+                        container.validateCreation();
+                        SoftwareSystem softwareSystem = JPAEntityManagerUtils.find(SoftwareSystem.class, id);
+                        DBUtil.persist(container);
+                        softwareSystem.getContainers().add(container);
+                        DBUtil.update(softwareSystem);
+                        response.status(HTTP_CREATED);
+                        response.type(JSON_CONTENT_TYPE);
+                        response.header("Location", request.pathInfo() + "/" + container.getId());
+                        return EMPTY_RESPONSE;
+                    } catch (Throwable ex) {
+                        return throwError(response, ex);
+                    }
+                });
+                get("/diagrams/architectures/:uuid/software-systems/:suuid/containers/:cuuid", (request, response) -> {
+                    Map<String, Object> params = new HashMap<>();
+                    String id = request.params(":suuid");
+                    String cid = request.params(":cuuid");
+                    params.put("id", id);
+                    params.put("cid", cid);
+                    response.type(JSON_CONTENT_TYPE);
+                    return getList(request, response, SoftwareSystem.GET_CONTAINER, params, null);
+                });
+                put("/diagrams/architectures/:uuid/software-systems/:suuid/containers/:cuuid", (request, response) -> {
+                    try {
+                        Container model = jsonUtils.fromJSON(request.body(), Container.class);
+                        if (model == null) {
+                            throw new Exception("Invalid kind of container");
+                        }
+                        String id = request.params(":cuuid");
+                        model.setId(id);
+                        model.validateReplacement();
+                        DBUtil.replace(model);
+                        response.status(HTTP_OK);
+                        return EMPTY_RESPONSE;
+                    } catch (EntityNotFoundException ex) {
+                        response.status(HTTP_NOT_FOUND);
+                        return EMPTY_RESPONSE;
+                    } catch (Throwable ex) {
+                        return throwError(response, ex);
+                    }
+                });
+                patch("/diagrams/architectures/:uuid/software-systems/:suuid/containers/:cuuid", (request, response) -> {
                     try {
                         Container container = jsonUtils.fromJSON(request.body(), Container.class);
                         if (container == null) {
