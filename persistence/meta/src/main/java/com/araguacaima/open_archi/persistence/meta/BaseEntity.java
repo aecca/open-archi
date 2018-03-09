@@ -83,50 +83,61 @@ public abstract class BaseEntity implements Serializable, BasicEntity, Cloneable
 
     @Override
     public void validateCreation() throws EntityError {
-        traverse(this, "validateCreation");
+        Map map = new HashMap<>();
+        traverse(this, "validateCreation", map);
     }
 
     @Override
     public void validateModification() throws EntityError {
-        traverse(this, "validateModification");
+        Map map = new HashMap<>();
+        traverse(this, "validateModification", map);
     }
 
     @Override
     public void validateReplacement() throws EntityError {
-        traverse(this, "validateReplacement");
+        Map map = new HashMap<>();
+        traverse(this, "validateReplacement", map);
     }
 
-    private void traverse(Object entity, String method) {
+    private void traverse(Object entity, String method, Map map) {
         Class<?> clazz = entity.getClass();
         ReflectionUtils.doWithFields(clazz, field -> {
             field.setAccessible(true);
             Object object_ = field.get(entity);
             Class<?> clazz_ = field.getType();
             if (ReflectionUtils.isCollectionImplementation(clazz_) && object_ != null) {
-                for (Object innerCollection : (Collection) object_) {
-                    traverse(innerCollection, method);
+                Collection collection = (Collection) object_;
+                if (collection.isEmpty()) {
+                    processSpecification(method, object_, ReflectionUtils.extractGenerics(field), map);
+                } else {
+                    for (Object innerCollection : collection) {
+                        traverse(innerCollection, method, map);
+                    }
                 }
             } else if (ReflectionUtils.isMapImplementation(clazz_) && object_ != null) {
-                Map<Object, Object> map = (Map<Object, Object>) object_;
-                Set<Map.Entry<Object, Object>> set = map.entrySet();
-                for (Map.Entry innerMapValues : set) {
-                    traverse(innerMapValues.getValue(), method);
+                Map<Object, Object> map_ = (Map<Object, Object>) object_;
+                Set<Map.Entry<Object, Object>> set = map_.entrySet();
+                if (map_.isEmpty()) {
+                    processSpecification(method, object_, ReflectionUtils.extractGenerics(field), map);
+                } else {
+                    for (Map.Entry innerMapValues : set) {
+                        traverse(innerMapValues.getValue(), method, map);
+                    }
                 }
             } else {
                 if (reflectionUtils.getFullyQualifiedJavaTypeOrNull(clazz_) == null && !clazz_.isEnum() && !Enum.class.isAssignableFrom(clazz_)) {
-                    processSpecification(method, object_, clazz_);
+                    processSpecification(method, object_, clazz_, map);
                 }
             }
         }, Utils::filterMethod);
-        processSpecification(method, entity, clazz);
+        processSpecification(method, entity, clazz, map);
     }
 
-    private void processSpecification(String method, Object object_, Class<?> clazz_) {
+    private void processSpecification(String method, Object object_, Class<?> clazz_, Map map) {
         try {
             SpecificationMap specificationMap = specificationMapBuilder.getInstance(clazz_, true);
             Specification specification = specificationMap.getSpecificationFromMethod(method);
             if (specification != null) {
-                Map map = new HashMap<>();
                 if (!specification.isSatisfiedBy(object_, map)) {
                     throw new EntityError(map.get("ERROR").toString());
                 }
