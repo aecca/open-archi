@@ -2,6 +2,7 @@
 package com.araguacaima.open_archi.web;
 
 import com.araguacaima.commons.utils.ReflectionUtils;
+import com.araguacaima.open_archi.persistence.commons.Utils;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 import com.araguacaima.open_archi.persistence.diagrams.core.Item;
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
@@ -94,7 +95,7 @@ public class DBUtil {
             Object object_ = field.get(entity);
             Object result = process(field.getType(), object_);
             field.set(entity, result);
-        }, DBUtil::filterMethod);
+        }, Utils::filterMethod);
         JPAEntityManagerUtils.persist(entity);
     }
 
@@ -104,7 +105,7 @@ public class DBUtil {
             Object object_ = field.get(entity);
             Object result = process(field.getType(), object_);
             field.set(entity, result);
-        }, DBUtil::filterMethod);
+        }, Utils::filterMethod);
         try {
             JPAEntityManagerUtils.persist(entity);
         } catch (Throwable t) {
@@ -118,7 +119,7 @@ public class DBUtil {
             field.setAccessible(true);
             Object object_ = field.get(entity);
             processCreateIfNotExists(field.getType(), object_);
-        }, DBUtil::filterMethod);
+        }, Utils::filterMethod);
         try {
             if (JPAEntityManagerUtils.find(entity.getClass(), ((BaseEntity) entity).getId()) == null) {
                 JPAEntityManagerUtils.persist(entity);
@@ -129,15 +130,7 @@ public class DBUtil {
         return entity;
     }
 
-    private static boolean filterMethod(Field field) {
-        Class aClass = null;
-        try {
-            aClass = ReflectionUtils.extractGenerics(field);
-        } catch (Throwable t) {
-            t.printStackTrace();
-        }
-        return aClass == null || reflectionUtils.getFullyQualifiedJavaTypeOrNull(aClass) == null;
-    }
+
 
     private static Object process(Class<?> type, Object object_) {
         if (object_ != null) {
@@ -202,7 +195,7 @@ public class DBUtil {
             Object object_ = field.get(entity);
             Object result = processFlatten(field.getType(), object_);
             field.set(entity, result);
-        }, DBUtil::filterMethod);
+        }, Utils::filterMethod);
     }
 
     private static Object innerFlatten(Object entity) {
@@ -211,7 +204,7 @@ public class DBUtil {
             Object object_ = field.get(entity);
             Object result = processFlatten(field.getType(), object_);
             field.set(entity, result);
-        }, DBUtil::filterMethod);
+        }, Utils::filterMethod);
         try {
             if (Item.class.isAssignableFrom(entity.getClass())) {
                 Map<String, Object> params = new HashMap<>();
@@ -293,7 +286,7 @@ public class DBUtil {
             Object object_ = field.get(entity);
             processCreateIfNotExists(field.getType(), object_);
 
-        }, DBUtil::filterMethod);
+        }, Utils::filterMethod);
     }
 
     public static void update(BaseEntity entity) throws Throwable {

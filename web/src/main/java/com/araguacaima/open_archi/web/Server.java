@@ -368,6 +368,7 @@ public class Server {
                         response.header("Location", request.pathInfo() + "/" + model.getId());
                         return EMPTY_RESPONSE;
                     } catch (Throwable ex) {
+                        ex.printStackTrace();
                         return throwError(response, ex);
                     }
                 });
