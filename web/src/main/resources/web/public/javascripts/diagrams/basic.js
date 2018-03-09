@@ -23,6 +23,7 @@ function initBasic(nodeDataArray, linkDataArray) {
                 "undoManager.isEnabled": true
             });
 
+    myDiagram.nodeTemplateMap.addAll(myPalette.nodeTemplateMap);
     // These nodes have text surrounded by a rounded rectangle
     // whose fill color is bound to the node data.
     // The user can drag a node by dragging its TextBlock label.
@@ -71,7 +72,6 @@ function initBasic(nodeDataArray, linkDataArray) {
             makePort("R", go.Spot.Right, true, true),
             makePort("B", go.Spot.Bottom, true, true)
         ));
-
     // The link shape and arrowhead have their stroke brush data bound to the "color" property
     myDiagram.linkTemplate =
         gojs(go.Link,  // the whole link panel

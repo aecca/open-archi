@@ -77,6 +77,23 @@ function architectureModelToDiagram(model) {
                             rank++;
                             diagram.nodes.push(groupComponents);
                         });
+                    } else {
+                        diagram.nodes.push({
+                            key: container.id,
+                            name: container.name,
+                            fill: container.shape.fill,
+                            isGroup: false,
+                            group: softwareSystem.id,
+                            shapeType: container.shape.type,
+                            rank: rank,
+                            size: {
+                                width: 40.0,
+                                height: 40.0
+                            },
+                            stroke: container.shape.stroke,
+                            input: container.shape.input,
+                            output: container.shape.output
+                        });
                     }
                 });
             }
