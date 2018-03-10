@@ -131,7 +131,7 @@ function makeButton(text, action, visiblePredicate) {
 
 // Show the diagram's model in JSON format that the user may edit
 function save() {
-    document.getElementById("modelToSaveOrLoad").value = OpenArchiWrapper.fromDiagram(myDiagram.model.toJson());
+    document.getElementById("modelToSaveOrLoad").value = OpenArchiWrapper.fromDiagram(JSON.parse(myDiagram.model.toJson()));
     myDiagram.isModified = false;
     myDiagram.model.modelData.position = go.Point.stringify(myDiagram.position);
 }

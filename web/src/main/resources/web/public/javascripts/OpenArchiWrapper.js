@@ -160,7 +160,7 @@ class OpenArchiWrapper {
     };
 
     static fromDiagram(diagram) {
-        let model = diagram;
+        let model = diagram.nodeDataArray;
         return model;
     };
 
