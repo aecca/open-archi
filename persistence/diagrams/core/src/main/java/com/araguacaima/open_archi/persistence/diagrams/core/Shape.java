@@ -76,12 +76,28 @@ public class Shape extends BaseEntity {
     public void override(Shape source) {
         super.override(source);
         this.setType(source.getType());
+        this.setFill(source.getFill());
+        this.setOutput(source.isOutput());
+        this.setInput(source.isInput());
+        this.setStroke(source.getStroke());
+        this.setSize(source.getSize());
     }
 
     public void copyNonEmpty(Shape source) {
         super.copyNonEmpty(source);
         if (source.getType() != null) {
             this.setType(source.getType());
+        }
+        if (source.getFill() != null) {
+            this.setFill(source.getFill());
+        }
+        this.setOutput(source.isOutput());
+        this.setInput(source.isInput());
+        if (source.getStroke() != null) {
+            this.setStroke(source.getStroke());
+        }
+        if (source.getSize() != null) {
+            this.setSize(source.getSize());
         }
     }
 }

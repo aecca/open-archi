@@ -300,8 +300,6 @@ public class Server {
                     mapEditor.put("palette", jsonUtils.toJSON(getArchitecturePalette()));
                     mapEditor.put("source", "basic");
                     mapEditor.put("examples", getExamples());
-/*                    mapEditor.put("models", getItemNames(req, res, Item.GET_ALL_DIAGRAM_NAMES, JSON_CONTENT_TYPE));
-                    mapEditor.put("prototypes", getItemNames(req, res, Item.GET_ALL_PROTOTYPE_NAMES, JSON_CONTENT_TYPE));*/
                     return new ModelAndView(mapEditor, "editor");
                 }, engine);
             });
@@ -368,6 +366,7 @@ public class Server {
                         response.header("Location", request.pathInfo() + "/" + model.getId());
                         return EMPTY_RESPONSE;
                     } catch (Throwable ex) {
+                        ex.printStackTrace();
                         return throwError(response, ex);
                     }
                 });
@@ -561,7 +560,6 @@ public class Server {
                         return throwError(response, ex);
                     }
                 });
-
                 get("/diagrams/architectures/:uuid/software-systems/:suuid/containers", (request, response) -> {
                     Map<String, Object> params = new HashMap<>();
                     params.put("id", request.params(":suuid"));
@@ -1238,7 +1236,7 @@ public class Server {
         Map<String, Object> params = new HashMap<>();
         params.put("type", SoftwareSystem.class);
         List<IdName> models;
-        models = JPAEntityManagerUtils.executeQuery(IdName.class, Item.GET_ALL_MODEL_NAMES_BY_TYPE, params);
+        models = JPAEntityManagerUtils.executeQuery(IdName.class, Item.GET_ALL_PROTOTYPE_NAMES_BY_TYPE, params);
         int rank = 0;
         for (IdName model : models) {
             PaletteItem item = new PaletteItem();
@@ -1248,13 +1246,13 @@ public class Server {
             item.setShapeType(ShapeType.RoundedRectangle);
             item.setId(model.getId());
             item.setSize(new Size(40, 40));
-            item.setFill("#01203A");
+            item.setFill(SoftwareSystem.SHAPE_COLOR);
             palette.getSoftwareSystems().add(item);
             rank++;
         }
 
         params.put("type", Container.class);
-        models = JPAEntityManagerUtils.executeQuery(IdName.class, Item.GET_ALL_MODEL_NAMES_BY_TYPE, params);
+        models = JPAEntityManagerUtils.executeQuery(IdName.class, Item.GET_ALL_PROTOTYPE_NAMES_BY_TYPE, params);
         rank = 0;
         for (IdName model : models) {
             PaletteItem item = new PaletteItem();
@@ -1264,13 +1262,13 @@ public class Server {
             item.setShapeType(ShapeType.RoundedRectangle);
             item.setId(model.getId());
             item.setSize(new Size(40, 40));
-            item.setFill("#08427B");
+            item.setFill(Container.SHAPE_COLOR);
             palette.getContainers().add(item);
             rank++;
         }
 
         params.put("type", Component.class);
-        models = JPAEntityManagerUtils.executeQuery(IdName.class, Item.GET_ALL_MODEL_NAMES_BY_TYPE, params);
+        models = JPAEntityManagerUtils.executeQuery(IdName.class, Item.GET_ALL_PROTOTYPE_NAMES_BY_TYPE, params);
         rank = 0;
         for (IdName model : models) {
             PaletteItem item = new PaletteItem();
@@ -1280,7 +1278,7 @@ public class Server {
             item.setShapeType(ShapeType.RoundedRectangle);
             item.setId(model.getId());
             item.setSize(new Size(40, 40));
-            item.setFill("#1368BD");
+            item.setFill(Component.SHAPE_COLOR);
             palette.getComponents().add(item);
             rank++;
         }

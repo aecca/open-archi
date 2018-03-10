@@ -1,5 +1,6 @@
 package com.araguacaima.open_archi.persistence.diagrams.er;
 
+import com.araguacaima.open_archi.persistence.diagrams.core.RelationshipKind;
 import com.araguacaima.open_archi.persistence.diagrams.core.RelationshipType;
 
 import javax.persistence.*;
@@ -12,6 +13,7 @@ import javax.persistence.*;
 @PersistenceUnit(unitName = "open-archi")
 @DiscriminatorValue("ErRelationship")
 public class Relationship extends com.araguacaima.open_archi.persistence.diagrams.core.Relationship {
+
     @Column
     @Enumerated(EnumType.STRING)
     private RelationshipType type;
@@ -19,6 +21,10 @@ public class Relationship extends com.araguacaima.open_archi.persistence.diagram
     private String sourceText;
     @Column
     private String destinationText;
+
+    @Column
+    @Enumerated(EnumType.STRING)
+    private RelationshipKind kind = RelationshipKind.ENTITY_RELATIONSHIP_RELATIONSHIP;
 
     public Relationship() {
     }
@@ -45,6 +51,14 @@ public class Relationship extends com.araguacaima.open_archi.persistence.diagram
 
     public void setDestinationText(String destinationText) {
         this.destinationText = destinationText;
+    }
+
+    public RelationshipKind getKind() {
+        return kind;
+    }
+
+    public void setKind(RelationshipKind kind) {
+        this.kind = kind;
     }
 
     public void override(Relationship source) {

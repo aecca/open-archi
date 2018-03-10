@@ -1,5 +1,8 @@
 package com.araguacaima.open_archi.persistence.commons;
 
+import com.araguacaima.commons.utils.ReflectionUtils;
+
+import java.lang.reflect.Field;
 import java.util.Random;
 
 public class Utils {
@@ -17,4 +20,15 @@ public class Utils {
         return (String.format("#%06x", nextInt));
     }
 
+    private static ReflectionUtils reflectionUtils = new ReflectionUtils(null);
+
+    public static boolean filterMethod(Field field) {
+        Class aClass = null;
+        try {
+            aClass = ReflectionUtils.extractGenerics(field);
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+        return aClass == null || reflectionUtils.getFullyQualifiedJavaTypeOrNull(aClass) == null;
+    }
 }

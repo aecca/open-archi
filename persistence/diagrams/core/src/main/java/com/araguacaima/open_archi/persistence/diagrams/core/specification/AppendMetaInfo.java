@@ -23,7 +23,12 @@ public class AppendMetaInfo extends AbstractSpecification {
             MetaInfo meta;
             Date thisTime = Calendar.getInstance().getTime();
             if (entity.getMeta() == null) {
-                meta = new MetaInfo();
+                if (map.get("meta") == null) {
+                    meta = new MetaInfo();
+                    map.put("meta", meta);
+                } else {
+                    meta = (MetaInfo) map.get("meta");
+                }
                 Version version = new Version();
                 meta.setVersion(version);
                 meta.setCreated(thisTime);

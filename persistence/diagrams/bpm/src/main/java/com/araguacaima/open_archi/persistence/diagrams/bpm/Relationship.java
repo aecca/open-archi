@@ -1,5 +1,6 @@
 package com.araguacaima.open_archi.persistence.diagrams.bpm;
 
+import com.araguacaima.open_archi.persistence.diagrams.core.RelationshipKind;
 import com.araguacaima.open_archi.persistence.diagrams.core.RelationshipType;
 
 import javax.persistence.*;
@@ -16,6 +17,10 @@ public class Relationship extends com.araguacaima.open_archi.persistence.diagram
     @Enumerated(EnumType.STRING)
     private RelationshipType type;
 
+    @Column
+    @Enumerated(EnumType.STRING)
+    private RelationshipKind kind = RelationshipKind.BPM_RELATIONSHIP;
+
     public Relationship() {
     }
 
@@ -25,6 +30,14 @@ public class Relationship extends com.araguacaima.open_archi.persistence.diagram
 
     public void setType(RelationshipType type) {
         this.type = type;
+    }
+
+    public RelationshipKind getKind() {
+        return kind;
+    }
+
+    public void setKind(RelationshipKind kind) {
+        this.kind = kind;
     }
 
     public void override(Relationship source) {

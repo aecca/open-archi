@@ -18,10 +18,10 @@ public class Palette implements Palettable {
         element.setShapeType(ShapeType.RoundedRectangle);
         element.setRank(0);
         element.setName("Element");
-        element.setFill("#F0AD4B");
+        element.setFill("#0000FF");
         element.setSize(new Size(40,40));
         basicElements.add(element);
-        PaletteItem person = new PaletteItem();
+/*        PaletteItem person = new PaletteItem();
         person.setShapeType(ShapeType.Triangle);
         person.setRank(1);
         person.setName("Person");
@@ -36,7 +36,7 @@ public class Palette implements Palettable {
         consumer.setFill("#49CC90");
         consumer.setSize(new Size(40,40));
         consumer.setKind(ElementKind.CONSUMER);
-        basicElements.add(consumer);
+        basicElements.add(consumer);*/
     }
 
     @Override

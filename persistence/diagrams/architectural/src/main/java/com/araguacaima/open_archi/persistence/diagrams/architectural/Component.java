@@ -25,6 +25,8 @@ public class Component extends StaticElement {
     @Column
     private long size;
 
+    public static final String SHAPE_COLOR = "#1368BD";
+
     public Component() {
         setKind(ElementKind.COMPONENT);
     }

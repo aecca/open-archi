@@ -1,7 +1,9 @@
 package com.araguacaima.open_archi.persistence.meta;
 
 import com.araguacaima.commons.utils.MapUtils;
+import com.araguacaima.commons.utils.ReflectionUtils;
 import com.araguacaima.open_archi.persistence.commons.Constants;
+import com.araguacaima.open_archi.persistence.commons.Utils;
 import com.araguacaima.open_archi.persistence.commons.exceptions.EntityError;
 import com.araguacaima.specification.Specification;
 import com.araguacaima.specification.util.SpecificationMap;
@@ -13,10 +15,7 @@ import org.springframework.stereotype.Component;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.ResourceBundle;
-import java.util.UUID;
+import java.util.*;
 
 @MappedSuperclass
 @PersistenceUnit(unitName = "open-archi")
@@ -27,6 +26,8 @@ public abstract class BaseEntity implements Serializable, BasicEntity, Cloneable
     @Transient
     @JsonIgnore
     protected static final ResourceBundle resourceBundle = ResourceBundle.getBundle(Constants.BUNDLE_NAME);
+
+    private static ReflectionUtils reflectionUtils = new ReflectionUtils(null);
 
     private static final long serialVersionUID = 5449758397914117108L;
     private static SpecificationMapBuilder specificationMapBuilder = new SpecificationMapBuilder(MapUtils.getInstance());
@@ -82,46 +83,62 @@ public abstract class BaseEntity implements Serializable, BasicEntity, Cloneable
 
     @Override
     public void validateCreation() throws EntityError {
-        try {
-            SpecificationMap specificationMap = specificationMapBuilder.getInstance(this.getClass(), true);
-            Specification specification = specificationMap.getSpecificationFromMethod("validateCreation");
-            if (specification != null) {
-                Map map = new HashMap<>();
-                if (!specification.isSatisfiedBy(this, map)) {
-                    throw new EntityError(map.get("ERROR").toString());
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new EntityError(e.getMessage(), e);
-        }
+        Map map = new HashMap<>();
+        traverse(this, "validateCreation", map);
     }
 
     @Override
     public void validateModification() throws EntityError {
-        try {
-            SpecificationMap specificationMap = specificationMapBuilder.getInstance(this.getClass(), true);
-            Specification specification = specificationMap.getSpecificationFromMethod("validateModification");
-            if (specification != null) {
-                Map map = new HashMap<>();
-                if (!specification.isSatisfiedBy(this, map)) {
-                    throw new EntityError(map.get("ERROR").toString());
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new EntityError(e.getMessage(), e);
-        }
+        Map map = new HashMap<>();
+        traverse(this, "validateModification", map);
     }
 
     @Override
     public void validateReplacement() throws EntityError {
+        Map map = new HashMap<>();
+        traverse(this, "validateReplacement", map);
+    }
+
+    private void traverse(Object entity, String method, Map map) {
+        Class<?> clazz = entity.getClass();
+        ReflectionUtils.doWithFields(clazz, field -> {
+            field.setAccessible(true);
+            Object object_ = field.get(entity);
+            Class<?> clazz_ = field.getType();
+            if (ReflectionUtils.isCollectionImplementation(clazz_) && object_ != null) {
+                Collection collection = (Collection) object_;
+                if (collection.isEmpty()) {
+                    processSpecification(method, object_, ReflectionUtils.extractGenerics(field), map);
+                } else {
+                    for (Object innerCollection : collection) {
+                        traverse(innerCollection, method, map);
+                    }
+                }
+            } else if (ReflectionUtils.isMapImplementation(clazz_) && object_ != null) {
+                Map<Object, Object> map_ = (Map<Object, Object>) object_;
+                Set<Map.Entry<Object, Object>> set = map_.entrySet();
+                if (map_.isEmpty()) {
+                    processSpecification(method, object_, ReflectionUtils.extractGenerics(field), map);
+                } else {
+                    for (Map.Entry innerMapValues : set) {
+                        traverse(innerMapValues.getValue(), method, map);
+                    }
+                }
+            } else {
+                if (reflectionUtils.getFullyQualifiedJavaTypeOrNull(clazz_) == null && !clazz_.isEnum() && !Enum.class.isAssignableFrom(clazz_)) {
+                    processSpecification(method, object_, clazz_, map);
+                }
+            }
+        }, Utils::filterMethod);
+        processSpecification(method, entity, clazz, map);
+    }
+
+    private void processSpecification(String method, Object object_, Class<?> clazz_, Map map) {
         try {
-            SpecificationMap specificationMap = specificationMapBuilder.getInstance(this.getClass(), true);
-            Specification specification = specificationMap.getSpecificationFromMethod("validateReplacement");
+            SpecificationMap specificationMap = specificationMapBuilder.getInstance(clazz_, true);
+            Specification specification = specificationMap.getSpecificationFromMethod(method);
             if (specification != null) {
-                Map map = new HashMap<>();
-                if (!specification.isSatisfiedBy(this, map)) {
+                if (!specification.isSatisfiedBy(object_, map)) {
                     throw new EntityError(map.get("ERROR").toString());
                 }
             }
