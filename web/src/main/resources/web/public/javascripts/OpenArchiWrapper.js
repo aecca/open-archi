@@ -14,7 +14,11 @@ function architectureModelToDiagram(model) {
 
     if (relationships) {
         relationships.forEach(function (relationship) {
-            diagram.links.push({from: relationship.sourceId, to: relationship.destinationId, stroke: relationship.connector.stroke});
+            diagram.links.push({
+                from: relationship.sourceId,
+                to: relationship.destinationId,
+                stroke: relationship.connector.stroke
+            });
         });
     }
 
@@ -27,7 +31,9 @@ function architectureModelToDiagram(model) {
                     key: softwareSystem.id,
                     name: softwareSystem.name,
                     description: softwareSystem.description,
-                    fill: softwareSystem.shape.fill,
+                    shape: {
+                        fill: softwareSystem.shape.fill
+                    },
                     isGroup: true,
                     group: model.id,
                     shapeType: softwareSystem.shape.type,
@@ -49,7 +55,7 @@ function architectureModelToDiagram(model) {
                             key: container.id,
                             name: container.name,
                             description: container.description,
-                            fill: container.shape.fill,
+                            shape: {fill: container.shape.fill},
                             isGroup: true,
                             group: softwareSystem.id,
                             shapeType: container.shape.type,
@@ -68,7 +74,7 @@ function architectureModelToDiagram(model) {
                                 key: component.id,
                                 name: component.name,
                                 description: component.description,
-                                fill: component.shape.fill,
+                                shape: {fill: component.shape.fill},
                                 isGroup: true,
                                 group: container.id,
                                 shapeType: component.shape.type,
@@ -89,7 +95,7 @@ function architectureModelToDiagram(model) {
                             key: container.id,
                             name: container.name,
                             description: container.description,
-                            fill: container.shape.fill,
+                            shape: {fill: container.shape.fill},
                             isGroup: false,
                             group: softwareSystem.id,
                             shapeType: container.shape.type,
@@ -116,7 +122,8 @@ function architectureModelToDiagram(model) {
             diagram.nodes.push({
                 key: consumer.id,
                 name: consumer.name,
-                fill: "lightgreen",
+
+                shape: {fill: consumer.shape.fill},
                 group: groupConsumers.key
             });
         })
