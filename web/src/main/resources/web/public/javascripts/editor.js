@@ -3,6 +3,7 @@ const gojs = go.GraphObject.make;
 function capitalize(text) {
     return text.substr(0, 1).toUpperCase() + text.substr(2, text.length).toLowerCase();
 }
+
 // Make link labels visible if coming out of a "conditional" node.
 // This listener is called by the "LinkDrawn" and "LinkRelinked" DiagramEvents.
 function showLinkLabel(e) {
@@ -11,9 +12,16 @@ function showLinkLabel(e) {
 }
 
 function nodeInfo(d) {  // Tooltip info for a node data object
-    let str = d.description + "\n";
-    if (d.group)
+    let str;
+    if (d.description) {
+        str = d.description + "\n";
+    }
+    if (d.group) {
         str += "Forma parte de: " + d.group;
+    }
+    if (str === undefined) {
+        str = d.name;
+    }
     return str;
 }
 
@@ -34,6 +42,7 @@ function groupInfo(adornment) {  // takes the tooltip or context menu, not a gro
     });
     return "Group " + g.data.key + ": " + g.data.text + "\n" + mems + " members including " + links + " links";
 }
+
 // a context menu is an Adornment with a bunch of buttons in them
 const partContextMenu =
     gojs(go.Adornment, "Vertical",
@@ -148,7 +157,7 @@ function getPageContent(url) {
             xhr.overrideMimeType("text/html; charset=utf-8");
         }
     }).done(function (data) {
-        $( "<div id='explanation'></div>" ).insertAfter( "#diagramsCanvas" );
+        $("<div id='explanation'></div>").insertAfter("#diagramsCanvas");
         $("#diagramsCanvas").html(data);
     });
 }
@@ -176,7 +185,7 @@ function getJsonContent(url, callback) {
 
 function openModel(model) {
     let graphicalModel = OpenArchiWrapper.toDiagram(model);
-    $( "#explanation" ).remove();
+    $("#explanation").remove();
     const type = model.kind;
     switch (type) {
         case "FLOWCHART_MODEL":

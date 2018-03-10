@@ -19,6 +19,8 @@ public class Consumer extends StaticElement {
     @Enumerated(EnumType.STRING)
     private Scope scope = Scope.Unspecified;
 
+    public static final String SHAPE_COLOR = "#F0AD4B";
+
     public Consumer() {
         setKind(ElementKind.CONSUMER);
     }

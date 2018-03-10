@@ -37,6 +37,10 @@ public class Relationship extends Taggable {
     @Column
     private String destinationPort;
 
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
+    private Connector connector;
+
     public Relationship() {
     }
 
@@ -96,6 +100,14 @@ public class Relationship extends Taggable {
         this.destinationPort = destinationPort;
     }
 
+    public Connector getConnector() {
+        return connector;
+    }
+
+    public void setConnector(Connector connector) {
+        this.connector = connector;
+    }
+
     public void override(Relationship source) {
         super.override(source);
         this.source = source.getSource();
@@ -105,6 +117,7 @@ public class Relationship extends Taggable {
         this.description = source.getDescription();
         this.sourcePort = source.getSourcePort();
         this.destinationPort = source.getDestinationPort();
+        this.connector = source.getConnector();
     }
 
     public void copyNonEmpty(Relationship source) {
@@ -129,6 +142,9 @@ public class Relationship extends Taggable {
         }
         if (source.getDestinationPort() != null) {
             this.destinationPort = source.getDestinationPort();
+        }
+        if (source.getConnector() != null) {
+            this.connector = source.getConnector();
         }
     }
 

@@ -1,5 +1,6 @@
 package com.araguacaima.open_archi.persistence.diagrams.sequence;
 
+import com.araguacaima.open_archi.persistence.diagrams.core.RelationshipKind;
 import com.araguacaima.open_archi.persistence.diagrams.core.RelationshipType;
 
 import javax.persistence.*;
@@ -19,6 +20,10 @@ public class Relationship extends com.araguacaima.open_archi.persistence.diagram
     @Column
     private int time;
 
+    @Column
+    @Enumerated(EnumType.STRING)
+    private RelationshipKind kind = RelationshipKind.SEQUENCE_RELATIONSHIP;
+
     public Relationship() {
     }
 
@@ -36,6 +41,14 @@ public class Relationship extends com.araguacaima.open_archi.persistence.diagram
 
     public void setTime(int time) {
         this.time = time;
+    }
+
+    public RelationshipKind getKind() {
+        return kind;
+    }
+
+    public void setKind(RelationshipKind kind) {
+        this.kind = kind;
     }
 
     public void override(Relationship source) {

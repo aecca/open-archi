@@ -2,18 +2,22 @@ function architectureModelToDiagram(model) {
 
     let diagram = {};
     if (model.kind !== "ARCHITECTURE_MODEL") {
-
         return diagram;
     }
-
     diagram.nodes = [];
     diagram.links = [];
     let key = 0;
-
     let relationships = commons.prototype.findValues(model, "relationships");
     let rank = 0;
     let softwareSystems = model.softwareSystems;
     let hasSoftwareSystems = softwareSystems !== undefined && !commons.prototype.isEmpty(softwareSystems);
+
+    if (relationships) {
+        relationships.forEach(function (relationship) {
+            diagram.links.push({from: relationship.sourceId, to: relationship.destinationId, stroke: relationship.connector.stroke});
+        });
+    }
+
     if (hasSoftwareSystems) {
         softwareSystems.forEach(function (softwareSystem) {
             let containers = softwareSystem.containers;
@@ -22,6 +26,7 @@ function architectureModelToDiagram(model) {
                 diagram.nodes.push({
                     key: softwareSystem.id,
                     name: softwareSystem.name,
+                    description: softwareSystem.description,
                     fill: softwareSystem.shape.fill,
                     isGroup: true,
                     group: model.id,
@@ -43,6 +48,7 @@ function architectureModelToDiagram(model) {
                         diagram.nodes.push({
                             key: container.id,
                             name: container.name,
+                            description: container.description,
                             fill: container.shape.fill,
                             isGroup: true,
                             group: softwareSystem.id,
@@ -61,6 +67,7 @@ function architectureModelToDiagram(model) {
                             let groupComponents = {
                                 key: component.id,
                                 name: component.name,
+                                description: component.description,
                                 fill: component.shape.fill,
                                 isGroup: true,
                                 group: container.id,
@@ -81,6 +88,7 @@ function architectureModelToDiagram(model) {
                         diagram.nodes.push({
                             key: container.id,
                             name: container.name,
+                            description: container.description,
                             fill: container.shape.fill,
                             isGroup: false,
                             group: softwareSystem.id,
@@ -105,12 +113,17 @@ function architectureModelToDiagram(model) {
         let groupConsumers = {key: key, name: "Consumers", color: "green", isGroup: true};
         diagram.nodes.push(groupConsumers);
         consumers.forEach(function (consumer) {
-            diagram.nodes.push({key: consumer.id, name: consumer.name, color: "lightgreen", group: groupConsumers.key});
+            diagram.nodes.push({
+                key: consumer.id,
+                name: consumer.name,
+                fill: "lightgreen",
+                group: groupConsumers.key
+            });
         })
     }
 
     diagram.links.push({from: 0, to: model.id, color: "blue"});
-    diagram.nodes.push({key: model.id, name: model.name, color: "orange", isGroup: hasSoftwareSystems});
+    diagram.nodes.push({key: model.id, name: model.name, fill: "orange", isGroup: hasSoftwareSystems});
     return diagram;
 }
 

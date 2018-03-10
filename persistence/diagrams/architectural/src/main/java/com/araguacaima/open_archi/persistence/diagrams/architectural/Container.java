@@ -32,6 +32,8 @@ public class Container extends StaticElement {
                     referencedColumnName = "Id")})
     private Set<Component> components = new LinkedHashSet<>();
 
+    public static final String SHAPE_COLOR = "#08427B";
+
     public Container() {
         setKind(ElementKind.CONTAINER);
     }

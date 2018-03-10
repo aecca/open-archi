@@ -110,9 +110,10 @@ block scripts
 block content
     div#mainContainer(style="padding-bottom: 15px;")
         div(style="display: flex")
-            div.sticky
-                a(href="/", style="display: flex;")
+            div.sticky(style="display: flex;")
+                a(href="/")
                     img(src='/images/OpenArchi.png', width='90', height='50', style="float: left;")
+                a(href="/editor")
                     h2.title= title
             div#cssmenu                    
                 ul
@@ -134,22 +135,6 @@ block content
                                     each example in examples
                                         li
                                             a(onclick="openContent('" + example.url + "');", resource=example.url)= example.name
-                    li.has-sub
-                        a(href='#')
-                            span Models
-                            if models
-                                ul
-                                    each model in models
-                                        li
-                                            a(onclick="openLoadedModel('/open-archi/api/models/" + model.id + "');")= model.name
-                    li.has-sub
-                        a(href='#')
-                            span Prototypes
-                            if prototypes
-                                ul
-                                    each prototype in prototypes
-                                        li
-                                            a(onclick="openLoadedModel('/open-archi/api/models/'" + prototype.id + "');")= prototype.name
                     li
                         input#diagramId(name='diagramId', placeholder='Nombre del diagrama...')
         div#diagramsCanvas(style="justify-content: space-between")
