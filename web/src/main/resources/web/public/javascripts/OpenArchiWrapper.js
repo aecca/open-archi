@@ -1,3 +1,13 @@
+function fulfill(item, isGroup, group, rank) {
+    item.key = item.id;
+    item.isGroup = isGroup;
+    if (group) {
+        item.group = group;
+    }
+    item.rank = rank;
+    return item;
+}
+
 function architectureModelToDiagram(model) {
 
     let diagram = {};
@@ -6,7 +16,7 @@ function architectureModelToDiagram(model) {
     }
     diagram.nodes = [];
     diagram.links = [];
-    let key = 0;
+    let key = "consumers";
     let relationships = commons.prototype.findValues(model, "relationships");
     let rank = 0;
     let softwareSystems = model.softwareSystems;
@@ -19,117 +29,48 @@ function architectureModelToDiagram(model) {
                 to: relationship.destinationId,
                 stroke: relationship.connector.stroke
             });
+            rank++;
         });
     }
-
+    rank = 0;
     if (hasSoftwareSystems) {
         softwareSystems.forEach(function (softwareSystem) {
             let containers = softwareSystem.containers;
             let hasContainers = containers !== undefined && !commons.prototype.isEmpty(containers);
             if (hasContainers) {
-                diagram.nodes.push({
-                    key: softwareSystem.id,
-                    name: softwareSystem.name,
-                    description: softwareSystem.description,
-                    shape: {
-                        fill: softwareSystem.shape.fill
-                    },
-                    isGroup: true,
-                    group: model.id,
-                    shapeType: softwareSystem.shape.type,
-                    rank: rank,
-                    size: {
-                        width: 40.0,
-                        height: 40.0
-                    },
-                    stroke: softwareSystem.shape.stroke,
-                    input: softwareSystem.shape.input,
-                    output: softwareSystem.shape.output
-                });
+                diagram.nodes.push(fulfill(softwareSystem, true, model.id, rank));
                 rank++;
                 containers.forEach(function (container) {
                     let components = container.components;
                     let hasComponents = components !== undefined && !commons.prototype.isEmpty(components);
                     if (hasComponents) {
-                        diagram.nodes.push({
-                            key: container.id,
-                            name: container.name,
-                            description: container.description,
-                            shape: {fill: container.shape.fill},
-                            isGroup: true,
-                            group: softwareSystem.id,
-                            shapeType: container.shape.type,
-                            rank: rank,
-                            size: {
-                                width: 40.0,
-                                height: 40.0
-                            },
-                            stroke: container.shape.stroke,
-                            input: container.shape.input,
-                            output: container.shape.output
-                        });
+                        diagram.nodes.push(fulfill(container, true, softwareSystem.id, rank));
                         rank++;
                         components.forEach(function (component) {
-                            let groupComponents = {
-                                key: component.id,
-                                name: component.name,
-                                description: component.description,
-                                shape: {fill: component.shape.fill},
-                                isGroup: true,
-                                group: container.id,
-                                shapeType: component.shape.type,
-                                rank: rank,
-                                size: {
-                                    width: 40.0,
-                                    height: 40.0
-                                },
-                                stroke: component.shape.stroke,
-                                input: component.shape.input,
-                                output: component.shape.output
-                            };
+                            diagram.nodes.push(fulfill(component, false, container.id, rank));
                             rank++;
-                            diagram.nodes.push(groupComponents);
                         });
                     } else {
-                        diagram.nodes.push({
-                            key: container.id,
-                            name: container.name,
-                            description: container.description,
-                            shape: {fill: container.shape.fill},
-                            isGroup: false,
-                            group: softwareSystem.id,
-                            shapeType: container.shape.type,
-                            rank: rank,
-                            size: {
-                                width: 40.0,
-                                height: 40.0
-                            },
-                            stroke: container.shape.stroke,
-                            input: container.shape.input,
-                            output: container.shape.output
-                        });
+                        diagram.nodes.push(fulfill(container, false, softwareSystem.id, rank));
+                        rank++;
                     }
                 });
             }
         });
     }
 
+    rank = 0;
+
     const consumers = model.consumers;
     if (consumers !== undefined && consumers !== null) {
-        let groupConsumers = {key: key, name: "Consumers", color: "green", isGroup: true};
+        let groupConsumers = {key: key, name: "Consumers", fill: "green", isGroup: true};
         diagram.nodes.push(groupConsumers);
         consumers.forEach(function (consumer) {
-            diagram.nodes.push({
-                key: consumer.id,
-                name: consumer.name,
-
-                shape: {fill: consumer.shape.fill},
-                group: groupConsumers.key
-            });
+            diagram.nodes.push(fulfill(consumer, false, key, rank));
         })
     }
 
-    diagram.links.push({from: 0, to: model.id, color: "blue"});
+    diagram.links.push({from: key, to: model.id, stroke: "black"});
     diagram.nodes.push({key: model.id, name: model.name, fill: "orange", isGroup: hasSoftwareSystems});
     return diagram;
 }
@@ -219,7 +160,7 @@ class OpenArchiWrapper {
     };
 
     static fromDiagram(diagram) {
-        let model = {};
+        let model = diagram;
         return model;
     };
 

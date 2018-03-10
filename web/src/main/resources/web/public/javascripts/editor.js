@@ -131,19 +131,18 @@ function makeButton(text, action, visiblePredicate) {
 
 // Show the diagram's model in JSON format that the user may edit
 function save() {
-    document.getElementById("modelToSaveOrLoad").value = myDiagram.model.toJson();
+    document.getElementById("modelToSaveOrLoad").value = OpenArchiWrapper.fromDiagram(myDiagram.model.toJson());
     myDiagram.isModified = false;
     myDiagram.model.modelData.position = go.Point.stringify(myDiagram.position);
-    //TODO: Construir y llamar a función wrapper para pasar del modelo a OpenArchi
-    //TODO: LLamar al API de OPenArchi para guardar el modelo
 }
 
 function load() {
-    const model = document.getElementById("modelToSaveOrLoad").value;
-    //TODO: Construir y llamar a función wrapper para pasar de OpenArchi al modelo
+    const model = OpenArchiWrapper.toDiagram(JSON.parse(document.getElementById("modelToSaveOrLoad").value));
     myDiagram.model = go.Model.fromJson(model);
     const pos = myDiagram.model.modelData.position;
-    if (pos) myDiagram.initialPosition = go.Point.parse(pos);
+    if (pos) {
+        myDiagram.initialPosition = go.Point.parse(pos);
+    }
 }
 
 function openContent(url) {
