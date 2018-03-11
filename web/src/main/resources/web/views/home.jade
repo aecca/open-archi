@@ -5,21 +5,33 @@ block content
     .container
 
         // Jumbotron
-        .jumbotron
-            h1 Open-Archi!
+        .jumbotron(style="text-align: left")
+            +img-rounded("/images/open-archi.png","Open Archi")(width=300, height=195)
             p.lead
-                | Cras justo odio, dapibus ac facilisis in, egestas eget quam. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet.
+                | Social network for the management of enterprise architecture, including:
+                div.well
+                    ul.lead
+                        li Knowledge base of architectural components.
+                        li Interrelation of business architecture elements (TOGAF based Architecture Framework):
+                            ul
+                                li Enterprise Architecture
+                                li Applications Architecture,
+                                li Data Architecture,
+                                li Technological Architecture
+                        li Administration and interrelation of component thru DevOps.
+                        li Automation of communication about its evolution.
+                        li Ease of design of architectural models.
+                        li Collaborative construction
             p
-                a.btn.btn-lg.btn-success(href='#', role='button') Get started today
+                a.btn.btn-lg.btn-success(href='/open-archi/api', role='button') View details »
 
         // Main component for a primary marketing message or call to action
-        .jumbotron
-            h1 Composite Specification
+        .jumbotron(style="text-align: right")
+            +img-rounded("/images/composite-specification-full.png","Composite Specification")(width=300, height=195)
+            p.lead
+                | The Composite Specification pattern is a particular implementation of the "Specification" design pattern, whereby business logic can be recombined by stringing business logic together with Boolean logic..
             p
-                | This example is a quick exercise to illustrate how the default, static and fixed to top navbar work. It includes the responsive CSS and HTML, so it also adapts to your viewport and device.
-            p To see the difference between static and fixed top navbars, just scroll.
-            p
-                a.btn.btn-lg.btn-primary(href='#navbar', role='button') View navbar docs »
+                a.btn.btn-lg.btn-primary(href='#navbar', role='button') View details »
 
         // Example row of columns
         .row
