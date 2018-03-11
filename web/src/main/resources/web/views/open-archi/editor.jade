@@ -111,25 +111,24 @@ append scripts
             //            });
         });
 
+block extra-menu-elements
+    +nav_item_dropdown("#")(label="Edit")
+        +nav_item("#")(onclick="save()", id="SaveButton") Save
+        +nav_item("#")(onclick="load()", id="LoadButton") Load
+        +nav_item("#")(onclick="openSVG()", id="OpenSVGButton") Export as SVG
+    if examples
+        +nav_item_dropdown("#", null, "sectionsExamples")(label="Examples")
+            each example in examples
+                +nav_item("#")(onclick="openContent('" + example.url + "');", resource=example.url)= example.name
+    +nav_item("#")
+        input#diagramId(name='diagramId', placeholder='Template name...')
+
 block content
-    .container
-        block menu-element
-            +nav_image_item("/open-archi", "/images/open-archi.png", "Open-Archi", null, "padding-top: 0; padding-bottom: 0;")(width='80', height='50')
-            +nav_item_dropdown("#")(label="Edit")
-                +nav_item("#")(onclick="save()", id="SaveButton") Save
-                +nav_item("#")(onclick="load()", id="LoadButton") Load
-                +nav_item("#")(onclick="openSVG()", id="OpenSVGButton") Export as SVG
-            if examples
-                +nav_item_dropdown("#", null, "sectionsExamples")(label="Examples")
-                    each example in examples
-                        +nav_item("#")(onclick="openContent('" + example.url + "');", resource=example.url)= example.name
-            li
-                input#diagramId(name='diagramId', placeholder='Template name...')
     .container
         h2.title= title
         #diagramsCanvas(style="justify-content: space-between")
             if explanation
-                div#explanation
+                #explanation
                     h2#mainTitle(style="margin-top: 0; padding-top: 0; margin-bottom: 30px;")= mainTitle
                     h2#caption(style="margin-top: 0; padding-top: 0; margin-bottom: 30px; color: red; text-align: right;")= caption
                     p= fullDescription
@@ -140,8 +139,8 @@ block content
                     if mainTitle
                         strong Como todos lo demás elementos, se pueden combinar éstas caractrísticas con las presentes en otros ejemplos para crear capacidades más complejas
             div(style="width: 100%; display: flex;")
-                div#paletteDiv(style="width: 15%; height:400px; border: solid gray 1px; overflow: scroll; margin-right: 2px; ")
-                div#diagramDiv(style="width: 85%; height:400px; border: solid gray 1px; overflow: scroll; margin-right: 2px; ")
+                #paletteDiv(style="width: 15%; height:400px; border: solid gray 1px; overflow: scroll; margin-right: 2px; ")
+                #diagramDiv(style="width: 85%; height:400px; border: solid gray 1px; overflow: scroll; margin-right: 2px; ")
             if nodeDataArray
                 div
                     p Aquí se pueden visualizar los datos que permiten almacenar y/o recuperar el diagrama expuesto arriba (Utilizando las APIs definidas en: /open-archi/api), en formato JSON y en tiempo real

@@ -1,7 +1,7 @@
 function showMenu() {
 
     // when the page loads, change the class of navigation LI's
-/*    const lis = document.getElementById("sectionsExamples").querySelectorAll("li");
+    const lis = document.getElementById("sectionsExamples").querySelectorAll("li");
     const l = lis.length;
     for (let i = 0; i < l; i++) {
         const anchor = lis[i].childNodes[0];
@@ -22,5 +22,5 @@ function showMenu() {
         } else {
             lis[i].childNodes[0].remove();
         }
-    }*/
+    }
 }
