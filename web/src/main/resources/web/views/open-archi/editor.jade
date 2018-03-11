@@ -1,10 +1,14 @@
-extends ../layout
+extends layout
+
 block meta
     meta(name="description", content="OpenArchi Editor")
-block scripts
+
+append styles
     link(rel='stylesheet', type='text/css', href='/stylesheets/jquery-ui.css')
     link(rel='stylesheet', type='text/css', href='/stylesheets/autocomplete.css')
     link(rel='stylesheet', type='text/css', href='/stylesheets/menu.css')
+
+append scripts
     script(type='text/javascript', src='/javascripts/jquery-ui.js')
     script(src='/javascripts/go.js')
     script(type='text/javascript', src='/javascripts/OpenArchiWrapper.js')
@@ -93,51 +97,37 @@ block scripts
             }).on("click", function () {
                 $(this).select();
             });
-            var menu = $('#cssmenu');
-            var menuList = menu.find('ul:first');
-            var listItems = menu.find('li').not('#responsive-tab');
-
-            // Create responsive trigger
-            menuList.prepend('<li id="responsive-tab"><a href="#">Menu</a></li>');
-
-            // Toggle menu visibility
-            menu.on('click', '#responsive-tab', function () {
-                listItems.slideToggle('fast');
-                listItems.addClass('collapsed');
-            });
+            //            var menu = $('#cssmenu');
+            //            var menuList = menu.find('ul:first');
+            //            var listItems = menu.find('li').not('#responsive-tab');
+            //
+            //            // Create responsive trigger
+            //            menuList.prepend('<li id="responsive-tab"><a href="#">Menu</a></li>');
+            //
+            //            // Toggle menu visibility
+            //            menu.on('click', '#responsive-tab', function () {
+            //                listItems.slideToggle('fast');
+            //                listItems.addClass('collapsed');
+            //            });
         });
 
 block content
-    div#mainContainer(style="padding-bottom: 15px;")
-        div(style="display: flex")
-            div.sticky(style="display: flex;")
-                a(href="/")
-                    img(src='/images/open-archi.png', width='90', height='50', style="float: left;")
-                a(href="/editor")
-                    h2.title= title
-            div#cssmenu                    
-                ul
-                    li.has-sub
-                        a(href='#')
-                            span Edit
-                        ul
-                            li
-                                a#SaveButton(onclick="save()", disabled=true) Guardar
-                            li
-                                a#LoadButton(onclick="load()") Cargar
-                            li
-                                a#OpenSVGButton(onclick="openSVG()") Exportar como SVG
-                    li.has-sub
-                        a(href='#')
-                            span Examples
-                            if examples
-                                ul#sectionsExamples
-                                    each example in examples
-                                        li
-                                            a(onclick="openContent('" + example.url + "');", resource=example.url)= example.name
-                    li
-                        input#diagramId(name='diagramId', placeholder='Nombre del diagrama...')
-        div#diagramsCanvas(style="justify-content: space-between")
+    .container
+        block menu-element
+            +nav_image_item("/open-archi", "/images/open-archi.png", "Open-Archi", null, "padding-top: 0; padding-bottom: 0;")(width='80', height='50')
+            +nav_item_dropdown("#")(label="Edit")
+                +nav_item("#")(onclick="save()", id="SaveButton") Save
+                +nav_item("#")(onclick="load()", id="LoadButton") Load
+                +nav_item("#")(onclick="openSVG()", id="OpenSVGButton") Export as SVG
+            if examples
+                +nav_item_dropdown("#", null, "sectionsExamples")(label="Examples")
+                    each example in examples
+                        +nav_item("#")(onclick="openContent('" + example.url + "');", resource=example.url)= example.name
+            li
+                input#diagramId(name='diagramId', placeholder='Template name...')
+    .container
+        h2.title= title
+        #diagramsCanvas(style="justify-content: space-between")
             if explanation
                 div#explanation
                     h2#mainTitle(style="margin-top: 0; padding-top: 0; margin-bottom: 30px;")= mainTitle

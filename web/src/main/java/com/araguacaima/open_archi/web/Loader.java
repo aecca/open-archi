@@ -17,8 +17,6 @@ package com.araguacaima.open_archi.web;
 
 import de.neuland.jade4j.template.ClasspathTemplateLoader;
 import org.apache.commons.lang3.SystemUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,7 +27,6 @@ import java.io.Reader;
  */
 public class Loader extends ClasspathTemplateLoader {
 
-    private static Logger log = LoggerFactory.getLogger(Loader.class);
     private String templateRoot;
 
     /**

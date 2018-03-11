@@ -84,7 +84,7 @@ mixin navbar-static-logo(name, text, id, style, href, image, textColor)
 					block
 
 mixin nav_item(href, active)
-	li(class=active): a( href=href )
+	li(class=active): a&attributes(attributes)( href=href )
 		block
 
 mixin nav_image_item(href, image, name, active, style)
@@ -97,12 +97,16 @@ mixin nav_image_item(href, image, name, active, style)
 				img(alt=name, src=image)&attributes(attributes)
 		block
 
-mixin nav_item_dropdown(href, active)
+mixin nav_item_dropdown(href, active, id)
 	- if (!active) var active = "";
+
 	li(class=["dropdown", active])
 		a.dropdown-toggle( href=href, data-toggle="dropdown", role="button", aria-expanded="false" )= attributes.label
 			span.caret
-		ul.dropdown-menu( role="menu" )
+		if (id)
+			ul.dropdown-menu( role="menu", id= id )
+		else
+			ul.dropdown-menu( role="menu")
 				block
 
 mixin nav_divider
