@@ -1,44 +1,44 @@
 extends ../layout
-block meta
-    meta(name="description", content="Composite Specification")
-block menu-element
-    +nav_image_item("/composite-specification", "/images/composite-specification.png", "Composite-Specification", null, "padding-top: 0; padding-bottom: 0;")(width='80', height='50')
-
-block content
-    .container
-        +img-rounded("/images/composite-specification-full.png","Composite Specification", "margin-bottom: 20px;")(width=300, height=125)
-
-        .jumbotron(style="text-align: left")
-            h1 ToC
-            .row
-                a(href="#composite-specification-pattern") Composite Specification Pattern
-            .row
-                a(href="#command") Command
-            .row
-                a(href="#joining-composite-specification-with-command-pattern") Joining Composite Specification with Command Pattern
-            .row
-                a(href="#specificationmap-and-specificationmaputil") SpecificationMap and SpecificationMapUtil
-            .row
-                a(href="#interpreter") Interpreter
-            .row
-                a(href="#how-to-use-it") How to use it?
-            .row
-                a(href="#conclusion") Conclusion
-
-        h1 Composite Specification Pattern
-        p
-            | The <strong>Composite Specification pattern</strong> is a particular implementation of the "Specification"
-            | design pattern, whereby business logic can be recombined by stringing business logic together with Boolean
-            | logic. Next we're going to dedicate a little more space to its detailed description.
-        p
-            | The pattern describes a business logic unit that can be combined with other logical business units. In
-            | this pattern, a business logic unit inherits its functionality from the abstract class
-            | <strong>CompositeSpecification</strong> by aggregation. The class <strong>CompositeSpecification</strong>
-            | has a function called <strong>isSatisfiedBy</strong> that returns a Boolean value. After the instantiation,
-            | the specification is "chained" to other specifications, making the new specifications easy to maintain
-            | besides offering to the business logic a high level of personalization. On the other hand the instantiation
-            | of business logic can, by means of method invocation or control inversion, alter its state to become a
-            | delegate of other classes.
-        p
-            | Here is a class diagram of the basic pattern.
-        +img-rounded("/images/basic-specification-class-diagram.png","Basic Specification class diagram")
+//block meta
+//    meta(name="description", content="Composite Specification")
+//block menu-element
+//    +nav_image_item("/composite-specification", "/images/composite-specification.png", "Composite-Specification", null, "padding-top: 0; padding-bottom: 0;")(width='80', height='50')
+//
+//block content
+//    .container
+//        +img-rounded("/images/composite-specification-full.png","Composite Specification", "margin-bottom: 20px;")(width=300, height=125)
+//
+//        .jumbotron(style="text-align: left")
+//            h1 ToC
+//            .row
+//                a(href="#composite-specification-pattern") Composite Specification Pattern
+//            .row
+//                a(href="#command") Command
+//            .row
+//                a(href="#joining-composite-specification-with-command-pattern") Joining Composite Specification with Command Pattern
+//            .row
+//                a(href="#specificationmap-and-specificationmaputil") SpecificationMap and SpecificationMapUtil
+//            .row
+//                a(href="#interpreter") Interpreter
+//            .row
+//                a(href="#how-to-use-it") How to use it?
+//            .row
+//                a(href="#conclusion") Conclusion
+//
+//        h1 Composite Specification Pattern
+//        p
+//            | The <strong>Composite Specification pattern</strong> is a particular implementation of the "Specification"
+//            | design pattern, whereby business logic can be recombined by stringing business logic together with Boolean
+//            | logic. Next we're going to dedicate a little more space to its detailed description.
+//        p
+//            | The pattern describes a business logic unit that can be combined with other logical business units. In
+//            | this pattern, a business logic unit inherits its functionality from the abstract class
+//            | <strong>CompositeSpecification</strong> by aggregation. The class <strong>CompositeSpecification</strong>
+//            | has a function called <strong>isSatisfiedBy</strong> that returns a Boolean value. After the instantiation,
+//            | the specification is "chained" to other specifications, making the new specifications easy to maintain
+//            | besides offering to the business logic a high level of personalization. On the other hand the instantiation
+//            | of business logic can, by means of method invocation or control inversion, alter its state to become a
+//            | delegate of other classes.
+//        p
+//            | Here is a class diagram of the basic pattern.
+//        +img-rounded("/images/basic-specification-class-diagram.png","Basic Specification class diagram")
