@@ -16,6 +16,7 @@ package com.araguacaima.open_archi.web;
  */
 
 import de.neuland.jade4j.template.ClasspathTemplateLoader;
+import org.apache.commons.lang3.SystemUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,11 +38,14 @@ public class Loader extends ClasspathTemplateLoader {
      * @param templateRoot the template root directory
      */
     public Loader(String templateRoot) {
-        log.error("templateRoot (before): " + templateRoot);
-        if (!templateRoot.endsWith(File.separator)) {
-            templateRoot += File.separator;
+        if (templateRoot.endsWith(File.separator)) {
+            templateRoot = templateRoot.substring(0, templateRoot.length() - 1);
         }
-        log.error("templateRoot (after): " + templateRoot);
+        if (SystemUtils.IS_OS_WINDOWS) {
+            templateRoot = templateRoot.replaceAll("/", File.separator + File.separator);
+        } else {
+            templateRoot = templateRoot.replaceAll("\\\\", File.separator);
+        }
         this.templateRoot = templateRoot;
     }
 
@@ -50,10 +54,16 @@ public class Loader extends ClasspathTemplateLoader {
      */
     @Override
     public Reader getReader(String name) throws IOException {
-        log.error("name: " + name);
         Reader reader = null;
+        if (!name.startsWith(File.separator)) {
+            name = File.separator + name;
+        }
+        if (SystemUtils.IS_OS_WINDOWS) {
+            name = name.replaceAll("/", File.separator + File.separator);
+        } else {
+            name = name.replaceAll("\\\\", File.separator);
+        }
         String name1 = templateRoot + name;
-        log.error("name1: " + name1);
         try {
             reader = super.getReader(name1);
         } catch (Throwable t) {
