@@ -6,26 +6,26 @@ block menu-element
 
 block content
     .container
-        +img-rounded("/images/composite-specification-full.png","Composite Specification", "margin-bottom: 20px;")(width=300, height=125)
-
-        .jumbotron(style="text-align: left")
-            h1 ToC
-            .row
-                a(href="#composite-specification-pattern") Composite Specification Pattern
-            .row
-                a(href="#command") Command
-            .row
-                a(href="#joining-composite-specification-with-command-pattern") Joining Composite Specification with Command Pattern
-            .row
-                a(href="#specificationmap-and-specificationmaputil") SpecificationMap and SpecificationMapUtil
-            .row
-                a(href="#interpreter") Interpreter
-            .row
-                a(href="#how-to-use-it") How to use it?
-            .row
-                a(href="#conclusion") Conclusion
-
-        h1 Composite Specification Pattern
+        h1= title
+        +accordion("toc")
+            +accordion-item-success("ToC","toc")
+                .container
+                    .row
+                        a(href="#composite-specification-pattern") Composite Specification Pattern
+                    .row
+                        a(href="#command") Command
+                    .row
+                        a(href="#joining-composite-specification-with-command-pattern") Joining Composite Specification with Command Pattern
+                    .row
+                        a(href="#specificationmap-and-specificationmaputil") SpecificationMap and SpecificationMapUtil
+                    .row
+                        a(href="#interpreter") Interpreter
+                    .row
+                        a(href="#how-to-use-it") How to use it?
+                    .row
+                        a(href="#conclusion") Conclusion
+    .container
+        h2 Composite Specification Pattern
         p
             | The <strong>Composite Specification pattern</strong> is a particular implementation of the "Specification"
             | design pattern, whereby business logic can be recombined by stringing business logic together with Boolean

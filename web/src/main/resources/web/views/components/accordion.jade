@@ -5,18 +5,17 @@ mixin accordion(id)
 
 //- accordion-item
 mixin accordion-item(type,title,parent,expanded)
-	-var id = title.replace(/\s+/g,"")
-	.panel(class="panel-#{type}")
+	.panel(class="panel-" + type)
 		.panel-heading(role="tab", id="heading#{title}")
 			h4.panel-title
-				a(data-toggle="collapse", data-parent="#accordion#{parent}", href="#collapse#{id}", aria-expanded="true" ,aria-controls="collapseOne")
+				a(data-toggle="collapse", data-parent="#accordion#{parent}", href="#collapse#{title}", aria-expanded="true", aria-controls="collapseOne")
 					= title
 		unless expanded
-			.panel-collapse.collapse(id="collapse#{id}", role="tabpanel", aria-labelledby="heading#{title}")
+			.panel-collapse.collapse(id="collapse#{title}", role="tabpanel", aria-labelledby="heading#{title}")
 				.panel-body
 					block
 		else
-			.panel-collapse.collapse.in(id="collapse#{id}", role="tabpanel", aria-labelledby="heading#{title}")
+			.panel-collapse.collapse.in(id="collapse#{title}", role="tabpanel", aria-labelledby="heading#{title}")
 				.panel-body
 					block
 

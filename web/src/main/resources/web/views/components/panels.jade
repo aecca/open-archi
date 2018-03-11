@@ -1,7 +1,7 @@
 //- panel
 mixin panel(type,title)
-	.panel(class="panel-${type}")
-		if title !== undefined
+	.panel(class="panel-" + type)
+		if title
 			.panel-heading
 				h3.panel-title= title
 			.panel-body

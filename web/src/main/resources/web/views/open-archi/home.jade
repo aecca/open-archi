@@ -6,14 +6,15 @@ block menu-element
 
 block content
     .container
-        +img-rounded("/images/open-archi.png","Open Archi")(width=250, height=145)
-        .jumbotron(style="text-align: left")
-            h1 ToC
-            .row
-                a(href="#tools") Tools
-            .row
-                a(href="#spec") Spec
-
+        h1= title
+        +accordion("toc")
+            +accordion-item-success("ToC","toc")
+                .container
+                    .row
+                        a(href="#tools") Tools
+                    .row
+                        a(href="#spec") Spec
+    .container
         .row#tools
             .col-lg-6
                 h2 Api
@@ -28,9 +29,8 @@ block content
                 p
                     a.btn.btn-primary(href='/open-archi/editor', role='button') View details »
         .row#spec
-            h1 Open Archi
             p.lead
-                | Social network for the management of enterprise architecture, including:
+                | Open Archi is a Social network for the management of enterprise architecture, including:
                 div.well
                     ul.lead
                         li Knowledge base of architectural components.
@@ -44,4 +44,3 @@ block content
                         li Automation of communication about its evolution.
                         li Ease of design of architectural models.
                         li Collaborative construction
-            p
