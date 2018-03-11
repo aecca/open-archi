@@ -1,8 +1,8 @@
-extends ../layout
+extends /web/views/layout
 block meta
     meta(name="description", content="Composite Specification")
-//block menu-element
-//    +nav_image_item("/composite-specification", "/images/composite-specification.png", "Composite-Specification", null, "padding-top: 0; padding-bottom: 0;")(width='80', height='50')
+block menu-element
+    +nav_image_item("/composite-specification", "/images/composite-specification.png", "Composite-Specification", null, "padding-top: 0; padding-bottom: 0;")(width='80', height='50')
 
 block content
     .container
