@@ -1,0 +1,23 @@
+extends ../layout
+block meta
+    meta(name="description", content="OpenArchi")
+block menu-element
+    +nav_image_item("/open-archi","/images/OpenArchi.png", "Open-Archi", "active")(width='90', height='50')
+
+block content
+    .container
+        .row
+            .col-lg-2
+                h2 Api
+                p.text-danger
+                    | As of v8.0, Safari exhibits a bug in which resizing your browser horizontally causes rendering errors in the justified nav that are cleared upon refreshing.
+                p
+                    | Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
+                p
+                    a.btn.btn-primary(href='/open-archi/api', role='button') View details »
+            .col-lg-2
+                h2 Editor
+                p
+                    | Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
+                p
+                    a.btn.btn-primary(href='/open-archi/editor', role='button') View details »
