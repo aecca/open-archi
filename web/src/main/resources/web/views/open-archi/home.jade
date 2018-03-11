@@ -1,12 +1,21 @@
 extends ../layout
 block meta
-    meta(name="description", content="OpenArchi")
+    meta(name="description", content="Open Archi")
 block menu-element
-    +nav_image_item("/open-archi", "/images/OpenArchi.png", "Open-Archi", null, "padding-top: 0; padding-bottom: 0;")(width='80', height='50')
+    +nav_image_item("/open-archi", "/images/open-archi.png", "Open-Archi", null, "padding-top: 0; padding-bottom: 0;")(width='80', height='50')
 
 block content
     .container
-        .row
+        +img-rounded("/images/open-archi.png","Open Archi")(width=250, height=145)
+        .jumbotron(style="text-align: left")
+            h1 ToC
+            .row
+                a(href="#tools") Tools
+            .row
+                a(href="#spec") Spec
+
+        h1 Open Archi
+        .row#tools
             .col-lg-6
                 h2 Api
                 p.text-danger
@@ -21,3 +30,20 @@ block content
                     | Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
                 p
                     a.btn.btn-primary(href='/open-archi/editor', role='button') View details »
+        .row#spec
+            p.lead
+                | Social network for the management of enterprise architecture, including:
+                div.well
+                    ul.lead
+                        li Knowledge base of architectural components.
+                        li Interrelation of business architecture elements (TOGAF and C4Model based Architecture Framework):
+                            ul
+                                li Enterprise Architecture
+                                li Applications Architecture,
+                                li Data Architecture,
+                                li Technological Architecture
+                        li Administration and interrelation of component thru DevOps.
+                        li Automation of communication about its evolution.
+                        li Ease of design of architectural models.
+                        li Collaborative construction
+            p

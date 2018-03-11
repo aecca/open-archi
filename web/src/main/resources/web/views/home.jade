@@ -6,7 +6,9 @@ block content
 
         // Jumbotron
         .jumbotron(style="text-align: left")
-            +img-rounded("/images/open-archi.png","Open Archi")(width=250, height=145)
+            a(href="/open-archi")
+                +img-rounded("/images/open-archi.png","Open Archi")(width=250, height=145)
+            br
             p.lead
                 | Social network for the management of enterprise architecture, including:
                 div.well
@@ -23,15 +25,17 @@ block content
                         li Ease of design of architectural models.
                         li Collaborative construction
             p
-                a.btn.btn-lg.btn-success(href='/open-archi/api', role='button') View details »
+                a.btn.btn-lg.btn-success(href='/open-archi', role='button') View details »
 
         // Main component for a primary marketing message or call to action
         .jumbotron(style="text-align: right")
-            +img-rounded("/images/composite-specification-full.png","Composite Specification")(width=300, height=125)
+            a(href="/composite-specification")
+                +img-rounded("/images/composite-specification-full.png","Composite Specification")(width=300, height=125)
+            br
             p.lead
                 | The Composite Specification pattern is a particular implementation of the "Specification" design pattern, whereby business logic can be recombined by stringing business logic together with Boolean logic..
             p
-                a.btn.btn-lg.btn-primary(href='#navbar', role='button') View details »
+                a.btn.btn-lg.btn-primary(href='/composite-specification', role='button') View details »
 
         // Example row of columns
         .row

@@ -289,12 +289,18 @@ public class Server {
             mapHome.put("title", "Home");
             get("/", (req, res) ->  new ModelAndView(mapHome, "home"), engine);
         });
+        redirect.get("/composite-specification", "/composite-specification/", Redirect.Status.TEMPORARY_REDIRECT);
+        path("/composite-specification", () -> {
+            Map<String, Object> mapHome = new HashMap<>();
+            mapHome.put("title", "Composite Specification");
+            get("/", (req, res) -> new ModelAndView(mapHome, "/composite-specification/home"), engine);
+        });
         redirect.get("/open-archi", "/open-archi/", Redirect.Status.TEMPORARY_REDIRECT);
         path("/open-archi", () -> {
             redirect.get("/api", "/open-archi/api/", Redirect.Status.PERMANENT_REDIRECT);
             redirect.get("/editor", "/open-archi/editor/", Redirect.Status.PERMANENT_REDIRECT);
             Map<String, Object> mapHome = new HashMap<>();
-            mapHome.put("title", "OpenArchi");
+            mapHome.put("title", "Open Archi");
             get("/", (req, res) -> new ModelAndView(mapHome, "/open-archi/home"), engine);
             path("/editor", () -> {
                 Map<String, Object> mapEditor = new HashMap<>();
