@@ -87,10 +87,14 @@ mixin nav_item(href, active)
 	li(class=active): a( href=href )
 		block
 
-mixin nav_image_item(href, image, name, active)
+mixin nav_image_item(href, image, name, active, style)
 	li(class=active)
-		a( href=href )
-			img(alt=name, src=image)&attributes(attributes)
+		if style
+			a( href=href, style=style )
+				img(alt=name, src=image)&attributes(attributes)
+		else
+			a( href=href )
+				img(alt=name, src=image)&attributes(attributes)
 		block
 
 mixin nav_item_dropdown(href, active)
