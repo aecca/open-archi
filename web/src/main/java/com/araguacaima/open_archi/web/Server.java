@@ -78,7 +78,7 @@ public class Server {
             response.body(render(errorMap, "error"));
         }
     };
-    private static TemplateLoader templateLoader = new SparkClasspathTemplateLoader("web/views/");
+    private static TemplateLoader templateLoader = new Loader("web/views");
     private static ReflectionUtils reflectionUtils = new ReflectionUtils(null);
     private static Taggable deeplyFulfilledParentModel;
     private static Taggable deeplyFulfilledParentModel_1;
