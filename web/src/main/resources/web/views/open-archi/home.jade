@@ -14,9 +14,11 @@ block content
                     .row
                         a(href="#spec") Spec
     .container
-        .row#tools
+        h2 Tools
+
+        .row
             .col-lg-6
-                h2 Api
+                h2#tools Api
                 p
                     | Api for open-archi model management
                 p
@@ -28,18 +30,20 @@ block content
                 p
                     a.btn.btn-primary(href='/open-archi/editor', role='button') View details »
         .row#spec
-            p.lead
-                | Open Archi is a Social network for the management of enterprise architecture, including:
-                div.well
-                    ul.lead
-                        li Knowledge base of architectural components.
-                        li Interrelation of business architecture elements (TOGAF and C4Model based Architecture Framework):
-                            ul
-                                li Enterprise Architecture
-                                li Applications Architecture,
-                                li Data Architecture,
-                                li Technological Architecture
-                        li Administration and interrelation of component thru DevOps.
-                        li Automation of communication about its evolution.
-                        li Ease of design of architectural models.
-                        li Collaborative construction
+            .container
+                hr
+                p.lead
+                    | Open Archi is a Social network for the management of enterprise architecture, including:
+                    div.well
+                        ul.lead
+                            li Knowledge base of architectural components
+                            li Intergration with the whole business concepts (TOGAF and C4Model based Architecture Framework):
+                                ul
+                                    li Enterprise Architecture
+                                    li Applications Architecture
+                                    li Data Architecture
+                                    li Technological Architecture
+                            li Administration and interrelation of component thru DevOps
+                            li Automation of communication about its evolution
+                            li Ease of design of architectural models
+                            li Collaborative construction

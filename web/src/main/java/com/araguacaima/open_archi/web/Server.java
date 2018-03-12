@@ -289,6 +289,12 @@ public class Server {
             mapHome.put("title", "Home");
             get("/", (req, res) ->  new ModelAndView(mapHome, "home"), engine);
         });
+        redirect.get("/raas", "/raas/", Redirect.Status.TEMPORARY_REDIRECT);
+        path("/raas", () -> {
+            Map<String, Object> mapHome = new HashMap<>();
+            mapHome.put("title", "Rules as a Service");
+            get("/", (req, res) -> new ModelAndView(mapHome, "/raas/home"), engine);
+        });
         redirect.get("/composite-specification", "/composite-specification/", Redirect.Status.TEMPORARY_REDIRECT);
         path("/composite-specification", () -> {
             Map<String, Object> mapHome = new HashMap<>();

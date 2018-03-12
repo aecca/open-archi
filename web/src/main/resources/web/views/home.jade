@@ -6,45 +6,64 @@ block content
 
         // Jumbotron
         .jumbotron(style="text-align: left")
-            a(href="/open-archi")
-                +img-rounded("/images/open-archi.png","Open Archi", "margin-bottom: 20px;")(width=250, height=145)
+            .container
+                a(href="/open-archi")
+                    +img-rounded("/images/open-archi.png","Open Archi", "margin-bottom: 20px;")(width=250, height=145)
 
-            p.lead
-                | Social network for the management of enterprise architecture, including:
-                div.well
-                    ul.lead
-                        li Knowledge base of architectural components.
-                        li Interrelation of business architecture elements (TOGAF and C4Model based Architecture Framework):
-                            ul
-                                li Enterprise Architecture
-                                li Applications Architecture,
-                                li Data Architecture,
-                                li Technological Architecture
-                        li Administration and interrelation of component thru DevOps.
-                        li Automation of communication about its evolution.
-                        li Ease of design of architectural models.
-                        li Collaborative construction
-            p
-                a.btn.btn-lg.btn-success(href='/open-archi', role='button') View details »
+                p.lead
+                    | Social network for the management of enterprise architecture, including:
+                    div.well
+                        ul.lead
+                            li Knowledge base of architectural components.
+                            li Interrelation of business architecture elements (TOGAF and C4Model based Architecture Framework):
+                                ul
+                                    li Enterprise Architecture
+                                    li Applications Architecture,
+                                    li Data Architecture,
+                                    li Technological Architecture
+                            li Administration and interrelation of component thru DevOps.
+                            li Automation of communication about its evolution.
+                            li Ease of design of architectural models.
+                            li Collaborative construction
+                p
+                    a.btn.btn-lg.btn-success(href='/open-archi', role='button') View details »
 
-        // Main component for a primary marketing message or call to action
         .jumbotron(style="text-align: right")
-            a(href="/composite-specification")
-                +img-rounded("/images/composite-specification-full.png","Composite Specification", "margin-bottom: 20px;")(width=300, height=125)
-            br
-            p.lead
-                | The Composite Specification pattern is a particular implementation of the "Specification" design pattern, whereby business logic can be recombined by stringing business logic together with Boolean logic..
-            p
-                a.btn.btn-lg.btn-primary(href='/composite-specification', role='button') View details »
+            .container
+                a(href="/composite-specification")
+                    +img-rounded("/images/composite-specification-full.png","Composite Specification", "margin-bottom: 20px;")(width=300, height=125)
+                br
+                p.lead
+                    | The Composite Specification pattern is a particular implementation of the "Specification" design pattern, whereby business logic can be recombined by stringing business logic together with Boolean logic..
+                p
+                    a.btn.btn-lg.btn-primary(href='/composite-specification', role='button') View details »
 
-        // Example row of columns
+        .jumbotron(style="text-align: left")
+            .container
+                a(href="/raas")
+                    +img-rounded("/images/raas.png","Rules as a Service", "margin-bottom: 20px;")(width=190, height=160)
+                br
+                p.lead
+                    | Rules as a Service is an API that expose the world famous Rules engine JBOSS Drools as a service by making, easy way to configure business rules and apply it to your custom business objects by configuring nothing more than a Rules Spreadsheet and invoke the proper validation API.
+                p
+                    a.btn.btn-lg.btn-info(href='/raas', role='button') View details »
+
         .row
             .col-lg-4
-                h2 Lorem ipsum!
-                p.text-danger
-                    | As of v8.0, Safari exhibits a bug in which resizing your browser horizontally causes rendering errors in the justified nav that are cleared upon refreshing.
+                h2 Commons Utils
                 p
-                    | Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
+                    | Common utilities is a set of java utilities for managing commmon actions when working with enums,
+                    | files, exceptions, zip/jar files, classes (via Reflection), maps, numbers and so on.
+                p
+                    | Most of the utilities extend functionalities covered in amazing libraries like:
+                p
+                    ul.lead
+                        li commons-beanutils (apache)
+                        li commons-lang3 (apache)
+                        li commons-io (apache)
+                        li commons-math3 (apache)
+                        li commons-collections4 (apache)
+                        li jreversepro (akkumar)
                 p
                     a.btn.btn-primary(href='#', role='button') View details »
             .col-lg-4
