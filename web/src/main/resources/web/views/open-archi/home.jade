@@ -4,6 +4,25 @@ block meta
     meta(name="description", content="Open Archi")
 
 block content
+
+    .container
+        hr
+        .well
+            p.lead
+                | Open Archi is a Social network for the management of enterprise architecture, including:
+                ul
+                    li Knowledge base of architectural components
+                    li Intergration with the main business concepts (TOGAF and C4Model based Architecture Framework):
+                        ul
+                            li Enterprise Architecture
+                            li Applications Architecture
+                            li Data Architecture
+                            li Technological Architecture
+                    li Administration and interrelation of component thru DevOps
+                    li Automation of communication about its evolution
+                    li Ease of design of architectural models
+                    li Collaborative construction
+                    li Automation of the application of business rules related to enterprise architecture
     .container
         h1= title
         +accordion("toc")
@@ -15,10 +34,9 @@ block content
                         a(href="#spec") Spec
     .container
         h2 Tools
-
-        .row
+        .row#tools
             .col-lg-6
-                h2#tools Api
+                h2 Api
                 p
                     | Api for open-archi model management
                 p
@@ -30,20 +48,3 @@ block content
                 p
                     a.btn.btn-primary(href='/open-archi/editor', role='button') View details »
         .row#spec
-            .container
-                hr
-                p.lead
-                    | Open Archi is a Social network for the management of enterprise architecture, including:
-                    div.well
-                        ul.lead
-                            li Knowledge base of architectural components
-                            li Intergration with the whole business concepts (TOGAF and C4Model based Architecture Framework):
-                                ul
-                                    li Enterprise Architecture
-                                    li Applications Architecture
-                                    li Data Architecture
-                                    li Technological Architecture
-                            li Administration and interrelation of component thru DevOps
-                            li Automation of communication about its evolution
-                            li Ease of design of architectural models
-                            li Collaborative construction

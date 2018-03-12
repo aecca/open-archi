@@ -8,7 +8,7 @@ block content
         .jumbotron(style="text-align: left")
             .container
                 a(href="/open-archi")
-                    +img-rounded("/images/open-archi.png","Open Archi", "margin-bottom: 20px;")(width=250, height=145)
+                    +img-responsive-rounded("/images/open-archi.png","Open Archi", "margin-bottom: 20px; text-align: left")(width=200, height=120)
 
                 p.lead
                     | Social network for the management of enterprise architecture, including:
@@ -31,7 +31,7 @@ block content
         .jumbotron(style="text-align: right")
             .container
                 a(href="/composite-specification")
-                    +img-rounded("/images/composite-specification-full.png","Composite Specification", "margin-bottom: 20px;")(width=300, height=125)
+                    +img-responsive-rounded("/images/composite-specification-full.png","Composite Specification", "margin-bottom: 20px; text-align: right")(width=240, height=110)
                 br
                 p.lead
                     | The Composite Specification pattern is a particular implementation of the "Specification" design pattern, whereby business logic can be recombined by stringing business logic together with Boolean logic..
@@ -41,7 +41,7 @@ block content
         .jumbotron(style="text-align: left")
             .container
                 a(href="/raas")
-                    +img-rounded("/images/raas.png","Rules as a Service", "margin-bottom: 20px;")(width=190, height=160)
+                    +img-responsive-rounded("/images/raas.png","Rules as a Service", "margin-bottom: 20px; text-align: left")(width=150, height=125)
                 br
                 p.lead
                     | Rules as a Service is an API that expose the world famous Rules engine JBOSS Drools as a service by making, easy way to configure business rules and apply it to your custom business objects by configuring nothing more than a Rules Spreadsheet and invoke the proper validation API.
@@ -57,7 +57,7 @@ block content
                 p
                     | Most of the utilities extend functionalities covered in amazing libraries like:
                 p
-                    ul.lead
+                    ul
                         li commons-beanutils (apache)
                         li commons-lang3 (apache)
                         li commons-io (apache)

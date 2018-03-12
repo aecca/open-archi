@@ -1,7 +1,11 @@
 //- Image mixins
 mixin img-responsive(_src,_alt, _style)
 	img&attributes(attributes).img-responsive(src=_src, alt=_alt, style=_style)
-	
+
+//- Image mixins
+mixin img-responsive-rounded(_src,_alt, _style)
+	img&attributes(attributes).img-responsive.img-rounded(src=_src, alt=_alt, style=_style)
+
 mixin img-responsive-center(_src,_alt, _style)
 	img&attributes(attributes).img-responsive.center-block(src=_src, alt=_alt, style=_style)
 
