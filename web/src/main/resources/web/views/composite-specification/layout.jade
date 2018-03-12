@@ -1,5 +1,17 @@
 extends ../layout
 
+append styles
+    link(rel="stylesheet", href="/stylesheets/highlight.css")
+
+append scripts
+    script(src="/javascripts/highlight.js")
+    script.
+        $(document).ready(function () {
+            $('pre code').each(function (i, block) {
+                hljs.highlightBlock(block);
+            });
+        });
+
 block body
     +navbar-fixed-logo("Composite-Specification", null, "navbar", null, "/composite-specification", "/images/composite-specification.png", "#1E97C2")(width="60px", height="50px")
         block extra-menu-elements

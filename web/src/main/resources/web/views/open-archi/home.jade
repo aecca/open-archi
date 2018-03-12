@@ -4,15 +4,23 @@ block meta
     meta(name="description", content="Open Archi")
 
 block content
-
+    .container
+        .row.align-items-center
+            .col-sm-6
+                h1= title
+            .col-sm-6.text-right
+                +a-btn-primary("https://github.com/araguacaima/open-archi")(target="blank")
+                    span.text-white
+                        i.fab.fa-github
+                        strong &nbsp;Clone
     .container
         hr
         .well
-            p.lead
-                | Open Archi is a Social network for the management of enterprise architecture, including:
+            p
+                | <strong>Open Archi is a Social network for the management of enterprise architecture</strong>, including:
                 ul
                     li Knowledge base of architectural components
-                    li Intergration with the main business concepts (TOGAF and C4Model based Architecture Framework):
+                    li Intergration witd the main business concepts (TOGAF and C4Model based Architecture Framework):
                         ul
                             li Enterprise Architecture
                             li Applications Architecture
@@ -24,7 +32,6 @@ block content
                     li Collaborative construction
                     li Automation of the application of business rules related to enterprise architecture
     .container
-        h1= title
         +accordion("toc")
             +accordion-item-success("ToC","toc")
                 .container
@@ -32,9 +39,11 @@ block content
                         a(href="#tools") Tools
                     .row
                         a(href="#spec") Spec
-    .container
+                    .row
+                        a(href="#roadmap") Roadmap
+    .container#tools
         h2 Tools
-        .row#tools
+        .row
             .col-lg-6
                 h2 Api
                 p
@@ -47,4 +56,51 @@ block content
                     | A graphical editor to compose and reuse architecture diagrams
                 p
                     a.btn.btn-primary(href='/open-archi/editor', role='button') View details »
-        .row#spec
+    .container#spec
+        h2 Spec
+        .row
+    .container#roadmap
+        h2 Roadmap
+        .table-responsive
+            table.table.table-striped
+                tbody
+                    tr
+                        td Implementation of C4-Model DB
+                    tr
+                        td
+                            +progress-bar-success(80)(style="margin-bottom: 0;")
+                    tr
+                        td Implementation of Archimate DB
+                    tr
+                        td
+                            +progress-bar-danger(5)(style="margin-bottom: 0;")
+                    tr
+                        td API layer
+                    tr
+                        td
+                            +progress-bar-success(75)(style="margin-bottom: 0;")
+                    tr
+                        td Architecture diagrams editor
+                    tr
+                        td
+                            +progress-bar-info(30)(style="margin-bottom: 0;")
+                    tr
+                        td Integration witd Architect Solution Model
+                    tr
+                        td
+                            +progress-bar-info(30)(style="margin-bottom: 0;")
+                    tr
+                        td Connectors for automatic extraction
+                    tr
+                        td
+                            +progress-bar-danger(5)(style="margin-bottom: 0;")
+                    tr
+                        td Artificial Intelligence based models
+                    tr
+                        td
+                            +progress-bar-danger(5)(style="margin-bottom: 0;")
+                    tr
+                        td Use of Rules as a service for models validation
+                    tr
+                        td
+                            +progress-bar-warning(15)(style="margin-bottom: 0;")

@@ -228,6 +228,44 @@ paths:
 #            allOf:
 #            - $ref: "#/definitions/Options_Get_Collection"
 #            - $ref: "#/definitions/Options_Put"
+  "/models/{model-id}/status/{statud-id}":
+    put:
+      tags:
+      - Models
+      summary: Replace the current status of the model
+      description:
+      operationId: replace-model-status
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: model-id
+        in: path
+        description: ID of the model to return
+        required: true
+        type: string
+      - name: statud-id
+        in: path
+        description: ID of the status for replacing
+        required: true
+        type: string
+        enum:
+        - INITIAL
+        - PROPOSAL
+        - IN_PROGRESS
+        - PUBLISHED
+        - DEPRECATED
+      responses:
+        '200':
+          description: OK
+        '405':
+          description: Invalid input
+      security:
+      - openarchi_auth:
+        - write:model
+        - read:models
+
   "/models/{model-id}/children":
     get:
       tags:
@@ -5000,6 +5038,14 @@ definitions:
           description: Tags of the model
           items:
             type: string
+        status:
+          type: string
+          enum:
+          - INITIAL
+          - PROPOSAL
+          - IN_PROGRESS
+          - PUBLISHED
+          - DEPRECATED
       required:
       - id
   Taggable_Create:
@@ -5013,6 +5059,14 @@ definitions:
           description: Tags of the model
           items:
             type: string
+        status:
+          type: string
+          enum:
+          - INITIAL
+          - PROPOSAL
+          - IN_PROGRESS
+          - PUBLISHED
+          - DEPRECATED
   Constraint:
     type: object
   Constraints:

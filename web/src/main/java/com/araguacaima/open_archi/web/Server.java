@@ -904,7 +904,7 @@ public class Server {
                         return throwError(response, ex);
                     }
                 });
-                patch("/models/:uuid", (request, response) -> {
+                patch("/models/:uuid/status/:sid", (request, response) -> {
                     try {
                         Taggable model = jsonUtils.fromJSON(request.body(), Taggable.class);
                         if (model == null) {
@@ -912,7 +912,9 @@ public class Server {
                         }
                         String id = request.params(":uuid");
                         model.setId(id);
-                        model.validateModification();
+                        String sid = request.params(":sid");
+                        model.setStatus((Status) enumsUtils.getEnum(Status.class, sid));
+                        model.validateReplacement();
                         DBUtil.update(model);
                         response.status(HTTP_OK);
                         return EMPTY_RESPONSE;
@@ -922,6 +924,11 @@ public class Server {
                     } catch (Throwable ex) {
                         return throwError(response, ex);
                     }
+                });
+                put("/models/:uuid/children", (request, response) -> {
+                    response.status(HTTP_NOT_IMPLEMENTED);
+                    response.type(JSON_CONTENT_TYPE);
+                    return EMPTY_RESPONSE;
                 });
                 options("/models/:uuid/children", (request, response) -> {
                     setCORS(request, response);

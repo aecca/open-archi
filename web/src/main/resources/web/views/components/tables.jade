@@ -1,6 +1,6 @@
 //- table mixins
 mixin table(header,data,type)
-	- var type = type || ""
+	- if (!type) var type = ""
 	table.table(class="#{type}")
 		thead
 			tr
