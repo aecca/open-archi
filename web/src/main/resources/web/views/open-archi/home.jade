@@ -40,7 +40,9 @@ block content
                     .row
                         a(href="#features") Features
                     .row
-                        a(href="#spec") Spec
+                        a(href="#inspiration") Inspiration
+                    .row
+                        a(href="#spec") Technical Specification
                     .row
                         a(href="#roadmap") Roadmap
     .container#tools
@@ -78,12 +80,92 @@ block content
                     | Information is fed automatically or manually, agnostically to a particular project or scenario. That
                     | is, with Open-Archi the enterise architecture evolves always.
                 h3 Ease of integration
-                p   | We have a layer of APIs so that anyone can manage the knowledge base of enterprise architecture
+                p
+                    | We have a layer of APIs so that anyone can manage the knowledge base of enterprise architecture
                     | components or integrate it into their pipelines (DevOps)
 
+    .container#inspiration
+        h2 Inspiration
+        p
+            | For the conception of Open-Archi I have been inspired by 3 formidable initiatives:
+            ul
+                li
+                    | The amazing AWS architectures design tool &nbsp;
+                    a(href="https://cloudcraft.co") Cloudcraft
+                li
+                    | The flexible abstraction of the&nbsp;
+                    a(href="http://c4model.com") C4Model
+                    | for the design of architectures
+                li
+                    | The proposed interrelation of functional, non-functional, business and technical elements for the
+                    | design of business architectures present in the &nbsp;
+                    a(href="https://publications.opengroup.org/standards/archimate") ArchiMate specification
+                    | and the &nbsp;
+                    a(href="http://pubs.opengroup.org/architecture/togaf9-doc/arch/chap41.html") TOGAF framework
+        p
+            | The integration of these initiatives results in the conception of this social network that seeks to
+            | satisfy the need for all functional and technical areas and all business units to make available to the
+            | entire organization the information they handle in their area of competence so that the teams that design
+            | business solutions can find unified everything necessary for effective decision-making regarding business
+            | architecture
+
     .container#spec
-        h2 Spec
-        .row
+        h2 Technical Specification
+        p
+            h2.sub-header Feature vs Technology
+            .table-responsive
+                table.table.table-striped
+                    thead
+                        tr
+                            th Feature
+                            th Technology
+                            th Site
+                    tbody
+                        tr
+                            td REST Api layer
+                            td Java Spark Framework
+                            td
+                                a(href("http://sparkjava.com") http://sparkjava.com
+                        tr
+                            td REST Documentation
+                            td OpenAPI Specification (formerly Swagger)
+                            td
+                                a(href("https://swagger.io") https://swagger.io
+                        tr
+                            td REST API Layer Sandbox
+                            td Swagger UI
+                            td
+                                a(href="https://swagger.io/swagger-ui") https://swagger.io/swagger-ui
+                        tr
+                            td Rules as a Service
+                            td JBoss Drools
+                            td
+                                a(href="https://www.drools.org") https://www.drools.org
+                        tr
+                            td Open Archi Graphical Editor
+                            td GoJS &reg;
+                            td
+                                a(href="https://gojs.net") https://gojs.net
+                        tr
+                            td Social Network (Core)
+                            td Open Social
+                            td
+                                a(href="https://opensocial.atlassian.net/wiki/spaces/OSD/pages/526570/Specs") https://opensocial.atlassian.net/wiki/spaces/OSD/pages/526570/Specs
+                        tr
+                            td Social Network (Impl)
+                            td Apache Rave
+                            td
+                                a(href="https://rave.apache.org") https://rave.apache.org
+                        tr
+                            td Knowledge base
+                            td PostgreSQL
+                            td
+                                a(href="https://www.postgresql.org") https://www.postgresql.org
+                        tr
+                            td Persistence
+                            td Hibernate JPA
+                            td
+                                a(href="http://hibernate.org") http://hibernate.org
     .container#roadmap
         h2 Roadmap
         .table-responsive
