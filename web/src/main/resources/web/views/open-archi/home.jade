@@ -38,6 +38,8 @@ block content
                     .row
                         a(href="#tools") Tools
                     .row
+                        a(href="#features") Features
+                    .row
                         a(href="#spec") Spec
                     .row
                         a(href="#roadmap") Roadmap
@@ -56,6 +58,29 @@ block content
                     | A graphical editor to compose and reuse architecture diagrams
                 p
                     a.btn.btn-primary(href='/open-archi/editor', role='button') View details »
+    .container#features
+        h2 Features
+        .row
+            .container
+                h3 A architecture social network on which the community is the who keeps it
+                p
+                    | CRUD of the entire exterprise architecture comes from the community (Wiki style)
+                p
+                    | Anyone inside the organization can "edit" or "create" content. Another can undo or alter this edition.
+                    | With a continuos usage, the "real" information possible will be revealed, but not only about
+                    | technological point of view. TOGAF model demands an interaction of all areas of the organization
+                    | each on adding a part of the entire enterprise estrategy and goals. With Open-Archi you could relate
+                    | a specific software class with the main objective the organization attemps to reach .
+                h3 Open-Archi is present at all times
+                p
+                    | Every piece of information (not only technological) can be archieved independently of a specific
+                    | project. Each of those pieces could, in the future, feed the design of a specific solution.
+                    | Information is fed automatically or manually, agnostically to a particular project or scenario. That
+                    | is, with Open-Archi the enterise architecture evolves always.
+                h3 Ease of integration
+                p   | We have a layer of APIs so that anyone can manage the knowledge base of enterprise architecture
+                    | components or integrate it into their pipelines (DevOps)
+
     .container#spec
         h2 Spec
         .row
@@ -68,44 +93,49 @@ block content
                         td
                             | Implementation of C4-Model DB
                             br
-                            +progress-bar-success(80)(style="margin-bottom: 0;")
+                            +progress-bar-success(80)(style="margin-bottom: 5px;")
                     tr
                         td
                             | Sandbox per organization
                             br
-                            +progress-bar-danger(5)(style="margin-bottom: 0;")
+                            +progress-bar-danger(2)(style="margin-bottom: 5px;")
                     tr
                         td
                             | Implementation of Archimate DB
                             br
-                            +progress-bar-danger(5)(style="margin-bottom: 0;")
+                            +progress-bar-danger(5)(style="margin-bottom: 5px;")
                     tr
                         td
                             | API layer
                             br
-                            +progress-bar-success(75)(style="margin-bottom: 0;")
+                            +progress-bar-success(75)(style="margin-bottom: 5px;")
                     tr
                         td
                             | Architecture diagrams editor
                             br
-                            +progress-bar-info(60)(style="margin-bottom: 0;")
+                            +progress-bar-info(60)(style="margin-bottom: 5px;")
                     tr
                         td
                             | Integration with Architect Solution Model
                             br
-                            +progress-bar-info(30)(style="margin-bottom: 0;")
+                            +progress-bar-info(30)(style="margin-bottom: 5px;")
                     tr
                         td
                             | Connectors for automatic extraction
                             br
-                            +progress-bar-danger(5)(style="margin-bottom: 0;")
+                            +progress-bar-danger(5)(style="margin-bottom: 5px;")
                     tr
                         td
                             | Artificial Intelligence based models
                             br
-                            +progress-bar-danger(5)(style="margin-bottom: 0;")
+                            +progress-bar-danger(5)(style="margin-bottom: 5px;")
                     tr
                         td
                             | Use of Rules as a service for models validation
                             br
-                            +progress-bar-warning(15)(style="margin-bottom: 0;")
+                            +progress-bar-warning(15)(style="margin-bottom: 5px;")
+                    tr
+                        td
+                            | DevOps integration
+                            br
+                            +progress-bar-danger(2)(style="margin-bottom: 5px;")

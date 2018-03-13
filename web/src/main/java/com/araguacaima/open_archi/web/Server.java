@@ -286,8 +286,20 @@ public class Server {
         });
         path("/", () -> {
             Map<String, Object> mapHome = new HashMap<>();
-            mapHome.put("title", "Home");
+            mapHome.put("title", "Araguacaima | Solutions for the open source community");
             get("/", (req, res) ->  new ModelAndView(mapHome, "home"), engine);
+        });
+        redirect.get("/about", "/about/", Redirect.Status.TEMPORARY_REDIRECT);
+        path("/about", () -> {
+            Map<String, Object> mapHome = new HashMap<>();
+            mapHome.put("title", "About araguacaima");
+            get("/", (req, res) -> new ModelAndView(mapHome, "/about"), engine);
+        });
+        redirect.get("/contact", "/contact/", Redirect.Status.TEMPORARY_REDIRECT);
+        path("/contact", () -> {
+            Map<String, Object> mapHome = new HashMap<>();
+            mapHome.put("title", "Contact araguacaima");
+            get("/", (req, res) -> new ModelAndView(mapHome, "/contact"), engine);
         });
         redirect.get("/raas", "/raas/", Redirect.Status.TEMPORARY_REDIRECT);
         path("/raas", () -> {
