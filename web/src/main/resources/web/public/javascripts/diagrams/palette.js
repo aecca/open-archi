@@ -79,6 +79,12 @@ function showPaletteByType(paletteData) {
                 });
             }
             myPalette.model = new go.GraphLinksModel(paletteModelArray);
+            myPalette.addDiagramListener("InitialLayoutCompleted", function (diagramEvent) {
+                const pdrag = document.getElementById("paletteDraggable");
+                const palette = diagramEvent.diagram;
+                pdrag.style.width = palette.documentBounds.width + 28 + "px"; // account for padding/borders
+                pdrag.style.height = palette.documentBounds.height + 38 + "px";
+            });
             break;
         case "BPM":
             break;

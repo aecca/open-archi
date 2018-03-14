@@ -7,12 +7,39 @@ append styles
     link(rel='stylesheet', type='text/css', href='/stylesheets/jquery-ui.css')
     link(rel='stylesheet', type='text/css', href='/stylesheets/autocomplete.css')
     link(rel='stylesheet', type='text/css', href='/stylesheets/menu.css')
+    link(rel='stylesheet', type='text/css', href='/stylesheets/dataInspector.css')
+    link(rel='stylesheet', type='text/css', href='/stylesheets/palette.css')
+    style.
+
+        /*
+        One simple way of making a div fill its space,
+        with allowances for the title (top) and the resize handle (bottom)
+        */
+        #dataModelContainer {
+            position: absolute;
+            bottom: 14px;
+            left: 0px;
+            right: 0px;
+            top: 14px;
+        }
+
+        .innerEditor {
+            height: 100%;
+            margin: 0;
+            min-height: 100%; /*for mozilla*/
+        }
+
+        html > body > div .innerEditor {
+            height: auto;
+        }
+
 
 append scripts
     script(type='text/javascript', src='/javascripts/jquery-ui.js')
     script(src='/javascripts/go.js')
     script(type='text/javascript', src='/javascripts/OpenArchiWrapper.js')
     script(type='text/javascript', src='/javascripts/editor.js')
+    script(type='text/javascript', src='/javascripts/diagrams/dataInspector.js')
     script#code(type="text/javascript")
     script.
         let myDiagram;
@@ -40,12 +67,35 @@ append scripts
                 showMenu();
             });
 
+            var diagramDiv = $("#diagramDiv");
+            var $menu = $("#menu");
+            var windowWidth = $(window).width();
+            var menuWidth = $menu.width();
+            var width;
+            if (windowWidth === menuWidth) {
+                width = windowWidth;
+            } else {
+                width = windowWidth - menuWidth;
+            }
+            var windowHeight = $(window).height();
+            var menuHeight = $menu.height();
+            var height;
+            if (windowHeight === menuHeight) {
+                height = windowHeight;
+            } else {
+                height = windowHeight - menuHeight;
+            }
+            diagramDiv.width(width);
+            diagramDiv.height(height);
+
             $.getScript("/javascripts/diagrams/palette.js").done(function (script, textStatus) {
                 showPaletteByType(paletteData);
                 switch (source) {
                     case "basic":
                         $.getScript("/javascripts/diagrams/basic.js").done(function (script, textStatus) {
                             initBasic(nodeDataArray, linkDataArray);
+
+                            myDiagram.requestUpdate();
                             // when the document is modified, add a "*" to the title and enable the "Save" button
                             myDiagram.addDiagramListener("Modified", function (e) {
                                 let button = $("#SaveButton");
@@ -57,6 +107,27 @@ append scripts
                                     if (idx >= 0) document.title = document.title.substr(0, idx);
                                 }
                             });
+
+                            $("#paletteDraggable").draggable({handle: "#paletteDraggableHandle"}).resizable({
+                                // After resizing, perform another layout to fit everything in the palette's viewport
+                                stop: function () {
+                                    myPalette.layoutDiagram(true);
+                                }
+                            });
+
+                            $("#infoDraggable").draggable({handle: "#infoDraggableHandle"});
+
+                            new Inspector('myInfo', myDiagram,
+                                {
+                                    properties: {
+                                        // key would be automatically added for nodes, but we want to declare it read-only also:
+                                        "key": {readOnly: true, show: Inspector.showIfPresent},
+                                        // fill and stroke would be automatically added for nodes, but we want to declare it a color also:
+                                        "fill": {show: Inspector.showIfPresent, type: 'color'},
+                                        "stroke": {show: Inspector.showIfPresent, type: 'color'}
+                                    }
+                                });
+
                         });
                         break;
                     default:
@@ -97,18 +168,14 @@ append scripts
             }).on("click", function () {
                 $(this).select();
             });
-            //            var menu = $('#cssmenu');
-            //            var menuList = menu.find('ul:first');
-            //            var listItems = menu.find('li').not('#responsive-tab');
-            //
-            //            // Create responsive trigger
-            //            menuList.prepend('<li id="responsive-tab"><a href="#">Menu</a></li>');
-            //
-            //            // Toggle menu visibility
-            //            menu.on('click', '#responsive-tab', function () {
-            //                listItems.slideToggle('fast');
-            //                listItems.addClass('collapsed');
-            //            });
+
+            $("#dataModelDraggable").draggable({handle: "#dataModelDraggableHandle"}).resizable({
+                stop: function (event, ui) {
+                    var $modelToSaveOrLoad = $("#modelToSaveOrLoad");
+                    $modelToSaveOrLoad.width(ui.size.width - 16);
+                    $modelToSaveOrLoad.height(ui.size.height - 22);
+                }
+            });
         });
 
 block extra-menu-elements
@@ -124,26 +191,36 @@ block extra-menu-elements
         input#diagramId(name='diagramId', placeholder='Template name...')
 
 block content
-    .container
-        h2.title= title
-        #diagramsCanvas(style="justify-content: space-between")
-            if explanation
-                #explanation
-                    h2#mainTitle(style="margin-top: 0; padding-top: 0; margin-bottom: 30px;")= mainTitle
-                    h2#caption(style="margin-top: 0; padding-top: 0; margin-bottom: 30px; color: red; text-align: right;")= caption
-                    p= fullDescription
-                    if steps
-                        ul
-                            each step in steps
-                                li= step
-                    if mainTitle
-                        strong Como todos lo demás elementos, se pueden combinar éstas caractrísticas con las presentes en otros ejemplos para crear capacidades más complejas
-            div(style="width: 100%; display: flex;")
-                #paletteDiv(style="width: 15%; height:400px; border: solid gray 1px; overflow: scroll; margin-right: 2px; ")
-                #diagramDiv(style="width: 85%; height:400px; border: solid gray 1px; overflow: scroll; margin-right: 2px; ")
-            if nodeDataArray
-                div
-                    p Aquí se pueden visualizar los datos que permiten almacenar y/o recuperar el diagrama expuesto arriba (Utilizando las APIs definidas en: /open-archi/api), en formato JSON y en tiempo real
-            br
-            div(style="display: inline; min-width: 300px;")
-                textarea#modelToSaveOrLoad(style="width:100%;height:300px")
+    #diagramDiv
+    #diagramsCanvas.container(style="justify-content: space-between")
+        if explanation
+            #explanation
+                h2#mainTitle(style="margin-top: 0; padding-top: 0; margin-bottom: 30px;")= mainTitle
+                h2#caption(style="margin-top: 0; padding-top: 0; margin-bottom: 30px; color: red; text-align: right;")= caption
+                p= fullDescription
+                if steps
+                    ul
+                        each step in steps
+                            li= step
+                if mainTitle
+                    strong Como todos lo demás elementos, se pueden combinar éstas caractrísticas con las presentes en otros ejemplos para crear capacidades más complejas
+    div.draggable#paletteDraggable(style="height: 300px; position: relative")
+        div.handle#paletteDraggableHandle
+            | Palette
+        div#paletteContainer
+            div#paletteDiv
+    div.draggable#infoDraggable(style="display: inline-block; vertical-align: top; padding: 5px; top: 20px; left: 380px; position: relative")
+        div.handle#infoDraggableHandle
+            | Info
+        div
+            div#myInfo
+    //#diagramDiv.innerEditor
+    if nodeDataArray
+        div
+            p Aquí se pueden visualizar los datos que permiten almacenar y/o recuperar el diagrama expuesto arriba (Utilizando las APIs definidas en: /open-archi/api), en formato JSON y en tiempo real
+    br
+    div.container-fluid.draggable#dataModelDraggable(style="height: 200px; width: 100%; position: relative")
+        div.handle#dataModelDraggableHandle
+            | Model
+        div#dataModelContainer
+            textarea#modelToSaveOrLoad(style="width: 100%; height: 200px")

@@ -38,7 +38,7 @@ mixin navbar-logo(name, id, style, href, image)
 mixin navbar-fixed-logo(name, text, id, style, href, image, textColor)
 	- if (!style) var style = "default";
 	- if (!href) var href = "#";
-	nav( role="navigation", class=["navbar", "navbar-fixed-top", "navbar-" + style] )
+	nav( role="navigation", class=["navbar", "navbar-fixed-top", "navbar-" + style], id=name)
 		.container
 			.navbar-header
 				button.navbar-toggle.collapsed( type="button", data-toggle="collapse", data-target="#" + id, aria-expanded="false", aria-controls="navbar")
