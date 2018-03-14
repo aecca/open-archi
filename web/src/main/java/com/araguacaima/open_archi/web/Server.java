@@ -315,7 +315,7 @@ public class Server {
         });
         redirect.get("/open-archi", "/open-archi/", Redirect.Status.TEMPORARY_REDIRECT);
         path("/open-archi", () -> {
-            redirect.get("/details", "/details/", Redirect.Status.TEMPORARY_REDIRECT);
+            redirect.get("/details", "/open-archi/details/", Redirect.Status.TEMPORARY_REDIRECT);
             path("/details", () -> {
                 Map<String, Object> mapHome = new HashMap<>();
                 mapHome.put("title", "Detailed Specification");
