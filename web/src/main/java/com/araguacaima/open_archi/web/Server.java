@@ -315,6 +315,12 @@ public class Server {
         });
         redirect.get("/open-archi", "/open-archi/", Redirect.Status.TEMPORARY_REDIRECT);
         path("/open-archi", () -> {
+            redirect.get("/details", "/details/", Redirect.Status.TEMPORARY_REDIRECT);
+            path("/details", () -> {
+                Map<String, Object> mapHome = new HashMap<>();
+                mapHome.put("title", "Detailed Specification");
+                get("/", (req, res) -> new ModelAndView(mapHome, "/open-archi/details"), engine);
+            });
             redirect.get("/api", "/open-archi/api/", Redirect.Status.PERMANENT_REDIRECT);
             redirect.get("/editor", "/open-archi/editor/", Redirect.Status.PERMANENT_REDIRECT);
             Map<String, Object> mapHome = new HashMap<>();

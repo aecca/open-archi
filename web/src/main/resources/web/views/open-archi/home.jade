@@ -45,6 +45,8 @@ block content
                         a(href="#spec") Technical Specification
                     .row
                         a(href="#roadmap") Roadmap
+                    .row
+                        a(href="#detailed") Detailed Specification
     .container#tools
         h2 Tools
         .row
@@ -53,13 +55,13 @@ block content
                 p
                     | Api for open-archi model management
                 p
-                    a.btn.btn-primary(href='/open-archi/api', role='button') View details »
+                    a.btn.btn-primary(href='/open-archi/api', role='button') Go to Api »
             .col-lg-6
                 h2 Editor
                 p
                     | A graphical editor to compose and reuse architecture diagrams
                 p
-                    a.btn.btn-primary(href='/open-archi/editor', role='button') View details »
+                    a.btn.btn-primary(href='/open-archi/editor', role='button') Go to editor »
     .container#features
         h2 Features
         .row
@@ -88,20 +90,37 @@ block content
         h2 Inspiration
         p
             | For the conception of Open-Archi I have been inspired by 3 formidable initiatives:
-            ul
-                li
-                    | The amazing AWS architectures design tool &nbsp;
-                    a(href="https://cloudcraft.co") Cloudcraft
-                li
+            .row
+                .col-sm-5
+                    +img-responsive-rounded("/images/cloud-craft.png", null, style="display: inherit;")
+                    | The amazing AWS architectures design tool&nbsp;
+                    a(href="https://cloudcraft.co")
+                        strong
+                            | Cloudcraft
+                .col-lg-6
+            .row
+                .col-lg-6
+
+                .col-sm-5
+                    +img-responsive-rounded("/images/c4model.png", null, style="display: inherit;")
                     | The flexible abstraction of the&nbsp;
-                    a(href="http://c4model.com") C4Model
+                    a(href="http://c4model.com")
+                        strong
+                            | C4Model&nbsp;
                     | for the design of architectures
-                li
+            .row
+                .col-sm-5
+                    +img-responsive-rounded("/images/archi-mate.png", null, style="display: inherit;")(height="100px;")
                     | The proposed interrelation of functional, non-functional, business and technical elements for the
-                    | design of business architectures present in the &nbsp;
-                    a(href="https://publications.opengroup.org/standards/archimate") ArchiMate specification
-                    | and the &nbsp;
-                    a(href="http://pubs.opengroup.org/architecture/togaf9-doc/arch/chap41.html") TOGAF framework
+                    | design of business architectures present in the&nbsp;
+                    a(href="https://publications.opengroup.org/standards/archimate")
+                        strong
+                            | ArchiMate specification&nbsp;
+                    | and the&nbsp;
+                    a(href="http://pubs.opengroup.org/architecture/togaf9-doc/arch/chap41.html")
+                        strong
+                            | TOGAF framework
+                .col-lg-6
         p
             | The integration of these initiatives results in the conception of this social network that seeks to
             | satisfy the need for all functional and technical areas and all business units to make available to the
@@ -112,7 +131,6 @@ block content
     .container#spec
         h2 Technical Specification
         p
-            h2.sub-header Feature vs Technology
             .table-responsive
                 table.table.table-striped
                     thead
@@ -214,12 +232,12 @@ block content
                         td
                             | Connectors for automatic extraction
                             br
-                            +progress-bar-danger(5)(style="margin-bottom: 5px;")
+                            +progress-bar-danger(2)(style="margin-bottom: 5px;")
                     tr
                         td
                             | Artificial Intelligence based models
                             br
-                            +progress-bar-danger(5)(style="margin-bottom: 5px;")
+                            +progress-bar-danger(2)(style="margin-bottom: 5px;")
                     tr
                         td
                             | Use of Rules as a service for models validation
@@ -230,3 +248,14 @@ block content
                             | DevOps integration
                             br
                             +progress-bar-danger(2)(style="margin-bottom: 5px;")
+                    tr
+                        td
+                            | Social Network
+                            br
+                            +progress-bar-danger(2)(style="margin-bottom: 5px;")
+    .container#detailed
+        h2 Detailed specification
+        p
+            | Of course, as you can imagine, there is more info about the whole solution. Click below if you want to know more
+        p
+            a.btn.btn-primary(href='/open-archi/details', role='button') View details »
