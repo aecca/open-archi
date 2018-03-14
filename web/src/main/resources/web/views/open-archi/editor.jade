@@ -61,12 +61,15 @@ append scripts
         let paletteData = !{palette};
         let lightText = 'whitesmoke';
 
-        $(function () {
-
-            $.getScript("/javascripts/menu.js").done(function (script, textStatus) {
-                showMenu();
+        function relocate(el, top, left) {
+            el.css({
+                position: "absolute",
+                marginLeft: 0, marginTop: 0,
+                top: top, left: left
             });
+        }
 
+        function resizeDiagramDiv() {
             var diagramDiv = $("#diagramDiv");
             var $menu = $("#menu");
             var windowWidth = $(window).width();
@@ -87,6 +90,53 @@ append scripts
             }
             diagramDiv.width(width);
             diagramDiv.height(height);
+        }
+
+        function relocateDataModelDiv() {
+            var dataModelDraggable = $("#dataModelDraggable");
+            var windowHeight = $(window).height();
+            var menuHeight = dataModelDraggable.height();
+            var height = windowHeight - menuHeight;
+            relocate(dataModelDraggable, height - 30, 20);
+        }
+
+        function relocatePaletteDiv() {
+            var diagramDiv = $("#diagramDiv");
+            var height = diagramDiv.height();
+            relocate(diagramDiv, height + 30, 20);
+        }
+
+        function relocateInfoDiv() {
+            var diagramDiv = $("#diagramDiv");
+            var $menu = $("#menu");
+            var windowWidth = $(window).width();
+            var menuWidth = $menu.width();
+            var width;
+            if (windowWidth === menuWidth) {
+                width = windowWidth;
+            } else {
+                width = windowWidth - menuWidth;
+            }
+            var windowHeight = $(window).height();
+            var menuHeight = $menu.height();
+            var height;
+            if (windowHeight === menuHeight) {
+                height = windowHeight;
+            } else {
+                height = windowHeight - menuHeight;
+            }
+            diagramDiv.width(width);
+            diagramDiv.height(height);
+        }
+        $(function () {
+
+            $.getScript("/javascripts/menu.js").done(function (script, textStatus) {
+                showMenu();
+            });
+
+            resizeDiagramDiv();
+            relocateDataModelDiv();
+            relocatePaletteDiv();
 
             $.getScript("/javascripts/diagrams/palette.js").done(function (script, textStatus) {
                 showPaletteByType(paletteData);
@@ -176,7 +226,16 @@ append scripts
                     $modelToSaveOrLoad.height(ui.size.height - 22);
                 }
             });
+
+            $(window).on("resize", function () {
+                resizeDiagramDiv();
+                relocateDataModelDiv();
+                relocateInfoDiv();
+                relocatePaletteDiv();
+            });
         });
+
+
 
 block extra-menu-elements
     +nav_item_dropdown("#")(label="Edit")
@@ -219,8 +278,8 @@ block content
         div
             p Aquí se pueden visualizar los datos que permiten almacenar y/o recuperar el diagrama expuesto arriba (Utilizando las APIs definidas en: /open-archi/api), en formato JSON y en tiempo real
     br
-    div.container-fluid.draggable#dataModelDraggable(style="height: 200px; width: 100%; position: relative")
+    div.container-fluid.draggable#dataModelDraggable(style="height: 100px; width: 400px;")
         div.handle#dataModelDraggableHandle
             | Model
         div#dataModelContainer
-            textarea#modelToSaveOrLoad(style="width: 100%; height: 200px")
+            textarea#modelToSaveOrLoad
