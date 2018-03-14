@@ -105,6 +105,7 @@ mixin nav_item_dropdown(href, active, id)
 			span.caret
 		if (id)
 			ul.dropdown-menu( role="menu", id= id )
+				block
 		else
 			ul.dropdown-menu( role="menu")
 				block
