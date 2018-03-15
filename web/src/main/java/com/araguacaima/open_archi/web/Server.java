@@ -336,7 +336,7 @@ public class Server {
                     mapEditor.put("examples", getExamples());
                     return new ModelAndView(mapEditor, "/open-archi/editor");
                 }, engine);
-                get("/editor/:uuid", (request, response) -> {
+                get("/:uuid", (request, response) -> {
                     try {
                         String id = request.params(":uuid");
                         Taggable model = JPAEntityManagerUtils.find(Taggable.class, id);
@@ -345,27 +345,69 @@ public class Server {
                         }
                         if (model != null) {
                             List nodeDataArray = jsonUtils.fromJSON("[\n" +
-                                    "                    {key: 1, text: \"Alpha\", color: \"lightblue\"},\n" +
-                                    "                    {key: 2, text: \"Beta\", color: \"orange\"},\n" +
-                                    "                    {key: 3, text: \"Gamma\", color: \"lightgreen\", group: 5},\n" +
-                                    "                    {key: 4, text: \"Delta\", color: \"pink\", group: 5},\n" +
-                                    "                    {key: 5, text: \"Epsilon\", color: \"green\", isGroup: true}\n" +
-                                    "        ]", List.class);
+                                    "   {\n" +
+                                    "      \"key\":1,\n" +
+                                    "      \"text\":\"Alpha\",\n" +
+                                    "      \"color\":\"lightblue\"\n" +
+                                    "   },\n" +
+                                    "   {\n" +
+                                    "      \"key\":2,\n" +
+                                    "      \"text\":\"Beta\",\n" +
+                                    "      \"color\":\"orange\"\n" +
+                                    "   },\n" +
+                                    "   {\n" +
+                                    "      \"key\":3,\n" +
+                                    "      \"text\":\"Gamma\",\n" +
+                                    "      \"color\":\"lightgreen\",\n" +
+                                    "      \"group\":5\n" +
+                                    "   },\n" +
+                                    "   {\n" +
+                                    "      \"key\":4,\n" +
+                                    "      \"text\":\"Delta\",\n" +
+                                    "      \"color\":\"pink\",\n" +
+                                    "      \"group\":5\n" +
+                                    "   },\n" +
+                                    "   {\n" +
+                                    "      \"key\":5,\n" +
+                                    "      \"text\":\"Epsilon\",\n" +
+                                    "      \"color\":\"green\",\n" +
+                                    "      \"isGroup\":true\n" +
+                                    "   }\n" +
+                                    "]", List.class);
                             List linkDataArray = jsonUtils.fromJSON("[\n" +
-                                    "                    {from: 1, to: 2, color: \"blue\"},\n" +
-                                    "                    {from: 2, to: 2},\n" +
-                                    "                    {from: 3, to: 4, color: \"green\"},\n" +
-                                    "                    {from: 3, to: 1, color: \"purple\"}\n" +
-                                    "        ]", List.class);
-                            mapEditor.put("nodeDataArray", nodeDataArray);
-                            mapEditor.put("linkDataArray", linkDataArray);
+                                    "   {\n" +
+                                    "      \"from\":1,\n" +
+                                    "      \"to\":2,\n" +
+                                    "      \"color\":\"blue\"\n" +
+                                    "   },\n" +
+                                    "   {\n" +
+                                    "      \"from\":2,\n" +
+                                    "      \"to\":2\n" +
+                                    "   },\n" +
+                                    "   {\n" +
+                                    "      \"from\":3,\n" +
+                                    "      \"to\":4,\n" +
+                                    "      \"color\":\"green\"\n" +
+                                    "   },\n" +
+                                    "   {\n" +
+                                    "      \"from\":3,\n" +
+                                    "      \"to\":1,\n" +
+                                    "      \"color\":\"purple\"\n" +
+                                    "   }\n" +
+                                    "]", List.class);
+                            mapEditor.put("nodeDataArray", jsonUtils.toJSON(nodeDataArray));
+                            mapEditor.put("linkDataArray", jsonUtils.toJSON(linkDataArray));
                         }
+                        mapEditor.put("palette", jsonUtils.toJSON(getArchitecturePalette()));
                         mapEditor.put("source", "basic");
                         return new ModelAndView(mapEditor, "/open-archi/editor");
                     } catch (Exception ex) {
-                        return throwError(response, ex);
+                        mapEditor.put("title", "Error");
+                        mapEditor.put("message", ex.getMessage());
+                        mapEditor.put("stack", ex.getStackTrace());
+                        return new ModelAndView(mapEditor, "/error");
                     }
-                });
+                }, engine);
             });
             path("/samples", () -> {
                 get("/basic", (request, response) -> {

@@ -10,12 +10,14 @@ function fulfill(item, isGroup, group, rank) {
 
 function architectureModelToDiagram(model) {
 
-    let diagram = {};
+    let diagram = {
+        class: "go.GraphLinksModel"
+    };
     if (model.kind !== "ARCHITECTURE_MODEL") {
         return diagram;
     }
-    diagram.nodes = [];
-    diagram.links = [];
+    diagram.nodeDataArray = [];
+    diagram.nodeDataArray = [];
     let key = "consumers";
     let relationships = commons.prototype.findValues(model, "relationships");
     let rank = 0;
@@ -24,7 +26,7 @@ function architectureModelToDiagram(model) {
 
     if (relationships) {
         relationships.forEach(function (relationship) {
-            diagram.links.push({
+            diagram.nodeDataArray.push({
                 from: relationship.sourceId,
                 to: relationship.destinationId,
                 stroke: relationship.connector.stroke
@@ -38,20 +40,20 @@ function architectureModelToDiagram(model) {
             let containers = softwareSystem.containers;
             let hasContainers = containers !== undefined && !commons.prototype.isEmpty(containers);
             if (hasContainers) {
-                diagram.nodes.push(fulfill(softwareSystem, true, model.id, rank));
+                diagram.nodeDataArray.push(fulfill(softwareSystem, true, model.id, rank));
                 rank++;
                 containers.forEach(function (container) {
                     let components = container.components;
                     let hasComponents = components !== undefined && !commons.prototype.isEmpty(components);
                     if (hasComponents) {
-                        diagram.nodes.push(fulfill(container, true, softwareSystem.id, rank));
+                        diagram.nodeDataArray.push(fulfill(container, true, softwareSystem.id, rank));
                         rank++;
                         components.forEach(function (component) {
-                            diagram.nodes.push(fulfill(component, false, container.id, rank));
+                            diagram.nodeDataArray.push(fulfill(component, false, container.id, rank));
                             rank++;
                         });
                     } else {
-                        diagram.nodes.push(fulfill(container, false, softwareSystem.id, rank));
+                        diagram.nodeDataArray.push(fulfill(container, false, softwareSystem.id, rank));
                         rank++;
                     }
                 });
@@ -64,62 +66,74 @@ function architectureModelToDiagram(model) {
     const consumers = model.consumers;
     if (consumers !== undefined && consumers !== null) {
         let groupConsumers = {key: key, name: "Consumers", fill: "green", isGroup: true};
-        diagram.nodes.push(groupConsumers);
+        diagram.nodeDataArray.push(groupConsumers);
         consumers.forEach(function (consumer) {
-            diagram.nodes.push(fulfill(consumer, false, key, rank));
+            diagram.nodeDataArray.push(fulfill(consumer, false, key, rank));
         })
     }
 
-    diagram.links.push({from: key, to: model.id, stroke: "black"});
-    diagram.nodes.push({key: model.id, name: model.name, fill: "orange", isGroup: hasSoftwareSystems});
+    diagram.nodeDataArray.push({from: key, to: model.id, stroke: "black"});
+    diagram.nodeDataArray.push({key: model.id, name: model.name, fill: "orange", isGroup: hasSoftwareSystems});
     return diagram;
 }
 
 function flowchartModelToDiagram(model) {
-    let diagram = {};
-    diagram.nodes = [];
-    diagram.links = [];
+    let diagram = {
+        class: "go.GraphLinksModel"
+    };
+    diagram.nodeDataArray = [];
+    diagram.linkDataArray = [];
     let key = 0;
-    diagram.nodes.push({key: -1, category: "Start", loc: "5 0", text: "Start"});
-    diagram.links.push({from: -1, to: model.id, fromPort: "B", toPort: "T"});
-    diagram.nodes.push({key: model.id, loc: "5 100", text: model.name});
-    diagram.links.push({from: model.id, to: -2, fromPort: "B", toPort: "T"});
-    diagram.nodes.push({key: -2, category: "End", loc: "5 200", text: "End!"});
+    diagram.nodeDataArray.push({key: -1, category: "Start", loc: "5 0", text: "Start"});
+    diagram.linkDataArray.push({from: -1, to: model.id, fromPort: "B", toPort: "T"});
+    diagram.nodeDataArray.push({key: model.id, loc: "5 100", text: model.name});
+    diagram.linkDataArray.push({from: model.id, to: -2, fromPort: "B", toPort: "T"});
+    diagram.nodeDataArray.push({key: -2, category: "End", loc: "5 200", text: "End!"});
     return diagram;
 }
 
 function sequenceModelToDiagram(model) {
-    let diagram = {};
-    diagram.nodes = [];
-    diagram.links = [];
+    let diagram = {
+        class: "go.GraphLinksModel"
+    };
+    diagram.nodeDataArray = [];
+    diagram.linkDataArray = [];
     return diagram;
 }
 
 function ganttModelToDiagram(model) {
-    let diagram = {};
-    diagram.nodes = [];
-    diagram.links = [];
+    let diagram = {
+        class: "go.GraphLinksModel"
+    };
+    diagram.nodeDataArray = [];
+    diagram.linkDataArray = [];
     return diagram;
 }
 
 function entityRelationshipModelToDiagram(model) {
-    let diagram = {};
-    diagram.nodes = [];
-    diagram.links = [];
+    let diagram = {
+        class: "go.GraphLinksModel"
+    };
+    diagram.nodeDataArray = [];
+    diagram.linkDataArray = [];
     return diagram;
 }
 
 function umlModelToDiagram(model) {
-    let diagram = {};
-    diagram.nodes = [];
-    diagram.links = [];
+    let diagram = {
+        class: "go.GraphLinksModel"
+    };
+    diagram.nodeDataArray = [];
+    diagram.linkDataArray = [];
     return diagram;
 }
 
 function bpmModelToDiagram(model) {
-    let diagram = {};
-    diagram.nodes = [];
-    diagram.links = [];
+    let diagram = {
+        class: "go.GraphLinksModel"
+    };
+    diagram.nodeDataArray = [];
+    diagram.linkDataArray = [];
     return diagram;
 }
 
@@ -130,8 +144,8 @@ class OpenArchiWrapper {
         let diagram = {
             class: "go.GraphLinksModel"
         };
-        diagram.nodes = [];
-        diagram.links = [];
+        diagram.nodeDataArray = [];
+        diagram.linkDataArray = [];
 
         switch (type) {
             case "FLOWCHART_MODEL":

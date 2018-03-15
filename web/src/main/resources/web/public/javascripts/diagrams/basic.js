@@ -205,11 +205,29 @@ function initBasic(nodeDataArray, linkDataArray) {
                     return o.diagram.commandHandler.canRedo();
                 })
         );
-    if (nodeDataArray !== "") {
-        myDiagram.model = new go.GraphLinksModel(nodeDataArray, linkDataArray);
-    }
+    fillDiagram(nodeDataArray, linkDataArray);
 
     // temporary links used by LinkingTool and RelinkingTool are also orthogonal:
     myDiagram.toolManager.linkingTool.temporaryLink.routing = go.Link.Orthogonal;
     myDiagram.toolManager.relinkingTool.temporaryLink.routing = go.Link.Orthogonal;
+}
+
+function fillDiagram(nodeDataArray, linkDataArray) {
+    let nodeDataArray_ = [];
+    let linkDataArray_ = [];
+    if (nodeDataArray !== "") {
+        if (typeof nodeDataArray === "string") {
+            nodeDataArray_ = JSON.parse(nodeDataArray)
+        } else {
+            nodeDataArray_ = nodeDataArray;
+        }
+        if (typeof linkDataArray === "string") {
+            linkDataArray_ = JSON.parse(linkDataArray)
+        } else {
+            linkDataArray_ = linkDataArray;
+        }
+        if (!commons.prototype.isEmpty(nodeDataArray_)) {
+            myDiagram.model = new go.GraphLinksModel(nodeDataArray_, linkDataArray_);
+        }
+    }
 }
