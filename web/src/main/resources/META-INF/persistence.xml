@@ -5,67 +5,40 @@
              http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
              version="2.1">
 
-        <!--<persistence-unit name="open-archi" transaction-type="RESOURCE_LOCAL">
-            <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-            <exclude-unlisted-classes>false</exclude-unlisted-classes>
-            <properties>
-                <property name="javax.persistence.jdbc.url"
-                          value="jdbc:h2:file:D:/tmp/gsa/db/gsa;AUTO_SERVER=TRUE;MVCC=TRUE;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=TRUE;INIT=CREATE SCHEMA IF NOT EXISTS ASM\;CREATE SCHEMA IF NOT EXISTS DIAGRAMS\;CREATE SCHEMA IF NOT EXISTS PERSONS\;CREATE SCHEMA IF NOT EXISTS META\;"/>
-                <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
-                <property name="javax.persistence.jdbc.user" value="open-archi"/>
-                <property name="javax.persistence.jdbc.password" value="open-archi"/>
-                <property name="hibernate.show_sql" value="false"/>
-                <property name="hibernate.hbm2ddl.auto" value="update"/>
-                <property name="hibernate.archive.autodetection" value="class"/>
-                <property name="packagesToScan" value="com.araguacaima.open_archi.persistence"/>
-                <property name="hibernate.c3p0.min_size" value="5"/>
-                <property name="hibernate.c3p0.max_size" value="30"/>
-                <property name="hibernate.c3p0.timeout" value="300"/>
-                <property name="hibernate.c3p0.max_statements" value="50"/>
-                <property name="hibernate.c3p0.idle_test_period" value="3000"/>
-            </properties>
-        </persistence-unit>
+    <!--<persistence-unit name="open-archi" transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <exclude-unlisted-classes>false</exclude-unlisted-classes>
+        <properties>
+            <property name="javax.persistence.jdbc.url"
+                      value="jdbc:h2:file:D:/tmp/gsa/db/gsa;AUTO_SERVER=TRUE;MVCC=TRUE;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=TRUE;INIT=CREATE SCHEMA IF NOT EXISTS ASM\;CREATE SCHEMA IF NOT EXISTS DIAGRAMS\;CREATE SCHEMA IF NOT EXISTS PERSONS\;CREATE SCHEMA IF NOT EXISTS META\;"/>
+            <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
+            <property name="javax.persistence.jdbc.user" value="open-archi"/>
+            <property name="javax.persistence.jdbc.password" value="open-archi"/>
+            <property name="hibernate.show_sql" value="false"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <property name="hibernate.archive.autodetection" value="class"/>
+            <property name="packagesToScan" value="com.araguacaima.open_archi.persistence"/>
+            <property name="hibernate.c3p0.min_size" value="5"/>
+            <property name="hibernate.c3p0.max_size" value="30"/>
+            <property name="hibernate.c3p0.timeout" value="300"/>
+            <property name="hibernate.c3p0.max_statements" value="50"/>
+            <property name="hibernate.c3p0.idle_test_period" value="3000"/>
+        </properties>
+    </persistence-unit>
 -->
-    <!--        <persistence-unit name="open-archi" transaction-type="RESOURCE_LOCAL">
-                <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-                <exclude-unlisted-classes>false</exclude-unlisted-classes>
-                <properties>
-                    <property name="hibernate.archive.autodetection" value="class" />
-                    <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL82Dialect" />
-                    <property name="hibernate.connection.driver_class" value="org.postgresql.Driver" />
-                    <property name="hibernate.connection.url" value="jdbc:postgresql://localhost:5432/open-archi" />
-                    <property name="hibernate.connection.username" value="open-archi" />
-                    <property name="hibernate.connection.password" value="open-archi" />
-                    <property name="javax.persistence.schema-generation.create-source" value="script"/>
-                    <property name="javax.persistence.schema-generation.create-script-source" value="META-INF/scripts/postgresql/create-schemas.sql"/>
-                    <property name="hibernate.show_sql" value="false"/>
-                    <property name="hibernate.flushMode" value="FLUSH_AUTO" />
-                    <property name="hibernate.hbm2ddl.auto" value="update" />
-                    <property name="packagesToScan" value="com.araguacaima.open_archi.persistence" />
-                    <property name="hibernate.c3p0.min_size" value="5"/>
-                    <property name="hibernate.c3p0.max_size" value="30"/>
-                    <property name="hibernate.c3p0.timeout" value="300"/>
-                    <property name="hibernate.c3p0.max_statements" value="50"/>
-                    <property name="hibernate.c3p0.idle_test_period" value="3000"/>
-                </properties>
-            </persistence-unit>-->
-
     <persistence-unit name="open-archi" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
         <properties>
-            <property name="transaction.factory_class" value="org.hibernate.transaction.JDBCTransactionFactory"/>
             <property name="hibernate.archive.autodetection" value="class"/>
-            <property name="hibernate.default_schema" value="Diagrams"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL82Dialect"/>
             <property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
-            <property name="hibernate.connection.url"
-                      value="jdbc:postgresql://ec2-107-22-162-82.compute-1.amazonaws.com:5432/d34tqia6t0iqe5?sslmode=require"/>
+            <property name="hibernate.connection.url" value="jdbc:postgresql://localhost:5432/d34tqia6t0iqe5"/>
             <property name="hibernate.connection.username" value="niheyjkauxafdk"/>
-            <property name="hibernate.connection.password"
-                      value="3aa11f4917ebf5282d520ccfb544bdab1addaaa754ce78bca9a3872283dd3315"/>
+            <property name="hibernate.connection.password" value="3aa11f4917ebf5282d520ccfb544bdab1addaaa754ce78bca9a3872283dd3315"/>
             <property name="javax.persistence.schema-generation.create-source" value="script"/>
-            <property name="javax.persistence.schema-generation.create-script-source" value="META-INF/scripts/postgresql/create-schemas.sql"/>
+            <property name="javax.persistence.schema-generation.create-script-source"
+                      value="META-INF/scripts/postgresql/create-schemas.sql"/>
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.flushMode" value="FLUSH_AUTO"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
@@ -77,4 +50,32 @@
             <property name="hibernate.c3p0.idle_test_period" value="3000"/>
         </properties>
     </persistence-unit>
+
+    <!-- <persistence-unit name="open-archi" transaction-type="RESOURCE_LOCAL">
+         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+         <exclude-unlisted-classes>false</exclude-unlisted-classes>
+         <properties>
+             <property name="transaction.factory_class" value="org.hibernate.transaction.JDBCTransactionFactory"/>
+             <property name="hibernate.archive.autodetection" value="class"/>
+             <property name="hibernate.default_schema" value="Diagrams"/>
+             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL82Dialect"/>
+             <property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
+             <property name="hibernate.connection.url"
+                       value="jdbc:postgresql://ec2-107-22-162-82.compute-1.amazonaws.com:5432/d34tqia6t0iqe5?sslmode=require"/>
+             <property name="hibernate.connection.username" value="niheyjkauxafdk"/>
+             <property name="hibernate.connection.password"
+                       value="3aa11f4917ebf5282d520ccfb544bdab1addaaa754ce78bca9a3872283dd3315"/>
+             <property name="javax.persistence.schema-generation.create-source" value="script"/>
+             <property name="javax.persistence.schema-generation.create-script-source" value="META-INF/scripts/postgresql/create-schemas.sql"/>
+             <property name="hibernate.show_sql" value="false"/>
+             <property name="hibernate.flushMode" value="FLUSH_AUTO"/>
+             <property name="hibernate.hbm2ddl.auto" value="update"/>
+             <property name="packagesToScan" value="com.araguacaima.open_archi.persistence"/>
+             <property name="hibernate.c3p0.min_size" value="5"/>
+             <property name="hibernate.c3p0.max_size" value="30"/>
+             <property name="hibernate.c3p0.timeout" value="300"/>
+             <property name="hibernate.c3p0.max_statements" value="50"/>
+             <property name="hibernate.c3p0.idle_test_period" value="3000"/>
+         </properties>
+     </persistence-unit>-->
 </persistence>
