@@ -334,6 +334,8 @@ public class Server {
                     mapEditor.put("palette", jsonUtils.toJSON(getArchitecturePalette()));
                     mapEditor.put("source", "basic");
                     mapEditor.put("examples", getExamples());
+                    mapEditor.put("nodeDataArray", "[]");
+                    mapEditor.put("linkDataArray", "[]");
                     return new ModelAndView(mapEditor, "/open-archi/editor");
                 }, engine);
                 get("/:uuid", (request, response) -> {
