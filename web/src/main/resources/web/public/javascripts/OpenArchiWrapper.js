@@ -127,7 +127,9 @@ class OpenArchiWrapper {
 
     static toDiagram(model) {
         const type = model.kind;
-        let diagram = {};
+        let diagram = {
+            class: "go.GraphLinksModel"
+        };
         diagram.nodes = [];
         diagram.links = [];
 

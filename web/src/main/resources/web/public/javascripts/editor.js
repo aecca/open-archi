@@ -133,15 +133,20 @@ function makeButton(text, action, visiblePredicate) {
 function save() {
     let value = OpenArchiWrapper.fromDiagram(myDiagram.model);
     value = JSON.stringify(value);
-    $("#modelToSaveOrLoad").jsonView(value);
+    let modelToSaveOrLoad = $("#modelToSaveOrLoad");
+    modelToSaveOrLoad.empty();
+    modelToSaveOrLoad.jsonView(value);
     resizeDataModelDiv();
     myDiagram.isModified = false;
     myDiagram.model.modelData.position = go.Point.stringify(myDiagram.position);
 }
 
 function load() {
-    const model = OpenArchiWrapper.toDiagram(JSON.parse(document.getElementById("modelToSaveOrLoad").value));
-    myDiagram.model = go.Model.fromJson(model);
+    let modelToSaveOrLoad = $("#modelToSaveOrLoad");
+    let jsonString = modelToSaveOrLoad.children()[0].innerText;
+    let model = JSON.parse(jsonString);
+    const diagram = OpenArchiWrapper.toDiagram(model);
+    myDiagram.model = go.Model.fromJson(diagram);
     const pos = myDiagram.model.modelData.position;
     if (pos) {
         myDiagram.initialPosition = go.Point.parse(pos);
@@ -212,7 +217,7 @@ function relocateInfoDiv() {
     const menuHeight = menu.height();
     const width = diagramDiv.width();
     const infoDraggableWidth = infoDraggable.width();
-    relocate(infoDraggable, menuHeight + 20, width -infoDraggableWidth - 10);
+    relocate(infoDraggable, menuHeight + 20, width - infoDraggableWidth - 10);
 }
 
 
@@ -246,7 +251,10 @@ function getJsonContent(url, callback) {
         }
     }).done(function (data) {
         let jsonData = JSON.stringify(data);
-        $("#modelToSaveOrLoad").val(jsonData);
+        let modelToSaveOrLoad = $("#modelToSaveOrLoad");
+        modelToSaveOrLoad.empty();
+        modelToSaveOrLoad.jsonView(jsonData);
+        resizeDataModelDiv();
         if (callback !== undefined && (typeof callback === "function")) {
             callback(data)
         }
@@ -575,3 +583,121 @@ function initArchitectureDiagram(nodeDataArray, linkDataArray) {
     // Create the Diagram's Model:
     myDiagram.model = new go.GraphLinksModel(nodeDataArray, linkDataArray);
 }
+
+$(function () {
+
+    $.getScript("/javascripts/menu.js").done(function (script, textStatus) {
+        showMenu();
+    });
+
+    relocateDataModelDiv();
+    relocatePaletteDiv();
+
+    $.getScript("/javascripts/diagrams/palette.js").done(function (script, textStatus) {
+        showPaletteByType(paletteData);
+        switch (source) {
+            case "basic":
+                $.getScript("/javascripts/diagrams/basic.js").done(function (script, textStatus) {
+                    initBasic(nodeDataArray, linkDataArray);
+
+                    myDiagram.requestUpdate();
+                    // when the document is modified, add a "*" to the title and enable the "Save" button
+                    myDiagram.addDiagramListener("Modified", function (e) {
+                        let button = $("#SaveButton");
+                        button.attr('disabled', !myDiagram.isModified);
+                        let idx = document.title.indexOf("*");
+                        if (myDiagram.isModified) {
+                            if (idx < 0) document.title += "*";
+                        } else {
+                            if (idx >= 0) document.title = document.title.substr(0, idx);
+                        }
+                    });
+
+                    $("#paletteDraggable").draggable({handle: "#paletteDraggableHandle"}).resizable({
+                        // After resizing, perform another layout to fit everything in the palette's viewport
+                        stop: function () {
+                            myPalette.layoutDiagram(true);
+                        }
+                    });
+
+                    $("#infoDraggable").draggable({handle: "#infoDraggableHandle"});
+
+                    new Inspector('myInfo', myDiagram,
+                        {
+                            properties: {
+                                // key would be automatically added for nodes, but we want to declare it read-only also:
+                                "key": {readOnly: true, show: Inspector.showIfPresent},
+                                // fill and stroke would be automatically added for nodes, but we want to declare it a color also:
+                                "fill": {show: Inspector.showIfPresent, type: 'color'},
+                                "stroke": {show: Inspector.showIfPresent, type: 'color'}
+                            }
+                        });
+
+                });
+                break;
+            default:
+                console.log("Still not implemented");
+        }
+    });
+
+    let dataArray;
+    $("#diagramId").autocomplete({
+        minLength: 3,
+        source: function (request, response) {
+            $.get("/open-archi/api/models", {$filter: "name=='*" + request.term + "*'"})
+                .done(function (data) {
+                    const models = [{id: "-1", value: "Select one..."}];
+                    dataArray = data;
+                    if (Array.isArray(data)) {
+                        data.forEach(function (model) {
+                            models.push({id: model.id, value: model.name});
+                        });
+                        response(models);
+                    } else {
+                        response({});
+                    }
+                });
+        },
+        select: function (event, element) {
+            const id = element.item.id;
+            const model = dataArray.find(function (model) {
+                return model.id === id;
+            });
+            const modelToSaveOrLoad = $("#modelToSaveOrLoad");
+            modelToSaveOrLoad.empty();
+            modelToSaveOrLoad.jsonView(model);
+            resizeDataModelDiv();
+            load();
+        },
+        // optional (if other layers overlap autocomplete list)
+        open: function (event, ui) {
+            $(".ui-autocomplete").css("z-index", 1000);
+        }
+    }).on("click", function () {
+        $(this).select();
+    });
+
+    const $dataModelDraggable = $("#dataModelDraggable");
+    $dataModelDraggable.draggable({handle: "#dataModelDraggableHandle"}).resizable({
+        stop: function (event, ui) {
+            // var $modelToSaveOrLoad = $("#modelToSaveOrLoad");
+            // $modelToSaveOrLoad.width(ui.size.width - 16);
+            // $modelToSaveOrLoad.height(ui.size.height - 22);
+        }
+    });
+
+    resizeDiagramDiv();
+    const $body = $('body');
+    const windowHeight = $(window).height();
+    $body.attr({style: 'height: ' + windowHeight + 'px; min-height: ' + windowHeight + 'px;'});
+    // var $modelToSaveOrLoad = $("#modelToSaveOrLoad");
+    // $modelToSaveOrLoad.width($dataModelDraggable.width() - 16);
+    // $modelToSaveOrLoad.height($dataModelDraggable.height() - 22);
+    relocateInfoDiv();
+
+    $(window).on("resize", function () {
+        relocateInfoDiv();
+        relocatePaletteDiv();
+        resizeDiagramDiv();
+    });
+});

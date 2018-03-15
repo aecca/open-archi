@@ -22,7 +22,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.*;
 import spark.template.jade.JadeTemplateEngine;
-import spark.template.jade.loader.SparkClasspathTemplateLoader;
 
 import javax.persistence.EntityNotFoundException;
 import java.io.BufferedReader;
@@ -287,7 +286,7 @@ public class Server {
         path("/", () -> {
             Map<String, Object> mapHome = new HashMap<>();
             mapHome.put("title", "Araguacaima | Solutions for the open source community");
-            get("/", (req, res) ->  new ModelAndView(mapHome, "home"), engine);
+            get("/", (req, res) -> new ModelAndView(mapHome, "home"), engine);
         });
         redirect.get("/about", "/about/", Redirect.Status.TEMPORARY_REDIRECT);
         path("/about", () -> {
@@ -337,6 +336,36 @@ public class Server {
                     mapEditor.put("examples", getExamples());
                     return new ModelAndView(mapEditor, "/open-archi/editor");
                 }, engine);
+                get("/editor/:uuid", (request, response) -> {
+                    try {
+                        String id = request.params(":uuid");
+                        Taggable model = JPAEntityManagerUtils.find(Taggable.class, id);
+                        if (model != null) {
+                            model.validateRequest();
+                        }
+                        if (model != null) {
+                            List nodeDataArray = jsonUtils.fromJSON("[\n" +
+                                    "                    {key: 1, text: \"Alpha\", color: \"lightblue\"},\n" +
+                                    "                    {key: 2, text: \"Beta\", color: \"orange\"},\n" +
+                                    "                    {key: 3, text: \"Gamma\", color: \"lightgreen\", group: 5},\n" +
+                                    "                    {key: 4, text: \"Delta\", color: \"pink\", group: 5},\n" +
+                                    "                    {key: 5, text: \"Epsilon\", color: \"green\", isGroup: true}\n" +
+                                    "        ]", List.class);
+                            List linkDataArray = jsonUtils.fromJSON("[\n" +
+                                    "                    {from: 1, to: 2, color: \"blue\"},\n" +
+                                    "                    {from: 2, to: 2},\n" +
+                                    "                    {from: 3, to: 4, color: \"green\"},\n" +
+                                    "                    {from: 3, to: 1, color: \"purple\"}\n" +
+                                    "        ]", List.class);
+                            mapEditor.put("nodeDataArray", nodeDataArray);
+                            mapEditor.put("linkDataArray", linkDataArray);
+                        }
+                        mapEditor.put("source", "basic");
+                        return new ModelAndView(mapEditor, "/open-archi/editor");
+                    } catch (Exception ex) {
+                        return throwError(response, ex);
+                    }
+                });
             });
             path("/samples", () -> {
                 get("/basic", (request, response) -> {
