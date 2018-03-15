@@ -1243,7 +1243,7 @@ public class Server {
 
     private static Collection<ExampleData> getExamples() {
         Collection<ExampleData> result = new ArrayList<>();
-        result.add(new ExampleData("/diagrams/basic.html", "Diagrama Básico"));
+//        result.add(new ExampleData("/diagrams/basic.html", "Diagrama Básico"));
         result.add(new ExampleData("/diagrams/checkBoxes.html", "Features (checkbox)"));
         result.add(new ExampleData("/diagrams/columnResizing.html", "Ajuste de tamaños"));
         result.add(new ExampleData("/diagrams/comments.html", "Comentarios"));
@@ -1256,7 +1256,7 @@ public class Server {
         result.add(new ExampleData("/diagrams/gantt.html", "Diagramas Gantt"));
         result.add(new ExampleData("/diagrams/grouping.html", "Expansión"));
         result.add(new ExampleData("/diagrams/guidedDragging.html", "Guías visuales"));
-        result.add(new ExampleData("/diagrams/htmlInteraction.html", "Interoperatividad HTML"));
+//        result.add(new ExampleData("/diagrams/htmlInteraction.html", "Interoperatividad HTML"));
         result.add(new ExampleData("/diagrams/icons.html", "Iconos SVG"));
         result.add(new ExampleData("/diagrams/kanban.html", "Tablero Kanban"));
         result.add(new ExampleData("/diagrams/logicCircuit.html", "Flujo y Secuencia 1"));
