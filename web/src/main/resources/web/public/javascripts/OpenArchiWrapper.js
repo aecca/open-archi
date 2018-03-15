@@ -17,7 +17,7 @@ function architectureModelToDiagram(model) {
         return diagram;
     }
     diagram.nodeDataArray = [];
-    diagram.nodeDataArray = [];
+    diagram.linkDataArray = [];
     let key = "consumers";
     let relationships = commons.prototype.findValues(model, "relationships");
     let rank = 0;
@@ -26,7 +26,7 @@ function architectureModelToDiagram(model) {
 
     if (relationships) {
         relationships.forEach(function (relationship) {
-            diagram.nodeDataArray.push({
+            diagram.linkDataArray.push({
                 from: relationship.sourceId,
                 to: relationship.destinationId,
                 stroke: relationship.connector.stroke
@@ -72,7 +72,7 @@ function architectureModelToDiagram(model) {
         })
     }
 
-    diagram.nodeDataArray.push({from: key, to: model.id, stroke: "black"});
+    diagram.linkDataArray.push({from: key, to: model.id, stroke: "black"});
     diagram.nodeDataArray.push({key: model.id, name: model.name, fill: "orange", isGroup: hasSoftwareSystems});
     return diagram;
 }
