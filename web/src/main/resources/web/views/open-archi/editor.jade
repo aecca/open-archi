@@ -33,7 +33,6 @@ append styles
             height: auto;
         }
 
-
 append scripts
     script(type='text/javascript', src='/javascripts/jquery-ui.js')
     script(src='/javascripts/go.js')
@@ -61,81 +60,12 @@ append scripts
         let paletteData = !{palette};
         let lightText = 'whitesmoke';
 
-        function relocate(el, top, left) {
-            el.css({
-                position: "absolute",
-                marginLeft: 0, marginTop: 0,
-                top: top, left: left
-            });
-        }
-
-        function resizeDiagramDiv() {
-            var diagramDiv = $("#diagramDiv");
-            var $menu = $("#menu");
-            var windowWidth = $(window).width();
-            var menuWidth = $menu.width();
-            var width;
-            if (windowWidth === menuWidth) {
-                width = windowWidth;
-            } else {
-                width = windowWidth - menuWidth;
-            }
-            var windowHeight = $(window).height();
-            var menuHeight = $menu.height();
-            var height;
-            if (windowHeight === menuHeight) {
-                height = windowHeight;
-            } else {
-                height = windowHeight - menuHeight;
-            }
-            diagramDiv.width(width);
-            diagramDiv.height(height);
-            relocate(diagramDiv, 0, 0);
-        }
-
-        function relocateDataModelDiv() {
-            var dataModelDraggable = $("#dataModelDraggable");
-            var windowHeight = $(window).height();
-            var menuHeight = dataModelDraggable.height();
-            var height = windowHeight - menuHeight;
-            relocate(dataModelDraggable, height - 30, 20);
-        }
-
-        function relocatePaletteDiv() {
-            var diagramDiv = $("#diagramDiv");
-            var height = diagramDiv.height();
-            relocate(diagramDiv, height + 30, 20);
-        }
-
-        function relocateInfoDiv() {
-            var diagramDiv = $("#diagramDiv");
-            var $menu = $("#menu");
-            var windowWidth = $(window).width();
-            var menuWidth = $menu.width();
-            var width;
-            if (windowWidth === menuWidth) {
-                width = windowWidth;
-            } else {
-                width = windowWidth - menuWidth;
-            }
-            var windowHeight = $(window).height();
-            var menuHeight = $menu.height();
-            var height;
-            if (windowHeight === menuHeight) {
-                height = windowHeight;
-            } else {
-                height = windowHeight - menuHeight;
-            }
-            diagramDiv.width(width);
-            diagramDiv.height(height);
-        }
         $(function () {
 
             $.getScript("/javascripts/menu.js").done(function (script, textStatus) {
                 showMenu();
             });
 
-            resizeDiagramDiv();
             relocateDataModelDiv();
             relocatePaletteDiv();
 
@@ -209,8 +139,7 @@ append scripts
                     var model = dataArray.find(function (model) {
                         return model.id === id;
                     });
-                    $("#modelToSaveOrLoad").html(JSON.stringify(model, null, 2));
-                    openModel(model);
+                    $("#modelToSaveOrLoad").JSONView(model);
                 },
                 // optional (if other layers overlap autocomplete list)
                 open: function (event, ui) {
@@ -220,26 +149,35 @@ append scripts
                 $(this).select();
             });
 
-            $("#dataModelDraggable").draggable({handle: "#dataModelDraggableHandle"}).resizable({
+            var $dataModelDraggable = $("#dataModelDraggable");
+            $dataModelDraggable.draggable({handle: "#dataModelDraggableHandle"}).resizable({
                 stop: function (event, ui) {
-                    var $modelToSaveOrLoad = $("#modelToSaveOrLoad");
-                    $modelToSaveOrLoad.width(ui.size.width - 16);
-                    $modelToSaveOrLoad.height(ui.size.height - 22);
+                    // var $modelToSaveOrLoad = $("#modelToSaveOrLoad");
+                    // $modelToSaveOrLoad.width(ui.size.width - 16);
+                    // $modelToSaveOrLoad.height(ui.size.height - 22);
                 }
             });
 
+            resizeDiagramDiv();
+            var $body = $('body');
+            var windowHeight = $(window).height();
+            $body.attr({style: 'height: ' + windowHeight + 'px; min-height: ' + windowHeight + 'px;'});
+            // var $modelToSaveOrLoad = $("#modelToSaveOrLoad");
+            // $modelToSaveOrLoad.width($dataModelDraggable.width() - 16);
+            // $modelToSaveOrLoad.height($dataModelDraggable.height() - 22);
+            relocateInfoDiv();
+
             $(window).on("resize", function () {
-                resizeDiagramDiv();
                 relocateDataModelDiv();
                 relocateInfoDiv();
                 relocatePaletteDiv();
+                resizeDiagramDiv();
             });
         });
 
-
-
 block extra-menu-elements
     +nav_item_dropdown("#")(label="Edit")
+        +nav_item("/open-archi/editor") New
         +nav_item("#")(onclick="save()", id="SaveButton") Save
         +nav_item("#")(onclick="load()", id="LoadButton") Load
         +nav_item("#")(onclick="openSVG()", id="OpenSVGButton") Export as SVG
@@ -263,7 +201,7 @@ block content
                         each step in steps
                             li= step
                 if mainTitle
-                    strong Como todos lo demás elementos, se pueden combinar éstas caractrísticas con las presentes en otros ejemplos para crear capacidades más complejas
+                    strong Like all other elements, we can combine these features with those in other examples to create more complex capabilities
     div.draggable#paletteDraggable(style="height: 300px; position: relative")
         div.handle#paletteDraggableHandle
             | Palette
@@ -277,10 +215,10 @@ block content
     //#diagramDiv.innerEditor
     if nodeDataArray
         div
-            p Aquí se pueden visualizar los datos que permiten almacenar y/o recuperar el diagrama expuesto arriba (Utilizando las APIs definidas en: /open-archi/api), en formato JSON y en tiempo real
+            p Here you can view the data that allows you to store and/or recover the diagram shown above (Using the APIs defined in: /open-archi/api), in JSON format and in real time
     br
     div.container-fluid.draggable#dataModelDraggable(style="height: 100px; width: 400px;")
         div.handle#dataModelDraggableHandle
             | Model
         div#dataModelContainer
-            textarea#modelToSaveOrLoad
+            span#modelToSaveOrLoad

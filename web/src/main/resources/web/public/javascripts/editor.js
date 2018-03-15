@@ -131,7 +131,9 @@ function makeButton(text, action, visiblePredicate) {
 
 // Show the diagram's model in JSON format that the user may edit
 function save() {
-    document.getElementById("modelToSaveOrLoad").value = OpenArchiWrapper.fromDiagram(JSON.parse(myDiagram.model.toJson()));
+    let value = OpenArchiWrapper.fromDiagram(myDiagram.model);
+    value = JSON.stringify(value);
+    $("#modelToSaveOrLoad").JSONView(value);
     myDiagram.isModified = false;
     myDiagram.model.modelData.position = go.Point.stringify(myDiagram.position);
 }
@@ -144,6 +146,65 @@ function load() {
         myDiagram.initialPosition = go.Point.parse(pos);
     }
 }
+
+
+function relocate(el, top, left) {
+    el.css({
+        position: "absolute",
+        marginLeft: 0, marginTop: 0,
+        top: top, left: left
+    });
+}
+
+function resizeDiagramDiv() {
+    const diagramDiv = $("#diagramDiv");
+    const $menu = $("#menu");
+    const windowWidth = $(window).width();
+    const menuWidth = $menu.width();
+    let width;
+    if (windowWidth === menuWidth) {
+        width = windowWidth;
+    } else {
+        width = windowWidth - menuWidth;
+    }
+    const windowHeight = $(window).height();
+    const menuHeight = $menu.height();
+    let height;
+    if (windowHeight === menuHeight) {
+        height = windowHeight;
+    } else {
+        height = windowHeight - menuHeight;
+    }
+    diagramDiv.width(width);
+    diagramDiv.height(height);
+    relocate(diagramDiv, -10, 0);
+}
+
+function relocateDataModelDiv() {
+    const dataModelDraggable = $("#dataModelDraggable");
+    const windowHeight = $(window).height();
+    const menuHeight = dataModelDraggable.height();
+    const height = windowHeight - menuHeight;
+    relocate(dataModelDraggable, height - 20, 10);
+}
+
+function relocatePaletteDiv() {
+    const paletteDraggable = $("#paletteDraggable");
+    const menu = $("#menu");
+    const menuHeight = menu.height();
+    relocate(paletteDraggable, menuHeight + 20, 10);
+}
+
+function relocateInfoDiv() {
+    const infoDraggable = $("#infoDraggable");
+    const diagramDiv = $("#diagramDiv");
+    const menu = $("#menu");
+    const menuHeight = menu.height();
+    const width = diagramDiv.width();
+    const infoDraggableWidth = infoDraggable.width();
+    relocate(infoDraggable, menuHeight + 20, width -infoDraggableWidth - 10);
+}
+
 
 function openContent(url) {
     getPageContent(url);
