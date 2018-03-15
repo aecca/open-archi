@@ -133,7 +133,8 @@ function makeButton(text, action, visiblePredicate) {
 function save() {
     let value = OpenArchiWrapper.fromDiagram(myDiagram.model);
     value = JSON.stringify(value);
-    $("#modelToSaveOrLoad").JSONView(value);
+    $("#modelToSaveOrLoad").jsonView(value);
+    resizeDataModelDiv();
     myDiagram.isModified = false;
     myDiagram.model.modelData.position = go.Point.stringify(myDiagram.position);
 }
@@ -178,6 +179,15 @@ function resizeDiagramDiv() {
     diagramDiv.width(width);
     diagramDiv.height(height);
     relocate(diagramDiv, -10, 0);
+}
+
+function resizeDataModelDiv() {
+    const dataModelDraggable = $("#dataModelDraggable");
+    const modelToSaveOrLoad = $("#modelToSaveOrLoad");
+    const modelToSaveOrLoadWidth = modelToSaveOrLoad.width();
+    const modelToSaveOrLoadHeight = modelToSaveOrLoad.height();
+    dataModelDraggable.width(modelToSaveOrLoadWidth);
+    dataModelDraggable.height(modelToSaveOrLoadHeight + 30);
 }
 
 function relocateDataModelDiv() {

@@ -139,7 +139,7 @@ append scripts
                     var model = dataArray.find(function (model) {
                         return model.id === id;
                     });
-                    $("#modelToSaveOrLoad").JSONView(model);
+                    $("#modelToSaveOrLoad").jsonView(model);
                 },
                 // optional (if other layers overlap autocomplete list)
                 open: function (event, ui) {
@@ -221,4 +221,4 @@ block content
         div.handle#dataModelDraggableHandle
             | Model
         div#dataModelContainer
-            span#modelToSaveOrLoad
+            span#modelToSaveOrLoad(style="display: block")
