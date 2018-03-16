@@ -71,6 +71,8 @@ block extra-menu-elements
         input#diagramId(name='diagramId', placeholder='Template name...')
 
 block content
+    +modal("Modal title","myModal")
+        p This is modal content
     #diagramDiv
     #diagramsCanvas.container(style="justify-content: space-between")
         if explanation

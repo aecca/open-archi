@@ -223,14 +223,13 @@ function initBasic(nodeDataArray, linkDataArray) {
         const node = myDiagram.findNodeForKey(e.subject.first().key);
         const data = node.data;
         if (data.category === "Element" && data.text==="Element") {
-            alert("node.data" + node.data);
             let object = node.findObject(node.data.category);
             if (object !== null && object instanceof go.TextBlock) {
                 if (myDiagram.currentTool instanceof go.TextEditingTool) {
                     myDiagram.currentTool.acceptText(go.TextEditingTool.LostFocus);
                 }
                 myDiagram.commandHandler.editTextBlock(object);
-                alert()
+                $("#myModal").modal('show');
             }
         }
 
