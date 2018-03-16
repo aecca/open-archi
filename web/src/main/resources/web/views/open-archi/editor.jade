@@ -71,8 +71,14 @@ block extra-menu-elements
         input#diagramId(name='diagramId', placeholder='Template name...')
 
 block content
-    +modal("Modal title","myModal")
-        p This is modal content
+    +modal-force("Basic element data", "basic-element-data")
+        form
+            .form-group
+                label.col-form-label(for="element-name") Name:
+                input.form-control#element-name(type="text")
+            .form-group
+                label.col-form-label(for="element-type") Type:
+                input.form-control#element-type
     #diagramDiv
     #diagramsCanvas.container(style="justify-content: space-between")
         if explanation

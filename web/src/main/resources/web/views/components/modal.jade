@@ -11,4 +11,22 @@ mixin modal(title,id)
 				.modal-body
 					block
 				.modal-footer
-					button.btn.btn-default(type="button",data-dismiss="modal") Close
+					button.btn.btn-default(type="button", data-dismiss="modal") Close
+mixin modal-force(title, id)
+	.modal.fade(id="#{id}", tabindex="-1", role="dialog", aria-labelledby="#{id}Label" aria-hidden="true" data-backdrop="static")
+		.modal-dialog.modal-dialog-centered(role="document")
+			.modal-content
+				.modal-header
+					h5.modal-title(id="#{id}Label")= title
+				.modal-body
+					block
+				.modal-footer
+					button.btn.btn-secondary(type="button", data-dismiss="modal") Dismiss
+					button.btn.btn-primary(type="button") Save
+
+
+
+
+
+
+

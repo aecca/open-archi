@@ -229,7 +229,19 @@ function initBasic(nodeDataArray, linkDataArray) {
                     myDiagram.currentTool.acceptText(go.TextEditingTool.LostFocus);
                 }
                 myDiagram.commandHandler.editTextBlock(object);
-                $("#myModal").modal('show');
+
+                let modal = $('#basic-element-data');
+                modal.on('show.bs.modal', function (event) {
+                    const button = $(event.relatedTarget); // Button that triggered the modal
+                    const modal = $(this);
+                    modal.find('.modal-title').text('Basic element data for ' + object.name);
+                    $("#element-name").val(object.name)
+                });
+                modal.modal({
+                    backdrop: 'static',
+                    keyboard: false,
+                    show: true
+                });
             }
         }
 
