@@ -11,10 +11,14 @@ function initBasic(nodeDataArray, linkDataArray) {
                 initialContentAlignment: go.Spot.Center,
 
                 // allow double-click in background to create a new node
-                "clickCreatingTool.archetypeNodeData": {text: "Node", color: "white"},
+                "clickCreatingTool.archetypeNodeData": {
+                    name: "Element",
+                    shape: {fill: "#01203A"},
+                    kind: "SOFTWARE_SYSTEM"
+                },
 
                 // allow Ctrl-G to call groupSelection()
-                "commandHandler.archetypeGroupData": {text: "Group", isGroup: true, color: "blue"},
+                "commandHandler.archetypeGroupData": {name: "Group", isGroup: true, color: "blue"},
                 "LinkDrawn": showLinkLabel,  // this DiagramEvent listener is defined below
                 "LinkRelinked": showLinkLabel,
                 scrollsPageOnFocus: false,
@@ -46,7 +50,7 @@ function initBasic(nodeDataArray, linkDataArray) {
                         toLinkableDuplicates: true
                     },
                     new go.Binding("fill", "", OpenArchiWrapper.toFill).makeTwoWay(OpenArchiWrapper.fromFill)),
-                gojs(go.TextBlock,
+                gojs(go.TextBlock, "text",
                     {
                         font: "bold 12px sans-serif",
                         stroke: 'white',
@@ -135,6 +139,7 @@ function initBasic(nodeDataArray, linkDataArray) {
             },  // enable Ctrl-Shift-G to ungroup a selected Group
             gojs(go.TextBlock,
                 {
+                    name: "text",
                     font: "bold 19px sans-serif",
                     isMultiline: false,  // don't allow newlines in text
                     editable: true  // allow in-place editing by user
@@ -210,6 +215,27 @@ function initBasic(nodeDataArray, linkDataArray) {
     // temporary links used by LinkingTool and RelinkingTool are also orthogonal:
     myDiagram.toolManager.linkingTool.temporaryLink.routing = go.Link.Orthogonal;
     myDiagram.toolManager.relinkingTool.temporaryLink.routing = go.Link.Orthogonal;
+
+    // this DiagramEvent is raised when the user has drag-and-dropped something
+    // from another Diagram (a Palette in this case) into this Diagram
+    myDiagram.addDiagramListener("ExternalObjectsDropped", function (e) {
+        // stop any ongoing text editing
+        const node = myDiagram.findNodeForKey(e.subject.first().key);
+        const data = node.data;
+        if (data.category === "Element" && data.text==="Element") {
+            alert("node.data" + node.data);
+            let object = node.findObject(node.data.category);
+            if (object !== null && object instanceof go.TextBlock) {
+                if (myDiagram.currentTool instanceof go.TextEditingTool) {
+                    myDiagram.currentTool.acceptText(go.TextEditingTool.LostFocus);
+                }
+                myDiagram.commandHandler.editTextBlock(object);
+                alert()
+            }
+        }
+
+    });
+
 }
 
 function fillDiagram(nodeDataArray, linkDataArray) {

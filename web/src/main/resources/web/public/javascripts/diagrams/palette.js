@@ -17,6 +17,7 @@ function fillElement(data, paletteModelArray) {
                 }),
             gojs(go.TextBlock, data.name,
                 {
+                    name: data.name,
                     font: "bold 11pt Helvetica, Arial, sans-serif",
                     stroke: lightText,
                     margin: 8,

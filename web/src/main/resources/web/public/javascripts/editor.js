@@ -320,43 +320,40 @@ $(function () {
         showPaletteByType(paletteData);
         switch (source) {
             case "basic":
-                $.getScript("/javascripts/diagrams/basic.js").done(function (script, textStatus) {
-                    initBasic(nodeDataArray, linkDataArray);
+                initBasic(nodeDataArray, linkDataArray);
 
-                    myDiagram.requestUpdate();
-                    // when the document is modified, add a "*" to the title and enable the "Save" button
-                    myDiagram.addDiagramListener("Modified", function (e) {
-                        let button = $("#SaveButton");
-                        button.attr('disabled', !myDiagram.isModified);
-                        let idx = document.title.indexOf("*");
-                        if (myDiagram.isModified) {
-                            if (idx < 0) document.title += "*";
-                        } else {
-                            if (idx >= 0) document.title = document.title.substr(0, idx);
-                        }
-                    });
-
-                    $("#paletteDraggable").draggable({handle: "#paletteDraggableHandle"}).resizable({
-                        // After resizing, perform another layout to fit everything in the palette's viewport
-                        stop: function () {
-                            myPalette.layoutDiagram(true);
-                        }
-                    });
-
-                    $("#infoDraggable").draggable({handle: "#infoDraggableHandle"});
-
-                    new Inspector('myInfo', myDiagram,
-                        {
-                            properties: {
-                                // key would be automatically added for nodes, but we want to declare it read-only also:
-                                "key": {readOnly: true, show: Inspector.showIfPresent},
-                                // fill and stroke would be automatically added for nodes, but we want to declare it a color also:
-                                "fill": {show: Inspector.showIfPresent, type: 'color'},
-                                "stroke": {show: Inspector.showIfPresent, type: 'color'}
-                            }
-                        });
-
+                myDiagram.requestUpdate();
+                // when the document is modified, add a "*" to the title and enable the "Save" button
+                myDiagram.addDiagramListener("Modified", function (e) {
+                    let button = $("#SaveButton");
+                    button.attr('disabled', !myDiagram.isModified);
+                    let idx = document.title.indexOf("*");
+                    if (myDiagram.isModified) {
+                        if (idx < 0) document.title += "*";
+                    } else {
+                        if (idx >= 0) document.title = document.title.substr(0, idx);
+                    }
                 });
+
+                $("#paletteDraggable").draggable({handle: "#paletteDraggableHandle"}).resizable({
+                    // After resizing, perform another layout to fit everything in the palette's viewport
+                    stop: function () {
+                        myPalette.layoutDiagram(true);
+                    }
+                });
+
+                $("#infoDraggable").draggable({handle: "#infoDraggableHandle"});
+
+                new Inspector('myInfo', myDiagram,
+                    {
+                        properties: {
+                            // key would be automatically added for nodes, but we want to declare it read-only also:
+                            "key": {readOnly: true, show: Inspector.showIfPresent},
+                            // fill and stroke would be automatically added for nodes, but we want to declare it a color also:
+                            "fill": {show: Inspector.showIfPresent, type: 'color'},
+                            "stroke": {show: Inspector.showIfPresent, type: 'color'}
+                        }
+                    });
                 break;
             default:
                 console.log("Still not implemented");
