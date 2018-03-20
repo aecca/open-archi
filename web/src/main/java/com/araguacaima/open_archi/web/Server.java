@@ -329,7 +329,11 @@ public class Server {
                 Map<String, Object> mapEditor = new HashMap<>();
                 exception(Exception.class, exceptionHandler);
                 mapEditor.put("title", "Editor");
-                mapEditor.put("diagramTypes", deeplyFulfilledDiagramTypesCollection);
+                try {
+                    mapEditor.put("diagramTypes", jsonUtils.toJSON(deeplyFulfilledDiagramTypesCollection));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 get("/", (req, res) -> {
                     mapEditor.put("palette", jsonUtils.toJSON(getArchitecturePalette()));
                     mapEditor.put("source", "basic");

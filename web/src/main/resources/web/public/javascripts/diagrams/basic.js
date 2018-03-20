@@ -228,7 +228,7 @@ function initBasic(nodeDataArray, linkDataArray) {
                 if (myDiagram.currentTool instanceof go.TextEditingTool) {
                     myDiagram.currentTool.acceptText(go.TextEditingTool.LostFocus);
                 }
-                myDiagram.commandHandler.editTextBlock(object);
+                //myDiagram.commandHandler.editTextBlock(object);
 
                 let modal = $('#basic-element-data');
                 modal.on('show.bs.modal', function (event) {

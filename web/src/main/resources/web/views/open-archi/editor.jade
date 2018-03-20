@@ -54,6 +54,20 @@ append scripts
         let source = '!{source}';
         let paletteData = !{palette};
         let lightText = 'whitesmoke';
+        var diagramTypes = !{diagramTypes};
+        $(function() {
+            var items = [];
+            $.each(diagramTypes, function (i, item) {
+                items.push('<li role="presentation"><a role="menuitem" tabindex="' + i + '" href="#">' + item + '</a></li>');
+            });
+            var $diagramTypesDropdown = $("#diagramTypesDropdown");
+            $diagramTypesDropdown.append(items.join(''));
+            $diagramTypesDropdown.on('click', 'a', function () {
+                var text = $(this).html();
+                var htmlText = text + ' <span class="caret"></span>';
+                $(this).closest('.dropdown').find('.dropdown-toggle').html(htmlText);
+            });
+        });
     script(type='text/javascript', src='/javascripts/diagrams/basic.js')
     script(type='text/javascript', src='/javascripts/editor.js')
 
@@ -71,14 +85,24 @@ block extra-menu-elements
         input#diagramId(name='diagramId', placeholder='Template name...')
 
 block content
-    +modal-force("Basic element data", "basic-element-data")
-        form
+    +modal-force("Basic element data", "basic-element-data")(save="checkAndSave('basic-element-form')", more="openMore")
+        form#basic-element-form
             .form-group
                 label.col-form-label(for="element-name") Name:
                 input.form-control#element-name(type="text")
             .form-group
-                label.col-form-label(for="element-type") Type:
-                input.form-control#element-type
+                label.col-form-label Type:
+                .dropdown
+                    button.btn.btn-default.dropdown-toggle(type="button", data-toggle="dropdown")
+                        | Element Types
+                        | &nbsp;
+                        span.caret
+                    ul.dropdown-menu#diagramTypesDropdown(role="menu", aria-labelledby="dropdownMenu1")
+            .form-group
+                label.col-form-label(for="element-prototype")
+                    | Prototype?
+                    | &nbsp;
+                input#element-prototype(type="checkbox")
     #diagramDiv
     #diagramsCanvas.container(style="justify-content: space-between")
         if explanation

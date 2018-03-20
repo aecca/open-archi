@@ -421,3 +421,13 @@ $(function () {
         resizeDiagramDiv();
     });
 });
+
+function checkAndSave(formId){
+    let element = $(formId);
+    alert(element);
+    $('#basic-element-data').modal('hide')
+}
+
+function openMore(){
+
+}
