@@ -22,5 +22,5 @@ mixin modal-force(title, id)
 					block
 				.modal-footer
 					button.btn.btn-secondary(type="button", data-dismiss="modal") Dismiss
-					button.btn.btn-info#more(type="button", onclick=attributes.more) More »
-					button.btn.btn-primary#save(type="button", onclick=attributes.save) Save
+					button.btn.btn-info#more(type="button", onclick=attributes.more+"();") More »
+					button.btn.btn-primary#save(type="button", onclick=attributes.save+"();") Save

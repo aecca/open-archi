@@ -422,12 +422,24 @@ $(function () {
     });
 });
 
-function checkAndSave(formId){
-    let element = $(formId);
-    alert(element);
-    $('#basic-element-data').modal('hide')
+function checkAndSave() {
+    let basicElementData = $('#basic-element-data');
+    const key = basicElementData.attr("data-key");
+    let data = myDiagram.model.findNodeDataForKey(key);
+
+    if (data !== null) {
+        const name = $("#element-name").val();
+        const type = $("#element-type").html().split(" ")[0];
+        const prototype = $("#element-prototype").prop("checked");
+        myDiagram.model.setDataProperty(data, "name", name);
+        myDiagram.model.setDataProperty(data, "text", name);
+        myDiagram.model.setDataProperty(data, "type", type);
+        myDiagram.model.setDataProperty(data, "prototype", prototype);
+        myDiagram.requestUpdate();
+    }
+    basicElementData.modal('hide')
 }
 
-function openMore(){
+function openMore() {
 
 }

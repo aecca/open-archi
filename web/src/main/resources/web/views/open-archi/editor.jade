@@ -85,7 +85,7 @@ block extra-menu-elements
         input#diagramId(name='diagramId', placeholder='Template name...')
 
 block content
-    +modal-force("Basic element data", "basic-element-data")(save="checkAndSave('basic-element-form')", more="openMore")
+    +modal-force("Basic element data", "basic-element-data")(save="checkAndSave", more="openMore")
         form#basic-element-form
             .form-group
                 label.col-form-label(for="element-name") Name:
@@ -93,7 +93,7 @@ block content
             .form-group
                 label.col-form-label Type:
                 .dropdown
-                    button.btn.btn-default.dropdown-toggle(type="button", data-toggle="dropdown")
+                    button.btn.btn-default.dropdown-toggle#element-type(type="button", data-toggle="dropdown")
                         | Element Types
                         | &nbsp;
                         span.caret

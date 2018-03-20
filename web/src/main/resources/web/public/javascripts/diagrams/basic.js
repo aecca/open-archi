@@ -231,6 +231,7 @@ function initBasic(nodeDataArray, linkDataArray) {
                 //myDiagram.commandHandler.editTextBlock(object);
 
                 let modal = $('#basic-element-data');
+                modal.attr("data-key", data.key);
                 modal.on('show.bs.modal', function (event) {
                     const button = $(event.relatedTarget); // Button that triggered the modal
                     const modal = $(this);
