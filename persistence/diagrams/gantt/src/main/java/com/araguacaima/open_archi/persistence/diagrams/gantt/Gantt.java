@@ -2,6 +2,7 @@ package com.araguacaima.open_archi.persistence.diagrams.gantt;
 
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 import com.araguacaima.open_archi.persistence.diagrams.core.Item;
+import com.araguacaima.open_archi.persistence.diagrams.core.ItemCategory;
 
 import javax.persistence.*;
 
@@ -9,8 +10,7 @@ import javax.persistence.*;
 @PersistenceUnit(unitName = "open-archi")
 public class Gantt extends Item {
 
-    @Column
-    @Enumerated(EnumType.STRING)
+    @OneToOne
     private Category category;
 
     @Column
@@ -23,12 +23,14 @@ public class Gantt extends Item {
     @Enumerated(EnumType.STRING)
     private ElementKind kind = ElementKind.GANTT;
 
+    @Override
     public Category getCategory() {
         return category;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    @Override
+    public void setCategory(ItemCategory category) {
+        this.category = (Category) category;
     }
 
     public int getDiagramStart() {

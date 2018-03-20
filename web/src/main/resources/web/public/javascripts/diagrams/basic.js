@@ -52,10 +52,11 @@ function initBasic(nodeDataArray, linkDataArray) {
                     new go.Binding("fill", "", OpenArchiWrapper.toFill).makeTwoWay(OpenArchiWrapper.fromFill)),
                 gojs(go.TextBlock, "text",
                     {
-                        font: "bold 12px sans-serif",
+                        font: "bold 11pt Helvetica, Arial, sans-serif",
                         stroke: 'white',
-                        margin: 6,  // make some extra space for the shape around the text
-                        isMultiline: false,  // don't allow newlines in text
+                        margin: 4,  // make some extra space for the shape around the text
+                        isMultiline: true,
+                        wrap: go.TextBlock.WrapFit,
                         editable: true  // allow in-place editing by user
                     },
                     new go.Binding("text", "", OpenArchiWrapper.toTitle).makeTwoWay(OpenArchiWrapper.fromTitle)),  // the label shows the node data's text
@@ -145,17 +146,26 @@ function initBasic(nodeDataArray, linkDataArray) {
                     editable: true  // allow in-place editing by user
                 },
                 new go.Binding("text", "", OpenArchiWrapper.toName).makeTwoWay(OpenArchiWrapper.fromName),
-                new go.Binding("stroke", "color")),
+                new go.Binding("stroke", "", OpenArchiWrapper.toStroke).makeTwoWay(OpenArchiWrapper.fromStroke)),
             gojs(go.Panel, "Auto",
                 {name: "PANEL"},
                 gojs(go.Shape, "Rectangle",  // the rectangular shape around the members
                     {
-                        fill: "rgba(128,128,128,0.2)", stroke: "gray", strokeWidth: 3,
-                        portId: "", cursor: "pointer",  // the Shape is the port, not the whole Node
+                        fill: "rgba(128,128,128,0.2)",
+                        stroke: "gray",
+                        strokeWidth: 3,
+                        portId: "",
+                        cursor: "pointer",  // the Shape is the port, not the whole Node
                         // allow all kinds of links from and to this port
-                        fromLinkable: true, fromLinkableSelfNode: true, fromLinkableDuplicates: true,
-                        toLinkable: true, toLinkableSelfNode: true, toLinkableDuplicates: true
-                    }),
+                        fromLinkable: true,
+                        fromLinkableSelfNode: true,
+                        fromLinkableDuplicates: true,
+                        toLinkable: true,
+                        toLinkableSelfNode: true,
+                        toLinkableDuplicates: true
+                    },
+                    new go.Binding("fill", "", OpenArchiWrapper.toFill).makeTwoWay(OpenArchiWrapper.fromFill),
+                    new go.Binding("stroke", "", OpenArchiWrapper.toStroke).makeTwoWay(OpenArchiWrapper.fromStroke)),
                 gojs(go.Placeholder, {margin: 10, background: "transparent"})  // represents where the members are
             ),
             { // this tooltip Adornment is shared by all groups
@@ -222,7 +232,7 @@ function initBasic(nodeDataArray, linkDataArray) {
         // stop any ongoing text editing
         const node = myDiagram.findNodeForKey(e.subject.first().key);
         const data = node.data;
-        if (data.category === "Element" && data.text==="Element") {
+        if (data.category === "Element" && data.text === "Element") {
             let object = node.findObject(node.data.category);
             if (object !== null && object instanceof go.TextBlock) {
                 if (myDiagram.currentTool instanceof go.TextEditingTool) {

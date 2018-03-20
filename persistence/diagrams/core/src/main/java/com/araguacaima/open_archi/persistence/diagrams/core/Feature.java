@@ -30,8 +30,8 @@ public class Feature extends Item {
     /**
      * the category of feature; e.g. class, interface, etc
      */
-    @Column
-    private FeatureCategory category;
+    @OneToOne
+    private Category category;
 
     /**
      * the visibility of the feature; e.g. public, package, private
@@ -81,12 +81,14 @@ public class Feature extends Item {
         this.url = url;
     }
 
-    public FeatureCategory getCategory() {
-        return category;
+    @Override
+    public Category getCategory() {
+        return this.category;
     }
 
-    public void setCategory(FeatureCategory category) {
-        this.category = category;
+    @Override
+    public void setCategory(ItemCategory category) {
+        this.category = (Category) category;
     }
 
     public String getVisibility() {

@@ -2,6 +2,7 @@ package com.araguacaima.open_archi.persistence.diagrams.flowchart;
 
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 import com.araguacaima.open_archi.persistence.diagrams.core.Item;
+import com.araguacaima.open_archi.persistence.diagrams.core.ItemCategory;
 
 import javax.persistence.*;
 
@@ -11,18 +12,19 @@ public class Flowchart extends Item {
 
     @Column
     @Enumerated(EnumType.STRING)
-    private Category category;
-
-    @Column
-    @Enumerated(EnumType.STRING)
     private ElementKind kind = ElementKind.FLOWCHART;
 
+    @OneToOne
+    private Category category;
+
+    @Override
     public Category getCategory() {
-        return category;
+        return this.category;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    @Override
+    public void setCategory(ItemCategory category) {
+        this.category = (Category) category;
     }
 
     public ElementKind getKind() {

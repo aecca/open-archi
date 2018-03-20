@@ -12,25 +12,25 @@ public class Palette implements Palettable {
 
     public Palette() {
         PaletteItem box = new PaletteItem();
-        box.setShapeType(ShapeType.RoundedRectangle);
+        box.setShape(new Shape(ShapeType.RoundedRectangle));
         box.setRank(0);
         box.setName("Element");
         box.setKind(ElementKind.FLOWCHART);
         basicElements.add(box);
         PaletteItem start = new PaletteItem();
-        start.setShapeType(ShapeType.Ellipse);
+        start.setShape(new Shape(ShapeType.Ellipse));
         start.setRank(1);
         start.setName("Start");
         start.setKind(ElementKind.FLOWCHART);
         basicElements.add(start);
         PaletteItem end = new PaletteItem();
-        end.setShapeType(ShapeType.Ellipse);
+        end.setShape(new Shape(ShapeType.Ellipse));
         end.setRank(2);
         end.setName("End");
         end.setKind(ElementKind.FLOWCHART);
         basicElements.add(end);
         PaletteItem diamond = new PaletteItem();
-        diamond.setShapeType(ShapeType.Diamond);
+        diamond.setShape(new Shape(ShapeType.Diamond));
         diamond.setRank(3);
         diamond.setName("?");
         diamond.setKind(ElementKind.FLOWCHART);

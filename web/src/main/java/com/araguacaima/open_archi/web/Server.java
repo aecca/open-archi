@@ -1359,13 +1359,15 @@ public class Server {
         int rank = 0;
         for (IdName model : models) {
             PaletteItem item = new PaletteItem();
+            item.setId(model.getId());
             item.setRank(rank);
             item.setKind(ElementKind.ARCHITECTURE_MODEL);
             item.setName(model.getName());
-            item.setShapeType(ShapeType.RoundedRectangle);
-            item.setId(model.getId());
-            item.setSize(new Size(40, 40));
-            item.setFill(SoftwareSystem.SHAPE_COLOR);
+            Shape shape = new Shape();
+            shape.setType(ShapeType.RoundedRectangle);
+            shape.setFill(SoftwareSystem.SHAPE_COLOR);
+            shape.setSize(new Size(40, 40));
+            item.setShape(shape);
             palette.getSoftwareSystems().add(item);
             rank++;
         }
@@ -1375,13 +1377,15 @@ public class Server {
         rank = 0;
         for (IdName model : models) {
             PaletteItem item = new PaletteItem();
+            item.setId(model.getId());
             item.setRank(rank);
             item.setKind(ElementKind.ARCHITECTURE_MODEL);
             item.setName(model.getName());
-            item.setShapeType(ShapeType.RoundedRectangle);
-            item.setId(model.getId());
-            item.setSize(new Size(40, 40));
-            item.setFill(Container.SHAPE_COLOR);
+            Shape shape = new Shape();
+            shape.setType(ShapeType.RoundedRectangle);
+            shape.setFill(Container.SHAPE_COLOR);
+            shape.setSize(new Size(40, 40));
+            item.setShape(shape);
             palette.getContainers().add(item);
             rank++;
         }
@@ -1391,13 +1395,15 @@ public class Server {
         rank = 0;
         for (IdName model : models) {
             PaletteItem item = new PaletteItem();
+            item.setId(model.getId());
             item.setRank(rank);
             item.setKind(ElementKind.ARCHITECTURE_MODEL);
             item.setName(model.getName());
-            item.setShapeType(ShapeType.RoundedRectangle);
-            item.setId(model.getId());
-            item.setSize(new Size(40, 40));
-            item.setFill(Component.SHAPE_COLOR);
+            Shape shape = new Shape();
+            shape.setType(ShapeType.RoundedRectangle);
+            shape.setFill(SoftwareSystem.SHAPE_COLOR);
+            shape.setSize(new Size(40, 40));
+            item.setShape(shape);
             palette.getComponents().add(item);
             rank++;
         }

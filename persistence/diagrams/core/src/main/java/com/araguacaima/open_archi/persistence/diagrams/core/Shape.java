@@ -25,6 +25,13 @@ public class Shape extends BaseEntity {
     @Column
     private boolean output = true;
 
+    public Shape(ShapeType type) {
+        this.type = type;
+    }
+
+    public Shape() {
+    }
+
     public ShapeType getType() {
         return type;
     }

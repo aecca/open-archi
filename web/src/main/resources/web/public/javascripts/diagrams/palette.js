@@ -1,20 +1,19 @@
 function fillElement(data, paletteModelArray) {
-    const shapeType = data.shapeType;
-    const input = data.input;
-    const output = data.output;
+    const shapeType = data.shape.type;
+    const input = data.shape.input;
+    const output = data.shape.output;
     let paletteModel = {};
-    paletteModel.category = data.name;
-    paletteModel.text = data.name;
+    paletteModel.category = data.category;
+    paletteModel.name = data.name;
     paletteModel.figure = shapeType;
     paletteModelArray.push(paletteModel);
     return gojs(go.Node, "Spot", nodeStyle(),
         gojs(go.Panel, "Auto",
-            gojs(go.Shape, shapeType,
-                {
-                    minSize: new go.Size(data.size.width, data.size.height),
-                    fill: data.fill,
-                    stroke: data.stroke
-                }),
+            gojs(go.Shape,
+                new go.Binding("figure", "", OpenArchiWrapper.toFigure).makeTwoWay(OpenArchiWrapper.fromFigure),
+                new go.Binding("fill", "", OpenArchiWrapper.toFill).makeTwoWay(OpenArchiWrapper.fromFill),
+                new go.Binding("minSize", "", OpenArchiWrapper.toSize).makeTwoWay(OpenArchiWrapper.fromSize),
+                new go.Binding("stroke", "", OpenArchiWrapper.toStroke).makeTwoWay(OpenArchiWrapper.fromStroke)),
             gojs(go.TextBlock, data.name,
                 {
                     name: data.name,
@@ -25,7 +24,7 @@ function fillElement(data, paletteModelArray) {
                     wrap: go.TextBlock.WrapFit,
                     editable: true
                 },
-                new go.Binding("text")),
+                new go.Binding("text", "", OpenArchiWrapper.toTitle)),
             { // this tooltip Adornment is shared by all nodes
                 toolTip:
                     gojs(go.Adornment, "Auto",

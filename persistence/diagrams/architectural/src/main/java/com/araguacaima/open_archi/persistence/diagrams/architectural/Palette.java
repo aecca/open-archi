@@ -15,28 +15,34 @@ public class Palette implements Palettable {
 
     public Palette() {
         PaletteItem element = new PaletteItem();
-        element.setShapeType(ShapeType.RoundedRectangle);
-        element.setRank(0);
+        Shape shape = new Shape();
+        shape.setFill("#0000FF");
+        shape.setSize(new Size(40,40));
+        shape.setType(ShapeType.RoundedRectangle);
         element.setName("Element");
-        element.setFill("#0000FF");
-        element.setSize(new Size(40,40));
+        element.setShape(shape);
+        element.setRank(0);
         basicElements.add(element);
-/*        PaletteItem person = new PaletteItem();
-        person.setShapeType(ShapeType.Triangle);
-        person.setRank(1);
+        PaletteItem person = new PaletteItem();
         person.setName("Person");
-        person.setFill("#ED5656");
-        person.setSize(new Size(40,40));
+        Shape shapePerson = new Shape();
+        shapePerson.setFill("#ED5656");
+        shapePerson.setSize(new Size(40,40));
+        shapePerson.setType(ShapeType.Rectangle);
+        person.setShape(shapePerson);
         person.setKind(ElementKind.CONSUMER);
+        person.setRank(1);
         basicElements.add(person);
         PaletteItem consumer = new PaletteItem();
-        consumer.setShapeType(ShapeType.Diamond);
-        consumer.setRank(2);
+        Shape shapeConsumer = new Shape();
+        shapeConsumer.setFill("#49CC90");
+        shapeConsumer.setSize(new Size(40,40));
+        shapeConsumer.setType(ShapeType.Ellipse);
         consumer.setName("Consumer");
-        consumer.setFill("#49CC90");
-        consumer.setSize(new Size(40,40));
+        consumer.setShape(shapeConsumer);
         consumer.setKind(ElementKind.CONSUMER);
-        basicElements.add(consumer);*/
+        consumer.setRank(2);
+        basicElements.add(consumer);
     }
 
     @Override

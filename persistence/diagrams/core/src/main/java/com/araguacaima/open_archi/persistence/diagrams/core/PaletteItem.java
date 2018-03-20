@@ -2,32 +2,22 @@ package com.araguacaima.open_archi.persistence.diagrams.core;
 
 import org.springframework.stereotype.Component;
 
+import java.util.Set;
+
 @Component
 public class PaletteItem extends PaletteInfo {
 
-    protected ShapeType shapeType;
-    protected int rank;
-    protected Size size = new Size();
-    protected String fill = "#ffffff";
-    protected String stroke = "#333333";
-    protected boolean input = true;
-    protected boolean output = true;
+    private int rank;
 
-    public ShapeType getShapeType() {
-        return shapeType;
-    }
+    private String description;
 
-    public void setShapeType(ShapeType shapeType) {
-        this.shapeType = shapeType;
-    }
+    private Shape shape;
 
-    public Size getSize() {
-        return size;
-    }
+    private Set<ConnectTrigger> canBeConnectedFrom;
 
-    public void setSize(Size size) {
-        this.size = size;
-    }
+    private Set<ConnectTrigger> canBeConnectedTo;
+
+    private boolean prototype;
 
     public int getRank() {
         return rank;
@@ -37,35 +27,43 @@ public class PaletteItem extends PaletteInfo {
         this.rank = rank;
     }
 
-    public String getFill() {
-        return fill;
+    public String getDescription() {
+        return description;
     }
 
-    public void setFill(String fill) {
-        this.fill = fill;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public String getStroke() {
-        return stroke;
+    public Shape getShape() {
+        return shape;
     }
 
-    public void setStroke(String stroke) {
-        this.stroke = stroke;
+    public void setShape(Shape shape) {
+        this.shape = shape;
     }
 
-    public boolean isInput() {
-        return input;
+    public Set<ConnectTrigger> getCanBeConnectedFrom() {
+        return canBeConnectedFrom;
     }
 
-    public void setInput(boolean input) {
-        this.input = input;
+    public void setCanBeConnectedFrom(Set<ConnectTrigger> canBeConnectedFrom) {
+        this.canBeConnectedFrom = canBeConnectedFrom;
     }
 
-    public boolean isOutput() {
-        return output;
+    public Set<ConnectTrigger> getCanBeConnectedTo() {
+        return canBeConnectedTo;
     }
 
-    public void setOutput(boolean output) {
-        this.output = output;
+    public void setCanBeConnectedTo(Set<ConnectTrigger> canBeConnectedTo) {
+        this.canBeConnectedTo = canBeConnectedTo;
+    }
+
+    public boolean isPrototype() {
+        return prototype;
+    }
+
+    public void setPrototype(boolean prototype) {
+        this.prototype = prototype;
     }
 }

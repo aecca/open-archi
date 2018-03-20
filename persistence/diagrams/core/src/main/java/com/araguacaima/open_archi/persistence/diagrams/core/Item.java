@@ -61,6 +61,9 @@ public class Item extends Taggable {
     protected String name;
 
     @Column
+    protected ItemCategory category;
+
+    @Column
     @Enumerated(EnumType.STRING)
     protected ElementKind kind;
 
@@ -120,6 +123,14 @@ public class Item extends Taggable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public ItemCategory getCategory() {
+        return category;
+    }
+
+    public void setCategory(ItemCategory category) {
+        this.category = category;
     }
 
     public ElementKind getKind() {

@@ -212,4 +212,31 @@ class OpenArchiWrapper {
     static fromName(loc, data, model) {
         model.setDataProperty(data, "text", data.name);
     }
+
+    static toSize(data, node) {
+        return new go.Size(data.shape.size.width, data.shape.size.height);
+    }
+
+    static fromSize(size, data, model) {
+
+        model.setDataProperty(data, "width", size.width);
+        model.setDataProperty(data, "height", size.height);
+    }
+
+    static toFigure(data, node) {
+        return data.shape.type;
+    }
+
+    static fromFigure(figure, data, model) {
+        model.setDataProperty(data, "figure", data.shape.type);
+    }
+
+    static toStroke(data, node) {
+        return new go.Brush(data.shape.stroke);
+    }
+
+    static fromStroke(stroke, data, model) {
+        model.setDataProperty(data, "stroke", data.shape.stroke);
+    }
+
 }

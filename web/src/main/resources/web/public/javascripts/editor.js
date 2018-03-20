@@ -431,8 +431,8 @@ function checkAndSave() {
         const name = $("#element-name").val();
         const type = $("#element-type").html().split(" ")[0];
         const prototype = $("#element-prototype").prop("checked");
+        delete data["text"];
         myDiagram.model.setDataProperty(data, "name", name);
-        myDiagram.model.setDataProperty(data, "text", name);
         myDiagram.model.setDataProperty(data, "type", type);
         myDiagram.model.setDataProperty(data, "prototype", prototype);
         myDiagram.requestUpdate();

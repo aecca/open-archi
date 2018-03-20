@@ -28,7 +28,7 @@ public class Features extends Items {
      * the category of feature; e.g. class, interface, etc
      */
     @Column
-    private FeatureCategory category;
+    private Category category;
 
     /**
      * the visibility of the feature; e.g. public, package, private
@@ -59,11 +59,11 @@ public class Features extends Items {
         this.url = url;
     }
 
-    public FeatureCategory getCategory() {
+    public Category getCategory() {
         return category;
     }
 
-    public void setCategory(FeatureCategory category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
 
