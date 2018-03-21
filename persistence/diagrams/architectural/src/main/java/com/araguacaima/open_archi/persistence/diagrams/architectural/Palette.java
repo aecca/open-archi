@@ -19,7 +19,7 @@ public class Palette implements Palettable {
         shape.setFill("#0000FF");
         shape.setSize(new Size(40,40));
         shape.setType(ShapeType.RoundedRectangle);
-        element.setName("Element");
+        element.setName("New Element");
         element.setShape(shape);
         element.setRank(0);
         element.setCategory(DefaultCategoryItem.DEFAULT.name());
@@ -30,7 +30,7 @@ public class Palette implements Palettable {
         Shape shapePerson = new Shape();
         shapePerson.setFill("#ED5656");
         shapePerson.setSize(new Size(40,40));
-        shapePerson.setType(ShapeType.Rectangle);
+        shapePerson.setType(ShapeType.Person);
         person.setShape(shapePerson);
         person.setKind(ElementKind.CONSUMER);
         person.setRank(1);
@@ -40,7 +40,7 @@ public class Palette implements Palettable {
         PaletteItem consumer = new PaletteItem();
         Shape shapeConsumer = new Shape();
         shapeConsumer.setFill("#49CC90");
-        shapeConsumer.setSize(new Size(40,40));
+        shapeConsumer.setSize(new Size(10,10));
         shapeConsumer.setType(ShapeType.Ellipse);
         consumer.setName("Consumer");
         consumer.setShape(shapeConsumer);

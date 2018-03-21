@@ -6,6 +6,7 @@ public enum ShapeType {
     Rectangle,
     Diamond,
     Ellipse,
+    Circle,
     Lane,
     Pool,
     Consumer,

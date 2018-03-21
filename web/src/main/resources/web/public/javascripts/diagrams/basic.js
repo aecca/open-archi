@@ -232,32 +232,25 @@ function initBasic(nodeDataArray, linkDataArray) {
         // stop any ongoing text editing
         const node = myDiagram.findNodeForKey(e.subject.first().key);
         const data = node.data;
-        if (data.category === "DEFAULT" && data.name === "Element") {
-            let object = node.findObject(node.data.category);
-            if (object !== null && object instanceof go.TextBlock) {
-                if (myDiagram.currentTool instanceof go.TextEditingTool) {
-                    myDiagram.currentTool.acceptText(go.TextEditingTool.LostFocus);
-                }
-                //myDiagram.commandHandler.editTextBlock(object);
-
-                let modal = $('#basic-element-data');
-                modal.attr("data-key", data.key);
-                modal.on('show.bs.modal', function (event) {
-                    const button = $(event.relatedTarget); // Button that triggered the modal
-                    const modal = $(this);
-                    modal.find('.modal-title').text('Basic element data for ' + object.name);
-                    $("#element-name").val(object.name)
-                });
-                modal.modal({
-                    backdrop: 'static',
-                    keyboard: false,
-                    show: true
-                });
+        if (data.category === "DEFAULT") {
+            if (myDiagram.currentTool instanceof go.TextEditingTool) {
+                myDiagram.currentTool.acceptText(go.TextEditingTool.LostFocus);
             }
+            let modal = $('#basic-element-data');
+            modal.attr("data-key", data.key);
+            modal.on('show.bs.modal', function (event) {
+                const button = $(event.relatedTarget); // Button that triggered the modal
+                const modal = $(this);
+                modal.find('.modal-title').text('Basic element data for ' + data.name);
+                $("#element-name").val(data.name)
+            });
+            modal.modal({
+                backdrop: 'static',
+                keyboard: false,
+                show: true
+            });
         }
-
     });
-
 }
 
 function fillDiagram(nodeDataArray, linkDataArray) {
