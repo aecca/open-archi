@@ -22,6 +22,8 @@ public class Palette implements Palettable {
         element.setName("Element");
         element.setShape(shape);
         element.setRank(0);
+        element.setCategory(DefaultCategoryItem.DEFAULT.name());
+        element.setPrototype(true);
         basicElements.add(element);
         PaletteItem person = new PaletteItem();
         person.setName("Person");
@@ -32,6 +34,8 @@ public class Palette implements Palettable {
         person.setShape(shapePerson);
         person.setKind(ElementKind.CONSUMER);
         person.setRank(1);
+        person.setCategory(DefaultCategoryItem.DEFAULT.name());
+        person.setPrototype(true);
         basicElements.add(person);
         PaletteItem consumer = new PaletteItem();
         Shape shapeConsumer = new Shape();
@@ -42,6 +46,8 @@ public class Palette implements Palettable {
         consumer.setShape(shapeConsumer);
         consumer.setKind(ElementKind.CONSUMER);
         consumer.setRank(2);
+        consumer.setCategory(DefaultCategoryItem.DEFAULT.name());
+        consumer.setPrototype(true);
         basicElements.add(consumer);
     }
 

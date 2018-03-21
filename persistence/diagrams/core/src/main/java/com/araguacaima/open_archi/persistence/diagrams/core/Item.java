@@ -60,7 +60,7 @@ public class Item extends Taggable {
     @Column
     protected String name;
 
-    @Column
+    @OneToOne(targetEntity = DefaultCategory.class)
     protected ItemCategory category;
 
     @Column

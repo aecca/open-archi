@@ -22,9 +22,3 @@ public class Category implements ItemCategory<FlowchartCategory> {
     }
 }
 
-enum FlowchartCategory {
-    ACTIVITY,
-    DECISION_POINT,
-    START,
-    END
-}

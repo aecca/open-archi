@@ -26,8 +26,3 @@ public class Category implements ItemCategory<GanttCategory> {
     }
 }
 
-enum GanttCategory {
-    ACTIVITY,
-    START,
-    END
-}

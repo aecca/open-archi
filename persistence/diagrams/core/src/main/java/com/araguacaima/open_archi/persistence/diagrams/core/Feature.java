@@ -30,7 +30,7 @@ public class Feature extends Item {
     /**
      * the category of feature; e.g. class, interface, etc
      */
-    @OneToOne
+    @OneToOne(targetEntity = Category.class)
     private Category category;
 
     /**

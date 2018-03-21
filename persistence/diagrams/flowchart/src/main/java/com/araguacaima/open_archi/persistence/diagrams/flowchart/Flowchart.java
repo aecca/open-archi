@@ -14,7 +14,7 @@ public class Flowchart extends Item {
     @Enumerated(EnumType.STRING)
     private ElementKind kind = ElementKind.FLOWCHART;
 
-    @OneToOne
+    @OneToOne(targetEntity = Category.class)
     private Category category;
 
     @Override

@@ -10,7 +10,7 @@ import javax.persistence.*;
 @PersistenceUnit(unitName = "open-archi")
 public class Gantt extends Item {
 
-    @OneToOne
+    @OneToOne(targetEntity = Category.class)
     private Category category;
 
     @Column

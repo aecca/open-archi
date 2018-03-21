@@ -1,25 +1,23 @@
 package com.araguacaima.open_archi.persistence.diagrams.core;
 
-
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
 
 @Entity
-public class Category implements ItemCategory<FeatureCategory> {
-
+public class DefaultCategory implements ItemCategory<DefaultCategoryItem> {
     @Id
     @Enumerated(EnumType.STRING)
-    private FeatureCategory type;
+    private DefaultCategoryItem type;
 
     @Override
-    public FeatureCategory getType() {
+    public DefaultCategoryItem getType() {
         return this.type;
     }
 
     @Override
-    public void setType(FeatureCategory type) {
+    public void setType(DefaultCategoryItem type) {
         this.type = type;
     }
 }

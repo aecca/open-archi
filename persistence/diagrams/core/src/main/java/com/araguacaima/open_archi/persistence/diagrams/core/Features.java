@@ -25,12 +25,6 @@ public class Features extends Items {
     private String url;
 
     /**
-     * the category of feature; e.g. class, interface, etc
-     */
-    @Column
-    private Category category;
-
-    /**
      * the visibility of the feature; e.g. public, package, private
      */
     @Column
@@ -59,14 +53,6 @@ public class Features extends Items {
         this.url = url;
     }
 
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
     public String getVisibility() {
         return visibility;
     }
@@ -87,7 +73,6 @@ public class Features extends Items {
         super.override(source);
         this.setRole(source.getRole());
         this.setUrl(source.getUrl());
-        this.setCategory(source.getCategory());
         this.setVisibility(source.getVisibility());
     }
 
@@ -99,9 +84,7 @@ public class Features extends Items {
         if (source.getUrl() != null) {
             this.setUrl(source.getUrl());
         }
-        if (source.getCategory() != null) {
-            this.setCategory(source.getCategory());
-        }
+
         if (source.getVisibility() != null) {
             this.setVisibility(source.getVisibility());
         }

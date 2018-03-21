@@ -42,7 +42,7 @@ public class SoftwareSystem extends StaticElement {
     public static final String SHAPE_COLOR = "#01203A";
 
     public SoftwareSystem() {
-        setKind(ElementKind.CONTAINER);
+        setKind(ElementKind.SOFTWARE_SYSTEM);
     }
 
     public Scope getScope() {

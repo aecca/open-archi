@@ -1368,6 +1368,8 @@ public class Server {
             shape.setFill(SoftwareSystem.SHAPE_COLOR);
             shape.setSize(new Size(40, 40));
             item.setShape(shape);
+            item.setCategory(ElementKind.SOFTWARE_SYSTEM.name());
+            item.setPrototype(true);
             palette.getSoftwareSystems().add(item);
             rank++;
         }
@@ -1386,6 +1388,8 @@ public class Server {
             shape.setFill(Container.SHAPE_COLOR);
             shape.setSize(new Size(40, 40));
             item.setShape(shape);
+            item.setCategory(ElementKind.CONTAINER.name());
+            item.setPrototype(true);
             palette.getContainers().add(item);
             rank++;
         }
@@ -1404,6 +1408,8 @@ public class Server {
             shape.setFill(SoftwareSystem.SHAPE_COLOR);
             shape.setSize(new Size(40, 40));
             item.setShape(shape);
+            item.setCategory(ElementKind.COMPONENT.name());
+            item.setPrototype(true);
             palette.getComponents().add(item);
             rank++;
         }

@@ -232,7 +232,7 @@ function initBasic(nodeDataArray, linkDataArray) {
         // stop any ongoing text editing
         const node = myDiagram.findNodeForKey(e.subject.first().key);
         const data = node.data;
-        if (data.category === "Element" && data.text === "Element") {
+        if (data.category === "DEFAULT" && data.name === "Element") {
             let object = node.findObject(node.data.category);
             if (object !== null && object instanceof go.TextBlock) {
                 if (myDiagram.currentTool instanceof go.TextEditingTool) {
