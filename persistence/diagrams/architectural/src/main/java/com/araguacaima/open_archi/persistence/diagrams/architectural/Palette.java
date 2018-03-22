@@ -39,9 +39,9 @@ public class Palette implements Palettable {
         basicElements.add(person);
         PaletteItem consumer = new PaletteItem();
         Shape shapeConsumer = new Shape();
-        shapeConsumer.setFill("#49CC90");
-        shapeConsumer.setSize(new Size(10,10));
-        shapeConsumer.setType(ShapeType.Ellipse);
+        shapeConsumer.setFill("#F0AD4B");
+        shapeConsumer.setSize(new Size(40,40));
+        shapeConsumer.setType(ShapeType.Rectangle);
         consumer.setName("Consumer");
         consumer.setShape(shapeConsumer);
         consumer.setKind(ElementKind.CONSUMER);

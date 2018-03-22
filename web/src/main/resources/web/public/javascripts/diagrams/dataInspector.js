@@ -25,11 +25,15 @@ function Inspector(divid, diagram, options) {
 
     const self = this;
     diagram.addModelChangedListener(function (e) {
-        if (e.isTransactionFinished) self.inspectObject();
+        if (e.isTransactionFinished) {
+            self.inspectObject();
+            relocateInfoDiv();
+        }
     });
     if (this.inspectsSelection) {
         diagram.addDiagramListener("ChangedSelection", function (e) {
             self.inspectObject();
+            relocateInfoDiv();
         });
     }
 }
