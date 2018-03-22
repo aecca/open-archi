@@ -101,16 +101,67 @@
             schema[pList[len - 1]] = value.trim();
         };
 
-        commons.prototype.isArray = isArray;
-        commons.prototype.isObject = isObject;
-        commons.prototype.traverse = traverse;
-        commons.prototype.setValue = setValue;
-        commons.prototype.replaceAll = replaceAll;
-        commons.prototype.isEmpty = isEmpty;
-        commons.prototype.isScalar = isScalar;
-        commons.prototype.isString = isString;
-        commons.prototype.getObjectLength = getObjectLength;
-        commons.prototype.findValues = findValues;
+        const put = function (url, data, contentType) {
+            new Promise(function (resolve, reject) {
+                $.ajax({
+                    url: url,
+                    data: JSON.stringify(data),
+                    type: 'PUT',
+                    dataType: "json",
+                    crossDomain: true,
+                    contentType: contentType,
+                    xhr: function () {
+                        return window.XMLHttpRequest === null || new window.XMLHttpRequest().addEventListener === null
+                            ? new window.ActiveXObject("Microsoft.XMLHTTP")
+                            : $.ajaxSettings.xhr();
+                    }
+                }).done(function (data) {
+                        resolve(data);
+                    }
+                ).fail(function (data) {
+                        reject(data);
+                    }
+                )
+            });
+        };
+        const patch = function (url, data, contentType) {
+            new Promise(function (resolve, reject) {
+                $.ajax({
+                    url: url,
+                    data: JSON.stringify(data),
+                    type: 'PATCH',
+                    dataType: "json",
+                    crossDomain: true,
+                    contentType: contentType,
+                    xhr: function () {
+                        return window.XMLHttpRequest === null || new window.XMLHttpRequest().addEventListener === null
+                            ? new window.ActiveXObject("Microsoft.XMLHTTP")
+                            : $.ajaxSettings.xhr();
+                    }
+                }).done(function (data) {
+                        resolve(data);
+                    }
+                ).fail(function (data) {
+                        reject(data);
+                    }
+                )
+            });
+        };
+
+        commons.prototype = {
+            isArray: isArray,
+            isObject: isObject,
+            traverse: traverse,
+            setValue: setValue,
+            replaceAll: replaceAll,
+            isEmpty: isEmpty,
+            isScalar: isScalar,
+            isString: isString,
+            getObjectLength: getObjectLength,
+            findValues: findValues,
+            patch: patch,
+            put: put
+        };
 
         function traverseArray(arr, prefix) {
             const val = arr[0];

@@ -91,12 +91,16 @@ go.Shape.defineFigureGenerator("Person", function (shape, w, h) {
 function toPalette(data, category) {
     let paletteModel = {};
     paletteModel.category = category;
-    paletteModel.text = data.name;
+    paletteModel.kind = data.kind;
     paletteModel.name = data.name;
     paletteModel.figure = data.shape.type;
     paletteModel.fill = data.shape.fill;
     paletteModel.stroke = data.shape.stroke;
     paletteModel.minSize = OpenArchiWrapper.toSize(data);
+    paletteModel.input = data.input;
+    paletteModel.output = data.output;
+    paletteModel.description = data.description;
+    paletteModel.prototype = data.prototype;
     return paletteModel;
 }
 

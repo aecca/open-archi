@@ -8,6 +8,65 @@ function fulfill(item, isGroup, group, rank) {
     return item;
 }
 
+function diagramToArchitectureModel(name, prototype, nodes, links) {
+
+    let model = {};
+    if (nodes) {
+        model.status = "INITIAL";
+        model.name = name;
+        model.kind = "ARCHITECTURE_MODEL";
+        model.description = "string";
+        model.prototype = prototype;
+        model.softwareSystems = [];
+        nodes.forEach(function (node) {
+            let shape = {
+                type: node.category,
+                size: {
+                    width: node.size.width,
+                    height: node.size.height
+                },
+                fill: node.fill,
+                stroke: node.stroke,
+                input: node.input,
+                output: node.output
+            };
+
+            if (node.kind === "SOFTWARE_SYSTEM") {
+                let softwareSystem = {};
+                softwareSystem.status = "INITIAL";
+                softwareSystem.name = node.name;
+                softwareSystem.kind = node.kind;
+                softwareSystem.description = node.description;
+                softwareSystem.prototype = node.prototype;
+                softwareSystem.location = {};
+                softwareSystem.location.x = node.loc.split(" ")[0];
+                softwareSystem.location.y = node.loc.split(" ")[1];
+                softwareSystem.shape = shape;
+                model.softwareSystems.push(softwareSystem);
+            }
+        });
+    }
+    return model;
+}
+
+function diagramToFlowchartModel(nodes, links) {
+}
+
+function diagramToSequenceModel(nodes, links) {
+}
+
+function diagramToGanttModel(nodes, links) {
+}
+
+function diagramToEntityRelationshipModel(nodes, links) {
+}
+
+function diagramToUmlModel(nodes, links) {
+}
+
+function diagramToBpmModel(nodes, links) {
+}
+
 function architectureModelToDiagram(model) {
 
     let diagram = {
@@ -177,6 +236,38 @@ class OpenArchiWrapper {
 
     static fromDiagram(diagram) {
         let model = diagram.nodeDataArray;
+        const type = model.kind;
+        delete diagram.class;
+        let nodes = diagram.nodeDataArray;
+        let links = diagram.linkDataArray;
+
+        switch (type) {
+            case "FLOWCHART_MODEL":
+                model = diagramToFlowchartModel(nodes, links);
+                break;
+            case "SEQUENCE_MODEL":
+                model = diagramToSequenceModel(nodes, links);
+                break;
+            case "GANTT_MODEL":
+                model = diagramToGanttModel(nodes, links);
+                break;
+            case "ENTITY_RELATIONSHIP_MODEL":
+                model = diagramToEntityRelationshipModel(nodes, links);
+                break;
+            case "UML_CLASS_MODEL":
+                model = diagramToUmlModel(nodes, links);
+                break;
+            case "BPM_MODEL":
+                model = diagramToBpmModel(nodes, links);
+                break;
+            case "ARCHITECTURE_MODEL":
+                model = diagramToArchitectureModel("test", true, nodes, links);
+                break;
+            default:
+                console.log("Still not implemented");
+        }
+
+
         return model;
     };
 

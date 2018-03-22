@@ -131,14 +131,39 @@ function makeButton(text, action, visiblePredicate) {
 
 // Show the diagram's model in JSON format that the user may edit
 function save() {
-    let value = OpenArchiWrapper.fromDiagram(myDiagram.model);
-    value = JSON.stringify(value);
+    let value_ = OpenArchiWrapper.fromDiagram(myDiagram.model);
+    value = JSON.stringify(value_);
     let modelToSaveOrLoad = $("#modelToSaveOrLoad");
     modelToSaveOrLoad.empty();
     modelToSaveOrLoad.jsonView(value);
     resizeDataModelDiv();
     myDiagram.isModified = false;
     myDiagram.model.modelData.position = go.Point.stringify(myDiagram.position);
+    $.post("/open-archi/api/models", value)
+        .done(function (response) {
+            if (response === 201) {
+                alert("created");
+            } else {
+                commons.prototype.put("/open-archi/api/models", value_, 'application/json')
+                    .then(function (data) {
+                        if (response === 200) {
+                            alert("created");
+                        } else {
+                            if (response === 201) {
+                                alert("accepted");
+                            } else {
+                                alert(data);
+                            }
+                        }
+                    }).catch(function (data) {
+                    alert(data);
+                });
+            }
+        })
+        .fail(function (response) {
+            alert("error: " + response);
+        });
+
 }
 
 function load() {
@@ -431,7 +456,7 @@ function checkAndSave() {
         const prototype = $("#element-prototype").prop("checked");
         delete data["text"];
         myDiagram.model.setDataProperty(data, "name", name);
-        myDiagram.model.setDataProperty(data, "type", type);
+        myDiagram.model.setDataProperty(data, "kind", type);
         myDiagram.model.setDataProperty(data, "prototype", prototype);
         myDiagram.requestUpdate();
     }
