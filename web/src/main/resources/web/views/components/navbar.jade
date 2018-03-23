@@ -101,7 +101,7 @@ mixin nav_item_dropdown(href, active, id)
 	- if (!active) var active = "";
 
 	li(class=["dropdown", active])
-		a.dropdown-toggle( href=href, data-toggle="dropdown", role="button", aria-expanded="false" )= attributes.label
+		a.dropdown-toggle(id="dropdown-anchor-" + id, href=href, data-toggle="dropdown", role="button", aria-expanded="false" )= attributes.label
 			span.caret
 		if (id)
 			ul.dropdown-menu( role="menu", id= id )

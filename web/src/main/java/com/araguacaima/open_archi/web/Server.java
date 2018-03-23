@@ -329,17 +329,30 @@ public class Server {
                 Map<String, Object> mapEditor = new HashMap<>();
                 exception(Exception.class, exceptionHandler);
                 mapEditor.put("title", "Editor");
+
+                Map<String, Boolean> diagramTypesMap = new HashMap<>();
+                for (String diagramType : deeplyFulfilledDiagramTypesCollection) {
+                    diagramTypesMap.put(diagramType, diagramType.equals(ElementKind.ARCHITECTURE_MODEL.name()));
+                }
                 try {
-                    mapEditor.put("diagramTypes", jsonUtils.toJSON(deeplyFulfilledDiagramTypesCollection));
-                } catch (IOException e) {
+                mapEditor.put("diagramTypes", jsonUtils.toJSON(diagramTypesMap));} catch (IOException e) {
                     e.printStackTrace();
                 }
+
                 get("/", (req, res) -> {
                     mapEditor.put("palette", jsonUtils.toJSON(getArchitecturePalette()));
                     mapEditor.put("source", "basic");
                     mapEditor.put("examples", getExamples());
                     mapEditor.put("nodeDataArray", "[]");
                     mapEditor.put("linkDataArray", "[]");
+                    String type = req.queryParams("type");
+                    if (type != null) {
+                        Map<String, Boolean> diagramTypesMap_ = new HashMap<>();
+                        for (String diagramType : deeplyFulfilledDiagramTypesCollection) {
+                            diagramTypesMap_.put(diagramType, diagramType.equals(type));
+                        }
+                        mapEditor.put("diagramTypes", jsonUtils.toJSON(diagramTypesMap_));
+                    }
                     return new ModelAndView(mapEditor, "/open-archi/editor");
                 }, engine);
                 get("/:uuid", (request, response) -> {

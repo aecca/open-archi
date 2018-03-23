@@ -33,7 +33,7 @@ append scripts
         let myDiagram;
         let myPalette;
         let nodeDataArray = [];
-        if(!{nodeDataArray}) {
+        if (!{nodeDataArray}) {
             nodeDataArray = !{nodeDataArray};
         }
         let linkDataArray = [];
@@ -55,13 +55,26 @@ append scripts
         let paletteData = !{palette};
         let lightText = 'whitesmoke';
         var diagramTypes = !{diagramTypes};
-        $(function() {
+        $(function () {
             var items = [];
-            $.each(diagramTypes, function (i, item) {
-                items.push('<li role="presentation"><a role="menuitem" tabindex="' + i + '" href="#">' + item + '</a></li>');
-            });
+            var i = 0;
+            var activeText;
+            for (var type in diagramTypes) {
+                var active = diagramTypes[type];
+                if (active) {
+                    items.push('<li role="presentation"><a role="menuitem" tabindex="' + i + '" href="/open-archi/editor?type=' + type + '" class="active">' + type + '</a></li>');
+                    activeText = type;
+                } else {
+                    items.push('<li role="presentation"><a role="menuitem" tabindex="' + i + '" href="/open-archi/editor?type=' + type + '">' + type + '</a></li>');
+                }
+                i++;
+            }
             var $diagramTypesDropdown = $("#diagramTypesDropdown");
             $diagramTypesDropdown.append(items.join(''));
+            if (activeText) {
+                var find = $("#dropdown-anchor-diagramTypesDropdown");
+                find.html(activeText + "<span class=\"caret\"></span>");
+            }
             $diagramTypesDropdown.on('click', 'a', function () {
                 var text = $(this).html();
                 var htmlText = text + ' <span class="caret"></span>';
@@ -73,6 +86,7 @@ append scripts
     script(type='text/javascript', src='/javascripts/editor.js')
 
 block extra-menu-elements
+    +nav_item_dropdown("#", null, "diagramTypesDropdown")(label="Diagram Type")
     +nav_item_dropdown("#")(label="Edit")
         +nav_item("/open-archi/editor") New
         +nav_item("#")(onclick="save()", id="SaveButton") Save
