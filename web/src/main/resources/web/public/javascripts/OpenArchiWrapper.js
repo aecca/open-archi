@@ -8,63 +8,62 @@ function fulfill(item, isGroup, group, rank) {
     return item;
 }
 
-function diagramToArchitectureModel(name, prototype, nodes, links) {
+function diagramToArchitectureModel(model, node, links) {
 
-    let model = {};
-    if (nodes) {
-        model.status = "INITIAL";
-        model.name = name;
-        model.kind = "ARCHITECTURE_MODEL";
-        model.description = "string";
-        model.prototype = prototype;
-        model.softwareSystems = [];
-        nodes.forEach(function (node) {
-            let shape = {
-                type: node.category,
+    if (node) {
+        let shape = {
+            type: node.category,
+            fill: node.fill,
+            stroke: node.stroke,
+            input: node.input,
+            output: node.output
+        };
+        if (node.size) {
+            shape.size = {
                 size: {
                     width: node.size.width,
                     height: node.size.height
-                },
-                fill: node.fill,
-                stroke: node.stroke,
-                input: node.input,
-                output: node.output
+                }
             };
-
-            if (node.kind === "SOFTWARE_SYSTEM") {
-                let softwareSystem = {};
-                softwareSystem.status = "INITIAL";
-                softwareSystem.name = node.name;
-                softwareSystem.kind = node.kind;
-                softwareSystem.description = node.description;
-                softwareSystem.prototype = node.prototype;
-                softwareSystem.location = {};
-                softwareSystem.location.x = node.loc.split(" ")[0];
-                softwareSystem.location.y = node.loc.split(" ")[1];
-                softwareSystem.shape = shape;
-                model.softwareSystems.push(softwareSystem);
+        }
+        model.shape = shape;
+        if (node.kind === "SOFTWARE_SYSTEM") {
+            let softwareSystem = {};
+            softwareSystem.status = "INITIAL";
+            softwareSystem.name = node.name;
+            softwareSystem.kind = node.kind;
+            softwareSystem.description = node.description;
+            softwareSystem.prototype = node.prototype;
+            softwareSystem.location = {};
+            softwareSystem.location.x = node.loc.split(" ")[0];
+            softwareSystem.location.y = node.loc.split(" ")[1];
+            softwareSystem.shape = shape;
+            if (!model.softwareSystems) {
+                model.softwareSystems = [];
             }
-        });
+
+            model.softwareSystems.push(softwareSystem);
+        }
     }
     return model;
 }
 
-function diagramToFlowchartModel(nodes, links) {
+function diagramToFlowchartModel(model, node, links) {
 }
 
-function diagramToSequenceModel(nodes, links) {
+function diagramToSequenceModel(model, node, links) {
 }
 
-function diagramToGanttModel(nodes, links) {
+function diagramToGanttModel(model, node, links) {
 }
 
-function diagramToEntityRelationshipModel(nodes, links) {
+function diagramToEntityRelationshipModel(model, node, links) {
 }
 
-function diagramToUmlModel(nodes, links) {
+function diagramToUmlModel(model, node, links) {
 }
 
-function diagramToBpmModel(nodes, links) {
+function diagramToBpmModel(model, node, links) {
 }
 
 function architectureModelToDiagram(model) {
@@ -235,38 +234,45 @@ class OpenArchiWrapper {
     };
 
     static fromDiagram(diagram) {
-        let model = diagram.nodeDataArray;
-        const type = model.kind;
+        let model = {};
         delete diagram.class;
         let nodes = diagram.nodeDataArray;
         let links = diagram.linkDataArray;
-
-        switch (type) {
-            case "FLOWCHART_MODEL":
-                model = diagramToFlowchartModel(nodes, links);
-                break;
-            case "SEQUENCE_MODEL":
-                model = diagramToSequenceModel(nodes, links);
-                break;
-            case "GANTT_MODEL":
-                model = diagramToGanttModel(nodes, links);
-                break;
-            case "ENTITY_RELATIONSHIP_MODEL":
-                model = diagramToEntityRelationshipModel(nodes, links);
-                break;
-            case "UML_CLASS_MODEL":
-                model = diagramToUmlModel(nodes, links);
-                break;
-            case "BPM_MODEL":
-                model = diagramToBpmModel(nodes, links);
-                break;
-            case "ARCHITECTURE_MODEL":
-                model = diagramToArchitectureModel("test", true, nodes, links);
-                break;
-            default:
-                console.log("Still not implemented");
+        if (nodes) {
+            nodes.forEach(function (node) {
+                model.status = node.status || "INITIAL";
+                model.name = node.name;
+                model.kind = node.kind;
+                model.description = node.description;
+                model.prototype = node.prototype;
+                model.softwareSystems = [];
+                switch (model.kind) {
+                    case "FLOWCHART_MODEL":
+                        model = diagramToFlowchartModel(model, node, links);
+                        break;
+                    case "SEQUENCE_MODEL":
+                        model = diagramToSequenceModel(model, node, links);
+                        break;
+                    case "GANTT_MODEL":
+                        model = diagramToGanttModel(model, node, links);
+                        break;
+                    case "ENTITY_RELATIONSHIP_MODEL":
+                        model = diagramToEntityRelationshipModel(model, node, links);
+                        break;
+                    case "UML_CLASS_MODEL":
+                        model = diagramToUmlModel(model, node, links);
+                        break;
+                    case "BPM_MODEL":
+                        model = diagramToBpmModel(model, node, links);
+                        break;
+                    case "ARCHITECTURE_MODEL":
+                        model = diagramToArchitectureModel(model, node, links);
+                        break;
+                    default:
+                        console.log("Still not implemented");
+                }
+            })
         }
-
 
         return model;
     };
