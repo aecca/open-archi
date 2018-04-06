@@ -161,7 +161,7 @@ function save() {
             }
         })
         .fail(function (response) {
-            alert("error: " + response);
+            alert("error");
         });
 
 }

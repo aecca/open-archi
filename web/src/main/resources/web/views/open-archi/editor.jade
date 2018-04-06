@@ -55,6 +55,7 @@ append scripts
         let paletteData = !{palette};
         let lightText = 'whitesmoke';
         var diagramTypes = !{diagramTypes};
+        var elementTypes = !{elementTypes};
         $(function () {
             var items = [];
             var i = 0;
@@ -76,6 +77,19 @@ append scripts
                 find.html(activeText + "<span class=\"caret\"></span>");
             }
             $diagramTypesDropdown.on('click', 'a', function () {
+                var text = $(this).html();
+                var htmlText = text + ' <span class="caret"></span>';
+                $(this).closest('.dropdown').find('.dropdown-toggle').html(htmlText);
+            });
+
+            var elementTypeItems = [];
+            i = 0;
+            elementTypes.forEach(function (elementType, i) {
+                elementTypeItems.push('<li role="presentation"><a role="menuitem" tabindex="' + i + '" href="#">' + elementType + '</a></li>');
+            });
+            var elementTypesDropdown = $("#elementTypesDropdown");
+            elementTypesDropdown.append(elementTypeItems.join(''));
+            elementTypesDropdown.on('click', 'a', function () {
                 var text = $(this).html();
                 var htmlText = text + ' <span class="caret"></span>';
                 $(this).closest('.dropdown').find('.dropdown-toggle').html(htmlText);
@@ -106,14 +120,14 @@ block content
             .form-group
                 label.col-form-label(for="element-name") Name:
                 input.form-control#element-name(type="text")
-            //.form-group
-            //    label.col-form-label Type:
-            //    .dropdown
-            //        button.btn.btn-default.dropdown-toggle#element-type(type="button", data-toggle="dropdown")
-            //            | Element Types
-            //            | &nbsp;
-            //            span.caret
-            //        ul.dropdown-menu#diagramTypesDropdown1(role="menu", aria-labelledby="dropdownMenu1")
+            .form-group
+                label.col-form-label Type:
+                .dropdown
+                    button.btn.btn-default.dropdown-toggle#element-type(type="button", data-toggle="dropdown")
+                        | Element Types
+                        | &nbsp;
+                        span.caret
+                    ul.dropdown-menu#elementTypesDropdown(role="menu", aria-labelledby="elementTypesDropdown")
             .form-group
                 label.col-form-label(for="element-prototype")
                     | Prototype?

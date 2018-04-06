@@ -136,6 +136,7 @@ public class Server {
 
     private static Set<Class<? extends Taggable>> modelsClasses;
     private static Reflections diagramsReflections;
+    private static List<String> elementTypesCollection = new ArrayList<>();
 
     private enum HttpMethod {
         get,
@@ -267,6 +268,20 @@ public class Server {
         deeplyFulfilledIdValueCollection.add(deeplyFulfilledIdValue_1);
         deeplyFulfilledIdValueCollection.add(deeplyFulfilledIdValue_2);
 
+        elementTypesCollection.add("ARCHITECTURE");
+        elementTypesCollection.add("FLOWCHART");
+        elementTypesCollection.add("SEQUENCE");
+        elementTypesCollection.add("GANTT");
+        elementTypesCollection.add("ENTITY_RELATIONSHIP");
+        elementTypesCollection.add("UML_CLASS");
+        elementTypesCollection.add("FEATURE");
+        elementTypesCollection.add("COMPONENT");
+        elementTypesCollection.add("CONSUMER");
+        elementTypesCollection.add("CONTAINER");
+        elementTypesCollection.add("DEPLOYMENT");
+        elementTypesCollection.add("BPM");
+        elementTypesCollection.add("SOFTWARE_SYSTEM");
+
         //noinspection ResultOfMethodCallIgnored
         JPAEntityManagerUtils.getEntityManager();
     }
@@ -335,7 +350,14 @@ public class Server {
                     diagramTypesMap.put(diagramType, diagramType.equals(ElementKind.ARCHITECTURE_MODEL.name()));
                 }
                 try {
-                mapEditor.put("diagramTypes", jsonUtils.toJSON(diagramTypesMap));} catch (IOException e) {
+                    mapEditor.put("diagramTypes", jsonUtils.toJSON(diagramTypesMap));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                try {
+                    mapEditor.put("elementTypes", jsonUtils.toJSON(elementTypesCollection));
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
 
