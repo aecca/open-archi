@@ -443,6 +443,13 @@ $(function () {
         relocatePaletteDiv();
         resizeDiagramDiv();
     });
+
+    let modalModelValidation = $('#model-validation');
+    modalModelValidation.modal({
+        backdrop: 'static',
+        keyboard: false,
+        show: false
+    });
 });
 
 function checkAndSave() {
@@ -452,7 +459,7 @@ function checkAndSave() {
 
     if (data !== null) {
         const name = $("#element-name").val();
-        const type = $("#element-type").html().split(" ")[0];
+        const type = $("#diagramTypesDropdown").html().split(" ")[0];
         const prototype = $("#element-prototype").prop("checked");
         delete data["text"];
         myDiagram.model.setDataProperty(data, "name", name);
@@ -465,4 +472,8 @@ function checkAndSave() {
 
 function openMore() {
 
+}
+
+function validateModel() {
+    $('#model-validation').modal('show')
 }

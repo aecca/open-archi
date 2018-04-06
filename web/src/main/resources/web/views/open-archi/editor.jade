@@ -89,6 +89,7 @@ block extra-menu-elements
     +nav_item_dropdown("#", null, "diagramTypesDropdown")(label="Diagram Type")
     +nav_item_dropdown("#")(label="Edit")
         +nav_item("/open-archi/editor") New
+        +nav_item("#")(onclick="validateModel()", id="ValidateModel") Validate
         +nav_item("#")(onclick="save()", id="SaveButton") Save
         +nav_item("#")(onclick="load()", id="LoadButton") Load
         +nav_item("#")(onclick="openSVG()", id="OpenSVGButton") Export as SVG
@@ -105,19 +106,27 @@ block content
             .form-group
                 label.col-form-label(for="element-name") Name:
                 input.form-control#element-name(type="text")
-            .form-group
-                label.col-form-label Type:
-                .dropdown
-                    button.btn.btn-default.dropdown-toggle#element-type(type="button", data-toggle="dropdown")
-                        | Element Types
-                        | &nbsp;
-                        span.caret
-                    ul.dropdown-menu#diagramTypesDropdown(role="menu", aria-labelledby="dropdownMenu1")
+            //.form-group
+            //    label.col-form-label Type:
+            //    .dropdown
+            //        button.btn.btn-default.dropdown-toggle#element-type(type="button", data-toggle="dropdown")
+            //            | Element Types
+            //            | &nbsp;
+            //            span.caret
+            //        ul.dropdown-menu#diagramTypesDropdown1(role="menu", aria-labelledby="dropdownMenu1")
             .form-group
                 label.col-form-label(for="element-prototype")
                     | Prototype?
                     | &nbsp;
                 input#element-prototype(type="checkbox")
+    +modal("Model Validation", "model-validation")
+        h4 The entire JSON Model will be passed the to the Rules as a Service that use a Drools' Desition Table based model's validation implementation
+        p [Later it could be a Cucumber based Test set]
+        +list-group-custom
+            +list-group-item("#")
+                Validation issue #1
+            +list-group-item("#")
+                Validation issue #2
     #diagramDiv
     #diagramsCanvas.container(style="justify-content: space-between")
         if explanation

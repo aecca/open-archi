@@ -13,7 +13,7 @@ mixin list-group-links(items,active)
 			a.list-group-item(href="#{item.url}") #{item.text}
 
 mixin list-group-item(url,active)
-	if(active === "true")
+	if(active)
 		a.list-group-item.active(href="#{url}")
 			block
 	else
