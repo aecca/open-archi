@@ -238,14 +238,14 @@ class OpenArchiWrapper {
         delete diagram.class;
         let nodes = diagram.nodeDataArray;
         let links = diagram.linkDataArray;
+        model.status = meta.status || "INITIAL";
+        model.name = meta.name;
+        model.kind = meta.kind;
+        model.description = meta.description;
+        model.prototype = meta.prototype;
+        model.softwareSystems = [];
         if (nodes) {
             nodes.forEach(function (node) {
-                model.status = node.status || "INITIAL";
-                model.name = node.name;
-                model.kind = node.kind;
-                model.description = node.description;
-                model.prototype = node.prototype;
-                model.softwareSystems = [];
                 switch (model.kind) {
                     case "FLOWCHART_MODEL":
                         model = diagramToFlowchartModel(model, node, links);
@@ -266,7 +266,7 @@ class OpenArchiWrapper {
                         model = diagramToBpmModel(model, node, links);
                         break;
                     case "ARCHITECTURE_MODEL":
-                        model = diagramToArchitectureModel(model, node, links);
+                        model = diagramToArchitectureModel(mo<del, node, links);
                         break;
                     default:
                         console.log("Still not implemented");

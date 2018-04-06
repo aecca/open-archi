@@ -1,4 +1,5 @@
 const gojs = go.GraphObject.make;
+let meta = {};
 
 function capitalize(text) {
     return text.substr(0, 1).toUpperCase() + text.substr(2, text.length).toLowerCase();
@@ -459,12 +460,11 @@ function checkAndSave() {
 
     if (data !== null) {
         const name = $("#element-name").val();
-        const type = $("#diagramTypesDropdown").html().split(" ")[0];
+        const type = $("#elementTypesDropdown").find("a.active").html();
         const prototype = $("#element-prototype").prop("checked");
         delete data["text"];
         myDiagram.model.setDataProperty(data, "name", name);
         myDiagram.model.setDataProperty(data, "kind", type);
-        myDiagram.model.setDataProperty(data, "prototype", prototype);
         myDiagram.requestUpdate();
     }
     basicElementData.modal('hide')
@@ -474,6 +474,26 @@ function openMore() {
 
 }
 
+function confirm() {
+    let diagramInfo = $('#diagram-info');
+    const name = $("#diagram-name").val();
+    const type = $("#diagramTypesDropdown").find("a.active").html();
+    const prototype = $("#diagram-prototype").prop("checked");
+    meta.name = name;
+    meta.kind = type;
+    meta.prototype = prototype;
+    diagramInfo.modal('hide');
+}
+
 function validateModel() {
     $('#model-validation').modal('show')
+}
+
+
+function confirmAndSave() {
+    let $diagramInfo = $('#diagram-info');
+    $diagramInfo.modal('show');
+    $diagramInfo.on('hidden.bs.modal', function () {
+        save();
+    })
 }

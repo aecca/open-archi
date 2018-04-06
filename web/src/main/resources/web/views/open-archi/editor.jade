@@ -104,7 +104,7 @@ block extra-menu-elements
     +nav_item_dropdown("#")(label="Edit")
         +nav_item("/open-archi/editor") New
         +nav_item("#")(onclick="validateModel()", id="ValidateModel") Validate
-        +nav_item("#")(onclick="save()", id="SaveButton") Save
+        +nav_item("#")(onclick="confirmAndSave()", id="SaveButton") Save
         +nav_item("#")(onclick="load()", id="LoadButton") Load
         +nav_item("#")(onclick="openSVG()", id="OpenSVGButton") Export as SVG
     if examples
@@ -115,6 +115,16 @@ block extra-menu-elements
         input#diagramId(name='diagramId', placeholder='Template name...')
 
 block content
+    +modal-force("Diagram info", "diagram-info")(save="confirm")
+        form#diagram-info-form
+            .form-group
+                label.col-form-label(for="element-name") Name:
+                input.form-control#diagram-name(type="text")
+            .form-group
+                label.col-form-label(for="diagram-prototype")
+                    | Prototype?
+                    | &nbsp;
+                input#diagram-prototype(type="checkbox")
     +modal-force("Basic element data", "basic-element-data")(save="checkAndSave", more="openMore")
         form#basic-element-form
             .form-group
@@ -128,11 +138,6 @@ block content
                         | &nbsp;
                         span.caret
                     ul.dropdown-menu#elementTypesDropdown(role="menu", aria-labelledby="elementTypesDropdown")
-            .form-group
-                label.col-form-label(for="element-prototype")
-                    | Prototype?
-                    | &nbsp;
-                input#element-prototype(type="checkbox")
     +modal("Model Validation", "model-validation")
         h4 The entire JSON Model will be passed the to the Rules as a Service that use a Drools' Desition Table based model's validation implementation
         p [Later it could be a Cucumber based Test set]
