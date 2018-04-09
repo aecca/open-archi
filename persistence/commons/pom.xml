@@ -8,6 +8,15 @@
     <packaging>jar</packaging>
     <name>Persistence Commons</name>
 
+    <dependencies>
+
+        <dependency>
+            <groupId>com.araguacaima.open_archi</groupId>
+            <artifactId>persistence-utils</artifactId>
+            <version>1.0.1</version>
+        </dependency>
+    </dependencies>
+
     <parent>
         <groupId>com.araguacaima.open_archi</groupId>
         <artifactId>persistence</artifactId>

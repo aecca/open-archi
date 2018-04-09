@@ -140,31 +140,26 @@ function save() {
     resizeDataModelDiv();
     myDiagram.isModified = false;
     myDiagram.model.modelData.position = go.Point.stringify(myDiagram.position);
-    $.post("/open-archi/api/models", value)
-        .done(function (response) {
-            if (response === 201) {
-                alert("created");
-            } else {
-                commons.prototype.put("/open-archi/api/models", value_, 'application/json')
-                    .then(function (data) {
-                        if (response === 200) {
-                            alert("created");
+    $.post("/open-archi/api/models", value, function (response) {
+        if (response === 201) {
+            alert("created");
+        } else {
+            commons.prototype.put("/open-archi/api/models", value_, 'application/json')
+                .then(function (data) {
+                    if (response === 200) {
+                        alert("created");
+                    } else {
+                        if (response === 201) {
+                            alert("accepted");
                         } else {
-                            if (response === 201) {
-                                alert("accepted");
-                            } else {
-                                alert(data);
-                            }
+                            alert(data);
                         }
-                    }).catch(function (data) {
-                    alert(data);
-                });
-            }
-        })
-        .fail(function (response) {
-            alert("error");
-        });
-
+                    }
+                }).catch(function (data) {
+                alert(data);
+            });
+        }
+    }, "application/json");
 }
 
 function load() {

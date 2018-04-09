@@ -244,7 +244,7 @@ class OpenArchiWrapper {
         model.description = meta.description;
         model.prototype = meta.prototype;
         model.softwareSystems = [];
-        if (nodes) {
+        if (!commons.prototype.isEmpty(nodes)) {
             nodes.forEach(function (node) {
                 switch (model.kind) {
                     case "FLOWCHART_MODEL":

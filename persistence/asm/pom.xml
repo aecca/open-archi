@@ -22,7 +22,7 @@
         </dependency>
 
         <dependency>
-            <groupId>com.araguacaima.open_archi.persistence</groupId>
+            <groupId>com.araguacaima.open_archi</groupId>
             <artifactId>persistence-architectural</artifactId>
         </dependency>
 

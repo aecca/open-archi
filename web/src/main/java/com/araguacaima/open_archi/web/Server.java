@@ -1034,6 +1034,19 @@ public class Server {
                         return throwError(response, ex);
                     }
                 });
+                delete("/models/:uuid", (request, response) -> {
+                    try {
+                        String id = request.params(":uuid");
+                        DBUtil.delete( Taggable.class, id);
+                        response.status(HTTP_OK);
+                        return EMPTY_RESPONSE;
+                    } catch (EntityNotFoundException ex) {
+                        response.status(HTTP_NOT_FOUND);
+                        return EMPTY_RESPONSE;
+                    } catch (Throwable ex) {
+                        return throwError(response, ex);
+                    }
+                });
                 patch("/models/:uuid/status/:sid", (request, response) -> {
                     try {
                         Taggable model = jsonUtils.fromJSON(request.body(), Taggable.class);

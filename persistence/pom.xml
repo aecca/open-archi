@@ -80,13 +80,27 @@
 
             <dependency>
                 <groupId>com.araguacaima.open_archi</groupId>
+                <artifactId>persistence-diagrams</artifactId>
+                <version>${project.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.araguacaima.open_archi</groupId>
+                <artifactId>persistence-utils</artifactId>
+                <version>${project.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.araguacaima.open_archi</groupId>
                 <artifactId>persistence-persons</artifactId>
                 <version>${project.version}</version>
                 <scope>compile</scope>
             </dependency>
 
             <dependency>
-                <groupId>com.araguacaima.open_archi.persistence</groupId>
+                <groupId>com.araguacaima.open_archi</groupId>
                 <artifactId>persistence-utils</artifactId>
                 <version>${project.version}</version>
                 <scope>compile</scope>
@@ -100,7 +114,7 @@
             </dependency>
 
             <dependency>
-                <groupId>com.araguacaima.open_archi.persistence</groupId>
+                <groupId>com.araguacaima.open_archi</groupId>
                 <artifactId>persistence-architectural</artifactId>
                 <version>${project.version}</version>
                 <scope>compile</scope>

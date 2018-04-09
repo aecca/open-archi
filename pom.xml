@@ -160,57 +160,57 @@
         <dependencies>
 
             <dependency>
-                <groupId>com.araguacaima.open_archi.persistence</groupId>
+                <groupId>com.araguacaima.open_archi</groupId>
                 <artifactId>persistence-diagrams</artifactId>
                 <version>${project.version}</version>
                 <scope>compile</scope>
             </dependency>
 
             <dependency>
-                <groupId>com.araguacaima.open_archi.persistence</groupId>
+                <groupId>com.araguacaima.open_archi</groupId>
                 <artifactId>persistence-core</artifactId>
                 <version>${project.version}</version>
                 <scope>compile</scope>
             </dependency>
 
             <dependency>
-                <groupId>com.araguacaima.open_archi.persistence</groupId>
+                <groupId>com.araguacaima.open_archi</groupId>
                 <artifactId>persistence-architectural</artifactId>
                 <version>${project.version}</version>
                 <scope>compile</scope>
             </dependency>
             <dependency>
-                <groupId>com.araguacaima.open_archi.persistence</groupId>
+                <groupId>com.araguacaima.open_archi</groupId>
                 <artifactId>persistence-bpm</artifactId>
                 <version>${project.version}</version>
                 <scope>compile</scope>
             </dependency>
             <dependency>
-                <groupId>com.araguacaima.open_archi.persistence</groupId>
+                <groupId>com.araguacaima.open_archi</groupId>
                 <artifactId>persistence-er</artifactId>
                 <version>${project.version}</version>
                 <scope>compile</scope>
             </dependency>
             <dependency>
-                <groupId>com.araguacaima.open_archi.persistence</groupId>
+                <groupId>com.araguacaima.open_archi</groupId>
                 <artifactId>persistence-flowchart</artifactId>
                 <version>${project.version}</version>
                 <scope>compile</scope>
             </dependency>
             <dependency>
-                <groupId>com.araguacaima.open_archi.persistence</groupId>
+                <groupId>com.araguacaima.open_archi</groupId>
                 <artifactId>persistence-gantt</artifactId>
                 <version>${project.version}</version>
                 <scope>compile</scope>
             </dependency>
             <dependency>
-                <groupId>com.araguacaima.open_archi.persistence</groupId>
+                <groupId>com.araguacaima.open_archi</groupId>
                 <artifactId>persistence-sequence</artifactId>
                 <version>${project.version}</version>
                 <scope>compile</scope>
             </dependency>
             <dependency>
-                <groupId>com.araguacaima.open_archi.persistence</groupId>
+                <groupId>com.araguacaima.open_archi</groupId>
                 <artifactId>persistence-uml-classes</artifactId>
                 <version>${project.version}</version>
                 <scope>compile</scope>
@@ -222,7 +222,7 @@
                 <scope>compile</scope>
             </dependency>
             <dependency>
-                <groupId>com.araguacaima.open_archi.persistence</groupId>
+                <groupId>com.araguacaima.open_archi</groupId>
                 <artifactId>persistence-commons</artifactId>
                 <version>${project.version}</version>
                 <scope>compile</scope>

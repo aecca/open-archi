@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory;
 
 import javax.persistence.Entity;
 import javax.persistence.EntityNotFoundException;
-import java.lang.reflect.Field;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
@@ -25,7 +24,7 @@ import static java.nio.charset.Charset.forName;
 
 public class DBUtil {
 
-    private static Logger log = LoggerFactory.getLogger(Server.class);
+    private static Logger log = LoggerFactory.getLogger(DBUtil.class);
     private static Set<Class<? extends BaseEntity>> classes = new HashSet<>();
     private static ReflectionUtils reflectionUtils = new ReflectionUtils(null);
     private static EnhancedRandomBuilder randomBuilder;
@@ -312,6 +311,20 @@ public class DBUtil {
         JPAEntityManagerUtils.begin();
         try {
             JPAEntityManagerUtils.persist(entity);
+        } catch (Throwable t) {
+            JPAEntityManagerUtils.rollback();
+            throw t;
+        } finally {
+            JPAEntityManagerUtils.commit();
+        }
+    }
+
+
+    public static void delete(Class<?> clazz, String key) {
+        JPAEntityManagerUtils.begin();
+        try {
+            Object entity = JPAEntityManagerUtils.find(clazz, key);
+            JPAEntityManagerUtils.delete(entity);
         } catch (Throwable t) {
             JPAEntityManagerUtils.rollback();
             throw t;

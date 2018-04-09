@@ -9,7 +9,7 @@
     <name>Persistence Core</name>
 
     <parent>
-        <groupId>com.araguacaima.open_archi.persistence</groupId>
+        <groupId>com.araguacaima.open_archi</groupId>
         <artifactId>persistence-diagrams</artifactId>
         <version>1.0.1</version>
     </parent>

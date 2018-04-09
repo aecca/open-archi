@@ -26,6 +26,9 @@
         const push_apply = Function.apply.bind([].push);
         const slice_call = Function.call.bind([].slice);
         const isEmpty = function (o) {
+            if (o === undefined || o === null) {
+                return true;
+            }
             if (isArray(o)) {
                 return o.length === 0;
             } else {

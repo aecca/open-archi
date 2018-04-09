@@ -43,7 +43,10 @@ import java.util.Set;
                         "and a.prototype=true"),
         @NamedQuery(name = Item.GET_ALL_CONSUMERS,
                 query = "select a " +
-                        "from com.araguacaima.open_archi.persistence.diagrams.core.Item a where a.kind='CONSUMER'")})
+                        "from com.araguacaima.open_archi.persistence.diagrams.core.Item a where a.kind='CONSUMER'"),
+        @NamedQuery(name = Item.GET_ITEMS_BY_NAME_AND_KIND,
+                query = "select a " +
+                        "from com.araguacaima.open_archi.persistence.diagrams.core.Item a where a.kind=:kind and a.name=:name")})
 public class Item extends Taggable {
 
     public static final String GET_ALL_CHILDREN = "get.all.children";
@@ -56,6 +59,7 @@ public class Item extends Taggable {
     public static final String GET_ALL_CONSUMERS = "get.all.consumers";
     public static final String GET_ALL_MODEL_NAMES_BY_TYPE = "get.all.model.names.by.type";
     public static final String GET_ALL_PROTOTYPE_NAMES_BY_TYPE = "get.all.prototype.names.by.type";
+    public static final String GET_ITEMS_BY_NAME_AND_KIND = "get.items.by.name.and.kind";
 
     @Column
     protected String name;
