@@ -103,10 +103,10 @@ append scripts
                 ticks: [1, 2, 3],
                 ticks_labels: ['Compact', 'Modeate', 'Full'],
                 tooltip: "hide",
-                min: "1",
-                max: "3",
-                step: "1",
-                value: "3"
+                min: 1,
+                max: 3,
+                step: 1,
+                value: 3
             });
             viewMode.on('slideStop', changeView);
 
@@ -193,7 +193,7 @@ block content
                 .col-sm-4
                     b View Mode:
                 .col-sm-4.text-right
-                    input#viewMode(type="text", data-provide="slider")
+                    input#viewMode(type="text")
     br
     div.container-fluid.draggable#dataModelDraggable(style="height: 100px; width: 400px;")
         div.handle#dataModelDraggableHandle
