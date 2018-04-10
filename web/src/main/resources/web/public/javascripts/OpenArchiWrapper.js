@@ -266,7 +266,7 @@ class OpenArchiWrapper {
                         model = diagramToBpmModel(model, node, links);
                         break;
                     case "ARCHITECTURE_MODEL":
-                        model = diagramToArchitectureModel(mo<del, node, links);
+                        model = diagramToArchitectureModel(model, node, links);
                         break;
                     default:
                         console.log("Still not implemented");

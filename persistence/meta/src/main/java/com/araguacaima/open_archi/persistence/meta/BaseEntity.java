@@ -3,6 +3,7 @@ package com.araguacaima.open_archi.persistence.meta;
 import com.araguacaima.commons.utils.MapUtils;
 import com.araguacaima.commons.utils.ReflectionUtils;
 import com.araguacaima.open_archi.persistence.commons.Constants;
+import com.araguacaima.open_archi.persistence.commons.OperationType;
 import com.araguacaima.open_archi.persistence.commons.Utils;
 import com.araguacaima.open_archi.persistence.commons.exceptions.EntityError;
 import com.araguacaima.specification.Specification;
@@ -83,19 +84,22 @@ public abstract class BaseEntity implements Serializable, BasicEntity, Cloneable
 
     @Override
     public void validateCreation() throws EntityError {
-        Map map = new HashMap<>();
+        Map<String, OperationType> map = new HashMap<>();
+        map.put("OperationType", OperationType.CREATION);
         traverse(this, "validateCreation", map);
     }
 
     @Override
     public void validateModification() throws EntityError {
-        Map map = new HashMap<>();
+        Map<String, OperationType> map = new HashMap<>();
+        map.put("OperationType", OperationType.MODIFICATION);
         traverse(this, "validateModification", map);
     }
 
     @Override
     public void validateReplacement() throws EntityError {
-        Map map = new HashMap<>();
+        Map<String, OperationType> map = new HashMap<>();
+        map.put("OperationType", OperationType.REPLACEMENT);
         traverse(this, "validateReplacement", map);
     }
 
