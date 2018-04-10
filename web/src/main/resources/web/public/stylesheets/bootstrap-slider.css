@@ -319,3 +319,7 @@
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff8ac1ef', endColorstr='#ff82b3de', GradientType=0);
     opacity: 1;
 }
+.slider-right-aligned {
+    float: right;
+    margin-right: 20px;
+}

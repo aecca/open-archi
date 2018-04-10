@@ -98,7 +98,17 @@ append scripts
                 $(this).closest('.dropdown').find('.dropdown-toggle').html(htmlText);
             });
 
-            viewMode = $('#viewMode').slider().on('slide', changeView).data('slider');
+            viewMode = new Slider("#viewMode", {
+                id: "viewMode",
+                ticks: [1, 2, 3],
+                ticks_labels: ['Compact', 'Modeate', 'Full'],
+                tooltip: "hide",
+                min: "1",
+                max: "3",
+                step: "1",
+                value: "3"
+            });
+            viewMode.on('slideStop', changeView);
 
         });
     script(type='text/javascript', src='/javascripts/diagrams/basic.js')
@@ -175,14 +185,15 @@ block content
             | Info
         div
             div#myInfo
-    div.draggable#controlsDraggable(style="display: inline-block; vertical-align: top; top: 20px; left: 380px; position: relative")
+    div.draggable#controlsDraggable(style="display: inline-block; vertical-align: top; top: 20px; left: 380px; position: relative; width: 380px; padding-bottom: 10px;")
         div.handle#controlsDraggableHandle
             | Controls
         div
-            div#myControls
-                p
-                    | View Mode&nbsp;
-                    input#viewMode(type="text", data-provide="slider", data-slider-value="3", data-slider-ticks="[1, 2, 3]", data-slider-ticks-labels="['Compact', 'Modeate', 'Full']", data-slider-tooltip="hide", data-slider-min="1", data-slider-max="3", data-slider-step="1")
+            div#myControls(style= "margin-top: 10px;")
+                .col-sm-4
+                    b View Mode:
+                .col-sm-4.text-right
+                    input#viewMode(type="text", data-provide="slider")
     br
     div.container-fluid.draggable#dataModelDraggable(style="height: 100px; width: 400px;")
         div.handle#dataModelDraggableHandle
