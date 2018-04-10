@@ -90,6 +90,9 @@ go.Shape.defineFigureGenerator("Person", function (shape, w, h) {
 
 function toPalette(data, category) {
     let paletteModel = {};
+    if (data.id !== undefined && data.id !== null) {
+        paletteModel.id = data.id;
+    }
     paletteModel.category = category;
     paletteModel.kind = data.kind;
     paletteModel.name = data.name;

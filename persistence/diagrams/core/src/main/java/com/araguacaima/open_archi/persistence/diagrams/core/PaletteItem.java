@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Set;
 
-@Component
+
 public class PaletteItem extends PaletteInfo {
 
     private int rank;

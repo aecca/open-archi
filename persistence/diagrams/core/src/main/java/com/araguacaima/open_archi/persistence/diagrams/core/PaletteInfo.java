@@ -2,17 +2,17 @@ package com.araguacaima.open_archi.persistence.diagrams.core;
 
 public abstract class PaletteInfo {
 
-    protected String id;
-    protected String name;
-    protected ElementKind kind;
-    protected String category;
+    private String id;
+    private String name;
+    private ElementKind kind;
+    private String category;
 
     public PaletteInfo() {
 
     }
 
     public String getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(String id) {

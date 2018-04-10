@@ -249,6 +249,13 @@ function initBasic(nodeDataArray, linkDataArray) {
                 keyboard: false,
                 show: true
             });
+        } else {
+            if (data.category === "PROTOTYPE") {
+                $.get("/open-archi/api/models/" + data.id)
+                    .done(function (data) {
+                        expand(data);
+                    });
+            }
         }
     });
 }

@@ -165,7 +165,11 @@ function save() {
 function load() {
     let modelToSaveOrLoad = $("#modelToSaveOrLoad");
     let jsonString = modelToSaveOrLoad.children()[0].innerText;
-    let model = JSON.parse(jsonString);
+    expand(jsonString);
+}
+
+function expand(data) {
+    let model = JSON.parse(data);
     const diagram = OpenArchiWrapper.toDiagram(model);
     myDiagram.model = go.Model.fromJson(diagram);
     const pos = myDiagram.model.modelData.position;
@@ -173,7 +177,6 @@ function load() {
         myDiagram.initialPosition = go.Point.parse(pos);
     }
 }
-
 
 function relocate(el, top, left) {
     el.css({
@@ -495,5 +498,6 @@ function confirmAndSave() {
 }
 
 function changeView() {
-    alert("New view mode: " + viewMode.tickLabels[viewMode.getValue()]);
+    let selectedViewModeElement = $(viewMode.tickLabels[viewMode.getValue()]);
+//    alert("New view mode: " + selectedViewModeElement.html());
 }
