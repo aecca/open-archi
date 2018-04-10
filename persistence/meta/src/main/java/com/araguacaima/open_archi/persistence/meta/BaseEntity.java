@@ -143,7 +143,7 @@ public abstract class BaseEntity implements Serializable, BasicEntity, Cloneable
             Specification specification = specificationMap.getSpecificationFromMethod(method);
             if (specification != null) {
                 if (!specification.isSatisfiedBy(object_, map)) {
-                    throw new EntityError(map.get("ERROR").toString());
+                    throw new EntityError(map.get(Constants.SPECIFICATION_ERROR).toString());
                 }
             }
         } catch (Exception e) {

@@ -492,3 +492,7 @@ function confirmAndSave() {
         save();
     })
 }
+
+function changeView() {
+    alert("New view mode: " + viewMode.getValue());
+}

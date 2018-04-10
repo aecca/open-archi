@@ -2397,6 +2397,10 @@ definitions:
         type: array
         items:
           $ref: "#/definitions/Palette_Item"
+      prototypes:
+        type: array
+        items:
+          $ref: "#/definitions/Palette_Item"
   Architecture_Model_Palette_Create:
     description: Architecture model palette
     type: object

@@ -1,5 +1,6 @@
 package com.araguacaima.open_archi.persistence.diagrams.core.specification;
 
+import com.araguacaima.open_archi.persistence.commons.Constants;
 import com.araguacaima.open_archi.persistence.commons.OperationType;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 import com.araguacaima.open_archi.persistence.diagrams.core.Item;
@@ -31,7 +32,7 @@ public class CheckModelDoesNotExist extends AbstractSpecification {
             BaseEntity entity = (BaseEntity) object;
             Object key = entity.getId();
             if (JPAEntityManagerUtils.find(clazz, key) != null) {
-                map.put("CreationError", "Key '" + key + "' already exists");
+                map.put(Constants.SPECIFICATION_ERROR, "Key '" + key + "' already exists");
                 return false;
             }
             if (Item.class.isAssignableFrom(clazz)) {
@@ -42,8 +43,7 @@ public class CheckModelDoesNotExist extends AbstractSpecification {
                 params.put("kind", kind);
                 params.put("name", name);
                 if (CollectionUtils.isNotEmpty(JPAEntityManagerUtils.executeQuery(Item.class, Item.GET_ITEMS_BY_NAME_AND_KIND, params))) {
-                    String text = map.get("OperationType") != null ? OperationType.CREATION.getValue() : GENERAL_ERROR;
-                    map.put(text, "Name '" + name + "' and Kind '" + kind + "' pair already exists");
+                    map.put(Constants.SPECIFICATION_ERROR, "Name '" + name + "' and Kind '" + kind + "' pair already exists");
                     return false;
                 }
             }

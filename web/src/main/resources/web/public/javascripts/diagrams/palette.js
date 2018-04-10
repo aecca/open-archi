@@ -187,6 +187,12 @@ function showPaletteByType(paletteData) {
                     myPalette.nodeTemplateMap.add("COMPONENT", fillElement(data));
                 });
             }
+            if (paletteData.prototypes) {
+                paletteData.prototypes.forEach(function (data) {
+                    paletteModelArray.push(toPalette(data, "PROTOTYPE"));
+                    myPalette.nodeTemplateMap.add("PROTOTYPE", fillElement(data));
+                });
+            }
             myPalette.model = new go.GraphLinksModel(paletteModelArray);
             myPalette.addDiagramListener("InitialLayoutCompleted", function (diagramEvent) {
                 const pdrag = document.getElementById("paletteDraggable");

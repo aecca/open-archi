@@ -11,6 +11,7 @@ public class Palette implements Palettable {
     private Set<PaletteItem> softwareSystems = new LinkedHashSet<>();
     private Set<PaletteItem> containers = new LinkedHashSet<>();
     private Set<PaletteItem> components = new LinkedHashSet<>();
+    private Set<PaletteItem> prototypes = new LinkedHashSet<>();
     private static PaletteKind kind = PaletteKind.ARCHITECTURE;
 
     public Palette() {
@@ -87,5 +88,13 @@ public class Palette implements Palettable {
 
     public void setComponents(Set<PaletteItem> components) {
         this.components = components;
+    }
+
+    public Set<PaletteItem> getPrototypes() {
+        return prototypes;
+    }
+
+    public void setPrototypes(Set<PaletteItem> prototypes) {
+        this.prototypes = prototypes;
     }
 }

@@ -1453,12 +1453,32 @@ public class Server {
             item.setName(model.getName());
             Shape shape = new Shape();
             shape.setType(ShapeType.RoundedRectangle);
-            shape.setFill(SoftwareSystem.SHAPE_COLOR);
+            shape.setFill(Component.SHAPE_COLOR);
             shape.setSize(new Size(40, 40));
             item.setShape(shape);
             item.setCategory(ElementKind.COMPONENT.name());
             item.setPrototype(true);
             palette.getComponents().add(item);
+            rank++;
+        }
+
+        params.put("type", Model.class);
+        models = JPAEntityManagerUtils.executeQuery(IdName.class, Item.GET_ALL_PROTOTYPE_NAMES_BY_TYPE, params);
+        rank = 0;
+        for (IdName model : models) {
+            PaletteItem item = new PaletteItem();
+            item.setId(model.getId());
+            item.setRank(rank);
+            item.setKind(ElementKind.ARCHITECTURE_MODEL);
+            item.setName(model.getName());
+            Shape shape = new Shape();
+            shape.setType(ShapeType.RoundedRectangle);
+            shape.setFill(Item.PROTOTYPE_SHAPE_COLOR);
+            shape.setSize(new Size(40, 40));
+            item.setShape(shape);
+            item.setCategory(ElementKind.ARCHITECTURE_MODEL.name());
+            item.setPrototype(true);
+            palette.getPrototypes().add(item);
             rank++;
         }
         return palette;

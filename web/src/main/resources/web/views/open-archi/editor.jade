@@ -9,6 +9,7 @@ append styles
     link(rel='stylesheet', type='text/css', href='/stylesheets/menu.css')
     link(rel='stylesheet', type='text/css', href='/stylesheets/dataInspector.css')
     link(rel='stylesheet', type='text/css', href='/stylesheets/palette.css')
+    link(rel='stylesheet', type='text/css', href='/stylesheets/bootstrap-slider.css')
     style.
 
         /*
@@ -28,6 +29,7 @@ append scripts
     script(src='/javascripts/go.js')
     script(type='text/javascript', src='/javascripts/OpenArchiWrapper.js')
     script(type='text/javascript', src='/javascripts/diagrams/dataInspector.js')
+    script(type='text/javascript', src='/javascripts/bootstrap-slider.js')
     script#code(type="text/javascript")
     script.
         let myDiagram;
@@ -54,6 +56,7 @@ append scripts
         let source = '!{source}';
         let paletteData = !{palette};
         let lightText = 'whitesmoke';
+        let viewMode;
         var diagramTypes = !{diagramTypes};
         var elementTypes = !{elementTypes};
         $(function () {
@@ -94,6 +97,9 @@ append scripts
                 var htmlText = text + ' <span class="caret"></span>';
                 $(this).closest('.dropdown').find('.dropdown-toggle').html(htmlText);
             });
+
+            viewMode = $('#viewMode').slider().on('slide', changeView).data('slider');
+
         });
     script(type='text/javascript', src='/javascripts/diagrams/basic.js')
     script(type='text/javascript', src='/javascripts/diagrams/palette.js')
@@ -164,11 +170,21 @@ block content
             | Palette
         div#paletteContainer
             div#paletteDiv
-    div.draggable#infoDraggable(style="display: inline-block; vertical-align: top; padding: 5px; top: 20px; left: 380px; position: relative")
+    div.draggable#infoDraggable(style="display: inline-block; vertical-align: top; top: 20px; left: 380px; position: relative")
         div.handle#infoDraggableHandle
             | Info
         div
             div#myInfo
+    div.draggable#controls(style="display: inline-block; vertical-align: top; top: 20px; left: 380px; position: relative")
+        div.handle#controlsDraggableHandle
+            | Controls
+        div
+            div#myControls
+                p
+                    |
+                        b View Mode&nbsp;
+                    |
+                        input(type="text", id ="viewMode", data-provide="slider", data-slider-value="3", value="3", data-slider-ticks="[1, 2, 3]", data-slider-ticks-labels="['Compact', 'Modeate', 'Full']", data-slider-id="viewMode", data-slider-tooltip="hide", data-slider-min="1", data-slider-max="3", data-slider-step="1")
     br
     div.container-fluid.draggable#dataModelDraggable(style="height: 100px; width: 400px;")
         div.handle#dataModelDraggableHandle
