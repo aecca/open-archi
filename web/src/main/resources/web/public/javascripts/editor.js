@@ -495,5 +495,5 @@ function confirmAndSave() {
 }
 
 function changeView() {
-    alert("New view mode: " + viewMode.getValue());
+    alert("New view mode: " + viewMode.tickLabels[viewMode.getValue()]);
 }
