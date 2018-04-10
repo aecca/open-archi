@@ -2,10 +2,7 @@ package com.araguacaima.open_archi.persistence.utils;
 
 import org.hibernate.Session;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
 import java.util.List;
 import java.util.Map;
 
@@ -94,13 +91,24 @@ public class JPAEntityManagerUtils {
         entityManager.persist(entity);
     }
 
-    public static void delete(Object entity) {
-        delete(entity, getAutocommit());
-    }
 
-    public static void delete(Object entity, boolean autocommit) {
-        entityManager.remove(entity);
-        entityManager.detach(entity);
+    public static void delete(Class<?> clazz, String key) {
+        begin();
+        try {
+            Session session = entityManager.unwrap(Session.class);
+            Object entity = find(clazz, key);
+            Query query = session.createQuery("delete " + clazz.getName() + " where id = :id");
+            query.setParameter("id", key);
+            query.executeUpdate();
+            commit();
+            session.detach(entity);
+            session.flush();
+            session.evict(entity);
+            flush();
+        } catch (Throwable t) {
+            t.printStackTrace();
+            rollback();
+        }
     }
 
     public static void detach(Object entity) {

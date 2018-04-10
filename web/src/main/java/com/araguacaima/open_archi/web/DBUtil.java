@@ -10,11 +10,13 @@ import com.araguacaima.open_archi.persistence.meta.BasicEntity;
 import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
 import io.github.benas.randombeans.EnhancedRandomBuilder;
 import io.github.benas.randombeans.api.EnhancedRandom;
+import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.persistence.Entity;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.Query;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
@@ -319,17 +321,8 @@ public class DBUtil {
         }
     }
 
-
     public static void delete(Class<?> clazz, String key) {
-        JPAEntityManagerUtils.begin();
-        try {
-            Object entity = JPAEntityManagerUtils.find(clazz, key);
-            JPAEntityManagerUtils.delete(entity);
-        } catch (Throwable t) {
-            JPAEntityManagerUtils.rollback();
-            throw t;
-        } finally {
-            JPAEntityManagerUtils.commit();
-        }
+        JPAEntityManagerUtils.delete(clazz, key);
     }
+
 }
