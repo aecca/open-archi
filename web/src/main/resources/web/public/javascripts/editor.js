@@ -363,6 +363,7 @@ $(function () {
             });
 
             $("#infoDraggable").draggable({handle: "#infoDraggableHandle"});
+            $("#controlsDraggable").draggable({handle: "#controlsDraggableHandle"});
 
             new Inspector('myInfo', myDiagram,
                 {

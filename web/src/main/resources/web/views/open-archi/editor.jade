@@ -175,16 +175,14 @@ block content
             | Info
         div
             div#myInfo
-    div.draggable#controls(style="display: inline-block; vertical-align: top; top: 20px; left: 380px; position: relative")
+    div.draggable#controlsDraggable(style="display: inline-block; vertical-align: top; top: 20px; left: 380px; position: relative")
         div.handle#controlsDraggableHandle
             | Controls
         div
             div#myControls
                 p
-                    |
-                        b View Mode&nbsp;
-                    |
-                        input(type="text", id ="viewMode", data-provide="slider", data-slider-value="3", value="3", data-slider-ticks="[1, 2, 3]", data-slider-ticks-labels="['Compact', 'Modeate', 'Full']", data-slider-id="viewMode", data-slider-tooltip="hide", data-slider-min="1", data-slider-max="3", data-slider-step="1")
+                    | View Mode&nbsp;
+                    input#viewMode(type="text", data-provide="slider", data-slider-value="3", data-slider-ticks="[1, 2, 3]", data-slider-ticks-labels="['Compact', 'Modeate', 'Full']", data-slider-tooltip="hide", data-slider-min="1", data-slider-max="3", data-slider-step="1")
     br
     div.container-fluid.draggable#dataModelDraggable(style="height: 100px; width: 400px;")
         div.handle#dataModelDraggableHandle
