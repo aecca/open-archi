@@ -1,6 +1,8 @@
 package com.araguacaima.open_archi.persistence.utils;
 
 import org.hibernate.Session;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.*;
 import java.util.List;
@@ -10,6 +12,8 @@ public class JPAEntityManagerUtils {
     private static EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("open-archi");
     private static EntityManager entityManager = entityManagerFactory.createEntityManager();
     private static boolean autocommit = true;
+
+    private static Logger log = LoggerFactory.getLogger(JPAEntityManagerUtils.class);
 
     public static void closeAll() {
         close(entityManager, entityManagerFactory);
@@ -100,13 +104,13 @@ public class JPAEntityManagerUtils {
             Query query = session.createQuery("delete " + clazz.getName() + " where id = :id");
             query.setParameter("id", key);
             query.executeUpdate();
-            commit();
             session.detach(entity);
             session.flush();
             session.evict(entity);
             flush();
+            commit();
         } catch (Throwable t) {
-            t.printStackTrace();
+            log.error(t.getMessage());
             rollback();
         }
     }
