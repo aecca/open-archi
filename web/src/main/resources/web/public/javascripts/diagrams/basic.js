@@ -250,7 +250,7 @@ function initBasic(nodeDataArray, linkDataArray) {
                 show: true
             });
         } else {
-            if (data.category === "PROTOTYPE") {
+            if (data.id) {
                 $.get("/open-archi/api/models/" + data.id)
                     .done(function (data) {
                         expand(data);

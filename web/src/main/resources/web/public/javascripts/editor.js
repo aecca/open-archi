@@ -169,7 +169,12 @@ function load() {
 }
 
 function expand(data) {
-    let model = JSON.parse(data);
+    let model;
+    if (!commons.prototype.isObject(data)) {
+        model = JSON.parse(data);
+    } else {
+        model = data;
+    }
     const diagram = OpenArchiWrapper.toDiagram(model);
     myDiagram.model = go.Model.fromJson(diagram);
     const pos = myDiagram.model.modelData.position;

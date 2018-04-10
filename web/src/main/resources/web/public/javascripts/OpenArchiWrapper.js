@@ -71,7 +71,7 @@ function architectureModelToDiagram(model) {
     let diagram = {
         class: "go.GraphLinksModel"
     };
-    if (model.kind !== "ARCHITECTURE_MODEL") {
+    if (model.kind !== "ARCHITECTURE_MODEL" && model.kind !== "SOFTWARE_SYSTEM" && model.kind !== "CONTAINER" && model.kind !== "COMPONENT") {
         return diagram;
     }
     diagram.nodeDataArray = [];
@@ -225,6 +225,9 @@ class OpenArchiWrapper {
                 diagram = bpmModelToDiagram(model);
                 break;
             case "ARCHITECTURE_MODEL":
+            case "SOFTWARE_SYSTEM":
+            case "CONTAINER":
+            case "COMPONENT":
                 diagram = architectureModelToDiagram(model);
                 break;
             default:
