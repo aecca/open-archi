@@ -17,11 +17,11 @@ public abstract class UmlItem extends Item {
         setKind(ElementKind.UML_CLASS);
     }
 
-    public void override(UmlItem source) {
-        super.override(source);
+    public void override(UmlItem source, boolean keepMeta) {
+        super.override(source, keepMeta);
     }
 
-    public void copyNonEmpty(UmlItem source) {
-        super.copyNonEmpty(source);
+    public void copyNonEmpty(UmlItem source, boolean keepMeta) {
+        super.copyNonEmpty(source, keepMeta);
     }
 }

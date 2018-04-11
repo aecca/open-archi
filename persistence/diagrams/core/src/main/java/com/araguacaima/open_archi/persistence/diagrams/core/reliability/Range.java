@@ -56,15 +56,15 @@ public class Range extends BaseEntity {
         this.upper = upper;
     }
 
-    public void override(Range source) {
-        super.override(source);
+    public void override(Range source, boolean keepMeta) {
+        super.override(source, keepMeta);
         this.setLower(source.getLower());
         this.setUnit(source.getUnit());
         this.setUpper(source.getUpper());
     }
 
-    public void copyNonEmpty(Range source) {
-        super.copyNonEmpty(source);
+    public void copyNonEmpty(Range source, boolean keepMeta) {
+        super.copyNonEmpty(source, keepMeta);
         if (source.getLower() != null) {
             this.setLower(source.getLower());
         }

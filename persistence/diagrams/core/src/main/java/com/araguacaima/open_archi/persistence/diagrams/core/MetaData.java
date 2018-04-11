@@ -105,8 +105,8 @@ public class MetaData extends BaseEntity {
         this.views = views;
     }
 
-    public void override(MetaData source) {
-        super.override(source);
+    public void override(MetaData source, boolean keepMeta) {
+        super.override(source, keepMeta);
         this.responsibles = source.getResponsibles();
         this.collaborators = source.getCollaborators();
         this.relatedWith = source.getRelatedWith();
@@ -114,8 +114,8 @@ public class MetaData extends BaseEntity {
         this.views = source.getViews();
     }
 
-    public void copyNonEmpty(MetaData source) {
-        super.copyNonEmpty(source);
+    public void copyNonEmpty(MetaData source, boolean keepMeta) {
+        super.copyNonEmpty(source, keepMeta);
         if (source.getResponsibles() != null && !source.getResponsibles().isEmpty()) {
             this.responsibles = source.getResponsibles();
         }

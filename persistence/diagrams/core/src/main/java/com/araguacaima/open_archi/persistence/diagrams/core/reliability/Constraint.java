@@ -153,8 +153,8 @@ public class Constraint extends BaseEntity {
         }
     }
 
-    public void override(Constraint source) {
-        super.override(source);
+    public void override(Constraint source, boolean keepMeta) {
+        super.override(source, keepMeta);
         this.setActivities(source.getActivities());
         this.setBatchProcessing(source.getBatchProcessing());
         this.setBulkProcessing(source.getBulkProcessing());
@@ -165,8 +165,8 @@ public class Constraint extends BaseEntity {
 
     }
 
-    public void copyNonEmpty(Constraint source) {
-        super.copyNonEmpty(source);
+    public void copyNonEmpty(Constraint source, boolean keepMeta) {
+        super.copyNonEmpty(source, keepMeta);
         if (source.getActivities() != null && !source.getActivities().isEmpty()) {
             this.setActivities(source.getActivities());
         }

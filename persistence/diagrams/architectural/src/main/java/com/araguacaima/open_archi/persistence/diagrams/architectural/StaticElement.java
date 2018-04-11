@@ -3,7 +3,8 @@ package com.araguacaima.open_archi.persistence.diagrams.architectural;
 import com.araguacaima.open_archi.persistence.diagrams.core.Element;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.PersistenceUnit;
 
 /**
  * This is the superclass for model elements that describe the static structure
@@ -17,11 +18,11 @@ public abstract class StaticElement extends Element {
         setKind(ElementKind.COMPONENT);
     }
 
-    public void override(StaticElement source) {
-        super.override(source);
+    public void override(StaticElement source, boolean keepMeta) {
+        super.override(source, keepMeta);
     }
 
-    public void copyNonEmpty(StaticElement source) {
-        super.copyNonEmpty(source);
+    public void copyNonEmpty(StaticElement source, boolean keepMeta) {
+        super.override(source, keepMeta);
     }
 }

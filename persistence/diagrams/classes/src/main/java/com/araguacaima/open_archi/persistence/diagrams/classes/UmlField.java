@@ -44,14 +44,14 @@ public class UmlField extends BaseEntity {
     }
 
 
-    public void override(UmlField source) {
-        super.override(source);
+    public void override(UmlField source, boolean keepMeta) {
+        super.override(source, keepMeta);
         this.name = source.getName();
         this.type = source.getType();
     }
 
-    public void copyNonEmpty(UmlField source) {
-        super.copyNonEmpty(source);
+    public void copyNonEmpty(UmlField source, boolean keepMeta) {
+        super.copyNonEmpty(source, keepMeta);
         if (source.getName() != null) {
             this.name = source.getName();
         }

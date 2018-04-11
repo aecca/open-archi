@@ -53,14 +53,14 @@ public class Elements extends Items {
     }
 
 
-    public void override(Elements source) {
-        super.override(source);
+    public void override(Elements source, boolean keepMeta) {
+        super.override(source, keepMeta);
         this.url = source.getUrl();
         this.features = source.getFeatures();
     }
 
-    public void copyNonEmpty(Elements source) {
-        super.copyNonEmpty(source);
+    public void copyNonEmpty(Elements source, boolean keepMeta) {
+        super.copyNonEmpty(source, keepMeta);
         if (source.getUrl() != null) {
             this.url = source.getUrl();
         }

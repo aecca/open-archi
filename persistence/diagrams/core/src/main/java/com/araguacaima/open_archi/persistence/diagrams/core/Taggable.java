@@ -53,13 +53,13 @@ public class Taggable extends BaseEntity {
         this.status = status;
     }
 
-    public void override(Taggable source) {
-        super.override(source);
+    public void override(Taggable source, boolean keepMeta) {
+        super.override(source, keepMeta);
         this.tags = source.getTags();
     }
 
-    public void copyNonEmpty(Taggable source) {
-        super.copyNonEmpty(source);
+    public void copyNonEmpty(Taggable source, boolean keepMeta) {
+        super.copyNonEmpty(source, keepMeta);
         if (source.getTags() != null && !source.getTags().isEmpty()) {
             this.tags = source.getTags();
         }

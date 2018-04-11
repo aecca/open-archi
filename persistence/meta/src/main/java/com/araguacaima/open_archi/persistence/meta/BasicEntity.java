@@ -6,7 +6,7 @@ package com.araguacaima.open_archi.persistence.meta;
 public interface BasicEntity <T extends BaseEntity> extends Valuable {
     String getId();
 
-    void override(T source);
+    void override(T source, boolean keepMeta);
 
-    void copyNonEmpty(T source);
+    void copyNonEmpty(T source, boolean keepMeta);
 }

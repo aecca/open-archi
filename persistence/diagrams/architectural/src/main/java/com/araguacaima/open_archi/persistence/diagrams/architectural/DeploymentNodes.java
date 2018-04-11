@@ -60,14 +60,14 @@ public class DeploymentNodes extends Elements {
         this.kind = kind;
     }
 
-    public void override(DeploymentNodes source) {
-        super.override(source);
+    public void override(DeploymentNodes source, boolean keepMeta) {
+        super.override(source, keepMeta);
         this.setInstances(source.getInstances());
         this.setTechnology(source.getTechnology());
     }
 
-    public void copyNonEmpty(DeploymentNodes source) {
-        super.copyNonEmpty(source);
+    public void copyNonEmpty(DeploymentNodes source, boolean keepMeta) {
+        super.override(source, keepMeta);
         if (source.getInstances() != 0) {
             this.setInstances(source.getInstances());
         }

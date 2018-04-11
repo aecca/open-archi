@@ -1058,19 +1058,21 @@ public class Server {
                             throw new Exception("Model with id of '" + id + "' not found");
                         }
                         DiagramableElement clonedModel = (DiagramableElement) model.getClass().newInstance();
-                        clonedModel.override(model);
+                        clonedModel.override(model, false);
                         Item clonedModelItem = (Item) clonedModel;
                         String name = clonedModelItem.getName();
+                        String description = clonedModelItem.getDescription();
                         if (StringUtils.isNotBlank(suffix)) {
                             name = name + " " + suffix;
+                            clonedModelItem.setDescription(description + " " + suffix);
                         }
                         Map<String, Object> map = new HashMap<>();
                         map.put("type", model.getClass());
                         map.put("name", name);
-                        List modelNames = JPAEntityManagerUtils.executeQuery(Item.class, Item.GET_MODEL_NAMES_BY_NAME_AND_TYPE, map);
+                        List<IdName> modelNames = JPAEntityManagerUtils.executeQuery(IdName.class, Item.GET_MODEL_NAMES_BY_NAME_AND_TYPE, map);
                         if (CollectionUtils.isNotEmpty(modelNames)) {
                             Collections.sort(modelNames);
-                            IdName lastFoundName = (IdName) IterableUtils.get(modelNames, modelNames.size() - 1);
+                            IdName lastFoundName = IterableUtils.get(modelNames, modelNames.size() - 1);
                             name = lastFoundName.getName() + " (1)";
                         }
                         clonedModelItem.setName(name);

@@ -49,13 +49,13 @@ public class Concurrency extends BaseEntity implements MeasurableRange {
         return RANGES;
     }
 
-    public void override(Concurrency source) {
-        super.override(source);
+    public void override(Concurrency source, boolean keepMeta) {
+        super.override(source, keepMeta);
         this.setValue(source.getValue());
     }
 
-    public void copyNonEmpty(Concurrency source) {
-        super.copyNonEmpty(source);
+    public void copyNonEmpty(Concurrency source, boolean keepMeta) {
+        super.copyNonEmpty(source, keepMeta);
         if (source.getValue() != null) {
             this.setValue(source.getValue());
         }

@@ -41,14 +41,14 @@ public class UmlClass extends UmlItem {
         this.methods = methods;
     }
 
-    public void override(UmlClass source) {
-        super.override(source);
+    public void override(UmlClass source, boolean keepMeta) {
+        super.override(source, keepMeta);
         this.fields = source.getFields();
         this.methods = source.getMethods();
     }
 
-    public void copyNonEmpty(UmlClass source) {
-        super.copyNonEmpty(source);
+    public void copyNonEmpty(UmlClass source, boolean keepMeta) {
+        super.copyNonEmpty(source, keepMeta);
         if (source.getFields() != null && !source.getFields().isEmpty()) {
             this.fields = source.getFields();
         }

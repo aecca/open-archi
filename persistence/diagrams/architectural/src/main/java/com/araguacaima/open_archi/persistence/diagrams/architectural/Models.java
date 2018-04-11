@@ -102,16 +102,16 @@ public class Models extends Elements {
         this.relationships = relationships;
     }
 
-    public void override(Models source) {
-        super.override(source);
+    public void override(Models source, boolean keepMeta) {
+        super.override(source, keepMeta);
         this.relationships = source.getRelationships();
         this.consumers = source.getConsumers();
         this.softwareSystems = source.getSoftwareSystems();
         this.deploymentNodes = source.getDeploymentNodes();
     }
 
-    public void copyNonEmpty(Models source) {
-        super.copyNonEmpty(source);
+    public void copyNonEmpty(Models source, boolean keepMeta) {
+        super.override(source, keepMeta);
         if (source.getRelationships() != null && !source.getRelationships().isEmpty()) {
             this.relationships = source.getRelationships();
         }

@@ -69,15 +69,15 @@ public class Features extends Items {
         this.kind = kind;
     }
 
-    public void override(Features source) {
-        super.override(source);
+    public void override(Features source, boolean keepMeta) {
+        super.override(source, keepMeta);
         this.setRole(source.getRole());
         this.setUrl(source.getUrl());
         this.setVisibility(source.getVisibility());
     }
 
-    public void copyNonEmpty(Features source) {
-        super.copyNonEmpty(source);
+    public void copyNonEmpty(Features source, boolean keepMeta) {
+        super.copyNonEmpty(source, keepMeta);
         if (source.getRole() != null) {
             this.setRole(source.getRole());
         }

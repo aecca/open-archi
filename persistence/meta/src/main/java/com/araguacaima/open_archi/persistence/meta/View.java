@@ -49,13 +49,13 @@ public class View extends BaseEntity {
         }
     }
 
-    public void override(View source) {
-        super.override(source);
+    public void override(View source, boolean keepMeta) {
+        super.override(source, keepMeta);
         this.setName(source.getName());
     }
 
-    public void copyNonEmpty(View source) {
-        super.copyNonEmpty(source);
+    public void copyNonEmpty(View source, boolean keepMeta) {
+        super.copyNonEmpty(source, keepMeta);
         if (source.getName() != null) {
             this.setName(source.getName());
         }

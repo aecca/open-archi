@@ -123,8 +123,8 @@ public class Feature extends Item {
         this.kind = kind;
     }
 
-    public void override(Feature source) {
-        super.override(source);
+    public void override(Feature source, boolean keepMeta) {
+        super.override(source, keepMeta);
         this.setRole(source.getRole());
         this.setUrl(source.getUrl());
         this.setCategory(source.getCategory());
@@ -133,8 +133,8 @@ public class Feature extends Item {
         this.setOutgoingConstraints(source.getOutgoingConstraints());
     }
 
-    public void copyNonEmpty(Feature source) {
-        super.copyNonEmpty(source);
+    public void copyNonEmpty(Feature source, boolean keepMeta) {
+        super.copyNonEmpty(source, keepMeta);
         if (source.getRole() != null) {
             this.setRole(source.getRole());
         }

@@ -45,13 +45,13 @@ public class Consumers extends StaticElements {
     }
 
 
-    public void override(Consumers source) {
-        super.override(source);
+    public void override(Consumers source, boolean keepMeta) {
+        super.override(source, keepMeta);
         this.setScope(source.getScope());
     }
 
-    public void copyNonEmpty(Consumers source) {
-        super.copyNonEmpty(source);
+    public void copyNonEmpty(Consumers source, boolean keepMeta) {
+        super.override(source, keepMeta);
         if (source.getScope() != null) {
             this.setScope(source.getScope());
         }

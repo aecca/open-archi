@@ -49,14 +49,14 @@ public class ContainerInstance extends Element {
         this.kind = kind;
     }
 
-    public void override(ContainerInstance source) {
-        super.override(source);
+    public void override(ContainerInstance source, boolean keepMeta) {
+        super.override(source, keepMeta);
         this.setContainerId(source.getContainerId());
         this.setInstanceId(source.getInstanceId());
     }
 
-    public void copyNonEmpty(ContainerInstance source) {
-        super.copyNonEmpty(source);
+    public void copyNonEmpty(ContainerInstance source, boolean keepMeta) {
+        super.copyNonEmpty(source, keepMeta);
         if (source.getContainerId() != null) {
             this.setContainerId(source.getContainerId());
         }

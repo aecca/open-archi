@@ -97,8 +97,8 @@ public class Items extends Taggable {
         this.children = children;
     }
 
-    public void override(Item source) {
-        super.override(source);
+    public void override(Item source, boolean keepMeta) {
+        super.override(source, keepMeta);
         this.name = source.getName();
         this.description = source.getDescription();
         this.location = source.getLocation();
@@ -107,8 +107,8 @@ public class Items extends Taggable {
         this.shape = source.getShape();
     }
 
-    public void copyNonEmpty(Item source) {
-        super.copyNonEmpty(source);
+    public void copyNonEmpty(Item source, boolean keepMeta) {
+        super.copyNonEmpty(source, keepMeta);
         if (source.getName() != null) {
             this.name = source.getName();
         }

@@ -13,11 +13,11 @@ import javax.persistence.Table;
 @DynamicUpdate
 public class FileTransfer extends BaseEntity {
 
-    public void override(FileTransfer source) {
-        super.override(source);
+    public void override(FileTransfer source, boolean keepMeta) {
+        super.override(source, keepMeta);
     }
 
-    public void copyNonEmpty(FileTransfer source) {
-        super.copyNonEmpty(source);
+    public void copyNonEmpty(FileTransfer source, boolean keepMeta) {
+        super.copyNonEmpty(source, keepMeta);
     }
 }

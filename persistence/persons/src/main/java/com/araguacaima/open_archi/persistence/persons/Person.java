@@ -38,14 +38,14 @@ public class Person extends BaseEntity {
     }
 
 
-    public void override(Person source) {
-        super.override(source);
+    public void override(Person source, boolean keepMeta) {
+        super.override(source, keepMeta);
         this.names = source.getNames();
         this.lastNames = source.getLastNames();
     }
 
-    public void copyNonEmpty(Person source) {
-        super.copyNonEmpty(source);
+    public void copyNonEmpty(Person source, boolean keepMeta) {
+        super.copyNonEmpty(source, keepMeta);
         if (source.getNames() != null) {
             this.names = source.getNames();
         }

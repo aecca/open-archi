@@ -80,8 +80,8 @@ public class Shape extends BaseEntity {
         this.output = output;
     }
 
-    public void override(Shape source) {
-        super.override(source);
+    public void override(Shape source, boolean keepMeta) {
+        super.override(source, keepMeta);
         this.setType(source.getType());
         this.setFill(source.getFill());
         this.setOutput(source.isOutput());
@@ -90,8 +90,8 @@ public class Shape extends BaseEntity {
         this.setSize(source.getSize());
     }
 
-    public void copyNonEmpty(Shape source) {
-        super.copyNonEmpty(source);
+    public void copyNonEmpty(Shape source, boolean keepMeta) {
+        super.copyNonEmpty(source, keepMeta);
         if (source.getType() != null) {
             this.setType(source.getType());
         }

@@ -13,12 +13,12 @@ import javax.persistence.Table;
 @DynamicUpdate
 public class BatchProcessing extends BaseEntity {
 
-    public void override(BatchProcessing source) {
-        super.override(source);
+    public void override(BatchProcessing source, boolean keepMeta) {
+        super.override(source, keepMeta);
     }
 
-    public void copyNonEmpty(BatchProcessing source) {
-        super.copyNonEmpty(source);
+    public void copyNonEmpty(BatchProcessing source, boolean keepMeta) {
+        super.copyNonEmpty(source, keepMeta);
 
     }
 }

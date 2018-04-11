@@ -77,15 +77,15 @@ public class DeploymentNode extends Element {
         this.containerInstances = containerInstances;
     }
 
-    public void override(DeploymentNode source) {
-        super.override(source);
+    public void override(DeploymentNode source, boolean keepMeta) {
+        super.override(source, keepMeta);
         this.setInstances(source.getInstances());
         this.setTechnology(source.getTechnology());
         this.setContainerInstances(source.getContainerInstances());
     }
 
-    public void copyNonEmpty(DeploymentNode source) {
-        super.copyNonEmpty(source);
+    public void copyNonEmpty(DeploymentNode source, boolean keepMeta) {
+        super.override(source, keepMeta);
         if (source.getInstances() != 0) {
             this.setInstances(source.getInstances());
         }

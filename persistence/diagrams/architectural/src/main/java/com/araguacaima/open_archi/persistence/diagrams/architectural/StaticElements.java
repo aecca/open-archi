@@ -28,11 +28,11 @@ public abstract class StaticElements extends Elements {
         this.kind = kind;
     }
 
-    public void override(StaticElements source) {
-        super.override(source);
+    public void override(StaticElements source, boolean keepMeta) {
+        super.override(source, keepMeta);
     }
 
-    public void copyNonEmpty(StaticElements source) {
-        super.copyNonEmpty(source);
+    public void copyNonEmpty(StaticElements source, boolean keepMeta) {
+        super.override(source, keepMeta);
     }
 }

@@ -6,7 +6,7 @@ public interface DiagramableElement<T> {
 
     void setKind(ElementKind kind);
 
-    void override(T source);
+    void override(T source, boolean keepMeta);
 
-    void copyNonEmpty(T source);
+    void copyNonEmpty(T source, boolean keepMeta);
 }

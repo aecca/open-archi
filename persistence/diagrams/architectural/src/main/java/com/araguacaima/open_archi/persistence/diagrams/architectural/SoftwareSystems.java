@@ -49,14 +49,14 @@ public class SoftwareSystems extends StaticElements {
         this.containers = containers;
     }
 
-    public void override(SoftwareSystems source) {
-        super.override(source);
+    public void override(SoftwareSystems source, boolean keepMeta) {
+        super.override(source, keepMeta);
         this.setScope(source.getScope());
         this.setContainers(source.getContainers());
     }
 
-    public void copyNonEmpty(SoftwareSystems source) {
-        super.copyNonEmpty(source);
+    public void copyNonEmpty(SoftwareSystems source, boolean keepMeta) {
+        super.override(source, keepMeta);
         if (source.getScope() != null) {
             this.setScope(source.getScope());
         }

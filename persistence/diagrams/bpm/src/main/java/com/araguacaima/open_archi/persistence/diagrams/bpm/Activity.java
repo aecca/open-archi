@@ -10,12 +10,12 @@ import javax.persistence.PersistenceUnit;
 public class Activity extends Item {
 
     //TODO Completar
-    public void override(Activity source) {
-        super.override(source);
+    public void override(Activity source, boolean keepMeta) {
+        super.override(source, keepMeta);
     }
 
-    public void copyNonEmpty(Activity source) {
-        super.copyNonEmpty(source);
+    public void copyNonEmpty(Activity source, boolean keepMeta) {
+        super.override(source, keepMeta);
     }
 
 }

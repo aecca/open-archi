@@ -60,14 +60,14 @@ public class UmlMethod extends BaseEntity {
     }
 
 
-    public void override(UmlMethod source) {
-        super.override(source);
+    public void override(UmlMethod source, boolean keepMeta) {
+        super.override(source, keepMeta);
         this.name = source.getName();
         this.type = source.getType();
     }
 
-    public void copyNonEmpty(UmlMethod source) {
-        super.copyNonEmpty(source);
+    public void copyNonEmpty(UmlMethod source, boolean keepMeta) {
+        super.copyNonEmpty(source, keepMeta);
         if (source.getName() != null) {
             this.name = source.getName();
         }

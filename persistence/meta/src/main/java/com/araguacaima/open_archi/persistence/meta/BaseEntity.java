@@ -152,14 +152,21 @@ public abstract class BaseEntity implements Serializable, BasicEntity, Cloneable
         }
     }
 
-    public void override(BaseEntity source) {
-        this.meta = source.getMeta();
+    public void override(BaseEntity source, boolean keepMeta) {
+        if (keepMeta) {
+            this.meta = source.getMeta();
+        } else {
+            this.meta = new MetaInfo();
+        }
     }
 
-
-    public void copyNonEmpty(BaseEntity source) {
-        if (source.getMeta() != null) {
-            this.meta = source.getMeta();
+    public void copyNonEmpty(BaseEntity source, boolean keepMeta) {
+        if (keepMeta) {
+            if (source.getMeta() != null) {
+                this.meta = source.getMeta();
+            }
+        } else {
+            this.meta = new MetaInfo();
         }
     }
 

@@ -42,14 +42,14 @@ public class Components extends StaticElements {
         this.size = size;
     }
 
-    public void override(Components source) {
-        super.override(source);
+    public void override(Components source, boolean keepMeta) {
+        super.override(source, keepMeta);
         this.setTechnology(source.getTechnology());
         this.setSize(source.getSize());
     }
 
-    public void copyNonEmpty(Components source) {
-        super.copyNonEmpty(source);
+    public void copyNonEmpty(Components source, boolean keepMeta) {
+        super.override(source, keepMeta);
         if (source.getTechnology() != null) {
             this.setTechnology(source.getTechnology());
         }

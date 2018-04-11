@@ -33,14 +33,14 @@ public class Connector extends BaseEntity {
         this.stroke = stroke;
     }
 
-    public void override(Connector source) {
-        super.override(source);
+    public void override(Connector source, boolean keepMeta) {
+        super.override(source, keepMeta);
         this.setType(source.getType());
         this.setStroke(source.getStroke());
     }
 
-    public void copyNonEmpty(Connector source) {
-        super.copyNonEmpty(source);
+    public void copyNonEmpty(Connector source, boolean keepMeta) {
+        super.copyNonEmpty(source, keepMeta);
         if (source.getType() != null) {
             this.setType(source.getType());
         }
