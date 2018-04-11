@@ -1063,10 +1063,6 @@ public class Server {
                         Item clonedModelItem = (Item) clonedModel;
                         String name = clonedModelItem.getName();
                         String description = clonedModelItem.getDescription();
-                        if (StringUtils.isNotBlank(suffix)) {
-                            name = name + " " + suffix;
-                            clonedModelItem.setDescription(description + " " + suffix);
-                        }
                         Map<String, Object> map = new HashMap<>();
                         map.put("type", model.getClass());
                         map.put("name", name);
