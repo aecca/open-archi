@@ -250,11 +250,14 @@ function initBasic(nodeDataArray, linkDataArray) {
                 show: true
             });
         } else {
-            if (data.id) {
-                $.get("/open-archi/api/models/" + data.id)
-                    .done(function (data) {
-                        expand(data);
-                    });
+            let currentViewMode = getCurrentViewMode();
+            if (currentViewMode === "Full") {
+                if (data.id) {
+                    $.get("/open-archi/api/models/" + data.id)
+                        .done(function (data) {
+                            expand(data);
+                        });
+                }
             }
         }
     });

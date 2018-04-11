@@ -176,7 +176,13 @@ function expand(data) {
         model = data;
     }
     const diagram = OpenArchiWrapper.toDiagram(model);
-    myDiagram.model = go.Model.fromJson(diagram);
+    const newElement = go.Model.fromJson(diagram);
+
+    myDiagram.startTransaction("Adding new element");
+    myDiagram.model.addNodeDataCollection(newElement.nodeDataArray);
+    myDiagram.model.addLinkDataCollection(newElement.linkDataArray);
+    myDiagram.commitTransaction("Adding new element");
+
     const pos = myDiagram.model.modelData.position;
     if (pos) {
         myDiagram.initialPosition = go.Point.parse(pos);
@@ -503,6 +509,10 @@ function confirmAndSave() {
 }
 
 function changeView() {
-    let selectedViewModeElement = $(viewMode.tickLabels[viewMode.getValue()]);
-//    alert("New view mode: " + selectedViewModeElement.html());
+
+}
+
+function getCurrentViewMode() {
+    let viewMode_ = $(viewMode.tickLabels[viewMode.getValue()-1]);
+    return viewMode_.html();
 }
