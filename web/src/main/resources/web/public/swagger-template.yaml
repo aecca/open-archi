@@ -249,6 +249,35 @@ paths:
 #            allOf:
 #            - $ref: "#/definitions/Options_Get_Collection"
 #            - $ref: "#/definitions/Options_Put"
+  "/models/{model-id}/clone":
+    get:
+      tags:
+      - Models
+      summary: Gets a clone of the model associated with the incoming ID
+      description: Returns a single cloned model
+      operationId: clone-model-by-id
+      produces:
+      - application/json
+      parameters:
+      - name: model-id
+        in: path
+        description: ID of the model to return
+        required: true
+        type: string
+      - name: "suffix"
+        in: query
+        description: Suffix proposed for the name of the cloned model
+        required: false
+        type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: "#/definitions/Model"
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Model not found
   "/models/{model-id}/status/{statud-id}":
     put:
       tags:

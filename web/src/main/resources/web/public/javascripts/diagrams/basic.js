@@ -253,7 +253,7 @@ function initBasic(nodeDataArray, linkDataArray) {
             let currentViewMode = getCurrentViewMode();
             if (currentViewMode === "Full") {
                 if (data.id) {
-                    $.get("/open-archi/api/models/" + data.id)
+                    $.get("/open-archi/api/models/" + data.id + "/clone", {suffix: "cloned"})
                         .done(function (completeModel) {
                             expand(completeModel);
                             myDiagram.model.removeNodeData(data);

@@ -41,6 +41,9 @@ import java.util.Set;
                 query = "select new com.araguacaima.open_archi.persistence.commons.IdName(a.id, a.name, TYPE(a)) " +
                         "from com.araguacaima.open_archi.persistence.diagrams.core.Item a where TYPE(a)=:type " +
                         "and a.prototype=true"),
+        @NamedQuery(name = Item.GET_MODEL_NAMES_BY_NAME_AND_TYPE,
+                query = "select new com.araguacaima.open_archi.persistence.commons.IdName(a.id, a.name, TYPE(a)) " +
+                        "from com.araguacaima.open_archi.persistence.diagrams.core.Item a where a.name like concat(:name,'%') and TYPE(a)=:type "),
         @NamedQuery(name = Item.GET_ALL_CONSUMERS,
                 query = "select a " +
                         "from com.araguacaima.open_archi.persistence.diagrams.core.Item a where a.kind='CONSUMER'"),
@@ -57,6 +60,7 @@ public class Item extends Taggable {
     public static final String GET_ITEM_ID_BY_NAME = "get.item.id.by.name";
     public static final String GET_ALL_CONSUMER_NAMES = "get.all.conmsumer.names";
     public static final String GET_ALL_CONSUMERS = "get.all.consumers";
+    public static final String GET_MODEL_NAMES_BY_NAME_AND_TYPE = "get.model.names.by.name.and.type";
     public static final String GET_ALL_MODEL_NAMES_BY_TYPE = "get.all.model.names.by.type";
     public static final String GET_ALL_PROTOTYPE_NAMES_BY_TYPE = "get.all.prototype.names.by.type";
     public static final String GET_ITEMS_BY_NAME_AND_KIND = "get.items.by.name.and.kind";

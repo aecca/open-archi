@@ -1037,13 +1037,48 @@ public class Server {
                 delete("/models/:uuid", (request, response) -> {
                     try {
                         String id = request.params(":uuid");
-                        DBUtil.delete( Taggable.class, id);
+                        DBUtil.delete(Taggable.class, id);
                         response.status(HTTP_OK);
                         return EMPTY_RESPONSE;
                     } catch (EntityNotFoundException ex) {
                         response.status(HTTP_NOT_FOUND);
                         return EMPTY_RESPONSE;
                     } catch (Throwable ex) {
+                        return throwError(response, ex);
+                    }
+                });
+                get("/models/:uuid/clone", (request, response) -> {
+                    try {
+                        String id = request.params(":uuid");
+                        String suffix = request.queryParams("suffix");
+                        Taggable model = JPAEntityManagerUtils.find(Taggable.class, id);
+                        if (model != null) {
+                            model.validateRequest();
+                        } else {
+                            throw new Exception("Model with id of '" + id + "' not found");
+                        }
+                        Taggable clonedModel = new Taggable();
+                        clonedModel.copyNonEmpty(model);
+                        Item clonedModelItem = (Item) clonedModel;
+                        String name = clonedModelItem.getName();
+                        if (StringUtils.isNotBlank(suffix)) {
+                            name = name + " " + suffix;
+                        }
+                        Map<String, Object> map = new HashMap<>();
+                        map.put("type", model.getClass());
+                        map.put("name", name);
+                        List modelNames = JPAEntityManagerUtils.executeQuery(Item.class, Item.GET_MODEL_NAMES_BY_NAME_AND_TYPE, map);
+                        if (CollectionUtils.isNotEmpty(modelNames)) {
+                            Collections.sort(modelNames);
+                            IdName lastFoundName = (IdName) IterableUtils.get(modelNames, modelNames.size() - 1);
+                            name = lastFoundName.getName() + " (1)";
+                        }
+                        clonedModelItem.setName(name);
+
+                        response.status(HTTP_OK);
+                        response.type(JSON_CONTENT_TYPE);
+                        return jsonUtils.toJSON(clonedModel);
+                    } catch (Exception ex) {
                         return throwError(response, ex);
                     }
                 });

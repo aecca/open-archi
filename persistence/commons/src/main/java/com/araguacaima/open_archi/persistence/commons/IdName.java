@@ -1,6 +1,6 @@
 package com.araguacaima.open_archi.persistence.commons;
 
-public class IdName {
+public class IdName implements Comparable<IdName> {
 
     private String id;
     private String name;
@@ -43,5 +43,19 @@ public class IdName {
 
     public void setKind(String kind) {
         this.kind = kind;
+    }
+
+    @Override
+    public int compareTo(IdName idName) {
+        if (idName == null) return -1;
+        if (clazz.getName().compareTo(idName.clazz.getName()) >= 0) {
+            if (kind.compareTo(idName.getKind()) >= 0) {
+                return name.compareTo(idName.getName());
+            } else {
+                return kind.compareTo(idName.getKind());
+            }
+        } else {
+            return clazz.getName().compareTo(idName.clazz.getName());
+        }
     }
 }
