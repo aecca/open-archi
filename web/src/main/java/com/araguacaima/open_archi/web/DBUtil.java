@@ -219,7 +219,7 @@ public class DBUtil {
                 params.put("kind", kind);
                 Item item = JPAEntityManagerUtils.findByQuery(Item.class, Item.GET_ITEM_ID_BY_NAME, params);
                 if (item != null) {
-                    item.override((Item) entity, false, suffix);
+                    item.override((Item) entity, false, null);
                     return item;
                 }
             }
