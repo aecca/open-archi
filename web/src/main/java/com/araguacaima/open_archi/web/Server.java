@@ -969,6 +969,7 @@ public class Server {
                         Taggable model = null;
                         Map<String, Object> incomingModel = (Map<String, Object>) jsonUtils.fromJSON(request.body(), Map.class);
                         Object kind = incomingModel.get("kind");
+                        Object id = incomingModel.get("id");
                         for (Class<? extends Taggable> modelClass : modelsClasses) {
                             Field field = reflectionUtils.getField(modelClass, "kind");
                             if (field != null) {
@@ -986,7 +987,7 @@ public class Server {
                             throw new Exception("Invalid kind of model '" + kind + "'");
                         }
                         model.validateCreation();
-                        DBUtil.populate(model);
+                        DBUtil.populate(model, id == null);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
                         response.header("Location", request.pathInfo() + "/" + model.getId());
@@ -1058,7 +1059,7 @@ public class Server {
                             throw new Exception("Model with id of '" + id + "' not found");
                         }
                         DiagramableElement clonedModel = (DiagramableElement) model.getClass().newInstance();
-                        clonedModel.override(model, false);
+                        clonedModel.override(model, true);
                         Item clonedModelItem = (Item) clonedModel;
                         String name = clonedModelItem.getName();
                         String description = clonedModelItem.getDescription();

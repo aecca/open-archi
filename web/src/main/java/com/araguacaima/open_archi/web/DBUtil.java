@@ -10,13 +10,11 @@ import com.araguacaima.open_archi.persistence.meta.BasicEntity;
 import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
 import io.github.benas.randombeans.EnhancedRandomBuilder;
 import io.github.benas.randombeans.api.EnhancedRandom;
-import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.persistence.Entity;
 import javax.persistence.EntityNotFoundException;
-import javax.persistence.Query;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
@@ -76,9 +74,16 @@ public class DBUtil {
         }
     }
 
+
     public static void populate(BaseEntity entity) throws Throwable {
+        populate(entity, true);
+    }
+
+    public static void populate(BaseEntity entity, boolean flatten) throws Throwable {
         JPAEntityManagerUtils.begin();
-        flatten(entity);
+        if (flatten) {
+            flatten(entity);
+        }
         try {
             Class clazz = entity.getClass();
             process(entity, clazz);
@@ -130,7 +135,6 @@ public class DBUtil {
         }
         return entity;
     }
-
 
 
     private static Object process(Class<?> type, Object object_) {

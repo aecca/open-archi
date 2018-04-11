@@ -25,7 +25,7 @@ public class AppendMetaInfo extends AbstractSpecification {
             if (entity.getMeta() == null) {
                 if (map.get("meta") == null) {
                     meta = new MetaInfo();
-                    map.put("meta", meta);
+                    //map.put("meta", meta);
                 } else {
                     meta = (MetaInfo) map.get("meta");
                 }
@@ -38,7 +38,7 @@ public class AppendMetaInfo extends AbstractSpecification {
                 meta = entity.getMeta();
                 meta.setModified(thisTime);
                 meta.getVersion().nextBuild();
-                map.put("meta", meta);
+                //map.put("meta", meta);
             }
         }
         return true;

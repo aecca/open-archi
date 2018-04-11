@@ -246,6 +246,9 @@ class OpenArchiWrapper {
         let nodes = diagram.nodeDataArray;
         let links = diagram.linkDataArray;
         model.status = meta.status || "INITIAL";
+        if (meta.id) {
+            model.id = meta.id;
+        }
         model.name = meta.name;
         model.kind = meta.kind;
         model.description = meta.description;

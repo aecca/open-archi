@@ -182,6 +182,7 @@ function expand(data) {
     } else {
         model = data;
     }
+    meta.id = model.id;
     const diagram = OpenArchiWrapper.toDiagram(model);
     const newElement = go.Model.fromJson(diagram);
 
