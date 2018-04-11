@@ -48,8 +48,8 @@ public class Component extends StaticElement {
     }
 
 
-    public void override(Component source, boolean keepMeta) {
-        super.override(source, keepMeta);
+    public void override(Component source, boolean keepMeta, String suffix) {
+        super.override(source, keepMeta, suffix);
         this.setTechnology(source.getTechnology());
         this.setSize(source.getSize());
     }

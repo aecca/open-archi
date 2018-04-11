@@ -65,8 +65,8 @@ public class Relationships extends Taggable {
         this.destinationPort = destinationPort;
     }
 
-    public void override(Relationships source, boolean keepMeta) {
-        super.override(source, keepMeta);
+    public void override(Relationships source, boolean keepMeta, String suffix) {
+        super.override(source, keepMeta, suffix);
         this.sourceId = source.getSourceId();
         this.destinationId = source.getDestinationId();
         this.description = source.getDescription();

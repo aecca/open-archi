@@ -35,8 +35,8 @@ public class Responsible extends BaseEntity {
         this.person = Responsible;
     }
 
-    public void override(Responsible source, boolean keepMeta) {
-        super.override(source, keepMeta);
+    public void override(Responsible source, boolean keepMeta, String suffix) {
+        super.override(source, keepMeta, suffix);
         this.setPerson(source.getPerson());
         this.setOrganizationUnit(source.getOrganizationUnit());
     }

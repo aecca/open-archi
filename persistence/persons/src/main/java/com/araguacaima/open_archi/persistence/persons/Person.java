@@ -1,8 +1,6 @@
 package com.araguacaima.open_archi.persistence.persons;
 
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.Column;
@@ -38,8 +36,8 @@ public class Person extends BaseEntity {
     }
 
 
-    public void override(Person source, boolean keepMeta) {
-        super.override(source, keepMeta);
+    public void override(Person source, boolean keepMeta, String suffix) {
+        super.override(source, keepMeta, suffix);
         this.names = source.getNames();
         this.lastNames = source.getLastNames();
     }

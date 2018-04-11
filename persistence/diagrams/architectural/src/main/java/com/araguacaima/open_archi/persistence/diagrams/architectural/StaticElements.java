@@ -29,7 +29,7 @@ public abstract class StaticElements extends Elements {
     }
 
     public void override(StaticElements source, boolean keepMeta) {
-        super.override(source, keepMeta);
+        super.override(source, keepMeta, suffix);
     }
 
     public void copyNonEmpty(StaticElements source, boolean keepMeta) {

@@ -55,7 +55,7 @@ public class Container extends StaticElement {
     }
 
     public void override(Container source, boolean keepMeta) {
-        super.override(source, keepMeta);
+        super.override(source, keepMeta, suffix);
         this.setTechnology(source.getTechnology());
         this.setComponents(source.getComponents());
     }

@@ -19,7 +19,7 @@ public abstract class StaticElement extends Element {
     }
 
     public void override(StaticElement source, boolean keepMeta) {
-        super.override(source, keepMeta);
+        super.override(source, keepMeta, suffix);
     }
 
     public void copyNonEmpty(StaticElement source, boolean keepMeta) {

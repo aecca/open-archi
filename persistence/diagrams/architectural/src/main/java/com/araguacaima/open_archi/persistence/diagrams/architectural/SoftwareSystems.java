@@ -50,7 +50,7 @@ public class SoftwareSystems extends StaticElements {
     }
 
     public void override(SoftwareSystems source, boolean keepMeta) {
-        super.override(source, keepMeta);
+        super.override(source, keepMeta, suffix);
         this.setScope(source.getScope());
         this.setContainers(source.getContainers());
     }

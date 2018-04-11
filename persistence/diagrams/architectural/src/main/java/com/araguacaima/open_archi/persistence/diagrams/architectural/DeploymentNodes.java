@@ -61,7 +61,7 @@ public class DeploymentNodes extends Elements {
     }
 
     public void override(DeploymentNodes source, boolean keepMeta) {
-        super.override(source, keepMeta);
+        super.override(source, keepMeta, suffix);
         this.setInstances(source.getInstances());
         this.setTechnology(source.getTechnology());
     }

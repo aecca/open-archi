@@ -68,13 +68,13 @@ public class Element extends Item {
         this.features = features;
     }
 
-    public void override(Element source, boolean keepMeta) {
-        super.override(source, keepMeta);
+    public void override(Element source, boolean keepMeta, String suffix) {
+        super.override(source, keepMeta, suffix);
         this.url = source.getUrl();
         this.properties = source.getProperties();
         for (Feature feature : source.getFeatures()) {
             Feature newFeature = new Feature();
-            newFeature.override(feature, keepMeta);
+            newFeature.override(feature, keepMeta, suffix);
             this.features.add(newFeature);
         }
     }

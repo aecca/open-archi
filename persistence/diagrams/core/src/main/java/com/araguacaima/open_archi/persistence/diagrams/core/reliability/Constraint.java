@@ -153,8 +153,8 @@ public class Constraint extends BaseEntity {
         }
     }
 
-    public void override(Constraint source, boolean keepMeta) {
-        super.override(source, keepMeta);
+    public void override(Constraint source, boolean keepMeta, String suffix) {
+        super.override(source, keepMeta, suffix);
         this.setActivities(source.getActivities());
         this.setBatchProcessing(source.getBatchProcessing());
         this.setBulkProcessing(source.getBulkProcessing());

@@ -41,8 +41,8 @@ public class UmlClass extends UmlItem {
         this.methods = methods;
     }
 
-    public void override(UmlClass source, boolean keepMeta) {
-        super.override(source, keepMeta);
+    public void override(UmlClass source, boolean keepMeta, String suffix) {
+        super.override(source, keepMeta, suffix);
         this.fields = source.getFields();
         this.methods = source.getMethods();
     }

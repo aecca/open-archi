@@ -34,7 +34,7 @@ public class Consumer extends StaticElement {
     }
 
     public void override(Consumer source, boolean keepMeta) {
-        super.override(source, keepMeta);
+        super.override(source, keepMeta, suffix);
         this.setScope(source.getScope());
     }
 

@@ -46,7 +46,7 @@ public class Attribute extends BaseEntity {
 
 
     public void override(Attribute source, boolean keepMeta) {
-        super.override(source, keepMeta);
+        super.override(source, keepMeta, suffix);
         this.setName(source.getName());
         this.setType(source.getType());
         this.setKey(source.isKey());

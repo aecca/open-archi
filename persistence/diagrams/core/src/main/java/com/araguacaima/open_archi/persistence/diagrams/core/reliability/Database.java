@@ -60,8 +60,8 @@ public class Database extends BaseEntity implements MeasurableRange {
         return RANGE;
     }
 
-    public void override(Database source, boolean keepMeta) {
-        super.override(source, keepMeta);
+    public void override(Database source, boolean keepMeta, String suffix) {
+        super.override(source, keepMeta, suffix);
         this.setValue(source.getValue());
         this.setType(source.getType());
     }

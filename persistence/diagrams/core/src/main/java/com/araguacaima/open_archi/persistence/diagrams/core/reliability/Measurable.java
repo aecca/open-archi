@@ -42,8 +42,8 @@ public class Measurable extends BaseEntity {
         this.value = value;
     }
 
-    public void override(Measurable source, boolean keepMeta) {
-        super.override(source, keepMeta);
+    public void override(Measurable source, boolean keepMeta, String suffix) {
+        super.override(source, keepMeta, suffix);
         this.setValue(source.getValue());
     }
 

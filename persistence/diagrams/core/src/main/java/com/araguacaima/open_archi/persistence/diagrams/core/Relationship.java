@@ -108,8 +108,8 @@ public class Relationship extends Taggable {
         this.connector = connector;
     }
 
-    public void override(Relationship source, boolean keepMeta) {
-        super.override(source, keepMeta);
+    public void override(Relationship source, boolean keepMeta, String suffix) {
+        super.override(source, keepMeta, suffix);
         this.source = source.getSource();
         this.sourceId = source.getSourceId();
         this.destination = source.getDestination();

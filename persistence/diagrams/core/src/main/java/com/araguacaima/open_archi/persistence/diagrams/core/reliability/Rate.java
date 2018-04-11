@@ -68,8 +68,8 @@ public class Rate extends BaseEntity implements MeasurableRange {
     }
 
 
-    public void override(Rate source, boolean keepMeta) {
-        super.override(source, keepMeta);
+    public void override(Rate source, boolean keepMeta, String suffix) {
+        super.override(source, keepMeta, suffix);
         this.setValue(source.getValue());
         this.setTarget(source.getTarget());
     }

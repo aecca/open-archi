@@ -1059,7 +1059,7 @@ public class Server {
                             throw new Exception("Model with id of '" + id + "' not found");
                         }
                         DiagramableElement clonedModel = (DiagramableElement) model.getClass().newInstance();
-                        clonedModel.override(model, true);
+                        clonedModel.override(model, false, suffix);
                         Item clonedModelItem = (Item) clonedModel;
                         String name = clonedModelItem.getName();
                         String description = clonedModelItem.getDescription();

@@ -58,7 +58,7 @@ public class Gantt extends Item {
     }
 
     public void override(Gantt source, boolean keepMeta) {
-        super.override(source, keepMeta);
+        super.override(source, keepMeta, suffix);
         this.setCategory(source.getCategory());
         this.setDiagramStart(source.getDiagramStart());
         this.setDiagramEnd(source.getDiagramEnd());

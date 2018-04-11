@@ -223,8 +223,8 @@ public class Item extends Taggable {
         this.prototype = prototype;
     }
 
-    public void override(Item source, boolean keepMeta) {
-        super.override(source, keepMeta);
+    public void override(Item source, boolean keepMeta, String suffix) {
+        super.override(source, keepMeta, suffix);
         this.name = source.getName();
         this.description = source.getDescription();
         this.location = source.getLocation();
@@ -232,14 +232,14 @@ public class Item extends Taggable {
         this.children = source.getChildren();
         if (source.getShape() != null) {
             Shape shape = new Shape();
-            shape.override(source.getShape(), keepMeta);
+            shape.override(source.getShape(), keepMeta, suffix);
             this.shape = shape;
         }
         this.canBeConnectedFrom = source.getCanBeConnectedFrom();
         this.canBeConnectedTo = source.getCanBeConnectedTo();
         if (source.getMetaData() != null) {
             MetaData metaData = new MetaData();
-            metaData.override(source.getMetaData(), keepMeta);
+            metaData.override(source.getMetaData(), keepMeta, suffix);
             this.metaData = source.getMetaData();
         }
         this.prototype = source.isPrototype();

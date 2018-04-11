@@ -69,8 +69,8 @@ public class Features extends Items {
         this.kind = kind;
     }
 
-    public void override(Features source, boolean keepMeta) {
-        super.override(source, keepMeta);
+    public void override(Features source, boolean keepMeta, String suffix) {
+        super.override(source, keepMeta, suffix);
         this.setRole(source.getRole());
         this.setUrl(source.getUrl());
         this.setVisibility(source.getVisibility());

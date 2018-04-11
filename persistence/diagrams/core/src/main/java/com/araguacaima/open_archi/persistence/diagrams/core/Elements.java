@@ -53,8 +53,8 @@ public class Elements extends Items {
     }
 
 
-    public void override(Elements source, boolean keepMeta) {
-        super.override(source, keepMeta);
+    public void override(Elements source, boolean keepMeta, String suffix) {
+        super.override(source, keepMeta, suffix);
         this.url = source.getUrl();
         this.features = source.getFeatures();
     }

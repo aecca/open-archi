@@ -53,8 +53,8 @@ public class Taggable extends BaseEntity {
         this.status = status;
     }
 
-    public void override(Taggable source, boolean keepMeta) {
-        super.override(source, keepMeta);
+    public void override(Taggable source, boolean keepMeta, String suffix) {
+        super.override(source, keepMeta, suffix);
         this.tags = source.getTags();
     }
 

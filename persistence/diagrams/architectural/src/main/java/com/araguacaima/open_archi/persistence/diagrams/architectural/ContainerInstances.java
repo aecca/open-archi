@@ -50,7 +50,7 @@ public class ContainerInstances extends Elements {
     }
 
     public void override(ContainerInstances source, boolean keepMeta) {
-        super.override(source, keepMeta);
+        super.override(source, keepMeta, suffix);
         this.setContainerId(source.getContainerId());
         this.setInstanceId(source.getInstanceId());
     }

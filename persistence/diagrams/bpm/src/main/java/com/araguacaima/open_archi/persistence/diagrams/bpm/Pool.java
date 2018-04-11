@@ -32,7 +32,7 @@ public class Pool extends Item {
     }
 
     public void override(Pool source, boolean keepMeta) {
-        super.override(source, keepMeta);
+        super.override(source, keepMeta, suffix);
         this.setLanes(source.getLanes());
     }
 

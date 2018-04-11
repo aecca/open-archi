@@ -105,8 +105,8 @@ public class MetaData extends BaseEntity {
         this.views = views;
     }
 
-    public void override(MetaData source, boolean keepMeta) {
-        super.override(source, keepMeta);
+    public void override(MetaData source, boolean keepMeta, String suffix) {
+        super.override(source, keepMeta, suffix);
         this.responsibles = source.getResponsibles();
         this.collaborators = source.getCollaborators();
         this.relatedWith = source.getRelatedWith();

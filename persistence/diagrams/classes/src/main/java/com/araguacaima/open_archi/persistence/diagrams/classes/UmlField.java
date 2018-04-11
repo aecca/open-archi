@@ -44,8 +44,8 @@ public class UmlField extends BaseEntity {
     }
 
 
-    public void override(UmlField source, boolean keepMeta) {
-        super.override(source, keepMeta);
+    public void override(UmlField source, boolean keepMeta, String suffix) {
+        super.override(source, keepMeta, suffix);
         this.name = source.getName();
         this.type = source.getType();
     }

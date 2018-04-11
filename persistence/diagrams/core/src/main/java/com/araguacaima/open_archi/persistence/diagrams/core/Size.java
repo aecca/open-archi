@@ -68,8 +68,8 @@ public class Size extends BaseEntity implements Serializable, Cloneable {
     }
 
 
-    public void override(Size source, boolean keepMeta) {
-        super.override(source, keepMeta);
+    public void override(Size source, boolean keepMeta, String suffix) {
+        super.override(source, keepMeta, suffix);
         this.width = source.getWidth();
         this.height = source.getHeight();
     }

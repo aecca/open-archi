@@ -59,8 +59,8 @@ public class Activity extends BaseEntity implements MeasurableRange {
     }
 
 
-    public void override(Activity source, boolean keepMeta) {
-        super.override(source, keepMeta);
+    public void override(Activity source, boolean keepMeta, String suffix) {
+        super.override(source, keepMeta, suffix);
         this.setValue(source.getValue());
     }
 

@@ -11,7 +11,7 @@ public class Activity extends Item {
 
     //TODO Completar
     public void override(Activity source, boolean keepMeta) {
-        super.override(source, keepMeta);
+        super.override(source, keepMeta, suffix);
     }
 
     public void copyNonEmpty(Activity source, boolean keepMeta) {

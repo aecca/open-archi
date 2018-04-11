@@ -103,7 +103,7 @@ public class Models extends Elements {
     }
 
     public void override(Models source, boolean keepMeta) {
-        super.override(source, keepMeta);
+        super.override(source, keepMeta, suffix);
         this.relationships = source.getRelationships();
         this.consumers = source.getConsumers();
         this.softwareSystems = source.getSoftwareSystems();

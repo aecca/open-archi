@@ -49,8 +49,8 @@ public class View extends BaseEntity {
         }
     }
 
-    public void override(View source, boolean keepMeta) {
-        super.override(source, keepMeta);
+    public void override(View source, boolean keepMeta, String suffix) {
+        super.override(source, keepMeta, suffix);
         this.setName(source.getName());
     }
 

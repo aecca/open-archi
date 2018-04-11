@@ -33,8 +33,8 @@ public class Connector extends BaseEntity {
         this.stroke = stroke;
     }
 
-    public void override(Connector source, boolean keepMeta) {
-        super.override(source, keepMeta);
+    public void override(Connector source, boolean keepMeta, String suffix) {
+        super.override(source, keepMeta, suffix);
         this.setType(source.getType());
         this.setStroke(source.getStroke());
     }

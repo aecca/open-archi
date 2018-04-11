@@ -75,8 +75,8 @@ public class Model extends Element implements DiagramableElement<Model> {
     }
 
     @Override
-    public void override(Model source, boolean keepMeta) {
-        super.override(source, keepMeta);
+    public void override(Model source, boolean keepMeta, String suffix) {
+        super.override(source, keepMeta, suffix);
         for (Relationship relationship : source.getRelationships()) {
             Relationship newRelationship = new Relationship();
             newRelationship.override(relationship, keepMeta);

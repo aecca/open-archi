@@ -36,8 +36,8 @@ public class UmlParameter extends BaseEntity {
     }
 
 
-    public void override(UmlParameter source, boolean keepMeta) {
-        super.override(source, keepMeta);
+    public void override(UmlParameter source, boolean keepMeta, String suffix) {
+        super.override(source, keepMeta, suffix);
         this.name = source.getName();
         this.type = source.getType();
     }

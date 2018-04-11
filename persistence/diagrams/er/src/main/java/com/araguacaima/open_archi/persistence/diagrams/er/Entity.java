@@ -38,7 +38,7 @@ public class Entity extends Element {
     }
 
     public void override(Entity source, boolean keepMeta) {
-        super.override(source, keepMeta);
+        super.override(source, keepMeta, suffix);
         this.setAttributes(source.getAttributes());
     }
 

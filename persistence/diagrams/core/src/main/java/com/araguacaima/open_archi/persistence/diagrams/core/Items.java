@@ -97,8 +97,8 @@ public class Items extends Taggable {
         this.children = children;
     }
 
-    public void override(Item source, boolean keepMeta) {
-        super.override(source, keepMeta);
+    public void override(Item source, boolean keepMeta, String suffix) {
+        super.override(source, keepMeta, suffix);
         this.name = source.getName();
         this.description = source.getDescription();
         this.location = source.getLocation();
