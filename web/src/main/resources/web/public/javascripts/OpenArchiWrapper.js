@@ -29,14 +29,18 @@ function diagramToArchitectureModel(model, node, links) {
         model.shape = shape;
         if (node.kind === "SOFTWARE_SYSTEM") {
             let softwareSystem = {};
-            softwareSystem.status = "INITIAL";
+            softwareSystem.meta = node.meta;
+            softwareSystem.status = node.status | "INITIAL";
             softwareSystem.name = node.name;
             softwareSystem.kind = node.kind;
             softwareSystem.description = node.description;
             softwareSystem.prototype = node.prototype;
             softwareSystem.location = {};
-            softwareSystem.location.x = node.loc.split(" ")[0];
-            softwareSystem.location.y = node.loc.split(" ")[1];
+            let loc = node.loc;
+            if (loc) {
+                softwareSystem.location.x = loc.split(" ")[0];
+                softwareSystem.location.y = loc.split(" ")[1];
+            }
             softwareSystem.shape = shape;
             if (!model.softwareSystems) {
                 model.softwareSystems = [];

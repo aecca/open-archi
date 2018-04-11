@@ -38,6 +38,7 @@ public class AppendMetaInfo extends AbstractSpecification {
                 meta = entity.getMeta();
                 meta.setModified(thisTime);
                 meta.getVersion().nextBuild();
+                map.put("meta", meta);
             }
         }
         return true;

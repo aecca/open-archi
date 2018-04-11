@@ -111,6 +111,13 @@ const partContextMenu =
             },
             function (o) {
                 return o.diagram.commandHandler.canUngroupSelection();
+            }),
+        makeButton("Re-Group",
+            function (e, obj) {
+                e.diagram.commandHandler.groupSelection();
+            },
+            function (o) {
+                return o.diagram.commandHandler.canGroupSelection();
             })
     );
 
