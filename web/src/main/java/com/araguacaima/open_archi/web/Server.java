@@ -6,6 +6,7 @@ import com.araguacaima.commons.utils.ReflectionUtils;
 import com.araguacaima.open_archi.persistence.commons.IdName;
 import com.araguacaima.open_archi.persistence.diagrams.architectural.*;
 import com.araguacaima.open_archi.persistence.diagrams.core.*;
+import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
 import com.araguacaima.open_archi.web.wrapper.RsqlJsonFilter;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -1058,11 +1059,17 @@ public class Server {
                         } else {
                             throw new Exception("Model with id of '" + id + "' not found");
                         }
-                        DiagramableElement clonedModel = (DiagramableElement) model.getClass().newInstance();
-                        clonedModel.override(model, false, suffix);
+                        Object clonedModel = model.getClass().newInstance();
+                        if (DiagramableElement.class.isAssignableFrom(clonedModel.getClass()) || BaseEntity.class.isAssignableFrom(clonedModel.getClass())) {
+                            ((BaseEntity) clonedModel).override(model, false, suffix);
+
+                            reflectionUtils.invokeMethod()
+
+                        } else {
+                            throw new Exception("Invalid model");
+                        }
                         Item clonedModelItem = (Item) clonedModel;
                         String name = clonedModelItem.getName();
-                        String description = clonedModelItem.getDescription();
                         Map<String, Object> map = new HashMap<>();
                         map.put("type", model.getClass());
                         map.put("name", name);
