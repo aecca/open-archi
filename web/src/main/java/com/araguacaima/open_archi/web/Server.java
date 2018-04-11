@@ -1057,8 +1057,8 @@ public class Server {
                         } else {
                             throw new Exception("Model with id of '" + id + "' not found");
                         }
-                        Taggable clonedModel = new Taggable();
-                        clonedModel.copyNonEmpty(model);
+                        DiagramableElement clonedModel = (DiagramableElement) model.getClass().newInstance();
+                        clonedModel.override(model);
                         Item clonedModelItem = (Item) clonedModel;
                         String name = clonedModelItem.getName();
                         if (StringUtils.isNotBlank(suffix)) {

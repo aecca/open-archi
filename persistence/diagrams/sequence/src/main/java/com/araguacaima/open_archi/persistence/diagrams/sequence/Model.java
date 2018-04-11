@@ -21,7 +21,7 @@ import java.util.Set;
         @NamedQuery(
                 name = Model.GET_ALL_SEQUENCE_MODELS,
                 query = "select a from com.araguacaima.open_archi.persistence.diagrams.sequence.Model a")})
-public class Model extends Element implements DiagramableElement {
+public class Model extends Element implements DiagramableElement<Model> {
 
     public static final String FIND_BY_NAME = "SequenceModel.findByName";
     public static final String GET_MODELS_COUNT = "SequenceModel.getModelsCount";
@@ -66,12 +66,14 @@ public class Model extends Element implements DiagramableElement {
         this.relationships = relationships;
     }
 
+    @Override
     public void override(Model source) {
         super.override(source);
         this.setSequences(source.getSequences());
         this.setRelationships(source.getRelationships());
     }
 
+    @Override
     public void copyNonEmpty(Model source) {
         super.copyNonEmpty(source);
         if (source.getSequences() != null && !source.getSequences().isEmpty()) {

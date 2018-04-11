@@ -12,7 +12,7 @@ import java.util.Set;
 @javax.persistence.Entity
 @PersistenceUnit(unitName = "open-archi")
 @DiscriminatorValue(value = "ERModel")
-public class Model extends Element implements DiagramableElement {
+public class Model extends Element implements DiagramableElement<Model> {
 
     @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinTable(schema = "DIAGRAMS",
@@ -53,13 +53,14 @@ public class Model extends Element implements DiagramableElement {
         this.relationships = relationships;
     }
 
-
+    @Override
     public void override(Model source) {
         super.override(source);
         this.setRelationships(source.getRelationships());
         this.setEntities(source.getEntities());
     }
 
+    @Override
     public void copyNonEmpty(Model source) {
         super.copyNonEmpty(source);
         if (source.getRelationships() != null && !source.getRelationships().isEmpty()) {

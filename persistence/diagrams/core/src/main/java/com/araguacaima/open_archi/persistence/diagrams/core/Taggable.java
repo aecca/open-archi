@@ -19,7 +19,7 @@ import java.util.Set;
         query = "select a from Taggable a "), @NamedQuery(name = Taggable.GET_MODELS_BY_TYPE,
         query = "select a from Taggable a where TYPE(a)=:modelType"),
         @NamedQuery(name = Taggable.GET_MODELS_BY_STATUS,
-        query = "select a from Taggable a where a.status=:status")})
+                query = "select a from Taggable a where a.status=:status")})
 @Component
 public class Taggable extends BaseEntity {
 

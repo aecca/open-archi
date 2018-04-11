@@ -25,7 +25,7 @@ import java.util.Set;
                 query = "select a.softwareSystems from com.araguacaima.open_archi.persistence.diagrams.architectural.Model a where a.id=:id"),
         @NamedQuery(name = Model.GET_SOFTWARE_SYSTEM,
                 query = "select s from com.araguacaima.open_archi.persistence.diagrams.architectural.Model a JOIN a.softwareSystems s where a.id=:id and s.id=:sid")})
-public class Model extends Element implements DiagramableElement {
+public class Model extends Element implements DiagramableElement<Model> {
 
     public static final String GET_ALL_RELATIONSHIPS = "get.all.relationships";
     public static final String GET_ALL_CONSUMERS_FOR_MODEL = "get.all.consumers.for.model";
@@ -74,6 +74,7 @@ public class Model extends Element implements DiagramableElement {
         setKind(ElementKind.ARCHITECTURE_MODEL);
     }
 
+    @Override
     public void override(Model source) {
         super.override(source);
         this.relationships = source.getRelationships();
@@ -82,6 +83,7 @@ public class Model extends Element implements DiagramableElement {
         this.deploymentNodes = source.getDeploymentNodes();
     }
 
+    @Override
     public void copyNonEmpty(Model source) {
         super.copyNonEmpty(source);
         if (source.getRelationships() != null && !source.getRelationships().isEmpty()) {

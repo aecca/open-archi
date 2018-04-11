@@ -12,7 +12,7 @@ import java.util.Set;
 @Entity
 @PersistenceUnit(unitName = "open-archi")
 @DiscriminatorValue(value = "FlowchartModel")
-public class Model extends Element implements DiagramableElement {
+public class Model extends Element implements DiagramableElement<Model> {
 
     @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinTable(schema = "DIAGRAMS",
@@ -52,12 +52,14 @@ public class Model extends Element implements DiagramableElement {
         this.relationships = relationships;
     }
 
+    @Override
     public void override(Model source) {
         super.override(source);
         this.setFlowcharts(source.getFlowcharts());
         this.setRelationships(source.getRelationships());
     }
 
+    @Override
     public void copyNonEmpty(Model source) {
         super.copyNonEmpty(source);
         if (source.getRelationships() != null && !source.getRelationships().isEmpty()) {
