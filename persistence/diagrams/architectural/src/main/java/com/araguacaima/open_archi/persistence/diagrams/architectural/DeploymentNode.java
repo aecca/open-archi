@@ -81,7 +81,11 @@ public class DeploymentNode extends Element {
         super.override(source, keepMeta);
         this.setInstances(source.getInstances());
         this.setTechnology(source.getTechnology());
-        this.setContainerInstances(source.getContainerInstances());
+        for (ContainerInstance container: source.getContainerInstances()) {
+            ContainerInstance newContainerInstance = new ContainerInstance();
+            newContainerInstance.override(container, keepMeta);
+            this.containerInstances.add(newContainerInstance);
+        }
     }
 
     public void copyNonEmpty(DeploymentNode source, boolean keepMeta) {
@@ -93,7 +97,11 @@ public class DeploymentNode extends Element {
             this.setTechnology(source.getTechnology());
         }
         if (source.getContainerInstances() != null && !source.getContainerInstances().isEmpty()) {
-            this.setContainerInstances(source.getContainerInstances());
+            for (ContainerInstance container: source.getContainerInstances()) {
+                ContainerInstance newContainerInstance = new ContainerInstance();
+                newContainerInstance.copyNonEmpty(container, keepMeta);
+                this.containerInstances.add(newContainerInstance);
+            }
         }
     }
 }

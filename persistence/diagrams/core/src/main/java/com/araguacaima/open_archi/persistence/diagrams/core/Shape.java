@@ -87,7 +87,11 @@ public class Shape extends BaseEntity {
         this.setOutput(source.isOutput());
         this.setInput(source.isInput());
         this.setStroke(source.getStroke());
-        this.setSize(source.getSize());
+        if (source.getSize() != null) {
+            Size size = new Size();
+            size.override(source.getSize(), keepMeta);
+            this.setSize(size);
+        }
     }
 
     public void copyNonEmpty(Shape source, boolean keepMeta) {
@@ -104,7 +108,9 @@ public class Shape extends BaseEntity {
             this.setStroke(source.getStroke());
         }
         if (source.getSize() != null) {
-            this.setSize(source.getSize());
+            Size size = new Size();
+            size.copyNonEmpty(source.getSize(), keepMeta);
+            this.setSize(size);
         }
     }
 }
