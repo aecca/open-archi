@@ -1,6 +1,7 @@
 package com.araguacaima.open_archi.persistence.diagrams.core;
 
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
@@ -225,7 +226,7 @@ public class Item extends Taggable {
 
     public void override(Item source, boolean keepMeta, String suffix) {
         super.override(source, keepMeta, suffix);
-        this.name = source.getName();
+        this.name = StringUtils.isNotBlank(suffix) ? source.getName() + " " + suffix : source.getName();
         this.description = source.getDescription();
         this.location = source.getLocation();
         this.parent = source.getParent();
