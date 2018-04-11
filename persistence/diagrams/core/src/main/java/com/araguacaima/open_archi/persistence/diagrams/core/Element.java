@@ -72,7 +72,11 @@ public class Element extends Item {
         super.override(source, keepMeta);
         this.url = source.getUrl();
         this.properties = source.getProperties();
-        this.features = source.getFeatures();
+        for (Feature feature : source.getFeatures()) {
+            Feature newFeature = new Feature();
+            newFeature.override(feature, keepMeta);
+            this.features.add(newFeature);
+        }
     }
 
     public void copyNonEmpty(Element source, boolean keepMeta) {
@@ -84,7 +88,11 @@ public class Element extends Item {
             this.properties = source.getProperties();
         }
         if (source.getFeatures() != null && !source.getFeatures().isEmpty()) {
-            this.features = source.getFeatures();
+            for (Feature feature : source.getFeatures()) {
+                Feature newFeature = new Feature();
+                newFeature.copyNonEmpty(feature, keepMeta);
+                this.features.add(newFeature);
+            }
         }
     }
 }

@@ -153,21 +153,34 @@ public abstract class BaseEntity implements Serializable, BasicEntity, Cloneable
     }
 
     public void override(BaseEntity source, boolean keepMeta) {
-        if (keepMeta) {
-            this.meta = source.getMeta();
-        } else {
-            this.meta = new MetaInfo();
+        if (source.getMeta() != null) {
+            if (keepMeta) {
+                this.meta = source.getMeta();
+            } else {
+                this.meta = buildDefaultMeta();
+            }
         }
     }
 
     public void copyNonEmpty(BaseEntity source, boolean keepMeta) {
-        if (keepMeta) {
-            if (source.getMeta() != null) {
+        if (source.getMeta() != null) {
+            if (keepMeta) {
                 this.meta = source.getMeta();
+            } else {
+                if (source.getMeta() != null) {
+                    this.meta = buildDefaultMeta();
+                }
             }
-        } else {
-            this.meta = new MetaInfo();
         }
+    }
+
+    private MetaInfo buildDefaultMeta() {
+        MetaInfo meta = new MetaInfo();
+        Date time = Calendar.getInstance().getTime();
+        meta.setCreated(time);
+        meta.setModified(time);
+        meta.setVersion(new Version());
+        return meta;
     }
 
     public void setId(String id) {

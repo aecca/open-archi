@@ -77,26 +77,58 @@ public class Model extends Element implements DiagramableElement<Model> {
     @Override
     public void override(Model source, boolean keepMeta) {
         super.override(source, keepMeta);
-        this.relationships = source.getRelationships();
-        this.consumers = source.getConsumers();
-        this.softwareSystems = source.getSoftwareSystems();
-        this.deploymentNodes = source.getDeploymentNodes();
+        for (Relationship relationship : source.getRelationships()) {
+            Relationship newRelationship = new Relationship();
+            newRelationship.override(relationship, keepMeta);
+            this.relationships.add(newRelationship);
+        }
+        for (Consumer consumer : source.getConsumers()) {
+            Consumer newConsumer = new Consumer();
+            newConsumer.override(consumer, keepMeta);
+            this.consumers.add(newConsumer);
+        }
+        for (SoftwareSystem softwareSystem : source.getSoftwareSystems()) {
+            SoftwareSystem newSoftwareSystem = new SoftwareSystem();
+            newSoftwareSystem.override(softwareSystem, keepMeta);
+            this.softwareSystems.add(newSoftwareSystem);
+        }
+        for (DeploymentNode deploymentNode : source.getDeploymentNodes()) {
+            DeploymentNode newDeploymentNode = new DeploymentNode();
+            newDeploymentNode.override(deploymentNode, keepMeta);
+            this.deploymentNodes.add(newDeploymentNode);
+        }
     }
 
     @Override
     public void copyNonEmpty(Model source, boolean keepMeta) {
         super.copyNonEmpty(source, keepMeta);
         if (source.getRelationships() != null && !source.getRelationships().isEmpty()) {
-            this.relationships = source.getRelationships();
+            for (Relationship relationship : source.getRelationships()) {
+                Relationship newRelationship = new Relationship();
+                newRelationship.copyNonEmpty(relationship, keepMeta);
+                this.relationships.add(newRelationship);
+            }
         }
         if (source.getConsumers() != null && !source.getConsumers().isEmpty()) {
-            this.consumers = source.getConsumers();
+            for (Consumer consumer : source.getConsumers()) {
+                Consumer newConsumer = new Consumer();
+                newConsumer.copyNonEmpty(consumer, keepMeta);
+                this.consumers.add(newConsumer);
+            }
         }
         if (source.getSoftwareSystems() != null && !source.getSoftwareSystems().isEmpty()) {
-            this.softwareSystems = source.getSoftwareSystems();
+            for (SoftwareSystem softwareSystem : source.getSoftwareSystems()) {
+                SoftwareSystem newSoftwareSystem = new SoftwareSystem();
+                newSoftwareSystem.copyNonEmpty(softwareSystem, keepMeta);
+                this.softwareSystems.add(newSoftwareSystem);
+            }
         }
         if (source.getDeploymentNodes() != null && !source.getDeploymentNodes().isEmpty()) {
-            this.deploymentNodes = source.getDeploymentNodes();
+            for (DeploymentNode deploymentNode : source.getDeploymentNodes()) {
+                DeploymentNode newDeploymentNode = new DeploymentNode();
+                newDeploymentNode.copyNonEmpty(deploymentNode, keepMeta);
+                this.deploymentNodes.add(newDeploymentNode);
+            }
         }
     }
 

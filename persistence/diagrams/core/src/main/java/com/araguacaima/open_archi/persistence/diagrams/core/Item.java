@@ -230,10 +230,18 @@ public class Item extends Taggable {
         this.location = source.getLocation();
         this.parent = source.getParent();
         this.children = source.getChildren();
-        this.shape = source.getShape();
+        if (source.getShape() != null) {
+            Shape shape = new Shape();
+            shape.override(source.getShape(), keepMeta);
+            this.shape = shape;
+        }
         this.canBeConnectedFrom = source.getCanBeConnectedFrom();
         this.canBeConnectedTo = source.getCanBeConnectedTo();
-        this.metaData = source.getMetaData();
+        if (source.getMetaData() != null) {
+            MetaData metaData = new MetaData();
+            metaData.override(source.getMetaData(), keepMeta);
+            this.metaData = source.getMetaData();
+        }
         this.prototype = source.isPrototype();
     }
 
@@ -255,7 +263,9 @@ public class Item extends Taggable {
             this.children = source.getChildren();
         }
         if (source.getShape() != null) {
-            this.shape = source.getShape();
+            Shape shape = new Shape();
+            shape.copyNonEmpty(source.getShape(), keepMeta);
+            this.shape = shape;
         }
         if (source.getCanBeConnectedFrom() != null && !source.getCanBeConnectedFrom().isEmpty()) {
             this.canBeConnectedFrom = source.getCanBeConnectedFrom();
@@ -264,6 +274,8 @@ public class Item extends Taggable {
             this.canBeConnectedTo = source.getCanBeConnectedTo();
         }
         if (source.getMetaData() != null) {
+            MetaData metaData = new MetaData();
+            metaData.copyNonEmpty(source.getMetaData(), keepMeta);
             this.metaData = source.getMetaData();
         }
         this.prototype = source.isPrototype();

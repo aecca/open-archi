@@ -1076,10 +1076,13 @@ public class Server {
                             name = lastFoundName.getName() + " (1)";
                         }
                         clonedModelItem.setName(name);
-
                         response.status(HTTP_OK);
                         response.type(JSON_CONTENT_TYPE);
-                        return jsonUtils.toJSON(clonedModel);
+                        String json = jsonUtils.toJSON(clonedModel);
+                        String json_ = jsonUtils.toJSON(model);
+                        log.error("Original: \n\n" + json_);
+                        log.error(" \n\nClonado: \n\n" + json);
+                        return json;
                     } catch (Exception ex) {
                         return throwError(response, ex);
                     }
