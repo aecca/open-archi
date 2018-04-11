@@ -61,7 +61,7 @@ public class Container extends StaticElement {
     }
 
     public void copyNonEmpty(Container source, boolean keepMeta) {
-        super.override(source, keepMeta);
+        super.copyNonEmpty(source, keepMeta);
         if (source.getTechnology() != null) {
             this.setTechnology(source.getTechnology());
         }

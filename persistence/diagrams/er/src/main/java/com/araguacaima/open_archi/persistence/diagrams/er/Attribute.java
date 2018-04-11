@@ -45,15 +45,15 @@ public class Attribute extends BaseEntity {
     }
 
 
-    public void override(Attribute source) {
-        super.override(source);
+    public void override(Attribute source, boolean keepMeta) {
+        super.override(source, keepMeta);
         this.setName(source.getName());
         this.setType(source.getType());
         this.setKey(source.isKey());
     }
 
-    public void copyNonEmpty(Attribute source) {
-        super.copyNonEmpty(source);
+    public void copyNonEmpty(Attribute source, boolean keepMeta) {
+        super.copyNonEmpty(source, keepMeta);
         if (source.getName() != null) {
             this.setName(source.getName());
         }

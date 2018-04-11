@@ -72,7 +72,7 @@ public class Relationship extends com.araguacaima.open_archi.persistence.diagram
     }
 
     public void copyNonEmpty(Relationship source, boolean keepMeta) {
-        super.override(source, keepMeta);
+        super.copyNonEmpty(source, keepMeta);
         if (source.getTechnology() != null) {
             this.technology = source.getTechnology();
         }

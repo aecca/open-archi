@@ -15,7 +15,7 @@ public class Activity extends Item {
     }
 
     public void copyNonEmpty(Activity source, boolean keepMeta) {
-        super.override(source, keepMeta);
+        super.copyNonEmpty(source, keepMeta);
     }
 
 }

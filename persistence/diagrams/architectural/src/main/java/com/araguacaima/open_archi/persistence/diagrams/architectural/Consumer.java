@@ -39,7 +39,7 @@ public class Consumer extends StaticElement {
     }
 
     public void copyNonEmpty(Consumer source, boolean keepMeta) {
-        super.override(source, keepMeta);
+        super.copyNonEmpty(source, keepMeta);
         if (source.getScope() != null) {
             this.setScope(source.getScope());
         }

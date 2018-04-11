@@ -47,14 +47,14 @@ public class Sequence extends Item {
         this.kind = kind;
     }
 
-    public void override(Sequence source) {
-        super.override(source);
+    public void override(Sequence source, boolean keepMeta) {
+        super.override(source, keepMeta);
         this.setStart(source.getStart());
         this.setDuration(source.getDuration());
     }
 
-    public void copyNonEmpty(Sequence source) {
-        super.copyNonEmpty(source);
+    public void copyNonEmpty(Sequence source, boolean keepMeta) {
+        super.copyNonEmpty(source, keepMeta);
         if (source.getStart() != 0) {
             this.setStart(source.getStart());
         }

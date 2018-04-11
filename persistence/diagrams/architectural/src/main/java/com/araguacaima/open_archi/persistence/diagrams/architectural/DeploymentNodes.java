@@ -67,7 +67,7 @@ public class DeploymentNodes extends Elements {
     }
 
     public void copyNonEmpty(DeploymentNodes source, boolean keepMeta) {
-        super.override(source, keepMeta);
+        super.copyNonEmpty(source, keepMeta);
         if (source.getInstances() != 0) {
             this.setInstances(source.getInstances());
         }

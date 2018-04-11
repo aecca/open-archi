@@ -42,13 +42,13 @@ public class Relationship extends com.araguacaima.open_archi.persistence.diagram
         this.kind = kind;
     }
 
-    public void override(Relationship source) {
-        super.override(source);
+    public void override(Relationship source, boolean keepMeta) {
+        super.override(source, keepMeta);
         this.type = source.getType();
     }
 
-    public void copyNonEmpty(Relationship source) {
-        super.copyNonEmpty(source);
+    public void copyNonEmpty(Relationship source, boolean keepMeta) {
+        super.copyNonEmpty(source, keepMeta);
         if (source.getType() != null) {
             this.type = source.getType();
         }

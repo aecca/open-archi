@@ -56,7 +56,7 @@ public class SoftwareSystems extends StaticElements {
     }
 
     public void copyNonEmpty(SoftwareSystems source, boolean keepMeta) {
-        super.override(source, keepMeta);
+        super.copyNonEmpty(source, keepMeta);
         if (source.getScope() != null) {
             this.setScope(source.getScope());
         }

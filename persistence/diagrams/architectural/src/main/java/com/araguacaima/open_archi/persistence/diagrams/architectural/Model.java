@@ -85,7 +85,7 @@ public class Model extends Element implements DiagramableElement<Model> {
 
     @Override
     public void copyNonEmpty(Model source, boolean keepMeta) {
-        super.override(source, keepMeta);
+        super.copyNonEmpty(source, keepMeta);
         if (source.getRelationships() != null && !source.getRelationships().isEmpty()) {
             this.relationships = source.getRelationships();
         }

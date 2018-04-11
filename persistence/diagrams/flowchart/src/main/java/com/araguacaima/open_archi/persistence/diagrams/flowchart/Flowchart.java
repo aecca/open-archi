@@ -36,13 +36,13 @@ public class Flowchart extends Item {
     }
 
 
-    public void override(Flowchart source) {
-        super.override(source);
+    public void override(Flowchart source, boolean keepMeta) {
+        super.override(source, keepMeta);
         this.setCategory(source.getCategory());
     }
 
-    public void copyNonEmpty(Flowchart source) {
-        super.copyNonEmpty(source);
+    public void copyNonEmpty(Flowchart source, boolean keepMeta) {
+        super.copyNonEmpty(source, keepMeta);
         if (source.getCategory() != null) {
             this.setCategory(source.getCategory());
         }

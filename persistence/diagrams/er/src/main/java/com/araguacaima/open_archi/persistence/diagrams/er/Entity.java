@@ -37,13 +37,13 @@ public class Entity extends Element {
         this.attributes = attributes;
     }
 
-    public void override(Entity source) {
-        super.override(source);
+    public void override(Entity source, boolean keepMeta) {
+        super.override(source, keepMeta);
         this.setAttributes(source.getAttributes());
     }
 
-    public void copyNonEmpty(Entity source) {
-        super.copyNonEmpty(source);
+    public void copyNonEmpty(Entity source, boolean keepMeta) {
+        super.copyNonEmpty(source, keepMeta);
         if (source.getAttributes() != null && !source.getAttributes().isEmpty()) {
             this.setAttributes(source.getAttributes());
         }

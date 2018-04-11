@@ -37,7 +37,7 @@ public class Pool extends Item {
     }
 
     public void copyNonEmpty(Pool source, boolean keepMeta) {
-        super.override(source, keepMeta);
+        super.copyNonEmpty(source, keepMeta);
         if (source.getLanes() != null && !source.getLanes().isEmpty()) {
             this.setLanes(source.getLanes());
         }

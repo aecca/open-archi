@@ -35,7 +35,7 @@ public class Lane extends BaseEntity {
     }
 
     public void copyNonEmpty(Lane source, boolean keepMeta) {
-        super.override(source, keepMeta);
+        super.copyNonEmpty(source, keepMeta);
         if (source.getActivities() != null && !source.getActivities().isEmpty()) {
             this.activities = source.getActivities();
         }

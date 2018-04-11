@@ -33,6 +33,6 @@ public abstract class StaticElements extends Elements {
     }
 
     public void copyNonEmpty(StaticElements source, boolean keepMeta) {
-        super.override(source, keepMeta);
+        super.copyNonEmpty(source, keepMeta);
     }
 }

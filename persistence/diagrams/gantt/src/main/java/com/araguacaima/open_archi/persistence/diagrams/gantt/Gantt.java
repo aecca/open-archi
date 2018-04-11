@@ -57,15 +57,15 @@ public class Gantt extends Item {
         this.kind = kind;
     }
 
-    public void override(Gantt source) {
-        super.override(source);
+    public void override(Gantt source, boolean keepMeta) {
+        super.override(source, keepMeta);
         this.setCategory(source.getCategory());
         this.setDiagramStart(source.getDiagramStart());
         this.setDiagramEnd(source.getDiagramEnd());
     }
 
-    public void copyNonEmpty(Gantt source) {
-        super.copyNonEmpty(source);
+    public void copyNonEmpty(Gantt source, boolean keepMeta) {
+        super.copyNonEmpty(source, keepMeta);
         if (source.getCategory() != null) {
             this.setCategory(source.getCategory());
         }
