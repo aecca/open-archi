@@ -1079,9 +1079,6 @@ public class Server {
                         response.status(HTTP_OK);
                         response.type(JSON_CONTENT_TYPE);
                         String json = jsonUtils.toJSON(clonedModel);
-                        String json_ = jsonUtils.toJSON(model);
-                        log.error("Original: \n\n" + json_);
-                        log.error(" \n\nClonado: \n\n" + json);
                         return json;
                     } catch (Exception ex) {
                         return throwError(response, ex);
