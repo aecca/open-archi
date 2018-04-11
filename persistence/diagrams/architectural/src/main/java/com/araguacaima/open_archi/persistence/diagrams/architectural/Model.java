@@ -79,22 +79,22 @@ public class Model extends Element implements DiagramableElement<Model> {
         super.override(source, keepMeta, suffix);
         for (Relationship relationship : source.getRelationships()) {
             Relationship newRelationship = new Relationship();
-            newRelationship.override(relationship, keepMeta);
+            newRelationship.override(relationship, keepMeta, suffix);
             this.relationships.add(newRelationship);
         }
         for (Consumer consumer : source.getConsumers()) {
             Consumer newConsumer = new Consumer();
-            newConsumer.override(consumer, keepMeta);
+            newConsumer.override(consumer, keepMeta, suffix);
             this.consumers.add(newConsumer);
         }
         for (SoftwareSystem softwareSystem : source.getSoftwareSystems()) {
             SoftwareSystem newSoftwareSystem = new SoftwareSystem();
-            newSoftwareSystem.override(softwareSystem, keepMeta);
+            newSoftwareSystem.override(softwareSystem, keepMeta, suffix);
             this.softwareSystems.add(newSoftwareSystem);
         }
         for (DeploymentNode deploymentNode : source.getDeploymentNodes()) {
             DeploymentNode newDeploymentNode = new DeploymentNode();
-            newDeploymentNode.override(deploymentNode, keepMeta);
+            newDeploymentNode.override(deploymentNode, keepMeta, suffix);
             this.deploymentNodes.add(newDeploymentNode);
         }
     }

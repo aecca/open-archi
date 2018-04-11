@@ -10,7 +10,7 @@ import javax.persistence.PersistenceUnit;
 public class Activity extends Item {
 
     //TODO Completar
-    public void override(Activity source, boolean keepMeta) {
+    public void override(Activity source, boolean keepMeta, String suffix) {
         super.override(source, keepMeta, suffix);
     }
 

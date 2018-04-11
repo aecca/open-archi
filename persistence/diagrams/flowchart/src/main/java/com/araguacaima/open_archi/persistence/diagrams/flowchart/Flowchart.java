@@ -36,7 +36,7 @@ public class Flowchart extends Item {
     }
 
 
-    public void override(Flowchart source, boolean keepMeta) {
+    public void override(Flowchart source, boolean keepMeta, String suffix) {
         super.override(source, keepMeta, suffix);
         this.setCategory(source.getCategory());
     }

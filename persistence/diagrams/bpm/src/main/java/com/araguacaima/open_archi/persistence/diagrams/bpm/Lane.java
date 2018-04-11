@@ -29,7 +29,7 @@ public class Lane extends BaseEntity {
         this.activities = activities;
     }
 
-    public void override(Lane source, boolean keepMeta) {
+    public void override(Lane source, boolean keepMeta, String suffix) {
         super.override(source, keepMeta, suffix);
         this.activities = source.getActivities();
     }

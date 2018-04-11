@@ -49,10 +49,14 @@ public class SoftwareSystems extends StaticElements {
         this.containers = containers;
     }
 
-    public void override(SoftwareSystems source, boolean keepMeta) {
+    public void override(SoftwareSystems source, boolean keepMeta, String suffix) {
         super.override(source, keepMeta, suffix);
         this.setScope(source.getScope());
-        this.setContainers(source.getContainers());
+        for (Containers container : source.getContainers()) {
+            Containers newContainer = new Containers();
+            newContainer.override(container, keepMeta, suffix);
+            this.containers.add(newContainer);
+        }
     }
 
     public void copyNonEmpty(SoftwareSystems source, boolean keepMeta) {
@@ -61,7 +65,11 @@ public class SoftwareSystems extends StaticElements {
             this.setScope(source.getScope());
         }
         if (source.getContainers() != null && !source.getContainers().isEmpty()) {
-            this.setContainers(source.getContainers());
+            for (Containers container : source.getContainers()) {
+                Containers newContainer = new Containers();
+                newContainer.copyNonEmpty(container, keepMeta);
+                this.containers.add(newContainer);
+            }
         }
     }
 }

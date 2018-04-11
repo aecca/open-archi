@@ -40,7 +40,7 @@ public class Relationship extends com.araguacaima.open_archi.persistence.diagram
         this.kind = kind;
     }
 
-    public void override(Relationship source, boolean keepMeta) {
+    public void override(Relationship source, boolean keepMeta, String suffix) {
         super.override(source, keepMeta, suffix);
         this.type = source.getType();
     }

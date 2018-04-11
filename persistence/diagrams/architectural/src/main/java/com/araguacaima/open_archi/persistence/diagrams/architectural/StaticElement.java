@@ -18,7 +18,7 @@ public abstract class StaticElement extends Element {
         setKind(ElementKind.COMPONENT);
     }
 
-    public void override(StaticElement source, boolean keepMeta) {
+    public void override(StaticElement source, boolean keepMeta, String suffix) {
         super.override(source, keepMeta, suffix);
     }
 

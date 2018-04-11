@@ -31,7 +31,7 @@ public class Pool extends Item {
         this.lanes = lanes;
     }
 
-    public void override(Pool source, boolean keepMeta) {
+    public void override(Pool source, boolean keepMeta, String suffix) {
         super.override(source, keepMeta, suffix);
         this.setLanes(source.getLanes());
     }

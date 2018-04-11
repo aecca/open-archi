@@ -102,27 +102,59 @@ public class Models extends Elements {
         this.relationships = relationships;
     }
 
-    public void override(Models source, boolean keepMeta) {
+    public void override(Models source, boolean keepMeta, String suffix) {
         super.override(source, keepMeta, suffix);
-        this.relationships = source.getRelationships();
-        this.consumers = source.getConsumers();
-        this.softwareSystems = source.getSoftwareSystems();
-        this.deploymentNodes = source.getDeploymentNodes();
+        for (Relationships relationship : source.getRelationships()) {
+            Relationships newRelationship = new Relationships();
+            newRelationship.override(relationship, keepMeta, suffix);
+            this.relationships.add(newRelationship);
+        }
+        for (Consumers consumer : source.getConsumers()) {
+            Consumers newConsumer = new Consumers();
+            newConsumer.override(consumer, keepMeta, suffix);
+            this.consumers.add(newConsumer);
+        }
+        for (SoftwareSystems softwareSystem : source.getSoftwareSystems()) {
+            SoftwareSystems newSoftwareSystem = new SoftwareSystems();
+            newSoftwareSystem.override(softwareSystem, keepMeta, suffix);
+            this.softwareSystems.add(newSoftwareSystem);
+        }
+        for (DeploymentNodes deploymentNode : source.getDeploymentNodes()) {
+            DeploymentNodes newDeploymentNode = new DeploymentNodes();
+            newDeploymentNode.override(deploymentNode, keepMeta, suffix);
+            this.deploymentNodes.add(newDeploymentNode);
+        }
     }
 
     public void copyNonEmpty(Models source, boolean keepMeta) {
         super.copyNonEmpty(source, keepMeta);
         if (source.getRelationships() != null && !source.getRelationships().isEmpty()) {
-            this.relationships = source.getRelationships();
+            for (Relationships relationship : source.getRelationships()) {
+                Relationships newRelationship = new Relationships();
+                newRelationship.copyNonEmpty(relationship, keepMeta);
+                this.relationships.add(newRelationship);
+            }
         }
         if (source.getConsumers() != null && !source.getConsumers().isEmpty()) {
-            this.consumers = source.getConsumers();
+            for (Consumers consumer : source.getConsumers()) {
+                Consumers newConsumer = new Consumers();
+                newConsumer.copyNonEmpty(consumer, keepMeta);
+                this.consumers.add(newConsumer);
+            }
         }
         if (source.getSoftwareSystems() != null && !source.getSoftwareSystems().isEmpty()) {
-            this.softwareSystems = source.getSoftwareSystems();
+            for (SoftwareSystems softwareSystem : source.getSoftwareSystems()) {
+                SoftwareSystems newSoftwareSystem = new SoftwareSystems();
+                newSoftwareSystem.copyNonEmpty(softwareSystem, keepMeta);
+                this.softwareSystems.add(newSoftwareSystem);
+            }
         }
         if (source.getDeploymentNodes() != null && !source.getDeploymentNodes().isEmpty()) {
-            this.deploymentNodes = source.getDeploymentNodes();
+            for (DeploymentNodes deploymentNode : source.getDeploymentNodes()) {
+                DeploymentNodes newDeploymentNode = new DeploymentNodes();
+                newDeploymentNode.copyNonEmpty(deploymentNode, keepMeta);
+                this.deploymentNodes.add(newDeploymentNode);
+            }
         }
     }
 }

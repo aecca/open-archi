@@ -4,8 +4,6 @@ import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 import com.araguacaima.open_archi.persistence.diagrams.core.Elements;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * <p>
@@ -60,7 +58,7 @@ public class DeploymentNodes extends Elements {
         this.kind = kind;
     }
 
-    public void override(DeploymentNodes source, boolean keepMeta) {
+    public void override(DeploymentNodes source, boolean keepMeta, String suffix) {
         super.override(source, keepMeta, suffix);
         this.setInstances(source.getInstances());
         this.setTechnology(source.getTechnology());

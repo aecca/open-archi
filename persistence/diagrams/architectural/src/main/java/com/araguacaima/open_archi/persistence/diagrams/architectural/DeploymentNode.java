@@ -77,13 +77,13 @@ public class DeploymentNode extends Element {
         this.containerInstances = containerInstances;
     }
 
-    public void override(DeploymentNode source, boolean keepMeta) {
+    public void override(DeploymentNode source, boolean keepMeta, String suffix) {
         super.override(source, keepMeta, suffix);
         this.setInstances(source.getInstances());
         this.setTechnology(source.getTechnology());
         for (ContainerInstance container: source.getContainerInstances()) {
             ContainerInstance newContainerInstance = new ContainerInstance();
-            newContainerInstance.override(container, keepMeta);
+            newContainerInstance.override(container, keepMeta, suffix);
             this.containerInstances.add(newContainerInstance);
         }
     }

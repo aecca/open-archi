@@ -47,7 +47,7 @@ public class Sequence extends Item {
         this.kind = kind;
     }
 
-    public void override(Sequence source, boolean keepMeta) {
+    public void override(Sequence source, boolean keepMeta, String suffix) {
         super.override(source, keepMeta, suffix);
         this.setStart(source.getStart());
         this.setDuration(source.getDuration());

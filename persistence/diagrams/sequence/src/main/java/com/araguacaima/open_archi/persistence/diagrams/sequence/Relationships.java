@@ -38,7 +38,7 @@ public class Relationships extends com.araguacaima.open_archi.persistence.diagra
         this.time = time;
     }
 
-    public void override(Relationships source, boolean keepMeta) {
+    public void override(Relationships source, boolean keepMeta, String suffix) {
         super.override(source, keepMeta, suffix);
         this.type = source.getType();
         this.time = source.getTime();

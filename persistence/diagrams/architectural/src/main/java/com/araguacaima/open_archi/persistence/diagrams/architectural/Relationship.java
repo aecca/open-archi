@@ -1,6 +1,5 @@
 package com.araguacaima.open_archi.persistence.diagrams.architectural;
 
-import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 import com.araguacaima.open_archi.persistence.diagrams.core.RelationshipKind;
 import com.araguacaima.open_archi.persistence.diagrams.core.RelationshipType;
 
@@ -64,7 +63,7 @@ public class Relationship extends com.araguacaima.open_archi.persistence.diagram
         this.kind = kind;
     }
 
-    public void override(Relationship source, boolean keepMeta) {
+    public void override(Relationship source, boolean keepMeta, String suffix) {
         super.override(source, keepMeta, suffix);
         this.technology = source.getTechnology();
         this.interactionStyle = source.getInteractionStyle();
