@@ -1061,10 +1061,11 @@ public class Server {
                         }
                         Object clonedModel = model.getClass().newInstance();
                         if (DiagramableElement.class.isAssignableFrom(clonedModel.getClass()) || BaseEntity.class.isAssignableFrom(clonedModel.getClass())) {
-                            ((BaseEntity) clonedModel).override(model, false, suffix);
-
-                            reflectionUtils.invokeMethod()
-
+                            Object[] overrideArgs = new Object[3];
+                            overrideArgs[0] = model;
+                            overrideArgs[1] = false;
+                            overrideArgs[2] = suffix;
+                            reflectionUtils.invokeMethod(clonedModel, "override", overrideArgs);
                         } else {
                             throw new Exception("Invalid model");
                         }
@@ -1082,8 +1083,7 @@ public class Server {
                         clonedModelItem.setName(name);
                         response.status(HTTP_OK);
                         response.type(JSON_CONTENT_TYPE);
-                        String json = jsonUtils.toJSON(clonedModel);
-                        return json;
+                        return jsonUtils.toJSON(clonedModel);
                     } catch (Exception ex) {
                         return throwError(response, ex);
                     }

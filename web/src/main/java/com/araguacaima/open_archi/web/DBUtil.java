@@ -64,7 +64,7 @@ public class DBUtil {
                 int next = new Random().nextInt((4 - 1) + 1) + 1;
                 for (int i = 0; i < next; i++) {
                     BaseEntity entity = enhancedRandom.nextObject(clazz);
-                    process(entity, clazz);
+                    populate(entity, clazz);
                 }
             }
         } catch (Throwable ignored) {
@@ -82,11 +82,11 @@ public class DBUtil {
     public static void populate(BaseEntity entity, boolean flatten) throws Throwable {
         JPAEntityManagerUtils.begin();
         if (flatten) {
-            flatten(entity);
+            flattenForPopulation(entity);
         }
         try {
             Class clazz = entity.getClass();
-            process(entity, clazz);
+            populate(entity, clazz);
         } catch (Throwable t) {
             JPAEntityManagerUtils.rollback();
             throw t;
@@ -95,11 +95,11 @@ public class DBUtil {
         }
     }
 
-    private static void process(BaseEntity entity, Class clazz) {
+    private static void populate(BaseEntity entity, Class clazz) {
         ReflectionUtils.doWithFields(clazz, field -> {
             field.setAccessible(true);
             Object object_ = field.get(entity);
-            Object result = process(field.getType(), object_);
+            Object result = populate(field.getType(), object_);
             field.set(entity, result);
         }, Utils::filterMethod);
         JPAEntityManagerUtils.persist(entity);
@@ -109,7 +109,7 @@ public class DBUtil {
         ReflectionUtils.doWithFields(entity.getClass(), field -> {
             field.setAccessible(true);
             Object object_ = field.get(entity);
-            Object result = process(field.getType(), object_);
+            Object result = populate(field.getType(), object_);
             field.set(entity, result);
         }, Utils::filterMethod);
         try {
@@ -137,7 +137,7 @@ public class DBUtil {
     }
 
 
-    private static Object process(Class<?> type, Object object_) {
+    private static Object populate(Class<?> type, Object object_) {
         if (object_ != null) {
             if (ReflectionUtils.isCollectionImplementation(type)) {
                 Collection<Object> valuesToRemove = new ArrayList<>();
@@ -189,16 +189,16 @@ public class DBUtil {
         }
     }
 
-    public static void flatten(Object entity) throws Throwable {
+    public static void flattenForPopulation(Object entity) throws Throwable {
         Class clazz = entity.getClass();
-        processFlatten(entity, clazz);
+        flattenForPopulation(entity, clazz);
     }
 
-    private static void processFlatten(Object entity, Class clazz) {
+    private static void flattenForPopulation(Object entity, Class clazz) {
         ReflectionUtils.doWithFields(clazz, field -> {
             field.setAccessible(true);
             Object object_ = field.get(entity);
-            Object result = processFlatten(field.getType(), object_);
+            Object result = flattenForPopulation(field.getType(), object_);
             field.set(entity, result);
         }, Utils::filterMethod);
     }
@@ -207,7 +207,7 @@ public class DBUtil {
         ReflectionUtils.doWithFields(entity.getClass(), field -> {
             field.setAccessible(true);
             Object object_ = field.get(entity);
-            Object result = processFlatten(field.getType(), object_);
+            Object result = flattenForPopulation(field.getType(), object_);
             field.set(entity, result);
         }, Utils::filterMethod);
         try {
@@ -229,7 +229,7 @@ public class DBUtil {
         return entity;
     }
 
-    private static Object processFlatten(Class<?> type, Object object_) {
+    private static Object flattenForPopulation(Class<?> type, Object object_) {
         if (object_ != null) {
             if (ReflectionUtils.isCollectionImplementation(type)) {
                 Collection<Object> valuesToRemove = new ArrayList<>();
@@ -325,8 +325,9 @@ public class DBUtil {
         }
     }
 
-    public static void delete(Class<?> clazz, String key) {
-        JPAEntityManagerUtils.delete(clazz, key);
+    public static void delete(Class<?> clazz, String key) throws Throwable {
+        Object entity = JPAEntityManagerUtils.find(clazz, (Object) key);
+        JPAEntityManagerUtils.delete(entity);
     }
 
 }

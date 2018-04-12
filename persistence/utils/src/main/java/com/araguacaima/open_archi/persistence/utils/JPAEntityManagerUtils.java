@@ -95,6 +95,17 @@ public class JPAEntityManagerUtils {
         entityManager.persist(entity);
     }
 
+    public static void delete(Object entity) {
+        begin();
+        try {
+            entityManager.remove(entity);
+            flush();
+            commit();
+        } catch (Throwable t) {
+            log.error(t.getMessage());
+            rollback();
+        }
+    }
 
     public static void delete(Class<?> clazz, String key) {
         begin();

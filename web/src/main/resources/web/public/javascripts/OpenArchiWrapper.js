@@ -8,8 +8,7 @@ function fulfill(item, isGroup, group, rank) {
     return item;
 }
 
-function diagramToArchitectureModel(model, node, links) {
-
+function commonShape(model, node) {
     if (node) {
         let shape = {
             type: node.category,
@@ -27,26 +26,54 @@ function diagramToArchitectureModel(model, node, links) {
             };
         }
         model.shape = shape;
+    }
+    return model;
+}
+
+function commonDiagram(model, node) {
+    let object = {};
+    object.meta = node.meta;
+    object.status = node.status | "INITIAL";
+    object.name = node.name;
+    object.kind = node.kind;
+    object.description = node.description;
+    object.prototype = node.prototype;
+    object.location = {};
+    let loc = node.loc;
+    if (loc) {
+        object.location.x = loc.split(" ")[0];
+        object.location.y = loc.split(" ")[1];
+    }
+    object.shape = model.shape;
+    return object;
+}
+function diagramToArchitectureModel(model, node, links) {
+    if (node) {
+        model = commonShape(model, node);
         if (node.kind === "SOFTWARE_SYSTEM") {
-            let softwareSystem = {};
-            softwareSystem.meta = node.meta;
-            softwareSystem.status = node.status | "INITIAL";
-            softwareSystem.name = node.name;
-            softwareSystem.kind = node.kind;
-            softwareSystem.description = node.description;
-            softwareSystem.prototype = node.prototype;
-            softwareSystem.location = {};
-            let loc = node.loc;
-            if (loc) {
-                softwareSystem.location.x = loc.split(" ")[0];
-                softwareSystem.location.y = loc.split(" ")[1];
-            }
-            softwareSystem.shape = shape;
+            let softwareSystem = commonDiagram(model, node);
             if (!model.softwareSystems) {
                 model.softwareSystems = [];
             }
-
+            if (node.containers && commons.prototype.isEmpty(node.containers)) {
+                softwareSystem.containers = [];
+                node.containers.forEach(function (container) {
+                    diagramToArchitectureModel(softwareSystem, container, links)
+                });
+            }
             model.softwareSystems.push(softwareSystem);
+        } else if (node.kind === "CONTAINER") {
+            let container = commonDiagram(model, node);
+            if (!model.containers) {
+                model.containers = [];
+            }
+            if (node.components && commons.prototype.isEmpty(node.components)) {
+                container.components = [];
+                node.components.forEach(function (component) {
+                    diagramToArchitectureModel(container, component, links)
+                });
+            }
+            model.containers.push(container);
         }
     }
     return model;
@@ -253,7 +280,6 @@ class OpenArchiWrapper {
         model.kind = meta.kind;
         model.description = meta.description;
         model.prototype = meta.prototype;
-        model.softwareSystems = [];
         if (!commons.prototype.isEmpty(nodes)) {
             nodes.forEach(function (node) {
                 switch (model.kind) {
