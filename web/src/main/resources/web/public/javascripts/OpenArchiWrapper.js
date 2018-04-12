@@ -1,3 +1,5 @@
+let alreadyProcessedNodes;
+
 function fulfill(item, isGroup, group, rank) {
     item.key = item.id;
     item.isGroup = isGroup;
@@ -8,7 +10,7 @@ function fulfill(item, isGroup, group, rank) {
     return item;
 }
 
-function commonShape(model, node) {
+function fillShape(model, node) {
     if (node) {
         let shape = {
             type: node.category,
@@ -30,8 +32,9 @@ function commonShape(model, node) {
     return model;
 }
 
-function commonDiagram(model, node) {
+function commonInnerDiagramElement(model, node) {
     let object = {};
+    object.id = node.id;
     object.meta = node.meta;
     object.status = node.status | "INITIAL";
     object.name = node.name;
@@ -44,36 +47,47 @@ function commonDiagram(model, node) {
         object.location.x = loc.split(" ")[0];
         object.location.y = loc.split(" ")[1];
     }
-    object.shape = model.shape;
+    object =  fillShape(object, node);
     return object;
 }
 function diagramToArchitectureModel(model, node, links) {
     if (node) {
-        model = commonShape(model, node);
         if (node.kind === "SOFTWARE_SYSTEM") {
-            let softwareSystem = commonDiagram(model, node);
+            let softwareSystem = commonInnerDiagramElement(model, node);
             if (!model.softwareSystems) {
                 model.softwareSystems = [];
             }
-            if (node.containers && commons.prototype.isEmpty(node.containers)) {
+            if (node.containers && !commons.prototype.isEmpty(node.containers)) {
                 softwareSystem.containers = [];
                 node.containers.forEach(function (container) {
                     diagramToArchitectureModel(softwareSystem, container, links)
                 });
             }
+            //TODO Añadir campor propios del softwareSystem
             model.softwareSystems.push(softwareSystem);
+            alreadyProcessedNodes.push(softwareSystem.id);
         } else if (node.kind === "CONTAINER") {
-            let container = commonDiagram(model, node);
+            let container = commonInnerDiagramElement(model, node);
             if (!model.containers) {
                 model.containers = [];
             }
-            if (node.components && commons.prototype.isEmpty(node.components)) {
+            if (node.components && !commons.prototype.isEmpty(node.components)) {
                 container.components = [];
                 node.components.forEach(function (component) {
                     diagramToArchitectureModel(container, component, links)
                 });
             }
+            //TODO Añadir campor propios del container
             model.containers.push(container);
+            alreadyProcessedNodes.push(container.id);
+        } else if (node.kind === "COMPONENT") {
+            let component = commonInnerDiagramElement(model, node);
+            if (!model.components) {
+                model.components = [];
+            }
+            //TODO Añadir campor propios del component
+            model.components.push(component);
+            alreadyProcessedNodes.push(component.id);
         }
     }
     return model;
@@ -280,36 +294,39 @@ class OpenArchiWrapper {
         model.kind = meta.kind;
         model.description = meta.description;
         model.prototype = meta.prototype;
+        alreadyProcessedNodes = [];
         if (!commons.prototype.isEmpty(nodes)) {
             nodes.forEach(function (node) {
-                switch (model.kind) {
-                    case "FLOWCHART_MODEL":
-                        model = diagramToFlowchartModel(model, node, links);
-                        break;
-                    case "SEQUENCE_MODEL":
-                        model = diagramToSequenceModel(model, node, links);
-                        break;
-                    case "GANTT_MODEL":
-                        model = diagramToGanttModel(model, node, links);
-                        break;
-                    case "ENTITY_RELATIONSHIP_MODEL":
-                        model = diagramToEntityRelationshipModel(model, node, links);
-                        break;
-                    case "UML_CLASS_MODEL":
-                        model = diagramToUmlModel(model, node, links);
-                        break;
-                    case "BPM_MODEL":
-                        model = diagramToBpmModel(model, node, links);
-                        break;
-                    case "ARCHITECTURE_MODEL":
-                        model = diagramToArchitectureModel(model, node, links);
-                        break;
-                    default:
-                        console.log("Still not implemented");
+                if (!alreadyProcessedNodes.includes(node.id)) {
+                    model = fillShape(model, node);
+                    switch (model.kind) {
+                        case "FLOWCHART_MODEL":
+                            model = diagramToFlowchartModel(model, node, links);
+                            break;
+                        case "SEQUENCE_MODEL":
+                            model = diagramToSequenceModel(model, node, links);
+                            break;
+                        case "GANTT_MODEL":
+                            model = diagramToGanttModel(model, node, links);
+                            break;
+                        case "ENTITY_RELATIONSHIP_MODEL":
+                            model = diagramToEntityRelationshipModel(model, node, links);
+                            break;
+                        case "UML_CLASS_MODEL":
+                            model = diagramToUmlModel(model, node, links);
+                            break;
+                        case "BPM_MODEL":
+                            model = diagramToBpmModel(model, node, links);
+                            break;
+                        case "ARCHITECTURE_MODEL":
+                            model = diagramToArchitectureModel(model, node, links);
+                            break;
+                        default:
+                            console.log("Still not implemented");
+                    }
                 }
             })
         }
-
         return model;
     };
 

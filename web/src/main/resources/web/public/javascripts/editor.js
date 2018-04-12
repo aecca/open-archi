@@ -140,7 +140,7 @@ function makeButton(text, action, visiblePredicate) {
 // Show the diagram's model in JSON format that the user may edit
 function save() {
     let value_ = OpenArchiWrapper.fromDiagram(myDiagram.model);
-    value = JSON.stringify(value_);
+    let value = JSON.stringify(value_);
     let modelToSaveOrLoad = $("#modelToSaveOrLoad");
     modelToSaveOrLoad.empty();
     modelToSaveOrLoad.jsonView(value);
