@@ -42,7 +42,7 @@ function initSwimBands() {
 
     const $ = go.GraphObject.make;
 
-    myDiagram = $(go.Diagram, diagramDiv,
+    myDiagram = gojs(go.Diagram, "diagramDiv",
         {
             initialContentAlignment: go.Spot.Center,
             layout: $(BandedTreeLayout,  // custom layout is defined above
@@ -54,10 +54,10 @@ function initSwimBands() {
         });
 
     myDiagram.nodeTemplate =
-        $(go.Node, go.Panel.Auto,
-            $(go.Shape, "Rectangle",
+        gojs(go.Node, go.Panel.Auto,
+            gojs(go.Shape, "Rectangle",
                 {fill: "white"}),
-            $(go.TextBlock, {margin: 5},
+            gojs(go.TextBlock, {margin: 5},
                 new go.Binding("text", "key")));
 
     // There should be at most a single object of this category.
@@ -68,7 +68,7 @@ function initSwimBands() {
     // of showing separator lines between the layers, but not both at the same time,
     // by commenting in/out the indicated code.
     myDiagram.nodeTemplateMap.add("Bands",
-        $(go.Part, "Position",
+        gojs(go.Part, "Position",
             new go.Binding("itemArray"),
             {
                 isLayoutPositioned: false,  // but still in document bounds
@@ -77,17 +77,17 @@ function initSwimBands() {
                 pickable: false,
                 selectable: false,
                 itemTemplate:
-                    $(go.Panel, HORIZONTAL ? "Vertical" : "Horizontal",
+                    gojs(go.Panel, HORIZONTAL ? "Vertical" : "Horizontal",
                         new go.Binding("position", "bounds", function (b) {
                             return b.position;
                         }),
-                        $(go.TextBlock,
+                        gojs(go.TextBlock,
                             {
                                 angle: HORIZONTAL ? 0 : 270,
                                 textAlign: "center",
                                 wrap: go.TextBlock.None,
                                 font: "bold 11pt sans-serif",
-                                background: $(go.Brush, "Linear", {0: "aqua", 1: go.Brush.darken("aqua")})
+                                background: gojs(go.Brush, "Linear", {0: "aqua", 1: go.Brush.darken("aqua")})
                             },
                             new go.Binding("text"),
                             // always bind "width" because the angle does the rotation
@@ -96,7 +96,7 @@ function initSwimBands() {
                             })
                         ),
                         // option 1: rectangular bands:
-                        $(go.Shape,
+                        gojs(go.Shape,
                             {stroke: null, strokeWidth: 0},
                             new go.Binding("desiredSize", "bounds", function (r) {
                                 return r.size;
@@ -106,11 +106,11 @@ function initSwimBands() {
                             }).ofObject())
                         // option 2: separator lines:
                         //(HORIZONTAL
-                        //  ? $(go.Shape, "LineV",
+                        //  ? gojs(go.Shape, "LineV",
                         //      { stroke: "gray", alignment: go.Spot.TopLeft, width: 1 },
                         //      new go.Binding("height", "bounds", function(r) { return r.height; }),
                         //      new go.Binding("visible", "itemIndex", function(i) { return i > 0; }).ofObject())
-                        //  : $(go.Shape, "LineH",
+                        //  : gojs(go.Shape, "LineH",
                         //      { stroke: "gray", alignment: go.Spot.TopLeft, height: 1 },
                         //      new go.Binding("width", "bounds", function(r) { return r.width; }),
                         //      new go.Binding("visible", "itemIndex", function(i) { return i > 0; }).ofObject())
@@ -120,8 +120,8 @@ function initSwimBands() {
         ));
 
     myDiagram.linkTemplate =
-        $(go.Link,
-            $(go.Shape));  // simple black line, no arrowhead needed
+        gojs(go.Link,
+            gojs(go.Shape));  // simple black line, no arrowhead needed
 
     // define the tree node data
     const nodearray = [

@@ -3,7 +3,7 @@ function initSequenceDiagram() {
     const $ = go.GraphObject.make;
 
     myDiagram =
-        $(go.Diagram, diagramDiv, // must be the ID or reference to an HTML DIV
+        gojs(go.Diagram, "diagramDiv", // must be the ID or reference to an HTML DIV
             {
                 initialContentAlignment: go.Spot.Center,
                 allowCopy: false,
@@ -31,7 +31,7 @@ function initSequenceDiagram() {
 
     // define the Lifeline Node template.
     myDiagram.groupTemplate =
-        $(go.Group, "Vertical",
+        gojs(go.Group, "Vertical",
             {
                 locationSpot: go.Spot.Bottom,
                 locationObjectName: "HEADER",
@@ -40,21 +40,21 @@ function initSequenceDiagram() {
                 selectionObjectName: "HEADER"
             },
             new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
-            $(go.Panel, "Auto",
+            gojs(go.Panel, "Auto",
                 {name: "HEADER"},
-                $(go.Shape, "Rectangle",
+                gojs(go.Shape, "Rectangle",
                     {
-                        fill: $(go.Brush, "Linear", {0: "#bbdefb", 1: go.Brush.darkenBy("#bbdefb", 0.1)}),
+                        fill: gojs(go.Brush, "Linear", {0: "#bbdefb", 1: go.Brush.darkenBy("#bbdefb", 0.1)}),
                         stroke: null
                     }),
-                $(go.TextBlock,
+                gojs(go.TextBlock,
                     {
                         margin: 5,
                         font: "400 10pt Source Sans Pro, sans-serif"
                     },
                     new go.Binding("text", "text"))
             ),
-            $(go.Shape,
+            gojs(go.Shape,
                 {
                     figure: "LineV",
                     fill: null,
@@ -74,7 +74,7 @@ function initSequenceDiagram() {
 
     // define the Activity Node template
     myDiagram.nodeTemplate =
-        $(go.Node,
+        gojs(go.Node,
             {
                 locationSpot: go.Spot.Top,
                 locationObjectName: "SHAPE",
@@ -84,9 +84,9 @@ function initSequenceDiagram() {
                 resizable: true,
                 resizeObjectName: "SHAPE",
                 resizeAdornmentTemplate:
-                    $(go.Adornment, "Spot",
-                        $(go.Placeholder),
-                        $(go.Shape,  // only a bottom resize handle
+                    gojs(go.Adornment, "Spot",
+                        gojs(go.Placeholder),
+                        gojs(go.Shape,  // only a bottom resize handle
                             {
                                 alignment: go.Spot.Bottom, cursor: "col-resize",
                                 desiredSize: new go.Size(6, 6), fill: "yellow"
@@ -94,7 +94,7 @@ function initSequenceDiagram() {
                     )
             },
             new go.Binding("location", "", computeActivityLocation).makeTwoWay(backComputeActivityLocation),
-            $(go.Shape, "Rectangle",
+            gojs(go.Shape, "Rectangle",
                 {
                     name: "SHAPE",
                     fill: "white", stroke: "black",
@@ -109,11 +109,11 @@ function initSequenceDiagram() {
     myDiagram.linkTemplate =
         $(MessageLink,  // defined below
             {selectionAdorned: true, curviness: 0},
-            $(go.Shape, "Rectangle",
+            gojs(go.Shape, "Rectangle",
                 {stroke: "black"}),
-            $(go.Shape,
+            gojs(go.Shape,
                 {toArrow: "OpenTriangle", stroke: "black"}),
-            $(go.TextBlock,
+            gojs(go.TextBlock,
                 {
                     font: "400 9pt Source Sans Pro, sans-serif",
                     segmentIndex: 0,
@@ -269,9 +269,9 @@ function MessagingTool() {
     const $ = go.GraphObject.make;
     this.temporaryLink =
         $(MessageLink,
-            $(go.Shape, "Rectangle",
+            gojs(go.Shape, "Rectangle",
                 {stroke: "magenta", strokeWidth: 2}),
-            $(go.Shape,
+            gojs(go.Shape,
                 {toArrow: "OpenTriangle", stroke: "magenta"}));
 };
 go.Diagram.inherit(MessagingTool, go.LinkingTool);

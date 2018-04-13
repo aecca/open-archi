@@ -1254,6 +1254,29 @@ public class Server {
                     List diagramNamesList = getListIdName(diagramNames);
                     return getList(request, response, diagramNamesList);
                 });
+                post("/catalogs/element-roles", (request, response) -> {
+                    try {
+                        String body = request.body();
+                        ElementRole model;
+                        try {
+                            model = jsonUtils.fromJSON(body, ElementRole.class);
+                        } catch(Throwable ignored) {
+                            throw new Exception("Invalid element role of '" + body + "'");
+                        }
+                        DBUtil.populate(model, false);
+                        response.status(HTTP_OK);
+                        response.type(JSON_CONTENT_TYPE);
+                        response.header("Location", request.pathInfo() + "/" + model.getId());
+                        return EMPTY_RESPONSE;
+                    } catch (Throwable ex) {
+                        return throwError(response, ex);
+                    }
+                });
+                get("/catalogs/element-roles", (request, response) -> {
+                    String roleNames = (String) getList(request, response, ElementRole.GET_ALL_ROLES, null, ElementRole.class);
+                    List diagramNamesList = getListIdName(roleNames);
+                    return getList(request, response, diagramNamesList);
+                });
                 get("/consumers", (request, response) -> getList(request, response, Item.GET_ALL_CONSUMERS, null, null));
                 post("/consumers", (request, response) -> {
                     try {
@@ -1531,13 +1554,17 @@ public class Server {
             String className = map.get("clazz");
             Class<?> clazz;
             try {
-                clazz = Class.forName(className);
-                boolean assignableFrom = DiagramableElement.class.isAssignableFrom(clazz);
-                if (assignableFrom) {
-                    map.put("type", ((DiagramableElement) clazz.newInstance()).getKind().name());
-                    map.remove("clazz");
+                if (StringUtils.isNotBlank(className)) {
+                    clazz = Class.forName(className);
+                    boolean assignableFrom = DiagramableElement.class.isAssignableFrom(clazz);
+                    if (assignableFrom) {
+                        map.put("type", ((DiagramableElement) clazz.newInstance()).getKind().name());
+                        map.remove("clazz");
+                    }
+                    return assignableFrom;
+                } else {
+                    return true;
                 }
-                return assignableFrom;
             } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
                 e.printStackTrace();
             }

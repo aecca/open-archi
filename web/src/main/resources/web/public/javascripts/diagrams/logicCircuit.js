@@ -3,10 +3,13 @@ green = "forestgreen";  // 1 or true
 
 function initLogicCircuit() {
 
-    const $ = go.GraphObject.make;  // for conciseness in defining templates
+    if (myDiagram !== undefined) {
+        myDiagram.clear();
+        myDiagram.div = null;
+    }
 
     myDiagram =
-        $(go.Diagram, diagramDiv,  // create a new Diagram in the HTML DIV element diagramDiv
+        gojs(go.Diagram, "diagramDiv",  // create a new Diagram in the HTML DIV element diagramDiv
             {
                 initialContentAlignment: go.Spot.Center,
                 allowDrop: true,  // Nodes from the Palette can be dropped into the Diagram
@@ -30,7 +33,7 @@ function initLogicCircuit() {
 
     // creates relinkable Links that will avoid crossing Nodes when possible and will jump over other Links in their paths
     myDiagram.linkTemplate =
-        $(go.Link,
+        gojs(go.Link,
             {
                 routing: go.Link.AvoidsNodes,
                 curve: go.Link.JumpOver,
@@ -40,14 +43,14 @@ function initLogicCircuit() {
                 shadowOffset: new go.Point(0, 0), shadowBlur: 5, shadowColor: "blue",
             },
             new go.Binding("isShadowed", "isSelected").ofObject(),
-            $(go.Shape,
+            gojs(go.Shape,
                 {name: "SHAPE", strokeWidth: 2, stroke: red}));
 
     // node template helpers
     const sharedToolTip =
-        $(go.Adornment, "Auto",
-            $(go.Shape, "RoundedRectangle", {fill: "lightyellow"}),
-            $(go.TextBlock, {margin: 2},
+        gojs(go.Adornment, "Auto",
+            gojs(go.Shape, "RoundedRectangle", {fill: "lightyellow"}),
+            gojs(go.TextBlock, {margin: 2},
                 new go.Binding("text", "", function (d) {
                     return d.category;
                 })));
@@ -90,10 +93,10 @@ function initLogicCircuit() {
 
     // define templates for each type of node
     const inputTemplate =
-        $(go.Node, "Spot", nodeStyle(),
-            $(go.Shape, "Circle", shapeStyle(),
+        gojs(go.Node, "Spot", nodeStyle(),
+            gojs(go.Shape, "Circle", shapeStyle(),
                 {fill: red}),  // override the default fill (from shapeStyle()) to be red
-            $(go.Shape, "Rectangle", portStyle(false),  // the only port
+            gojs(go.Shape, "Rectangle", portStyle(false),  // the only port
                 {portId: "", alignment: new go.Spot(1, 0.5)}),
             { // if double-clicked, an input node will change its value, represented by the color.
                 doubleClick: function (e, obj) {
@@ -107,85 +110,85 @@ function initLogicCircuit() {
         );
 
     const outputTemplate =
-        $(go.Node, "Spot", nodeStyle(),
-            $(go.Shape, "Rectangle", shapeStyle(),
+        gojs(go.Node, "Spot", nodeStyle(),
+            gojs(go.Shape, "Rectangle", shapeStyle(),
                 {fill: green}),  // override the default fill (from shapeStyle()) to be green
-            $(go.Shape, "Rectangle", portStyle(true),  // the only port
+            gojs(go.Shape, "Rectangle", portStyle(true),  // the only port
                 {portId: "", alignment: new go.Spot(0, 0.5)})
         );
 
     const andTemplate =
-        $(go.Node, "Spot", nodeStyle(),
-            $(go.Shape, "AndGate", shapeStyle()),
-            $(go.Shape, "Rectangle", portStyle(true),
+        gojs(go.Node, "Spot", nodeStyle(),
+            gojs(go.Shape, "AndGate", shapeStyle()),
+            gojs(go.Shape, "Rectangle", portStyle(true),
                 {portId: "in1", alignment: new go.Spot(0, 0.3)}),
-            $(go.Shape, "Rectangle", portStyle(true),
+            gojs(go.Shape, "Rectangle", portStyle(true),
                 {portId: "in2", alignment: new go.Spot(0, 0.7)}),
-            $(go.Shape, "Rectangle", portStyle(false),
+            gojs(go.Shape, "Rectangle", portStyle(false),
                 {portId: "out", alignment: new go.Spot(1, 0.5)})
         );
 
     const orTemplate =
-        $(go.Node, "Spot", nodeStyle(),
-            $(go.Shape, "OrGate", shapeStyle()),
-            $(go.Shape, "Rectangle", portStyle(true),
+        gojs(go.Node, "Spot", nodeStyle(),
+            gojs(go.Shape, "OrGate", shapeStyle()),
+            gojs(go.Shape, "Rectangle", portStyle(true),
                 {portId: "in1", alignment: new go.Spot(0.16, 0.3)}),
-            $(go.Shape, "Rectangle", portStyle(true),
+            gojs(go.Shape, "Rectangle", portStyle(true),
                 {portId: "in2", alignment: new go.Spot(0.16, 0.7)}),
-            $(go.Shape, "Rectangle", portStyle(false),
+            gojs(go.Shape, "Rectangle", portStyle(false),
                 {portId: "out", alignment: new go.Spot(1, 0.5)})
         );
 
     const xorTemplate =
-        $(go.Node, "Spot", nodeStyle(),
-            $(go.Shape, "XorGate", shapeStyle()),
-            $(go.Shape, "Rectangle", portStyle(true),
+        gojs(go.Node, "Spot", nodeStyle(),
+            gojs(go.Shape, "XorGate", shapeStyle()),
+            gojs(go.Shape, "Rectangle", portStyle(true),
                 {portId: "in1", alignment: new go.Spot(0.26, 0.3)}),
-            $(go.Shape, "Rectangle", portStyle(true),
+            gojs(go.Shape, "Rectangle", portStyle(true),
                 {portId: "in2", alignment: new go.Spot(0.26, 0.7)}),
-            $(go.Shape, "Rectangle", portStyle(false),
+            gojs(go.Shape, "Rectangle", portStyle(false),
                 {portId: "out", alignment: new go.Spot(1, 0.5)})
         );
 
     const norTemplate =
-        $(go.Node, "Spot", nodeStyle(),
-            $(go.Shape, "NorGate", shapeStyle()),
-            $(go.Shape, "Rectangle", portStyle(true),
+        gojs(go.Node, "Spot", nodeStyle(),
+            gojs(go.Shape, "NorGate", shapeStyle()),
+            gojs(go.Shape, "Rectangle", portStyle(true),
                 {portId: "in1", alignment: new go.Spot(0.16, 0.3)}),
-            $(go.Shape, "Rectangle", portStyle(true),
+            gojs(go.Shape, "Rectangle", portStyle(true),
                 {portId: "in2", alignment: new go.Spot(0.16, 0.7)}),
-            $(go.Shape, "Rectangle", portStyle(false),
+            gojs(go.Shape, "Rectangle", portStyle(false),
                 {portId: "out", alignment: new go.Spot(1, 0.5)})
         );
 
     const xnorTemplate =
-        $(go.Node, "Spot", nodeStyle(),
-            $(go.Shape, "XnorGate", shapeStyle()),
-            $(go.Shape, "Rectangle", portStyle(true),
+        gojs(go.Node, "Spot", nodeStyle(),
+            gojs(go.Shape, "XnorGate", shapeStyle()),
+            gojs(go.Shape, "Rectangle", portStyle(true),
                 {portId: "in1", alignment: new go.Spot(0.26, 0.3)}),
-            $(go.Shape, "Rectangle", portStyle(true),
+            gojs(go.Shape, "Rectangle", portStyle(true),
                 {portId: "in2", alignment: new go.Spot(0.26, 0.7)}),
-            $(go.Shape, "Rectangle", portStyle(false),
+            gojs(go.Shape, "Rectangle", portStyle(false),
                 {portId: "out", alignment: new go.Spot(1, 0.5)})
         );
 
     const nandTemplate =
-        $(go.Node, "Spot", nodeStyle(),
-            $(go.Shape, "NandGate", shapeStyle()),
-            $(go.Shape, "Rectangle", portStyle(true),
+        gojs(go.Node, "Spot", nodeStyle(),
+            gojs(go.Shape, "NandGate", shapeStyle()),
+            gojs(go.Shape, "Rectangle", portStyle(true),
                 {portId: "in1", alignment: new go.Spot(0, 0.3)}),
-            $(go.Shape, "Rectangle", portStyle(true),
+            gojs(go.Shape, "Rectangle", portStyle(true),
                 {portId: "in2", alignment: new go.Spot(0, 0.7)}),
-            $(go.Shape, "Rectangle", portStyle(false),
+            gojs(go.Shape, "Rectangle", portStyle(false),
                 {portId: "out", alignment: new go.Spot(1, 0.5)})
         );
 
     const notTemplate =
-        $(go.Node, "Spot", nodeStyle(),
-            $(go.Shape, "Inverter", shapeStyle()),
-            $(go.Shape, "Rectangle", portStyle(true),
+        gojs(go.Node, "Spot", nodeStyle(),
+            gojs(go.Shape, "Inverter", shapeStyle()),
+            gojs(go.Shape, "Rectangle", portStyle(true),
                 {portId: "in", alignment: new go.Spot(0, 0.5)}),
-            $(go.Shape, "Rectangle", portStyle(false),
+            gojs(go.Shape, "Rectangle", portStyle(false),
                 {portId: "out", alignment: new go.Spot(1, 0.5)})
         );
 

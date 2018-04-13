@@ -1,32 +1,39 @@
 function initEntityRelationship() {
 
-    const $ = go.GraphObject.make;  // for conciseness in defining templates
+    if (myDiagram !== undefined) {
+        myDiagram.clear();
+        myDiagram.div = null;
+    }
 
     myDiagram =
-        $(go.Diagram, diagramDiv,  // must name or refer to the DIV HTML element
+        gojs(go.Diagram, "diagramDiv",  // must name or refer to the DIV HTML element
             {
                 initialContentAlignment: go.Spot.Center,
                 allowDelete: false,
                 allowCopy: false,
-                layout: $(go.ForceDirectedLayout),
+                layout: gojs(go.ForceDirectedLayout),
                 "undoManager.isEnabled": true
             });
 
     // define several shared Brushes
-    const bluegrad = $(go.Brush, "Linear", {0: "rgb(150, 150, 250)", 0.5: "rgb(86, 86, 186)", 1: "rgb(86, 86, 186)"});
-    const greengrad = $(go.Brush, "Linear", {0: "rgb(158, 209, 159)", 1: "rgb(67, 101, 56)"});
-    const redgrad = $(go.Brush, "Linear", {0: "rgb(206, 106, 100)", 1: "rgb(180, 56, 50)"});
-    const yellowgrad = $(go.Brush, "Linear", {0: "rgb(254, 221, 50)", 1: "rgb(254, 182, 50)"});
-    const lightgrad = $(go.Brush, "Linear", {1: "#E6E6FA", 0: "#FFFAF0"});
+    const bluegrad = gojs(go.Brush, "Linear", {
+        0: "rgb(150, 150, 250)",
+        0.5: "rgb(86, 86, 186)",
+        1: "rgb(86, 86, 186)"
+    });
+    const greengrad = gojs(go.Brush, "Linear", {0: "rgb(158, 209, 159)", 1: "rgb(67, 101, 56)"});
+    const redgrad = gojs(go.Brush, "Linear", {0: "rgb(206, 106, 100)", 1: "rgb(180, 56, 50)"});
+    const yellowgrad = gojs(go.Brush, "Linear", {0: "rgb(254, 221, 50)", 1: "rgb(254, 182, 50)"});
+    const lightgrad = gojs(go.Brush, "Linear", {1: "#E6E6FA", 0: "#FFFAF0"});
 
     // the template for each attribute in a node's array of item data
     const itemTempl =
-        $(go.Panel, "Horizontal",
-            $(go.Shape,
+        gojs(go.Panel, "Horizontal",
+            gojs(go.Shape,
                 {desiredSize: new go.Size(10, 10)},
                 new go.Binding("figure", "figure"),
                 new go.Binding("fill", "color")),
-            $(go.TextBlock,
+            gojs(go.TextBlock,
                 {
                     stroke: "#333333",
                     font: "bold 14px sans-serif"
@@ -36,7 +43,7 @@ function initEntityRelationship() {
 
     // define the Node template, representing an entity
     myDiagram.nodeTemplate =
-        $(go.Node, "Auto",  // the whole node panel
+        gojs(go.Node, "Auto",  // the whole node panel
             {
                 selectionAdorned: true,
                 resizable: true,
@@ -53,13 +60,13 @@ function initEntityRelationship() {
                 return new go.Size(NaN, NaN);
             }).ofObject("LIST"),
             // define the node's outer shape, which will surround the Table
-            $(go.Shape, "Rectangle",
+            gojs(go.Shape, "Rectangle",
                 {fill: lightgrad, stroke: "#756875", strokeWidth: 3}),
-            $(go.Panel, "Table",
+            gojs(go.Panel, "Table",
                 {margin: 8, stretch: go.GraphObject.Fill},
-                $(go.RowColumnDefinition, {row: 0, sizing: go.RowColumnDefinition.None}),
+                gojs(go.RowColumnDefinition, {row: 0, sizing: go.RowColumnDefinition.None}),
                 // the table header
-                $(go.TextBlock,
+                gojs(go.TextBlock,
                     {
                         row: 0, alignment: go.Spot.Center,
                         margin: new go.Margin(0, 14, 0, 2),  // leave room for Button
@@ -70,7 +77,7 @@ function initEntityRelationship() {
                 $("PanelExpanderButton", "LIST",  // the name of the element whose visibility this button toggles
                     {row: 0, alignment: go.Spot.TopRight}),
                 // the list of Panels, each showing an attribute
-                $(go.Panel, "Vertical",
+                gojs(go.Panel, "Vertical",
                     {
                         name: "LIST",
                         row: 1,
@@ -86,7 +93,7 @@ function initEntityRelationship() {
 
     // define the Link template, representing a relationship
     myDiagram.linkTemplate =
-        $(go.Link,  // the whole link panel
+        gojs(go.Link,  // the whole link panel
             {
                 selectionAdorned: true,
                 layerName: "Foreground",
@@ -95,9 +102,9 @@ function initEntityRelationship() {
                 corner: 5,
                 curve: go.Link.JumpOver
             },
-            $(go.Shape,  // the link shape
+            gojs(go.Shape,  // the link shape
                 {stroke: "#303B45", strokeWidth: 2.5}),
-            $(go.TextBlock,  // the "from" label
+            gojs(go.TextBlock,  // the "from" label
                 {
                     textAlign: "center",
                     font: "bold 14px sans-serif",
@@ -107,7 +114,7 @@ function initEntityRelationship() {
                     segmentOrientation: go.Link.OrientUpright
                 },
                 new go.Binding("text", "text")),
-            $(go.TextBlock,  // the "to" label
+            gojs(go.TextBlock,  // the "to" label
                 {
                     textAlign: "center",
                     font: "bold 14px sans-serif",

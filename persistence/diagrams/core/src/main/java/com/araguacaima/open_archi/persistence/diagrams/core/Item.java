@@ -59,7 +59,7 @@ public class Item extends Taggable {
     public static final String GET_ALL_PROTOTYPE_NAMES = "get.all.prototype.names";
     public static final String GET_ALL_DIAGRAM_NAMES = "get.all.diagram.names";
     public static final String GET_ITEM_ID_BY_NAME = "get.item.id.by.name";
-    public static final String GET_ALL_CONSUMER_NAMES = "get.all.conmsumer.names";
+    public static final String GET_ALL_CONSUMER_NAMES = "get.all.consumer.names";
     public static final String GET_ALL_CONSUMERS = "get.all.consumers";
     public static final String GET_MODEL_NAMES_BY_NAME_AND_TYPE = "get.model.names.by.name.and.type";
     public static final String GET_ALL_MODEL_NAMES_BY_TYPE = "get.all.model.names.by.type";

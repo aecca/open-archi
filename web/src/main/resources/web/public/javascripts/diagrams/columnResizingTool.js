@@ -4,24 +4,33 @@
 */
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        ({__proto__: []} instanceof Array && function (d, b) {
+            d.__proto__ = b;
+        }) ||
+        function (d, b) {
+            for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+        };
     return function (d, b) {
         extendStatics(d, b);
-        function __() { this.constructor = d; }
+
+        function __() {
+            this.constructor = d;
+        }
+
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", {value: true});
 var go = require("../go");
 // A custom Tool for resizing each column of a named Table Panel in a selected Part.
 /**
-* @constructor
-* @extends Tool
-* @class
-*/
+ * @constructor
+ * @extends Tool
+ * @class
+ */
 var ColumnResizingTool = (function (_super) {
     __extends(ColumnResizingTool, _super);
+
     function ColumnResizingTool() {
         var _this = _super.call(this) || this;
         _this.name = "ColumnResizing";
@@ -42,63 +51,76 @@ var ColumnResizingTool = (function (_super) {
         _this._handleArchetype = h;
         return _this;
     }
+
     Object.defineProperty(ColumnResizingTool.prototype, "handleArchetype", {
         /**
-        * A small GraphObject used as a resize handle for each column.
-        * This tool expects that this object's {@link GraphObject#desiredSize} (a.k.a width and height) has been set to real numbers.
-        * @name ColumnResizingTool#handleArchetype
-        * @function.
-        * @return {Shape}
-        */
-        get: function () { return this._handleArchetype; },
-        set: function (val) { this._handleArchetype = val; },
+         * A small GraphObject used as a resize handle for each column.
+         * This tool expects that this object's {@link GraphObject#desiredSize} (a.k.a width and height) has been set to real numbers.
+         * @name ColumnResizingTool#handleArchetype
+         * @function.
+         * @return {Shape}
+         */
+        get: function () {
+            return this._handleArchetype;
+        },
+        set: function (val) {
+            this._handleArchetype = val;
+        },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(ColumnResizingTool.prototype, "tableName", {
         /**
-        * The name of the Table Panel to be resized, by default the name "TABLE".
-        * @name ColumnResizingTool#tableName
-        * @function.
-        * @return {string}
-        */
-        get: function () { return this._tableName; },
-        set: function (val) { this._tableName = val; },
+         * The name of the Table Panel to be resized, by default the name "TABLE".
+         * @name ColumnResizingTool#tableName
+         * @function.
+         * @return {string}
+         */
+        get: function () {
+            return this._tableName;
+        },
+        set: function (val) {
+            this._tableName = val;
+        },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(ColumnResizingTool.prototype, "handle", {
         /**
-        * This read-only property returns the {@link GraphObject} that is the tool handle being dragged by the user.
-        * This will be contained by an {@link Adornment} whose category is "ColumnResizing".
-        * Its {@link Adornment#adornedObject} is the same as the {@link #adornedTable}.
-        * @name ColumnResizingTool#handle
-        * @function.
-        * @return {GraphObject}
-        */
-        get: function () { return this._handle; },
+         * This read-only property returns the {@link GraphObject} that is the tool handle being dragged by the user.
+         * This will be contained by an {@link Adornment} whose category is "ColumnResizing".
+         * Its {@link Adornment#adornedObject} is the same as the {@link #adornedTable}.
+         * @name ColumnResizingTool#handle
+         * @function.
+         * @return {GraphObject}
+         */
+        get: function () {
+            return this._handle;
+        },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(ColumnResizingTool.prototype, "adornedTable", {
         /**
-        * Gets the {@link Panel} of type {@link Panel#Table} whose columns may be resized.
-        * This must be contained within the selected Part.
-        * @name ColumnResizingTool#adornedTable
-        * @function.
-        * @return {Panel}
-        */
-        get: function () { return this._adornedTable; },
+         * Gets the {@link Panel} of type {@link Panel#Table} whose columns may be resized.
+         * This must be contained within the selected Part.
+         * @name ColumnResizingTool#adornedTable
+         * @function.
+         * @return {Panel}
+         */
+        get: function () {
+            return this._adornedTable;
+        },
         enumerable: true,
         configurable: true
     });
     /**
-    * Show an {@link Adornment} with a resize handle at each column.
-    * Don't show anything if {@link #tableName} doesn't identify a {@link Panel}
-    * that has a {@link Panel#type} of type {@link Panel#Table}.
-    * @this {ColumnResizingTool}
-    * @param {Part} part the part.
-    */
+     * Show an {@link Adornment} with a resize handle at each column.
+     * Don't show anything if {@link #tableName} doesn't identify a {@link Panel}
+     * that has a {@link Panel#type} of type {@link Panel#Table}.
+     * @this {ColumnResizingTool}
+     * @param {Part} part the part.
+     */
     ColumnResizingTool.prototype.updateAdornments = function (part) {
         if (part === null || part instanceof go.Link)
             return; // this tool never applies to Links
@@ -147,10 +169,10 @@ var ColumnResizingTool = (function (_super) {
     };
     ;
     /**
-    * @this {ColumnResizingTool}
-    * @param {Panel} table the Table Panel whose columns may be resized
-    * @return {Adornment}
-    */
+     * @this {ColumnResizingTool}
+     * @param {Panel} table the Table Panel whose columns may be resized
+     * @return {Adornment}
+     */
     ColumnResizingTool.prototype.makeAdornment = function (table) {
         // the Adornment is a Spot Panel holding resize handles
         var adornment = new go.Adornment();
@@ -172,11 +194,11 @@ var ColumnResizingTool = (function (_super) {
     };
     ;
     /**
-    * @this {ColumnResizingTool}
-    * @param {Panel} table the Table Panel whose columns may be resized
-    * @param {RowColumnDefinition} coldef the column definition to be resized
-    * @return a copy of the {@link #handleArchetype}
-    */
+     * @this {ColumnResizingTool}
+     * @param {Panel} table the Table Panel whose columns may be resized
+     * @param {RowColumnDefinition} coldef the column definition to be resized
+     * @return a copy of the {@link #handleArchetype}
+     */
     ColumnResizingTool.prototype.makeHandle = function (table, coldef) {
         var h = this.handleArchetype;
         if (h === null)
@@ -187,10 +209,10 @@ var ColumnResizingTool = (function (_super) {
     };
     ;
     /**
-    * This predicate is true when there is a resize handle at the mouse down point.
-    * @this {ColumnResizingTool}
-    * @return {boolean}
-    */
+     * This predicate is true when there is a resize handle at the mouse down point.
+     * @this {ColumnResizingTool}
+     * @return {boolean}
+     */
     ColumnResizingTool.prototype.canStart = function () {
         if (!this.isEnabled)
             return false;
@@ -204,8 +226,8 @@ var ColumnResizingTool = (function (_super) {
     };
     ;
     /**
-    * @this {ColumnResizingTool}
-    */
+     * @this {ColumnResizingTool}
+     */
     ColumnResizingTool.prototype.doActivate = function () {
         var diagram = this.diagram;
         if (diagram === null)
@@ -223,8 +245,8 @@ var ColumnResizingTool = (function (_super) {
     };
     ;
     /**
-    * @this {ColumnResizingTool}
-    */
+     * @this {ColumnResizingTool}
+     */
     ColumnResizingTool.prototype.doDeactivate = function () {
         this.stopTransaction();
         this._handle = null;
@@ -236,8 +258,8 @@ var ColumnResizingTool = (function (_super) {
     };
     ;
     /**
-    * @this {ColumnResizingTool}
-    */
+     * @this {ColumnResizingTool}
+     */
     ColumnResizingTool.prototype.doMouseMove = function () {
         var diagram = this.diagram;
         if (this.isActive && diagram !== null) {
@@ -247,8 +269,8 @@ var ColumnResizingTool = (function (_super) {
     };
     ;
     /**
-    * @this {ColumnResizingTool}
-    */
+     * @this {ColumnResizingTool}
+     */
     ColumnResizingTool.prototype.doMouseUp = function () {
         var diagram = this.diagram;
         if (this.isActive && diagram !== null) {
@@ -260,12 +282,12 @@ var ColumnResizingTool = (function (_super) {
     };
     ;
     /**
-    * This should change the {@link RowColumnDefinition#width} of the column being resized
-    * to a value corresponding to the given mouse point.
-    * @expose
-    * @this {ColumnResizingTool}
-    * @param {Point} newPoint the value of the call to {@link #computeResize}.
-    */
+     * This should change the {@link RowColumnDefinition#width} of the column being resized
+     * to a value corresponding to the given mouse point.
+     * @expose
+     * @this {ColumnResizingTool}
+     * @param {Point} newPoint the value of the call to {@link #computeResize}.
+     */
     ColumnResizingTool.prototype.resize = function (newPoint) {
         var table = this.adornedTable;
         var pad = table.padding;
@@ -286,20 +308,20 @@ var ColumnResizingTool = (function (_super) {
     };
     ;
     /**
-    * This can be overridden in order to customize the resizing process.
-    * @expose
-    * @this {ColumnResizingTool}
-    * @param {Point} p the point where the handle is being dragged.
-    * @return {Point}
-    */
+     * This can be overridden in order to customize the resizing process.
+     * @expose
+     * @this {ColumnResizingTool}
+     * @param {Point} p the point where the handle is being dragged.
+     * @return {Point}
+     */
     ColumnResizingTool.prototype.computeResize = function (p) {
         return p;
     };
     ;
     /**
-    * Pressing the Delete key removes any column width setting and stops this tool.
-    * @this {ColumnResizingTool}
-    */
+     * Pressing the Delete key removes any column width setting and stops this tool.
+     * @this {ColumnResizingTool}
+     */
     ColumnResizingTool.prototype.doKeyDown = function () {
         if (!this.isActive)
             return;

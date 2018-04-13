@@ -238,14 +238,17 @@ Object.defineProperty(DragCreatingTool.prototype, "archetypeNodeData", {
 
 function initDragCreating() {
 
-    const $ = go.GraphObject.make;  // for conciseness in defining templates
+    if (myDiagram !== undefined) {
+        myDiagram.clear();
+        myDiagram.div = null;
+    }
 
     myDiagram =
-        $(go.Diagram, diagramDiv,
+        gojs(go.Diagram, "diagramDiv",
             {
                 // Define the template for Nodes, just some text inside a colored rectangle
                 nodeTemplate:
-                    $(go.Node, "Auto",
+                    gojs(go.Node, "Auto",
                         {minSize: new go.Size(60, 20), resizable: true},
                         new go.Binding("desiredSize", "size", go.Size.parse).makeTwoWay(go.Size.stringify),
                         new go.Binding("position", "pos", go.Point.parse).makeTwoWay(go.Point.stringify),
@@ -253,16 +256,16 @@ function initDragCreating() {
                         new go.Binding("layerName", "isSelected", function (s) {
                             return s ? "Foreground" : "";
                         }).ofObject(),
-                        $(go.Shape, "Rectangle",
+                        gojs(go.Shape, "Rectangle",
                             new go.Binding("fill", "color")),
-                        $(go.TextBlock,
+                        gojs(go.TextBlock,
                             {margin: 2},
                             new go.Binding("text", "color"))),
                 "undoManager.isEnabled": true
             });
 
     myDiagram.add(
-        $(go.Part,
+        gojs(go.Part,
             {layerName: "Grid", location: new go.Point(0, 0)}
         ));
 
@@ -277,9 +280,9 @@ function initDragCreating() {
             {
                 isEnabled: true,  // disabled by the checkbox
                 delay: 0,  // always canStart(), so PanningTool never gets the chance to run
-                box: $(go.Part,
+                box: gojs(go.Part,
                     {layerName: "Tool"},
-                    $(go.Shape,
+                    gojs(go.Shape,
                         {name: "SHAPE", fill: null, stroke: "cyan", strokeWidth: 2})
                 ),
                 archetypeNodeData: {color: "white"}, // initial properties shared by all nodes

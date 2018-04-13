@@ -1,15 +1,18 @@
 function initDraggableLink() {
 
-    const $ = go.GraphObject.make;  // for conciseness in defining templates
+    if (myDiagram !== undefined) {
+        myDiagram.clear();
+        myDiagram.div = null;
+    }
 
     myDiagram =
-        $(go.Diagram, diagramDiv,  // must name or refer to the DIV HTML element<
+        gojs(go.Diagram, "diagramDiv",  // must name or refer to the DIV HTML element<
             {
-                grid: $(go.Panel, "Grid",
-                    $(go.Shape, "LineH", {stroke: "lightgray", strokeWidth: 0.5}),
-                    $(go.Shape, "LineH", {stroke: "gray", strokeWidth: 0.5, interval: 10}),
-                    $(go.Shape, "LineV", {stroke: "lightgray", strokeWidth: 0.5}),
-                    $(go.Shape, "LineV", {stroke: "gray", strokeWidth: 0.5, interval: 10})
+                grid: gojs(go.Panel, "Grid",
+                    gojs(go.Shape, "LineH", {stroke: "lightgray", strokeWidth: 0.5}),
+                    gojs(go.Shape, "LineH", {stroke: "gray", strokeWidth: 0.5, interval: 10}),
+                    gojs(go.Shape, "LineV", {stroke: "lightgray", strokeWidth: 0.5}),
+                    gojs(go.Shape, "LineV", {stroke: "gray", strokeWidth: 0.5, interval: 10})
                 ),
                 allowDrop: true,  // must be true to accept drops from the Palette
                 "draggingTool.dragsLink": true,
@@ -19,7 +22,7 @@ function initDraggableLink() {
                 "relinkingTool.isUnconnectedLinkValid": true,
                 "relinkingTool.portGravity": 20,
                 "relinkingTool.fromHandleArchetype":
-                    $(go.Shape, "Diamond", {
+                    gojs(go.Shape, "Diamond", {
                         segmentIndex: 0,
                         cursor: "pointer",
                         desiredSize: new go.Size(8, 8),
@@ -27,7 +30,7 @@ function initDraggableLink() {
                         stroke: "darkred"
                     }),
                 "relinkingTool.toHandleArchetype":
-                    $(go.Shape, "Diamond", {
+                    gojs(go.Shape, "Diamond", {
                         segmentIndex: -1,
                         cursor: "pointer",
                         desiredSize: new go.Size(8, 8),
@@ -35,7 +38,11 @@ function initDraggableLink() {
                         stroke: "tomato"
                     }),
                 "linkReshapingTool.handleArchetype":
-                    $(go.Shape, "Diamond", {desiredSize: new go.Size(7, 7), fill: "lightblue", stroke: "deepskyblue"}),
+                    gojs(go.Shape, "Diamond", {
+                        desiredSize: new go.Size(7, 7),
+                        fill: "lightblue",
+                        stroke: "deepskyblue"
+                    }),
                 rotatingTool: $(TopRotatingTool),  // defined below
                 "rotatingTool.snapAngleMultiple": 15,
                 "rotatingTool.snapAngleEpsilon": 15,
@@ -60,7 +67,7 @@ function initDraggableLink() {
     // control whether the user can draw links from or to the port.
     function makePort(name, spot, output, input) {
         // the port is basically just a small transparent square
-        return $(go.Shape, "Circle",
+        return gojs(go.Shape, "Circle",
             {
                 fill: null,  // not seen, by default; set to a translucent gray by showSmallPorts, defined below
                 stroke: null,
@@ -75,30 +82,30 @@ function initDraggableLink() {
     }
 
     const nodeSelectionAdornmentTemplate =
-        $(go.Adornment, "Auto",
-            $(go.Shape, {fill: null, stroke: "deepskyblue", strokeWidth: 1.5, strokeDashArray: [4, 2]}),
-            $(go.Placeholder)
+        gojs(go.Adornment, "Auto",
+            gojs(go.Shape, {fill: null, stroke: "deepskyblue", strokeWidth: 1.5, strokeDashArray: [4, 2]}),
+            gojs(go.Placeholder)
         );
 
     const nodeResizeAdornmentTemplate =
-        $(go.Adornment, "Spot",
+        gojs(go.Adornment, "Spot",
             {locationSpot: go.Spot.Right},
-            $(go.Placeholder),
-            $(go.Shape, {
+            gojs(go.Placeholder),
+            gojs(go.Shape, {
                 alignment: go.Spot.TopLeft,
                 cursor: "nw-resize",
                 desiredSize: new go.Size(6, 6),
                 fill: "lightblue",
                 stroke: "deepskyblue"
             }),
-            $(go.Shape, {
+            gojs(go.Shape, {
                 alignment: go.Spot.Top,
                 cursor: "n-resize",
                 desiredSize: new go.Size(6, 6),
                 fill: "lightblue",
                 stroke: "deepskyblue"
             }),
-            $(go.Shape, {
+            gojs(go.Shape, {
                 alignment: go.Spot.TopRight,
                 cursor: "ne-resize",
                 desiredSize: new go.Size(6, 6),
@@ -106,14 +113,14 @@ function initDraggableLink() {
                 stroke: "deepskyblue"
             }),
 
-            $(go.Shape, {
+            gojs(go.Shape, {
                 alignment: go.Spot.Left,
                 cursor: "w-resize",
                 desiredSize: new go.Size(6, 6),
                 fill: "lightblue",
                 stroke: "deepskyblue"
             }),
-            $(go.Shape, {
+            gojs(go.Shape, {
                 alignment: go.Spot.Right,
                 cursor: "e-resize",
                 desiredSize: new go.Size(6, 6),
@@ -121,21 +128,21 @@ function initDraggableLink() {
                 stroke: "deepskyblue"
             }),
 
-            $(go.Shape, {
+            gojs(go.Shape, {
                 alignment: go.Spot.BottomLeft,
                 cursor: "se-resize",
                 desiredSize: new go.Size(6, 6),
                 fill: "lightblue",
                 stroke: "deepskyblue"
             }),
-            $(go.Shape, {
+            gojs(go.Shape, {
                 alignment: go.Spot.Bottom,
                 cursor: "s-resize",
                 desiredSize: new go.Size(6, 6),
                 fill: "lightblue",
                 stroke: "deepskyblue"
             }),
-            $(go.Shape, {
+            gojs(go.Shape, {
                 alignment: go.Spot.BottomRight,
                 cursor: "sw-resize",
                 desiredSize: new go.Size(6, 6),
@@ -145,16 +152,16 @@ function initDraggableLink() {
         );
 
     const nodeRotateAdornmentTemplate =
-        $(go.Adornment,
+        gojs(go.Adornment,
             {locationSpot: go.Spot.Center, locationObjectName: "CIRCLE"},
-            $(go.Shape, "Circle", {
+            gojs(go.Shape, "Circle", {
                 name: "CIRCLE",
                 cursor: "pointer",
                 desiredSize: new go.Size(7, 7),
                 fill: "lightblue",
                 stroke: "deepskyblue"
             }),
-            $(go.Shape, {
+            gojs(go.Shape, {
                 geometryString: "M3.5 7 L3.5 30",
                 isGeometryPositioned: true,
                 stroke: "deepskyblue",
@@ -164,7 +171,7 @@ function initDraggableLink() {
         );
 
     myDiagram.nodeTemplate =
-        $(go.Node, "Spot",
+        gojs(go.Node, "Spot",
             {locationSpot: go.Spot.Center},
             new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
             {selectable: true, selectionAdornmentTemplate: nodeSelectionAdornmentTemplate},
@@ -172,10 +179,10 @@ function initDraggableLink() {
             {rotatable: true, rotateAdornmentTemplate: nodeRotateAdornmentTemplate},
             new go.Binding("angle").makeTwoWay(),
             // the main object is a Panel that surrounds a TextBlock with a Shape
-            $(go.Panel, "Auto",
+            gojs(go.Panel, "Auto",
                 {name: "PANEL"},
                 new go.Binding("desiredSize", "size", go.Size.parse).makeTwoWay(go.Size.stringify),
-                $(go.Shape, "Rectangle",  // default figure
+                gojs(go.Shape, "Rectangle",  // default figure
                     {
                         portId: "", // the default port: if no spot on link data, use closest side
                         fromLinkable: true, toLinkable: true, cursor: "pointer",
@@ -184,7 +191,7 @@ function initDraggableLink() {
                     },
                     new go.Binding("figure"),
                     new go.Binding("fill")),
-                $(go.TextBlock,
+                gojs(go.TextBlock,
                     {
                         font: "bold 11pt Helvetica, Arial, sans-serif",
                         margin: 8,
@@ -218,14 +225,14 @@ function initDraggableLink() {
     }
 
     const linkSelectionAdornmentTemplate =
-        $(go.Adornment, "Link",
-            $(go.Shape,
+        gojs(go.Adornment, "Link",
+            gojs(go.Shape,
                 // isPanelMain declares that this Shape shares the Link.geometry
                 {isPanelMain: true, fill: null, stroke: "deepskyblue", strokeWidth: 0})  // use selection object's strokeWidth
         );
 
     myDiagram.linkTemplate =
-        $(go.Link,  // the whole link panel
+        gojs(go.Link,  // the whole link panel
             {selectable: true, selectionAdornmentTemplate: linkSelectionAdornmentTemplate},
             {relinkableFrom: true, relinkableTo: true, reshapable: true},
             {
@@ -235,15 +242,15 @@ function initDraggableLink() {
                 toShortLength: 4
             },
             new go.Binding("points").makeTwoWay(),
-            $(go.Shape,  // the link path shape
+            gojs(go.Shape,  // the link path shape
                 {isPanelMain: true, strokeWidth: 2}),
-            $(go.Shape,  // the arrowhead
+            gojs(go.Shape,  // the arrowhead
                 {toArrow: "Standard", stroke: null}),
-            $(go.Panel, "Auto",
+            gojs(go.Panel, "Auto",
                 new go.Binding("visible", "isSelected").ofObject(),
-                $(go.Shape, "RoundedRectangle",  // the link shape
+                gojs(go.Shape, "RoundedRectangle",  // the link shape
                     {fill: "#F8F8F8", stroke: null}),
-                $(go.TextBlock,
+                gojs(go.TextBlock,
                     {
                         textAlign: "center",
                         font: "10pt helvetica, arial, sans-serif",
@@ -260,21 +267,21 @@ function initDraggableLink() {
 
     // initialize the Palette that is on the left side of the page
     myPalette =
-        $(go.Palette, "paletteDiv",  // must name or refer to the DIV HTML element
+        gojs(go.Palette, "paletteDiv",  // must name or refer to the DIV HTML element
             {
                 maxSelectionCount: 1,
                 nodeTemplateMap: myDiagram.nodeTemplateMap,  // share the templates used by myDiagram
                 linkTemplate: // simplify the link template, just in this Palette
-                    $(go.Link,
+                    gojs(go.Link,
                         { // because the GridLayout.alignment is Location and the nodes have locationSpot == Spot.Center,
                             // to line up the Link in the same manner we have to pretend the Link has the same location spot
                             locationSpot: go.Spot.Center,
                             selectionAdornmentTemplate:
-                                $(go.Adornment, "Link",
+                                gojs(go.Adornment, "Link",
                                     {locationSpot: go.Spot.Center},
-                                    $(go.Shape,
+                                    gojs(go.Shape,
                                         {isPanelMain: true, fill: null, stroke: "deepskyblue", strokeWidth: 0}),
-                                    $(go.Shape,  // the arrowhead
+                                    gojs(go.Shape,  // the arrowhead
                                         {toArrow: "Standard", stroke: null})
                                 )
                         },
@@ -285,9 +292,9 @@ function initDraggableLink() {
                             toShortLength: 4
                         },
                         new go.Binding("points"),
-                        $(go.Shape,  // the link path shape
+                        gojs(go.Shape,  // the link path shape
                             {isPanelMain: true, strokeWidth: 2}),
-                        $(go.Shape,  // the arrowhead
+                        gojs(go.Shape,  // the arrowhead
                             {toArrow: "Standard", stroke: null})
                     ),
                 model: new go.GraphLinksModel([  // specify the contents of the Palette

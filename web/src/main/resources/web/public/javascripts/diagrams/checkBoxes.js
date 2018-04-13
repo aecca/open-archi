@@ -1,8 +1,11 @@
 function initCheckBoxes() {
 
-    const $ = go.GraphObject.make;  // for conciseness in defining templates
+    if (myDiagram !== undefined) {
+        myDiagram.clear();
+        myDiagram.div = null;
+    }
 
-    myDiagram = $(go.Diagram, diagramDiv,  // create a Diagram for the DIV HTML element
+    myDiagram = gojs(go.Diagram, "diagramDiv",  // create a Diagram for the DIV HTML element
         {
             initialContentAlignment: go.Spot.Center,  // center the content
             "undoManager.isEnabled": true  // enable undo & redo
@@ -10,36 +13,36 @@ function initCheckBoxes() {
 
     // this template includes a lot of CheckBoxes, each configured in different manners
     myDiagram.nodeTemplate =
-        $(go.Node, "Auto",  // the Shape will go around the whole table
-            $(go.Shape, {strokeWidth: 0},  // no border
+        gojs(go.Node, "Auto",  // the Shape will go around the whole table
+            gojs(go.Shape, {strokeWidth: 0},  // no border
                 new go.Binding("fill", "color")),
-            $(go.Panel, "Table",
+            gojs(go.Panel, "Table",
                 {padding: 3},
-                $(go.TextBlock,
+                gojs(go.TextBlock,
                     {row: 0, column: 0, columnSpan: 2},
                     {margin: 3, font: "bold 10pt sans-serif"},  // some room around the bold text
                     new go.Binding("text", "key")),
                 // the first column has an assortment of CheckBoxes
-                $(go.Panel, "Vertical",
+                gojs(go.Panel, "Vertical",
                     {row: 1, column: 0, defaultAlignment: go.Spot.Left},
                     $("CheckBox", "choice1",
-                        $(go.TextBlock, "default")
+                        gojs(go.TextBlock, "default")
                     ),
                     $("CheckBox", "choice2",
                         {"ButtonIcon.stroke": "green"},
-                        $(go.TextBlock, "green")
+                        gojs(go.TextBlock, "green")
                     ),
                     $("CheckBox", "choice3",
                         {"ButtonIcon.stroke": "red", "ButtonIcon.figure": "XLine"},
-                        $(go.TextBlock, "red X")
+                        gojs(go.TextBlock, "red X")
                     ),
                     $("CheckBox", "choice4",
                         {"_buttonFillOver": "pink", "_buttonStrokeOver": "red"},
-                        $(go.TextBlock, "pink over")
+                        gojs(go.TextBlock, "pink over")
                     ),
                     $("CheckBox", "choice5",
                         {"Button.width": 32, "Button.height": 32},
-                        $(go.TextBlock, "BIG",
+                        gojs(go.TextBlock, "BIG",
                             {font: "bold 12pt sans-serif"})
                     ),
                     $("CheckBox", "choice6",
@@ -49,21 +52,21 @@ function initCheckBoxes() {
                             "ButtonIcon.figure": "Circle", "ButtonIcon.fill": "blue",
                             "ButtonIcon.strokeWidth": 0, "ButtonIcon.desiredSize": new go.Size(10, 10)
                         },
-                        $(go.TextBlock, "blue circle")
+                        gojs(go.TextBlock, "blue circle")
                     ),
                     $("CheckBox", "choice7", go.Panel.Vertical,
-                        $(go.TextBlock, "vertical")
+                        gojs(go.TextBlock, "vertical")
                     )
                 ),
                 // the second column is a list of CheckBoxes
-                $(go.Panel, "Table",
+                gojs(go.Panel, "Table",
                     {
                         row: 1, column: 1,
                         alignment: go.Spot.Top,
                         minSize: new go.Size(50, NaN),
                         itemTemplate:
                             $("CheckBox", "checked", go.Panel.TableRow,
-                                $(go.TextBlock,  // align text towards the right, next to the Button
+                                gojs(go.TextBlock,  // align text towards the right, next to the Button
                                     {column: 0, alignment: go.Spot.Right},
                                     new go.Binding("text", "name")),
                                 {"Button.column": 1}  // put Button in second column, to the right of text
@@ -76,7 +79,7 @@ function initCheckBoxes() {
                     {row: 3, columnSpan: 2, alignment: go.Spot.Left},
                     // this checkbox is not bound to model data, but it does toggle the Part.movable
                     // property of the Node that this is in
-                    $(go.TextBlock, "Node is not movable"),
+                    gojs(go.TextBlock, "Node is not movable"),
                     { // _doClick is executed within a transaction by the CheckBoxButton click function
                         "_doClick": function (e, obj) {
                             obj.part.movable = !obj.part.movable;  // toggle the Part.movable flag
@@ -90,7 +93,7 @@ function initCheckBoxes() {
 
     // create the model data that will be represented by Nodes and Links
     myDiagram.model =
-        $(go.GraphLinksModel,
+        gojs(go.GraphLinksModel,
             {
                 copiesArrays: true,
                 copiesArrayObjects: true,

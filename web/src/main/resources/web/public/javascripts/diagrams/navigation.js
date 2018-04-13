@@ -1,9 +1,12 @@
 function initNavigation() {
 
-    const $ = go.GraphObject.make;  // for conciseness in defining templates
+    if (myDiagram !== undefined) {
+        myDiagram.clear();
+        myDiagram.div = null;
+    }
 
     myDiagram =
-        $(go.Diagram, diagramDiv,  // Diagram refers to its DIV HTML element by id
+        gojs(go.Diagram, "diagramDiv",  // Diagram refers to its DIV HTML element by id
             {
                 initialContentAlignment: go.Spot.Center,
                 maxSelectionCount: 1 // no more than 1 element can be selected at a time
@@ -11,26 +14,26 @@ function initNavigation() {
 
     // define the node template
     myDiagram.nodeTemplate =
-        $(go.Node, "Auto",
+        gojs(go.Node, "Auto",
             new go.Binding("location", "loc"),
             {
                 locationSpot: go.Spot.Center,
                 toEndSegmentLength: 30, fromEndSegmentLength: 30
             },
-            $(go.Shape, "Rectangle",
+            gojs(go.Shape, "Rectangle",
                 {
                     name: "OBJSHAPE",
                     fill: "white",
                     desiredSize: new go.Size(30, 30)
                 }),
-            $(go.TextBlock,
+            gojs(go.TextBlock,
                 {margin: 4},
                 new go.Binding("text", "key")),
             {
                 toolTip:  //  define a tooltip for each node that displays its information
-                    $(go.Adornment, "Auto",
-                        $(go.Shape, {fill: "#EFEFCC"}),
-                        $(go.TextBlock, {margin: 4},
+                    gojs(go.Adornment, "Auto",
+                        gojs(go.Shape, {fill: "#EFEFCC"}),
+                        gojs(go.TextBlock, {margin: 4},
                             new go.Binding("text", "", getInfo))
                     )
             }
@@ -38,28 +41,28 @@ function initNavigation() {
 
     // define the link template
     myDiagram.linkTemplate =
-        $(go.Link,
+        gojs(go.Link,
             {
                 selectionAdornmentTemplate:
-                    $(go.Adornment,
-                        $(go.Shape,
+                    gojs(go.Adornment,
+                        gojs(go.Shape,
                             {isPanelMain: true, stroke: "dodgerblue", strokeWidth: 3}),
-                        $(go.Shape,
+                        gojs(go.Shape,
                             {toArrow: "Standard", fill: "dodgerblue", stroke: null, scale: 1})
                     ),
                 routing: go.Link.Normal,
                 curve: go.Link.Bezier,
                 toShortLength: 2
             },
-            $(go.Shape,  //  the link shape
+            gojs(go.Shape,  //  the link shape
                 {name: "OBJSHAPE"}),
-            $(go.Shape,  //  the arrowhead
+            gojs(go.Shape,  //  the arrowhead
                 {name: "ARWSHAPE", toArrow: "Standard"}),
             {
                 toolTip:  //  define a tooltip for each link that displays its information
-                    $(go.Adornment, "Auto",
-                        $(go.Shape, {fill: "#EFEFCC"}),
-                        $(go.TextBlock, {margin: 4},
+                    gojs(go.Adornment, "Auto",
+                        gojs(go.Shape, {fill: "#EFEFCC"}),
+                        gojs(go.TextBlock, {margin: 4},
                             new go.Binding("text", "", getInfo))
                     )
             }
@@ -67,29 +70,29 @@ function initNavigation() {
 
     // define the group template
     myDiagram.groupTemplate =
-        $(go.Group, "Spot",
+        gojs(go.Group, "Spot",
             {
                 selectionAdornmentTemplate: // adornment when a group is selected
-                    $(go.Adornment, "Auto",
-                        $(go.Shape, "Rectangle",
+                    gojs(go.Adornment, "Auto",
+                        gojs(go.Shape, "Rectangle",
                             {fill: null, stroke: "dodgerblue", strokeWidth: 3}),
-                        $(go.Placeholder)
+                        gojs(go.Placeholder)
                     ),
                 toSpot: go.Spot.AllSides, // links coming into groups at any side
                 toEndSegmentLength: 30, fromEndSegmentLength: 30
             },
-            $(go.Panel, "Auto",
-                $(go.Shape, "Rectangle",
+            gojs(go.Panel, "Auto",
+                gojs(go.Shape, "Rectangle",
                     {
                         name: "OBJSHAPE",
                         parameter1: 14,
                         fill: "rgba(255,0,0,0.10)"
                     },
                     new go.Binding("desiredSize", "ds")),
-                $(go.Placeholder,
+                gojs(go.Placeholder,
                     {padding: 16})
             ),
-            $(go.TextBlock,
+            gojs(go.TextBlock,
                 {
                     name: "GROUPTEXT",
                     alignment: go.Spot.TopLeft,
@@ -99,9 +102,9 @@ function initNavigation() {
                 new go.Binding("text", "key")),
             {
                 toolTip:  //  define a tooltip for each group that displays its information
-                    $(go.Adornment, "Auto",
-                        $(go.Shape, {fill: "#EFEFCC"}),
-                        $(go.TextBlock, {margin: 4},
+                    gojs(go.Adornment, "Auto",
+                        gojs(go.Shape, {fill: "#EFEFCC"}),
+                        gojs(go.TextBlock, {margin: 4},
                             new go.Binding("text", "", getInfo))
                     )
             }

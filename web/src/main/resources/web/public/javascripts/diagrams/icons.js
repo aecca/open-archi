@@ -1,6 +1,9 @@
 function initIcons() {
 
-    const $ = go.GraphObject.make;  // for conciseness in defining templates
+    if (myDiagram !== undefined) {
+        myDiagram.clear();
+        myDiagram.div = null;
+    }
 
     // a collection of colors
     const colors = {
@@ -12,11 +15,11 @@ function initIcons() {
     };
 
     // The first Diagram showcases what the Nodes might look like "in action"
-    myDiagram = $(go.Diagram, diagramDiv,
+    myDiagram = gojs(go.Diagram, "diagramDiv",
         {
             initialContentAlignment: go.Spot.Center,
             "undoManager.isEnabled": true,
-            layout: $(go.TreeLayout)
+            layout: gojs(go.TreeLayout)
         });
 
     // "icons" is defined in icons.js
@@ -35,28 +38,28 @@ function initIcons() {
 
     // Define a simple template consisting of the icon surrounded by a filled circle
     myDiagram.nodeTemplate =
-        $(go.Node, "Auto",
-            $(go.Shape, "Circle",
+        gojs(go.Node, "Auto",
+            gojs(go.Shape, "Circle",
                 {fill: "lightcoral", strokeWidth: 4, stroke: colors["gray"], width: 60, height: 60},
                 new go.Binding("fill", "color")),
-            $(go.Shape,
+            gojs(go.Shape,
                 {margin: 3, fill: colors["white"], strokeWidth: 0},
                 new go.Binding("geometry", "geo", geoFunc)),
             // Each node has a tooltip that reveals the name of its icon
             {
                 toolTip:
-                    $(go.Adornment, "Auto",
-                        $(go.Shape, {fill: "LightYellow", stroke: colors["gray"], strokeWidth: 2}),
-                        $(go.TextBlock, {margin: 8, stroke: colors["gray"], font: "bold 16px sans-serif"},
+                    gojs(go.Adornment, "Auto",
+                        gojs(go.Shape, {fill: "LightYellow", stroke: colors["gray"], strokeWidth: 2}),
+                        gojs(go.TextBlock, {margin: 8, stroke: colors["gray"], font: "bold 16px sans-serif"},
                             new go.Binding("text", "geo")))
             }
         );
 
     // Define a Link template that routes orthogonally, with no arrowhead
     myDiagram.linkTemplate =
-        $(go.Link,
+        gojs(go.Link,
             {routing: go.Link.Orthogonal, corner: 5, toShortLength: -2, fromShortLength: -2},
-            $(go.Shape, {strokeWidth: 5, stroke: colors["gray"]})); // the link shape
+            gojs(go.Shape, {strokeWidth: 5, stroke: colors["gray"]})); // the link shape
 
     // Create the model data that will be represented by Nodes and Links
     myDiagram.model = new go.GraphLinksModel(
@@ -82,11 +85,11 @@ function initIcons() {
 
 
     // The second Diagram showcases every icon in icons.js
-    myDiagram2 = $(go.Diagram, "diagramDiv2",
+    myDiagram2 = gojs(go.Diagram, "diagramDiv2",
         { // share node templates between both Diagrams
             nodeTemplate: myDiagram.nodeTemplate,
             // simple grid layout
-            layout: $(go.GridLayout)
+            layout: gojs(go.GridLayout)
         });
 
     // Convert the icons collection into an Array of JavaScript objects

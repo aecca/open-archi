@@ -15,11 +15,11 @@ import java.util.Set;
 public class Feature extends Item {
 
     /**
-     * the role of the feature ... Primary or Supporting
+     * the type of the feature ... Primary or Supporting
      */
     @Column
     @Enumerated(EnumType.STRING)
-    private FeatureRole role = FeatureRole.Supporting;
+    private FeatureType type = FeatureType.Primary;
 
     /**
      * a URL; e.g. a reference to the feature in source code control
@@ -65,12 +65,12 @@ public class Feature extends Item {
     public Feature() {
     }
 
-    public FeatureRole getRole() {
-        return role;
+    public FeatureType getType() {
+        return type;
     }
 
-    public void setRole(FeatureRole role) {
-        this.role = role;
+    public void setType(FeatureType type) {
+        this.type = type;
     }
 
     public String getUrl() {

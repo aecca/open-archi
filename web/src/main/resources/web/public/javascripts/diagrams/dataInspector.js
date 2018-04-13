@@ -431,7 +431,7 @@ function initDataInspector() {
     let $ = go.GraphObject.make;  // for conciseness in defining templates
 
     myDiagram =
-        $(go.Diagram, diagramDiv,  // create a Diagram for the DIV HTML element
+        gojs(go.Diagram, "diagramDiv",  // create a Diagram for the DIV HTML element
             {
                 // position the graph in the middle of the diagram
                 initialContentAlignment: go.Spot.Center,
@@ -455,10 +455,10 @@ function initDataInspector() {
     // The user can drag a node by dragging its TextBlock label.
     // Dragging from the Shape will start drawing a new link.
     myDiagram.nodeTemplate =
-        $(go.Node, "Auto",
+        gojs(go.Node, "Auto",
             {locationSpot: go.Spot.Center},
             new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
-            $(go.Shape, "Rectangle",
+            gojs(go.Shape, "Rectangle",
                 {
                     stroke: null, strokeWidth: 0,
                     fill: "white", // the default fill, if there is no data-binding
@@ -468,7 +468,7 @@ function initDataInspector() {
                     toLinkable: true, toLinkableSelfNode: true, toLinkableDuplicates: true
                 },
                 new go.Binding("fill", "color")),
-            $(go.TextBlock,
+            gojs(go.TextBlock,
                 {
                     font: "bold 18px sans-serif",
                     stroke: '#111',
@@ -481,12 +481,12 @@ function initDataInspector() {
 
     // The link shape and arrowhead have their stroke brush data bound to the "color" property
     myDiagram.linkTemplate =
-        $(go.Link,
+        gojs(go.Link,
             {toShortLength: 3, relinkableFrom: true, relinkableTo: true},  // allow the user to relink existing links
-            $(go.Shape,
+            gojs(go.Shape,
                 {strokeWidth: 2},
                 new go.Binding("stroke", "color")),
-            $(go.Shape,
+            gojs(go.Shape,
                 {toArrow: "Standard", stroke: null},
                 new go.Binding("fill", "color"))
         );
@@ -494,12 +494,12 @@ function initDataInspector() {
     // Groups consist of a title in the color given by the group node data
     // above a translucent gray rectangle surrounding the member parts
     myDiagram.groupTemplate =
-        $(go.Group, "Vertical",
+        gojs(go.Group, "Vertical",
             {
                 selectionObjectName: "PANEL",  // selection handle goes around shape, not label
                 ungroupable: true
             },  // enable Ctrl-Shift-G to ungroup a selected Group
-            $(go.TextBlock,
+            gojs(go.TextBlock,
                 {
                     font: "bold 19px sans-serif",
                     isMultiline: false,  // don't allow newlines in text
@@ -507,11 +507,11 @@ function initDataInspector() {
                 },
                 new go.Binding("text", "text").makeTwoWay(),
                 new go.Binding("stroke", "color")),
-            $(go.Panel, "Auto",
+            gojs(go.Panel, "Auto",
                 {name: "PANEL"},
-                $(go.Shape, "Rectangle",  // the rectangular shape around the members
+                gojs(go.Shape, "Rectangle",  // the rectangular shape around the members
                     {fill: "rgba(128,128,128,0.2)", stroke: "gray", strokeWidth: 3}),
-                $(go.Placeholder, {padding: 10})  // represents where the members are
+                gojs(go.Placeholder, {padding: 10})  // represents where the members are
             )
         );
 

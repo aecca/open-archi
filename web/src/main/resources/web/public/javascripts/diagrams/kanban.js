@@ -96,7 +96,7 @@ function initKanban() {
     const $ = go.GraphObject.make;
 
     myDiagram =
-        $(go.Diagram, diagramDiv,
+        gojs(go.Diagram, "diagramDiv",
             {
                 // start everything in the middle of the viewport
                 contentAlignment: go.Spot.TopCenter,
@@ -136,9 +136,9 @@ function initKanban() {
     }
 
     myDiagram.nodeTemplate =
-        $(go.Node, "Horizontal",
+        gojs(go.Node, "Horizontal",
             new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
-            $(go.Shape, "Rectangle", {
+            gojs(go.Shape, "Rectangle", {
                     fill: '#009CCC', strokeWidth: 1, stroke: '#009CCC',
                     width: 6, stretch: go.GraphObject.Vertical, alignment: go.Spot.Left,
                     // if a user clicks the colored portion of a node, cycle through colors
@@ -153,11 +153,11 @@ function initKanban() {
                 new go.Binding("fill", "color", getNoteColor),
                 new go.Binding("stroke", "color", getNoteColor)
             ),
-            $(go.Panel, "Auto",
-                $(go.Shape, "Rectangle", {fill: "white", stroke: '#CCCCCC'}),
-                $(go.Panel, "Table",
+            gojs(go.Panel, "Auto",
+                gojs(go.Shape, "Rectangle", {fill: "white", stroke: '#CCCCCC'}),
+                gojs(go.Panel, "Table",
                     {width: 130, minSize: new go.Size(NaN, 50)},
-                    $(go.TextBlock,
+                    gojs(go.TextBlock,
                         {
                             name: 'TEXT',
                             margin: 6, font: '11px Lato, sans-serif', editable: true,
@@ -171,7 +171,7 @@ function initKanban() {
 
     // unmovable node that acts as a button
     myDiagram.nodeTemplateMap.add('newbutton',
-        $(go.Node, "Horizontal",
+        gojs(go.Node, "Horizontal",
             {
                 selectable: false,
                 click: function (e, node) {
@@ -190,9 +190,9 @@ function initKanban() {
                 },
                 background: 'white'
             },
-            $(go.Panel, "Auto",
-                $(go.Shape, "Rectangle", {strokeWidth: 0, stroke: null, fill: '#6FB583'}),
-                $(go.Shape, "PlusLine", {
+            gojs(go.Panel, "Auto",
+                gojs(go.Shape, "Rectangle", {strokeWidth: 0, stroke: null, fill: '#6FB583'}),
+                gojs(go.Shape, "PlusLine", {
                     margin: 6,
                     strokeWidth: 2,
                     width: 12,
@@ -201,7 +201,7 @@ function initKanban() {
                     background: '#6FB583'
                 })
             ),
-            $(go.TextBlock, "New item", {font: '10px Lato, sans-serif', margin: 6,})
+            gojs(go.TextBlock, "New item", {font: '10px Lato, sans-serif', margin: 6,})
         )
     );
 
@@ -218,12 +218,12 @@ function initKanban() {
     }
 
     myDiagram.groupTemplate =
-        $(go.Group, "Vertical",
+        gojs(go.Group, "Vertical",
             {
                 selectable: false,
                 selectionObjectName: "SHAPE", // even though its not selectable, this is used in the layout
                 layerName: "Background",  // all lanes are always behind all nodes and links
-                layout: $(go.GridLayout,  // automatically lay out the lane's subgraph
+                layout: gojs(go.GridLayout,  // automatically lay out the lane's subgraph
                     {
                         wrappingColumn: 1,
                         cellSize: new go.Size(1, 1),
@@ -272,30 +272,30 @@ function initKanban() {
             new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
             new go.Binding("isSubGraphExpanded", "expanded").makeTwoWay(),
             // the lane header consisting of a TextBlock and an expander button
-            $(go.Panel, "Horizontal",
+            gojs(go.Panel, "Horizontal",
                 {
                     name: "HEADER",
                     angle: 0,  // maybe rotate the header to read sideways going up
                     alignment: go.Spot.Left
                 },
                 $("SubGraphExpanderButton", {margin: 5}),  // this remains always visible
-                $(go.Panel, "Horizontal",  // this is hidden when the swimlane is collapsed
+                gojs(go.Panel, "Horizontal",  // this is hidden when the swimlane is collapsed
                     new go.Binding("visible", "isSubGraphExpanded").ofObject(),
-                    $(go.TextBlock,  // the lane label
+                    gojs(go.TextBlock,  // the lane label
                         {font: "15px Lato, sans-serif", editable: true, margin: new go.Margin(2, 0, 0, 0)},
                         new go.Binding("text", "text").makeTwoWay())
                 )
             ),  // end Horizontal Panel
-            $(go.Panel, "Auto",  // the lane consisting of a background Shape and a Placeholder representing the subgraph
-                $(go.Shape, "Rectangle",  // this is the resized object
+            gojs(go.Panel, "Auto",  // the lane consisting of a background Shape and a Placeholder representing the subgraph
+                gojs(go.Shape, "Rectangle",  // this is the resized object
                     {name: "SHAPE", fill: "#F1F1F1", stroke: null, strokeWidth: 4},
                     new go.Binding("fill", "isHighlighted", function (h) {
                         return h ? "#D6D6D6" : "#F1F1F1";
                     }).ofObject(),
                     new go.Binding("desiredSize", "size", go.Size.parse).makeTwoWay(go.Size.stringify)),
-                $(go.Placeholder,
+                gojs(go.Placeholder,
                     {padding: 12, alignment: go.Spot.TopLeft}),
-                $(go.TextBlock,  // this TextBlock is only seen when the swimlane is collapsed
+                gojs(go.TextBlock,  // this TextBlock is only seen when the swimlane is collapsed
                     {
                         name: "LABEL",
                         font: "15px Lato, sans-serif", editable: true,
@@ -312,29 +312,29 @@ function initKanban() {
 
     // Set up a Part as a legend, and place it directly on the diagram
     myDiagram.add(
-        $(go.Part, "Table",
+        gojs(go.Part, "Table",
             {position: new go.Point(300, 10), selectable: false},
-            $(go.TextBlock, "Key",
+            gojs(go.TextBlock, "Key",
                 {row: 0, font: "700 14px Droid Serif, sans-serif"}),  // end row 0
-            $(go.Panel, "Horizontal",
+            gojs(go.Panel, "Horizontal",
                 {row: 1, alignment: go.Spot.Left},
-                $(go.Shape, "Rectangle",
+                gojs(go.Shape, "Rectangle",
                     {desiredSize: new go.Size(10, 10), fill: '#CC293D', margin: 5}),
-                $(go.TextBlock, "Halted",
+                gojs(go.TextBlock, "Halted",
                     {font: "700 13px Droid Serif, sans-serif"})
             ),  // end row 1
-            $(go.Panel, "Horizontal",
+            gojs(go.Panel, "Horizontal",
                 {row: 2, alignment: go.Spot.Left},
-                $(go.Shape, "Rectangle",
+                gojs(go.Shape, "Rectangle",
                     {desiredSize: new go.Size(10, 10), fill: '#FFD700', margin: 5}),
-                $(go.TextBlock, "In Progress",
+                gojs(go.TextBlock, "In Progress",
                     {font: "700 13px Droid Serif, sans-serif"})
             ),  // end row 2
-            $(go.Panel, "Horizontal",
+            gojs(go.Panel, "Horizontal",
                 {row: 3, alignment: go.Spot.Left},
-                $(go.Shape, "Rectangle",
+                gojs(go.Shape, "Rectangle",
                     {desiredSize: new go.Size(10, 10), fill: '#009CCC', margin: 5}),
-                $(go.TextBlock, "Completed",
+                gojs(go.TextBlock, "Completed",
                     {font: "700 13px Droid Serif, sans-serif"})
             )  // end row 3
         ));

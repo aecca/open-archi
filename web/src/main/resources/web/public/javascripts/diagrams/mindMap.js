@@ -3,7 +3,7 @@ function initMindMap() {
     const $ = go.GraphObject.make;
 
     myDiagram =
-        $(go.Diagram, diagramDiv,
+        gojs(go.Diagram, "diagramDiv",
             {
                 // when the user drags a node, also move/copy/delete the whole subtree starting with that node
                 "commandHandler.copiesTree": true,
@@ -27,9 +27,9 @@ function initMindMap() {
 
     // a node consists of some text with a line shape underneath
     myDiagram.nodeTemplate =
-        $(go.Node, "Vertical",
+        gojs(go.Node, "Vertical",
             {selectionObjectName: "TEXT"},
-            $(go.TextBlock,
+            gojs(go.TextBlock,
                 {
                     name: "TEXT",
                     minSize: new go.Size(30, 15),
@@ -39,7 +39,7 @@ function initMindMap() {
                 new go.Binding("text", "text").makeTwoWay(),
                 new go.Binding("scale", "scale").makeTwoWay(),
                 new go.Binding("font", "font").makeTwoWay()),
-            $(go.Shape, "LineH",
+            gojs(go.Shape, "LineH",
                 {
                     stretch: go.GraphObject.Horizontal,
                     strokeWidth: 3, height: 3,
@@ -64,11 +64,11 @@ function initMindMap() {
 
     // selected nodes show a button for adding children
     myDiagram.nodeTemplate.selectionAdornmentTemplate =
-        $(go.Adornment, "Spot",
-            $(go.Panel, "Auto",
+        gojs(go.Adornment, "Spot",
+            gojs(go.Panel, "Auto",
                 // this Adornment has a rectangular blue Shape around the selected node
-                $(go.Shape, {fill: null, stroke: "dodgerblue", strokeWidth: 3}),
-                $(go.Placeholder, {margin: new go.Margin(4, 4, 0, 4)})
+                gojs(go.Shape, {fill: null, stroke: "dodgerblue", strokeWidth: 3}),
+                gojs(go.Placeholder, {margin: new go.Margin(4, 4, 0, 4)})
             ),
             // and this Adornment has a Button to the right of the selected node
             $("Button",
@@ -77,7 +77,7 @@ function initMindMap() {
                     alignmentFocus: go.Spot.Left,
                     click: addNodeAndLink  // define click behavior for this Button in the Adornment
                 },
-                $(go.TextBlock, "+",  // the Button content
+                gojs(go.TextBlock, "+",  // the Button content
                     {font: "bold 8pt sans-serif"})
             )
         );
@@ -85,30 +85,30 @@ function initMindMap() {
     // the context menu allows users to change the font size and weight,
     // and to perform a limited tree layout starting at that node
     myDiagram.nodeTemplate.contextMenu =
-        $(go.Adornment, "Vertical",
+        gojs(go.Adornment, "Vertical",
             $("ContextMenuButton",
-                $(go.TextBlock, "Bigger"),
+                gojs(go.TextBlock, "Bigger"),
                 {
                     click: function (e, obj) {
                         changeTextSize(obj, 1.1);
                     }
                 }),
             $("ContextMenuButton",
-                $(go.TextBlock, "Smaller"),
+                gojs(go.TextBlock, "Smaller"),
                 {
                     click: function (e, obj) {
                         changeTextSize(obj, 1 / 1.1);
                     }
                 }),
             $("ContextMenuButton",
-                $(go.TextBlock, "Bold/Normal"),
+                gojs(go.TextBlock, "Bold/Normal"),
                 {
                     click: function (e, obj) {
                         toggleTextWeight(obj);
                     }
                 }),
             $("ContextMenuButton",
-                $(go.TextBlock, "Layout"),
+                gojs(go.TextBlock, "Layout"),
                 {
                     click: function (e, obj) {
                         const adorn = obj.part;
@@ -122,14 +122,14 @@ function initMindMap() {
 
     // a link is just a Bezier-curved line of the same color as the node to which it is connected
     myDiagram.linkTemplate =
-        $(go.Link,
+        gojs(go.Link,
             {
                 curve: go.Link.Bezier,
                 fromShortLength: -2,
                 toShortLength: -2,
                 selectable: false
             },
-            $(go.Shape,
+            gojs(go.Shape,
                 {strokeWidth: 3},
                 new go.Binding("stroke", "toNode", function (n) {
                     if (n.data.brush) return n.data.brush;
@@ -139,9 +139,9 @@ function initMindMap() {
 
     // the Diagram's context menu just displays commands for general functionality
     myDiagram.contextMenu =
-        $(go.Adornment, "Vertical",
+        gojs(go.Adornment, "Vertical",
             $("ContextMenuButton",
-                $(go.TextBlock, "Undo"),
+                gojs(go.TextBlock, "Undo"),
                 {
                     click: function (e, obj) {
                         e.diagram.commandHandler.undo();
@@ -151,7 +151,7 @@ function initMindMap() {
                     return o.diagram && o.diagram.commandHandler.canUndo();
                 }).ofObject()),
             $("ContextMenuButton",
-                $(go.TextBlock, "Redo"),
+                gojs(go.TextBlock, "Redo"),
                 {
                     click: function (e, obj) {
                         e.diagram.commandHandler.redo();
@@ -161,14 +161,14 @@ function initMindMap() {
                     return o.diagram && o.diagram.commandHandler.canRedo();
                 }).ofObject()),
             $("ContextMenuButton",
-                $(go.TextBlock, "Save"),
+                gojs(go.TextBlock, "Save"),
                 {
                     click: function (e, obj) {
                         save();
                     }
                 }),
             $("ContextMenuButton",
-                $(go.TextBlock, "Load"),
+                gojs(go.TextBlock, "Load"),
                 {
                     click: function (e, obj) {
                         load();

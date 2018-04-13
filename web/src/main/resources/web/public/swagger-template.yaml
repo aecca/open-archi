@@ -1948,6 +1948,52 @@ paths:
       security:
       - openarchi_auth:
         - read:catalogs
+  "/catalogs/element-roles":
+    get:
+      tags:
+      - Catalogs
+      summary: Finds element's roles
+      description: Returns all permitted element's roles
+      operationId: get-element-roles
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Element_Role"
+        '400':
+          description: Bad request
+      security:
+      - openarchi_auth:
+        - read:catalogs
+    post:
+      tags:
+      - Catalogs
+      summary: Add a new element role
+      description: If the element role exists previously an error will be raised.
+      operationId: add-element-role
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: Element role that needs to be added
+        required: true
+        schema:
+          $ref: "#/definitions/Element_Role_Create"
+      responses:
+        '200':
+          description: Accepted
+        '405':
+          description: Invalid input
+      security:
+      - openarchi_auth:
+        - write:catalog
   "/palette/architectures":
     get:
       tags:
@@ -2181,7 +2227,7 @@ securityDefinitions:
     scopes:
       write:model: Modify or add a model
       read:models: Read models
-      write:catalogs: Modify or add a catalog
+      write:catalog: Modify or add a catalog
       read:catalogs: Read catalogs
       write:palette: Modify or add an element to a palette
       read:palettes: Read palette elements
@@ -3089,6 +3135,26 @@ definitions:
         url:
           type: string
           description: Url for the physical access to the of model
+  Element_Role:
+    type: object
+    description: Element role
+    allOf:
+    - $ref: "#/definitions/Base_Entity"
+    - type: object
+      properties:
+        name:
+          type: string
+          description: Name of the role
+  Element_Role_Create:
+    type: object
+    description: Element role
+    allOf:
+    - $ref: "#/definitions/Base_Entity_Create"
+    - type: object
+      properties:
+        name:
+          type: string
+          description: Name of the role
   Deployment_Node:
     description: Deployment Node
     type: object

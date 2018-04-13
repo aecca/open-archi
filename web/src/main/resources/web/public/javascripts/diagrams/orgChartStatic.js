@@ -1,9 +1,12 @@
 function initOrgChartStatic() {
 
-    const $ = go.GraphObject.make;  // for conciseness in defining templates
+    if (myDiagram !== undefined) {
+        myDiagram.clear();
+        myDiagram.div = null;
+    }
 
     myDiagram =
-        $(go.Diagram, diagramDiv,  // the DIV HTML element
+        gojs(go.Diagram, "diagramDiv",  // the DIV HTML element
             {
                 // Put the diagram contents at the top center of the viewport
                 initialDocumentSpot: go.Spot.TopCenter,
@@ -14,7 +17,7 @@ function initOrgChartStatic() {
                 //  if (node !== null) e.diagram.commandHandler.scrollToPart(node);
                 //},
                 layout:
-                    $(go.TreeLayout,  // use a TreeLayout to position all of the nodes
+                    gojs(go.TreeLayout,  // use a TreeLayout to position all of the nodes
                         {
                             treeStyle: go.TreeLayout.StyleLastParents,
                             // properties for most of the tree:
@@ -53,27 +56,27 @@ function initOrgChartStatic() {
 
     // define the Node template
     myDiagram.nodeTemplate =
-        $(go.Node, "Auto",
+        gojs(go.Node, "Auto",
             // the outer shape for the node, surrounding the Table
-            $(go.Shape, "Rectangle",
+            gojs(go.Shape, "Rectangle",
                 {stroke: null, strokeWidth: 0},
                 /* reddish if highlighted, blue otherwise */
                 new go.Binding("fill", "isHighlighted", function (h) {
                     return h ? "#F44336" : "#A7E7FC";
                 }).ofObject()),
             // a table to contain the different parts of the node
-            $(go.Panel, "Table",
+            gojs(go.Panel, "Table",
                 {margin: 6, maxSize: new go.Size(200, NaN)},
                 // the two TextBlocks in column 0 both stretch in width
                 // but align on the left side
-                $(go.RowColumnDefinition,
+                gojs(go.RowColumnDefinition,
                     {
                         column: 0,
                         stretch: go.GraphObject.Horizontal,
                         alignment: go.Spot.Left
                     }),
                 // the name
-                $(go.TextBlock,
+                gojs(go.TextBlock,
                     {
                         row: 0, column: 0,
                         maxSize: new go.Size(160, NaN), margin: 2,
@@ -82,7 +85,7 @@ function initOrgChartStatic() {
                     },
                     new go.Binding("text", "name")),
                 // the country flag
-                $(go.Picture,
+                gojs(go.Picture,
                     {
                         row: 0, column: 1, margin: 2,
                         imageStretch: go.GraphObject.Uniform,
@@ -94,7 +97,7 @@ function initOrgChartStatic() {
                     }),
                     new go.Binding("source", "nation", theNationFlagConverter)),
                 // the additional textual information
-                $(go.TextBlock,
+                gojs(go.TextBlock,
                     {
                         row: 1, column: 0, columnSpan: 2,
                         font: "12px Roboto, sans-serif"
@@ -105,9 +108,9 @@ function initOrgChartStatic() {
 
     // define the Link template, a simple orthogonal line
     myDiagram.linkTemplate =
-        $(go.Link, go.Link.Orthogonal,
+        gojs(go.Link, go.Link.Orthogonal,
             {corner: 5, selectable: false},
-            $(go.Shape, {strokeWidth: 3, stroke: "#424242"}));  // dark gray, rounded corner links
+            gojs(go.Shape, {strokeWidth: 3, stroke: "#424242"}));  // dark gray, rounded corner links
 
 
     // set up the nodeDataArray, describing each person/position
@@ -354,7 +357,7 @@ function initOrgChartStatic() {
 
     // create the Model with data for the tree, and assign to the Diagram
     myDiagram.model =
-        $(go.TreeModel,
+        gojs(go.TreeModel,
             {
                 nodeParentKeyProperty: "boss",  // this property refers to the parent node data
                 nodeDataArray: nodeDataArray
@@ -362,7 +365,7 @@ function initOrgChartStatic() {
 
     // Overview
     myOverview =
-        $(go.Overview, "myOverviewDiv",  // the HTML DIV element for the Overview
+        gojs(go.Overview, "myOverviewDiv",  // the HTML DIV element for the Overview
             {observed: myDiagram, contentAlignment: go.Spot.Center});   // tell it which Diagram to show and pan
 }
 

@@ -1,13 +1,16 @@
 function initGrouping() {
 
-    const $ = go.GraphObject.make;  // for conciseness in defining templates
+    if (myDiagram !== undefined) {
+        myDiagram.clear();
+        myDiagram.div = null;
+    }
 
     myDiagram =
-        $(go.Diagram, diagramDiv,  // Diagram refers to its DIV HTML element by id
+        gojs(go.Diagram, "diagramDiv",  // Diagram refers to its DIV HTML element by id
             {
                 // start everything in the middle of the viewport
                 initialContentAlignment: go.Spot.Center,
-                layout: $(go.TreeLayout,  // the layout for the entire diagram
+                layout: gojs(go.TreeLayout,  // the layout for the entire diagram
                     {
                         angle: 90,
                         arrangement: go.TreeLayout.ArrangementHorizontal,
@@ -17,28 +20,28 @@ function initGrouping() {
 
     // define the node template for non-groups
     myDiagram.nodeTemplate =
-        $(go.Node, "Auto",
-            $(go.Shape, "Rectangle",
+        gojs(go.Node, "Auto",
+            gojs(go.Shape, "Rectangle",
                 {stroke: null, strokeWidth: 0},
                 new go.Binding("fill", "key")),
-            $(go.TextBlock,
+            gojs(go.TextBlock,
                 {margin: 7, font: "Bold 14px Sans-Serif"},
                 //the text, color, and key are all bound to the same property in the node data
                 new go.Binding("text", "key"))
         );
 
     myDiagram.linkTemplate =
-        $(go.Link,
+        gojs(go.Link,
             {routing: go.Link.Orthogonal, corner: 10},
-            $(go.Shape, {strokeWidth: 2}),
-            $(go.Shape, {toArrow: "OpenTriangle"})
+            gojs(go.Shape, {strokeWidth: 2}),
+            gojs(go.Shape, {toArrow: "OpenTriangle"})
         );
 
     // define the group template
     myDiagram.groupTemplate =
-        $(go.Group, "Auto",
+        gojs(go.Group, "Auto",
             { // define the group's internal layout
-                layout: $(go.TreeLayout,
+                layout: gojs(go.TreeLayout,
                     {angle: 90, arrangement: go.TreeLayout.ArrangementHorizontal, isRealtime: false}),
                 // the group begins unexpanded;
                 // upon expansion, a Diagram Listener will generate contents for the group
@@ -50,20 +53,20 @@ function initGrouping() {
                     }
                 }
             },
-            $(go.Shape, "Rectangle",
+            gojs(go.Shape, "Rectangle",
                 {fill: null, stroke: "gray", strokeWidth: 2}),
-            $(go.Panel, "Vertical",
+            gojs(go.Panel, "Vertical",
                 {defaultAlignment: go.Spot.Left, margin: 4},
-                $(go.Panel, "Horizontal",
+                gojs(go.Panel, "Horizontal",
                     {defaultAlignment: go.Spot.Top},
                     // the SubGraphExpanderButton is a panel that functions as a button to expand or collapse the subGraph
                     $("SubGraphExpanderButton"),
-                    $(go.TextBlock,
+                    gojs(go.TextBlock,
                         {font: "Bold 18px Sans-Serif", margin: 4},
                         new go.Binding("text", "key"))
                 ),
                 // create a placeholder to represent the area where the contents of the group are
-                $(go.Placeholder,
+                gojs(go.Placeholder,
                     {padding: new go.Margin(0, 10)})
             )  // end Vertical Panel
         );  // end Group

@@ -118,7 +118,41 @@ const partContextMenu =
             },
             function (o) {
                 return o.diagram.commandHandler.canGroupSelection();
-            })
+            }),
+        makeButton("Role",
+            function (e, obj) {
+                const model = e.diagram.model;
+                const node = obj.part.data;
+
+                $.get("/open-archi/api/catalogs/element-roles")
+                    .done(function (data) {
+                        let modal = $('#element-role-data');
+                        let elementRoleItems = [];
+                        i = 0;
+                        data.forEach(function (elementRole, i) {
+                            elementRoleItems.push('<li role="presentation"><a role="menuitem" tabindex="' + i + '" href="#">' + elementRole.name + '</a></li>');
+                        });
+                        let elementRolesDropdown = $("#elementRolesDropdown");
+                        elementRolesDropdown.append(elementRoleItems.join(''));
+                        elementRolesDropdown.on('click', 'a', function () {
+                            const text = $(this).html();
+                            const htmlText = text + ' <span class="caret"></span>';
+                            $(this).closest('.dropdown').find('.dropdown-toggle').html(htmlText);
+                        });
+                        modal.modal({
+                            backdrop: 'static',
+                            keyboard: false,
+                            show: true
+                        });
+                        modal.on('hidden.bs.modal', function () {
+                            const role = $("#elementRolesDropdown").find("a.active").html();
+                            model.setDataProperty(node, "role", role);
+                        })
+                    });
+
+
+
+            }, true)
     );
 
 // Define the appearance and behavior for Nodes:
@@ -521,6 +555,6 @@ function changeView() {
 }
 
 function getCurrentViewMode() {
-    let viewMode_ = $(viewMode.tickLabels[viewMode.getValue()-1]);
+    let viewMode_ = $(viewMode.tickLabels[viewMode.getValue() - 1]);
     return viewMode_.html();
 }

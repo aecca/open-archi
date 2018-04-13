@@ -5,7 +5,7 @@ function initHtmlInteraction() {
     const GO = go.GraphObject.make;  // for conciseness in defining templates
 
     myDiagram =
-        GO(go.Diagram, diagramDiv,  // must name or refer to the DIV HTML element
+        GO(go.Diagram, "diagramDiv",  // must name or refer to the DIV HTML element
             {allowDrop: true});  // must be true to accept drops from the Palette
 
     // define several shared Brushes

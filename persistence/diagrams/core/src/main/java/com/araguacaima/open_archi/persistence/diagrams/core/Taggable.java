@@ -37,6 +37,9 @@ public class Taggable extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Status status = Status.INITIAL;
 
+    @OneToOne
+    private ElementRole role;
+
     public Set<String> getTags() {
         return tags;
     }
@@ -53,9 +56,18 @@ public class Taggable extends BaseEntity {
         this.status = status;
     }
 
+    public ElementRole getRole() {
+        return role;
+    }
+
+    public void setRole(ElementRole role) {
+        this.role = role;
+    }
+
     public void override(Taggable source, boolean keepMeta, String suffix) {
         super.override(source, keepMeta, suffix);
         this.tags = source.getTags();
+        this.role = source.getRole();
     }
 
     public void copyNonEmpty(Taggable source, boolean keepMeta) {
@@ -63,6 +75,8 @@ public class Taggable extends BaseEntity {
         if (source.getTags() != null && !source.getTags().isEmpty()) {
             this.tags = source.getTags();
         }
-
+        if (source.getRole() != null) {
+            this.role = source.getRole();
+        }
     }
 }

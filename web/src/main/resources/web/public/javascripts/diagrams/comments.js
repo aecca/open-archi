@@ -3,10 +3,10 @@ function initComments() {
     let $ = go.GraphObject.make;
 
     myDiagram =
-        $(go.Diagram, diagramDiv,  // create a Diagram for the DIV HTML element
+        gojs(go.Diagram, "diagramDiv",  // create a Diagram for the DIV HTML element
             {
                 initialContentAlignment: go.Spot.Center,
-                layout: $(go.TreeLayout,
+                layout: gojs(go.TreeLayout,
                     {
                         angle: 90,
                         setsPortSpot: false,
@@ -59,9 +59,9 @@ function initComments() {
         );
 
     myDiagram.nodeTemplateMap.add("Comment",
-        $(go.Node,  // this needs to act as a rectangular shape for BalloonLink,
+        gojs(go.Node,  // this needs to act as a rectangular shape for BalloonLink,
             {background: "transparent"},  // which can be accomplished by setting the background.
-            $(go.TextBlock,
+            gojs(go.TextBlock,
                 {stroke: "brown", margin: 3},
                 new go.Binding("text"))
         ));
@@ -69,13 +69,13 @@ function initComments() {
     myDiagram.linkTemplateMap.add("Comment",
         // if the BalloonLink class has been loaded from the Extensions directory, use it
         $((typeof BalloonLink === "function" ? BalloonLink : go.Link),
-            $(go.Shape,  // the Shape.geometry will be computed to surround the comment node and
+            gojs(go.Shape,  // the Shape.geometry will be computed to surround the comment node and
                 // point all the way to the commented node
                 {stroke: "brown", strokeWidth: 1, fill: "lightyellow"})
         ));
 
     myDiagram.model =
-        $(go.GraphLinksModel,
+        gojs(go.GraphLinksModel,
             {
                 nodeDataArray: [
                     {key: "Alpha", color: "orange"},
