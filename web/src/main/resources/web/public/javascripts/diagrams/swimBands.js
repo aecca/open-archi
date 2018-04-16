@@ -42,7 +42,13 @@ function initSwimBands() {
 
     const $ = go.GraphObject.make;
 
-    myDiagram = gojs(go.Diagram, "diagramDiv",
+
+    if (myDiagram !== undefined) {
+        myDiagram.clear();
+        myDiagram.div = null;
+    }
+
+    myDiagram = gojs(go.Diagram, "diagramDiv",  // create a Diagram for the DIV HTML element
         {
             initialContentAlignment: go.Spot.Center,
             layout: $(BandedTreeLayout,  // custom layout is defined above

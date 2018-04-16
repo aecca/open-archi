@@ -2,45 +2,40 @@
 <head>
     <script src="/javascripts/diagrams/logicCircuit.js"></script>
     <script id="code">
-        initLogicCircuit();
+        initLogicCircuit({
+            "class": "go.GraphLinksModel",
+            linkFromPortIdProperty: "fromPort",
+            linkToPortIdProperty: "toPort",
+            nodeDataArray: [
+                {"category": "input", "key": "input1", "loc": "-150 -80"},
+                {"category": "or", "key": "or1", "loc": "-70 0"},
+                {"category": "not", "key": "not1", "loc": "10 0"},
+                {"category": "xor", "key": "xor1", "loc": "100 0"},
+                {"category": "or", "key": "or2", "loc": "200 0"},
+                {"category": "output", "key": "output1", "loc": "200 -100"}
+            ],
+            linkDataArray: [
+                {"from": "input1", "fromPort": "out", "to": "or1", "toPort": "in1"},
+                {"from": "or1", "fromPort": "out", "to": "not1", "toPort": "in"},
+                {"from": "not1", "fromPort": "out", "to": "or1", "toPort": "in2"},
+                {"from": "not1", "fromPort": "out", "to": "xor1", "toPort": "in1"},
+                {"from": "xor1", "fromPort": "out", "to": "or2", "toPort": "in1"},
+                {"from": "or2", "fromPort": "out", "to": "xor1", "toPort": "in2"},
+                {"from": "xor1", "fromPort": "out", "to": "output1", "toPort": ""}
+            ]
+        });
     </script>
 <body>
-<div id="explanation">
-    <h2 style="margin-top: 0; padding-top: 0; margin-bottom: 30px;">
-        Alternativa a diagrama de flujos y secuencia
-    </h2>
-    <p>Para representar un diagrama de secuencia que muestre la interacción entre consumidores y backend a través de
-        todas las piezas middleware de un caso de uso se puede usar, claramente, un diagrama UML de secuencia. Eso lo
-        más convencional. SIn embargo, con OpenArchi podríamos incorporar esos flujos y secuencias directamente en el
-        diagrama de componentes de arquitectura. De este modo en la misma visual podría cualquier persona identificar
-        por cuáles componentes pasará cada caso de uso, identificando cuellos de botella, exceso de invocaciones,
-        consumo de APIs, etc, en tiempo de diseño
-    </p>
-</div>
-<textarea id="modelToSaveOrLoad" style="width:100%;height:200px">
-      {
-        "class": "go.GraphLinksModel",
-        "linkFromPortIdProperty": "fromPort",
-        "linkToPortIdProperty": "toPort",
-        "nodeDataArray": [
-          {"category": "input", "key": "input1", "loc": "-150 -80"},
-          {"category": "or", "key": "or1", "loc": "-70 0"},
-          {"category": "not", "key": "not1", "loc": "10 0"},
-          {"category": "xor", "key": "xor1", "loc": "100 0"},
-          {"category": "or", "key": "or2", "loc": "200 0"},
-          {"category": "output", "key": "output1", "loc": "200 -100"}
-          ],
-        "linkDataArray": [
-          {"from": "input1", "fromPort": "out", "to": "or1", "toPort": "in1"},
-          {"from": "or1", "fromPort": "out", "to": "not1", "toPort": "in"},
-          {"from": "not1", "fromPort": "out", "to": "or1", "toPort": "in2"},
-          {"from": "not1", "fromPort": "out", "to": "xor1", "toPort": "in1"},
-          {"from": "xor1", "fromPort": "out", "to": "or2", "toPort": "in1"},
-          {"from": "or2", "fromPort": "out", "to": "xor1", "toPort": "in2"},
-          {"from": "xor1", "fromPort": "out", "to": "output1", "toPort": ""}
-        ]
-      }
-    </textarea>
+<h2 style="margin-top: 0; padding-top: 0; margin-bottom: 30px;">
+    Alternativa a diagrama de flujos y secuencia
+</h2>
+<p>Para representar un diagrama de secuencia que muestre la interacción entre consumidores y backend a través de
+    todas las piezas middleware de un caso de uso se puede usar, claramente, un diagrama UML de secuencia. Eso lo
+    más convencional. SIn embargo, con OpenArchi podríamos incorporar esos flujos y secuencias directamente en el
+    diagrama de componentes de arquitectura. De este modo en la misma visual podría cualquier persona identificar
+    por cuáles componentes pasará cada caso de uso, identificando cuellos de botella, exceso de invocaciones,
+    consumo de APIs, etc, en tiempo de diseño
+</p>
 
 </body>
 </html>

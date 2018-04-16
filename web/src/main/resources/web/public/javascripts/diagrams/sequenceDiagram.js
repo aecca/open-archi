@@ -1,21 +1,26 @@
-function initSequenceDiagram() {
+function initSequenceDiagram(nodeDataArray, linkDataArray) {
 
     const $ = go.GraphObject.make;
 
-    myDiagram =
-        gojs(go.Diagram, "diagramDiv", // must be the ID or reference to an HTML DIV
-            {
-                initialContentAlignment: go.Spot.Center,
-                allowCopy: false,
-                linkingTool: $(MessagingTool),  // defined below
-                "resizingTool.isGridSnapEnabled": true,
-                "draggingTool.gridSnapCellSize": new go.Size(1, MessageSpacing / 4),
-                "draggingTool.isGridSnapEnabled": true,
-                // automatically extend Lifelines as Activities are moved or resized
-                "SelectionMoved": ensureLifelineHeights,
-                "PartResized": ensureLifelineHeights,
-                "undoManager.isEnabled": true
-            });
+
+    if (myDiagram !== undefined) {
+        myDiagram.clear();
+        myDiagram.div = null;
+    }
+
+    myDiagram = gojs(go.Diagram, "diagramDiv",  // create a Diagram for the DIV HTML element
+        {
+            initialContentAlignment: go.Spot.Center,
+            allowCopy: false,
+            linkingTool: $(MessagingTool),  // defined below
+            "resizingTool.isGridSnapEnabled": true,
+            "draggingTool.gridSnapCellSize": new go.Size(1, MessageSpacing / 4),
+            "draggingTool.isGridSnapEnabled": true,
+            // automatically extend Lifelines as Activities are moved or resized
+            "SelectionMoved": ensureLifelineHeights,
+            "PartResized": ensureLifelineHeights,
+            "undoManager.isEnabled": true
+        });
 
     // when the document is modified, add a "*" to the title and enable the "Save" button
     myDiagram.addDiagramListener("Modified", function (e) {
@@ -125,6 +130,7 @@ function initSequenceDiagram() {
         );
 
     // create the graph by reading the JSON data saved in "modelToSaveOrLoad" textarea element
+    myDiagram.model = new go.GraphLinksModel(nodeDataArray, linkDataArray);
     load();
 }
 
@@ -313,8 +319,4 @@ function save() {
     document.getElementById("modelToSaveOrLoad").value = JSON.stringify(myDiagram.model, null, 2);
     let textContent = myDiagram.model.toJson();
     myDiagram.isModified = false;
-}
-
-function load() {
-    myDiagram.model = go.Model.fromJson(document.getElementById("modelToSaveOrLoad").value);
 }

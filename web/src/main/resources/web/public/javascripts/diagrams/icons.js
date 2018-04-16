@@ -14,8 +14,12 @@ function initIcons() {
         white: "#F5F5F5"
     };
 
-    // The first Diagram showcases what the Nodes might look like "in action"
-    myDiagram = gojs(go.Diagram, "diagramDiv",
+    if (myDiagram !== undefined) {
+        myDiagram.clear();
+        myDiagram.div = null;
+    }
+
+    myDiagram = gojs(go.Diagram, "diagramDiv",  // create a Diagram for the DIV HTML element
         {
             initialContentAlignment: go.Spot.Center,
             "undoManager.isEnabled": true,

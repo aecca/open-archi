@@ -2,21 +2,26 @@ function initUmlClass() {
 
     const $ = go.GraphObject.make;
 
-    myDiagram =
-        gojs(go.Diagram, "diagramDiv",
-            {
-                initialContentAlignment: go.Spot.Center,
-                "undoManager.isEnabled": true,
-                layout: gojs(go.TreeLayout,
-                    { // this only lays out in trees nodes connected by "generalization" links
-                        angle: 90,
-                        path: go.TreeLayout.PathSource,  // links go from child to parent
-                        setsPortSpot: false,  // keep Spot.AllSides for link connection spot
-                        setsChildPortSpot: false,  // keep Spot.AllSides
-                        // nodes not connected by "generalization" links are laid out horizontally
-                        arrangement: go.TreeLayout.ArrangementHorizontal
-                    })
-            });
+
+    if (myDiagram !== undefined) {
+        myDiagram.clear();
+        myDiagram.div = null;
+    }
+
+    myDiagram = gojs(go.Diagram, "diagramDiv",  // create a Diagram for the DIV HTML element
+        {
+            initialContentAlignment: go.Spot.Center,
+            "undoManager.isEnabled": true,
+            layout: gojs(go.TreeLayout,
+                { // this only lays out in trees nodes connected by "generalization" links
+                    angle: 90,
+                    path: go.TreeLayout.PathSource,  // links go from child to parent
+                    setsPortSpot: false,  // keep Spot.AllSides for link connection spot
+                    setsChildPortSpot: false,  // keep Spot.AllSides
+                    // nodes not connected by "generalization" links are laid out horizontally
+                    arrangement: go.TreeLayout.ArrangementHorizontal
+                })
+        });
 
     // show visibility or access as a single character at the beginning of each property or method
     function convertVisibility(v) {

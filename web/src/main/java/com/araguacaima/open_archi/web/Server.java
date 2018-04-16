@@ -1435,8 +1435,6 @@ public class Server {
         result.add(new ExampleData("/diagrams/checkBoxes.html", "Features (checkbox)"));
         result.add(new ExampleData("/diagrams/columnResizing.html", "Ajuste de tamaños"));
         result.add(new ExampleData("/diagrams/comments.html", "Comentarios"));
-        result.add(new ExampleData("/diagrams/contextMenu.html", "Menú Contextual"));
-        result.add(new ExampleData("/diagrams/dataInspector.html", "Meta Datos"));
         result.add(new ExampleData("/diagrams/dragCreating.html", "Creación Ágil"));
         result.add(new ExampleData("/diagrams/draggableLink.html", "Constraints"));
         result.add(new ExampleData("/diagrams/entityRelationship.html", "Entidad Relación"));
@@ -1444,7 +1442,6 @@ public class Server {
         result.add(new ExampleData("/diagrams/gantt.html", "Diagramas Gantt"));
         result.add(new ExampleData("/diagrams/grouping.html", "Expansión"));
         result.add(new ExampleData("/diagrams/guidedDragging.html", "Guías visuales"));
-//        result.add(new ExampleData("/diagrams/htmlInteraction.html", "Interoperatividad HTML"));
         result.add(new ExampleData("/diagrams/icons.html", "Iconos SVG"));
         result.add(new ExampleData("/diagrams/kanban.html", "Tablero Kanban"));
         result.add(new ExampleData("/diagrams/logicCircuit.html", "Flujo y Secuencia 1"));

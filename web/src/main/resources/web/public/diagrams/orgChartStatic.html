@@ -20,7 +20,7 @@
     </script>
 </head>
 <body>
-<div id="explanation">
+<div>
     <h2 style="margin-top: 0; padding-top: 0; margin-bottom: 30px;">
         Zooming
     </h2>
@@ -40,7 +40,7 @@
         Descripción general.
     </p>
 
-    <input type="search" id="mySearch" onkeypress="if (event.keyCode === 13) searchDiagram()"/>
+    <input type="search" id="mySearch" onkeypress="if (event.keyCode === 13) searchDiagram()" title="Search"/>
     <button onclick="searchDiagram()">Search</button>
 </div>
 

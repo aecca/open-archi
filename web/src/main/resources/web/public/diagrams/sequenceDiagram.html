@@ -3,57 +3,44 @@
     <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
     <script src="/javascripts/diagrams/sequenceDiagram.js"></script>
     <script id="code">
-        initSequenceDiagram();
+        initSequenceDiagram({
+            nodeDataArray: [
+                {"key": "Fred", "text": "Fred: Patron", "isGroup": true, "loc": "0 0", "duration": 9},
+                {"key": "Bob", "text": "Bob: Waiter", "isGroup": true, "loc": "100 0", "duration": 9},
+                {"key": "Hank", "text": "Hank: Cook", "isGroup": true, "loc": "200 0", "duration": 9},
+                {"key": "Renee", "text": "Renee: Cashier", "isGroup": true, "loc": "300 0", "duration": 9},
+                {"group": "Bob", "start": 1, "duration": 2},
+                {"group": "Hank", "start": 2, "duration": 3},
+                {"group": "Fred", "start": 3, "duration": 1},
+                {"group": "Bob", "start": 5, "duration": 1},
+                {"group": "Fred", "start": 6, "duration": 2},
+                {"group": "Renee", "start": 8, "duration": 1}
+            ],
+            linkDataArray: [
+                {"from": "Fred", "to": "Bob", "text": "order", "time": 1},
+                {"from": "Bob", "to": "Hank", "text": "order food", "time": 2},
+                {"from": "Bob", "to": "Fred", "text": "serve drinks", "time": 3},
+                {"from": "Hank", "to": "Bob", "text": "finish cooking", "time": 5},
+                {"from": "Bob", "to": "Fred", "text": "serve food", "time": 6},
+                {"from": "Fred", "to": "Renee", "text": "pay", "time": 8}
+            ]
+        });
     </script>
 </head>
 <body>
-<div id="explanation">
-    <h2 style="margin-top: 0; padding-top: 0; margin-bottom: 30px;">
-        Diagrama de secuencias
-    </h2>
-    <p>
-        Un <em> diagrama de secuencia </em> es un diagrama de interacción que muestra cómo las entidades operan entre sí
-        y en qué orden.
-    </p>
-    <p>
-        Hay muchos precedentes de soluciones en donde la determinicaicón del orden y el flujo de intearcción entre
-        componentes condicionan el modelo de solución. Esta es una solución clásica utilizando un digrama UML de
-        secuancias convencional para describir, a petición, el flujo de interacción entre los componentes de un modelo.
-    </p></div>
-<div id=diagramDiv style="border: solid 1px black; width: 100%; height: 400px"></div>
+
+<h2 style="margin-top: 0; padding-top: 0; margin-bottom: 30px;">
+    Diagrama de secuencias
+</h2>
 <p>
-    Aquí se pueden visualizar los datos que permiten almacenar y/o recuperar el diagrama expuesto arriba (Utilizando las
-    APIs definidas en: /open-archi/api), en formato JSON
+    Un <em> diagrama de secuencia </em> es un diagrama de interacción que muestra cómo las entidades operan entre sí
+    y en qué orden.
 </p>
-<div>
-    <div>
-        <button id="SaveButton" onclick="save()">Save</button>
-        <button onclick="load()">Load</button>
-    </div>
-    <textarea id="modelToSaveOrLoad" style="width:100%;height:240px">
-{ "class": "go.GraphLinksModel",
-  "nodeDataArray": [
-{"key":"Fred", "text":"Fred: Patron", "isGroup":true, "loc":"0 0", "duration":9},
-{"key":"Bob", "text":"Bob: Waiter", "isGroup":true, "loc":"100 0", "duration":9},
-{"key":"Hank", "text":"Hank: Cook", "isGroup":true, "loc":"200 0", "duration":9},
-{"key":"Renee", "text":"Renee: Cashier", "isGroup":true, "loc":"300 0", "duration":9},
-{"group":"Bob", "start":1, "duration":2},
-{"group":"Hank", "start":2, "duration":3},
-{"group":"Fred", "start":3, "duration":1},
-{"group":"Bob", "start":5, "duration":1},
-{"group":"Fred", "start":6, "duration":2},
-{"group":"Renee", "start":8, "duration":1}
- ],
-  "linkDataArray": [
-{"from":"Fred", "to":"Bob", "text":"order", "time":1},
-{"from":"Bob", "to":"Hank", "text":"order food", "time":2},
-{"from":"Bob", "to":"Fred", "text":"serve drinks", "time":3},
-{"from":"Hank", "to":"Bob", "text":"finish cooking", "time":5},
-{"from":"Bob", "to":"Fred", "text":"serve food", "time":6},
-{"from":"Fred", "to":"Renee", "text":"pay", "time":8}
- ]}
-    </textarea>
-</div>
-</div>
+<p>
+    Hay muchos precedentes de soluciones en donde la determinicaicón del orden y el flujo de intearcción entre
+    componentes condicionan el modelo de solución. Esta es una solución clásica utilizando un digrama UML de
+    secuancias convencional para describir, a petición, el flujo de interacción entre los componentes de un modelo.
+</p>
+
 </body>
 </html>

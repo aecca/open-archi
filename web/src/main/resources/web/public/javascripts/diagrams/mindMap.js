@@ -1,17 +1,22 @@
-function initMindMap() {
+function initMindMap(nodeDataArray, linkDataArray) {
 
     const $ = go.GraphObject.make;
 
-    myDiagram =
-        gojs(go.Diagram, "diagramDiv",
-            {
-                // when the user drags a node, also move/copy/delete the whole subtree starting with that node
-                "commandHandler.copiesTree": true,
-                "commandHandler.deletesTree": true,
-                "draggingTool.dragsTree": true,
-                initialContentAlignment: go.Spot.Center,  // center the whole graph
-                "undoManager.isEnabled": true
-            });
+
+    if (myDiagram !== undefined) {
+        myDiagram.clear();
+        myDiagram.div = null;
+    }
+
+    myDiagram = gojs(go.Diagram, "diagramDiv",  // create a Diagram for the DIV HTML element
+        {
+            // when the user drags a node, also move/copy/delete the whole subtree starting with that node
+            "commandHandler.copiesTree": true,
+            "commandHandler.deletesTree": true,
+            "draggingTool.dragsTree": true,
+            initialContentAlignment: go.Spot.Center,  // center the whole graph
+            "undoManager.isEnabled": true
+        });
 
     // when the document is modified, add a "*" to the title and enable the "Save" button
     myDiagram.addDiagramListener("Modified", function (e) {
@@ -191,7 +196,7 @@ function initMindMap() {
     });
 
     // read in the predefined graph using the JSON format data held in the "modelToSaveOrLoad" textarea
-    load();
+    myDiagram.model = new go.GraphLinksModel(nodeDataArray, linkDataArray);
 }
 
 function spotConverter(dir, from) {
@@ -300,8 +305,4 @@ function save() {
     document.getElementById("modelToSaveOrLoad").value = JSON.stringify(myDiagram.model, null, 2);
     let textContent = myDiagram.model.toJson();
     myDiagram.isModified = false;
-}
-
-function load() {
-    myDiagram.model = go.Model.fromJson(document.getElementById("modelToSaveOrLoad").value);
 }

@@ -1,4 +1,4 @@
-function initShopFloorMonitor() {
+function initShopFloorMonitor(nodeDataArray, linkDataArray) {
 
     if (myDiagram !== undefined) {
         myDiagram.clear();
@@ -103,7 +103,7 @@ function initShopFloorMonitor() {
                 new go.Binding("stroke", "problem", linkProblemConverter))
         );
 
-    load();
+    myDiagram.model = new go.GraphLinksModel(nodeDataArray, linkDataArray);
 
 
     // simulate some real-time problem monitoring, once every two seconds:
@@ -137,6 +137,3 @@ function initShopFloorMonitor() {
     loop();  // start the simulation
 }
 
-function load() {
-    myDiagram.model = go.Model.fromJson(document.getElementById("modelToSaveOrLoad").value);
-}

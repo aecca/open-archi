@@ -91,29 +91,34 @@ PoolLayout.prototype.doLayout = function (coll) {
 // end PoolLayout class
 
 
-function initKanban() {
+function initKanban(nodeDataArray, linkDataArray) {
 
     const $ = go.GraphObject.make;
 
-    myDiagram =
-        gojs(go.Diagram, "diagramDiv",
-            {
-                // start everything in the middle of the viewport
-                contentAlignment: go.Spot.TopCenter,
-                // use a simple layout to stack the top-level Groups next to each other
-                layout: $(PoolLayout),
-                // disallow nodes to be dragged to the diagram's background
-                mouseDrop: function (e) {
-                    e.diagram.currentTool.doCancel();
-                },
-                // a clipboard copied node is pasted into the original node's group (i.e. lane).
-                "commandHandler.copiesGroupKey": true,
-                // automatically re-layout the swim lanes after dragging the selection
-                "SelectionMoved": relayoutDiagram,  // this DiagramEvent listener is
-                "SelectionCopied": relayoutDiagram, // defined above
-                "animationManager.isEnabled": false,
-                "undoManager.isEnabled": true
-            });
+
+    if (myDiagram !== undefined) {
+        myDiagram.clear();
+        myDiagram.div = null;
+    }
+
+    myDiagram = gojs(go.Diagram, "diagramDiv",  // create a Diagram for the DIV HTML element
+        {
+            // start everything in the middle of the viewport
+            contentAlignment: go.Spot.TopCenter,
+            // use a simple layout to stack the top-level Groups next to each other
+            layout: $(PoolLayout),
+            // disallow nodes to be dragged to the diagram's background
+            mouseDrop: function (e) {
+                e.diagram.currentTool.doCancel();
+            },
+            // a clipboard copied node is pasted into the original node's group (i.e. lane).
+            "commandHandler.copiesGroupKey": true,
+            // automatically re-layout the swim lanes after dragging the selection
+            "SelectionMoved": relayoutDiagram,  // this DiagramEvent listener is
+            "SelectionCopied": relayoutDiagram, // defined above
+            "animationManager.isEnabled": false,
+            "undoManager.isEnabled": true
+        });
 
     // Customize the dragging tool:
     // When dragging a Node set its opacity to 0.7 and move it to the foreground layer
@@ -307,7 +312,7 @@ function initKanban() {
                     new go.Binding("text", "text").makeTwoWay())
             )  // end Auto Panel
         );  // end Group
-
+    myDiagram.model = new go.GraphLinksModel(nodeDataArray, linkDataArray);
     load();
 
     // Set up a Part as a legend, and place it directly on the diagram
@@ -349,6 +354,5 @@ function save() {
 }
 
 function load() {
-    myDiagram.model = go.Model.fromJson(document.getElementById("modelToSaveOrLoad").value);
     myDiagram.delayInitialization(relayoutDiagram);
 }

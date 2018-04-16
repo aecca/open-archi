@@ -1,7 +1,7 @@
 red = "orangered";  // 0 or false
 green = "forestgreen";  // 1 or true
 
-function initLogicCircuit() {
+function initLogicCircuit(incomingModel) {
 
     if (myDiagram !== undefined) {
         myDiagram.clear();
@@ -218,8 +218,10 @@ function initLogicCircuit() {
         {category: "xnor"}
     ];
 
+    myDiagram.model = go.Model.fromJson(incomingModel);
+
+
     // load the initial diagram
-    load();
 
     // continually update the diagram
     loop();
@@ -353,8 +355,4 @@ function save() {
     document.getElementById("modelToSaveOrLoad").value = JSON.stringify(myDiagram.model, null, 2);
     let textContent = myDiagram.model.toJson();
     myDiagram.isModified = false;
-}
-
-function load() {
-    myDiagram.model = go.Model.fromJson(document.getElementById("modelToSaveOrLoad").value);
 }

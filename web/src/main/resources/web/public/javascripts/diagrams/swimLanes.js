@@ -168,39 +168,44 @@ function initSwimLanes() {
 
     const $ = go.GraphObject.make;
 
-    myDiagram =
-        gojs(go.Diagram, "diagramDiv",
-            {
-                // start everything in the middle of the viewport
-                initialContentAlignment: go.Spot.Center,
-                // use a custom ResizingTool (along with a custom ResizeAdornment on each Group)
-                resizingTool: new LaneResizingTool(),
-                // use a simple layout that ignores links to stack the top-level Pool Groups next to each other
-                layout: $(PoolLayout),
-                // don't allow dropping onto the diagram's background unless they are all Groups (lanes or pools)
-                mouseDragOver: function (e) {
-                    if (!e.diagram.selection.all(function (n) {
-                            return n instanceof go.Group;
-                        })) {
-                        e.diagram.currentCursor = 'not-allowed';
-                    }
-                },
-                mouseDrop: function (e) {
-                    if (!e.diagram.selection.all(function (n) {
-                            return n instanceof go.Group;
-                        })) {
-                        e.diagram.currentTool.doCancel();
-                    }
-                },
-                // a clipboard copied node is pasted into the original node's group (i.e. lane).
-                "commandHandler.copiesGroupKey": true,
-                // automatically re-layout the swim lanes after dragging the selection
-                "SelectionMoved": relayoutDiagram,  // this DiagramEvent listener is
-                "SelectionCopied": relayoutDiagram, // defined above
-                "animationManager.isEnabled": false,
-                // enable undo & redo
-                "undoManager.isEnabled": true
-            });
+
+    if (myDiagram !== undefined) {
+        myDiagram.clear();
+        myDiagram.div = null;
+    }
+
+    myDiagram = gojs(go.Diagram, "diagramDiv",  // create a Diagram for the DIV HTML element
+        {
+            // start everything in the middle of the viewport
+            initialContentAlignment: go.Spot.Center,
+            // use a custom ResizingTool (along with a custom ResizeAdornment on each Group)
+            resizingTool: new LaneResizingTool(),
+            // use a simple layout that ignores links to stack the top-level Pool Groups next to each other
+            layout: $(PoolLayout),
+            // don't allow dropping onto the diagram's background unless they are all Groups (lanes or pools)
+            mouseDragOver: function (e) {
+                if (!e.diagram.selection.all(function (n) {
+                        return n instanceof go.Group;
+                    })) {
+                    e.diagram.currentCursor = 'not-allowed';
+                }
+            },
+            mouseDrop: function (e) {
+                if (!e.diagram.selection.all(function (n) {
+                        return n instanceof go.Group;
+                    })) {
+                    e.diagram.currentTool.doCancel();
+                }
+            },
+            // a clipboard copied node is pasted into the original node's group (i.e. lane).
+            "commandHandler.copiesGroupKey": true,
+            // automatically re-layout the swim lanes after dragging the selection
+            "SelectionMoved": relayoutDiagram,  // this DiagramEvent listener is
+            "SelectionCopied": relayoutDiagram, // defined above
+            "animationManager.isEnabled": false,
+            // enable undo & redo
+            "undoManager.isEnabled": true
+        });
 
     // this is a Part.dragComputation function for limiting where a Node may be dragged
     function stayInGroup(part, pt, gridpt) {
