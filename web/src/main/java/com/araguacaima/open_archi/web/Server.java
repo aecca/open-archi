@@ -1432,7 +1432,6 @@ public class Server {
 
     private static Collection<ExampleData> getExamples() {
         Collection<ExampleData> result = new ArrayList<>();
-//        result.add(new ExampleData("/diagrams/basic.html", "Diagrama Básico"));
         result.add(new ExampleData("/diagrams/checkBoxes.html", "Features (checkbox)"));
         result.add(new ExampleData("/diagrams/columnResizing.html", "Ajuste de tamaños"));
         result.add(new ExampleData("/diagrams/comments.html", "Comentarios"));

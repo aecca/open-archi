@@ -25,27 +25,27 @@ function initCheckBoxes() {
                 // the first column has an assortment of CheckBoxes
                 gojs(go.Panel, "Vertical",
                     {row: 1, column: 0, defaultAlignment: go.Spot.Left},
-                    $("CheckBox", "choice1",
+                    gojs("CheckBox", "choice1",
                         gojs(go.TextBlock, "default")
                     ),
-                    $("CheckBox", "choice2",
+                    gojs("CheckBox", "choice2",
                         {"ButtonIcon.stroke": "green"},
                         gojs(go.TextBlock, "green")
                     ),
-                    $("CheckBox", "choice3",
+                    gojs("CheckBox", "choice3",
                         {"ButtonIcon.stroke": "red", "ButtonIcon.figure": "XLine"},
                         gojs(go.TextBlock, "red X")
                     ),
-                    $("CheckBox", "choice4",
+                    gojs("CheckBox", "choice4",
                         {"_buttonFillOver": "pink", "_buttonStrokeOver": "red"},
                         gojs(go.TextBlock, "pink over")
                     ),
-                    $("CheckBox", "choice5",
+                    gojs("CheckBox", "choice5",
                         {"Button.width": 32, "Button.height": 32},
                         gojs(go.TextBlock, "BIG",
                             {font: "bold 12pt sans-serif"})
                     ),
-                    $("CheckBox", "choice6",
+                    gojs("CheckBox", "choice6",
                         {
                             "Button.width": 20, "Button.height": 20,
                             "ButtonBorder.figure": "Circle", "ButtonBorder.stroke": "blue",
@@ -54,7 +54,7 @@ function initCheckBoxes() {
                         },
                         gojs(go.TextBlock, "blue circle")
                     ),
-                    $("CheckBox", "choice7", go.Panel.Vertical,
+                    gojs("CheckBox", "choice7", go.Panel.Vertical,
                         gojs(go.TextBlock, "vertical")
                     )
                 ),
@@ -65,7 +65,7 @@ function initCheckBoxes() {
                         alignment: go.Spot.Top,
                         minSize: new go.Size(50, NaN),
                         itemTemplate:
-                            $("CheckBox", "checked", go.Panel.TableRow,
+                            gojs("CheckBox", "checked", go.Panel.TableRow,
                                 gojs(go.TextBlock,  // align text towards the right, next to the Button
                                     {column: 0, alignment: go.Spot.Right},
                                     new go.Binding("text", "name")),
@@ -75,7 +75,7 @@ function initCheckBoxes() {
                     new go.Binding("itemArray", "items")
                 ),
                 // now a checkbox at the bottom of the whole table
-                $("CheckBox", "",  // not data bound
+                gojs("CheckBox", "",  // not data bound
                     {row: 3, columnSpan: 2, alignment: go.Spot.Left},
                     // this checkbox is not bound to model data, but it does toggle the Part.movable
                     // property of the Node that this is in

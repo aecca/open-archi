@@ -174,17 +174,6 @@ block content
                 Validation issue #2
     #diagramDiv
     #diagramsCanvas.container(style="justify-content: space-between")
-        if explanation
-            #explanation
-                h2#mainTitle(style="margin-top: 0; padding-top: 0; margin-bottom: 30px;")= mainTitle
-                h2#caption(style="margin-top: 0; padding-top: 0; margin-bottom: 30px; color: red; text-align: right;")= caption
-                p= fullDescription
-                if steps
-                    ul
-                        each step in steps
-                            li= step
-                if mainTitle
-                    strong Like all other elements, we can combine these features with those in other examples to create more complex capabilities
     div.draggable#paletteDraggable(style="height: 300px; position: relative")
         div.handle#paletteDraggableHandle
             | Palette

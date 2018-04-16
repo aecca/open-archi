@@ -309,8 +309,7 @@ function getPageContent(url) {
             xhr.overrideMimeType("text/html; charset=utf-8");
         }
     }).done(function (data) {
-        $("<div id='explanation'></div>").insertAfter("#diagramsCanvas");
-        $("#diagramsCanvas").html(data);
+        $("#myInfo").html(data);
     });
 }
 
@@ -340,7 +339,6 @@ function getJsonContent(url, callback) {
 
 function openModel(model) {
     let graphicalModel = OpenArchiWrapper.toDiagram(model);
-    $("#explanation").remove();
     const type = model.kind;
     switch (type) {
         case "FLOWCHART_MODEL":
