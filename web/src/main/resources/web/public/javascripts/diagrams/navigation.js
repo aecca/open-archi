@@ -5,6 +5,7 @@ function initNavigation() {
         myDiagram.div = null;
     }
 
+    // noinspection JSUndeclaredVariable
     myDiagram =
         gojs(go.Diagram, "diagramDiv",  // Diagram refers to its DIV HTML element by id
             {

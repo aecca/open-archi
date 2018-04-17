@@ -242,7 +242,7 @@ function initDragCreating() {
         myDiagram.clear();
         myDiagram.div = null;
     }
-
+    // noinspection JSUndeclaredVariable
     myDiagram =
         gojs(go.Diagram, "diagramDiv",
             {
@@ -276,7 +276,7 @@ function initDragCreating() {
     // require a wait after the mouse down event.  Not waiting will allow the DragSelectingTool
     // and the PanningTool to be able to run instead of the DragCreatingTool, depending on the delay.
     myDiagram.toolManager.mouseMoveTools.insertAt(2,
-        $(DragCreatingTool,
+        gojs(DragCreatingTool,
             {
                 isEnabled: true,  // disabled by the checkbox
                 delay: 0,  // always canStart(), so PanningTool never gets the chance to run

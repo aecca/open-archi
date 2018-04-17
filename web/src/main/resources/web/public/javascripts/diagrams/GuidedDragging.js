@@ -3,8 +3,6 @@
 function GuidedDraggingTool() {
     go.DraggingTool.call(this);
 
-    // temporary parts for horizonal guidelines
-    const $ = go.GraphObject.make;
     const partProperties = {layerName: "Tool", isInDocumentBounds: false};
     const shapeProperties = {stroke: "gray", isGeometryPositioned: true};
     /** @ignore */

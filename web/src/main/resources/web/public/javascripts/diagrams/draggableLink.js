@@ -43,7 +43,7 @@ function initDraggableLink() {
                         fill: "lightblue",
                         stroke: "deepskyblue"
                     }),
-                rotatingTool: $(TopRotatingTool),  // defined below
+                rotatingTool: gojs(TopRotatingTool),  // defined below
                 "rotatingTool.snapAngleMultiple": 15,
                 "rotatingTool.snapAngleEpsilon": 15,
                 "undoManager.isEnabled": true
@@ -263,9 +263,13 @@ function initDraggableLink() {
             )
         );
 
-    load();  // load an initial diagram from some JSON text
+    if (myPalette !== undefined) {
+        myPalette.clear();
+        myPalette.div = null;
+    }
 
     // initialize the Palette that is on the left side of the page
+    // noinspection JSUndeclaredVariable
     myPalette =
         gojs(go.Palette, "paletteDiv",  // must name or refer to the DIV HTML element
             {
@@ -333,26 +337,4 @@ TopRotatingTool.prototype.rotate = function (newangle) {
 };
 // end of TopRotatingTool class
 
-/*
 
-// Show the diagram's model in JSON format that the user may edit
-function save() {
-    saveDiagramProperties();  // do this first, before writing to JSON
-    document.getElementById("modelToSaveOrLoad").value = myDiagram.model.toJson();
-    myDiagram.isModified = false;
-}
-
-function load() {
-    myDiagram.model = go.Model.fromJson(document.getElementById("modelToSaveOrLoad").value);
-    loadDiagramProperties();  // do this after the Model.modelData has been brought into memory
-}
-
-function saveDiagramProperties() {
-    myDiagram.model.modelData.position = go.Point.stringify(myDiagram.position);
-}
-
-function loadDiagramProperties(e) {
-    // set Diagram.initialPosition, not Diagram.position, to handle initialization side-effects
-    const pos = myDiagram.model.modelData.position;
-    if (pos) myDiagram.initialPosition = go.Point.parse(pos);
-}*/

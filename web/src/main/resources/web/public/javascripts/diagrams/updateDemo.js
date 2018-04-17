@@ -126,7 +126,7 @@ function initUpdateDemo() {
 
     undoDisplay.nodeTemplate =
         gojs(go.Node,
-            $("TreeExpanderButton",
+            gojs("TreeExpanderButton",
                 {width: 14, "ButtonBorder.fill": "whitesmoke"}),
             gojs(go.Panel, "Horizontal",
                 {position: new go.Point(16, 0)},

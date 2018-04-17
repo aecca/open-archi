@@ -135,12 +135,4 @@ function initRecords() {
                 ]
             });
 
-    showModel();  // show the diagram's initial model
-
-    function showModel() {
-        const modelToSaveOrLoad = $("#modelToSaveOrLoad");
-        modelToSaveOrLoad.empty();
-        modelToSaveOrLoad.jsonView(myDiagram.model.toJson());
-        let textContent = myDiagram.model.toJson();
-    }
 }

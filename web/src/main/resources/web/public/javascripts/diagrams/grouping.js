@@ -60,7 +60,7 @@ function initGrouping() {
                 gojs(go.Panel, "Horizontal",
                     {defaultAlignment: go.Spot.Top},
                     // the SubGraphExpanderButton is a panel that functions as a button to expand or collapse the subGraph
-                    $("SubGraphExpanderButton"),
+                    gojs("SubGraphExpanderButton"),
                     gojs(go.TextBlock,
                         {font: "Bold 18px Sans-Serif", margin: 4},
                         new go.Binding("text", "key"))

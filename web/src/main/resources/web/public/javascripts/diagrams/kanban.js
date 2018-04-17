@@ -93,20 +93,18 @@ PoolLayout.prototype.doLayout = function (coll) {
 
 function initKanban(nodeDataArray, linkDataArray) {
 
-    const $ = go.GraphObject.make;
-
-
     if (myDiagram !== undefined) {
         myDiagram.clear();
         myDiagram.div = null;
     }
 
+    // noinspection JSUndeclaredVariable
     myDiagram = gojs(go.Diagram, "diagramDiv",  // create a Diagram for the DIV HTML element
         {
             // start everything in the middle of the viewport
-            contentAlignment: go.Spot.TopCenter,
+            contentAlignment: go.Spot.Center,
             // use a simple layout to stack the top-level Groups next to each other
-            layout: $(PoolLayout),
+            layout: gojs(PoolLayout),
             // disallow nodes to be dragged to the diagram's background
             mouseDrop: function (e) {
                 e.diagram.currentTool.doCancel();
@@ -283,7 +281,7 @@ function initKanban(nodeDataArray, linkDataArray) {
                     angle: 0,  // maybe rotate the header to read sideways going up
                     alignment: go.Spot.Left
                 },
-                $("SubGraphExpanderButton", {margin: 5}),  // this remains always visible
+                gojs("SubGraphExpanderButton", {margin: 5}),  // this remains always visible
                 gojs(go.Panel, "Horizontal",  // this is hidden when the swimlane is collapsed
                     new go.Binding("visible", "isSubGraphExpanded").ofObject(),
                     gojs(go.TextBlock,  // the lane label
@@ -313,7 +311,11 @@ function initKanban(nodeDataArray, linkDataArray) {
             )  // end Auto Panel
         );  // end Group
     myDiagram.model = new go.GraphLinksModel(nodeDataArray, linkDataArray);
-    load();
+    myDiagram.delayInitialization(relayoutDiagram);
+    const pos = myDiagram.model.modelData.position;
+    if (pos) {
+        myDiagram.initialPosition = go.Point.parse(pos);
+    }
 
     // Set up a Part as a legend, and place it directly on the diagram
     myDiagram.add(
@@ -345,14 +347,3 @@ function initKanban(nodeDataArray, linkDataArray) {
         ));
 
 }  // end init
-
-// Show the diagram's model in JSON format
-function save() {
-    document.getElementById("modelToSaveOrLoad").value = JSON.stringify(myDiagram.model, null, 2);
-    let textContent = myDiagram.model.toJson();
-    myDiagram.isModified = false;
-}
-
-function load() {
-    myDiagram.delayInitialization(relayoutDiagram);
-}

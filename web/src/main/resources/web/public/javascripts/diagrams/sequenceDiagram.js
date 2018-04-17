@@ -1,18 +1,16 @@
 function initSequenceDiagram(nodeDataArray, linkDataArray) {
 
-    const $ = go.GraphObject.make;
-
-
     if (myDiagram !== undefined) {
         myDiagram.clear();
         myDiagram.div = null;
     }
 
+    // noinspection JSUndeclaredVariable
     myDiagram = gojs(go.Diagram, "diagramDiv",  // create a Diagram for the DIV HTML element
         {
             initialContentAlignment: go.Spot.Center,
             allowCopy: false,
-            linkingTool: $(MessagingTool),  // defined below
+            linkingTool: gojs(MessagingTool),  // defined below
             "resizingTool.isGridSnapEnabled": true,
             "draggingTool.gridSnapCellSize": new go.Size(1, MessageSpacing / 4),
             "draggingTool.isGridSnapEnabled": true,
@@ -112,7 +110,7 @@ function initSequenceDiagram(nodeDataArray, linkDataArray) {
 
     // define the Message Link template.
     myDiagram.linkTemplate =
-        $(MessageLink,  // defined below
+        gojs(MessageLink,  // defined below
             {selectionAdorned: true, curviness: 0},
             gojs(go.Shape, "Rectangle",
                 {stroke: "black"}),
@@ -272,9 +270,8 @@ MessageLink.prototype.computePoints = function () {
 // for both the temporaryLink and the actual newly created Link
 function MessagingTool() {
     go.LinkingTool.call(this);
-    const $ = go.GraphObject.make;
     this.temporaryLink =
-        $(MessageLink,
+        gojs(MessageLink,
             gojs(go.Shape, "Rectangle",
                 {stroke: "magenta", strokeWidth: 2}),
             gojs(go.Shape,

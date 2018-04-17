@@ -1,13 +1,11 @@
 function initUmlClass() {
 
-    const $ = go.GraphObject.make;
-
-
     if (myDiagram !== undefined) {
         myDiagram.clear();
         myDiagram.div = null;
     }
 
+    // noinspection JSUndeclaredVariable
     myDiagram = gojs(go.Diagram, "diagramDiv",  // create a Diagram for the DIV HTML element
         {
             initialContentAlignment: go.Spot.Center,
@@ -139,7 +137,7 @@ function initUmlClass() {
                         itemTemplate: propertyTemplate
                     }
                 ),
-                $("PanelExpanderButton", "PROPERTIES",
+                gojs("PanelExpanderButton", "PROPERTIES",
                     {row: 1, column: 1, alignment: go.Spot.TopRight, visible: false},
                     new go.Binding("visible", "properties", function (arr) {
                         return arr.length > 0;
@@ -158,7 +156,7 @@ function initUmlClass() {
                         itemTemplate: methodTemplate
                     }
                 ),
-                $("PanelExpanderButton", "METHODS",
+                gojs("PanelExpanderButton", "METHODS",
                     {row: 2, column: 1, alignment: go.Spot.TopRight, visible: false},
                     new go.Binding("visible", "methods", function (arr) {
                         return arr.length > 0;

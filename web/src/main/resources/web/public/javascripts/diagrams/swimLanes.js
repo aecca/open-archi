@@ -166,9 +166,6 @@ PoolLayout.prototype.doLayout = function (coll) {
 
 function initSwimLanes() {
 
-    const $ = go.GraphObject.make;
-
-
     if (myDiagram !== undefined) {
         myDiagram.clear();
         myDiagram.div = null;
@@ -181,7 +178,7 @@ function initSwimLanes() {
             // use a custom ResizingTool (along with a custom ResizeAdornment on each Group)
             resizingTool: new LaneResizingTool(),
             // use a simple layout that ignores links to stack the top-level Pool Groups next to each other
-            layout: $(PoolLayout),
+            layout: gojs(PoolLayout),
             // don't allow dropping onto the diagram's background unless they are all Groups (lanes or pools)
             mouseDragOver: function (e) {
                 if (!e.diagram.selection.all(function (n) {
@@ -324,7 +321,7 @@ function initSwimLanes() {
                         {font: "bold 13pt sans-serif", editable: true, margin: new go.Margin(2, 0, 0, 0)},
                         new go.Binding("text", "text").makeTwoWay())
                 ),
-                $("SubGraphExpanderButton", {margin: 5})  // but this remains always visible!
+                gojs("SubGraphExpanderButton", {margin: 5})  // but this remains always visible!
             ),  // end Horizontal Panel
             gojs(go.Panel, "Auto",  // the lane consisting of a background Shape and a Placeholder representing the subgraph
                 gojs(go.Shape, "Rectangle",  // this is the resized object
@@ -377,7 +374,7 @@ function initSwimLanes() {
     myDiagram.groupTemplateMap.add("Pool",
         gojs(go.Group, "Auto", groupStyle(),
             { // use a simple layout that ignores links to stack the "lane" Groups on top of each other
-                layout: $(PoolLayout, {spacing: new go.Size(0, 0)})  // no space between lanes
+                layout: gojs(PoolLayout, {spacing: new go.Size(0, 0)})  // no space between lanes
             },
             gojs(go.Shape,
                 {fill: "white"},

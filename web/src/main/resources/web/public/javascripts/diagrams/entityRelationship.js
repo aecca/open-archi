@@ -74,7 +74,7 @@ function initEntityRelationship() {
                     },
                     new go.Binding("text", "key")),
                 // the collapse/expand button
-                $("PanelExpanderButton", "LIST",  // the name of the element whose visibility this button toggles
+                gojs("PanelExpanderButton", "LIST",  // the name of the element whose visibility this button toggles
                     {row: 0, alignment: go.Spot.TopRight}),
                 // the list of Panels, each showing an attribute
                 gojs(go.Panel, "Vertical",

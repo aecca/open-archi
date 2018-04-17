@@ -76,7 +76,7 @@ function initMindMap(nodeDataArray, linkDataArray) {
                 gojs(go.Placeholder, {margin: new go.Margin(4, 4, 0, 4)})
             ),
             // and this Adornment has a Button to the right of the selected node
-            $("Button",
+            gojs("Button",
                 {
                     alignment: go.Spot.Right,
                     alignmentFocus: go.Spot.Left,
@@ -91,28 +91,28 @@ function initMindMap(nodeDataArray, linkDataArray) {
     // and to perform a limited tree layout starting at that node
     myDiagram.nodeTemplate.contextMenu =
         gojs(go.Adornment, "Vertical",
-            $("ContextMenuButton",
+            gojs("ContextMenuButton",
                 gojs(go.TextBlock, "Bigger"),
                 {
                     click: function (e, obj) {
                         changeTextSize(obj, 1.1);
                     }
                 }),
-            $("ContextMenuButton",
+            gojs("ContextMenuButton",
                 gojs(go.TextBlock, "Smaller"),
                 {
                     click: function (e, obj) {
                         changeTextSize(obj, 1 / 1.1);
                     }
                 }),
-            $("ContextMenuButton",
+            gojs("ContextMenuButton",
                 gojs(go.TextBlock, "Bold/Normal"),
                 {
                     click: function (e, obj) {
                         toggleTextWeight(obj);
                     }
                 }),
-            $("ContextMenuButton",
+            gojs("ContextMenuButton",
                 gojs(go.TextBlock, "Layout"),
                 {
                     click: function (e, obj) {
@@ -145,7 +145,7 @@ function initMindMap(nodeDataArray, linkDataArray) {
     // the Diagram's context menu just displays commands for general functionality
     myDiagram.contextMenu =
         gojs(go.Adornment, "Vertical",
-            $("ContextMenuButton",
+            gojs("ContextMenuButton",
                 gojs(go.TextBlock, "Undo"),
                 {
                     click: function (e, obj) {
@@ -155,7 +155,7 @@ function initMindMap(nodeDataArray, linkDataArray) {
                 new go.Binding("visible", "", function (o) {
                     return o.diagram && o.diagram.commandHandler.canUndo();
                 }).ofObject()),
-            $("ContextMenuButton",
+            gojs("ContextMenuButton",
                 gojs(go.TextBlock, "Redo"),
                 {
                     click: function (e, obj) {
@@ -165,14 +165,14 @@ function initMindMap(nodeDataArray, linkDataArray) {
                 new go.Binding("visible", "", function (o) {
                     return o.diagram && o.diagram.commandHandler.canRedo();
                 }).ofObject()),
-            $("ContextMenuButton",
+            gojs("ContextMenuButton",
                 gojs(go.TextBlock, "Save"),
                 {
                     click: function (e, obj) {
                         save();
                     }
                 }),
-            $("ContextMenuButton",
+            gojs("ContextMenuButton",
                 gojs(go.TextBlock, "Load"),
                 {
                     click: function (e, obj) {

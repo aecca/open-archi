@@ -29,7 +29,15 @@ function initLogicCircuit(incomingModel) {
         }
     });
 
-    const palette = new go.Palette("palette");  // create a new Palette in the HTML DIV element "palette"
+    if (myPalette !== undefined) {
+        myPalette.clear();
+        myPalette.div = null;
+    }
+
+    // initialize the Palette that is on the left side of the page
+    // noinspection JSUndeclaredVariable
+    myPalette =
+        gojs(go.Palette, "paletteDiv");
 
     // creates relinkable Links that will avoid crossing Nodes when possible and will jump over other Links in their paths
     myDiagram.linkTemplate =
@@ -204,9 +212,9 @@ function initLogicCircuit(incomingModel) {
     myDiagram.nodeTemplateMap.add("xnor", xnorTemplate);
 
     // share the template map with the Palette
-    palette.nodeTemplateMap = myDiagram.nodeTemplateMap;
+    myPalette.nodeTemplateMap = myDiagram.nodeTemplateMap;
 
-    palette.model.nodeDataArray = [
+    myPalette.model.nodeDataArray = [
         {category: "input"},
         {category: "output"},
         {category: "and"},

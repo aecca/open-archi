@@ -40,9 +40,6 @@ BandedTreeLayout.prototype.commitLayers = function (layerRects, offset) {
 
 function initSwimBands() {
 
-    const $ = go.GraphObject.make;
-
-
     if (myDiagram !== undefined) {
         myDiagram.clear();
         myDiagram.div = null;
@@ -51,7 +48,7 @@ function initSwimBands() {
     myDiagram = gojs(go.Diagram, "diagramDiv",  // create a Diagram for the DIV HTML element
         {
             initialContentAlignment: go.Spot.Center,
-            layout: $(BandedTreeLayout,  // custom layout is defined above
+            layout: gojs(BandedTreeLayout,  // custom layout is defined above
                 {
                     angle: HORIZONTAL ? 0 : 90,
                     arrangement: HORIZONTAL ? go.TreeLayout.ArrangementVertical : go.TreeLayout.ArrangementHorizontal
