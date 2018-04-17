@@ -1,8 +1,5 @@
 function initMindMap(nodeDataArray, linkDataArray) {
 
-    const $ = go.GraphObject.make;
-
-
     if (myDiagram !== undefined) {
         myDiagram.clear();
         myDiagram.div = null;
@@ -17,18 +14,6 @@ function initMindMap(nodeDataArray, linkDataArray) {
             initialContentAlignment: go.Spot.Center,  // center the whole graph
             "undoManager.isEnabled": true
         });
-
-    // when the document is modified, add a "*" to the title and enable the "Save" button
-    myDiagram.addDiagramListener("Modified", function (e) {
-        const button = document.getElementById("SaveButton");
-        if (button) button.disabled = !myDiagram.isModified;
-        const idx = document.title.indexOf("*");
-        if (myDiagram.isModified) {
-            if (idx < 0) document.title += "*";
-        } else {
-            if (idx >= 0) document.title = document.title.substr(0, idx);
-        }
-    });
 
     // a node consists of some text with a line shape underneath
     myDiagram.nodeTemplate =
@@ -196,7 +181,7 @@ function initMindMap(nodeDataArray, linkDataArray) {
     });
 
     // read in the predefined graph using the JSON format data held in the "modelToSaveOrLoad" textarea
-    myDiagram.model = new go.GraphLinksModel(nodeDataArray, linkDataArray);
+    myDiagram.model = new go.TreeModel(nodeDataArray);
 }
 
 function spotConverter(dir, from) {
@@ -300,9 +285,3 @@ function layoutAll() {
     myDiagram.commitTransaction("Layout");
 }
 
-// Show the diagram's model in JSON format
-function save() {
-    document.getElementById("modelToSaveOrLoad").value = JSON.stringify(myDiagram.model, null, 2);
-    let textContent = myDiagram.model.toJson();
-    myDiagram.isModified = false;
-}
