@@ -47,9 +47,10 @@ function commonInnerDiagramElement(model, node) {
         object.location.x = loc.split(" ")[0];
         object.location.y = loc.split(" ")[1];
     }
-    object =  fillShape(object, node);
+    object = fillShape(object, node);
     return object;
 }
+
 function diagramToArchitectureModel(model, node, links) {
     if (node) {
         if (node.kind === "SOFTWARE_SYSTEM") {
@@ -124,7 +125,12 @@ function architectureModelToDiagram(model) {
     let key = "consumers";
     let relationships = commons.prototype.findValues(model, "relationships");
     let rank = 0;
-    let softwareSystems = model.softwareSystems;
+    let softwareSystems = model.kind === "SOFTWARE_SYSTEM"
+        ? [model]
+        : (model.kind === "ARCHITECTURE_MODEL"
+            ? model.softwareSystems
+            : undefined);
+    let parentGroup = model.kind === "ARCHITECTURE_MODEL" ? model.id : undefined;
     let hasSoftwareSystems = softwareSystems !== undefined && !commons.prototype.isEmpty(softwareSystems);
 
     if (relationships) {
@@ -140,26 +146,36 @@ function architectureModelToDiagram(model) {
     rank = 0;
     if (hasSoftwareSystems) {
         softwareSystems.forEach(function (softwareSystem) {
-            let containers = softwareSystem.containers;
-            let hasContainers = containers !== undefined && !commons.prototype.isEmpty(containers);
-            if (hasContainers) {
-                diagram.nodeDataArray.push(fulfill(softwareSystem, true, model.id, rank));
-                rank++;
-                containers.forEach(function (container) {
-                    let components = container.components;
-                    let hasComponents = components !== undefined && !commons.prototype.isEmpty(components);
-                    if (hasComponents) {
-                        diagram.nodeDataArray.push(fulfill(container, true, softwareSystem.id, rank));
-                        rank++;
-                        components.forEach(function (component) {
-                            diagram.nodeDataArray.push(fulfill(component, false, container.id, rank));
-                            rank++;
-                        });
-                    } else {
-                        diagram.nodeDataArray.push(fulfill(container, false, softwareSystem.id, rank));
-                        rank++;
-                    }
-                });
+            if (!alreadyProcessedNodes.includes(softwareSystem.id)) {
+                let containers = softwareSystem.containers;
+                let hasContainers = containers !== undefined && !commons.prototype.isEmpty(containers);
+                if (hasContainers) {
+                    diagram.nodeDataArray.push(fulfill(softwareSystem, true, parentGroup, rank));
+                    alreadyProcessedNodes.push(softwareSystem.id);
+                    rank++;
+                    containers.forEach(function (container) {
+                        if (!alreadyProcessedNodes.includes(container.id)) {
+                            let components = container.components;
+                            let hasComponents = components !== undefined && !commons.prototype.isEmpty(components);
+                            if (hasComponents) {
+                                diagram.nodeDataArray.push(fulfill(container, true, softwareSystem.id, rank));
+                                alreadyProcessedNodes.push(container.id);
+                                rank++;
+                                components.forEach(function (component) {
+                                    if (!alreadyProcessedNodes.includes(component.id)) {
+                                        diagram.nodeDataArray.push(fulfill(component, false, container.id, rank));
+                                        alreadyProcessedNodes.push(component.id);
+                                        rank++;
+                                    }
+                                });
+                            } else {
+                                diagram.nodeDataArray.push(fulfill(container, false, softwareSystem.id, rank));
+                                alreadyProcessedNodes.push(container.id);
+                                rank++;
+                            }
+                        }
+                    });
+                }
             }
         });
     }
@@ -172,11 +188,12 @@ function architectureModelToDiagram(model) {
         diagram.nodeDataArray.push(groupConsumers);
         consumers.forEach(function (consumer) {
             diagram.nodeDataArray.push(fulfill(consumer, false, key, rank));
-        })
+        });
+        diagram.linkDataArray.push({from: key, to: model.id, stroke: "black"});
     }
-
-    diagram.linkDataArray.push({from: key, to: model.id, stroke: "black"});
-    diagram.nodeDataArray.push({key: model.id, name: model.name, fill: "orange", isGroup: hasSoftwareSystems});
+    if (parentGroup) {
+        diagram.nodeDataArray.push({key: model.id, name: model.name, fill: "orange", isGroup: hasSoftwareSystems});
+    }
     return diagram;
 }
 
@@ -249,6 +266,7 @@ class OpenArchiWrapper {
         };
         diagram.nodeDataArray = [];
         diagram.linkDataArray = [];
+        alreadyProcessedNodes = [];
 
         switch (type) {
             case "FLOWCHART_MODEL":

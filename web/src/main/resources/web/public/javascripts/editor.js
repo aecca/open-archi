@@ -218,11 +218,11 @@ function expand(data) {
     }
     meta.id = model.id;
     const diagram = OpenArchiWrapper.toDiagram(model);
-    const newElement = go.Model.fromJson(diagram);
+    const newDiagram = go.Model.fromJson(diagram);
 
     myDiagram.startTransaction("Adding new element");
-    myDiagram.model.addNodeDataCollection(newElement.nodeDataArray);
-    myDiagram.model.addLinkDataCollection(newElement.linkDataArray);
+    myDiagram.model.addNodeDataCollection(newDiagram.nodeDataArray);
+    myDiagram.model.addLinkDataCollection(newDiagram.linkDataArray);
     myDiagram.commitTransaction("Adding new element");
 
     const pos = myDiagram.model.modelData.position;
