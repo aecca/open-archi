@@ -136,3 +136,5 @@ function initRecords() {
             });
 
 }
+
+function showModel() {}
