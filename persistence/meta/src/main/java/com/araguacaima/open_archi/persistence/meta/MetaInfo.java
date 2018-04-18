@@ -1,7 +1,7 @@
 package com.araguacaima.open_archi.persistence.meta;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.collections4.Predicate;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.Cascade;
@@ -48,18 +48,10 @@ public class MetaInfo implements Serializable, Comparable<MetaInfo> {
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private Account createdBy;
 
-    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
-    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
-    private Account modifiedBy;
-
     @Column(nullable = false)
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     private Date created;
-
-    @Column(nullable = true)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date modified;
 
     public MetaInfo() {
         this.id = UUID.randomUUID().toString();
@@ -73,7 +65,6 @@ public class MetaInfo implements Serializable, Comparable<MetaInfo> {
         this.id = id;
     }
 
-
     public Account getCreatedBy() {
         return createdBy;
     }
@@ -82,28 +73,12 @@ public class MetaInfo implements Serializable, Comparable<MetaInfo> {
         this.createdBy = createdBy;
     }
 
-    public Account getModifiedBy() {
-        return modifiedBy;
-    }
-
-    public void setModifiedBy(Account modifiedBy) {
-        this.modifiedBy = modifiedBy;
-    }
-
     public Date getCreated() {
         return created;
     }
 
     public void setCreated(Date created) {
         this.created = created;
-    }
-
-    public Date getModified() {
-        return modified;
-    }
-
-    public void setModified(Date modified) {
-        this.modified = modified;
     }
 
     public Set<History> getHistory() {
@@ -118,13 +93,20 @@ public class MetaInfo implements Serializable, Comparable<MetaInfo> {
         this.history.add(history);
     }
 
-    public History getActiveHistory() {
+    public void addNewHistory(Date time) {
+        History history = new History(time);
+        history.setVersion(new Version());
+        this.history.add(history);
+    }
+
+    @JsonIgnore
+    public Version getActiveVersion() {
         History history = CollectionUtils.find(this.history, object -> VersionStatus.ACTIVE.equals(object.getVersion().getStatus()));
         if (history == null) {
             history = new History();
             history.setVersion(new Version());
         }
-        return history;
+        return history.getVersion();
     }
 
     @Override
@@ -147,9 +129,7 @@ public class MetaInfo implements Serializable, Comparable<MetaInfo> {
         return new EqualsBuilder().append(id, metaInfo.id)
                 .append(history, metaInfo.history)
                 .append(createdBy, metaInfo.createdBy)
-                .append(modifiedBy, metaInfo.modifiedBy)
                 .append(created, metaInfo.created)
-                .append(modified, metaInfo.modified)
                 .isEquals();
     }
 
@@ -158,15 +138,15 @@ public class MetaInfo implements Serializable, Comparable<MetaInfo> {
         return new HashCodeBuilder(17, 37).append(id)
                 .append(history)
                 .append(createdBy)
-                .append(modifiedBy)
                 .append(created)
-                .append(modified)
                 .toHashCode();
     }
 
     @Override
     public int compareTo(MetaInfo o) {
-        //TODO completar
-        return 0;
+        if (o == null) {
+            return 0;
+        }
+        return this.created.compareTo(o.getCreated());
     }
 }

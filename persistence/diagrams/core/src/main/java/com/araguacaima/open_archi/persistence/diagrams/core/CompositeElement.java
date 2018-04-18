@@ -4,12 +4,14 @@ import com.araguacaima.commons.utils.MapUtils;
 import com.araguacaima.open_archi.persistence.commons.Constants;
 import com.araguacaima.open_archi.persistence.commons.exceptions.EntityError;
 import com.araguacaima.open_archi.persistence.meta.Valuable;
+import com.araguacaima.open_archi.persistence.meta.Version;
 import com.araguacaima.specification.Specification;
 import com.araguacaima.specification.util.SpecificationMap;
 import com.araguacaima.specification.util.SpecificationMapBuilder;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.Type;
+
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -23,23 +25,22 @@ import java.util.ResourceBundle;
 @DynamicUpdate
 public class CompositeElement<T extends ElementKind> implements Valuable {
 
-    @Transient
-    @JsonIgnore
-    protected static final ResourceBundle resourceBundle = ResourceBundle.getBundle(Constants.BUNDLE_NAME);
-
     private static SpecificationMapBuilder specificationMapBuilder = new SpecificationMapBuilder(MapUtils.getInstance());
 
     @Id
     @NotNull
     @Column(name = "Id")
-    protected String id;
+    private String id;
 
     @Column
     @Type(type = "com.araguacaima.open_archi.persistence.diagrams.core.ElementKind")
-    protected T type;
+    private T type;
 
     @Column
-    protected String link;
+    private String link;
+
+    @OneToOne
+    private Version version;
 
     public String getId() {
         return id;
@@ -63,6 +64,14 @@ public class CompositeElement<T extends ElementKind> implements Valuable {
 
     public void setLink(String link) {
         this.link = link;
+    }
+
+    public Version getVersion() {
+        return version;
+    }
+
+    public void setVersion(Version version) {
+        this.version = version;
     }
 
     @Override

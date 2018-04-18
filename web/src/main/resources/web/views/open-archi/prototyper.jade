@@ -1,0 +1,170 @@
+extends layout
+
+block meta
+    meta(name="description", content="OpenArchi Editor")
+
+append styles
+    link(rel='stylesheet', type='text/css', href='/stylesheets/jquery-ui.css')
+    link(rel='stylesheet', type='text/css', href='/stylesheets/autocomplete.css')
+    link(rel='stylesheet', type='text/css', href='/stylesheets/menu.css')
+    link(rel='stylesheet', type='text/css', href='/stylesheets/dataInspector.css')
+    link(rel='stylesheet', type='text/css', href='/stylesheets/palette.css')
+    link(rel='stylesheet', type='text/css', href='/stylesheets/bootstrap-slider.css')
+    style.
+
+        /*
+        One simple way of making a div fill its space,
+        with allowances for the title (top) and the resize handle (bottom)
+        */
+        #dataModelContainer {
+            position: absolute;
+            bottom: 14px;
+            left: 0px;
+            right: 0px;
+            top: 14px;
+        }
+
+append scripts
+    script(type='text/javascript', src='/javascripts/jquery-ui.js')
+    script(src='/javascripts/go.js')
+    script(type='text/javascript', src='/javascripts/OpenArchiWrapper.js')
+    script(type='text/javascript', src='/javascripts/diagrams/dataInspector.js')
+    script(type='text/javascript', src='/javascripts/bootstrap-slider.js')
+    script#code(type="text/javascript")
+    script.
+        let myDiagram;
+        let myPalette;
+        let nodeDataArray = [];
+        if (!{nodeDataArray}) {
+            nodeDataArray = !{nodeDataArray};
+        }
+        let linkDataArray = [];
+        if (!{linkDataArray}) {
+            linkDataArray = !{linkDataArray};
+        }
+        let MINLENGTH = '!{MINLENGTH}';  // this controls the minimum length of any swimlane
+        let MINBREADTH = '!{MINBREADTH}';  // this controls the minimum breadth of any non-collapsed swimlane
+        let HORIZONTAL = '!{HORIZONTAL}';  // this constant parameter can only be set here, not dynamically
+        let red = '!{red}';
+        let green = '!{green}';
+        let LinePrefix = '!{LinePrefix}';  // vertical starting point in document for all Messages and Activations
+        let LineSuffix = '!{LineSuffix}';  // vertical length beyond the last message time
+        let MessageSpacing = '!{MessageSpacing}';  // vertical distance between Messages at different steps
+        let ActivityWidth = '!{ActivityWidth}';  // width of each vertical activity bar
+        let ActivityStart = '!{ActivityStart}';  // height before start message time
+        let ActivityEnd = '!{ActivityEnd}';  // height beyond end message time
+        let source = '!{source}';
+        let paletteData = !{palette};
+        let lightText = 'whitesmoke';
+        let viewMode;
+        var elementTypes = !{elementTypes};
+        $(function () {
+            var elementTypeItems = [];
+            var i = 0;
+            elementTypes.forEach(function (elementType, i) {
+                elementTypeItems.push('<li role="presentation"><a role="menuitem" tabindex="' + i + '" href="#">' + elementType + '</a></li>');
+            });
+            var elementTypesDropdown = $("#elementTypesDropdown");
+            elementTypesDropdown.append(elementTypeItems.join(''));
+            elementTypesDropdown.on('click', 'a', function () {
+                var text = $(this).html();
+                var htmlText = text + ' <span class="caret"></span>';
+                $(this).closest('.dropdown').find('.dropdown-toggle').html(htmlText);
+            });
+
+            viewMode = new Slider("#viewMode", {
+                id: "viewMode",
+                ticks: [1, 2, 3],
+                ticks_labels: ['Compact', 'Moderated', 'Full'],
+                tooltip: "hide",
+                min: 1,
+                max: 3,
+                step: 1,
+                value: 3
+            });
+            viewMode.on('slideStop', changeView);
+
+        });
+    script(type='text/javascript', src='/javascripts/diagrams/basic.js')
+    script(type='text/javascript', src='/javascripts/diagrams/palette.js')
+    script(type='text/javascript', src='/javascripts/editor.js')
+
+block extra-menu-elements
+    +nav_item_dropdown("#")(label="Menu")
+        +nav_item("/open-archi/editor") New
+        +nav_item("#")(onclick="validateModel()", id="ValidateModel") Validate
+        +nav_item("#")(onclick="confirmAndSave()", id="SaveButton") Save
+        +nav_item("#")(onclick="load()", id="LoadButton") Load
+        +nav_item("#")(onclick="openSVG()", id="OpenSVGButton") Export as SVG
+    +nav_item("#")
+        input#diagramId(name='diagramId', placeholder='Template name...')
+
+block content
+    +modal-force("Diagram info", "diagram-info")(save="confirm")
+        form#diagram-info-form
+            .form-group
+                label.col-form-label(for="element-name") Name:
+                input.form-control#diagram-name(type="text")
+            .form-group
+                label.col-form-label(for="diagram-prototype")
+                    | Prototype?
+                    | &nbsp;
+                input#diagram-prototype(type="checkbox", disabled=true, checked=true)
+    +modal-force("Basic element data", "basic-element-data")(save="checkAndSave", more="openMore")
+        form#basic-element-form
+            .form-group
+                label.col-form-label(for="element-name") Name:
+                input.form-control#element-name(type="text")
+            .form-group
+                label.col-form-label Type:
+                .dropdown
+                    button.btn.btn-default.dropdown-toggle#element-type(type="button", data-toggle="dropdown")
+                        | Element Types
+                        | &nbsp;
+                        span.caret
+                    ul.dropdown-menu#elementTypesDropdown(role="menu", aria-labelledby="elementTypesDropdown")
+    +modal("Element role", "element-role-data")
+        form#element-role-form
+            .form-group
+                label.col-form-label Role:
+                .dropdown
+                    button.btn.btn-default.dropdown-toggle#element-role(type="button", data-toggle="dropdown")
+                        | Element Roles
+                        | &nbsp;
+                        span.caret
+                    ul.dropdown-menu#elementRolesDropdown(role="menu", aria-labelledby="elementRolesDropdown")
+    +modal("Model Validation", "model-validation")
+        h4 The entire JSON Model will be passed the to the Rules as a Service that use a Drools' Desition Table based model's validation implementation
+        p [Later it could be a Cucumber based Test set]
+        +list-group-custom
+            +list-group-item("#")
+                Validation issue #1
+            +list-group-item("#")
+                Validation issue #2
+    #diagramDiv
+    #diagramsCanvas.container(style="justify-content: space-between")
+    div.draggable#paletteDraggable(style="height: 300px; position: relative")
+        div.handle#paletteDraggableHandle
+            | Palette
+        div#paletteContainer
+            div#paletteDiv
+    div.draggable#infoDraggable(style="display: inline-block; vertical-align: top; top: 20px; left: 380px; position: relative")
+        div.handle#infoDraggableHandle
+            | Info
+        div
+            div#myInfo
+    div.draggable#controlsDraggable(style="display: inline-block; vertical-align: top; top: 20px; left: 380px; position: relative; width: 380px; padding-bottom: 10px;")
+        div.handle#controlsDraggableHandle
+            | Controls
+        div
+            div#myControls(style= "margin-top: 10px;")
+                .col-sm-4
+                    b View Mode:
+                .col-sm-4.text-right
+                    input#viewMode(type="text")
+    br
+    div.container-fluid.draggable#dataModelDraggable(style="height: 100px; width: 400px;")
+        div.handle#dataModelDraggableHandle
+            | Model
+        div#dataModelContainer
+            span#modelToSaveOrLoad(style="display: block")

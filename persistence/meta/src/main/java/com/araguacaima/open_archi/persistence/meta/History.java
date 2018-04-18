@@ -1,10 +1,12 @@
 package com.araguacaima.open_archi.persistence.meta;
 
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.Date;
 
 @PersistenceUnit(unitName = "open-archi")
 @Entity
@@ -29,6 +31,23 @@ public class History implements Serializable, Comparable<History> {
     @ManyToOne
     private Version version;
 
+    @Column
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date modified;
+
+
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
+    private Account modifiedBy;
+
+    public History() {
+    }
+
+
+    public History(Date modified) {
+        this.modified = modified;
+    }
+
     public Version getVersion() {
         return version;
     }
@@ -45,10 +64,26 @@ public class History implements Serializable, Comparable<History> {
         this.version = version;
     }
 
+    public Date getModified() {
+        return modified;
+    }
+
+    public Account getModifiedBy() {
+        return modifiedBy;
+    }
+
+    public void setModifiedBy(Account modifiedBy) {
+        this.modifiedBy = modifiedBy;
+    }
+
     @Override
     public int compareTo(History o) {
-
-        //TODO completar
-        return this.version.compareTo(o.getVersion());
+        int compare = this.version.compareTo(o.getVersion());
+        if (compare == 0) {
+            return this.modified.compareTo(o.getModified());
+        } else {
+            //TODO completar
+            return compare;
+        }
     }
 }

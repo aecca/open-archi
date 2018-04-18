@@ -292,7 +292,8 @@ public class Item extends Taggable {
         CompositeElement compositeElement = new CompositeElement();
         compositeElement.setId(this.getId());
         compositeElement.setType(this.getKind());
-        compositeElement.setLink("/models/"+ this.getId());
+        compositeElement.setLink("/models/" + this.getId());
+        compositeElement.setVersion(this.getMeta().getActiveVersion());
         return compositeElement;
     }
 

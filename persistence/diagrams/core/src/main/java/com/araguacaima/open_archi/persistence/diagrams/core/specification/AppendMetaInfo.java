@@ -30,16 +30,12 @@ public class AppendMetaInfo extends AbstractSpecification {
                 } else {
                     meta = (MetaInfo) map.get("meta");
                 }
-                History history = new History();
-                history.setVersion(new Version());
-                meta.addHistory(history);
+                meta.addNewHistory(thisTime);
                 meta.setCreated(thisTime);
-                meta.setModified(thisTime);
                 entity.setMeta(meta);
             } else {
                 meta = entity.getMeta();
-                meta.setModified(thisTime);
-                meta.getActiveHistory().getVersion().nextBuild();
+                meta.addNewHistory(thisTime);
                 //map.put("meta", meta);
             }
         }

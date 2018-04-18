@@ -338,6 +338,7 @@ public class Server {
             });
             redirect.get("/api", "/open-archi/api/", Redirect.Status.PERMANENT_REDIRECT);
             redirect.get("/editor", "/open-archi/editor/", Redirect.Status.PERMANENT_REDIRECT);
+            redirect.get("/prototyper", "/open-archi/prototyper/", Redirect.Status.TEMPORARY_REDIRECT);
             Map<String, Object> mapHome = new HashMap<>();
             mapHome.put("title", "Open Archi");
             get("/", (req, res) -> new ModelAndView(mapHome, "/open-archi/home"), engine);
@@ -345,7 +346,6 @@ public class Server {
                 Map<String, Object> mapEditor = new HashMap<>();
                 exception(Exception.class, exceptionHandler);
                 mapEditor.put("title", "Editor");
-
                 Map<String, Boolean> diagramTypesMap = new HashMap<>();
                 for (String diagramType : deeplyFulfilledDiagramTypesCollection) {
                     diagramTypesMap.put(diagramType, diagramType.equals(ElementKind.ARCHITECTURE_MODEL.name()));
@@ -355,13 +355,11 @@ public class Server {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
                 try {
                     mapEditor.put("elementTypes", jsonUtils.toJSON(elementTypesCollection));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
                 get("/", (req, res) -> {
                     mapEditor.put("palette", jsonUtils.toJSON(getArchitecturePalette()));
                     mapEditor.put("source", "basic");
@@ -450,40 +448,50 @@ public class Server {
                         return new ModelAndView(mapEditor, "/error");
                     }
                 }, engine);
-                path("/prototypes", () -> {
-                    mapEditor.put("title", "Prototypes Editor");
-                    mapEditor.remove("diagramTypes");
+            });
+            path("/prototyper", () -> {
+                Map<String, Object> mapEditor = new HashMap<>();
+                exception(Exception.class, exceptionHandler);
+                mapEditor.put("title", "Prototyper");
+                Map<String, Boolean> diagramTypesMap = new HashMap<>();
+                for (String diagramType : deeplyFulfilledDiagramTypesCollection) {
+                    diagramTypesMap.put(diagramType, diagramType.equals(ElementKind.ARCHITECTURE_MODEL.name()));
+                }
+                try {
+                    mapEditor.put("diagramTypes", jsonUtils.toJSON(diagramTypesMap));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    mapEditor.put("elementTypes", jsonUtils.toJSON(elementTypesCollection));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                get("/", (req, res) -> {
+                    mapEditor.put("palette", jsonUtils.toJSON(getPrototypesPalette()));
+                    mapEditor.put("source", "basic");
+                    mapEditor.put("nodeDataArray", "[]");
+                    mapEditor.put("linkDataArray", "[]");
+                    return new ModelAndView(mapEditor, "/open-archi/editor");
+                }, engine);
+                get("/:uuid", (request, response) -> {
                     try {
-                        mapEditor.put("elementTypes", jsonUtils.toJSON(elementTypesCollection));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    get("/", (req, res) -> {
+                        String id = request.params(":uuid");
+                        Taggable model = JPAEntityManagerUtils.find(Taggable.class, id);
+                        if (model != null) {
+                            model.validateRequest();
+                        }
+                        mapEditor.put("model", jsonUtils.toJSON(model));
                         mapEditor.put("palette", jsonUtils.toJSON(getPrototypesPalette()));
                         mapEditor.put("source", "basic");
-                        mapEditor.put("nodeDataArray", "[]");
-                        mapEditor.put("linkDataArray", "[]");
-                        return new ModelAndView(mapEditor, "/open-archi/editor");
-                    }, engine);
-                    get("/:uuid", (request, response) -> {
-                        try {
-                            String id = request.params(":uuid");
-                            Taggable model = JPAEntityManagerUtils.find(Taggable.class, id);
-                            if (model != null) {
-                                model.validateRequest();
-                            }
-                            mapEditor.put("model", jsonUtils.toJSON(model));
-                            mapEditor.put("palette", jsonUtils.toJSON(getPrototypesPalette()));
-                            mapEditor.put("source", "basic");
-                            return new ModelAndView(mapEditor, "/open-archi/editor");
-                        } catch (Exception ex) {
-                            mapEditor.put("title", "Error");
-                            mapEditor.put("message", ex.getMessage());
-                            mapEditor.put("stack", ex.getStackTrace());
-                            return new ModelAndView(mapEditor, "/error");
-                        }
-                    }, engine);
-                });
+                        return new ModelAndView(mapEditor, "/open-archi/prototyper");
+                    } catch (Exception ex) {
+                        mapEditor.put("title", "Error");
+                        mapEditor.put("message", ex.getMessage());
+                        mapEditor.put("stack", ex.getStackTrace());
+                        return new ModelAndView(mapEditor, "/error");
+                    }
+                }, engine);
             });
             path("/samples", () -> {
                 get("/basic", (request, response) -> {
@@ -1104,7 +1112,7 @@ public class Server {
                             throw new Exception("Invalid model");
                         }
                         Item clonedModelItem = (Item) clonedModel;
-                        clonedModelItem.setClonedFrom(((Item)model).buildCompositeElement());
+                        clonedModelItem.setClonedFrom(((Item) model).buildCompositeElement());
                         String name = clonedModelItem.getName();
                         Map<String, Object> map = new HashMap<>();
                         map.put("type", model.getClass());
