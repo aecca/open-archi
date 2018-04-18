@@ -1,5 +1,7 @@
 package com.araguacaima.open_archi.persistence.meta;
 
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.Predicate;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.Cascade;
@@ -9,6 +11,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.UUID;
 
 /**
@@ -21,21 +25,23 @@ import java.util.UUID;
 @NamedQueries(value = {@NamedQuery(name = MetaInfo.COUNT_ALL_META_INFO,
         query = "select count(a) from MetaInfo a"), @NamedQuery(
         name = MetaInfo.GET_ALL_META_INFO,
-        query = "select a from MetaInfo a order by a.version, a.created"), @NamedQuery(
-        name = MetaInfo.GET_DEFAULT_META_INFO,
-        query = "select a from MetaInfo a where a.version.major = 1 and a.version.minor = 0 and a.version.build = 0 order by a.version, a.created")})
+        query = "select a from MetaInfo a order by a.created")})
 public class MetaInfo implements Serializable, Comparable<MetaInfo> {
 
     public static final String GET_ALL_META_INFO = "MetaInfo.getAllMetaInfo";
     public static final String COUNT_ALL_META_INFO = "MetaInfo.countAllMetaInfo";
-    public static final String GET_DEFAULT_META_INFO = "MetaInfo.getDefaultMetaInfo";
 
     @Id
     private String id;
 
-    @NotNull
-    @ManyToOne
-    private Version version;
+    @ManyToMany(cascade = CascadeType.REMOVE)
+    @JoinTable(schema = "META",
+            name = "MetaInfo_History_Ids",
+            joinColumns = {@JoinColumn(name = "MetaInfo_Id",
+                    referencedColumnName = "Id")},
+            inverseJoinColumns = {@JoinColumn(name = "History_Id",
+                    referencedColumnName = "Id")})
+    private Set<History> history = new TreeSet<>();
 
     @NotNull
     @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
@@ -67,13 +73,6 @@ public class MetaInfo implements Serializable, Comparable<MetaInfo> {
         this.id = id;
     }
 
-    public Version getVersion() {
-        return version;
-    }
-
-    public void setVersion(Version version) {
-        this.version = version;
-    }
 
     public Account getCreatedBy() {
         return createdBy;
@@ -107,6 +106,27 @@ public class MetaInfo implements Serializable, Comparable<MetaInfo> {
         this.modified = modified;
     }
 
+    public Set<History> getHistory() {
+        return history;
+    }
+
+    public void setHistory(Set<History> history) {
+        this.history = history;
+    }
+
+    public void addHistory(History history) {
+        this.history.add(history);
+    }
+
+    public History getActiveHistory() {
+        History history = CollectionUtils.find(this.history, object -> VersionStatus.ACTIVE.equals(object.getVersion().getStatus()));
+        if (history == null) {
+            history = new History();
+            history.setVersion(new Version());
+        }
+        return history;
+    }
+
     @Override
     protected Object clone() throws CloneNotSupportedException {
         final Object cloned = super.clone();
@@ -125,7 +145,7 @@ public class MetaInfo implements Serializable, Comparable<MetaInfo> {
         MetaInfo metaInfo = (MetaInfo) o;
 
         return new EqualsBuilder().append(id, metaInfo.id)
-                .append(version, metaInfo.version)
+                .append(history, metaInfo.history)
                 .append(createdBy, metaInfo.createdBy)
                 .append(modifiedBy, metaInfo.modifiedBy)
                 .append(created, metaInfo.created)
@@ -136,7 +156,7 @@ public class MetaInfo implements Serializable, Comparable<MetaInfo> {
     @Override
     public int hashCode() {
         return new HashCodeBuilder(17, 37).append(id)
-                .append(version)
+                .append(history)
                 .append(createdBy)
                 .append(modifiedBy)
                 .append(created)
@@ -146,6 +166,7 @@ public class MetaInfo implements Serializable, Comparable<MetaInfo> {
 
     @Override
     public int compareTo(MetaInfo o) {
-        return this.version.compareTo(o.version);
+        //TODO completar
+        return 0;
     }
 }

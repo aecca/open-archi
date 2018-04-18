@@ -53,11 +53,16 @@ public class Version implements Serializable, Comparable<Version>, Cloneable {
     @Column(nullable = false)
     @NotNull
     private Integer minor = 0;
-    @Column(nullable = true)
+    @Column
     private Integer build = 1;
+
+    @Column
+    @Enumerated(EnumType.STRING)
+    protected VersionStatus status;
 
     public Version() {
         this.id = UUID.randomUUID().toString();
+        this.status = VersionStatus.ACTIVE;
     }
 
     public Version(Integer major, Integer minor, Integer build) {
@@ -134,6 +139,14 @@ public class Version implements Serializable, Comparable<Version>, Cloneable {
 
     public void setBuild(Integer build) {
         this.build = build;
+    }
+
+    public VersionStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(VersionStatus status) {
+        this.status = status;
     }
 
     @Override

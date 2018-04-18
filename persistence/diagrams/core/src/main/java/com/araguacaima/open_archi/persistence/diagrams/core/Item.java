@@ -42,6 +42,10 @@ import java.util.Set;
                 query = "select new com.araguacaima.open_archi.persistence.commons.IdName(a.id, a.name, TYPE(a)) " +
                         "from com.araguacaima.open_archi.persistence.diagrams.core.Item a where TYPE(a)=:type " +
                         "and a.prototype=true"),
+        @NamedQuery(name = Item.GET_ALL_NON_CLONED_PROTOTYPE_NAMES_BY_TYPE,
+                query = "select new com.araguacaima.open_archi.persistence.commons.IdName(a.id, a.name, TYPE(a)) " +
+                        "from com.araguacaima.open_archi.persistence.diagrams.core.Item a where TYPE(a)=:type " +
+                        "and a.prototype=true and a.clonedFrom IS NULL"),
         @NamedQuery(name = Item.GET_MODEL_NAMES_BY_NAME_AND_TYPE,
                 query = "select new com.araguacaima.open_archi.persistence.commons.IdName(a.id, a.name, TYPE(a)) " +
                         "from com.araguacaima.open_archi.persistence.diagrams.core.Item a where a.name like concat(:name,'%') and TYPE(a)=:type "),
@@ -64,6 +68,7 @@ public class Item extends Taggable {
     public static final String GET_MODEL_NAMES_BY_NAME_AND_TYPE = "get.model.names.by.name.and.type";
     public static final String GET_ALL_MODEL_NAMES_BY_TYPE = "get.all.model.names.by.type";
     public static final String GET_ALL_PROTOTYPE_NAMES_BY_TYPE = "get.all.prototype.names.by.type";
+    public static final String GET_ALL_NON_CLONED_PROTOTYPE_NAMES_BY_TYPE = "get.all.non.cloned.prototype.names.by.type";
     public static final String GET_ITEMS_BY_NAME_AND_KIND = "get.items.by.name.and.kind";
 
     public static final String PROTOTYPE_SHAPE_COLOR = "#E00000";
@@ -281,6 +286,14 @@ public class Item extends Taggable {
         }
         this.prototype = source.isPrototype();
 
+    }
+
+    public CompositeElement buildCompositeElement() {
+        CompositeElement compositeElement = new CompositeElement();
+        compositeElement.setId(this.getId());
+        compositeElement.setType(this.getKind());
+        compositeElement.setLink("/models/"+ this.getId());
+        return compositeElement;
     }
 
     @Override

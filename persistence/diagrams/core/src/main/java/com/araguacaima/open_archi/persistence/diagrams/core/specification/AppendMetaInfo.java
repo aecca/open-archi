@@ -1,6 +1,7 @@
 package com.araguacaima.open_archi.persistence.diagrams.core.specification;
 
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
+import com.araguacaima.open_archi.persistence.meta.History;
 import com.araguacaima.open_archi.persistence.meta.MetaInfo;
 import com.araguacaima.open_archi.persistence.meta.Version;
 import com.araguacaima.specification.AbstractSpecification;
@@ -29,15 +30,16 @@ public class AppendMetaInfo extends AbstractSpecification {
                 } else {
                     meta = (MetaInfo) map.get("meta");
                 }
-                Version version = new Version();
-                meta.setVersion(version);
+                History history = new History();
+                history.setVersion(new Version());
+                meta.addHistory(history);
                 meta.setCreated(thisTime);
                 meta.setModified(thisTime);
                 entity.setMeta(meta);
             } else {
                 meta = entity.getMeta();
                 meta.setModified(thisTime);
-                meta.getVersion().nextBuild();
+                meta.getActiveHistory().getVersion().nextBuild();
                 //map.put("meta", meta);
             }
         }

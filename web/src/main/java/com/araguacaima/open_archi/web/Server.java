@@ -450,6 +450,40 @@ public class Server {
                         return new ModelAndView(mapEditor, "/error");
                     }
                 }, engine);
+                path("/prototypes", () -> {
+                    mapEditor.put("title", "Prototypes Editor");
+                    mapEditor.remove("diagramTypes");
+                    try {
+                        mapEditor.put("elementTypes", jsonUtils.toJSON(elementTypesCollection));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    get("/", (req, res) -> {
+                        mapEditor.put("palette", jsonUtils.toJSON(getPrototypesPalette()));
+                        mapEditor.put("source", "basic");
+                        mapEditor.put("nodeDataArray", "[]");
+                        mapEditor.put("linkDataArray", "[]");
+                        return new ModelAndView(mapEditor, "/open-archi/editor");
+                    }, engine);
+                    get("/:uuid", (request, response) -> {
+                        try {
+                            String id = request.params(":uuid");
+                            Taggable model = JPAEntityManagerUtils.find(Taggable.class, id);
+                            if (model != null) {
+                                model.validateRequest();
+                            }
+                            mapEditor.put("model", jsonUtils.toJSON(model));
+                            mapEditor.put("palette", jsonUtils.toJSON(getPrototypesPalette()));
+                            mapEditor.put("source", "basic");
+                            return new ModelAndView(mapEditor, "/open-archi/editor");
+                        } catch (Exception ex) {
+                            mapEditor.put("title", "Error");
+                            mapEditor.put("message", ex.getMessage());
+                            mapEditor.put("stack", ex.getStackTrace());
+                            return new ModelAndView(mapEditor, "/error");
+                        }
+                    }, engine);
+                });
             });
             path("/samples", () -> {
                 get("/basic", (request, response) -> {
@@ -1070,6 +1104,7 @@ public class Server {
                             throw new Exception("Invalid model");
                         }
                         Item clonedModelItem = (Item) clonedModel;
+                        clonedModelItem.setClonedFrom(((Item)model).buildCompositeElement());
                         String name = clonedModelItem.getName();
                         Map<String, Object> map = new HashMap<>();
                         map.put("type", model.getClass());
@@ -1260,7 +1295,7 @@ public class Server {
                         ElementRole model;
                         try {
                             model = jsonUtils.fromJSON(body, ElementRole.class);
-                        } catch(Throwable ignored) {
+                        } catch (Throwable ignored) {
                             throw new Exception("Invalid element role of '" + body + "'");
                         }
                         DBUtil.populate(model, false);
@@ -1464,6 +1499,92 @@ public class Server {
         params.put("type", SoftwareSystem.class);
         List<IdName> models;
         models = JPAEntityManagerUtils.executeQuery(IdName.class, Item.GET_ALL_PROTOTYPE_NAMES_BY_TYPE, params);
+        int rank = 0;
+        for (IdName model : models) {
+            PaletteItem item = new PaletteItem();
+            item.setId(model.getId());
+            item.setRank(rank);
+            item.setKind(ElementKind.ARCHITECTURE_MODEL);
+            item.setName(model.getName());
+            Shape shape = new Shape();
+            shape.setType(ShapeType.RoundedRectangle);
+            shape.setFill(SoftwareSystem.SHAPE_COLOR);
+            shape.setSize(new Size(40, 40));
+            item.setShape(shape);
+            item.setCategory(ElementKind.SOFTWARE_SYSTEM.name());
+            item.setPrototype(true);
+            palette.getSoftwareSystems().add(item);
+            rank++;
+        }
+
+        params.put("type", Container.class);
+        models = JPAEntityManagerUtils.executeQuery(IdName.class, Item.GET_ALL_PROTOTYPE_NAMES_BY_TYPE, params);
+        rank = 0;
+        for (IdName model : models) {
+            PaletteItem item = new PaletteItem();
+            item.setId(model.getId());
+            item.setRank(rank);
+            item.setKind(ElementKind.ARCHITECTURE_MODEL);
+            item.setName(model.getName());
+            Shape shape = new Shape();
+            shape.setType(ShapeType.RoundedRectangle);
+            shape.setFill(Container.SHAPE_COLOR);
+            shape.setSize(new Size(40, 40));
+            item.setShape(shape);
+            item.setCategory(ElementKind.CONTAINER.name());
+            item.setPrototype(true);
+            palette.getContainers().add(item);
+            rank++;
+        }
+
+        params.put("type", Component.class);
+        models = JPAEntityManagerUtils.executeQuery(IdName.class, Item.GET_ALL_PROTOTYPE_NAMES_BY_TYPE, params);
+        rank = 0;
+        for (IdName model : models) {
+            PaletteItem item = new PaletteItem();
+            item.setId(model.getId());
+            item.setRank(rank);
+            item.setKind(ElementKind.ARCHITECTURE_MODEL);
+            item.setName(model.getName());
+            Shape shape = new Shape();
+            shape.setType(ShapeType.RoundedRectangle);
+            shape.setFill(Component.SHAPE_COLOR);
+            shape.setSize(new Size(40, 40));
+            item.setShape(shape);
+            item.setCategory(ElementKind.COMPONENT.name());
+            item.setPrototype(true);
+            palette.getComponents().add(item);
+            rank++;
+        }
+
+        params.put("type", Model.class);
+        models = JPAEntityManagerUtils.executeQuery(IdName.class, Item.GET_ALL_PROTOTYPE_NAMES_BY_TYPE, params);
+        rank = 0;
+        for (IdName model : models) {
+            PaletteItem item = new PaletteItem();
+            item.setId(model.getId());
+            item.setRank(rank);
+            item.setKind(ElementKind.ARCHITECTURE_MODEL);
+            item.setName(model.getName());
+            Shape shape = new Shape();
+            shape.setType(ShapeType.RoundedRectangle);
+            shape.setFill(Item.PROTOTYPE_SHAPE_COLOR);
+            shape.setSize(new Size(40, 40));
+            item.setShape(shape);
+            item.setCategory(ElementKind.ARCHITECTURE_MODEL.name());
+            item.setPrototype(true);
+            palette.getPrototypes().add(item);
+            rank++;
+        }
+        return palette;
+    }
+
+    private static Palette getPrototypesPalette() {
+        Palette palette = new Palette();
+        Map<String, Object> params = new HashMap<>();
+        params.put("type", SoftwareSystem.class);
+        List<IdName> models;
+        models = JPAEntityManagerUtils.executeQuery(IdName.class, Item.GET_ALL_NON_CLONED_PROTOTYPE_NAMES_BY_TYPE, params);
         int rank = 0;
         for (IdName model : models) {
             PaletteItem item = new PaletteItem();

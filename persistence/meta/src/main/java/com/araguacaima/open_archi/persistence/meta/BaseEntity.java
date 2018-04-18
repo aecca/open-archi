@@ -179,7 +179,9 @@ public abstract class BaseEntity implements Serializable, BasicEntity, Cloneable
         Date time = Calendar.getInstance().getTime();
         meta.setCreated(time);
         meta.setModified(time);
-        meta.setVersion(new Version());
+        History history = new History();
+        history.setVersion(new Version());
+        meta.addHistory(history);
         return meta;
     }
 

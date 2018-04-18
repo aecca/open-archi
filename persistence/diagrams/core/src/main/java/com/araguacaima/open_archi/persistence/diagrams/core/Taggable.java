@@ -40,6 +40,18 @@ public class Taggable extends BaseEntity {
     @OneToOne
     private ElementRole role;
 
+    @OneToOne
+    private CompositeElement clonedFrom;
+
+    @ManyToMany(cascade = CascadeType.REMOVE)
+    @JoinTable(schema = "DIAGRAMS",
+            name = "Taggable_Cloned_By_Ids",
+            joinColumns = {@JoinColumn(name = "Taggable_Id",
+                    referencedColumnName = "Id")},
+            inverseJoinColumns = {@JoinColumn(name = "Cloned_Tagabble_Id",
+                    referencedColumnName = "Id")})
+    private Set<CompositeElement> clonedBy;
+
     public Set<String> getTags() {
         return tags;
     }
@@ -64,6 +76,22 @@ public class Taggable extends BaseEntity {
         this.role = role;
     }
 
+    public CompositeElement getClonedFrom() {
+        return clonedFrom;
+    }
+
+    public void setClonedFrom(CompositeElement clonedFrom) {
+        this.clonedFrom = clonedFrom;
+    }
+
+    public Set<CompositeElement> getClonedBy() {
+        return clonedBy;
+    }
+
+    public void setClonedBy(Set<CompositeElement> clonedBy) {
+        this.clonedBy = clonedBy;
+    }
+
     public void override(Taggable source, boolean keepMeta, String suffix) {
         super.override(source, keepMeta, suffix);
         this.tags = source.getTags();
@@ -79,4 +107,6 @@ public class Taggable extends BaseEntity {
             this.role = source.getRole();
         }
     }
+
+
 }
