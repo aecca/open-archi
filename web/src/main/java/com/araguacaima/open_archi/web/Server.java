@@ -1484,6 +1484,7 @@ public class Server {
         result.add(new ExampleData("/diagrams/flowchart.html", "Flujo de Secuencia"));
         result.add(new ExampleData("/diagrams/gantt.html", "Diagramas Gantt"));
         result.add(new ExampleData("/diagrams/grouping.html", "Expansión"));
+        result.add(new ExampleData("/diagrams/regrouping.html", "Re-agrupación"));
         result.add(new ExampleData("/diagrams/guidedDragging.html", "Guías visuales"));
         result.add(new ExampleData("/diagrams/icons.html", "Iconos SVG"));
         result.add(new ExampleData("/diagrams/kanban.html", "Tablero Kanban"));

@@ -151,7 +151,6 @@ const partContextMenu =
                     });
 
 
-
             }, true)
     );
 
@@ -229,6 +228,23 @@ function expand(data) {
     if (pos) {
         myDiagram.initialPosition = go.Point.parse(pos);
     }
+}
+
+function expandGroups(g, i, level) {
+    if (!(g instanceof go.Group)) return;
+    g.isSubGraphExpanded = i < level;
+    g.memberParts.each(function (m) {
+        expandGroups(m, i + 1, level);
+    })
+}
+
+function reexpand(e) {
+    myDiagram.startTransaction("reexpand");
+    let level = getCurrentViewModeValue();
+    myDiagram.findTopLevelGroups().each(function (g) {
+        expandGroups(g, 0, level);
+    });
+    myDiagram.commitTransaction("reexpand");
 }
 
 function relocate(el, top, left) {
@@ -548,11 +564,11 @@ function confirmAndSave() {
     })
 }
 
-function changeView() {
-
-}
-
 function getCurrentViewMode() {
     let viewMode_ = $(viewMode.tickLabels[viewMode.getValue() - 1]);
     return viewMode_.html();
+}
+
+function getCurrentViewModeValue() {
+    return viewMode.getValue();
 }
