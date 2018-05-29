@@ -526,11 +526,22 @@ function checkAndSave() {
 
     if (data !== null) {
         const name = $("#element-name").val();
-        const type = $("#elementTypesDropdown").find("a.active").html();
+        const type = getElementType();
         const prototype = $("#element-prototype").prop("checked");
         delete data["text"];
-        myDiagram.model.setDataProperty(data, "name", name);
-        myDiagram.model.setDataProperty(data, "kind", type);
+        data.kind = type;
+        data.name = name;
+        const newNode = getNodeByType(data);
+        let group = newNode.isGroup;
+        if (group) {
+            myDiagram.groupTemplateMap.add(type, newNode);
+        } else {
+            myDiagram.nodeTemplateMap.add(type, newNode);
+        }
+        data.category = type;
+        data.isGroup = group;
+        myDiagram.model.removeNodeData(data);
+        myDiagram.model.addNodeData(data);
         myDiagram.requestUpdate();
     }
     basicElementData.modal('hide')
@@ -571,4 +582,15 @@ function getCurrentViewMode() {
 
 function getCurrentViewModeValue() {
     return viewMode.getValue();
+}
+
+function getElementType() {
+    const elementType = $("#elementTypesDropdown").closest('.dropdown').find('.dropdown-toggle');
+    if (elementType) {
+        let type = elementType.html();
+        if (type) {
+            return type.split(" ")[0];
+        }
+    }
+    return undefined;
 }

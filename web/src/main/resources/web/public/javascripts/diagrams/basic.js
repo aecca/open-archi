@@ -36,6 +36,9 @@ function initBasic(nodeDataArray, linkDataArray) {
         gojs(go.Node, "Spot", nodeStyle(),
             // the main object is a Panel that surrounds a TextBlock with a rectangular Shape
             gojs(go.Panel, "Auto",
+                {
+                    name: "New Element"
+                },
                 gojs(go.Shape, "RoundedRectangle",
                     {
                         fill: "blue", // the default fill, if there is no data bound value

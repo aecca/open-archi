@@ -107,52 +107,6 @@ function toPalette(data, category) {
     return paletteModel;
 }
 
-function fillElement(paletteModel) {
-    return gojs(
-        go.Node, "Spot", nodeStyle(),
-        gojs(go.Panel, "Auto",
-            gojs(go.Shape, paletteModel.shape.type,
-                {
-                    "fill": paletteModel.shape.fill,
-                    "stroke": paletteModel.shape.stroke,
-                    "minSize": OpenArchiWrapper.toSize(paletteModel)
-                },
-                new go.Binding("figure", "", OpenArchiWrapper.toFigure).makeTwoWay(OpenArchiWrapper.fromFigure),
-                new go.Binding("fill", "", OpenArchiWrapper.toFill).makeTwoWay(OpenArchiWrapper.fromFill),
-                new go.Binding("minSize", "", OpenArchiWrapper.toSize).makeTwoWay(OpenArchiWrapper.fromSize),
-                new go.Binding("stroke", "", OpenArchiWrapper.toStroke).makeTwoWay(OpenArchiWrapper.fromStroke)),
-            gojs(go.TextBlock, "Text",
-                {
-                    name: paletteModel.name,
-                    font: "bold 11pt Helvetica, Arial, sans-serif",
-                    stroke: lightText,
-                    margin: 8,
-                    maxSize: new go.Size(160, NaN),
-                    wrap: go.TextBlock.WrapFit,
-                    editable: true
-                },
-                new go.Binding("text", "", OpenArchiWrapper.toTitle),
-                new go.Binding("minSize", "", OpenArchiWrapper.toSize).makeTwoWay(OpenArchiWrapper.fromSize)),
-            { // this tooltip Adornment is shared by all nodes
-                toolTip:
-                    gojs(go.Adornment, "Auto",
-                        gojs(go.Shape, {fill: "#FFFFCC"}),
-                        gojs(go.TextBlock, {margin: 4},  // the tooltip shows the result of calling nodeInfo(data)
-                            new go.Binding("text", "", nodeInfo))
-                    ),
-                // this context menu Adornment is shared by all nodes
-                contextMenu: partContextMenu
-            }
-        ),
-        // three named ports, one on each side except the top, all output only:
-        // four named ports, one on each side:
-        makePort("T", go.Spot.Top, paletteModel.shape.input, paletteModel.shape.output),
-        makePort("L", go.Spot.Left, paletteModel.shape.input, paletteModel.shape.output),
-        makePort("R", go.Spot.Right, paletteModel.shape.input, paletteModel.shape.output),
-        makePort("B", go.Spot.Bottom, paletteModel.shape.input, paletteModel.shape.output)
-    );
-}
-
 function showPaletteByType(paletteData) {
     switch (paletteData.type) {
         case "ARCHITECTURE":
@@ -170,30 +124,30 @@ function showPaletteByType(paletteData) {
             let paletteModelArray = [];
             paletteData.basicElements.forEach(function (data) {
                 paletteModelArray.push(toPalette(data, data.shape.type));
-                myPalette.nodeTemplateMap.add(data.shape.type, fillElement(data));
+                myPalette.nodeTemplateMap.add(data.shape.type, getNodeByType(data));
             });
             if (paletteData.softwareSystems) {
                 paletteData.softwareSystems.forEach(function (data) {
                     paletteModelArray.push(toPalette(data, "SOFTWARE_SYSTEM"));
-                    myPalette.nodeTemplateMap.add("SOFTWARE_SYSTEM", fillElement(data));
+                    myPalette.nodeTemplateMap.add(data.shape.type, getNodeByType(data));
                 });
             }
             if (paletteData.containers) {
                 paletteData.containers.forEach(function (data) {
                     paletteModelArray.push(toPalette(data, "CONTAINER"));
-                    myPalette.nodeTemplateMap.add("CONTAINER", fillElement(data));
+                    myPalette.nodeTemplateMap.add(data.shape.type, getNodeByType(data));
                 });
             }
             if (paletteData.components) {
                 paletteData.components.forEach(function (data) {
                     paletteModelArray.push(toPalette(data, "COMPONENT"));
-                    myPalette.nodeTemplateMap.add("COMPONENT", fillElement(data));
+                    myPalette.nodeTemplateMap.add(data.shape.type, getNodeByType(data));
                 });
             }
             if (paletteData.prototypes) {
                 paletteData.prototypes.forEach(function (data) {
                     paletteModelArray.push(toPalette(data, "PROTOTYPE"));
-                    myPalette.nodeTemplateMap.add("PROTOTYPE", fillElement(data));
+                    myPalette.nodeTemplateMap.add("PROTOTYPE", getNodeByType(data));
                 });
             }
             myPalette.model = new go.GraphLinksModel(paletteModelArray);

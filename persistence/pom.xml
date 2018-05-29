@@ -31,7 +31,7 @@
         <javax.validation-validation-api>2.0.0.Final</javax.validation-validation-api>
         <org.apache.commons-commons-collections4>4.0</org.apache.commons-commons-collections4>
         <commons-io-commons-io>2.6</commons-io-commons-io>
-        <org.postgresql-postgresql>9.3-1102-jdbc41</org.postgresql-postgresql>
+        <org.postgresql-postgresql>42.2.2</org.postgresql-postgresql>
         <org.threeten-threetenbp>1.3.3</org.threeten-threetenbp>
         <com.araguacaima-commons-utils>1.0.1-SNAPSHOT</com.araguacaima-commons-utils>
         <com.araguacaima-composite-specification>1.0.1-SNAPSHOT</com.araguacaima-composite-specification>

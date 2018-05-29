@@ -382,7 +382,13 @@ class OpenArchiWrapper {
     }
 
     static toSize(data, node) {
-        return new go.Size(data.shape.size.width, data.shape.size.height);
+        let size;
+        if (data.shape && data.shape.size) {
+            size = new go.Size(data.shape.size.width, data.shape.size.height);
+        } else {
+            size = new go.Size(25, 15);
+        }
+        return size;
     }
 
     static fromSize(size, data, model) {

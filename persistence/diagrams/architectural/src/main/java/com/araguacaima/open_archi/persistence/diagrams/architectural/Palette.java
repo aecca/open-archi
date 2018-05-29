@@ -35,19 +35,19 @@ public class Palette implements Palettable {
         person.setShape(shapePerson);
         person.setKind(ElementKind.CONSUMER);
         person.setRank(1);
-        person.setCategory(DefaultCategoryItem.DEFAULT.name());
+        person.setCategory("Person");
         person.setPrototype(false);
         basicElements.add(person);
         PaletteItem consumer = new PaletteItem();
         Shape shapeConsumer = new Shape();
         shapeConsumer.setFill("#F0AD4B");
         shapeConsumer.setSize(new Size(40,40));
-        shapeConsumer.setType(ShapeType.Rectangle);
+        shapeConsumer.setType(ShapeType.Consumer);
         consumer.setName("Consumer");
         consumer.setShape(shapeConsumer);
         consumer.setKind(ElementKind.CONSUMER);
         consumer.setRank(2);
-        consumer.setCategory(DefaultCategoryItem.DEFAULT.name());
+        consumer.setCategory("Consumer");
         consumer.setPrototype(false);
         basicElements.add(consumer);
     }

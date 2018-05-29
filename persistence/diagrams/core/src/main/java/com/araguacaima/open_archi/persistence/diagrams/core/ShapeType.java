@@ -10,5 +10,8 @@ public enum ShapeType {
     Lane,
     Pool,
     Consumer,
-    Triangle
+    Triangle,
+    SoftwareSystem,
+    Container,
+    Component
 }
