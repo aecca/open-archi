@@ -594,3 +594,31 @@ function getElementType() {
     }
     return undefined;
 }
+
+// Upon a drop onto a Group, we try to add the selection as members of the Group.
+// Upon a drop onto the background, or onto a top-level Node, make selection top-level.
+// If this is OK, we're done; otherwise we cancel the operation to rollback everything.
+function finishDrop(e, grp) {
+    let ok = (grp !== null
+        ? grp.addMembers(grp.diagram.selection, true)
+        : e.diagram.commandHandler.addTopLevelParts(e.diagram.selection, true));
+    if (!ok) e.diagram.currentTool.doCancel();
+}
+
+// this function is used to highlight a Group that the selection may be dropped into
+function highlightGroup(e, grp, show) {
+    if (!grp) return;
+    e.handled = true;
+    if (show) {
+        // cannot depend on the grp.diagram.selection in the case of external drag-and-drops;
+        // instead depend on the DraggingTool.draggedParts or .copiedParts
+        let tool = grp.diagram.toolManager.draggingTool;
+        let map = tool.draggedParts || tool.copiedParts;  // this is a Map
+        // now we can check to see if the Group will accept membership of the dragged Parts
+        if (grp.canAddMembers(map.toKeySet())) {
+            grp.isHighlighted = true;
+            return;
+        }
+    }
+    grp.isHighlighted = false;
+}

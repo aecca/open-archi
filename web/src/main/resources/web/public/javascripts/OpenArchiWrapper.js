@@ -369,8 +369,8 @@ class OpenArchiWrapper {
         return data.name;
     }
 
-    static fromTitle(loc, data, model) {
-        model.setDataProperty(data, "text", data.name);
+    static fromTitle(text, data, model) {
+        model.setDataProperty(data, "text", text);
     }
 
     static toName(data, node) {

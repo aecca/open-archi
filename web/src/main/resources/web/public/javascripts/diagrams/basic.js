@@ -16,7 +16,10 @@ function initBasic(nodeDataArray, linkDataArray) {
                     shape: {fill: "#01203A"},
                     kind: "SOFTWARE_SYSTEM"
                 },
-
+                mouseDrop: function(e) { finishDrop(e, null); },
+                layout:  // Diagram has simple horizontal layout
+                    gojs(go.GridLayout,
+                        { wrappingWidth: Infinity, alignment: go.GridLayout.Position, cellSize: new go.Size(1, 1) }),
                 // allow Ctrl-G to call groupSelection()
                 "commandHandler.archetypeGroupData": {name: "Group", isGroup: true, color: "blue"},
                 "LinkDrawn": showLinkLabel,  // this DiagramEvent listener is defined below
