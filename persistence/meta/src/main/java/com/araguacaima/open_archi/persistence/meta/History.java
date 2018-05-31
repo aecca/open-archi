@@ -7,6 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.UUID;
 
 @PersistenceUnit(unitName = "open-archi")
 @Entity
@@ -41,10 +42,12 @@ public class History implements Serializable, Comparable<History> {
     private Account modifiedBy;
 
     public History() {
+        this.id = UUID.randomUUID().toString();
     }
 
 
     public History(Date modified) {
+        this();
         this.modified = modified;
     }
 
