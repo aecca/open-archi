@@ -5,6 +5,7 @@ import com.araguacaima.commons.utils.JsonUtils;
 import com.araguacaima.commons.utils.ReflectionUtils;
 import com.araguacaima.open_archi.persistence.commons.IdName;
 import com.araguacaima.open_archi.persistence.diagrams.architectural.*;
+import com.araguacaima.open_archi.persistence.diagrams.architectural.System;
 import com.araguacaima.open_archi.persistence.diagrams.core.*;
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;

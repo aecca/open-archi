@@ -101,13 +101,6 @@
 
             <dependency>
                 <groupId>com.araguacaima.open_archi</groupId>
-                <artifactId>persistence-utils</artifactId>
-                <version>${project.version}</version>
-                <scope>compile</scope>
-            </dependency>
-
-            <dependency>
-                <groupId>com.araguacaima.open_archi</groupId>
                 <artifactId>persistence-commons</artifactId>
                 <version>${project.version}</version>
                 <scope>compile</scope>
