@@ -32,7 +32,7 @@ public class Element extends Item {
             name = "Element_FeatureIds",
             joinColumns = {@JoinColumn(name = "Architecture_Model_Id",
                     referencedColumnName = "Id")},
-            inverseJoinColumns = {@JoinColumn(name = "SoftwareSystem_Id",
+            inverseJoinColumns = {@JoinColumn(name = "System_Id",
                     referencedColumnName = "Id")})
     protected Set<Feature> features = new LinkedHashSet<>();
 

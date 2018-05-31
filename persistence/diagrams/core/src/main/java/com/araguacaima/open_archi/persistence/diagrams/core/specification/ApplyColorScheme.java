@@ -81,7 +81,7 @@ public class ApplyColorScheme extends AbstractSpecification {
                     case BPM:
                         shape.setFill("#01203A");
                         break;
-                    case SOFTWARE_SYSTEM:
+                    case SYSTEM:
                         shape.setFill("#01203A");
                         break;
                 }

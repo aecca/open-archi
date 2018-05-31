@@ -3007,7 +3007,7 @@ definitions:
         - CONTAINER
         - DEPLOYMENT
         - BPM
-        - SOFTWARE_SYSTEM
+        - SYSTEM
       link:
         type: string
         description: Link to the referenced element
@@ -3043,7 +3043,7 @@ definitions:
         - CONTAINER
         - DEPLOYMENT
         - BPM
-        - SOFTWARE_SYSTEM
+        - SYSTEM
       link:
         type: string
         description: Link to the referenced element

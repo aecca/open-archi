@@ -31,18 +31,18 @@ public class Palette implements Palettable {
         Shape shapePerson = new Shape();
         shapePerson.setFill("#ED5656");
         shapePerson.setSize(new Size(40,40));
-        shapePerson.setType(ShapeType.Person);
+        shapePerson.setType(ShapeType.PERSON);
         person.setShape(shapePerson);
         person.setKind(ElementKind.CONSUMER);
         person.setRank(1);
-        person.setCategory("Person");
+        person.setCategory("PERSON");
         person.setPrototype(false);
         basicElements.add(person);
         PaletteItem consumer = new PaletteItem();
         Shape shapeConsumer = new Shape();
         shapeConsumer.setFill("#F0AD4B");
         shapeConsumer.setSize(new Size(40,40));
-        shapeConsumer.setType(ShapeType.Consumer);
+        shapeConsumer.setType(ShapeType.CONSUMER);
         consumer.setName("Consumer");
         consumer.setShape(shapeConsumer);
         consumer.setKind(ElementKind.CONSUMER);
@@ -66,11 +66,11 @@ public class Palette implements Palettable {
         this.basicElements = basicElements;
     }
 
-    public Set<PaletteItem> getSoftwareSystems() {
+    public Set<PaletteItem> getSystems() {
         return softwareSystems;
     }
 
-    public void setSoftwareSystems(Set<PaletteItem> softwareSystems) {
+    public void setSystems(Set<PaletteItem> softwareSystems) {
         this.softwareSystems = softwareSystems;
     }
 

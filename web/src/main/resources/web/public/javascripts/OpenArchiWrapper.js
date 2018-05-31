@@ -53,7 +53,7 @@ function commonInnerDiagramElement(model, node) {
 
 function diagramToArchitectureModel(model, node, links) {
     if (node) {
-        if (node.kind === "SOFTWARE_SYSTEM") {
+        if (node.kind === "SYSTEM") {
             let softwareSystem = commonInnerDiagramElement(model, node);
             if (!model.softwareSystems) {
                 model.softwareSystems = [];
@@ -117,7 +117,7 @@ function architectureModelToDiagram(model) {
     let diagram = {
         class: "go.GraphLinksModel"
     };
-    if (model.kind !== "ARCHITECTURE_MODEL" && model.kind !== "SOFTWARE_SYSTEM" && model.kind !== "CONTAINER" && model.kind !== "COMPONENT") {
+    if (model.kind !== "ARCHITECTURE_MODEL" && model.kind !== "SYSTEM" && model.kind !== "CONTAINER" && model.kind !== "COMPONENT") {
         return diagram;
     }
     diagram.nodeDataArray = [];
@@ -125,13 +125,13 @@ function architectureModelToDiagram(model) {
     let key = "consumers";
     let relationships = commons.prototype.findValues(model, "relationships");
     let rank = 0;
-    let softwareSystems = model.kind === "SOFTWARE_SYSTEM"
+    let softwareSystems = model.kind === "SYSTEM"
         ? [model]
         : (model.kind === "ARCHITECTURE_MODEL"
             ? model.softwareSystems
             : undefined);
     let parentGroup = model.kind === "ARCHITECTURE_MODEL" ? model.id : undefined;
-    let hasSoftwareSystems = softwareSystems !== undefined && !commons.prototype.isEmpty(softwareSystems);
+    let hasSystems = softwareSystems !== undefined && !commons.prototype.isEmpty(softwareSystems);
 
     if (relationships) {
         relationships.forEach(function (relationship) {
@@ -144,7 +144,7 @@ function architectureModelToDiagram(model) {
         });
     }
     rank = 0;
-    if (hasSoftwareSystems) {
+    if (hasSystems) {
         softwareSystems.forEach(function (softwareSystem) {
             if (!alreadyProcessedNodes.includes(softwareSystem.id)) {
                 let containers = softwareSystem.containers;
@@ -192,7 +192,7 @@ function architectureModelToDiagram(model) {
         diagram.linkDataArray.push({from: key, to: model.id, stroke: "black"});
     }
     if (parentGroup) {
-        diagram.nodeDataArray.push({key: model.id, name: model.name, fill: "orange", isGroup: hasSoftwareSystems});
+        diagram.nodeDataArray.push({key: model.id, name: model.name, fill: "orange", isGroup: hasSystems});
     }
     return diagram;
 }
@@ -288,7 +288,7 @@ class OpenArchiWrapper {
                 diagram = bpmModelToDiagram(model);
                 break;
             case "ARCHITECTURE_MODEL":
-            case "SOFTWARE_SYSTEM":
+            case "SYSTEM":
             case "CONTAINER":
             case "COMPONENT":
                 diagram = architectureModelToDiagram(model);

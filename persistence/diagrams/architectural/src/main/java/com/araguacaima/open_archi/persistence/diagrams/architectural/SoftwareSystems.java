@@ -10,12 +10,12 @@ import java.util.Set;
  * the software system you are modelling, and the other software systems upon
  * which your software system depends.
  * <p>
- * See <a href="https://structurizr.com/help/model#SoftwareSystem">Model - Software System</a>
+ * See <a href="https://structurizr.com/help/model#System">Model - Software System</a>
  * on the Structurizr website for more information.
  */
 @Entity
 @PersistenceUnit(unitName = "open-archi")
-public class SoftwareSystems extends StaticElements {
+public class Systems extends StaticElements {
 
     @Column
     @Enumerated(EnumType.STRING)
@@ -23,14 +23,14 @@ public class SoftwareSystems extends StaticElements {
 
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
-            name = "SoftwareSystem_Containers",
-            joinColumns = {@JoinColumn(name = "SoftwareSystem_Id",
+            name = "System_Containers",
+            joinColumns = {@JoinColumn(name = "System_Id",
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Container_Id",
                     referencedColumnName = "Id")})
     private Set<Containers> containers = new LinkedHashSet<>();
 
-    public SoftwareSystems() {
+    public Systems() {
     }
 
     public Scope getScope() {
@@ -49,7 +49,7 @@ public class SoftwareSystems extends StaticElements {
         this.containers = containers;
     }
 
-    public void override(SoftwareSystems source, boolean keepMeta, String suffix) {
+    public void override(Systems source, boolean keepMeta, String suffix) {
         super.override(source, keepMeta, suffix);
         this.setScope(source.getScope());
         for (Containers container : source.getContainers()) {
@@ -59,7 +59,7 @@ public class SoftwareSystems extends StaticElements {
         }
     }
 
-    public void copyNonEmpty(SoftwareSystems source, boolean keepMeta) {
+    public void copyNonEmpty(Systems source, boolean keepMeta) {
         super.copyNonEmpty(source, keepMeta);
         if (source.getScope() != null) {
             this.setScope(source.getScope());

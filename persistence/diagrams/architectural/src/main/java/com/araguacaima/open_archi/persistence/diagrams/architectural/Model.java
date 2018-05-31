@@ -54,12 +54,12 @@ public class Model extends Element implements DiagramableElement<Model> {
 
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
-            name = "Architecture_Model_SoftwareSystems",
+            name = "Architecture_Model_Systems",
             joinColumns = {@JoinColumn(name = "Architecture_Model_Id",
                     referencedColumnName = "Id")},
-            inverseJoinColumns = {@JoinColumn(name = "SoftwareSystem_Id",
+            inverseJoinColumns = {@JoinColumn(name = "System_Id",
                     referencedColumnName = "Id")})
-    private Set<SoftwareSystem> softwareSystems = new LinkedHashSet<>();
+    private Set<System> softwareSystems = new LinkedHashSet<>();
 
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
@@ -87,10 +87,10 @@ public class Model extends Element implements DiagramableElement<Model> {
             newConsumer.override(consumer, keepMeta, suffix);
             this.consumers.add(newConsumer);
         }
-        for (SoftwareSystem softwareSystem : source.getSoftwareSystems()) {
-            SoftwareSystem newSoftwareSystem = new SoftwareSystem();
-            newSoftwareSystem.override(softwareSystem, keepMeta, suffix);
-            this.softwareSystems.add(newSoftwareSystem);
+        for (System softwareSystem : source.getSystems()) {
+            System newSystem = new System();
+            newSystem.override(softwareSystem, keepMeta, suffix);
+            this.softwareSystems.add(newSystem);
         }
         for (DeploymentNode deploymentNode : source.getDeploymentNodes()) {
             DeploymentNode newDeploymentNode = new DeploymentNode();
@@ -116,11 +116,11 @@ public class Model extends Element implements DiagramableElement<Model> {
                 this.consumers.add(newConsumer);
             }
         }
-        if (source.getSoftwareSystems() != null && !source.getSoftwareSystems().isEmpty()) {
-            for (SoftwareSystem softwareSystem : source.getSoftwareSystems()) {
-                SoftwareSystem newSoftwareSystem = new SoftwareSystem();
-                newSoftwareSystem.copyNonEmpty(softwareSystem, keepMeta);
-                this.softwareSystems.add(newSoftwareSystem);
+        if (source.getSystems() != null && !source.getSystems().isEmpty()) {
+            for (System softwareSystem : source.getSystems()) {
+                System newSystem = new System();
+                newSystem.copyNonEmpty(softwareSystem, keepMeta);
+                this.softwareSystems.add(newSystem);
             }
         }
         if (source.getDeploymentNodes() != null && !source.getDeploymentNodes().isEmpty()) {
@@ -140,11 +140,11 @@ public class Model extends Element implements DiagramableElement<Model> {
         this.consumers = people;
     }
 
-    public Set<SoftwareSystem> getSoftwareSystems() {
+    public Set<System> getSystems() {
         return softwareSystems;
     }
 
-    public void setSoftwareSystems(Set<SoftwareSystem> softwareSystems) {
+    public void setSystems(Set<System> softwareSystems) {
         this.softwareSystems = softwareSystems;
     }
 

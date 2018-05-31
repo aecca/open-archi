@@ -43,12 +43,12 @@ public class Models extends Elements {
 
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
-            name = "Architecture_Model_SoftwareSystems",
+            name = "Architecture_Model_Systems",
             joinColumns = {@JoinColumn(name = "Architecture_Model_Id",
                     referencedColumnName = "Id")},
-            inverseJoinColumns = {@JoinColumn(name = "SoftwareSystem_Id",
+            inverseJoinColumns = {@JoinColumn(name = "System_Id",
                     referencedColumnName = "Id")})
-    private Set<SoftwareSystems> softwareSystems = new LinkedHashSet<>();
+    private Set<Systems> softwareSystems = new LinkedHashSet<>();
 
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
@@ -78,11 +78,11 @@ public class Models extends Elements {
         this.consumers = people;
     }
 
-    public Set<SoftwareSystems> getSoftwareSystems() {
+    public Set<Systems> getSystems() {
         return softwareSystems;
     }
 
-    public void setSoftwareSystems(Set<SoftwareSystems> softwareSystems) {
+    public void setSystems(Set<Systems> softwareSystems) {
         this.softwareSystems = softwareSystems;
     }
 
@@ -114,10 +114,10 @@ public class Models extends Elements {
             newConsumer.override(consumer, keepMeta, suffix);
             this.consumers.add(newConsumer);
         }
-        for (SoftwareSystems softwareSystem : source.getSoftwareSystems()) {
-            SoftwareSystems newSoftwareSystem = new SoftwareSystems();
-            newSoftwareSystem.override(softwareSystem, keepMeta, suffix);
-            this.softwareSystems.add(newSoftwareSystem);
+        for (Systems softwareSystem : source.getSystems()) {
+            Systems newSystem = new Systems();
+            newSystem.override(softwareSystem, keepMeta, suffix);
+            this.softwareSystems.add(newSystem);
         }
         for (DeploymentNodes deploymentNode : source.getDeploymentNodes()) {
             DeploymentNodes newDeploymentNode = new DeploymentNodes();
@@ -142,11 +142,11 @@ public class Models extends Elements {
                 this.consumers.add(newConsumer);
             }
         }
-        if (source.getSoftwareSystems() != null && !source.getSoftwareSystems().isEmpty()) {
-            for (SoftwareSystems softwareSystem : source.getSoftwareSystems()) {
-                SoftwareSystems newSoftwareSystem = new SoftwareSystems();
-                newSoftwareSystem.copyNonEmpty(softwareSystem, keepMeta);
-                this.softwareSystems.add(newSoftwareSystem);
+        if (source.getSystems() != null && !source.getSystems().isEmpty()) {
+            for (Systems softwareSystem : source.getSystems()) {
+                Systems newSystem = new Systems();
+                newSystem.copyNonEmpty(softwareSystem, keepMeta);
+                this.softwareSystems.add(newSystem);
             }
         }
         if (source.getDeploymentNodes() != null && !source.getDeploymentNodes().isEmpty()) {

@@ -8,7 +8,7 @@ import javax.persistence.*;
  * However you think about your users (as actors, roles, persons, etc),
  * people are the various human users of your software system.
  * <p>
- * See <a href="https://structurizr.com/help/model#Consumer">Model - Consumer</a>
+ * See <a href="https://structurizr.com/help/model#Consumer">Model - CONSUMER</a>
  * on the Structurizr website for more information.
  */
 @Entity

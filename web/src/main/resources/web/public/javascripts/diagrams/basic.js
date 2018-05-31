@@ -14,7 +14,7 @@ function initBasic(nodeDataArray, linkDataArray) {
                 "clickCreatingTool.archetypeNodeData": {
                     name: "Element",
                     shape: {fill: "#01203A"},
-                    kind: "SOFTWARE_SYSTEM"
+                    kind: "SYSTEM"
                 },
                 mouseDrop: function(e) { finishDrop(e, null); },
                 layout:  // Diagram has simple horizontal layout

@@ -128,7 +128,7 @@ function showPaletteByType(paletteData) {
             });
             if (paletteData.softwareSystems) {
                 paletteData.softwareSystems.forEach(function (data) {
-                    paletteModelArray.push(toPalette(data, "SOFTWARE_SYSTEM"));
+                    paletteModelArray.push(toPalette(data, "SYSTEM"));
                     myPalette.nodeTemplateMap.add(data.shape.type, getNodeByType(data));
                 });
             }

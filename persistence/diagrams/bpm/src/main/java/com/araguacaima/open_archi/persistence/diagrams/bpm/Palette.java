@@ -36,13 +36,13 @@ public class Palette implements Palettable {
         diamond.setKind(ElementKind.BPM);
         basicElements.add(diamond);
         PaletteItem lane = new PaletteItem();
-        lane.setShape(new Shape(ShapeType.Lane));
+        lane.setShape(new Shape(ShapeType.LANE));
         lane.setRank(4);
         lane.setName("Lane");
         lane.setKind(ElementKind.BPM);
         basicElements.add(lane);
         PaletteItem pool = new PaletteItem();
-        pool.setShape(new Shape(ShapeType.Pool));
+        pool.setShape(new Shape(ShapeType.POOL));
         pool.setRank(5);
         pool.setName("Pool");
         pool.setKind(ElementKind.BPM);

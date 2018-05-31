@@ -20,5 +20,5 @@ public enum ElementKind {
     CONTAINER,
     DEPLOYMENT,
     BPM,
-    SOFTWARE_SYSTEM
+    SYSTEM
 }

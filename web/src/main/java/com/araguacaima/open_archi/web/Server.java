@@ -281,7 +281,7 @@ public class Server {
         elementTypesCollection.add("CONTAINER");
         elementTypesCollection.add("DEPLOYMENT");
         elementTypesCollection.add("BPM");
-        elementTypesCollection.add("SOFTWARE_SYSTEM");
+        elementTypesCollection.add("SYSTEM");
 
         //noinspection ResultOfMethodCallIgnored
         JPAEntityManagerUtils.getEntityManager();
@@ -685,7 +685,7 @@ public class Server {
                 });
                 post("/diagrams/architectures/:uuid/software-systems", (request, response) -> {
                     try {
-                        com.araguacaima.open_archi.persistence.diagrams.architectural.SoftwareSystem softwareSystem = jsonUtils.fromJSON(request.body(), com.araguacaima.open_archi.persistence.diagrams.architectural.SoftwareSystem.class);
+                        com.araguacaima.open_archi.persistence.diagrams.architectural.System softwareSystem = jsonUtils.fromJSON(request.body(), com.araguacaima.open_archi.persistence.diagrams.architectural.System.class);
                         if (softwareSystem == null) {
                             throw new Exception("Invalid kind of container");
                         }
@@ -693,7 +693,7 @@ public class Server {
                         softwareSystem.validateCreation();
                         Model model = JPAEntityManagerUtils.find(com.araguacaima.open_archi.persistence.diagrams.architectural.Model.class, id);
                         DBUtil.persist(softwareSystem);
-                        model.getSoftwareSystems().add(softwareSystem);
+                        model.getSystems().add(softwareSystem);
                         DBUtil.update(model);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
@@ -753,7 +753,7 @@ public class Server {
                 get("/diagrams/architectures/:uuid/software-systems/:suuid/containers", (request, response) -> {
                     Map<String, Object> params = new HashMap<>();
                     params.put("id", request.params(":suuid"));
-                    return getList(request, response, SoftwareSystem.GET_ALL_CONTAINERS, params, Collection.class);
+                    return getList(request, response, System.GET_ALL_CONTAINERS, params, Collection.class);
                 });
                 post("/diagrams/architectures/:uuid/software-systems/:suuid/containers", (request, response) -> {
                     try {
@@ -763,7 +763,7 @@ public class Server {
                         }
                         String id = request.params(":suuid");
                         container.validateCreation();
-                        SoftwareSystem softwareSystem = JPAEntityManagerUtils.find(SoftwareSystem.class, id);
+                        System softwareSystem = JPAEntityManagerUtils.find(System.class, id);
                         DBUtil.persist(container);
                         softwareSystem.getContainers().add(container);
                         DBUtil.update(softwareSystem);
@@ -782,7 +782,7 @@ public class Server {
                     params.put("id", id);
                     params.put("cid", cid);
                     response.type(JSON_CONTENT_TYPE);
-                    return getList(request, response, SoftwareSystem.GET_CONTAINER, params, null);
+                    return getList(request, response, System.GET_CONTAINER, params, null);
                 });
                 put("/diagrams/architectures/:uuid/software-systems/:suuid/containers/:cuuid", (request, response) -> {
                     try {
@@ -1505,7 +1505,7 @@ public class Server {
     private static Palette getArchitecturePalette() {
         Palette palette = new Palette();
         Map<String, Object> params = new HashMap<>();
-        params.put("type", SoftwareSystem.class);
+        params.put("type", System.class);
         List<IdName> models;
         models = JPAEntityManagerUtils.executeQuery(IdName.class, Item.GET_ALL_PROTOTYPE_NAMES_BY_TYPE, params);
         int rank = 0;
@@ -1517,12 +1517,12 @@ public class Server {
             item.setName(model.getName());
             Shape shape = new Shape();
             shape.setType(ShapeType.RoundedRectangle);
-            shape.setFill(SoftwareSystem.SHAPE_COLOR);
+            shape.setFill(System.SHAPE_COLOR);
             shape.setSize(new Size(40, 40));
             item.setShape(shape);
-            item.setCategory(ElementKind.SOFTWARE_SYSTEM.name());
+            item.setCategory(ElementKind.SYSTEM.name());
             item.setPrototype(true);
-            palette.getSoftwareSystems().add(item);
+            palette.getSystems().add(item);
             rank++;
         }
 
@@ -1591,7 +1591,7 @@ public class Server {
     private static Palette getPrototypesPalette() {
         Palette palette = new Palette();
         Map<String, Object> params = new HashMap<>();
-        params.put("type", SoftwareSystem.class);
+        params.put("type", System.class);
         List<IdName> models;
         models = JPAEntityManagerUtils.executeQuery(IdName.class, Item.GET_ALL_NON_CLONED_PROTOTYPE_NAMES_BY_TYPE, params);
         int rank = 0;
@@ -1603,12 +1603,12 @@ public class Server {
             item.setName(model.getName());
             Shape shape = new Shape();
             shape.setType(ShapeType.RoundedRectangle);
-            shape.setFill(SoftwareSystem.SHAPE_COLOR);
+            shape.setFill(System.SHAPE_COLOR);
             shape.setSize(new Size(40, 40));
             item.setShape(shape);
-            item.setCategory(ElementKind.SOFTWARE_SYSTEM.name());
+            item.setCategory(ElementKind.SYSTEM.name());
             item.setPrototype(true);
-            palette.getSoftwareSystems().add(item);
+            palette.getSystems().add(item);
             rank++;
         }
 

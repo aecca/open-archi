@@ -12,17 +12,17 @@ import java.util.Set;
  * the software system you are modelling, and the other software systems upon
  * which your software system depends.
  * <p>
- * See <a href="https://structurizr.com/help/model#SoftwareSystem">Model - Software System</a>
+ * See <a href="https://structurizr.com/help/model#System">Model - Software System</a>
  * on the Structurizr website for more information.
  */
 @Entity
 @PersistenceUnit(unitName = "open-archi")
 @NamedQueries({
-        @NamedQuery(name = SoftwareSystem.GET_ALL_CONTAINERS,
-                query = "select a.containers from SoftwareSystem a where a.id=:id"),
-        @NamedQuery(name = SoftwareSystem.GET_CONTAINER,
-                query = "select c from SoftwareSystem a JOIN a.containers c where a.id=:id and c.id=:cid")})
-public class SoftwareSystem extends StaticElement {
+        @NamedQuery(name = System.GET_ALL_CONTAINERS,
+                query = "select a.containers from System a where a.id=:id"),
+        @NamedQuery(name = System.GET_CONTAINER,
+                query = "select c from System a JOIN a.containers c where a.id=:id and c.id=:cid")})
+public class System extends StaticElement {
 
     public static final String GET_ALL_CONTAINERS = "get.all.containers";
     public static final String GET_CONTAINER = "get.container";
@@ -32,8 +32,8 @@ public class SoftwareSystem extends StaticElement {
 
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
-            name = "SoftwareSystem_Containers",
-            joinColumns = {@JoinColumn(name = "SoftwareSystem_Id",
+            name = "System_Containers",
+            joinColumns = {@JoinColumn(name = "System_Id",
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Container_Id",
                     referencedColumnName = "Id")})
@@ -41,8 +41,8 @@ public class SoftwareSystem extends StaticElement {
 
     public static final String SHAPE_COLOR = "#01203A";
 
-    public SoftwareSystem() {
-        setKind(ElementKind.SOFTWARE_SYSTEM);
+    public System() {
+        setKind(ElementKind.SYSTEM);
     }
 
     public Scope getScope() {
@@ -61,7 +61,7 @@ public class SoftwareSystem extends StaticElement {
         this.containers = containers;
     }
 
-    public void override(SoftwareSystem source, boolean keepMeta, String suffix) {
+    public void override(System source, boolean keepMeta, String suffix) {
         super.override(source, keepMeta, suffix);
         this.setScope(source.getScope());
         for (Container container : source.getContainers()) {
@@ -71,7 +71,7 @@ public class SoftwareSystem extends StaticElement {
         }
     }
 
-    public void copyNonEmpty(SoftwareSystem source, boolean keepMeta) {
+    public void copyNonEmpty(System source, boolean keepMeta) {
         super.copyNonEmpty(source, keepMeta);
         if (source.getScope() != null) {
             this.setScope(source.getScope());

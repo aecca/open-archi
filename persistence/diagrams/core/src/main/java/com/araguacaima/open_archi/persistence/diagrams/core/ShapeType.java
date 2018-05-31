@@ -1,17 +1,17 @@
 package com.araguacaima.open_archi.persistence.diagrams.core;
 
 public enum ShapeType {
-    Person,
+    PERSON,
     RoundedRectangle,
     Rectangle,
     Diamond,
     Ellipse,
     Circle,
-    Lane,
-    Pool,
-    Consumer,
-    Triangle,
-    SoftwareSystem,
-    Container,
-    Component
+    LANE,
+    POOL,
+    CONSUMER,
+    TRIANGLE,
+    SYSTEM,
+    CONTAINER,
+    COMPONENT
 }

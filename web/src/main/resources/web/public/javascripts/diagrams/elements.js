@@ -50,8 +50,8 @@ go.Shape.defineFigureGenerator("RoundedBottomRectangle", function (shape, w, h) 
 function getNodeByType(paletteModel) {
     let type = paletteModel.shape !== undefined ? paletteModel.shape.type : paletteModel.kind;
     switch (type) {
-        case "SOFTWARE_SYSTEM":
-        case "SoftwareSystem":
+        case "SYSTEM":
+        case "System":
             let node =
                 gojs(go.Group, "Auto",
                     {
@@ -117,7 +117,7 @@ function getNodeByType(paletteModel) {
             return node;
             break;
         case "SOFTWARE_SYSTEM_":
-        case "SoftwareSystem_":
+        case "System_":
             return gojs(go.Node, "Spot", nodeStyle(),
                 // the main object is a Panel that surrounds a TextBlock with a rectangular Shape
                 {

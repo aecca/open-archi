@@ -8,7 +8,7 @@ import javax.persistence.PersistenceUnit;
 
 /**
  * This is the superclass for model elements that describe the static structure
- * of a software system, namely Person, SoftwareSystem, Container and Component.
+ * of a software system, namely Person, System, Container and Component.
  */
 @Entity
 @PersistenceUnit(unitName = "open-archi")
