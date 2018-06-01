@@ -97,19 +97,19 @@ append scripts
                 var htmlText = text + ' <span class="caret"></span>';
                 $(this).closest('.dropdown').find('.dropdown-toggle').html(htmlText);
             });
-
-            viewMode = new Slider("#viewMode", {
-                id: "viewMode",
-                ticks: [1, 2, 3],
-                ticks_labels: ['Compact', 'Moderated', 'Full'],
-                tooltip: "hide",
-                min: 1,
-                max: 3,
-                step: 1,
-                value: 3
-            });
-            viewMode.on('slideStop', reexpand);
-
+            if ($("#viewMode").length > 0) {
+                viewMode = new Slider("#viewMode", {
+                    id: "viewMode",
+                    ticks: [1, 2, 3],
+                    ticks_labels: ['Compact', 'Moderated', 'Full'],
+                    tooltip: "hide",
+                    min: 1,
+                    max: 3,
+                    step: 1,
+                    value: 3
+                });
+                viewMode.on('slideStop', reexpand);
+            }
         });
     script(type='text/javascript', src='/javascripts/diagrams/basic.js')
     script(type='text/javascript', src='/javascripts/diagrams/palette.js')
@@ -180,23 +180,24 @@ block content
             | Palette
         div#paletteContainer
             div#paletteDiv
-    div.draggable#infoDraggable(style="display: inline-block; vertical-align: top; top: 20px; left: 380px; position: relative")
-        div.handle#infoDraggableHandle
-            | Info
-        div
-            div#myInfo
-    div.draggable#controlsDraggable(style="display: inline-block; vertical-align: top; top: 20px; left: 380px; position: relative; width: 380px; padding-bottom: 10px;")
-        div.handle#controlsDraggableHandle
-            | Controls
-        div
-            div#myControls(style= "margin-top: 10px;")
-                .col-sm-4
-                    b View Mode:
-                .col-sm-4.text-right
-                    input#viewMode(type="text")
-    br
-    div.container-fluid.draggable#dataModelDraggable(style="height: 100px; width: 400px;")
-        div.handle#dataModelDraggableHandle
-            | Model
-        div#dataModelContainer
-            span#modelToSaveOrLoad(style="display: block")
+    if fullView
+        div.draggable#infoDraggable(style="display: inline-block; vertical-align: top; top: 20px; left: 380px; position: relative")
+            div.handle#infoDraggableHandle
+                | Info
+            div
+                div#myInfo
+        div.draggable#controlsDraggable(style="display: inline-block; vertical-align: top; top: 20px; left: 380px; position: relative; width: 380px; padding-bottom: 10px;")
+            div.handle#controlsDraggableHandle
+                | Controls
+            div
+                div#myControls(style= "margin-top: 10px;")
+                    .col-sm-4
+                        b View Mode:
+                    .col-sm-4.text-right
+                        input#viewMode(type="text")
+        br
+        div.container-fluid.draggable#dataModelDraggable(style="height: 100px; width: 400px;")
+            div.handle#dataModelDraggableHandle
+                | Model
+            div#dataModelContainer
+                span#modelToSaveOrLoad(style="display: block")

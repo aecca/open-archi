@@ -1,40 +1,42 @@
 function Inspector(divid, diagram, options) {
     const mainDiv = document.getElementById(divid);
-    mainDiv.className = "inspector";
-    mainDiv.innerHTML = "";
-    this._div = mainDiv;
-    this._div = mainDiv;
-    this._diagram = diagram;
-    this._inspectedProperties = {};
+    if (mainDiv) {
+        mainDiv.className = "inspector";
+        mainDiv.innerHTML = "";
+        this._div = mainDiv;
+        this._div = mainDiv;
+        this._diagram = diagram;
+        this._inspectedProperties = {};
 
-    // Either a GoJS Part or a simple data object, such as Model.modelData
-    this.inspectedObject = null;
+        // Either a GoJS Part or a simple data object, such as Model.modelData
+        this.inspectedObject = null;
 
-    // Inspector options defaults:
-    this.includesOwnProperties = true;
-    this.declaredProperties = {};
-    this.inspectsSelection = true;
-    this.propertyModified = null;
+        // Inspector options defaults:
+        this.includesOwnProperties = true;
+        this.declaredProperties = {};
+        this.inspectsSelection = true;
+        this.propertyModified = null;
 
-    if (options !== undefined) {
-        if (options["includesOwnProperties"] !== undefined) this.includesOwnProperties = options["includesOwnProperties"];
-        if (options["properties"] !== undefined) this.declaredProperties = options["properties"];
-        if (options["inspectSelection"] !== undefined) this.inspectsSelection = options["inspectSelection"];
-        if (options["propertyModified"] !== undefined) this.propertyModified = options["propertyModified"];
-    }
-
-    const self = this;
-    diagram.addModelChangedListener(function (e) {
-        if (e.isTransactionFinished) {
-            self.inspectObject();
-            relocateInfoDiv();
+        if (options !== undefined) {
+            if (options["includesOwnProperties"] !== undefined) this.includesOwnProperties = options["includesOwnProperties"];
+            if (options["properties"] !== undefined) this.declaredProperties = options["properties"];
+            if (options["inspectSelection"] !== undefined) this.inspectsSelection = options["inspectSelection"];
+            if (options["propertyModified"] !== undefined) this.propertyModified = options["propertyModified"];
         }
-    });
-    if (this.inspectsSelection) {
-        diagram.addDiagramListener("ChangedSelection", function (e) {
-            self.inspectObject();
-            relocateInfoDiv();
+
+        const self = this;
+        diagram.addModelChangedListener(function (e) {
+            if (e.isTransactionFinished) {
+                self.inspectObject();
+                relocateInfoDiv();
+            }
         });
+        if (this.inspectsSelection) {
+            diagram.addDiagramListener("ChangedSelection", function (e) {
+                self.inspectObject();
+                relocateInfoDiv();
+            });
+        }
     }
 }
 

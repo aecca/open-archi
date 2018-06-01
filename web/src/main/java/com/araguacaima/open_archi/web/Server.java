@@ -270,19 +270,20 @@ public class Server {
         deeplyFulfilledIdValueCollection.add(deeplyFulfilledIdValue_1);
         deeplyFulfilledIdValueCollection.add(deeplyFulfilledIdValue_2);
 
-        elementTypesCollection.add("ARCHITECTURE");
-        elementTypesCollection.add("FLOWCHART");
-        elementTypesCollection.add("SEQUENCE");
-        elementTypesCollection.add("GANTT");
-        elementTypesCollection.add("ENTITY_RELATIONSHIP");
-        elementTypesCollection.add("UML_CLASS");
-        elementTypesCollection.add("FEATURE");
-        elementTypesCollection.add("COMPONENT");
-        elementTypesCollection.add("CONSUMER");
-        elementTypesCollection.add("CONTAINER");
-        elementTypesCollection.add("DEPLOYMENT");
-        elementTypesCollection.add("BPM");
+//        elementTypesCollection.add("ARCHITECTURE");
+//        elementTypesCollection.add("FLOWCHART");
+//        elementTypesCollection.add("SEQUENCE");
+//        elementTypesCollection.add("GANTT");
+//        elementTypesCollection.add("ENTITY_RELATIONSHIP");
+//        elementTypesCollection.add("UML_CLASS");
+//        elementTypesCollection.add("FEATURE");
+//        elementTypesCollection.add("COMPONENT");
+//        elementTypesCollection.add("CONSUMER");
+//        elementTypesCollection.add("CONTAINER");
+//        elementTypesCollection.add("DEPLOYMENT");
+//        elementTypesCollection.add("BPM");
         elementTypesCollection.add("SYSTEM");
+        elementTypesCollection.add("GROUP");
 
         //noinspection ResultOfMethodCallIgnored
         JPAEntityManagerUtils.getEntityManager();
@@ -1317,8 +1318,10 @@ public class Server {
                     }
                 });
                 get("/catalogs/element-roles", (request, response) -> {
-                    List roleNames = (List) getList(request, response, ElementRole.GET_ALL_ROLES, null, ElementRole.class);
-                    return getList(request, response, roleNames);
+                    String roleNames = (String) getList(request, response, ElementRole.GET_ALL_ROLES, null, ElementRole.class);
+                    List diagramNamesList = getListIdName(roleNames);
+                    return getList(request, response, diagramNamesList);
+
                 });
                 get("/consumers", (request, response) -> getList(request, response, Item.GET_ALL_CONSUMERS, null, null));
                 post("/consumers", (request, response) -> {

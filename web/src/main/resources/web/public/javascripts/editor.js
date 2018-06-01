@@ -644,3 +644,25 @@ function highlightGroup(e, grp, show) {
     }
     grp.isHighlighted = false;
 }
+
+function groupStyle() {  // common settings for both Lane and Pool Groups
+    return [
+        {
+            layerName: "Background",  // all pools and lanes are always behind all nodes and links
+            background: "transparent",  // can grab anywhere in bounds
+            movable: true, // allows users to re-order by dragging
+            copyable: false,  // can't copy lanes or pools
+            avoidable: false,  // don't impede AvoidsNodes routed Links
+            minLocation: new go.Point(NaN, -Infinity),  // only allow vertical movement
+            maxLocation: new go.Point(NaN, Infinity)
+        },
+        new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify)
+    ];
+}
+
+// hide links between lanes when either lane is collapsed
+function updateCrossLaneLinks(group) {
+    group.findExternalLinksConnected().each(function (l) {
+        l.visible = (l.fromNode.isVisible() && l.toNode.isVisible());
+    });
+}

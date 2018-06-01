@@ -22,6 +22,7 @@ function initBasic(nodeDataArray, linkDataArray) {
                         { wrappingWidth: Infinity, alignment: go.GridLayout.Position, cellSize: new go.Size(1, 1) }),
                 // allow Ctrl-G to call groupSelection()
                 "commandHandler.archetypeGroupData": {name: "Group", isGroup: true, color: "blue"},
+                "commandHandler.copiesGroupKey": true,
                 "LinkDrawn": showLinkLabel,  // this DiagramEvent listener is defined below
                 "LinkRelinked": showLinkLabel,
                 scrollsPageOnFocus: false,
