@@ -598,12 +598,18 @@ function confirmAndSave() {
 }
 
 function getCurrentViewMode() {
-    let viewMode_ = $(viewMode.tickLabels[viewMode.getValue() - 1]);
-    return viewMode_.html();
+    if (viewMode) {
+        let viewMode_ = $(viewMode.tickLabels[viewMode.getValue() - 1]);
+        return viewMode_.html();
+    }
+    return "";
 }
 
 function getCurrentViewModeValue() {
-    return viewMode.getValue();
+    if (viewMode) {
+        return viewMode.getValue();
+    }
+    return 0;
 }
 
 function getElementType() {

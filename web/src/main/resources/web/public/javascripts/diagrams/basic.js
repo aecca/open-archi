@@ -17,9 +17,9 @@ function initBasic(nodeDataArray, linkDataArray) {
                     kind: "SYSTEM"
                 },
                 mouseDrop: function(e) { finishDrop(e, null); },
-                layout:  // Diagram has simple horizontal layout
+/*                layout:  // Diagram has simple horizontal layout
                     gojs(go.GridLayout,
-                        { wrappingWidth: Infinity, alignment: go.GridLayout.Position, cellSize: new go.Size(1, 1) }),
+                        { wrappingWidth: Infinity, alignment: go.GridLayout.Position, cellSize: new go.Size(1, 1) }),*/
                 // allow Ctrl-G to call groupSelection()
                 "commandHandler.archetypeGroupData": {name: "Group", isGroup: true, color: "blue"},
                 "commandHandler.copiesGroupKey": true,

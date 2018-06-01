@@ -147,7 +147,7 @@ function getNodeByType(paletteModel) {
                     computesBoundsAfterDrag: true,  // needed to prevent recomputing Group.placeholder bounds too soon
                     computesBoundsIncludingLinks: false,  // to reduce occurrences of links going briefly outside the lane
                     computesBoundsIncludingLocation: true,  // to support empty space at top-left corner of lane
-                    handlesDragDropForMembers: false,  // don't need to define handlers on member Nodes and Links
+                    //handlesDragDropForMembers: false,  // don't need to define handlers on member Nodes and Links
                     mouseDrop: function (e, grp) {  // dropping a copy of some Nodes and Links onto this Group adds them to this Group
                         if (!e.shift) return;  // cannot change groups with an unmodified drag-and-drop
                         // don't allow drag-and-dropping a mix of regular Nodes and Groups
