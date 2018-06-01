@@ -2337,7 +2337,7 @@ definitions:
           description: Consumers of the model
           items:
             $ref: "#/definitions/Consumer"
-        softwareSystems:
+        softwares:
           type: array
           description: Consumers of the model
           items:
@@ -2370,7 +2370,7 @@ definitions:
           description: Consumers of the model
           items:
             $ref: "#/definitions/Consumers"
-        softwareSystems:
+        softwares:
           type: array
           description: Consumers of the model
           items:
@@ -2403,7 +2403,7 @@ definitions:
           description: Consumers of the model
           items:
             $ref: "#/definitions/Consumer_Create"
-        softwareSystems:
+        softwares:
           type: array
           description: Consumers of the model
           items:
@@ -2436,7 +2436,7 @@ definitions:
           description: Consumers of the model
           items:
             $ref: "#/definitions/Consumer_Create"
-        softwareSystems:
+        softwares:
           type: array
           description: Consumers of the model
           items:
@@ -2460,7 +2460,7 @@ definitions:
         type: array
         items:
           $ref: "#/definitions/Palette_Item"
-      softwareSystems:
+      softwares:
         type: array
         items:
           $ref: "#/definitions/Palette_Item"
@@ -3802,6 +3802,81 @@ definitions:
         - BPM_MODEL
         - FLOWCHART_MODEL
         - ENTITY_RELATIONSHIP_MODEL
+  Image:
+    type: object
+    description: Image that graphically identifies an element within the model
+    properties:
+      id:
+        type: string
+        description: Image identifier. Each enumerated value represents a valid mime type for the image
+      type:
+        type: string
+        description: Image type
+        enum:
+        - BMP
+        - VND
+        - GIF
+        - JPEG
+        - PNG
+        - SVG
+      raw:
+        type: string
+        description: Represents a byte array with the content of the image.
+      url:
+        type: string
+        description: Full URL path on which this image can be found. Request on this resoource should be accompanied with the mime type related to the image
+    required:
+    - id
+    - type
+  Images:
+    type: object
+    description: Images that graphically identifies an element within the model
+    properties:
+      id:
+        type: string
+        description: Image identifier. Each enumerated value represents a valid mime type for the image
+      type:
+        type: string
+        description: Image type
+        enum:
+        - BMP
+        - VND
+        - GIF
+        - JPEG
+        - PNG
+        - SVG
+      raw:
+        type: string
+        description: Represents a byte array with the content of the image.
+      url:
+        type: string
+        description: Full URL path on which this image can be found. Request on this resoource should be accompanied with the mime type related to the image
+    required:
+    - id
+    - type
+  Image_Create:
+    type: object
+    description: Image that graphically identifies an element within the model
+    properties:
+      type:
+        type: string
+        description: Image type
+        enum:
+        - BMP
+        - VND
+        - GIF
+        - JPEG
+        - PNG
+        - SVG
+      raw:
+        type: string
+        description: Represents a byte array with the content of the image.
+      url:
+        type: string
+        description: Full URL path on which this image can be found. Request on this resoource should be accompanied with the mime type related to the image
+    required:
+    - type
+    - raw
   Item:
     type: object
     description: Abstract item object
@@ -3847,7 +3922,10 @@ definitions:
             $ref: "#/definitions/Composite_Element"
         shape:
           $ref: "#/definitions/Shape"
-          description: Long description of model
+          description: Shape on which this element should be represented
+        image:
+          $ref: "#/definitions/Image"
+          description: Image that identified this element
         canBeConnectedFrom:
           type: array
           description: Origin elements from which it is allowed to connect to this item
@@ -3910,7 +3988,10 @@ definitions:
             $ref: "#/definitions/Composite_Element_Create"
         shape:
           $ref: "#/definitions/Shape_Create"
-          description: Long description of model
+          description: Shape on which this element should be represented
+        image:
+          $ref: "#/definitions/Image_Create"
+          description: Image that identified this element
         canBeConnectedFrom:
           type: array
           description: Origin elements from which it is allowed to connect to this item
@@ -3973,7 +4054,10 @@ definitions:
             $ref: "#/definitions/Composite_Elements"
         shape:
           $ref: "#/definitions/Shapes"
-          description: Long description of model
+          description: Shape on which this element should be represented
+        image:
+          $ref: "#/definitions/Images"
+          description: Images that identified this element
         metaData:
           $ref: "#/definitions/Meta_Data_List"
           description: Meta data associated with the model
@@ -4743,6 +4827,22 @@ definitions:
         - Rectangle
         - Diamond
         - Ellipse
+      size:
+        $ref: "#/definitions/Size"
+      fill:
+        type: string
+        description: Hex string that represents the filling color of the shape
+        default: #ffffff
+      stroke:
+        type: string
+        description: Hex string that represents the line surrounding the shape (stroke)
+        default: #333333
+      input:
+        type: boolean
+        default: true
+      output:
+        type: boolean
+        default: true
     required:
     - id
     - type
@@ -4765,11 +4865,13 @@ definitions:
       size:
         $ref: "#/definitions/Size"
       fill:
-         type: string
-         default: #ffffff
+        type: string
+        description: Hex string that represents the filling color of the shape
+        default: #ffffff
       stroke:
-         type: string
-         default: #333333
+        type: string
+        description: Hex string that represents the line surrounding the shape (stroke)
+        default: #333333
       input:
          type: boolean
          default: true

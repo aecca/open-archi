@@ -686,19 +686,19 @@ public class Server {
                 });
                 post("/diagrams/architectures/:uuid/software-systems", (request, response) -> {
                     try {
-                        com.araguacaima.open_archi.persistence.diagrams.architectural.System softwareSystem = jsonUtils.fromJSON(request.body(), com.araguacaima.open_archi.persistence.diagrams.architectural.System.class);
-                        if (softwareSystem == null) {
+                        com.araguacaima.open_archi.persistence.diagrams.architectural.System software = jsonUtils.fromJSON(request.body(), com.araguacaima.open_archi.persistence.diagrams.architectural.System.class);
+                        if (software == null) {
                             throw new Exception("Invalid kind of container");
                         }
                         String id = request.params(":uuid");
-                        softwareSystem.validateCreation();
+                        software.validateCreation();
                         Model model = JPAEntityManagerUtils.find(com.araguacaima.open_archi.persistence.diagrams.architectural.Model.class, id);
-                        DBUtil.persist(softwareSystem);
-                        model.getSystems().add(softwareSystem);
+                        DBUtil.persist(software);
+                        model.getSystems().add(software);
                         DBUtil.update(model);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
-                        response.header("Location", request.pathInfo() + "/" + softwareSystem.getId());
+                        response.header("Location", request.pathInfo() + "/" + software.getId());
                         return EMPTY_RESPONSE;
                     } catch (Throwable ex) {
                         return throwError(response, ex);
@@ -764,10 +764,10 @@ public class Server {
                         }
                         String id = request.params(":suuid");
                         container.validateCreation();
-                        System softwareSystem = JPAEntityManagerUtils.find(System.class, id);
+                        System software = JPAEntityManagerUtils.find(System.class, id);
                         DBUtil.persist(container);
-                        softwareSystem.getContainers().add(container);
-                        DBUtil.update(softwareSystem);
+                        software.getContainers().add(container);
+                        DBUtil.update(software);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
                         response.header("Location", request.pathInfo() + "/" + container.getId());

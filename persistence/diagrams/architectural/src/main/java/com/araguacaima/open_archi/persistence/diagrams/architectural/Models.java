@@ -48,7 +48,7 @@ public class Models extends Elements {
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "System_Id",
                     referencedColumnName = "Id")})
-    private Set<Systems> softwareSystems = new LinkedHashSet<>();
+    private Set<Systems> softwares = new LinkedHashSet<>();
 
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
@@ -79,11 +79,11 @@ public class Models extends Elements {
     }
 
     public Set<Systems> getSystems() {
-        return softwareSystems;
+        return softwares;
     }
 
-    public void setSystems(Set<Systems> softwareSystems) {
-        this.softwareSystems = softwareSystems;
+    public void setSystems(Set<Systems> softwares) {
+        this.softwares = softwares;
     }
 
     public Set<DeploymentNodes> getDeploymentNodes() {
@@ -114,10 +114,10 @@ public class Models extends Elements {
             newConsumer.override(consumer, keepMeta, suffix);
             this.consumers.add(newConsumer);
         }
-        for (Systems softwareSystem : source.getSystems()) {
+        for (Systems software : source.getSystems()) {
             Systems newSystem = new Systems();
-            newSystem.override(softwareSystem, keepMeta, suffix);
-            this.softwareSystems.add(newSystem);
+            newSystem.override(software, keepMeta, suffix);
+            this.softwares.add(newSystem);
         }
         for (DeploymentNodes deploymentNode : source.getDeploymentNodes()) {
             DeploymentNodes newDeploymentNode = new DeploymentNodes();
@@ -143,10 +143,10 @@ public class Models extends Elements {
             }
         }
         if (source.getSystems() != null && !source.getSystems().isEmpty()) {
-            for (Systems softwareSystem : source.getSystems()) {
+            for (Systems software : source.getSystems()) {
                 Systems newSystem = new Systems();
-                newSystem.copyNonEmpty(softwareSystem, keepMeta);
-                this.softwareSystems.add(newSystem);
+                newSystem.copyNonEmpty(software, keepMeta);
+                this.softwares.add(newSystem);
             }
         }
         if (source.getDeploymentNodes() != null && !source.getDeploymentNodes().isEmpty()) {

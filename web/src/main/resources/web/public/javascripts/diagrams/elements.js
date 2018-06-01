@@ -52,72 +52,87 @@ function getNodeByType(paletteModel) {
     switch (type) {
         case "SYSTEM":
         case "System":
-            let node =
-                gojs(go.Group, "Auto",
-                    {
-                        background: "transparent",
-                        // highlight when dragging into the Group
-                        mouseDragEnter: function (e, grp, prev) {
-                            highlightGroup(e, grp, true);
-                        },
-                        mouseDragLeave: function (e, grp, next) {
-                            highlightGroup(e, grp, false);
-                        },
-                        ungroupable: true,
-                        computesBoundsAfterDrag: true,
-                        // when the selection is dropped into a Group, add the selected Parts into that Group;
-                        // if it fails, cancel the tool, rolling back any changes
-                        mouseDrop: finishDrop,
-                        handlesDragDropForMembers: true,  // don't need to define handlers on member Nodes and Links
-                        // Groups containing Groups lay out their members horizontally
-                        layout:
-                            gojs(go.GridLayout,
-                                {
-                                    wrappingWidth: Infinity, alignment: go.GridLayout.Position,
-                                    cellSize: new go.Size(1, 1), spacing: new go.Size(4, 4)
-                                })
+            return gojs(go.Group, "Auto",
+                {
+                    background: "transparent",
+                    // highlight when dragging into the Group
+                    mouseDragEnter: function (e, grp, prev) {
+                        highlightGroup(e, grp, true);
                     },
-                    new go.Binding("background", "isHighlighted", function (h) {
-                        return h ? "rgba(255,0,0,0.2)" : "transparent";
-                    }).ofObject(),
-                    gojs(go.Shape, "RoundedRectangle",
-                        {fill: null, stroke: "#000085", strokeWidth: 2}),
-                    gojs(go.Panel, "Vertical",  // title above Placeholder
-                        gojs(go.Panel, "Auto",  // button next to TextBlock
+                    mouseDragLeave: function (e, grp, next) {
+                        highlightGroup(e, grp, false);
+                    },
+                    ungroupable: true,
+                    computesBoundsAfterDrag: true,
+                    // when the selection is dropped into a Group, add the selected Parts into that Group;
+                    // if it fails, cancel the tool, rolling back any changes
+                    mouseDrop: finishDrop,
+                    handlesDragDropForMembers: true,  // don't need to define handlers on member Nodes and Links
+                    // Groups containing Groups lay out their members horizontally
+                    layout:
+                        gojs(go.GridLayout,
                             {
-                                background: "transparent"
+                                wrappingWidth: Infinity, alignment: go.GridLayout.Position,
+                                cellSize: new go.Size(1, 1), spacing: new go.Size(4, 4)
+                            })
+                },
+                nodeStyle(),
+                new go.Binding("background", "isHighlighted", function (h) {
+                    return h ? "rgba(255,0,0,0.2)" : "transparent";
+                }).ofObject(),
+                gojs(go.Shape, "Rectangle",
+                    {
+                        fill: null,
+                        stroke: "#000085",
+                        stretch: go.GraphObject.Horizontal,
+                        strokeWidth: 2
+                    },
+                ),
+                gojs(go.Panel, "Vertical",  // title above Placeholder
+                    gojs(go.Panel, "Horizontal",  // button next to TextBlock
+                        {
+                            stretch: go.GraphObject.Horizontal,
+                            background: "#000085"
+                        },
+                        gojs("SubGraphExpanderButton",
+                            {alignment: go.Spot.Right, margin: 5}),
+                        gojs(go.TextBlock,
+                            {
+                                alignment: go.Spot.Left,
+                                editable: true,
+                                margin: 5,
+                                font: "bold 18px sans-serif",
+                                stroke: "white",
+                                click: toogleCollapseGroup
                             },
-                            gojs(go.Shape, "RoundedTopRectangle",
-                                {
-                                    fill: "#000085"
-                                }
-                            ),
-                            gojs(go.Panel, "Horizontal",
-                                {
-                                    stretch: go.GraphObject.Horizontal,
-                                    background: "transparent"
-                                },
-                                gojs("SubGraphExpanderButton",
-                                    {alignment: go.Spot.Right, margin: 5}),
-                                gojs(go.TextBlock,
-                                    {
-                                        alignment: go.Spot.Left,
-                                        editable: true,
-                                        margin: 5,
-                                        font: "bold 18px sans-serif",
-                                        stroke: "white"
-                                    },
-                                    new go.Binding("text", "", OpenArchiWrapper.toTitle).makeTwoWay(OpenArchiWrapper.fromTitle))
-                            )),  // end Horizontal Panel
-                        gojs(go.Placeholder,
-                            {padding: 5, alignment: go.Spot.TopLeft})
-                    )  // end Vertical Panel
-                );  // end Group
-            node.isGroup = true;
-            return node;
+                            new go.Binding("text", "", OpenArchiWrapper.toTitle).makeTwoWay(OpenArchiWrapper.fromTitle))
+                    ),  // end Horizontal Panel
+                    gojs(go.Placeholder,
+                        {
+                            padding: 5,
+                            alignment: go.Spot.TopLeft
+                        }
+                    )
+                ),  // end Vertical Panel
+                // four named ports, one on each side:
+                makePort("T", go.Spot.Top, true, true),
+                makePort("L", go.Spot.Left, true, true),
+                makePort("R", go.Spot.Right, true, true),
+                makePort("B", go.Spot.Bottom, true, true),
+                { // this tooltip Adornment is shared by all nodes
+                    toolTip:
+                        gojs(go.Adornment, "Auto",
+                            gojs(go.Shape, {fill: "#FFFFCC"}),
+                            gojs(go.TextBlock, {margin: 4},  // the tooltip shows the result of calling nodeInfo(data)
+                                new go.Binding("text", "", nodeInfo))
+                        ),
+                    // this context menu Adornment is shared by all nodes
+                    contextMenu: partContextMenu
+                }
+            );
             break;
-        case "SOFTWARE_SYSTEM_":
-        case "System_":
+        case "CONTAINER":
+        case "Container":
             return gojs(go.Node, "Spot", nodeStyle(),
                 // the main object is a Panel that surrounds a TextBlock with a rectangular Shape
                 {

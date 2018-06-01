@@ -54,19 +54,19 @@ function commonInnerDiagramElement(model, node) {
 function diagramToArchitectureModel(model, node, links) {
     if (node) {
         if (node.kind === "SYSTEM") {
-            let softwareSystem = commonInnerDiagramElement(model, node);
-            if (!model.softwareSystems) {
-                model.softwareSystems = [];
+            let software = commonInnerDiagramElement(model, node);
+            if (!model.softwares) {
+                model.softwares = [];
             }
             if (node.containers && !commons.prototype.isEmpty(node.containers)) {
-                softwareSystem.containers = [];
+                software.containers = [];
                 node.containers.forEach(function (container) {
-                    diagramToArchitectureModel(softwareSystem, container, links)
+                    diagramToArchitectureModel(software, container, links)
                 });
             }
-            //TODO Añadir campor propios del softwareSystem
-            model.softwareSystems.push(softwareSystem);
-            alreadyProcessedNodes.push(softwareSystem.id);
+            //TODO Añadir campor propios del software
+            model.softwares.push(software);
+            alreadyProcessedNodes.push(software.id);
         } else if (node.kind === "CONTAINER") {
             let container = commonInnerDiagramElement(model, node);
             if (!model.containers) {
@@ -125,13 +125,13 @@ function architectureModelToDiagram(model) {
     let key = "consumers";
     let relationships = commons.prototype.findValues(model, "relationships");
     let rank = 0;
-    let softwareSystems = model.kind === "SYSTEM"
+    let softwares = model.kind === "SYSTEM"
         ? [model]
         : (model.kind === "ARCHITECTURE_MODEL"
-            ? model.softwareSystems
+            ? model.softwares
             : undefined);
     let parentGroup = model.kind === "ARCHITECTURE_MODEL" ? model.id : undefined;
-    let hasSystems = softwareSystems !== undefined && !commons.prototype.isEmpty(softwareSystems);
+    let hasSystems = softwares !== undefined && !commons.prototype.isEmpty(softwares);
 
     if (relationships) {
         relationships.forEach(function (relationship) {
@@ -145,20 +145,20 @@ function architectureModelToDiagram(model) {
     }
     rank = 0;
     if (hasSystems) {
-        softwareSystems.forEach(function (softwareSystem) {
-            if (!alreadyProcessedNodes.includes(softwareSystem.id)) {
-                let containers = softwareSystem.containers;
+        softwares.forEach(function (software) {
+            if (!alreadyProcessedNodes.includes(software.id)) {
+                let containers = software.containers;
                 let hasContainers = containers !== undefined && !commons.prototype.isEmpty(containers);
                 if (hasContainers) {
-                    diagram.nodeDataArray.push(fulfill(softwareSystem, true, parentGroup, rank));
-                    alreadyProcessedNodes.push(softwareSystem.id);
+                    diagram.nodeDataArray.push(fulfill(software, true, parentGroup, rank));
+                    alreadyProcessedNodes.push(software.id);
                     rank++;
                     containers.forEach(function (container) {
                         if (!alreadyProcessedNodes.includes(container.id)) {
                             let components = container.components;
                             let hasComponents = components !== undefined && !commons.prototype.isEmpty(components);
                             if (hasComponents) {
-                                diagram.nodeDataArray.push(fulfill(container, true, softwareSystem.id, rank));
+                                diagram.nodeDataArray.push(fulfill(container, true, software.id, rank));
                                 alreadyProcessedNodes.push(container.id);
                                 rank++;
                                 components.forEach(function (component) {
@@ -169,7 +169,7 @@ function architectureModelToDiagram(model) {
                                     }
                                 });
                             } else {
-                                diagram.nodeDataArray.push(fulfill(container, false, softwareSystem.id, rank));
+                                diagram.nodeDataArray.push(fulfill(container, false, software.id, rank));
                                 alreadyProcessedNodes.push(container.id);
                                 rank++;
                             }

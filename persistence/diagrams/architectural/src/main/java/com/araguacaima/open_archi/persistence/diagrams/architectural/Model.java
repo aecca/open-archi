@@ -22,9 +22,9 @@ import java.util.Set;
         @NamedQuery(name = Model.GET_CONSUMER_FOR_MODEL,
                 query = "select c from com.araguacaima.open_archi.persistence.diagrams.architectural.Model a JOIN a.consumers c where a.id=:id and c.id=:cid"),
         @NamedQuery(name = Model.GET_ALL_SOFTWARE_SYSTEMS,
-                query = "select a.softwareSystems from com.araguacaima.open_archi.persistence.diagrams.architectural.Model a where a.id=:id"),
+                query = "select a.systems from com.araguacaima.open_archi.persistence.diagrams.architectural.Model a where a.id=:id"),
         @NamedQuery(name = Model.GET_SOFTWARE_SYSTEM,
-                query = "select s from com.araguacaima.open_archi.persistence.diagrams.architectural.Model a JOIN a.softwareSystems s where a.id=:id and s.id=:sid")})
+                query = "select s from com.araguacaima.open_archi.persistence.diagrams.architectural.Model a JOIN a.systems s where a.id=:id and s.id=:sid")})
 public class Model extends Element implements DiagramableElement<Model> {
 
     public static final String GET_ALL_RELATIONSHIPS = "get.all.relationships";
@@ -59,7 +59,7 @@ public class Model extends Element implements DiagramableElement<Model> {
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "System_Id",
                     referencedColumnName = "Id")})
-    private Set<System> softwareSystems = new LinkedHashSet<>();
+    private Set<System> systems = new LinkedHashSet<>();
 
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
@@ -87,10 +87,10 @@ public class Model extends Element implements DiagramableElement<Model> {
             newConsumer.override(consumer, keepMeta, suffix);
             this.consumers.add(newConsumer);
         }
-        for (System softwareSystem : source.getSystems()) {
+        for (System software : source.getSystems()) {
             System newSystem = new System();
-            newSystem.override(softwareSystem, keepMeta, suffix);
-            this.softwareSystems.add(newSystem);
+            newSystem.override(software, keepMeta, suffix);
+            this.systems.add(newSystem);
         }
         for (DeploymentNode deploymentNode : source.getDeploymentNodes()) {
             DeploymentNode newDeploymentNode = new DeploymentNode();
@@ -117,10 +117,10 @@ public class Model extends Element implements DiagramableElement<Model> {
             }
         }
         if (source.getSystems() != null && !source.getSystems().isEmpty()) {
-            for (System softwareSystem : source.getSystems()) {
+            for (System software : source.getSystems()) {
                 System newSystem = new System();
-                newSystem.copyNonEmpty(softwareSystem, keepMeta);
-                this.softwareSystems.add(newSystem);
+                newSystem.copyNonEmpty(software, keepMeta);
+                this.systems.add(newSystem);
             }
         }
         if (source.getDeploymentNodes() != null && !source.getDeploymentNodes().isEmpty()) {
@@ -141,11 +141,11 @@ public class Model extends Element implements DiagramableElement<Model> {
     }
 
     public Set<System> getSystems() {
-        return softwareSystems;
+        return systems;
     }
 
-    public void setSystems(Set<System> softwareSystems) {
-        this.softwareSystems = softwareSystems;
+    public void setSystems(Set<System> softwares) {
+        this.systems = softwares;
     }
 
     public Set<DeploymentNode> getDeploymentNodes() {

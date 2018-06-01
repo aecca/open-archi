@@ -105,6 +105,11 @@ public class Item extends Taggable {
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     protected Shape shape;
 
+
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
+    protected Image image;
+
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
             name = "Item_Can_Be_Connected_From_Ids",
@@ -221,6 +226,14 @@ public class Item extends Taggable {
         this.children = children;
     }
 
+    public Image getImage() {
+        return image;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
+    }
+
     public boolean isPrototype() {
         return prototype;
     }
@@ -241,6 +254,7 @@ public class Item extends Taggable {
             shape.override(source.getShape(), keepMeta, suffix);
             this.shape = shape;
         }
+        this.image = source.getImage();
         this.canBeConnectedFrom = source.getCanBeConnectedFrom();
         this.canBeConnectedTo = source.getCanBeConnectedTo();
         if (source.getMetaData() != null) {
@@ -272,6 +286,9 @@ public class Item extends Taggable {
             Shape shape = new Shape();
             shape.copyNonEmpty(source.getShape(), keepMeta);
             this.shape = shape;
+        }
+        if (source.getImage() != null) {
+            this.image = source.getImage();
         }
         if (source.getCanBeConnectedFrom() != null && !source.getCanBeConnectedFrom().isEmpty()) {
             this.canBeConnectedFrom = source.getCanBeConnectedFrom();

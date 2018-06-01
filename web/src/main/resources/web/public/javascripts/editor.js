@@ -247,6 +247,28 @@ function reexpand(e) {
     myDiagram.commitTransaction("reexpand");
 }
 
+function toogleCollapseGroup(element, obj) {
+    let root = obj.part.findTreeRoot();
+    const elementData = root.data;
+    const groupId = elementData.key;
+    if (!groupId) return;
+    if (!(root instanceof go.Group)) return;
+    if (root.isSubGraphExpanded) {
+        if (myDiagram.commandHandler.canCollapseSubGraph(root)) {
+            myDiagram.startTransaction("Collapse group");
+            root.collapseSubGraph();
+            myDiagram.commitTransaction("Collapse group");
+        }
+    } else {
+        if (myDiagram.commandHandler.canExpandSubGraph(root)) {
+            myDiagram.startTransaction("Expand group");
+            root.expandTree();
+            myDiagram.commitTransaction("Expand group");
+        }
+    }
+
+}
+
 function relocate(el, top, left) {
     el.css({
         position: "absolute",
@@ -539,7 +561,6 @@ function checkAndSave() {
             myDiagram.nodeTemplateMap.add(type, newNode);
         }
         data.category = type;
-        data.isGroup = group;
         myDiagram.model.removeNodeData(data);
         myDiagram.model.addNodeData(data);
         myDiagram.requestUpdate();

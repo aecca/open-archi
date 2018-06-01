@@ -126,8 +126,8 @@ function showPaletteByType(paletteData) {
                 paletteModelArray.push(toPalette(data, data.shape.type));
                 myPalette.nodeTemplateMap.add(data.shape.type, getNodeByType(data));
             });
-            if (paletteData.softwareSystems) {
-                paletteData.softwareSystems.forEach(function (data) {
+            if (paletteData.softwares) {
+                paletteData.softwares.forEach(function (data) {
                     paletteModelArray.push(toPalette(data, "SYSTEM"));
                     myPalette.nodeTemplateMap.add(data.shape.type, getNodeByType(data));
                 });
@@ -225,5 +225,7 @@ function showPorts(node, show) {
     if (!diagram || diagram.isReadOnly || !diagram.allowLink) return;
     node.ports.each(function (port) {
         port.stroke = (show ? "white" : null);
+        port.fill = (show ? "orange" : "transparent");
+        port.zOrder = 1000;
     });
 }
