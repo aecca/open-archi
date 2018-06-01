@@ -1317,9 +1317,8 @@ public class Server {
                     }
                 });
                 get("/catalogs/element-roles", (request, response) -> {
-                    String roleNames = (String) getList(request, response, ElementRole.GET_ALL_ROLES, null, ElementRole.class);
-                    List diagramNamesList = getListIdName(roleNames);
-                    return getList(request, response, diagramNamesList);
+                    List roleNames = (List) getList(request, response, ElementRole.GET_ALL_ROLES, null, ElementRole.class);
+                    return getList(request, response, roleNames);
                 });
                 get("/consumers", (request, response) -> getList(request, response, Item.GET_ALL_CONSUMERS, null, null));
                 post("/consumers", (request, response) -> {

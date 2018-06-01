@@ -7,6 +7,7 @@ import javax.persistence.*;
 
 @Entity
 @PersistenceUnit(unitName = "open-archi")
+@Table(name = "ElementRole", schema = "DIAGRAMS", uniqueConstraints = @UniqueConstraint(columnNames = {"name"}))
 @NamedQueries({@NamedQuery(name = ElementRole.GET_ALL_ROLES, query = "select a from ElementRole a "), @NamedQuery(name = ElementRole.GET_ROLE_BY_NAME, query = "select a from ElementRole a where a.name  = :name ")})
 public class ElementRole extends BaseEntity {
 

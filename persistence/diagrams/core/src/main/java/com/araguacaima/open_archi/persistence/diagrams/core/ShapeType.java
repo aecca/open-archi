@@ -13,5 +13,6 @@ public enum ShapeType {
     TRIANGLE,
     SYSTEM,
     CONTAINER,
-    COMPONENT
+    COMPONENT,
+    GROUP
 }
