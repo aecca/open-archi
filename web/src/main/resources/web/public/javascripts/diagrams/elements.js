@@ -136,20 +136,20 @@ function getNodeByType(paletteModel) {
                 {
                     selectionObjectName: "SHAPE",  // selecting a lane causes the body of the lane to be highlit, not the label
                     resizable: true, resizeObjectName: "SHAPE",  // the custom resizeAdornmentTemplate only permits two kinds of resizing
-/*                    layout: gojs(go.LayeredDigraphLayout,  // automatically lay out the lane's subgraph
+                    layout: gojs(go.LayeredDigraphLayout,  // automatically lay out the lane's subgraph
                         {
                             isInitial: false,  // don't even do initial layout
                             //isOngoing: false,  // don't invalidate layout when nodes or links are added or removed
                             direction: 0,
                             columnSpacing: 10,
                             layeringOption: go.LayeredDigraphLayout.LayerLongestPathSource
-                        }),*/
+                        }),
                     computesBoundsAfterDrag: true,  // needed to prevent recomputing Group.placeholder bounds too soon
                     computesBoundsIncludingLinks: false,  // to reduce occurrences of links going briefly outside the lane
                     computesBoundsIncludingLocation: true,  // to support empty space at top-left corner of lane
                     //handlesDragDropForMembers: false,  // don't need to define handlers on member Nodes and Links
                     mouseDrop: function (e, grp) {  // dropping a copy of some Nodes and Links onto this Group adds them to this Group
-                        if (!e.shift) return;  // cannot change groups with an unmodified drag-and-drop
+                        //if (!e.shift) return;  // cannot change groups with an unmodified drag-and-drop
                         // don't allow drag-and-dropping a mix of regular Nodes and Groups
                         if (!e.diagram.selection.any(function (n) {
                                 return n instanceof go.Group;
