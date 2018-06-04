@@ -687,27 +687,74 @@ function updateCrossLaneLinks(group) {
     });
 }
 
+function convertSVGPolygonPolylineToPath(svg) {
+    return svg
+    // close path for polygon
+        .replace(/(<polygon[\w\W]+?)points=(["'])([\.\d, ]+?)(["'])/g, "$1d=$2M$3z$4")
+        // dont close path for polyline
+        .replace(/(<polyline[\w\W]+?)points=(["'])([\.\d, ]+?)(["'])/g, "$1d=$2M$3$4")
+        .replace(/poly(gon|line)/g, "path");
+}
+
+
 function handleImageSelect(evt) {
     let files = evt.target.files;
     let i = 0, file;
     for (; file = files[i]; i++) {
         const type = file.type;
-        // Only process image files.
-        if (!type.match('image.*')) {
+        // Only process SVG image files.
+        if (type !== 'image/svg+xml') {
             continue;
         }
 
         const reader = new FileReader();
 
         // Closure to capture the file information.
-        reader.onload = (function (theFile) {
+        reader.onload = (function (file) {
             return function (e) {
-                let raw = e.target.result;
-                raw = raw.replace(/^data:image\/(png|jpg|gif);base64,/, "");
-                const id = 1;
+                let rawImage = e.target.result;
+                rawImage = rawImage.replace(/^data:image\/svg\+xml;base64,/, "");
+                rawImage = window.atob(rawImage);
+                let raw = rawImage;
+                raw = convertSVGPolygonPolylineToPath(raw);
+                const xmldoc = new DOMParser().parseFromString(raw, "text/xml");
+                const paths = xmldoc.getElementsByTagName("path");
+                let imagePanel = new go.Panel();  // this Panel holds all of the Shapes for the drawing
+                for (let i = 0; i < paths.length; i++) {
+                    // represent each SVG path by a Shape of type Path with its own fill and stroke
+                    let path = paths[i];
+                    let shape = new go.Shape();
+                    let stroke = path.getAttribute("stroke");
+                    if (typeof stroke === "string" && stroke !== "none") {
+                        shape.stroke = stroke;
+                    } else {
+                        shape.stroke = null;
+                    }
+                    let strokewidth = parseFloat(path.getAttribute("stroke-width"));
+                    if (!isNaN(strokewidth)) shape.strokeWidth = strokewidth;
+                    let id = path.getAttribute("id");
+                    if (typeof id === "string") shape.name = id;
+                    let fill = path.getAttribute("fill");
+                    if (typeof fill === "string") {
+                        shape.fill = (fill === "none") ? null : fill;
+                    }
+                    // convert the path data string into a go.Geometry
+                    let data = path.getAttribute("d");
+                    if (typeof data === "string") shape.geometry = go.Geometry.parse(data, true);
+                    // collect these Shapes in the single Panel
+                    imagePanel.add(shape);
+                }
+                // add the Panel as the only element in the Part
+                let imagePart = new go.Part();  // doesn't need to be a Node for this sample
+                // the default position of the Panel drawing in the Part is (0,0)
+                imagePart.add(imagePanel);
+                myDiagram.add(imagePart);
+                myDiagram.requestUpdate();
+                $('#element-image-data').modal('hide')
+                /*const id = 1;
                 let image = {
                     type: type,
-                    raw: raw
+                    raw: rawImage
                 };
                 $.ajax({
                     url: '/open-archi/api/models/' + id,
@@ -735,7 +782,7 @@ function handleImageSelect(evt) {
                 ).fail(function (data) {
                         alert("fail");
                     }
-                )
+                )*/
             };
         })(file);
 

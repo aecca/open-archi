@@ -205,6 +205,6 @@ block content
     +modal("Element image", "element-image-data")
         form#element-image-form
             .form-group
-                label.col-form-label Image:
+                label.col-form-label Image (Only svg is permitted):
                 .dropdown
-                    input#element-image(type="file", name="image")
+                    input#element-image(type="file", name="image", accept="image/svg+xml")
