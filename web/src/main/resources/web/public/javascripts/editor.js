@@ -81,6 +81,20 @@ const partContextMenu =
             }, function (o) {
                 return true;
             }),
+        makeButton("Add image",
+            function (e, obj) {
+                const model = e.diagram.model;
+                const node = obj.part.data;
+
+                let modal = $('#element-image-data');
+                modal.modal({
+                    backdrop: 'static',
+                    keyboard: false,
+                    show: true
+                });
+            }, function (o) {
+                return true;
+            }),
         makeButton("Properties",
             function (e, obj) {  // OBJ is this Button
                 const contextmenu = obj.part;  // the Button is in the context menu Adornment
@@ -672,3 +686,63 @@ function updateCrossLaneLinks(group) {
         l.visible = (l.fromNode.isVisible() && l.toNode.isVisible());
     });
 }
+
+function handleImageSelect(evt) {
+    let files = evt.target.files;
+    let i = 0, file;
+    for (; file = files[i]; i++) {
+        const type = file.type;
+        // Only process image files.
+        if (!type.match('image.*')) {
+            continue;
+        }
+
+        const reader = new FileReader();
+
+        // Closure to capture the file information.
+        reader.onload = (function (theFile) {
+            return function (e) {
+                let raw = e.target.result;
+                raw = raw.replace(/^data:image\/(png|jpg|gif);base64,/, "");
+                const id = 1;
+                let image = {
+                    type: type,
+                    raw: raw
+                };
+                $.ajax({
+                    url: '/open-archi/api/models/' + id,
+                    data: JSON.stringify(image),
+                    type: 'PUT',
+                    dataType: "json",
+                    crossDomain: true,
+                    contentType: 'application/json',
+                    xhr: function () {
+                        return window.XMLHttpRequest === null || new window.XMLHttpRequest().addEventListener === null
+                            ? new window.ActiveXObject("Microsoft.XMLHTTP")
+                            : $.ajaxSettings.xhr();
+                    }
+                }).done(function (data) {
+                        if (response === 200) {
+                            alert("created");
+                        } else {
+                            if (response === 201) {
+                                alert("accepted");
+                            } else {
+                                alert(data);
+                            }
+                        }
+                    }
+                ).fail(function (data) {
+                        alert("fail");
+                    }
+                )
+            };
+        })(file);
+
+        // Read in the image file as a data URL.
+        reader.readAsDataURL(file);
+
+    }
+
+}
+

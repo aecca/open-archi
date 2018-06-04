@@ -1133,6 +1133,22 @@ public class Server {
                         return throwError(response, ex);
                     }
                 });
+                put("/models/:uuid/image", (request, response) -> {
+                    try {
+                        Image image = jsonUtils.fromJSON(request.body(), Image.class);
+                        if (image == null) {
+                            throw new Exception("Invalid kind of relationship");
+                        }
+                        image.validateReplacement();
+                        DBUtil.persist(image);
+                        response.status(HTTP_CREATED);
+                        response.type(JSON_CONTENT_TYPE);
+                        response.header("Location", request.pathInfo() + "/" + image.getId());
+                        return EMPTY_RESPONSE;
+                    } catch (Throwable ex) {
+                        return throwError(response, ex);
+                    }
+                });
                 patch("/models/:uuid/status/:sid", (request, response) -> {
                     try {
                         Taggable model = jsonUtils.fromJSON(request.body(), Taggable.class);

@@ -110,6 +110,7 @@ append scripts
                 });
                 viewMode.on('slideStop', reexpand);
             }
+            $("#element-image").on("change", handleImageSelect);
         });
     script(type='text/javascript', src='/javascripts/diagrams/basic.js')
     script(type='text/javascript', src='/javascripts/diagrams/palette.js')
@@ -201,3 +202,9 @@ block content
                 | Model
             div#dataModelContainer
                 span#modelToSaveOrLoad(style="display: block")
+    +modal("Element image", "element-image-data")
+        form#element-image-form
+            .form-group
+                label.col-form-label Image:
+                .dropdown
+                    input#element-image(type="file", name="image")
