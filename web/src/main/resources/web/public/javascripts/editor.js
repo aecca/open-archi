@@ -696,6 +696,35 @@ function convertSVGPolygonPolylineToPath(svg) {
         .replace(/poly(gon|line)/g, "path");
 }
 
+function parseSVG(svg) {
+    svg = convertSVGPolygonPolylineToPath(svg);
+    return svg;
+}
+
+function processCss(style, shape, path) {
+    let tokens = style.split(";");
+    for (let j = 0; j < tokens.length; j++) {
+        let token = tokens[j];
+        if (token.match('^fill:')) {
+            shape.fill = token.split(":")[1];
+        }
+        if (token.match('^fill-opacity:')) {
+            shape.opacity = parseFloat(token.split(":")[1]);
+        }
+        if (token.match('^stroke-width:')) {
+            let strokewidth = parseFloat(path.getAttribute(token.split(":")[1]));
+            if (!isNaN(strokewidth)) shape.strokeWidth = strokewidth;
+        }
+        if (token.match('^stroke:')) {
+            shape.stroke = token.split(":")[1];
+        }
+    }
+    if (!tokens.find(function (token) {
+            return token.match('^stroke:');
+        })) {
+        shape.stroke = null;
+    }
+}
 
 function handleImageSelect(evt) {
     let files = evt.target.files;
@@ -716,34 +745,91 @@ function handleImageSelect(evt) {
                 rawImage = rawImage.replace(/^data:image\/svg\+xml;base64,/, "");
                 rawImage = window.atob(rawImage);
                 let raw = rawImage;
-                raw = convertSVGPolygonPolylineToPath(raw);
+                raw = parseSVG(raw);
                 const xmldoc = new DOMParser().parseFromString(raw, "text/xml");
-                const paths = xmldoc.getElementsByTagName("path");
                 let imagePanel = new go.Panel();  // this Panel holds all of the Shapes for the drawing
+                const circles = xmldoc.getElementsByTagName("circle");
+                for (let i = 0; i < circles.length; i++) {
+                    // represent each SVG path by a Shape of type Path with its own fill and stroke
+                    let circle = circles[i];
+                    let shape = new go.Shape();
+                    let style = circle.getAttribute("style");
+                    if (style && typeof style === "string" && style !== "none") {
+                        processCss(style, shape, circle);
+                    } else {
+                        let stroke = circle.getAttribute("stroke");
+                        if (typeof stroke === "string" && stroke !== "none") {
+                            shape.stroke = stroke;
+                        } else {
+                            shape.stroke = null;
+                        }
+                        let strokewidth = parseFloat(circle.getAttribute("stroke-width"));
+                        if (!isNaN(strokewidth)) shape.strokeWidth = strokewidth;
+                        let fill = circle.getAttribute("fill");
+                        if (typeof fill === "string") {
+                            shape.fill = (fill === "none") ? null : fill;
+                        }
+                    }
+
+                    let id = circle.getAttribute("id");
+                    if (typeof id === "string") shape.name = id;
+
+                    let cx = circle.getAttribute("cx");
+                    let cy = circle.getAttribute("cy");
+                    let r = circle.getAttribute("r");
+                    let d = parseFloat(r) * 2;
+                    let data = "M cx, cy m -r, 0 a r,r 0 1,0 d,0 a r,r 0 1,0 -d,0".replace(/cx/g, cx).replace(/cy/g, cy).replace(/r/g, r.toString()).replace(/d/g, d.toString());
+                    shape.geometry = go.Geometry.parse(data, true);
+
+                    // collect these Shapes in the single Panel
+                    imagePanel.add(shape);
+                }
+
+                const paths = xmldoc.getElementsByTagName("path");
                 for (let i = 0; i < paths.length; i++) {
                     // represent each SVG path by a Shape of type Path with its own fill and stroke
                     let path = paths[i];
                     let shape = new go.Shape();
-                    let stroke = path.getAttribute("stroke");
-                    if (typeof stroke === "string" && stroke !== "none") {
-                        shape.stroke = stroke;
+                    let style = path.getAttribute("style");
+                    if (style && typeof style === "string" && style !== "none") {
+                        processCss(style, shape, path);
                     } else {
-                        shape.stroke = null;
+                        let stroke = path.getAttribute("stroke");
+                        if (typeof stroke === "string" && stroke !== "none") {
+                            shape.stroke = stroke;
+                        } else {
+                            shape.stroke = null;
+                        }
+                        let strokewidth = parseFloat(path.getAttribute("stroke-width"));
+                        if (!isNaN(strokewidth)) shape.strokeWidth = strokewidth;
+                        let fill = path.getAttribute("fill");
+                        if (typeof fill === "string") {
+                            shape.fill = (fill === "none") ? null : fill;
+                        }
                     }
-                    let strokewidth = parseFloat(path.getAttribute("stroke-width"));
-                    if (!isNaN(strokewidth)) shape.strokeWidth = strokewidth;
+
+                    let transform = path.getAttribute("transform");
+                    if (transform && typeof transform === "string" && transform !== "none") {
+                        let tokens = transform.split(";");
+                        for (let j = 0; j < tokens.length; j++) {
+                            let token = tokens[j];
+                            if (token.match('^scale\\(')) {
+                                let split = token.split("(")[1];
+                                let x = split.substr(0, split.length - 1);
+                                shape.scale = parseFloat(x);
+                            }
+                        }
+                    }
+
                     let id = path.getAttribute("id");
                     if (typeof id === "string") shape.name = id;
-                    let fill = path.getAttribute("fill");
-                    if (typeof fill === "string") {
-                        shape.fill = (fill === "none") ? null : fill;
-                    }
                     // convert the path data string into a go.Geometry
                     let data = path.getAttribute("d");
                     if (typeof data === "string") shape.geometry = go.Geometry.parse(data, true);
                     // collect these Shapes in the single Panel
                     imagePanel.add(shape);
                 }
+
                 // add the Panel as the only element in the Part
                 let imagePart = new go.Part();  // doesn't need to be a Node for this sample
                 // the default position of the Panel drawing in the Part is (0,0)
