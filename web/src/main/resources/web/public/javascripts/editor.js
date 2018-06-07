@@ -742,16 +742,16 @@ function handleImageSelect(evt) {
         // Closure to capture the file information.
         reader.onload = (function (file) {
             return function (e) {
-                let rawImage = e.target.result;
-                rawImage = rawImage.replace(/^data:image\/svg\+xml;base64,/, "");
+                let rawImage_ = e.target.result;
+                let rawImage = rawImage_.replace(/^data:image\/svg\+xml;base64,/, "");
                 rawImage = window.atob(rawImage);
                 let raw = rawImage;
                 raw = parseSVG(raw);
                 const xmldoc = new DOMParser().parseFromString(raw, "text/xml");
                 let svgComponents = gojs(go.Panel, {
-                   /* desiredSize: new go.Size(60, 60),
-                    width: 60,
-                    height: 60*/
+                    /* desiredSize: new go.Size(60, 60),
+                     width: 60,
+                     height: 60*/
                 });  // this Panel holds all of the Shapes for the drawing
                 const circles = xmldoc.getElementsByTagName("circle");
                 for (let i = 0; i < circles.length; i++) {
@@ -837,12 +837,15 @@ function handleImageSelect(evt) {
 
                 // add the Panel as the only element in the Part
                 let imagePanel = gojs(go.Panel, {
-           /*         width: 60,
-                    height: 60,*/
-                    name: "IMAGE"
-                });
+                        width: 60,
+                        height: 60,
+                        name: "IMAGE"
+                    },
+                    new go.Binding("isSubGraphExpanded", "expanded").makeTwoWay(),
+                    new go.Binding("visible", "isSubGraphExpanded").ofObject());
                 // the default position of the Panel drawing in the Part is (0,0)
-                imagePanel.add(svgComponents);
+                //  imagePanel.add(svgComponents);
+                imagePanel.add(gojs(go.Picture, {desiredSize: new go.Size(60, 60), source: rawImage_}));
                 let $element = $('#element-image-data');
                 const elementKey = $element.attr("key");
                 let node = myDiagram.findNodeForKey(elementKey);

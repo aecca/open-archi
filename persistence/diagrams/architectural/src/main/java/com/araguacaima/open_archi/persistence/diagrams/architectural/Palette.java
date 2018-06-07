@@ -8,7 +8,7 @@ import java.util.Set;
 public class Palette implements Palettable {
 
     private Set<PaletteItem> basicElements = new LinkedHashSet<>();
-    private Set<PaletteItem> softwares = new LinkedHashSet<>();
+    private Set<PaletteItem> systems = new LinkedHashSet<>();
     private Set<PaletteItem> containers = new LinkedHashSet<>();
     private Set<PaletteItem> components = new LinkedHashSet<>();
     private Set<PaletteItem> prototypes = new LinkedHashSet<>();
@@ -67,11 +67,11 @@ public class Palette implements Palettable {
     }
 
     public Set<PaletteItem> getSystems() {
-        return softwares;
+        return systems;
     }
 
-    public void setSystems(Set<PaletteItem> softwares) {
-        this.softwares = softwares;
+    public void setSystems(Set<PaletteItem> systems) {
+        this.systems = systems;
     }
 
     public Set<PaletteItem> getContainers() {
