@@ -87,6 +87,7 @@ const partContextMenu =
                 const node = obj.part.data;
 
                 let modal = $('#element-image-data');
+                modal.attr("key", node.key);
                 modal.modal({
                     backdrop: 'static',
                     keyboard: false,
@@ -747,7 +748,11 @@ function handleImageSelect(evt) {
                 let raw = rawImage;
                 raw = parseSVG(raw);
                 const xmldoc = new DOMParser().parseFromString(raw, "text/xml");
-                let imagePanel = new go.Panel();  // this Panel holds all of the Shapes for the drawing
+                let svgComponents = gojs(go.Panel, {
+                   /* desiredSize: new go.Size(60, 60),
+                    width: 60,
+                    height: 60*/
+                });  // this Panel holds all of the Shapes for the drawing
                 const circles = xmldoc.getElementsByTagName("circle");
                 for (let i = 0; i < circles.length; i++) {
                     // represent each SVG path by a Shape of type Path with its own fill and stroke
@@ -782,7 +787,7 @@ function handleImageSelect(evt) {
                     shape.geometry = go.Geometry.parse(data, true);
 
                     // collect these Shapes in the single Panel
-                    imagePanel.add(shape);
+                    svgComponents.add(shape);
                 }
 
                 const paths = xmldoc.getElementsByTagName("path");
@@ -827,16 +832,32 @@ function handleImageSelect(evt) {
                     let data = path.getAttribute("d");
                     if (typeof data === "string") shape.geometry = go.Geometry.parse(data, true);
                     // collect these Shapes in the single Panel
-                    imagePanel.add(shape);
+                    svgComponents.add(shape);
                 }
 
                 // add the Panel as the only element in the Part
-                let imagePart = new go.Part();  // doesn't need to be a Node for this sample
+                let imagePanel = gojs(go.Panel, {
+           /*         width: 60,
+                    height: 60,*/
+                    name: "IMAGE"
+                });
                 // the default position of the Panel drawing in the Part is (0,0)
-                imagePart.add(imagePanel);
-                myDiagram.add(imagePart);
-                myDiagram.requestUpdate();
-                $('#element-image-data').modal('hide')
+                imagePanel.add(svgComponents);
+                let $element = $('#element-image-data');
+                const elementKey = $element.attr("key");
+                let node = myDiagram.findNodeForKey(elementKey);
+                let panel;
+                panel = node.findObject("HEADER");
+                if (panel) {
+                    let panelImage = node.findObject("IMAGE");
+                    if (panelImage) {
+                        panel.remove(panelImage);
+                    }
+                    panel.insertAt(0, imagePanel);
+                    //myDiagram.add(imagePanel);
+                    myDiagram.requestUpdate();
+                }
+                $element.modal('hide');
                 /*const id = 1;
                 let image = {
                     type: type,

@@ -91,6 +91,7 @@ function getNodeByType(paletteModel) {
                 gojs(go.Panel, "Vertical",  // title above Placeholder
                     gojs(go.Panel, "Horizontal",  // button next to TextBlock
                         {
+                            name: "HEADER",
                             stretch: go.GraphObject.Horizontal,
                             background: "#000085"
                         },
@@ -135,7 +136,8 @@ function getNodeByType(paletteModel) {
             return gojs(go.Group, "Horizontal", groupStyle(),
                 {
                     selectionObjectName: "SHAPE",  // selecting a lane causes the body of the lane to be highlit, not the label
-                    resizable: true, resizeObjectName: "SHAPE",  // the custom resizeAdornmentTemplate only permits two kinds of resizing
+                    resizable: true,
+                    resizeObjectName: "SHAPE",  // the custom resizeAdornmentTemplate only permits two kinds of resizing
                     layout: gojs(go.LayeredDigraphLayout,  // automatically lay out the lane's subgraph
                         {
                             isInitial: false,  // don't even do initial layout
@@ -178,38 +180,66 @@ function getNodeByType(paletteModel) {
                 },
                 new go.Binding("isSubGraphExpanded", "expanded").makeTwoWay(),
                 // the lane header consisting of a Shape and a TextBlock
+                new go.Binding("background", "isHighlighted", function (h) {
+                    return h ? "rgba(255,0,0,0.2)" : "transparent";
+                }).ofObject(),
                 gojs(go.Panel, "Horizontal",
                     {
                         name: "HEADER",
                         angle: 270,  // maybe rotate the header to read sideways going up
-                        alignment: go.Spot.Center
+                        alignment: go.Spot.Center,
+                        stretch: go.GraphObject.Horizontal
                     },
                     gojs(go.Panel, "Horizontal",  // this is hidden when the swimlane is collapsed
                         new go.Binding("visible", "isSubGraphExpanded").ofObject(),
                         gojs(go.TextBlock,  // the lane label
-                            {font: "bold 13pt sans-serif", editable: true, margin: new go.Margin(2, 0, 0, 0)},
+                            {
+                                font: "bold 13pt sans-serif",
+                                editable: true,
+                                margin: new go.Margin(2, 0, 0, 0)
+                            },
                             new go.Binding("text", "", OpenArchiWrapper.toTitle).makeTwoWay(OpenArchiWrapper.fromTitle))
                     ),
                     gojs("SubGraphExpanderButton", {margin: 5})  // but this remains always visible!
                 ),  // end Horizontal Panel
                 gojs(go.Panel, "Auto",  // the lane consisting of a background Shape and a Placeholder representing the subgraph
                     gojs(go.Shape, "Rectangle",  // this is the resized object
-                        {name: "SHAPE", fill: "white", stretch: go.GraphObject.Horizontal},
+                        {
+                            name: "SHAPE",
+                            fill: "white",
+                            stretch: go.GraphObject.Horizontal
+                        },
                         new go.Binding("fill", "color"),
                         new go.Binding("desiredSize", "size", go.Size.parse).makeTwoWay(go.Size.stringify)),
                     gojs(go.Placeholder,
-                        {padding: 12, alignment: go.Spot.TopLeft}),
+                        {
+                            padding: 12,
+                            alignment: go.Spot.TopLeft
+                        }),
                     gojs(go.TextBlock,  // this TextBlock is only seen when the swimlane is collapsed
                         {
                             name: "LABEL",
-                            font: "bold 13pt sans-serif", editable: true,
-                            angle: 0, alignment: go.Spot.TopLeft, margin: new go.Margin(2, 0, 0, 4)
+                            font: "bold 13pt sans-serif",
+                            editable: true,
+                            angle: 0,
+                            alignment: go.Spot.TopLeft,
+                            margin: new go.Margin(2, 0, 0, 4)
                         },
                         new go.Binding("visible", "isSubGraphExpanded", function (e) {
                             return !e;
                         }).ofObject(),
                         new go.Binding("text", "", OpenArchiWrapper.toTitle).makeTwoWay(OpenArchiWrapper.fromTitle))
-                )  // end Auto Panel
+                ), // end Auto Panel
+                { // this tooltip Adornment is shared by all nodes
+                    toolTip:
+                        gojs(go.Adornment, "Auto",
+                            gojs(go.Shape, {fill: "#FFFFCC"}),
+                            gojs(go.TextBlock, {margin: 4},  // the tooltip shows the result of calling nodeInfo(data)
+                                new go.Binding("text", "", nodeInfo))
+                        ),
+                    // this context menu Adornment is shared by all nodes
+                    contextMenu: partContextMenu
+                }
             );  // end Group
         default:
             return gojs(
