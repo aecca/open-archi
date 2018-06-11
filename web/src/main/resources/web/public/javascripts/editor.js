@@ -609,7 +609,9 @@ function confirmAndSave() {
     $diagramInfo.modal('show');
     $diagramInfo.on('hidden.bs.modal', function () {
         save();
-    })
+        return null;
+    });
+    return null;
 }
 
 function getCurrentViewMode() {

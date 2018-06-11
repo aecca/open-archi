@@ -28,9 +28,14 @@ public abstract class BaseEntity implements Serializable, BasicEntity, Cloneable
     @JsonIgnore
     protected static final ResourceBundle resourceBundle = ResourceBundle.getBundle(Constants.BUNDLE_NAME);
 
+    @Transient
+    @JsonIgnore
     private static ReflectionUtils reflectionUtils = new ReflectionUtils(null);
 
     private static final long serialVersionUID = 5449758397914117108L;
+
+    @Transient
+    @JsonIgnore
     private static SpecificationMapBuilder specificationMapBuilder = new SpecificationMapBuilder(MapUtils.getInstance());
 
     @Id
@@ -45,8 +50,13 @@ public abstract class BaseEntity implements Serializable, BasicEntity, Cloneable
         this.id = generateId();
     }
 
+    @JsonIgnore
     private String generateId() {
         return UUID.randomUUID().toString();
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     @Override
@@ -78,11 +88,13 @@ public abstract class BaseEntity implements Serializable, BasicEntity, Cloneable
     }
 
     @Override
+    @JsonIgnore
     public void validateRequest() throws EntityError {
         //Do nothing. All request are valid on this entity
     }
 
     @Override
+    @JsonIgnore
     public void validateCreation() throws EntityError {
         Map<String, OperationType> map = new HashMap<>();
         map.put("OperationType", OperationType.CREATION);
@@ -90,6 +102,7 @@ public abstract class BaseEntity implements Serializable, BasicEntity, Cloneable
     }
 
     @Override
+    @JsonIgnore
     public void validateModification() throws EntityError {
         Map<String, OperationType> map = new HashMap<>();
         map.put("OperationType", OperationType.MODIFICATION);
@@ -97,12 +110,14 @@ public abstract class BaseEntity implements Serializable, BasicEntity, Cloneable
     }
 
     @Override
+    @JsonIgnore
     public void validateReplacement() throws EntityError {
         Map<String, OperationType> map = new HashMap<>();
         map.put("OperationType", OperationType.REPLACEMENT);
         traverse(this, "validateReplacement", map);
     }
 
+    @JsonIgnore
     private void traverse(Object entity, String method, Map map) {
         Class<?> clazz = entity.getClass();
         ReflectionUtils.doWithFields(clazz, field -> {
@@ -111,9 +126,7 @@ public abstract class BaseEntity implements Serializable, BasicEntity, Cloneable
             Class<?> clazz_ = field.getType();
             if (ReflectionUtils.isCollectionImplementation(clazz_) && object_ != null) {
                 Collection collection = (Collection) object_;
-                if (collection.isEmpty()) {
-                    processSpecification(method, object_, ReflectionUtils.extractGenerics(field), map);
-                } else {
+                if (!collection.isEmpty()) {
                     for (Object innerCollection : collection) {
                         traverse(innerCollection, method, map);
                     }
@@ -121,9 +134,7 @@ public abstract class BaseEntity implements Serializable, BasicEntity, Cloneable
             } else if (ReflectionUtils.isMapImplementation(clazz_) && object_ != null) {
                 Map<Object, Object> map_ = (Map<Object, Object>) object_;
                 Set<Map.Entry<Object, Object>> set = map_.entrySet();
-                if (map_.isEmpty()) {
-                    processSpecification(method, object_, ReflectionUtils.extractGenerics(field), map);
-                } else {
+                if (!map_.isEmpty()) {
                     for (Map.Entry innerMapValues : set) {
                         traverse(innerMapValues.getValue(), method, map);
                     }
@@ -137,12 +148,19 @@ public abstract class BaseEntity implements Serializable, BasicEntity, Cloneable
         processSpecification(method, entity, clazz, map);
     }
 
+    @JsonIgnore
     private void processSpecification(String method, Object object_, Class<?> clazz_, Map map) {
         try {
-            SpecificationMap specificationMap = specificationMapBuilder.getInstance(clazz_, true);
-            Specification specification = specificationMap.getSpecificationFromMethod(method);
-            if (specification != null) {
-                if (!specification.isSatisfiedBy(object_, map)) {
+            if (reflectionUtils.getFullyQualifiedJavaTypeOrNull(clazz_) == null) {
+                List<SpecificationMap> specificationMaps = specificationMapBuilder.getInstances(clazz_, true);
+                boolean specificationResult = true;
+                for (SpecificationMap specificationMap : specificationMaps) {
+                    Specification specification = specificationMap.getSpecificationFromMethod(method);
+                    if (specification != null) {
+                        specificationResult = specificationResult && specification.isSatisfiedBy(object_, map);
+                    }
+                }
+                if (!specificationResult) {
                     throw new EntityError(map.get(Constants.SPECIFICATION_ERROR).toString());
                 }
             }
@@ -152,6 +170,7 @@ public abstract class BaseEntity implements Serializable, BasicEntity, Cloneable
         }
     }
 
+    @JsonIgnore
     public void override(BaseEntity source, boolean keepMeta, String suffix) {
         if (source.getMeta() != null) {
             if (keepMeta) {
@@ -162,6 +181,7 @@ public abstract class BaseEntity implements Serializable, BasicEntity, Cloneable
         }
     }
 
+    @JsonIgnore
     public void copyNonEmpty(BaseEntity source, boolean keepMeta) {
         if (source.getMeta() != null) {
             if (keepMeta) {
@@ -174,6 +194,7 @@ public abstract class BaseEntity implements Serializable, BasicEntity, Cloneable
         }
     }
 
+    @JsonIgnore
     private MetaInfo buildDefaultMeta() {
         MetaInfo meta = new MetaInfo();
         Date time = Calendar.getInstance().getTime();
@@ -184,7 +205,4 @@ public abstract class BaseEntity implements Serializable, BasicEntity, Cloneable
         return meta;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
 }

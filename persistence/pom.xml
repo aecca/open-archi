@@ -24,7 +24,8 @@
         <org.apache.commons-commons-lang3>3.5</org.apache.commons-commons-lang3>
         <com.h2database-h2>1.4.196</com.h2database-h2>
         <!--<org.eclipse.persistence-org.eclipse.persistence.jpa>2.7.0</org.eclipse.persistence-org.eclipse.persistence.jpa>-->
-        <org.hibernate-hibernate-core>5.2.12.Final</org.hibernate-hibernate-core>
+        <org.hibernate-hibernate-core>5.3.1.Final</org.hibernate-hibernate-core>
+        <org.hibernate-hibernate-c3p0>5.3.1.Final</org.hibernate-hibernate-c3p0>
         <org.hibernate.javax.persistence-hibernate-jpa-2.1-api>1.0.0.Final
         </org.hibernate.javax.persistence-hibernate-jpa-2.1-api>
         <junit.version>4.11</junit.version>
@@ -172,6 +173,14 @@
             <artifactId>hibernate-jpa-2.1-api</artifactId>
             <version>${org.hibernate.javax.persistence-hibernate-jpa-2.1-api}</version>
         </dependency>
+
+        <!-- Hibernate c3p0 connection pool -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-c3p0</artifactId>
+            <version>${org.hibernate-hibernate-c3p0}</version>
+        </dependency>
+
         <!--
                 <dependency>
                     <groupId>com.araguacaima.open_archi</groupId>

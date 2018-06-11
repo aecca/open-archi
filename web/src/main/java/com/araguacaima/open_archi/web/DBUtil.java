@@ -54,6 +54,7 @@ public class DBUtil {
                 .collectionSizeRange(1, 5)
                 .scanClasspathForConcreteTypes(true)
                 .overrideDefaultInitialization(true);
+        JPAEntityManagerUtils.begin();
     }
 
     public static void dbPopulation() {
@@ -87,11 +88,10 @@ public class DBUtil {
         try {
             Class clazz = entity.getClass();
             populate(entity, clazz);
+            JPAEntityManagerUtils.commit();
         } catch (Throwable t) {
             JPAEntityManagerUtils.rollback();
             throw t;
-        } finally {
-            JPAEntityManagerUtils.commit();
         }
     }
 
@@ -290,7 +290,6 @@ public class DBUtil {
             field.setAccessible(true);
             Object object_ = field.get(entity);
             processCreateIfNotExists(field.getType(), object_);
-
         }, Utils::filterMethod);
     }
 

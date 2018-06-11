@@ -26,6 +26,7 @@ public class CheckModelDoesNotExist extends AbstractSpecification {
         super(evaluateAllTerms);
     }
 
+    @Override
     public boolean isSatisfiedBy(Object object, Map map) {
         Class<?> clazz = object.getClass();
         if (BaseEntity.class.isAssignableFrom(clazz)) {
@@ -51,6 +52,7 @@ public class CheckModelDoesNotExist extends AbstractSpecification {
         return true;
     }
 
+    @Override
     public Collection/*<Object>*/ getTerms() {
         return new ArrayList();
     }

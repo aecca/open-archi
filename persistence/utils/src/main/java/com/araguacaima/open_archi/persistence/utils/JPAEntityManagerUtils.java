@@ -57,7 +57,11 @@ public class JPAEntityManagerUtils {
                 namedQuery.setParameter(param.getKey(), param.getValue());
             }
         }
-        return namedQuery.getResultList();
+        try {
+            return namedQuery.getResultList();
+        } catch (javax.persistence.NoResultException ignored) {
+            return null;
+        }
     }
 
     public static <T> T findByQuery(Class<T> clazz, String query) {
@@ -79,12 +83,27 @@ public class JPAEntityManagerUtils {
     }
 
 
-    public static void merge(Object entity) {
-        merge(entity, getAutocommit());
+    public static <T> T merge(T entity) {
+        return merge(entity, getAutocommit());
     }
 
-    public static void merge(Object entity, boolean autocommit) {
-        entityManager.merge(entity);
+    public static <T> T merge(T entity, boolean autocommit) {
+        if (autocommit) {
+            begin();
+        }
+        try {
+            entity = entityManager.merge(entity);
+            if (autocommit) {
+                commit();
+            }
+        } catch (Throwable t) {
+            log.error(t.getMessage());
+            if (autocommit) {
+                rollback();
+            }
+            throw t;
+        }
+        return entity;
     }
 
     public static void persist(Object entity) {
@@ -92,18 +111,43 @@ public class JPAEntityManagerUtils {
     }
 
     public static void persist(Object entity, boolean autocommit) {
-        entityManager.persist(entity);
+        if (autocommit) {
+            begin();
+        }
+        try {
+            entityManager.persist(entity);
+            if (autocommit) {
+                commit();
+            }
+        } catch (Throwable t) {
+            log.error(t.getMessage());
+            if (autocommit) {
+                rollback();
+            }
+            throw t;
+        }
     }
 
     public static void delete(Object entity) {
-        begin();
+        delete(entity, getAutocommit());
+    }
+
+    public static void delete(Object entity, boolean autocommit) {
+        if (autocommit) {
+            begin();
+        }
         try {
             entityManager.remove(entity);
-            flush();
-            commit();
+            if (autocommit) {
+                flush();
+                commit();
+            }
         } catch (Throwable t) {
             log.error(t.getMessage());
-            rollback();
+            if (autocommit) {
+                rollback();
+            }
+            throw t;
         }
     }
 
@@ -122,16 +166,33 @@ public class JPAEntityManagerUtils {
             commit();
         } catch (Throwable t) {
             log.error(t.getMessage());
-            rollback();
+            if (autocommit) {
+                rollback();
+            }
+            throw t;
         }
     }
 
     public static void detach(Object entity) {
-        detach(entity, true);
+        detach(entity, getAutocommit());
     }
 
     public static void detach(Object entity, boolean autocommit) {
-        entityManager.detach(entity);
+        if (autocommit) {
+            begin();
+        }
+        try {
+            entityManager.detach(entity);
+            if (autocommit) {
+                commit();
+            }
+        } catch (Throwable t) {
+            log.error(t.getMessage());
+            if (autocommit) {
+                rollback();
+            }
+            throw t;
+        }
     }
 
     public static void update(Object entity) {
@@ -139,11 +200,40 @@ public class JPAEntityManagerUtils {
     }
 
     public static void update(Object entity, boolean autocommit) {
-        entityManager.merge(entity);
+        merge(entity, autocommit);
+    }
+
+    public static void executeNativeQuery(String query) {
+        executeNativeQuery(query, getAutocommit());
+    }
+
+    public static void executeNativeQuery(String query, boolean autocommit) {
+        if (autocommit) {
+            begin();
+        }
+        try {
+            Query nativeQuery = entityManager.createNativeQuery(query);
+            nativeQuery.executeUpdate();
+            if (autocommit) {
+                commit();
+            }
+        } catch (Throwable t) {
+            log.error(t.getMessage());
+            if (autocommit) {
+                rollback();
+            }
+            throw t;
+        }
     }
 
     public static void begin() {
-        entityManager.getTransaction().begin();
+        try {
+            entityManager.getTransaction().begin();
+        } catch (java.lang.IllegalStateException ex) {
+            if (!"Transaction already active".equals(ex.getMessage())) {
+                throw ex;
+            }
+        }
     }
 
     public static void commit() {

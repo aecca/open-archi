@@ -61,6 +61,26 @@ public class Model extends Element implements DiagramableElement<Model> {
                     referencedColumnName = "Id")})
     private Set<System> systems = new LinkedHashSet<>();
 
+
+    @ManyToMany(cascade = CascadeType.REMOVE)
+    @JoinTable(schema = "DIAGRAMS",
+            name = "Architecture_Model_Containers",
+            joinColumns = {@JoinColumn(name = "Architecture_Model_Id",
+                    referencedColumnName = "Id")},
+            inverseJoinColumns = {@JoinColumn(name = "Container_Id",
+                    referencedColumnName = "Id")})
+    private Set<Container> containers = new LinkedHashSet<>();
+
+
+    @ManyToMany(cascade = CascadeType.REMOVE)
+    @JoinTable(schema = "DIAGRAMS",
+            name = "Architecture_Model_Components",
+            joinColumns = {@JoinColumn(name = "Architecture_Model_Id",
+                    referencedColumnName = "Id")},
+            inverseJoinColumns = {@JoinColumn(name = "Component_Id",
+                    referencedColumnName = "Id")})
+    private Set<Component> components = new LinkedHashSet<>();
+
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
             name = "Architecture_Model_DeploymentNodes",
@@ -162,5 +182,21 @@ public class Model extends Element implements DiagramableElement<Model> {
 
     public void setRelationships(Set<Relationship> relationships) {
         this.relationships = relationships;
+    }
+
+    public Set<Container> getContainers() {
+        return containers;
+    }
+
+    public void setContainers(Set<Container> containers) {
+        this.containers = containers;
+    }
+
+    public Set<Component> getComponents() {
+        return components;
+    }
+
+    public void setComponents(Set<Component> components) {
+        this.components = components;
     }
 }

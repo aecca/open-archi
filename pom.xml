@@ -57,7 +57,7 @@
         <com.google.oauth-client-google-oauth-client-java6>1.22.0</com.google.oauth-client-google-oauth-client-java6>
         <com.google.oauth-client-google-oauth-client-jetty>1.22.0</com.google.oauth-client-google-oauth-client-jetty>
         <com.h2database-h2>1.4.196</com.h2database-h2>
-        <com.mchange-c3p0>0.9.5</com.mchange-c3p0>
+        <com.mchange-c3p0>0.9.5.2</com.mchange-c3p0>
         <com.sparkjava-spark-core>2.5.5</com.sparkjava-spark-core>
         <com.sparkjava-spark-template-jade>2.5.5</com.sparkjava-spark-template-jade>
         <com.thoughtworks.paranamer-paranamer>2.7</com.thoughtworks.paranamer-paranamer>
@@ -743,7 +743,6 @@
                 <version>${tomcat-jdbc.version}</version>
                 <scope>compile</scope>
             </dependency>
-
 
             <dependency>
                 <groupId>com.mchange</groupId>
