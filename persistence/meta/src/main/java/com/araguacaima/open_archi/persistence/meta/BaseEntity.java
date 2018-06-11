@@ -140,7 +140,7 @@ public abstract class BaseEntity implements Serializable, BasicEntity, Cloneable
                     }
                 }
             } else {
-                if (reflectionUtils.getFullyQualifiedJavaTypeOrNull(clazz_) == null && !clazz_.isEnum() && !Enum.class.isAssignableFrom(clazz_)) {
+                if (reflectionUtils.getFullyQualifiedJavaTypeOrNull(clazz_) == null && !clazz_.isEnum() && !Enum.class.isAssignableFrom(clazz_) && object_ != null) {
                     processSpecification(method, object_, clazz_, map);
                 }
             }
