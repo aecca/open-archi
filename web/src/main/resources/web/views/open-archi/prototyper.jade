@@ -100,7 +100,7 @@ block extra-menu-elements
         input#diagramId(name='diagramId', placeholder='Template name...')
 
 block content
-    +modal-force("Diagram info", "diagram-info")(save="confirm")
+    +modal-force("Diagram info", "diagram-info")(save="save")
         form#diagram-info-form
             .form-group
                 label.col-form-label(for="element-name") Name:

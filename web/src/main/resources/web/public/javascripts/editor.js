@@ -185,9 +185,18 @@ function makeButton(text, action, visiblePredicate) {
         }).ofObject() : {});
 }
 
+function fixMetaData() {
+    const name = $("#diagram-name").val();
+    const type = $("#diagramTypesDropdown").find("a.active").html();
+    const prototype = $("#diagram-prototype").prop("checked");
+    meta.name = name;
+    meta.kind = type;
+    meta.prototype = prototype;
+}
 
 // Show the diagram's model in JSON format that the user may edit
 function save() {
+    fixMetaData();
     let value_ = OpenArchiWrapper.fromDiagram(myDiagram.model);
     let value = JSON.stringify(value_);
     let modelToSaveOrLoad = $("#modelToSaveOrLoad");
@@ -196,26 +205,29 @@ function save() {
     resizeDataModelDiv();
     myDiagram.isModified = false;
     myDiagram.model.modelData.position = go.Point.stringify(myDiagram.position);
-    $.post("/open-archi/api/models", value, function (response) {
-        if (response === 201) {
-            alert("created");
-        } else {
-            commons.prototype.put("/open-archi/api/models", value_, 'application/json')
-                .then(function (data) {
-                    if (response === 200) {
-                        alert("created");
-                    } else {
-                        if (response === 201) {
-                            alert("accepted");
+    commons.prototype.post("/open-archi/api/models", value_, "application/json")
+        .then(function (response) {
+            if (response === 201) {
+                alert("created");
+            } else {
+                commons.prototype.put("/open-archi/api/models", value_, 'application/json')
+                    .then(function (data) {
+                        if (response === 200) {
+                            alert("created");
                         } else {
-                            alert(data);
+                            if (response === 201) {
+                                alert("accepted");
+                            } else {
+                                alert(data);
+                            }
                         }
-                    }
-                }).catch(function (data) {
-                alert(data);
-            });
-        }
-    }, "application/json");
+                    }).catch(function (data) {
+                    alert(data);
+                });
+            }
+        }).catch(function (data) {
+        alert(data);
+    });
 }
 
 function load() {
@@ -605,13 +617,7 @@ function validateModel() {
 
 
 function confirmAndSave() {
-    let $diagramInfo = $('#diagram-info');
-    $diagramInfo.modal('show');
-    $diagramInfo.on('hidden.bs.modal', function () {
-        save();
-        return null;
-    });
-    return null;
+    $('#diagram-info').modal('show');
 }
 
 function getCurrentViewMode() {

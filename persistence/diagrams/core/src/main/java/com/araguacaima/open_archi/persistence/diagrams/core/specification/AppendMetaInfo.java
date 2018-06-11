@@ -26,12 +26,12 @@ public class AppendMetaInfo extends AbstractSpecification {
             if (entity.getMeta() == null) {
                 if (map.get("meta") == null) {
                     meta = new MetaInfo();
+                    meta.addNewHistory(thisTime);
+                    meta.setCreated(thisTime);
                     map.put("meta", meta);
                 } else {
                     meta = (MetaInfo) map.get("meta");
                 }
-                meta.addNewHistory(thisTime);
-                meta.setCreated(thisTime);
                 entity.setMeta(meta);
             } else {
                 meta = entity.getMeta();

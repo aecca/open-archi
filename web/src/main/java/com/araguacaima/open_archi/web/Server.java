@@ -278,9 +278,9 @@ public class Server {
 //        elementTypesCollection.add("ENTITY_RELATIONSHIP");
 //        elementTypesCollection.add("UML_CLASS");
 //        elementTypesCollection.add("FEATURE");
+        elementTypesCollection.add("CONTAINER");
         elementTypesCollection.add("COMPONENT");
 //        elementTypesCollection.add("CONSUMER");
-        elementTypesCollection.add("CONTAINER");
 //        elementTypesCollection.add("DEPLOYMENT");
 //        elementTypesCollection.add("BPM");
 //        elementTypesCollection.add("GROUP");
@@ -1012,7 +1012,8 @@ public class Server {
                 post("/models", (request, response) -> {
                     try {
                         Taggable model = null;
-                        Map<String, Object> incomingModel = (Map<String, Object>) jsonUtils.fromJSON(request.body(), Map.class);
+                        String body = request.body();
+                        Map<String, Object> incomingModel = (Map<String, Object>) jsonUtils.fromJSON(body, Map.class);
                         Object kind = incomingModel.get("kind");
                         Object id = incomingModel.get("id");
                         for (Class<? extends Taggable> modelClass : modelsClasses) {
@@ -1023,7 +1024,7 @@ public class Server {
                                 Object thisKind = field.get(obj);
                                 thisKind = enumsUtils.getStringValue((Enum) thisKind);
                                 if (kind.equals(thisKind)) {
-                                    model = jsonUtils.fromJSON(request.body(), modelClass);
+                                    model = jsonUtils.fromJSON(body, modelClass);
                                     break;
                                 }
                             }
