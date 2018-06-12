@@ -42,7 +42,7 @@ public class AppendMetaInfo extends AbstractSpecification {
         return true;
     }
 
-    public Collection/*<Object>*/ getTerms() {
-        return new ArrayList();
+    public Collection<Object> getTerms() {
+        return new ArrayList<>();
     }
 }

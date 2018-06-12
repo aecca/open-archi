@@ -39,6 +39,6 @@ public class Utils {
         } catch (Throwable t) {
             t.printStackTrace();
         }
-        return aClass != null && (reflectionUtils.getFullyQualifiedJavaTypeOrNull(aClass.getName(), true) == null && !aClass.isEnum() && !Enum.class.isAssignableFrom(aClass));
+        return aClass != null && (reflectionUtils.getFullyQualifiedJavaTypeOrNull(aClass) == null && !aClass.isEnum() && !Enum.class.isAssignableFrom(aClass));
     }
 }

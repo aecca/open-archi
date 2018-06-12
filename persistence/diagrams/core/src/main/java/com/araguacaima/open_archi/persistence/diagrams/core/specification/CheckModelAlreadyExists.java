@@ -1,7 +1,6 @@
 package com.araguacaima.open_archi.persistence.diagrams.core.specification;
 
 import com.araguacaima.open_archi.persistence.commons.Constants;
-import com.araguacaima.open_archi.persistence.commons.OperationType;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 import com.araguacaima.open_archi.persistence.diagrams.core.Item;
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
@@ -14,13 +13,13 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CheckModelDoesNotExist extends AbstractSpecification {
+public class CheckModelAlreadyExists extends AbstractSpecification {
 
-    public CheckModelDoesNotExist() {
+    public CheckModelAlreadyExists() {
         this(false);
     }
 
-    public CheckModelDoesNotExist(boolean evaluateAllTerms) {
+    public CheckModelAlreadyExists(boolean evaluateAllTerms) {
         super(evaluateAllTerms);
     }
 
@@ -37,12 +36,13 @@ public class CheckModelDoesNotExist extends AbstractSpecification {
                 params.put("kind", kind);
                 params.put("name", name);
                 if (CollectionUtils.isNotEmpty(JPAEntityManagerUtils.executeQuery(Item.class, Item.GET_ITEMS_BY_NAME_AND_KIND, params))) {
-                    map.put(Constants.SPECIFICATION_ERROR, "Name '" + name + "' and Kind '" + kind + "' pair already exists");
-                    return false;
+                    return true;
+                } else {
+                    map.put(Constants.SPECIFICATION_ERROR, "Name '" + name + "' and Kind '" + kind + "' pair does not exists");
                 }
             }
         }
-        return true;
+        return false;
     }
 
     @Override
