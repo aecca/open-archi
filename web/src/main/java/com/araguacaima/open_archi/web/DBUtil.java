@@ -255,11 +255,14 @@ public class DBUtil {
                 params.put("name", name);
                 ElementKind kind = (ElementKind) reflectionUtils.invokeGetter(entity, "kind");
                 params.put("kind", kind);
-                Item item = JPAEntityManagerUtils.findByQuery(Item.class, Item.GET_ITEM_ID_BY_NAME, params);
-                if (item != null) {
-                    item.override((Item) entity, false, null);
-                    return item;
+                Object entity_ = JPAEntityManagerUtils.findByQuery(Item.class, Item.GET_ITEM_ID_BY_NAME, params);
+                if (entity_ == null) {
+                    entity_ = JPAEntityManagerUtils.find(entity);
                 }
+                if (entity_ != null) {
+                    ((Item) entity_).override((Item) entity, false, null);
+                }
+                return entity_;
             }
         } catch (Throwable t) {
             t.printStackTrace();
@@ -278,10 +281,11 @@ public class DBUtil {
             for (Object innerCollection : (Collection) object_) {
                 Object value = innerFlatten(innerCollection);
                 valuesToRemove.add(innerCollection);
+                JPAEntityManagerUtils.merge(value);
                 valuesToAdd.add(value);
             }
             ((Collection) object_).removeAll(valuesToRemove);
-            valuesToAdd.forEach(JPAEntityManagerUtils::merge);
+
             ((Collection) object_).addAll(valuesToAdd);
             return object_;
         } else if (ReflectionUtils.isMapImplementation(type)) {
@@ -292,6 +296,7 @@ public class DBUtil {
             Set<Map.Entry<Object, Object>> set = map.entrySet();
             for (Map.Entry innerMapValues : set) {
                 Object value = innerFlatten(innerMapValues.getValue());
+                JPAEntityManagerUtils.merge(value);
                 map.put(innerMapValues.getKey(), value);
             }
             return map;

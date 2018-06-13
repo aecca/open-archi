@@ -1,10 +1,14 @@
 package com.araguacaima.open_archi.persistence.utils;
 
+import com.araguacaima.commons.utils.ReflectionUtils;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.persistence.*;
+import java.lang.reflect.Field;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +16,10 @@ public class JPAEntityManagerUtils {
     private static EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("open-archi");
     private static EntityManager entityManager = entityManagerFactory.createEntityManager();
     private static boolean autocommit = true;
+
+    @Transient
+    @JsonIgnore
+    private static ReflectionUtils reflectionUtils = new ReflectionUtils(null);
 
     private static Logger log = LoggerFactory.getLogger(JPAEntityManagerUtils.class);
 
@@ -44,6 +52,19 @@ public class JPAEntityManagerUtils {
 
     public static <T> T find(Class<T> clazz, Object key) {
         return entityManager.find(clazz, key);
+    }
+
+    public static <T> T find(T entity) {
+        try {
+            Object key = extractId(entity);
+            if (key != null) {
+                return find((Class<T>) entity.getClass(), key);
+            }
+        } catch (Throwable t) {
+            log.error(t.getMessage());
+            throw new RuntimeException(t);
+        }
+        return null;
     }
 
     public static <T> List<T> executeQuery(Class<T> clazz, String query) {
@@ -92,7 +113,12 @@ public class JPAEntityManagerUtils {
             begin();
         }
         try {
-            entity = entityManager.merge(entity);
+            Object key = extractId(entity);
+            if (key != null && find(entity.getClass(), key) == null) {
+                entityManager.persist(entity);
+            } else {
+                entity = entityManager.merge(entity);
+            }
             if (autocommit) {
                 commit();
             }
@@ -101,9 +127,20 @@ public class JPAEntityManagerUtils {
             if (autocommit) {
                 rollback();
             }
-            throw t;
+            throw new RuntimeException(t);
         }
         return entity;
+    }
+
+    private static <T> Object extractId(T entity) throws IllegalAccessException {
+        Collection<Field> fields = reflectionUtils.getAllFieldsIncludingParents(entity);
+        for (Field field : fields) {
+            if (field.getAnnotation(Id.class) != null) {
+                field.setAccessible(true);
+                return field.get(entity);
+            }
+        }
+        return null;
     }
 
     public static void persist(Object entity) {
