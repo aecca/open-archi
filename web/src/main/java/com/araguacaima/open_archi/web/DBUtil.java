@@ -211,8 +211,10 @@ public class DBUtil {
     private static void flattenForPopulation(Object entity, Class clazz) {
         ReflectionUtils.doWithFields(clazz, field -> {
             field.setAccessible(true);
-            Object object_ = field.get(entity); if (object_ != null) {
-            processFieldFlatten(entity, field, object_);}
+            Object object_ = field.get(entity);
+            if (object_ != null) {
+                processFieldFlatten(entity, field, object_);
+            }
         }, Utils::filterMethod);
     }
 
@@ -221,9 +223,18 @@ public class DBUtil {
             Object result = flattenForPopulation(field.getType(), object_);
             if (result != null) {
                 field.set(entity, result);
-                Class<?> type = result.getClass();
-                if (reflectionUtils.getFullyQualifiedJavaTypeOrNull(type) == null && !type.isEnum() && !Enum.class.isAssignableFrom(type)) {
-                    JPAEntityManagerUtils.merge(result);
+                if (!ReflectionUtils.isCollectionImplementation(result.getClass()) && !ReflectionUtils.isMapImplementation(result.getClass())) {
+                    Class<?> type = result.getClass();
+                    if (reflectionUtils.getFullyQualifiedJavaTypeOrNull(type) == null && !type.isEnum() && !Enum.class.isAssignableFrom(type)) {
+                        JPAEntityManagerUtils.merge(result);
+                    }
+                } else {
+                    ((Collection) result).forEach(value -> {
+                        Class<?> type = value.getClass();
+                        if (reflectionUtils.getFullyQualifiedJavaTypeOrNull(type) == null && !type.isEnum() && !Enum.class.isAssignableFrom(type)) {
+                            JPAEntityManagerUtils.merge(value);
+                        }
+                    });
                 }
             }
         }
@@ -232,8 +243,10 @@ public class DBUtil {
     private static Object innerFlatten(Object entity) {
         ReflectionUtils.doWithFields(entity.getClass(), field -> {
             field.setAccessible(true);
-            Object object_ = field.get(entity); if (object_ != null) {
-            processFieldFlatten(entity, field, object_);}
+            Object object_ = field.get(entity);
+            if (object_ != null) {
+                processFieldFlatten(entity, field, object_);
+            }
         }, Utils::filterMethod);
         try {
             if (Item.class.isAssignableFrom(entity.getClass())) {
