@@ -211,8 +211,8 @@ public class DBUtil {
     private static void flattenForPopulation(Object entity, Class clazz) {
         ReflectionUtils.doWithFields(clazz, field -> {
             field.setAccessible(true);
-            Object object_ = field.get(entity);
-            processFieldFlatten(entity, field, object_);
+            Object object_ = field.get(entity); if (object_ != null) {
+            processFieldFlatten(entity, field, object_);}
         }, Utils::filterMethod);
     }
 
@@ -232,8 +232,8 @@ public class DBUtil {
     private static Object innerFlatten(Object entity) {
         ReflectionUtils.doWithFields(entity.getClass(), field -> {
             field.setAccessible(true);
-            Object object_ = field.get(entity);
-            processFieldFlatten(entity, field, object_);
+            Object object_ = field.get(entity); if (object_ != null) {
+            processFieldFlatten(entity, field, object_);}
         }, Utils::filterMethod);
         try {
             if (Item.class.isAssignableFrom(entity.getClass())) {
@@ -268,6 +268,7 @@ public class DBUtil {
                 valuesToAdd.add(value);
             }
             ((Collection) object_).removeAll(valuesToRemove);
+            valuesToAdd.forEach(JPAEntityManagerUtils::merge);
             ((Collection) object_).addAll(valuesToAdd);
             return object_;
         } else if (ReflectionUtils.isMapImplementation(type)) {
