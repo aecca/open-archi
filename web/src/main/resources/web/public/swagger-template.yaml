@@ -661,6 +661,91 @@ paths:
       - openarchi_auth:
         - write:model
         - read:models
+  "/models/{model-id}/meta":
+     get:
+       tags:
+       - Models
+       summary: Get the meta info related to this model. Each model can handle only one meta info. Each meta info can contain multiple versions, belonging to an history on which only one of it its marked as 'active'
+       description: This service supports query by using RSQL expressions
+       operationId: get-model-meta
+       produces:
+       - application/json
+       parameters:
+       - name: model-id
+         in: path
+         description: ID of the model for retrieving its meta info
+         required: true
+         type: string
+       responses:
+         '200':
+           description: OK
+           schema:
+             $ref: "#/definitions/Meta_Info"
+         '400':
+           description: Bad request
+       security:
+       - openarchi_auth:
+         - read:models
+  "/models/{model-id}/meta/history":
+     get:
+       tags:
+       - Models
+       summary: Get the history of versions related to this model. Each model can handle several versions, but only one of those can be considered as the 'active' one.
+       description: This service supports query by using RSQL expressions
+       operationId: get-model-meta-history
+       produces:
+       - application/json
+       parameters:
+       - name: model-id
+         in: path
+         description: ID of the model for retrieving its meta info
+         required: true
+         type: string
+       responses:
+         '200':
+           description: OK
+           schema:
+             type: array
+             items:
+               $ref: "#/definitions/History_List"
+         '400':
+           description: Bad request
+       security:
+       - openarchi_auth:
+         - read:models
+     post:
+       tags:
+       - Models
+       summary: Add a new entry of the history of versions for the current model's meta info
+       description: Add the meta-data of the current model
+       operationId: add-history
+       consumes:
+       - application/json
+       produces:
+       - application/json
+       parameters:
+       - name: model-id
+         in: path
+         description: ID of the model to add history to its meta info
+         required: true
+         type: string
+       - in: body
+         name: body
+         description: History object that needs to be added to the current model's meta info
+         required: true
+         schema:
+           $ref: "#/definitions/History_Create"
+       responses:
+         '200':
+           description: Accepted
+         '201':
+           description: Created
+         '405':
+           description: Invalid input
+       security:
+       - openarchi_auth:
+         - write:model
+         - read:models
   "/diagrams/architectures":
 #    options:
 #      tags:
@@ -3861,6 +3946,86 @@ definitions:
         - BPM_MODEL
         - FLOWCHART_MODEL
         - ENTITY_RELATIONSHIP_MODEL
+  History:
+    type: object
+    description: History of versions for any object
+    properties:
+      id:
+        type: string
+        description: History identifier
+      version:
+        $ref: "#/definitions/Version"
+        description: Version of the object
+      versionStatus:
+        type: string
+        enum:
+          - INITIAL
+          - ACTIVE
+          - ARCHIVED
+        default: INITIAL
+      modifiedBy:
+        $ref: "#/definitions/Account"
+        description: Account that modifies the object
+      modified:
+        type: string
+        format: date-time
+        description: Full date of modification of the object
+    required:
+    - id
+    - version
+    - modifiedBy
+  History_List:
+    type: object
+    description: History of versions for any object
+    properties:
+      id:
+        type: string
+        description: History identifier
+      version:
+        $ref: "#/definitions/Version"
+        description: Version of the object
+      versionStatus:
+        type: string
+        enum:
+          - INITIAL
+          - ACTIVE
+          - ARCHIVED
+        default: INITIAL
+      modifiedBy:
+        $ref: "#/definitions/Account"
+        description: Account that modifies the object
+      modified:
+        type: string
+        format: date-time
+        description: Full date of modification of the object
+    required:
+    - id
+    - version
+    - modifiedBy
+  History_Create:
+    type: object
+    description: History of versions for any object
+    properties:
+      version:
+        $ref: "#/definitions/Version"
+        description: Version of the object
+      versionStatus:
+        type: string
+        enum:
+          - INITIAL
+          - ACTIVE
+          - ARCHIVED
+        default: INITIAL
+      modifiedBy:
+        $ref: "#/definitions/Account"
+        description: Account that modifies the object
+      modified:
+        type: string
+        format: date-time
+        description: Full date of modification of the object
+    required:
+    - version
+    - modifiedBy
   Image:
     type: object
     description: Image that graphically identifies an element within the model
@@ -4248,28 +4413,21 @@ definitions:
       id:
         type: string
         description: Meta info identifier
-      version:
-        $ref: "#/definitions/Version"
-        description: Version of the object
+      history:
+        type: array
+        items:
+          $ref: "#/definitions/History"
+        description: History of the object
       createdBy:
         $ref: "#/definitions/Account"
         description: Account that creates the object
-      modifiedBy:
-        $ref: "#/definitions/Account"
-        description: Account that modifies the object
       created:
         type: string
         format: date-time
         description: Full date of creation of the object
-      modified:
-        type: string
-        format: date-time
-        description: Full date of modification of the object
     required:
     - id
-    - version
     - createdBy
-    - modifiedBy
   Meta_Info_List:
     type: object
     description: Meta info for any object
@@ -4277,49 +4435,36 @@ definitions:
       id:
         type: string
         description: Meta info identifier
-      version:
-        $ref: "#/definitions/Versions"
-        description: Version of the object
+      history:
+        type: array
+        items:
+          $ref: "#/definitions/History"
+        description: History of the object
       createdBy:
         $ref: "#/definitions/Accounts"
         description: Account that creates the object
-      modifiedBy:
-        $ref: "#/definitions/Accounts"
-        description: Account that modifies the object
       created:
         type: string
         format: date-time
         description: Full date of creation of the object
-      modified:
-        type: string
-        format: date-time
-        description: Full date of modification of the object
     required:
     - id
-    - version
     - createdBy
-    - modifiedBy
   Meta_Info_Create:
     type: object
     description: Meta info for any object
     properties:
-      version:
-        $ref: "#/definitions/Version_Create"
-        description: Version of the object
+      history:
+        type: array
+        items:
+          $ref: "#/definitions/History_Create"
       createdBy:
         $ref: "#/definitions/Account_Create"
         description: Account that creates the object
-      modifiedBy:
-        $ref: "#/definitions/Account_Create"
-        description: Account that modifies the object
       created:
         type: string
         format: date-time
         description: Full date of creation of the object
-      modified:
-        type: string
-        format: date-time
-        description: Full date of modification of the object
     required:
     - version
     - createdBy
@@ -5359,32 +5504,32 @@ definitions:
     description: Version
     properties:
       id:
-        type: string
+        $ref: "#/definitions/Version_Id"
         description: Version identifier
-      major:
-        type: integer
-        format: int32
-        description: Major part of the version
-      minor:
-        type: integer
-        format: int32
-        description: Minor part of the version
-      build:
-        type: integer
-        format: int32
-        description: Build part of the version
     required:
     - id
-    - major
-    - minor
-    - build
   Versions:
     type: object
     description: Version
     properties:
       id:
-        type: string
+        $ref: "#/definitions/Version_Ids"
         description: Version identifier
+    required:
+    - id
+  Version_Create:
+    type: object
+    description: Version
+    properties:
+      id:
+        $ref: "#/definitions/Version_Id_Create"
+        description: Version identifier
+    required:
+    - id
+  Version_Id:
+    type: object
+    description: Version identifier
+    properties:
       major:
         type: integer
         format: int32
@@ -5398,11 +5543,30 @@ definitions:
         format: int32
         description: Build part of the version
     required:
-    - id
     - major
     - minor
     - build
-  Version_Create:
+  Version_Ids:
+    type: object
+    description: Version
+    properties:
+      major:
+        type: integer
+        format: int32
+        description: Major part of the version
+      minor:
+        type: integer
+        format: int32
+        description: Minor part of the version
+      build:
+        type: integer
+        format: int32
+        description: Build part of the version
+    required:
+    - major
+    - minor
+    - build
+  Version_Id_Create:
     type: object
     description: Version
     properties:

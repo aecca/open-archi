@@ -87,7 +87,11 @@ public class DBUtil {
         try {
             Class clazz = entity.getClass();
             populate(entity, clazz);
-            JPAEntityManagerUtils.commit();
+            try {
+                JPAEntityManagerUtils.commit();
+            } catch (Throwable ignored) {
+
+            }
         } catch (Throwable t) {
             JPAEntityManagerUtils.rollback();
             throw t;
@@ -258,11 +262,13 @@ public class DBUtil {
                 Object entity_ = JPAEntityManagerUtils.findByQuery(Item.class, Item.GET_ITEM_ID_BY_NAME, params);
                 if (entity_ == null) {
                     entity_ = JPAEntityManagerUtils.find(entity);
-                }
-                if (entity_ != null) {
+                    if (entity_ != null) {
+                        return entity_;
+                    }
+                }else {
                     ((Item) entity_).override((Item) entity, false, null);
+                    return entity_;
                 }
-                return entity_;
             }
         } catch (Throwable t) {
             t.printStackTrace();

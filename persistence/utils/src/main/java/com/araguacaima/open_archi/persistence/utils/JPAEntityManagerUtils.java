@@ -109,6 +109,9 @@ public class JPAEntityManagerUtils {
     }
 
     public static <T> T merge(T entity, boolean autocommit) {
+        if (entity == null) {
+            return null;
+        }
         if (autocommit) {
             begin();
         }
@@ -135,7 +138,7 @@ public class JPAEntityManagerUtils {
     private static <T> Object extractId(T entity) throws IllegalAccessException {
         Collection<Field> fields = reflectionUtils.getAllFieldsIncludingParents(entity);
         for (Field field : fields) {
-            if (field.getAnnotation(Id.class) != null) {
+            if (field.getAnnotation(Id.class) != null || field.getAnnotation(EmbeddedId.class) != null) {
                 field.setAccessible(true);
                 return field.get(entity);
             }

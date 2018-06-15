@@ -101,7 +101,7 @@ public class MetaInfo implements Serializable, Comparable<MetaInfo> {
 
     @JsonIgnore
     public Version getActiveVersion() {
-        History history = CollectionUtils.find(this.history, object -> VersionStatus.ACTIVE.equals(object.getVersion().getStatus()));
+        History history = CollectionUtils.find(this.history, object -> VersionStatus.ACTIVE.equals(object.getStatus()));
         if (history == null) {
             history = new History();
             history.setVersion(new Version());

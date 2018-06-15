@@ -16,10 +16,10 @@ import java.util.UUID;
 @NamedQueries(value = {
         @NamedQuery(
                 name = History.GET_DEFAULT_HISTORY_VERSION,
-                query = "select a from History a where a.version.major = 1 and a.version.minor = 0 and a.version.build = 0 order by a.version"),
+                query = "select a from History a where a.version.id.major = 1 and a.version.id.minor = 0 and a.version.id.build = 0 order by a.version"),
         @NamedQuery(
                 name = History.GET_DEFAULT_ACTIVE_VERSION,
-                query = "select a from History a where a.version.status = 'ACTIVE'")})
+                query = "select a from History a where a.status = 'ACTIVE'")})
 public class History implements Serializable, Comparable<History> {
 
     public static final String GET_DEFAULT_HISTORY_VERSION = "get.default.history.version";
@@ -33,9 +33,12 @@ public class History implements Serializable, Comparable<History> {
     private Version version;
 
     @Column
+    @Enumerated(EnumType.STRING)
+    private VersionStatus status;
+
+    @Column
     @Temporal(TemporalType.TIMESTAMP)
     private Date modified;
-
 
     @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
@@ -43,6 +46,7 @@ public class History implements Serializable, Comparable<History> {
 
     public History() {
         this.id = UUID.randomUUID().toString();
+        this.status = VersionStatus.INITIAL;
     }
 
 
@@ -77,6 +81,14 @@ public class History implements Serializable, Comparable<History> {
 
     public void setModifiedBy(Account modifiedBy) {
         this.modifiedBy = modifiedBy;
+    }
+
+    public VersionStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(VersionStatus status) {
+        this.status = status;
     }
 
     @Override

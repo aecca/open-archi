@@ -1,14 +1,12 @@
 package com.araguacaima.open_archi.persistence.meta;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import java.beans.Transient;
 import java.io.Serializable;
-import java.util.UUID;
 
 @PersistenceUnit(unitName = "open-archi")
 @Entity
@@ -16,18 +14,17 @@ import java.util.UUID;
 @DynamicUpdate
 @NamedQueries(value = {@NamedQuery(name = Version.COUNT_ALL_VERSIONS,
         query = "select count(a) from Version a"), @NamedQuery(name = Version.GET_DEFAULT_VERSION,
-        query = "select a from Version a where a.major = 1 and a.minor = 0 and a.build = 0"), @NamedQuery(
+        query = "select a from Version a where a.id.major = 1 and a.id.minor = 0 and a.id.build = 0"), @NamedQuery(
         name = Version.GET_ALL_VERSIONS,
-        query = "select a from Version a order by a.major, a.minor, a.build"), @NamedQuery(
+        query = "select a from Version a order by a.id.major, a.id.minor, a.id.build"), @NamedQuery(
         name = Version.FIND_VERSION,
-        query = "select a from Version a where a.major = :major and a.minor = :minor and a.build = :build order by a.major, a.minor, a.build"), @NamedQuery(
+        query = "select a from Version a where a.id.major = :major and a.id.minor = :minor and a.id.build = :build order by a.id.major, a.id.minor, a.id.build"), @NamedQuery(
         name = Version.GET_LAST_VERSION,
         query = "SELECT v1 "
                 + "FROM Version v1 LEFT OUTER JOIN Version v2 ON ( "
-                + "  (v1.major = v2.major AND v1.minor < v2.minor) OR (v1.major = v2.major AND v1.minor = v2.minor AND v1.build < v2.build) "
-                + "  OR (v1.major < v2.major)) "
-                + "WHERE v2.id IS NULL")})
-public class Version extends BaseEntity implements Serializable, Comparable<Version>, Cloneable {
+                + "  (v1.id.major = v2.id.major AND v1.id.minor < v2.id.minor) OR (v1.id.major = v2.id.major AND v1.id.minor = v2.id.minor AND v1.id.build < v2.id.build) "
+                + "  OR (v1.id.major < v2.id.major))")})
+public class Version implements Serializable, Comparable<Version>, Cloneable {
 
     public static final String GET_ALL_VERSIONS = "Version.getAllVersions";
     public static final String COUNT_ALL_VERSIONS = "Version.countAllVersions";
@@ -42,28 +39,18 @@ public class Version extends BaseEntity implements Serializable, Comparable<Vers
 
     private static final long serialVersionUID = -5350803918802322500L;
 
-    @Column(nullable = false)
-    @NotNull
-    private Integer major = 0;
-    @Column(nullable = false)
-    @NotNull
-    private Integer minor = 0;
-    @Column
-    private Integer build = 1;
-
-    @Column
-    @Enumerated(EnumType.STRING)
-    protected VersionStatus status;
+    @EmbeddedId
+    @JsonIgnore
+    private VersionId id = new VersionId();
 
     public Version() {
-        this.status = VersionStatus.ACTIVE;
     }
 
     public Version(Integer major, Integer minor, Integer build) {
         this();
-        this.major = major;
-        this.minor = minor;
-        this.build = build;
+        this.id.setMajor(major);
+        this.id.setMinor(minor);
+        this.id.setBuild(build);
     }
 
     public Version(String version) throws NumberFormatException {
@@ -74,149 +61,123 @@ public class Version extends BaseEntity implements Serializable, Comparable<Vers
 
             versionSplitted = version.split("\\.");
             try {
-                this.major = Integer.valueOf(versionSplitted[0]);
+                this.id.setMajor(Integer.valueOf(versionSplitted[0]));
             } catch (IndexOutOfBoundsException ignored) {
             } catch (NumberFormatException nfe) {
-                this.major = Integer.valueOf(versionSplitted[0].substring(0, 1));
+                this.id.setMajor(Integer.valueOf(versionSplitted[0].substring(0, 1)));
             }
             try {
-                this.minor = Integer.valueOf(versionSplitted[1]);
+                this.id.setMinor(Integer.valueOf(versionSplitted[1]));
             } catch (IndexOutOfBoundsException ignored) {
             } catch (NumberFormatException nfe) {
-                this.minor = Integer.valueOf(versionSplitted[1].substring(0, 1));
+                this.id.setMinor(Integer.valueOf(versionSplitted[1].substring(0, 1)));
             }
-            if (this.major == null) {
+            if (this.id.getMajor() == null) {
                 versionSplitted = version.split(",");
                 try {
-                    this.major = Integer.valueOf(versionSplitted[0]);
+                    this.id.setMajor(Integer.valueOf(versionSplitted[0]));
                 } catch (IndexOutOfBoundsException ignored) {
                 } catch (NumberFormatException nfe) {
-                    this.major = Integer.valueOf(versionSplitted[0].substring(0, 1));
+                    this.id.setMajor(Integer.valueOf(versionSplitted[0].substring(0, 1)));
                 }
                 try {
-                    this.minor = Integer.valueOf(versionSplitted[1]);
+                    this.id.setMinor(Integer.valueOf(versionSplitted[1]));
                 } catch (IndexOutOfBoundsException ignored) {
                 } catch (NumberFormatException nfe) {
-                    this.minor = Integer.valueOf(versionSplitted[1].substring(0, 1));
+                    this.id.setMinor(Integer.valueOf(versionSplitted[1].substring(0, 1)));
                 }
             }
             try {
-                this.build = Integer.valueOf(versionSplitted[2]);
+                this.id.setBuild(Integer.valueOf(versionSplitted[2]));
             } catch (IndexOutOfBoundsException ignored) {
             }
         }
     }
 
+    @JsonIgnore
+    @Transient
+    public VersionId getId() {
+        return id;
+    }
+
+    @JsonIgnore
+    @Transient
+    public void setId(VersionId id) {
+        this.id = id;
+    }
+
     public Integer getMajor() {
-        return major;
+        return id.getMajor();
     }
 
     public void setMajor(Integer major) {
-        this.major = major;
+        this.setMajor(major);
     }
 
     public Integer getMinor() {
-        return minor;
+        return id.getMinor();
     }
 
     public void setMinor(Integer minor) {
-        this.minor = minor;
+        this.setMinor(minor);
     }
 
     public Integer getBuild() {
-        return build;
+        return id.getBuild();
     }
 
     public void setBuild(Integer build) {
-        this.build = build;
-    }
-
-    public VersionStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(VersionStatus status) {
-        this.status = status;
+        this.setBuild(build);
     }
 
     @Override
     public String toString() {
-        return major + "." + minor + "." + build;
+        return id.getMajor() + "." + id.getMinor() + "." + id.getBuild();
     }
 
     @Override
     public Object clone() throws CloneNotSupportedException {
         final Version cloned = new Version();
-        cloned.id = UUID.randomUUID().toString();
+        cloned.setId(this.getId());
         cloned.setMajor(this.getMajor());
         cloned.setMinor(this.getMinor());
         cloned.setBuild(this.getBuild());
         return cloned;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-
-        if (o == null || getClass() != o.getClass())
-            return false;
-
-        Version version = (Version) o;
-
-        return new EqualsBuilder().append(id, version.id)
-                .append(major, version.major)
-                .append(minor, version.minor)
-                .append(build, version.build)
-                .isEquals();
-    }
-
     public Version nextBuild() {
+        Integer build = this.id.getBuild();
         if (build != null) {
-            build = build++;
+            this.id.setBuild(build + 1);
         } else {
-            build = 1;
+            this.id.setBuild(1);
         }
         return this;
     }
 
     public Version nextMinor() {
+        Integer minor = this.id.getMinor();
         if (minor != null) {
-            minor = minor++;
+            this.id.setMinor(minor + 1);
         } else {
-            minor = 0;
+            this.id.setMinor(1);
         }
         return this;
     }
 
     public Version nextMajor() {
+        Integer major = this.id.getMajor();
         if (major != null) {
-            major = major++;
+            this.id.setMajor(major + 1);
         } else {
-            major = 0;
+            this.id.setMajor(1);
         }
         return this;
     }
 
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder(17, 37).append(id).append(major).append(minor).append(build).toHashCode();
-    }
 
     @Override
-    public int compareTo(Version other) {
-        try {
-            if (this.major.equals(other.major)) {
-                if (this.minor.equals(other.minor)) {
-                    return this.build - other.build;
-                } else {
-                    return this.minor - other.minor;
-                }
-            } else {
-                return this.major - other.major;
-            }
-        } catch (Throwable ignored) {
-            return -1;
-        }
+    public int compareTo(Version version) {
+        return this.id.compareTo(version.getId());
     }
 }
