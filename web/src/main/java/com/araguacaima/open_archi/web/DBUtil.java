@@ -12,6 +12,7 @@ import io.github.benas.randombeans.EnhancedRandomBuilder;
 import io.github.benas.randombeans.api.EnhancedRandom;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import java.lang.reflect.Field;
 import java.time.LocalDate;
@@ -122,7 +123,9 @@ public class DBUtil {
         try {
             JPAEntityManagerUtils.persist(entity);
         } catch (Throwable t) {
-            t.printStackTrace();
+            if (!EntityExistsException.class.isAssignableFrom(t.getClass())) {
+                t.printStackTrace();
+            }
         }
         return entity;
     }
@@ -265,7 +268,7 @@ public class DBUtil {
                     if (entity_ != null) {
                         return entity_;
                     }
-                }else {
+                } else {
                     ((Item) entity_).override((Item) entity, false, null);
                     return entity_;
                 }
