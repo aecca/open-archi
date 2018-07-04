@@ -376,6 +376,10 @@ public class Server {
                         }
                         mapEditor.put("diagramTypes", jsonUtils.toJSON(diagramTypesMap_));
                     }
+                    if (req.queryParams("fullView") != null) {
+                        mapEditor.put("fullView", true);
+
+                    }
                     return new ModelAndView(mapEditor, "/open-archi/editor");
                 }, engine);
                 get("/:uuid", (request, response) -> {
