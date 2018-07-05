@@ -26,6 +26,7 @@ import static java.nio.charset.Charset.forName;
 public class DBUtil {
 
     private static Set<Class<? extends BaseEntity>> classes = new HashSet<>();
+    private static Set<Object> persistedObjects = new HashSet<>();
     private static ReflectionUtils reflectionUtils = new ReflectionUtils(null);
     private static EnhancedRandomBuilder randomBuilder;
     private static LocalTime timeLower = LocalTime.of(0, 0);
@@ -81,6 +82,8 @@ public class DBUtil {
     }
 
     public static void populate(BaseEntity entity, boolean flatten) throws Throwable {
+        boolean autocommit = JPAEntityManagerUtils.getAutocommit();
+        JPAEntityManagerUtils.setAutocommit(false);
         JPAEntityManagerUtils.begin();
         if (flatten) {
             flattenForPopulation(entity);
@@ -96,6 +99,9 @@ public class DBUtil {
         } catch (Throwable t) {
             JPAEntityManagerUtils.rollback();
             throw t;
+        } finally {
+            JPAEntityManagerUtils.setAutocommit(autocommit);
+            persistedObjects.clear();
         }
     }
 
@@ -108,7 +114,10 @@ public class DBUtil {
                 field.set(entity, result);
             }
         }, Utils::filterMethod);
-        JPAEntityManagerUtils.persist(entity);
+        if (!persistedObjects.contains(entity)) {
+            JPAEntityManagerUtils.persist(entity);
+            persistedObjects.add(entity);
+        }
     }
 
     private static Object innerPopulation(Object entity) {
@@ -121,7 +130,10 @@ public class DBUtil {
             }
         }, Utils::filterMethod);
         try {
-            JPAEntityManagerUtils.persist(entity);
+            if (!persistedObjects.contains(entity)) {
+                JPAEntityManagerUtils.persist(entity);
+                persistedObjects.add(entity);
+            }
         } catch (Throwable t) {
             if (!EntityExistsException.class.isAssignableFrom(t.getClass())) {
                 t.printStackTrace();
@@ -138,7 +150,10 @@ public class DBUtil {
         }, Utils::filterMethod);
         try {
             if (JPAEntityManagerUtils.find(entity.getClass(), ((BaseEntity) entity).getId()) == null) {
-                JPAEntityManagerUtils.persist(entity);
+                if (!persistedObjects.contains(entity)) {
+                    JPAEntityManagerUtils.persist(entity);
+                    persistedObjects.add(entity);
+                }
             }
         } catch (Throwable t) {
             t.printStackTrace();
@@ -195,7 +210,10 @@ public class DBUtil {
             for (Object innerCollection : (Collection) object_) {
                 Object result = innerPopulationCreateIfNotExists(innerCollection);
                 if (result != null) {
-                    JPAEntityManagerUtils.merge(result);
+                    if (!persistedObjects.contains(result)) {
+                        Object entity = JPAEntityManagerUtils.merge(result);
+                        persistedObjects.add(entity);
+                    }
                 }
             }
         } else if (ReflectionUtils.isMapImplementation(type)) {
@@ -204,7 +222,10 @@ public class DBUtil {
             for (Map.Entry innerMapValues : set) {
                 Object result = innerPopulationCreateIfNotExists(innerMapValues.getValue());
                 if (result != null) {
-                    JPAEntityManagerUtils.merge(result);
+                    if (!persistedObjects.contains(result)) {
+                        Object entity_ = JPAEntityManagerUtils.merge(result);
+                        persistedObjects.add(entity_);
+                    }
                 }
             }
         }
@@ -233,13 +254,19 @@ public class DBUtil {
                 if (!ReflectionUtils.isCollectionImplementation(result.getClass()) && !ReflectionUtils.isMapImplementation(result.getClass())) {
                     Class<?> type = result.getClass();
                     if (reflectionUtils.getFullyQualifiedJavaTypeOrNull(type) == null && !type.isEnum() && !Enum.class.isAssignableFrom(type)) {
-                        JPAEntityManagerUtils.merge(result);
+                        if (!persistedObjects.contains(result)) {
+                            Object entity_ = JPAEntityManagerUtils.merge(result);
+                            persistedObjects.add(entity_);
+                        }
                     }
                 } else {
                     ((Collection) result).forEach(value -> {
                         Class<?> type = value.getClass();
                         if (reflectionUtils.getFullyQualifiedJavaTypeOrNull(type) == null && !type.isEnum() && !Enum.class.isAssignableFrom(type)) {
-                            JPAEntityManagerUtils.merge(value);
+                            if (!persistedObjects.contains(value)) {
+                                Object entity_ = JPAEntityManagerUtils.merge(value);
+                                persistedObjects.add(entity_);
+                            }
                         }
                     });
                 }
@@ -290,7 +317,10 @@ public class DBUtil {
             for (Object innerCollection : (Collection) object_) {
                 Object value = innerFlatten(innerCollection);
                 valuesToRemove.add(innerCollection);
-                JPAEntityManagerUtils.merge(value);
+                if (!persistedObjects.contains(value)) {
+                    Object entity = JPAEntityManagerUtils.merge(value);
+                    persistedObjects.add(entity);
+                }
                 valuesToAdd.add(value);
             }
             ((Collection) object_).removeAll(valuesToRemove);
@@ -305,7 +335,10 @@ public class DBUtil {
             Set<Map.Entry<Object, Object>> set = map.entrySet();
             for (Map.Entry innerMapValues : set) {
                 Object value = innerFlatten(innerMapValues.getValue());
-                JPAEntityManagerUtils.merge(value);
+                if (!persistedObjects.contains(value)) {
+                    Object entity = JPAEntityManagerUtils.merge(value);
+                    persistedObjects.add(entity);
+                }
                 map.put(innerMapValues.getKey(), value);
             }
             return map;
@@ -325,6 +358,8 @@ public class DBUtil {
     }
 
     public static void replace(BaseEntity entity) throws Throwable {
+        boolean autocommit = JPAEntityManagerUtils.getAutocommit();
+        JPAEntityManagerUtils.setAutocommit(false);
         JPAEntityManagerUtils.begin();
         Class<?> clazz = entity.getClass();
         Object persistedEntity = JPAEntityManagerUtils.find(clazz, entity.getId());
@@ -341,6 +376,7 @@ public class DBUtil {
             throw t;
         } finally {
             JPAEntityManagerUtils.commit();
+            JPAEntityManagerUtils.setAutocommit(autocommit);
         }
     }
 
@@ -349,6 +385,8 @@ public class DBUtil {
     }
 
     public static void update(BaseEntity entity) throws Throwable {
+        boolean autocommit = JPAEntityManagerUtils.getAutocommit();
+        JPAEntityManagerUtils.setAutocommit(false);
         JPAEntityManagerUtils.begin();
         Class<?> clazz = entity.getClass();
         Object persistedEntity = JPAEntityManagerUtils.find(clazz, entity.getId());
@@ -364,10 +402,13 @@ public class DBUtil {
             throw t;
         } finally {
             JPAEntityManagerUtils.commit();
+            JPAEntityManagerUtils.setAutocommit(autocommit);
         }
     }
 
     public static void persist(Object entity) {
+        boolean autocommit = JPAEntityManagerUtils.getAutocommit();
+        JPAEntityManagerUtils.setAutocommit(false);
         JPAEntityManagerUtils.begin();
         try {
             JPAEntityManagerUtils.persist(entity);
@@ -376,6 +417,7 @@ public class DBUtil {
             throw t;
         } finally {
             JPAEntityManagerUtils.commit();
+            JPAEntityManagerUtils.setAutocommit(autocommit);
         }
     }
 

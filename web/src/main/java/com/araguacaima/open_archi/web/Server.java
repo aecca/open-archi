@@ -379,6 +379,8 @@ public class Server {
                     if (req.queryParams("fullView") != null) {
                         mapEditor.put("fullView", true);
 
+                    } else {
+                        mapEditor.remove("fullView");
                     }
                     return new ModelAndView(mapEditor, "/open-archi/editor");
                 }, engine);
