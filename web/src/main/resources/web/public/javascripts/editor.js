@@ -214,8 +214,8 @@ function save() {
     }).always(data => {
         const diagramInfo = $('#diagram-info');
         diagramInfo.modal('hide');
-    }).done(function (response) {
-            if (response === 201) {
+    }).done((data, textStatus, jqXHR) => {
+            if (textStatus === 201) {
                 alert("created");
             } else {
                 $.ajax({
@@ -224,24 +224,21 @@ function save() {
                     type: 'PUT',
                     crossDomain: true,
                     contentType: "application/json"
-                }).done(response => {
-                        if (response === 200) {
+                }).done((data, textStatus, jqXHR) => {
+                        if (textStatus === 200) {
                             alert("created");
                         } else {
-                            if (response === 201) {
+                            if (textStatus === 201) {
                                 alert("accepted");
                             } else {
-                                alert(response);
+                                alert("Not created!");
                             }
                         }
-
                     }
-                ).fail(data => alert(data))
+                ).fail((jqXHR, textStatus, errorThrown) => alert(errorThrown))
             }
         }
-    ).fail(function (data) {
-        alert(data);
-    });
+    ).fail((jqXHR, textStatus, errorThrown) => alert(errorThrown));
 }
 
 function load() {
