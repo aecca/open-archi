@@ -48,7 +48,7 @@ import static spark.Spark.*;
 public class Server {
     private static final String JSON_CONTENT_TYPE = "application/json";
     private static final String HTML_CONTENT_TYPE = "text/html";
-    private static final String EMPTY_RESPONSE = "null";
+    private static final String EMPTY_RESPONSE = "";
     private static JadeConfiguration config = new JadeConfiguration();
     private static JadeTemplateEngine engine = new JadeTemplateEngine(config);
     private static Logger log = LoggerFactory.getLogger(Server.class);

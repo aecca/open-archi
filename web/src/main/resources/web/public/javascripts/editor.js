@@ -210,26 +210,36 @@ function save() {
         data: JSON.stringify(value_),
         type: 'POST',
         crossDomain: true,
-        contentType: "application/json"
+        contentType: "application/json",
+        converters: {
+            "text json": function (response) {
+                return (response === "") ? null : JSON.parse(response);
+            }
+        }
     }).always(data => {
         const diagramInfo = $('#diagram-info');
         diagramInfo.modal('hide');
-    }).done((data, textStatus, jqXHR) => {
-            if (textStatus === 201) {
-                alert("created");
+    }).done((data, textStatus, response) => {
+            if (response.status === 201) {
+                alert(response.statusText);
             } else {
                 $.ajax({
                     url: "/open-archi/api/models",
                     data: JSON.stringify(value_),
                     type: 'PUT',
                     crossDomain: true,
-                    contentType: "application/json"
-                }).done((data, textStatus, jqXHR) => {
-                        if (textStatus === 200) {
-                            alert("created");
+                    contentType: "application/json",
+                    converters: {
+                        "text json": function (response) {
+                            return (response === "") ? null : JSON.parse(response);
+                        }
+                    }
+                }).done((data, textStatus, response) => {
+                        if (response.status === 200) {
+                            alert(response.statusText);
                         } else {
-                            if (textStatus === 201) {
-                                alert("accepted");
+                            if (response.status === 201) {
+                                alert(response.statusText);
                             } else {
                                 alert("Not created!");
                             }
