@@ -69,3 +69,12 @@ DELETE FROM diagrams.architecture_model_systems;
 DELETE FROM diagrams.models;
 DELETE FROM diagrams.shape;
 DELETE FROM diagrams.point;
+
+DELETE FROM meta.account CASCADE;
+DELETE FROM meta.account_roles CASCADE;
+DELETE FROM meta.metainfo_history_ids CASCADE;
+DELETE FROM meta.metainfo CASCADE;
+DELETE FROM meta.history CASCADE;
+DELETE FROM meta.role CASCADE;
+DELETE FROM meta.version CASCADE;
+DELETE FROM meta.view CASCADE;
