@@ -115,9 +115,13 @@ function diagramToArchitectureModel(model, node, links) {
                 model.components.push(component);
             } else {
                 //Los component sólo se pueden agrupar en containers
-                const parentContainer = model.systems.find(system => {
-                    return system.containers.find(container => {
-                        return container.key === node.group
+                let parentContainer;
+                model.systems.find(system => {
+                    system.containers.find(container => {
+                        if (container.key === node.group) {
+                            parentContainer = container;
+                            return true;
+                        }
                     });
                 });
                 if (parentContainer !== undefined) {

@@ -205,29 +205,55 @@ function save() {
     resizeDataModelDiv();
     myDiagram.isModified = false;
     myDiagram.model.modelData.position = go.Point.stringify(myDiagram.position);
-    commons.prototype.post("/open-archi/api/models", value_, "application/json")
-        .then(function (response) {
+    $.ajax({
+        url: "/open-archi/api/models",
+        data: JSON.stringify(value_),
+        type: 'POST',
+        dataType: "json",
+        crossDomain: true,
+        contentType: "application/json",
+        xhr: function () {
+            return window.XMLHttpRequest === null || new window.XMLHttpRequest().addEventListener === null
+                ? new window.ActiveXObject("Microsoft.XMLHTTP")
+                : $.ajaxSettings.xhr();
+        }
+    }).done(function (response) {
             if (response === 201) {
                 alert("created");
             } else {
-                commons.prototype.put("/open-archi/api/models", value_, 'application/json')
-                    .then(function (data) {
+                $.ajax({
+                    url: "/open-archi/api/models",
+                    data: JSON.stringify(value_),
+                    type: 'PUT',
+                    dataType: "json",
+                    crossDomain: true,
+                    contentType: "application/json",
+                    xhr: function () {
+                        return window.XMLHttpRequest === null || new window.XMLHttpRequest().addEventListener === null
+                            ? new window.ActiveXObject("Microsoft.XMLHTTP")
+                            : $.ajaxSettings.xhr();
+                    }
+                }).done(function (response) {
                         if (response === 200) {
                             alert("created");
                         } else {
                             if (response === 201) {
                                 alert("accepted");
                             } else {
-                                alert(data);
+                                alert(response);
                             }
                         }
-                    }).catch(function (data) {
-                    alert(data);
-                });
+                    }
+                ).fail(function (data) {
+                        alert(data);
+                    }
+                )
             }
-        }).catch(function (data) {
-        alert(data);
-    });
+        }
+    ).fail(function (data) {
+            alert(data);
+        }
+    );
 }
 
 function load() {
