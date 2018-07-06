@@ -209,14 +209,11 @@ function save() {
         url: "/open-archi/api/models",
         data: JSON.stringify(value_),
         type: 'POST',
-        dataType: "json",
         crossDomain: true,
-        contentType: "application/json",
-        xhr: function () {
-            return window.XMLHttpRequest === null || new window.XMLHttpRequest().addEventListener === null
-                ? new window.ActiveXObject("Microsoft.XMLHTTP")
-                : $.ajaxSettings.xhr();
-        }
+        contentType: "application/json"
+    }).always(data => {
+        const diagramInfo = $('#diagram-info');
+        diagramInfo.modal('hide');
     }).done(function (response) {
             if (response === 201) {
                 alert("created");
@@ -225,15 +222,9 @@ function save() {
                     url: "/open-archi/api/models",
                     data: JSON.stringify(value_),
                     type: 'PUT',
-                    dataType: "json",
                     crossDomain: true,
-                    contentType: "application/json",
-                    xhr: function () {
-                        return window.XMLHttpRequest === null || new window.XMLHttpRequest().addEventListener === null
-                            ? new window.ActiveXObject("Microsoft.XMLHTTP")
-                            : $.ajaxSettings.xhr();
-                    }
-                }).done(function (response) {
+                    contentType: "application/json"
+                }).done(response => {
                         if (response === 200) {
                             alert("created");
                         } else {
@@ -243,17 +234,14 @@ function save() {
                                 alert(response);
                             }
                         }
+
                     }
-                ).fail(function (data) {
-                        alert(data);
-                    }
-                )
+                ).fail(data => alert(data))
             }
         }
     ).fail(function (data) {
-            alert(data);
-        }
-    );
+        alert(data);
+    });
 }
 
 function load() {
