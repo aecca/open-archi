@@ -35,9 +35,7 @@ function fillShape(model, node) {
 function commonInnerDiagramElement(model, node) {
     let object = {};
     object.id = node.id;
-    if (object.id === undefined) {
-        object.id = node.key;
-    }
+    object.key = node.key;
     object.meta = node.meta;
     object.status = node.status | "INITIAL";
     object.name = node.name;
@@ -69,11 +67,11 @@ function diagramToArchitectureModel(model, node, links) {
                 if (!model.systems) {
                     model.systems = [];
                 }
-                model.systems.push(system);    
+                model.systems.push(system);
             } else {
                 //TODO completar. Determinar primero cómo se agrupan systems?. En arquitecturas?. En otros systems?. De acuerdo con ese criterio se buscará el objeto padre para agregar el recién creado. De momento no va a funcionar si llega un system que tenga un padre (agrupado en otro element)
-            }            
-            alreadyProcessedNodes.push(system.id);
+            }
+            alreadyProcessedNodes.push(system.key);
         } else if (node.kind === "CONTAINER") {
             let container = commonInnerDiagramElement(model, node);
             if (node.components && !commons.prototype.isEmpty(node.components)) {
@@ -93,24 +91,23 @@ function diagramToArchitectureModel(model, node, links) {
                 if (!model.systems) {
                     model.systems = [];
                 }
-                const parentSystem = model.systems.find((t, number, obj) => obj.id === node.group);
+                const parentSystem = model.systems.find(system => system.key === node.group);
                 if (parentSystem !== undefined) {
                     if (!parentSystem.containers) {
                         parentSystem.containers = [];
                     }
                     parentSystem.containers.push(container);
+                } else {
+                    if (!model.containers) {
+                        model.containers = [];
+                    }
+                    model.containers.push(container);
                 }
             }
-            
-            alreadyProcessedNodes.push(container.id);
+            alreadyProcessedNodes.push(container.key);
         } else if (node.kind === "COMPONENT") {
             let component = commonInnerDiagramElement(model, node);
-            if (!model.components) {
-                model.components = [];
-            }
             //TODO Añadir campos propios del component
-            model.components.push(component);
-
             if (node.group === undefined) {
                 if (!model.components) {
                     model.components = [];
@@ -118,19 +115,24 @@ function diagramToArchitectureModel(model, node, links) {
                 model.components.push(component);
             } else {
                 //Los component sólo se pueden agrupar en containers
-                if (!model.containers) {
-                    model.containers = [];
-                }
-                const parentContainer = model.containers.find((t, number, obj) => obj.id === node.group);
+                const parentContainer = model.systems.find(system => {
+                    return system.containers.find(container => {
+                        return container.key === node.group
+                    });
+                });
                 if (parentContainer !== undefined) {
                     if (!parentContainer.components) {
                         parentContainer.components = [];
                     }
                     parentContainer.components.push(component);
+                } else {
+                    if (!model.components) {
+                        model.components = [];
+                    }
+                    model.components.push(component);
                 }
             }
-            
-            alreadyProcessedNodes.push(component.id);
+            alreadyProcessedNodes.push(component.key);
         }
     }
     return model;
