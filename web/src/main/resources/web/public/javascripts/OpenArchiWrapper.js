@@ -35,6 +35,9 @@ function fillShape(model, node) {
 function commonInnerDiagramElement(model, node) {
     let object = {};
     object.id = node.id;
+    if (object.id === undefined) {
+        object.id = node.key;
+    }
     object.meta = node.meta;
     object.status = node.status | "INITIAL";
     object.name = node.name;
@@ -55,39 +58,78 @@ function diagramToArchitectureModel(model, node, links) {
     if (node) {
         if (node.kind === "SYSTEM") {
             let system = commonInnerDiagramElement(model, node);
-            if (!model.systems) {
-                model.systems = [];
-            }
             if (node.containers && !commons.prototype.isEmpty(node.containers)) {
                 system.containers = [];
                 node.containers.forEach(function (container) {
                     diagramToArchitectureModel(system, container, links)
                 });
             }
-            //TODO Añadir campor propios del system
-            model.systems.push(system);
+            //TODO Añadir campos propios del system
+            if (node.group === undefined) {
+                if (!model.systems) {
+                    model.systems = [];
+                }
+                model.systems.push(system);    
+            } else {
+                //TODO completar. Determinar primero cómo se agrupan systems?. En arquitecturas?. En otros systems?. De acuerdo con ese criterio se buscará el objeto padre para agregar el recién creado. De momento no va a funcionar si llega un system que tenga un padre (agrupado en otro element)
+            }            
             alreadyProcessedNodes.push(system.id);
         } else if (node.kind === "CONTAINER") {
             let container = commonInnerDiagramElement(model, node);
-            if (!model.containers) {
-                model.containers = [];
-            }
             if (node.components && !commons.prototype.isEmpty(node.components)) {
                 container.components = [];
                 node.components.forEach(function (component) {
                     diagramToArchitectureModel(container, component, links)
                 });
             }
-            //TODO Añadir campor propios del container
-            model.containers.push(container);
+            //TODO Añadir campos propios del container
+            if (node.group === undefined) {
+                if (!model.containers) {
+                    model.containers = [];
+                }
+                model.containers.push(container);
+            } else {
+                //Los container sólo se pueden agrupar en sistemas
+                if (!model.systems) {
+                    model.systems = [];
+                }
+                const parentSystem = model.systems.find((t, number, obj) => obj.id === node.group);
+                if (parentSystem !== undefined) {
+                    if (!parentSystem.containers) {
+                        parentSystem.containers = [];
+                    }
+                    parentSystem.containers.push(container);
+                }
+            }
+            
             alreadyProcessedNodes.push(container.id);
         } else if (node.kind === "COMPONENT") {
             let component = commonInnerDiagramElement(model, node);
             if (!model.components) {
                 model.components = [];
             }
-            //TODO Añadir campor propios del component
+            //TODO Añadir campos propios del component
             model.components.push(component);
+
+            if (node.group === undefined) {
+                if (!model.components) {
+                    model.components = [];
+                }
+                model.components.push(component);
+            } else {
+                //Los component sólo se pueden agrupar en containers
+                if (!model.containers) {
+                    model.containers = [];
+                }
+                const parentContainer = model.containers.find((t, number, obj) => obj.id === node.group);
+                if (parentContainer !== undefined) {
+                    if (!parentContainer.components) {
+                        parentContainer.components = [];
+                    }
+                    parentContainer.components.push(component);
+                }
+            }
+            
             alreadyProcessedNodes.push(component.id);
         }
     }
@@ -315,7 +357,7 @@ class OpenArchiWrapper {
         alreadyProcessedNodes = [];
         if (!commons.prototype.isEmpty(nodes)) {
             nodes.forEach(function (node) {
-                if (!alreadyProcessedNodes.includes(node.id)) {
+                if (!alreadyProcessedNodes.includes(node.key)) {
                     model = fillShape(model, node);
                     switch (model.kind) {
                         case "FLOWCHART_MODEL":
