@@ -284,7 +284,7 @@ public class Server {
 //        elementTypesCollection.add("DEPLOYMENT");
 //        elementTypesCollection.add("BPM");
 //        elementTypesCollection.add("GROUP");
-
+        elementTypesCollection.add("LAYER");
         //noinspection ResultOfMethodCallIgnored
         JPAEntityManagerUtils.getEntityManager();
     }
@@ -1532,171 +1532,101 @@ public class Server {
     private static Palette getArchitecturePalette() {
         Palette palette = new Palette();
         Map<String, Object> params = new HashMap<>();
-        params.put("type", System.class);
+
+        params.put("type", Layer.class);
         List<IdName> models;
         models = JPAEntityManagerUtils.executeQuery(IdName.class, Item.GET_ALL_PROTOTYPE_NAMES_BY_TYPE, params);
         int rank = 0;
         for (IdName model : models) {
-            PaletteItem item = new PaletteItem();
-            item.setId(model.getId());
-            item.setRank(rank);
-            item.setKind(ElementKind.ARCHITECTURE_MODEL);
-            item.setName(model.getName());
-            Shape shape = new Shape();
-            shape.setType(ShapeType.RoundedRectangle);
-            shape.setFill(System.SHAPE_COLOR);
-            shape.setSize(new Size(40, 40));
-            item.setShape(shape);
-            item.setCategory(ElementKind.SYSTEM.name());
-            item.setPrototype(true);
-            palette.getSystems().add(item);
-            rank++;
+            rank = buildPalette(palette, rank, model, ElementKind.LAYER.name(), true);
+        }
+
+        params.put("type", System.class);
+        models = JPAEntityManagerUtils.executeQuery(IdName.class, Item.GET_ALL_PROTOTYPE_NAMES_BY_TYPE, params);
+        rank = 0;
+        for (IdName model : models) {
+            rank = buildPalette(palette, rank, model, ElementKind.SYSTEM.name(), true);
         }
 
         params.put("type", Container.class);
         models = JPAEntityManagerUtils.executeQuery(IdName.class, Item.GET_ALL_PROTOTYPE_NAMES_BY_TYPE, params);
         rank = 0;
         for (IdName model : models) {
-            PaletteItem item = new PaletteItem();
-            item.setId(model.getId());
-            item.setRank(rank);
-            item.setKind(ElementKind.ARCHITECTURE_MODEL);
-            item.setName(model.getName());
-            Shape shape = new Shape();
-            shape.setType(ShapeType.RoundedRectangle);
-            shape.setFill(Container.SHAPE_COLOR);
-            shape.setSize(new Size(40, 40));
-            item.setShape(shape);
-            item.setCategory(ElementKind.CONTAINER.name());
-            item.setPrototype(true);
-            palette.getContainers().add(item);
-            rank++;
+            rank = buildPalette(palette, rank, model, ElementKind.CONTAINER.name(), true);
         }
 
         params.put("type", Component.class);
         models = JPAEntityManagerUtils.executeQuery(IdName.class, Item.GET_ALL_PROTOTYPE_NAMES_BY_TYPE, params);
         rank = 0;
         for (IdName model : models) {
-            PaletteItem item = new PaletteItem();
-            item.setId(model.getId());
-            item.setRank(rank);
-            item.setKind(ElementKind.ARCHITECTURE_MODEL);
-            item.setName(model.getName());
-            Shape shape = new Shape();
-            shape.setType(ShapeType.RoundedRectangle);
-            shape.setFill(Component.SHAPE_COLOR);
-            shape.setSize(new Size(40, 40));
-            item.setShape(shape);
-            item.setCategory(ElementKind.COMPONENT.name());
-            item.setPrototype(true);
-            palette.getComponents().add(item);
-            rank++;
+            rank = buildPalette(palette, rank, model, ElementKind.COMPONENT.name(), true);
         }
 
         params.put("type", Model.class);
         models = JPAEntityManagerUtils.executeQuery(IdName.class, Item.GET_ALL_PROTOTYPE_NAMES_BY_TYPE, params);
         rank = 0;
         for (IdName model : models) {
-            PaletteItem item = new PaletteItem();
-            item.setId(model.getId());
-            item.setRank(rank);
-            item.setKind(ElementKind.ARCHITECTURE_MODEL);
-            item.setName(model.getName());
-            Shape shape = new Shape();
-            shape.setType(ShapeType.RoundedRectangle);
-            shape.setFill(Item.PROTOTYPE_SHAPE_COLOR);
-            shape.setSize(new Size(40, 40));
-            item.setShape(shape);
-            item.setCategory(ElementKind.ARCHITECTURE_MODEL.name());
-            item.setPrototype(true);
-            palette.getPrototypes().add(item);
-            rank++;
+            rank = buildPalette(palette, rank, model, ElementKind.ARCHITECTURE_MODEL.name(), true);
         }
         return palette;
+    }
+
+    private static int buildPalette(Palette palette, int rank, IdName model, String category, boolean prototype) {
+        PaletteItem item = new PaletteItem();
+        item.setId(model.getId());
+        item.setRank(rank);
+        item.setKind(ElementKind.ARCHITECTURE_MODEL);
+        item.setName(model.getName());
+        Shape shape = new Shape();
+        shape.setType(ShapeType.RoundedRectangle);
+        shape.setFill(System.SHAPE_COLOR);
+        shape.setSize(new Size(40, 40));
+        item.setShape(shape);
+        item.setCategory(category);
+        item.setPrototype(prototype);
+        palette.getSystems().add(item);
+        rank++;
+        return rank;
     }
 
     private static Palette getPrototypesPalette() {
         Palette palette = new Palette();
         Map<String, Object> params = new HashMap<>();
-        params.put("type", System.class);
+
+
+        params.put("type", Layer.class);
         List<IdName> models;
         models = JPAEntityManagerUtils.executeQuery(IdName.class, Item.GET_ALL_NON_CLONED_PROTOTYPE_NAMES_BY_TYPE, params);
         int rank = 0;
         for (IdName model : models) {
-            PaletteItem item = new PaletteItem();
-            item.setId(model.getId());
-            item.setRank(rank);
-            item.setKind(ElementKind.ARCHITECTURE_MODEL);
-            item.setName(model.getName());
-            Shape shape = new Shape();
-            shape.setType(ShapeType.RoundedRectangle);
-            shape.setFill(System.SHAPE_COLOR);
-            shape.setSize(new Size(40, 40));
-            item.setShape(shape);
-            item.setCategory(ElementKind.SYSTEM.name());
-            item.setPrototype(true);
-            palette.getSystems().add(item);
-            rank++;
+            rank = buildPalette(palette, rank, model, ElementKind.LAYER.name(), true);
+        }
+
+        params.put("type", System.class);
+        models = JPAEntityManagerUtils.executeQuery(IdName.class, Item.GET_ALL_NON_CLONED_PROTOTYPE_NAMES_BY_TYPE, params);
+        for (IdName model : models) {
+            rank = buildPalette(palette, rank, model, ElementKind.SYSTEM.name(), true);
         }
 
         params.put("type", Container.class);
         models = JPAEntityManagerUtils.executeQuery(IdName.class, Item.GET_ALL_PROTOTYPE_NAMES_BY_TYPE, params);
         rank = 0;
         for (IdName model : models) {
-            PaletteItem item = new PaletteItem();
-            item.setId(model.getId());
-            item.setRank(rank);
-            item.setKind(ElementKind.ARCHITECTURE_MODEL);
-            item.setName(model.getName());
-            Shape shape = new Shape();
-            shape.setType(ShapeType.RoundedRectangle);
-            shape.setFill(Container.SHAPE_COLOR);
-            shape.setSize(new Size(40, 40));
-            item.setShape(shape);
-            item.setCategory(ElementKind.CONTAINER.name());
-            item.setPrototype(true);
-            palette.getContainers().add(item);
-            rank++;
+            rank = buildPalette(palette, rank, model, ElementKind.CONTAINER.name(), true);
         }
 
         params.put("type", Component.class);
         models = JPAEntityManagerUtils.executeQuery(IdName.class, Item.GET_ALL_PROTOTYPE_NAMES_BY_TYPE, params);
         rank = 0;
         for (IdName model : models) {
-            PaletteItem item = new PaletteItem();
-            item.setId(model.getId());
-            item.setRank(rank);
-            item.setKind(ElementKind.ARCHITECTURE_MODEL);
-            item.setName(model.getName());
-            Shape shape = new Shape();
-            shape.setType(ShapeType.RoundedRectangle);
-            shape.setFill(Component.SHAPE_COLOR);
-            shape.setSize(new Size(40, 40));
-            item.setShape(shape);
-            item.setCategory(ElementKind.COMPONENT.name());
-            item.setPrototype(true);
-            palette.getComponents().add(item);
-            rank++;
+            rank = buildPalette(palette, rank, model, ElementKind.COMPONENT.name(), true);
         }
 
         params.put("type", Model.class);
         models = JPAEntityManagerUtils.executeQuery(IdName.class, Item.GET_ALL_PROTOTYPE_NAMES_BY_TYPE, params);
         rank = 0;
         for (IdName model : models) {
-            PaletteItem item = new PaletteItem();
-            item.setId(model.getId());
-            item.setRank(rank);
-            item.setKind(ElementKind.ARCHITECTURE_MODEL);
-            item.setName(model.getName());
-            Shape shape = new Shape();
-            shape.setType(ShapeType.RoundedRectangle);
-            shape.setFill(Item.PROTOTYPE_SHAPE_COLOR);
-            shape.setSize(new Size(40, 40));
-            item.setShape(shape);
-            item.setCategory(ElementKind.ARCHITECTURE_MODEL.name());
-            item.setPrototype(true);
-            palette.getPrototypes().add(item);
-            rank++;
+            rank = buildPalette(palette, rank, model, ElementKind.ARCHITECTURE_MODEL.name(), true);
         }
         return palette;
     }

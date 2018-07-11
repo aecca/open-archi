@@ -21,5 +21,6 @@ public enum ElementKind {
     DEPLOYMENT,
     BPM,
     SYSTEM,
-    GROUP
+    GROUP,
+    LAYER
 }

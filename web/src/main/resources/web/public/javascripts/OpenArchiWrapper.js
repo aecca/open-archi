@@ -54,7 +54,33 @@ function commonInnerDiagramElement(model, node) {
 
 function diagramToArchitectureModel(model, node, links) {
     if (node) {
-        if (node.kind === "SYSTEM") {
+        if (node.kind === "LAYER") {
+            let layer = commonInnerDiagramElement(model, node);
+
+            if (node.systems && !commons.prototype.isEmpty(node.systems)) {
+                layer.systems = [];
+                node.systems.forEach(function (system) {
+                    diagramToArchitectureModel(layer, system, links)
+                });
+            }
+            //TODO Añadir campos propios del layer
+            if (node.containers && !commons.prototype.isEmpty(node.containers)) {
+                layer.containers = [];
+                node.containers.forEach(function (container) {
+                    diagramToArchitectureModel(layer, container, links)
+                });
+            }
+            //TODO Añadir campos propios del system
+            if (node.group === undefined) {
+                if (!model.layers) {
+                    model.layers = [];
+                }
+                model.layers.push(layer);
+            } else {
+                //TODO completar. Determinar primero cómo se agrupan systems?. En arquitecturas?. En otros systems?. De acuerdo con ese criterio se buscará el objeto padre para agregar el recién creado. De momento no va a funcionar si llega un system que tenga un padre (agrupado en otro element)
+            }
+            alreadyProcessedNodes.push(layer.key);
+        } else if (node.kind === "SYSTEM") {
             let system = commonInnerDiagramElement(model, node);
             if (node.containers && !commons.prototype.isEmpty(node.containers)) {
                 system.containers = [];
@@ -114,7 +140,7 @@ function diagramToArchitectureModel(model, node, links) {
                 }
                 model.components.push(component);
             } else {
-                //Los component sólo se pueden agrupar en containers
+                //Los component sólo se pueden agrupar en containers o layers
                 let parentContainer;
                 model.systems.find(system => {
                     system.containers.find(container => {

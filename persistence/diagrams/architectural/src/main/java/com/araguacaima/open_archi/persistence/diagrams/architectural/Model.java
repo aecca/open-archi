@@ -54,6 +54,15 @@ public class Model extends Element implements DiagramableElement<Model> {
 
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
+            name = "Architecture_Model_Layers",
+            joinColumns = {@JoinColumn(name = "Architecture_Model_Id",
+                    referencedColumnName = "Id")},
+            inverseJoinColumns = {@JoinColumn(name = "Layer_Id",
+                    referencedColumnName = "Id")})
+    private Set<Layer> layers = new LinkedHashSet<>();
+
+    @ManyToMany(cascade = CascadeType.REMOVE)
+    @JoinTable(schema = "DIAGRAMS",
             name = "Architecture_Model_Systems",
             joinColumns = {@JoinColumn(name = "Architecture_Model_Id",
                     referencedColumnName = "Id")},
@@ -94,23 +103,46 @@ public class Model extends Element implements DiagramableElement<Model> {
         setKind(ElementKind.ARCHITECTURE_MODEL);
     }
 
+    public Set<Layer> getLayers() {
+        return layers;
+    }
+
+    public void setLayers(Set<Layer> layers) {
+        this.layers = layers;
+    }
+
     @Override
     public void override(Model source, boolean keepMeta, String suffix) {
         super.override(source, keepMeta, suffix);
-        for (Relationship relationship : source.getRelationships()) {
-            Relationship newRelationship = new Relationship();
-            newRelationship.override(relationship, keepMeta, suffix);
-            this.relationships.add(newRelationship);
-        }
         for (Consumer consumer : source.getConsumers()) {
             Consumer newConsumer = new Consumer();
             newConsumer.override(consumer, keepMeta, suffix);
             this.consumers.add(newConsumer);
         }
+        for (Relationship relationship : source.getRelationships()) {
+            Relationship newRelationship = new Relationship();
+            newRelationship.override(relationship, keepMeta, suffix);
+            this.relationships.add(newRelationship);
+        }
+        for (Layer layer : source.getLayers()) {
+            Layer newLayer = new Layer();
+            newLayer.override(layer, keepMeta, suffix);
+            this.layers.add(newLayer);
+        }
         for (System software : source.getSystems()) {
             System newSystem = new System();
             newSystem.override(software, keepMeta, suffix);
             this.systems.add(newSystem);
+        }
+        for (Container software : source.getContainers()) {
+            Container newContainer = new Container();
+            newContainer.override(software, keepMeta, suffix);
+            this.containers.add(newContainer);
+        }
+        for (Component software : source.getComponents()) {
+            Component newComponent = new Component();
+            newComponent.override(software, keepMeta, suffix);
+            this.components.add(newComponent);
         }
         for (DeploymentNode deploymentNode : source.getDeploymentNodes()) {
             DeploymentNode newDeploymentNode = new DeploymentNode();
@@ -122,13 +154,6 @@ public class Model extends Element implements DiagramableElement<Model> {
     @Override
     public void copyNonEmpty(Model source, boolean keepMeta) {
         super.copyNonEmpty(source, keepMeta);
-        if (source.getRelationships() != null && !source.getRelationships().isEmpty()) {
-            for (Relationship relationship : source.getRelationships()) {
-                Relationship newRelationship = new Relationship();
-                newRelationship.copyNonEmpty(relationship, keepMeta);
-                this.relationships.add(newRelationship);
-            }
-        }
         if (source.getConsumers() != null && !source.getConsumers().isEmpty()) {
             for (Consumer consumer : source.getConsumers()) {
                 Consumer newConsumer = new Consumer();
@@ -136,11 +161,39 @@ public class Model extends Element implements DiagramableElement<Model> {
                 this.consumers.add(newConsumer);
             }
         }
+        if (source.getRelationships() != null && !source.getRelationships().isEmpty()) {
+            for (Relationship relationship : source.getRelationships()) {
+                Relationship newRelationship = new Relationship();
+                newRelationship.copyNonEmpty(relationship, keepMeta);
+                this.relationships.add(newRelationship);
+            }
+        }
+        if (source.getLayers() != null && !source.getLayers().isEmpty()) {
+            for (Layer software : source.getLayers()) {
+                Layer newLayer = new Layer();
+                newLayer.copyNonEmpty(software, keepMeta);
+                this.layers.add(newLayer);
+            }
+        }
         if (source.getSystems() != null && !source.getSystems().isEmpty()) {
             for (System software : source.getSystems()) {
                 System newSystem = new System();
                 newSystem.copyNonEmpty(software, keepMeta);
                 this.systems.add(newSystem);
+            }
+        }
+        if (source.getContainers() != null && !source.getContainers().isEmpty()) {
+            for (Container software : source.getContainers()) {
+                Container newContainer = new Container();
+                newContainer.copyNonEmpty(software, keepMeta);
+                this.containers.add(newContainer);
+            }
+        }
+        if (source.getComponents() != null && !source.getComponents().isEmpty()) {
+            for (Component software : source.getComponents()) {
+                Component newComponent = new Component();
+                newComponent.copyNonEmpty(software, keepMeta);
+                this.components.add(newComponent);
             }
         }
         if (source.getDeploymentNodes() != null && !source.getDeploymentNodes().isEmpty()) {

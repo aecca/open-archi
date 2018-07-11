@@ -126,8 +126,14 @@ function showPaletteByType(paletteData) {
                 paletteModelArray.push(toPalette(data, data.shape.type));
                 myPalette.nodeTemplateMap.add(data.shape.type, getNodeByType(data));
             });
-            if (paletteData.softwares) {
+            if (paletteData.layers) {
                 paletteData.softwares.forEach(function (data) {
+                    paletteModelArray.push(toPalette(data, "LAYER"));
+                    myPalette.nodeTemplateMap.add(data.shape.type, getNodeByType(data));
+                });
+            }
+            if (paletteData.systems) {
+                paletteData.systems.forEach(function (data) {
                     paletteModelArray.push(toPalette(data, "SYSTEM"));
                     myPalette.nodeTemplateMap.add(data.shape.type, getNodeByType(data));
                 });
