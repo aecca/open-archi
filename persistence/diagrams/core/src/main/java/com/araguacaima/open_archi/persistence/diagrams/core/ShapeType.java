@@ -14,5 +14,6 @@ public enum ShapeType {
     SYSTEM,
     CONTAINER,
     COMPONENT,
-    GROUP
+    GROUP,
+    LAYER
 }

@@ -92,18 +92,25 @@ function diagramToArchitectureModel(model, node, links) {
                 model.systems.push(system);
             } else {
                 //Los systems sólo se pueden agrupar en layers u otros systems
-                let parent = model.systems.find(system => system.key === node.group);
+                let parent;
+                if (model.systems !== undefined) {
+                    parent = model.systems.find(system => system.key === node.group);
+                }
                 if (parent === undefined) {
-                    parent = model.layers.find(layer => layer.key === node.group);
+                    if (model.layers !== undefined) {
+                        parent = model.layers.find(layer => layer.key === node.group);
+                    }
                     if (parent !== undefined) {
-                        if (!model.layers) {
-                            model.layers = [];
+                        if (!parent.systems) {
+                            parent.systems = [];
                         }
+                        parent.systems.push(system);
+                    } else {
+                        if (!model.systems) {
+                            model.systems = [];
+                        }
+                        model.model.push(system);
                     }
-                    if (!parent.layers) {
-                        parent.layers = [];
-                    }
-                    parent.layers.push(system);
                 } else {
                     if (!model.systems) {
                         model.systems = [];
