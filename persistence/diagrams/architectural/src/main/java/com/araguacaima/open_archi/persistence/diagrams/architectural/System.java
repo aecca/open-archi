@@ -30,6 +30,16 @@ public class System extends StaticElement {
     @Enumerated(EnumType.STRING)
     private Scope scope = Scope.Unspecified;
 
+
+    @ManyToMany(cascade = CascadeType.REMOVE)
+    @JoinTable(schema = "DIAGRAMS",
+            name = "System_Systems",
+            joinColumns = {@JoinColumn(name = "System_Id",
+                    referencedColumnName = "Id")},
+            inverseJoinColumns = {@JoinColumn(name = "Child_System_Id",
+                    referencedColumnName = "Id")})
+    private Set<System> systems = new LinkedHashSet<>();
+
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
             name = "System_Containers",
@@ -38,6 +48,15 @@ public class System extends StaticElement {
             inverseJoinColumns = {@JoinColumn(name = "Container_Id",
                     referencedColumnName = "Id")})
     private Set<Container> containers = new LinkedHashSet<>();
+
+    @ManyToMany(cascade = CascadeType.REMOVE)
+    @JoinTable(schema = "DIAGRAMS",
+            name = "System_Components",
+            joinColumns = {@JoinColumn(name = "System_Id",
+                    referencedColumnName = "Id")},
+            inverseJoinColumns = {@JoinColumn(name = "Component_Id",
+                    referencedColumnName = "Id")})
+    private Set<Component> components = new LinkedHashSet<>();
 
     public static final String SHAPE_COLOR = "#01203A";
 
@@ -61,6 +80,22 @@ public class System extends StaticElement {
         this.containers = containers;
     }
 
+    public Set<System> getSystems() {
+        return systems;
+    }
+
+    public void setSystems(Set<System> systems) {
+        this.systems = systems;
+    }
+
+    public Set<Component> getComponents() {
+        return components;
+    }
+
+    public void setComponents(Set<Component> components) {
+        this.components = components;
+    }
+
     public void override(System source, boolean keepMeta, String suffix) {
         super.override(source, keepMeta, suffix);
         this.setScope(source.getScope());
@@ -68,6 +103,16 @@ public class System extends StaticElement {
             Container newContainer = new Container();
             newContainer.override(container, keepMeta, suffix);
             this.containers.add(newContainer);
+        }
+        for (System system : source.getSystems()) {
+            System newSystem = new System();
+            newSystem.copyNonEmpty(system, keepMeta);
+            this.systems.add(newSystem);
+        }
+        for (Component component : source.getComponents()) {
+            Component newComponent = new Component();
+            newComponent.copyNonEmpty(component, keepMeta);
+            this.components.add(newComponent);
         }
     }
 
@@ -81,6 +126,20 @@ public class System extends StaticElement {
                 Container newContainer = new Container();
                 newContainer.copyNonEmpty(container, keepMeta);
                 this.containers.add(newContainer);
+            }
+        }
+        if (source.getSystems() != null && !source.getSystems().isEmpty()) {
+            for (System system : source.getSystems()) {
+                System newSystem = new System();
+                newSystem.copyNonEmpty(system, keepMeta);
+                this.systems.add(newSystem);
+            }
+        }
+        if (source.getComponents() != null && !source.getComponents().isEmpty()) {
+            for (Component component : source.getComponents()) {
+                Component newComponent = new Component();
+                newComponent.copyNonEmpty(component, keepMeta);
+                this.components.add(newComponent);
             }
         }
     }

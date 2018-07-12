@@ -71,14 +71,10 @@ function diagramToArchitectureModel(model, node, links) {
                 });
             }
             //TODO Añadir campos propios del system
-            if (node.group === undefined) {
-                if (!model.layers) {
-                    model.layers = [];
-                }
-                model.layers.push(layer);
-            } else {
-                //TODO completar. Determinar primero cómo se agrupan systems?. En arquitecturas?. En otros systems?. De acuerdo con ese criterio se buscará el objeto padre para agregar el recién creado. De momento no va a funcionar si llega un system que tenga un padre (agrupado en otro element)
+            if (!model.layers) {
+                model.layers = [];
             }
+            model.layers.push(layer);
             alreadyProcessedNodes.push(layer.key);
         } else if (node.kind === "SYSTEM") {
             let system = commonInnerDiagramElement(model, node);
@@ -95,7 +91,28 @@ function diagramToArchitectureModel(model, node, links) {
                 }
                 model.systems.push(system);
             } else {
-                //TODO completar. Determinar primero cómo se agrupan systems?. En arquitecturas?. En otros systems?. De acuerdo con ese criterio se buscará el objeto padre para agregar el recién creado. De momento no va a funcionar si llega un system que tenga un padre (agrupado en otro element)
+                //Los systems sólo se pueden agrupar en layers u otros systems
+                let parent = model.systems.find(system => system.key === node.group);
+                if (parent === undefined) {
+                    parent = model.layers.find(layer => layer.key === node.group);
+                    if (parent !== undefined) {
+                        if (!model.layers) {
+                            model.layers = [];
+                        }
+                    }
+                    if (!parent.layers) {
+                        parent.layers = [];
+                    }
+                    parent.layers.push(system);
+                } else {
+                    if (!model.systems) {
+                        model.systems = [];
+                    }
+                    if (!parent.systems) {
+                        parent.systems = [];
+                    }
+                    parent.systems.push(system);
+                }
             }
             alreadyProcessedNodes.push(system.key);
         } else if (node.kind === "CONTAINER") {

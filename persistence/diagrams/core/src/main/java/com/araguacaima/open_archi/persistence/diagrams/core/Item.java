@@ -326,7 +326,10 @@ public class Item extends Taggable {
 
     @Override
     public int hashCode() {
-        int result = name.hashCode();
+        int result = 0;
+        if (StringUtils.isNotBlank(name)) {
+            result = name.hashCode();
+        }
         result = 31 * result + kind.hashCode();
         return result;
     }
