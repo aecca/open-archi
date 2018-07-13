@@ -66,6 +66,7 @@ DELETE FROM diagrams.image;
 DELETE FROM diagrams.architecture_model_components;
 DELETE FROM diagrams.architecture_model_containers;
 DELETE FROM diagrams.architecture_model_systems;
+DELETE FROM diagrams.architecture_model_layers;
 DELETE FROM diagrams.models;
 DELETE FROM diagrams.shape;
 DELETE FROM diagrams.point;

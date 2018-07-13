@@ -68,6 +68,7 @@ DROP TABLE diagrams.architecture_model_deploymentnodes CASCADE;
 DROP TABLE diagrams.architecture_model_people CASCADE;
 DROP TABLE diagrams.architecture_model_relationships CASCADE;
 DROP TABLE diagrams.architecture_model_systems CASCADE;
+DROP TABLE diagrams.architecture_model_layers CASCADE;
 DROP TABLE diagrams.models CASCADE;
 DROP TABLE diagrams.point CASCADE;
 
