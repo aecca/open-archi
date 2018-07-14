@@ -1566,7 +1566,7 @@ public class Server {
         models = JPAEntityManagerUtils.executeQuery(IdName.class, Item.GET_ALL_PROTOTYPE_NAMES_BY_TYPE, params);
         rank = 0;
         for (IdName model : models) {
-            rank = buildPalette(palette, rank, model, ElementKind.ARCHITECTURE_MODEL.name(), true);
+            rank = buildPalette(palette, rank, model, model.getKind().name(), true);
         }
         return palette;
     }
@@ -1584,7 +1584,7 @@ public class Server {
         item.setShape(shape);
         item.setCategory(category);
         item.setPrototype(prototype);
-        palette.getSystems().add(item);
+        palette.getComplexElements().add(item);
         rank++;
         return rank;
     }

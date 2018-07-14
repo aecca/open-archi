@@ -88,6 +88,10 @@ go.Shape.defineFigureGenerator("Person", function (shape, w, h) {
     return geo;
 });
 
+function toPalette(data) {
+    toPalette(data, data.category);
+}
+
 function toPalette(data, category) {
     let paletteModel = {};
     if (data.id !== undefined && data.id !== null) {
@@ -126,6 +130,12 @@ function showPaletteByType(paletteData) {
                 paletteModelArray.push(toPalette(data, data.shape.type));
                 myPalette.nodeTemplateMap.add(data.shape.type, getNodeByType(data));
             });
+            if (paletteData.complexElements) {
+                paletteData.complexElements.forEach(function (data) {
+                    paletteModelArray.push(toPalette(data));
+                    myPalette.nodeTemplateMap.add(data.shape.type, getNodeByType(data));
+                });
+            }/*
             if (paletteData.layers) {
                 paletteData.softwares.forEach(function (data) {
                     paletteModelArray.push(toPalette(data, "LAYER"));
@@ -155,7 +165,7 @@ function showPaletteByType(paletteData) {
                     paletteModelArray.push(toPalette(data, "PROTOTYPE"));
                     myPalette.nodeTemplateMap.add("PROTOTYPE", getNodeByType(data));
                 });
-            }
+            }*/
             myPalette.model = new go.GraphLinksModel(paletteModelArray);
             myPalette.addDiagramListener("InitialLayoutCompleted", function (diagramEvent) {
                 const pdrag = document.getElementById("paletteDraggable");

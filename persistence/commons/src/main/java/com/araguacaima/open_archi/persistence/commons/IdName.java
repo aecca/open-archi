@@ -1,16 +1,23 @@
 package com.araguacaima.open_archi.persistence.commons;
 
+import javax.lang.model.element.ElementKind;
+
 public class IdName implements Comparable<IdName> {
 
     private String id;
     private String name;
     private Class clazz;
-    private String kind;
+    private ElementKind kind;
 
     public IdName(String id, String name, Class clazz) {
         this.id = id;
         this.name = name;
         this.clazz = clazz;
+    }
+
+    public IdName(String id, String name, Class clazz, ElementKind kind) {
+        this(id, name, clazz);
+        this.kind = kind;
     }
 
     public String getId() {
@@ -37,11 +44,11 @@ public class IdName implements Comparable<IdName> {
         this.clazz = clazz;
     }
 
-    public String getKind() {
+    public ElementKind getKind() {
         return kind;
     }
 
-    public void setKind(String kind) {
+    public void setKind(ElementKind kind) {
         this.kind = kind;
     }
 

@@ -8,10 +8,8 @@ import java.util.Set;
 public class Palette implements Palettable {
 
     private Set<PaletteItem> basicElements = new LinkedHashSet<>();
-    private Set<PaletteItem> systems = new LinkedHashSet<>();
-    private Set<PaletteItem> containers = new LinkedHashSet<>();
-    private Set<PaletteItem> components = new LinkedHashSet<>();
-    private Set<PaletteItem> prototypes = new LinkedHashSet<>();
+    private Set<PaletteItem> complexElements = new LinkedHashSet<>();
+
     private static PaletteKind kind = PaletteKind.ARCHITECTURE;
 
     public Palette() {
@@ -66,35 +64,11 @@ public class Palette implements Palettable {
         this.basicElements = basicElements;
     }
 
-    public Set<PaletteItem> getSystems() {
-        return systems;
+    public Set<PaletteItem> getComplexElements() {
+        return complexElements;
     }
 
-    public void setSystems(Set<PaletteItem> systems) {
-        this.systems = systems;
-    }
-
-    public Set<PaletteItem> getContainers() {
-        return containers;
-    }
-
-    public void setContainers(Set<PaletteItem> containers) {
-        this.containers = containers;
-    }
-
-    public Set<PaletteItem> getComponents() {
-        return components;
-    }
-
-    public void setComponents(Set<PaletteItem> components) {
-        this.components = components;
-    }
-
-    public Set<PaletteItem> getPrototypes() {
-        return prototypes;
-    }
-
-    public void setPrototypes(Set<PaletteItem> prototypes) {
-        this.prototypes = prototypes;
+    public void setComplexElements(Set<PaletteItem> complexElements) {
+        this.complexElements = complexElements;
     }
 }
