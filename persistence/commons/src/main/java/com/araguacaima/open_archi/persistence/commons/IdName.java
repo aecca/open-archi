@@ -1,13 +1,11 @@
 package com.araguacaima.open_archi.persistence.commons;
 
-import javax.lang.model.element.ElementKind;
-
-public class IdName implements Comparable<IdName> {
+public class IdName<T extends Comparable<T>> implements Comparable<IdName> {
 
     private String id;
     private String name;
     private Class clazz;
-    private ElementKind kind;
+    private T kind;
 
     public IdName(String id, String name, Class clazz) {
         this.id = id;
@@ -15,7 +13,7 @@ public class IdName implements Comparable<IdName> {
         this.clazz = clazz;
     }
 
-    public IdName(String id, String name, Class clazz, ElementKind kind) {
+    public IdName(String id, String name, Class clazz, T kind) {
         this(id, name, clazz);
         this.kind = kind;
     }
@@ -44,11 +42,11 @@ public class IdName implements Comparable<IdName> {
         this.clazz = clazz;
     }
 
-    public ElementKind getKind() {
+    public T getKind() {
         return kind;
     }
 
-    public void setKind(ElementKind kind) {
+    public void setKind(T kind) {
         this.kind = kind;
     }
 
@@ -56,10 +54,10 @@ public class IdName implements Comparable<IdName> {
     public int compareTo(IdName idName) {
         if (idName == null) return -1;
         if (clazz.getName().compareTo(idName.clazz.getName()) >= 0) {
-            if (kind.compareTo(idName.getKind()) >= 0) {
+            if (kind.compareTo((T) idName.getKind()) >= 0) {
                 return name.compareTo(idName.getName());
             } else {
-                return kind.compareTo(idName.getKind());
+                return kind.compareTo((T) idName.getKind());
             }
         } else {
             return clazz.getName().compareTo(idName.clazz.getName());

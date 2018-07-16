@@ -1566,7 +1566,7 @@ public class Server {
         models = JPAEntityManagerUtils.executeQuery(IdName.class, Item.GET_ALL_PROTOTYPE_NAMES_BY_TYPE, params);
         rank = 0;
         for (IdName model : models) {
-            rank = buildPalette(palette, rank, model, model.getKind().name(), true);
+            rank = buildPalette(palette, rank, model, ((ElementKind) model.getKind()).name(), true);
         }
         return palette;
     }
