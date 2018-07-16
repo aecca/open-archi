@@ -28,7 +28,7 @@ public class Layer extends StaticElement {
                     referencedColumnName = "Id")})
     private Set<Item> items = new LinkedHashSet<>();
 
-    public static final String SHAPE_COLOR = "#01203A";
+    public static final String SHAPE_COLOR = "#FFFFFF";
 
     public Layer() {
         setKind(ElementKind.LAYER);

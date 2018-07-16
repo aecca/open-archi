@@ -50,6 +50,56 @@ go.Shape.defineFigureGenerator("RoundedBottomRectangle", function (shape, w, h) 
 function getNodeByType(paletteModel) {
     let type = paletteModel.shape !== undefined ? paletteModel.shape.type : paletteModel.kind;
     switch (type) {
+        case "MODEL":
+        case "Model":
+            return gojs(
+                go.Node, "Spot", nodeStyle(),
+                {
+                    name: paletteModel.name
+                },
+                gojs(go.Panel, "Auto",
+                    gojs(go.Shape,
+                        {
+                            fill: paletteModel.shape !== undefined ? paletteModel.shape.fill : "white",
+                            stroke: paletteModel.shape !== undefined ? paletteModel.shape.stroke : "black",
+                            minSize: OpenArchiWrapper.toSize(paletteModel)
+                        },
+                        new go.Binding("figure", "", OpenArchiWrapper.toFigure).makeTwoWay(OpenArchiWrapper.fromFigure),
+                        new go.Binding("fill", "", OpenArchiWrapper.toFill).makeTwoWay(OpenArchiWrapper.fromFill),
+                        new go.Binding("minSize", "", OpenArchiWrapper.toSize).makeTwoWay(OpenArchiWrapper.fromSize),
+                        new go.Binding("stroke", "", OpenArchiWrapper.toStroke).makeTwoWay(OpenArchiWrapper.fromStroke)),
+                    gojs(go.TextBlock, "Text",
+                        {
+                            text: paletteModel.name,
+                            font: "bold 11pt Helvetica, Arial, sans-serif",
+                            stroke: "black",
+                            margin: 8,
+                            maxSize: new go.Size(160, NaN),
+                            wrap: go.TextBlock.WrapFit,
+                            editable: true
+                        },
+                        new go.Binding("text", "", OpenArchiWrapper.toTitle),
+                        new go.Binding("stroke", "", OpenArchiWrapper.toStroke).makeTwoWay(OpenArchiWrapper.fromStroke),
+                        new go.Binding("minSize", "", OpenArchiWrapper.toSize).makeTwoWay(OpenArchiWrapper.fromSize)),
+                    { // this tooltip Adornment is shared by all nodes
+                        toolTip:
+                            gojs(go.Adornment, "Auto",
+                                gojs(go.Shape, {fill: "#FFFFCC"}),
+                                gojs(go.TextBlock, {margin: 4},  // the tooltip shows the result of calling nodeInfo(data)
+                                    new go.Binding("text", "", nodeInfo))
+                            ),
+                        // this context menu Adornment is shared by all nodes
+                        contextMenu: partContextMenu
+                    }
+                ),
+                // three named ports, one on each side except the top, all output only:
+                // four named ports, one on each side:
+                makePort("T", go.Spot.Top, paletteModel.shape.input, paletteModel.shape.output),
+                makePort("L", go.Spot.Left, paletteModel.shape.input, paletteModel.shape.output),
+                makePort("R", go.Spot.Right, paletteModel.shape.input, paletteModel.shape.output),
+                makePort("B", go.Spot.Bottom, paletteModel.shape.input, paletteModel.shape.output)
+            );
+            break;
         case "SYSTEM":
         case "System":
             return gojs(go.Group, "Auto",
@@ -517,6 +567,7 @@ function getNodeByType(paletteModel) {
                             editable: true
                         },
                         new go.Binding("text", "", OpenArchiWrapper.toTitle),
+                        new go.Binding("stroke", "", OpenArchiWrapper.toStroke).makeTwoWay(OpenArchiWrapper.fromStroke),
                         new go.Binding("minSize", "", OpenArchiWrapper.toSize).makeTwoWay(OpenArchiWrapper.fromSize)),
                     { // this tooltip Adornment is shared by all nodes
                         toolTip:

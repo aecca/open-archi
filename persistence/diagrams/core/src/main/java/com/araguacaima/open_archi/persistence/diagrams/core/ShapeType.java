@@ -15,5 +15,6 @@ public enum ShapeType {
     CONTAINER,
     COMPONENT,
     GROUP,
-    LAYER
+    LAYER,
+    MODEL
 }

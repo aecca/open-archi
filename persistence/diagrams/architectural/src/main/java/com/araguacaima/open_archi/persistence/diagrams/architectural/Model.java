@@ -32,6 +32,7 @@ public class Model extends Element implements DiagramableElement<Model> {
     public static final String GET_CONSUMER_FOR_MODEL = "get.consumer.for.model";
     public static final String GET_ALL_SOFTWARE_SYSTEMS = "get.all.software.systems";
     public static final String GET_SOFTWARE_SYSTEM = "get.software.system";
+    public static final String SHAPE_COLOR = "#FFFFFF";
 
     @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinTable(schema = "DIAGRAMS",

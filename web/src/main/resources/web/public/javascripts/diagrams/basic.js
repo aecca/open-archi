@@ -16,10 +16,12 @@ function initBasic(nodeDataArray, linkDataArray) {
                     shape: {fill: "#01203A"},
                     kind: "SYSTEM"
                 },
-                mouseDrop: function(e) { finishDrop(e, null); },
-/*                layout:  // Diagram has simple horizontal layout
-                    gojs(go.GridLayout,
-                        { wrappingWidth: Infinity, alignment: go.GridLayout.Position, cellSize: new go.Size(1, 1) }),*/
+                mouseDrop: function (e) {
+                    finishDrop(e, null);
+                },
+                /*                layout:  // Diagram has simple horizontal layout
+                                    gojs(go.GridLayout,
+                                        { wrappingWidth: Infinity, alignment: go.GridLayout.Position, cellSize: new go.Size(1, 1) }),*/
                 // allow Ctrl-G to call groupSelection()
                 "commandHandler.archetypeGroupData": {name: "Group", isGroup: true, color: "blue"},
                 "commandHandler.copiesGroupKey": true,
@@ -45,7 +47,7 @@ function initBasic(nodeDataArray, linkDataArray) {
                 },
                 gojs(go.Shape, "RoundedRectangle",
                     {
-                        fill: "blue", // the default fill, if there is no data bound value
+                        fill: "black", // the default fill, if there is no data bound value
                         portId: "",
                         cursor: "pointer",  // the Shape is the port, not the whole Node
                         // allow all kinds of links from and to this port
@@ -84,6 +86,58 @@ function initBasic(nodeDataArray, linkDataArray) {
             makePort("R", go.Spot.Right, true, true),
             makePort("B", go.Spot.Bottom, true, true)
         ));
+    myDiagram.nodeTemplateMap.add("MODEL",
+        gojs(go.Node, "Spot", nodeStyle(),
+            // the main object is a Panel that surrounds a TextBlock with a rectangular Shape
+            gojs(go.Panel, "Auto",
+                {
+                    name: "Model"
+                },
+                gojs(go.Shape, "RoundedRectangle",
+                    {
+                        fill: "white", // the default fill, if there is no data bound value
+                        stroke: "blue",
+                        portId: "",
+                        cursor: "pointer",  // the Shape is the port, not the whole Node
+                        // allow all kinds of links from and to this port
+                        fromLinkable: true,
+                        fromLinkableSelfNode: true,
+                        fromLinkableDuplicates: true,
+                        toLinkable: true,
+                        toLinkableSelfNode: true,
+                        toLinkableDuplicates: true
+                    },
+                    new go.Binding("fill", "", OpenArchiWrapper.toFill).makeTwoWay(OpenArchiWrapper.fromFill),
+                    new go.Binding("stroke", "", OpenArchiWrapper.toStroke).makeTwoWay(OpenArchiWrapper.fromStroke)),
+                gojs(go.TextBlock, "text",
+                    {
+                        font: "bold 11pt Helvetica, Arial, sans-serif",
+                        stroke: 'black',
+                        margin: 4,  // make some extra space for the shape around the text
+                        isMultiline: true,
+                        wrap: go.TextBlock.WrapFit,
+                        editable: true  // allow in-place editing by user
+                    },
+                    new go.Binding("text", "", OpenArchiWrapper.toTitle).makeTwoWay(OpenArchiWrapper.fromTitle)),  // the label shows the node data's text
+                { // this tooltip Adornment is shared by all nodes
+                    toolTip:
+                        gojs(go.Adornment, "Auto",
+                            gojs(go.Shape, {fill: "#FFFFCC"}),
+                            gojs(go.TextBlock, {margin: 4},  // the tooltip shows the result of calling nodeInfo(data)
+                                new go.Binding("text", "", nodeInfo))
+                        ),
+                    // this context menu Adornment is shared by all nodes
+                    contextMenu: partContextMenu
+                }
+            ),
+            // four named ports, one on each side:
+            makePort("T", go.Spot.Top, true, true),
+            makePort("L", go.Spot.Left, true, true),
+            makePort("R", go.Spot.Right, true, true),
+            makePort("B", go.Spot.Bottom, true, true)
+        )
+    );
+
     // The link shape and arrowhead have their stroke brush data bound to the "color" property
     myDiagram.linkTemplate =
         gojs(go.Link,  // the whole link panel
