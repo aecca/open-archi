@@ -23,6 +23,12 @@
     font: 12px helvetica, sans-serif;
 }
 
+
+#myExamples {
+    width: 100%;
+    overflow: hidden;
+}
+
 #myInfo {
     width: 100%;
     overflow: hidden;

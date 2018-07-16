@@ -385,18 +385,30 @@ function relocateInfoDiv() {
 }
 
 
-function openContent(url) {
-    getPageContent(url);
+function openExample(url, targetDiv) {
+    $("#dataModelDraggable").show();
+    getPageContent(url, targetDiv);
 }
 
-function getPageContent(url) {
+function openContent(url, targetDiv) {
+    getPageContent(url, targetDiv);
+}
+
+function getPageContent(url, targetDiv) {
     $.ajax({
         url: url,
         beforeSend: function (xhr) {
             xhr.overrideMimeType("text/html; charset=utf-8");
         }
     }).done(function (data) {
-        $("#myInfo").html(data);
+        let target;
+        if (targetDiv === undefined) {
+            target = $("#myInfo");
+        } else {
+            target = $("#" + targetDiv);
+        }
+        target.html(data);
+        target.show();
     });
 }
 

@@ -59,6 +59,7 @@ append scripts
         let viewMode;
         var diagramTypes = !{diagramTypes};
         var elementTypes = !{elementTypes};
+        var fullView = '!{fullView}';
         $(function () {
             var items = [];
             var i = 0;
@@ -111,6 +112,18 @@ append scripts
                 viewMode.on('slideStop', reexpand);
             }
             $("#element-image").on("change", handleImageSelect);
+
+
+            if (fullView) {
+                $("#infoDraggable").show();
+                $("#controlsDraggable").show();
+                $("#dataModelDraggable").show();
+            } else {
+                $("#infoDraggable").hide();
+                $("#controlsDraggable").hide();
+                $("#dataModelDraggable").hide();
+            }
+
         });
     script(type='text/javascript', src='/javascripts/diagrams/basic.js')
     script(type='text/javascript', src='/javascripts/diagrams/palette.js')
@@ -128,7 +141,7 @@ block extra-menu-elements
     if examples
         +nav_item_dropdown("#", null, "sectionsExamples")(label="Examples")
             each example in examples
-                +nav_item("#")(onclick="openContent('" + example.url + "');", resource=example.url)= example.name
+                +nav_item("#")(onclick="openExample('" + example.url + "', 'myExamples');", resource=example.url)= example.name
     +nav_item("#")
         input#diagramId(name='diagramId', placeholder='Template name...')
 
@@ -181,27 +194,27 @@ block content
             | Palette
         div#paletteContainer
             div#paletteDiv
-    if fullView
-        div.draggable#infoDraggable(style="display: inline-block; vertical-align: top; top: 20px; left: 380px; position: relative")
-            div.handle#infoDraggableHandle
-                | Info
-            div
-                div#myInfo
-        div.draggable#controlsDraggable(style="display: inline-block; vertical-align: top; top: 20px; left: 380px; position: relative; width: 380px; padding-bottom: 10px;")
-            div.handle#controlsDraggableHandle
-                | Controls
-            div
-                div#myControls(style= "margin-top: 10px;")
-                    .col-sm-4
-                        b View Mode:
-                    .col-sm-4.text-right
-                        input#viewMode(type="text")
-        br
-        div.container-fluid.draggable#dataModelDraggable(style="height: 100px; width: 400px;")
-            div.handle#dataModelDraggableHandle
-                | Model
-            div#dataModelContainer
-                span#modelToSaveOrLoad(style="display: block")
+    div.#myExamples
+    div.draggable#infoDraggable(style="display: inline-block; vertical-align: top; top: 20px; left: 380px; position: relative")
+        div.handle#infoDraggableHandle
+            | Info
+        div
+            div#myInfo
+    div.draggable#controlsDraggable(style="display: inline-block; vertical-align: top; top: 20px; left: 380px; position: relative; width: 380px; padding-bottom: 10px;")
+        div.handle#controlsDraggableHandle
+            | Controls
+        div
+            div#myControls(style= "margin-top: 10px;")
+                .col-sm-4
+                    b View Mode:
+                .col-sm-4.text-right
+                    input#viewMode(type="text")
+    br
+    div.container-fluid.draggable#dataModelDraggable(style="height: 100px; width: 400px;")
+        div.handle#dataModelDraggableHandle
+            | Model
+        div#dataModelContainer
+            span#modelToSaveOrLoad(style="display: block")
     +modal("Element image", "element-image-data")
         form#element-image-form
             .form-group
