@@ -1,7 +1,6 @@
 package com.araguacaima.open_archi.persistence.diagrams.architectural;
 
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
-import com.araguacaima.open_archi.persistence.diagrams.core.Item;
 
 import javax.persistence.*;
 import java.util.LinkedHashSet;
@@ -21,12 +20,30 @@ public class Layer extends StaticElement {
 
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
-            name = "Layer_Items",
+            name = "Layer_Systems",
             joinColumns = {@JoinColumn(name = "Layer_Id",
                     referencedColumnName = "Id")},
-            inverseJoinColumns = {@JoinColumn(name = "Item_Id",
+            inverseJoinColumns = {@JoinColumn(name = "System_Id",
                     referencedColumnName = "Id")})
-    private Set<Item> items = new LinkedHashSet<>();
+    private Set<System> systems = new LinkedHashSet<>();
+
+    @ManyToMany(cascade = CascadeType.REMOVE)
+    @JoinTable(schema = "DIAGRAMS",
+            name = "Layer_Containers",
+            joinColumns = {@JoinColumn(name = "Layer_Id",
+                    referencedColumnName = "Id")},
+            inverseJoinColumns = {@JoinColumn(name = "Container_Id",
+                    referencedColumnName = "Id")})
+    private Set<Container> containers = new LinkedHashSet<>();
+
+    @ManyToMany(cascade = CascadeType.REMOVE)
+    @JoinTable(schema = "DIAGRAMS",
+            name = "Layer_Components",
+            joinColumns = {@JoinColumn(name = "Layer_Id",
+                    referencedColumnName = "Id")},
+            inverseJoinColumns = {@JoinColumn(name = "Component_Id",
+                    referencedColumnName = "Id")})
+    private Set<Component> components = new LinkedHashSet<>();
 
     public static final String SHAPE_COLOR = "#FFFFFF";
 
@@ -34,30 +51,70 @@ public class Layer extends StaticElement {
         setKind(ElementKind.LAYER);
     }
 
-    public Set<Item> getItems() {
-        return items;
+    public Set<System> getSystems() {
+        return systems;
     }
 
-    public void setItems(Set<Item> items) {
-        this.items = items;
+    public void setSystems(Set<System> systems) {
+        this.systems = systems;
+    }
+
+    public Set<Container> getContainers() {
+        return containers;
+    }
+
+    public void setContainers(Set<Container> containers) {
+        this.containers = containers;
+    }
+
+    public Set<Component> getComponents() {
+        return components;
+    }
+
+    public void setComponents(Set<Component> components) {
+        this.components = components;
     }
 
     public void override(Layer source, boolean keepMeta, String suffix) {
         super.override(source, keepMeta, suffix);
-        for (Item item : source.getItems()) {
-            Item newItem = new Item();
-            newItem.override(item, keepMeta, suffix);
-            this.items.add(newItem);
+        for (System system : source.getSystems()) {
+            System newSystem = new System();
+            newSystem.override(system, keepMeta, suffix);
+            this.systems.add(newSystem);
+        }
+        for (Container container : source.getContainers()) {
+            Container newContainer = new Container();
+            newContainer.override(container, keepMeta, suffix);
+            this.containers.add(newContainer);
+        }
+        for (Component component : source.getComponents()) {
+            Component newComponent = new Component();
+            newComponent.override(component, keepMeta, suffix);
+            this.components.add(newComponent);
         }
     }
 
     public void copyNonEmpty(Layer source, boolean keepMeta) {
         super.copyNonEmpty(source, keepMeta);
-        if (source.getItems() != null && !source.getItems().isEmpty()) {
-            for (Item item : source.getItems()) {
-                Item newItem = new Item();
-                newItem.copyNonEmpty(item, keepMeta);
-                this.items.add(newItem);
+        if (source.getSystems() != null && !source.getSystems().isEmpty()) {
+            for (System system : source.getSystems()) {
+                System newSystem = new System();
+                newSystem.copyNonEmpty(system, keepMeta);
+                this.systems.add(newSystem);
+            }
+        }
+        if (source.getContainers() != null && !source.getContainers().isEmpty()) {
+            for (Container container : source.getContainers()) {
+                Container newContainer = new Container();
+                newContainer.copyNonEmpty(container, keepMeta);
+                this.containers.add(newContainer);
+            }
+        }
+        if (source.getComponents() != null && !source.getComponents().isEmpty()) {
+            for (Component component : source.getComponents()) {
+                Component newComponent = new Component();
+                newComponent.copyNonEmpty(component, keepMeta);
+                this.components.add(newComponent);
             }
         }
     }

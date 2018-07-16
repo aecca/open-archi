@@ -195,9 +195,20 @@ function fixMetaData() {
 }
 
 // Show the diagram's model in JSON format that the user may edit
-function save() {
+function save(model) {
     fixMetaData();
-    let value_ = OpenArchiWrapper.fromDiagram(myDiagram.model);
+    let value_;
+    if (model === undefined) {
+        value_ = OpenArchiWrapper.fromDiagram(myDiagram.model);
+    } else {
+        let model_;
+        if (typeof model === "string") {
+            value_ = JSON.parse(model);
+        } else {
+            model_ = model;
+        }
+        value_ = OpenArchiWrapper.fromDiagram(model_);
+    }
     let value = JSON.stringify(value_);
     let modelToSaveOrLoad = $("#modelToSaveOrLoad");
     modelToSaveOrLoad.empty();

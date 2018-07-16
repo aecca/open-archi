@@ -32,7 +32,7 @@ function fillShape(model, node) {
     return model;
 }
 
-function commonInnerDiagramElement(model, node) {
+function commonInnerDiagramElement(node) {
     let object = {};
     object.id = node.id;
     object.key = node.key;
@@ -52,8 +52,26 @@ function commonInnerDiagramElement(model, node) {
     return object;
 }
 
-function processLayer(model, node, parent, links) {
-    let layer = commonInnerDiagramElement(model, node);
+function commonInnerModelElement(model) {
+    let object = {};
+    object.id = model.id;
+    object.key = model.key;
+    object.meta = model.meta;
+    object.status = model.status;
+    object.name = model.name;
+    object.kind = model.kind;
+    object.description = model.description;
+    object.prototype = model.prototype;
+    let loc = model.location;
+    if (loc) {
+        object.loc = loc.x + " " + loc.y;
+    }
+    object.shape = model.shape;
+    return object;
+}
+
+function processLayerToArchitectureModel(node, parent, links) {
+    let layer = commonInnerDiagramElement(node);
     //TODO Añadir campos propios del layer
     //Los layer sólo se pueden agrupar en el modelo directamente, no en otros layers, systems, container, o components
     if (!parent.layers) {
@@ -63,8 +81,8 @@ function processLayer(model, node, parent, links) {
     alreadyProcessedNodes.push(layer.key);
 }
 
-function processSystem(model, node, parent, links) {
-    let system = commonInnerDiagramElement(model, node);
+function processSystemToArchitectureModel(node, parent, links) {
+    let system = commonInnerDiagramElement(node);
     //TODO Añadir campos propios del system
     //Los systems sólo se pueden agrupar en layers u otros systems
     if (!parent.systems) {
@@ -74,8 +92,8 @@ function processSystem(model, node, parent, links) {
     alreadyProcessedNodes.push(system.key);
 }
 
-function processContainer(model, node, parent, links) {
-    let container = commonInnerDiagramElement(model, node);
+function processContainerToArchitectureModel(node, parent, links) {
+    let container = commonInnerDiagramElement(node);
     //TODO Añadir campos propios del container
     //Los containers sólo se pueden agrupar en layers u otros containers
     if (!parent.containers) {
@@ -85,8 +103,8 @@ function processContainer(model, node, parent, links) {
     alreadyProcessedNodes.push(container.key);
 }
 
-function processComponent(model, node, parent, links) {
-    let component = commonInnerDiagramElement(model, node);
+function processComponentToArchitectureModel(node, parent, links) {
+    let component = commonInnerDiagramElement(node);
     //TODO Añadir campos propios del component
     //Los components sólo se pueden agrupar en layers u otros components
     if (!parent.components) {
@@ -96,7 +114,92 @@ function processComponent(model, node, parent, links) {
     alreadyProcessedNodes.push(component.key);
 }
 
-function findValues(obj, key){
+function processLayerToDiagram(diagram, layer, nodes, links, parentId) {
+    let layerElement = commonInnerModelElement(layer);
+    //TODO Añadir campos propios del layer
+    //Los layer sólo se pueden agrupar en el modelo directamente, no en otros layers, systems, containers o components
+    if (parentId !== undefined) {
+        layerElement.group = parentId;
+    }
+    nodes.push(layerElement);
+
+    if (layer.systems) {
+        layer.systems.forEach(item => {
+            processElementToDiagram(item, diagram);
+        });
+    }
+}
+
+function processSystemToDiagram(system, nodes, links, parentId) {
+    let systemElement = commonInnerModelElement(system);
+    //TODO Añadir campos propios del system
+    //Los systems sólo se pueden agrupar en layers u otros systems
+    let rank = 0;
+    let containers = system.containers;
+    let hasContainers = containers !== undefined && !commons.prototype.isEmpty(containers);
+    if (hasContainers) {
+        nodes.push(fulfill(system, true, parentId, rank));
+        rank++;
+        containers.forEach(function (container) {
+            processContainerToDiagram(diagram, container, nodes, links, system.id)
+        });
+    }
+
+    let components = system.components;
+    let hasComponents = components !== undefined && !commons.prototype.isEmpty(components);
+    if (hasComponents) {
+        nodes.push(fulfill(system, true, parentId, rank));
+        rank++;
+        components.forEach(function (component) {
+            processComponentToDiagram(diagram, component, nodes, links, system.id)
+        });
+    }
+
+    if (parentId !== undefined) {
+        systemElement.group = parentId;
+    }
+    nodes.push(systemElement);
+
+}
+
+function processContainerToDiagram(container, nodes, links, parentId) {
+    let containerElement = commonInnerModelElement(container);
+    //TODO Añadir campos propios del container
+    //Los containers sólo se pueden agrupar en layers u otros containers
+
+    let rank = 0;
+    let components = container.components;
+    let hasComponents = components !== undefined && !commons.prototype.isEmpty(components);
+    if (hasComponents) {
+        nodes.push(fulfill(container, true, parentId, rank));
+        rank++;
+        components.forEach(function (component) {
+            processComponentToDiagram(diagram, component, nodes, links, component.key)
+        });
+    } else {
+        nodes.push(fulfill(container, false, parentId, rank));
+        rank++;
+    }
+
+    if (parentId !== undefined) {
+        containerElement.group = parentId;
+    }
+    nodes.push(containerElement);
+
+}
+
+function processComponentToDiagram(diagram, component, nodes, links, parentId) {
+    let componentElement = commonInnerModelElement(component);
+    //TODO Añadir campos propios del component
+    //Los components sólo se pueden agrupar en layers u otros components
+    if (parentId !== undefined) {
+        componentElement.group = parentId;
+    }
+    nodes.push(componentElement);
+
+}
+
+function findValues(obj, key) {
     return findValuesHelper(obj, key, []);
 }
 
@@ -111,10 +214,10 @@ function findValuesHelper(obj, key, list) {
     }
     if (obj[key]) list.push(obj);
 
-    if ((typeof obj === "object") && (obj !== null) ){
+    if ((typeof obj === "object") && (obj !== null)) {
         let children = Object.keys(obj);
-        if (children.length > 0){
-            for (i = 0; i < children.length; i++ ){
+        if (children.length > 0) {
+            for (i = 0; i < children.length; i++) {
                 list = list.concat(findValuesHelper(obj[children[i]], key, []));
             }
         }
@@ -132,20 +235,20 @@ function findParent(parentId, model) {
     return undefined;
 }
 
-function diagramToArchitectureModel(model, node, links, nodes) {
+function diagramToArchitectureModel(model, node, links) {
     if (node) {
         let parent = findParent(node.group, model);
         if (parent === undefined) {
             parent = model;
         }
         if (node.kind === "LAYER") {
-            processLayer(model, node, parent, links);
+            processLayerToArchitectureModel(node, parent, links);
         } else if (node.kind === "SYSTEM") {
-            processSystem(model, node, parent, links);
+            processSystemToArchitectureModel(node, parent, links);
         } else if (node.kind === "CONTAINER") {
-            processContainer(model, node, parent, links);
+            processContainerToArchitectureModel(node, parent, links);
         } else if (node.kind === "COMPONENT") {
-            processComponent(model, node, parent, links);
+            processComponentToArchitectureModel(node, parent, links);
         }
     }
     return model;
@@ -169,75 +272,33 @@ function diagramToUmlModel(model, node, links) {
 function diagramToBpmModel(model, node, links) {
 }
 
+function processElementToDiagram(model, diagram) {
+    if (model.layers) {
+        model.layers.forEach(layer => processLayerToDiagram(diagram, layer, diagram.nodeDataArray, diagram.linkDataArray));
+    }
+    if (model.systems) {
+        model.systems.forEach(system => processSystemToDiagram(system, diagram.nodeDataArray, diagram.linkDataArray));
+    }
+    if (model.containers) {
+        model.containers.forEach(container => processContainerToDiagram(container, diagram.nodeDataArray, diagram.linkDataArray));
+    }
+    if (model.components) {
+        model.components.forEach(component => processComponentToDiagram(component, diagram.nodeDataArray, diagram.linkDataArray));
+    }
+}
+
 function architectureModelToDiagram(model) {
 
     let diagram = {
         class: "go.GraphLinksModel"
     };
-    if (model.kind !== "ARCHITECTURE_MODEL" && model.kind !== "SYSTEM" && model.kind !== "CONTAINER" && model.kind !== "COMPONENT") {
+    if (model.kind !== "ARCHITECTURE_MODEL" && model.kind !== "LAYER" && model.kind !== "SYSTEM" && model.kind !== "CONTAINER" && model.kind !== "COMPONENT") {
         return diagram;
     }
     diagram.nodeDataArray = [];
     diagram.linkDataArray = [];
-    let key = "consumers";
-    let relationships = commons.prototype.findValues(model, "relationships");
-    let rank = 0;
-    let systems = model.kind === "SYSTEM"
-        ? [model]
-        : (model.kind === "ARCHITECTURE_MODEL"
-            ? model.systems
-            : undefined);
-    let parentGroup = model.kind === "ARCHITECTURE_MODEL" ? model.id : undefined;
-    let hasSystems = systems !== undefined && !commons.prototype.isEmpty(systems);
 
-    if (relationships) {
-        relationships.forEach(function (relationship) {
-            diagram.linkDataArray.push({
-                from: relationship.sourceId,
-                to: relationship.destinationId,
-                stroke: relationship.connector.stroke
-            });
-            rank++;
-        });
-    }
-    rank = 0;
-    if (hasSystems) {
-        systems.forEach(function (system) {
-            if (!alreadyProcessedNodes.includes(system.id)) {
-                let containers = system.containers;
-                let hasContainers = containers !== undefined && !commons.prototype.isEmpty(containers);
-                if (hasContainers) {
-                    diagram.nodeDataArray.push(fulfill(system, true, parentGroup, rank));
-                    alreadyProcessedNodes.push(system.id);
-                    rank++;
-                    containers.forEach(function (container) {
-                        if (!alreadyProcessedNodes.includes(container.id)) {
-                            let components = container.components;
-                            let hasComponents = components !== undefined && !commons.prototype.isEmpty(components);
-                            if (hasComponents) {
-                                diagram.nodeDataArray.push(fulfill(container, true, system.id, rank));
-                                alreadyProcessedNodes.push(container.id);
-                                rank++;
-                                components.forEach(function (component) {
-                                    if (!alreadyProcessedNodes.includes(component.id)) {
-                                        diagram.nodeDataArray.push(fulfill(component, false, container.id, rank));
-                                        alreadyProcessedNodes.push(component.id);
-                                        rank++;
-                                    }
-                                });
-                            } else {
-                                diagram.nodeDataArray.push(fulfill(container, false, system.id, rank));
-                                alreadyProcessedNodes.push(container.id);
-                                rank++;
-                            }
-                        }
-                    });
-                }
-            }
-        });
-    }
-
-    rank = 0;
+    processElementToDiagram(model, diagram);
 
     const consumers = model.consumers;
     if (consumers !== undefined && consumers !== null) {
@@ -248,9 +309,7 @@ function architectureModelToDiagram(model) {
         });
         diagram.linkDataArray.push({from: key, to: model.id, stroke: "black"});
     }
-    if (parentGroup) {
-        diagram.nodeDataArray.push({key: model.id, name: model.name, fill: "orange", isGroup: hasSystems});
-    }
+
     return diagram;
 }
 
@@ -394,7 +453,7 @@ class OpenArchiWrapper {
                             model = diagramToBpmModel(model, node, links);
                             break;
                         case "ARCHITECTURE_MODEL":
-                            model = diagramToArchitectureModel(model, node, links, nodes);
+                            model = diagramToArchitectureModel(model, node, links);
                             break;
                         default:
                             console.log("Still not implemented");
@@ -406,7 +465,7 @@ class OpenArchiWrapper {
     };
 
     static toLocation(data, node) {
-        return new go.Point(data.x, data.y);
+        return new Point(data.x, data.y);
     }
 
     static fromLocation(loc, data, model) {
@@ -415,7 +474,7 @@ class OpenArchiWrapper {
     }
 
     static toFill(data, node) {
-        return new go.Brush(data.shape.fill);
+        return new Brush(data.shape.fill);
     }
 
     static fromFill(loc, data, model) {
@@ -465,7 +524,7 @@ class OpenArchiWrapper {
     }
 
     static toStroke(data, node) {
-        return new go.Brush(data.shape.stroke);
+        return new Brush(data.shape.stroke);
     }
 
     static fromStroke(stroke, data, model) {
