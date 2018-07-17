@@ -121,7 +121,15 @@ public class DBUtil {
             JPAEntityManagerUtils.persist(entity);
             persistedObjects.add(entity);
         } else {
-            log.debug("Entity with name '" + reflectionUtils.invokeGetter(entity, "name") + "' is already processed");
+            if (log.isDebugEnabled()) {
+                Object id = reflectionUtils.invokeGetter(entity, "id");
+                Field nameField = reflectionUtils.getFieldByFieldName(entity, "name");
+                if (nameField != null) {
+                    log.debug("Entity of type '" + entity.getClass().getName() + "' with name '" + nameField + "' is already processed");
+                } else {
+                    log.debug("Entity of type '" + entity.getClass().getName() + "' with id '" + id + "' is already processed");
+                }
+            }
         }
     }
 
@@ -139,7 +147,15 @@ public class DBUtil {
                 JPAEntityManagerUtils.persist(entity);
                 persistedObjects.add(entity);
             } else {
-                log.debug("Entity with name '" + reflectionUtils.invokeGetter(entity, "name") + "' is already processed");
+                if (log.isDebugEnabled()) {
+                    Object id = reflectionUtils.invokeGetter(entity, "id");
+                    Field nameField = reflectionUtils.getFieldByFieldName(entity, "name");
+                    if (nameField != null) {
+                        log.debug(" Entity of type '" + entity.getClass().getName() + "' with name '" + nameField + "' is already processed");
+                    } else {
+                        log.debug(" Entity of type '" + entity.getClass().getName() + "' with id '" + id + "' is already processed");
+                    }
+                }
             }
         } catch (Throwable t) {
             if (!EntityExistsException.class.isAssignableFrom(t.getClass())) {
@@ -162,7 +178,14 @@ public class DBUtil {
                     JPAEntityManagerUtils.persist(entity);
                     persistedObjects.add(entity);
                 } else {
-                    log.debug("Entity with name '" + reflectionUtils.invokeGetter(entity, "name") + "' is already processed");
+                    if (log.isDebugEnabled()) {
+                        Field nameField = reflectionUtils.getFieldByFieldName(entity, "name");
+                        if (nameField != null) {
+                            log.debug(" Entity of type '" + entity.getClass().getName() + "' with name '" + nameField + "' is already processed");
+                        } else {
+                            log.debug(" Entity of type '" + entity.getClass().getName() + "' with id '" + id + "' is already processed");
+                        }
+                    }
                 }
             }
         } catch (Throwable t) {
@@ -224,7 +247,15 @@ public class DBUtil {
                         Object entity = JPAEntityManagerUtils.merge(result);
                         persistedObjects.add(entity);
                     } else {
-                        log.debug("Entity with name '" + reflectionUtils.invokeGetter(result, "name") + "' is already processed");
+                        if (log.isDebugEnabled()) {
+                            Object id = reflectionUtils.invokeGetter(result, "id");
+                            Field nameField = reflectionUtils.getFieldByFieldName(result, "name");
+                            if (nameField != null) {
+                                log.debug(" Entity of type '" + result.getClass().getName() + "' with name '" + nameField + "' is already processed");
+                            } else {
+                                log.debug(" Entity of type '" + result.getClass().getName() + "' with id '" + id + "' is already processed");
+                            }
+                        }
                     }
                 }
             }
@@ -238,7 +269,15 @@ public class DBUtil {
                         Object entity_ = JPAEntityManagerUtils.merge(result);
                         persistedObjects.add(entity_);
                     } else {
-                        log.debug("Entity with name '" + reflectionUtils.invokeGetter(result, "name") + "' is already processed");
+                        if (log.isDebugEnabled()) {
+                            Object id = reflectionUtils.invokeGetter(result, "id");
+                            Field nameField = reflectionUtils.getFieldByFieldName(result, "name");
+                            if (nameField != null) {
+                                log.debug(" Entity of type '" + result.getClass().getName() + "' with name '" + nameField + "' is already processed");
+                            } else {
+                                log.debug(" Entity of type '" + result.getClass().getName() + "' with id '" + id + "' is already processed");
+                            }
+                        }
                     }
                 }
             }
@@ -272,7 +311,15 @@ public class DBUtil {
                             Object entity_ = JPAEntityManagerUtils.merge(result);
                             persistedObjects.add(entity_);
                         } else {
-                            log.debug("Entity with name '" + reflectionUtils.invokeGetter(result, "name") + "' is already processed");
+                            if (log.isDebugEnabled()) {
+                                Object id = reflectionUtils.invokeGetter(result, "id");
+                                Field nameField = reflectionUtils.getFieldByFieldName(result, "name");
+                                if (nameField != null) {
+                                    log.debug(" Entity of type '" + result.getClass().getName() + "' with name '" + nameField + "' is already processed");
+                                } else {
+                                    log.debug(" Entity of type '" + result.getClass().getName() + "' with id '" + id + "' is already processed");
+                                }
+                            }
                         }
                     }
                 } else {
@@ -283,7 +330,15 @@ public class DBUtil {
                                 Object entity_ = JPAEntityManagerUtils.merge(value);
                                 persistedObjects.add(entity_);
                             } else {
-                                log.debug("Entity with name '" + reflectionUtils.invokeGetter(value, "name") + "' is already processed");
+                                if (log.isDebugEnabled()) {
+                                    Object id = reflectionUtils.invokeGetter(value, "id");
+                                    Field nameField = reflectionUtils.getFieldByFieldName(value, "name");
+                                    if (nameField != null) {
+                                        log.debug(" Entity of type '" + value.getClass().getName() + "' with name '" + nameField + "' is already processed");
+                                    } else {
+                                        log.debug(" Entity of type '" + value.getClass().getName() + "' with id '" + id + "' is already processed");
+                                    }
+                                }
                             }
                         }
                     });
@@ -300,7 +355,15 @@ public class DBUtil {
                 if (!persistedObjects.contains(object_)) {
                     processFieldFlatten(entity, field, object_);
                 } else {
-                    log.debug("Entity with name '" + reflectionUtils.invokeGetter(object_, "name") + "' is already processed");
+                    if (log.isDebugEnabled()) {
+                        Object id = reflectionUtils.invokeGetter(object_, "id");
+                        Field nameField = reflectionUtils.getFieldByFieldName(object_, "name");
+                        if (nameField != null) {
+                            log.debug(" Entity of type '" + object_.getClass().getName() + "' with name '" + nameField + "' is already processed");
+                        } else {
+                            log.debug(" Entity of type '" + object_.getClass().getName() + "' with id '" + id + "' is already processed");
+                        }
+                    }
                 }
             }
         }, Utils::filterMethod);
@@ -343,7 +406,15 @@ public class DBUtil {
                     Object entity = JPAEntityManagerUtils.merge(value);
                     persistedObjects.add(entity);
                 } else {
-                    log.debug("Entity with name '" + reflectionUtils.invokeGetter(value, "name") + "' is already processed");
+                    if (log.isDebugEnabled()) {
+                        Object id = reflectionUtils.invokeGetter(value, "id");
+                        Field nameField = reflectionUtils.getFieldByFieldName(value, "name");
+                        if (nameField != null) {
+                            log.debug(" Entity of type '" + value.getClass().getName() + "' with name '" + nameField + "' is already processed");
+                        } else {
+                            log.debug(" Entity of type '" + value.getClass().getName() + "' with id '" + id + "' is already processed");
+                        }
+                    }
                 }
                 valuesToAdd.add(value);
             }
@@ -363,7 +434,15 @@ public class DBUtil {
                     Object entity = JPAEntityManagerUtils.merge(value);
                     persistedObjects.add(entity);
                 } else {
-                    log.debug("Entity with name '" + reflectionUtils.invokeGetter(value, "name") + "' is already processed");
+                    if (log.isDebugEnabled()) {
+                        Object id = reflectionUtils.invokeGetter(value, "id");
+                        Field nameField = reflectionUtils.getFieldByFieldName(value, "name");
+                        if (nameField != null) {
+                            log.debug(" Entity of type '" + value.getClass().getName() + "' with name '" + nameField + "' is already processed");
+                        } else {
+                            log.debug(" Entity of type '" + value.getClass().getName() + "' with id '" + id + "' is already processed");
+                        }
+                    }
                 }
                 map.put(innerMapValues.getKey(), value);
             }
