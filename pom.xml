@@ -558,13 +558,6 @@
                 <scope>compile</scope>
             </dependency>
 
-<!--            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-simple</artifactId>
-                <version>${org.slf4j-slf4j-simple}</version>
-                <scope>compile</scope>
-            </dependency>-->
-
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-collections4</artifactId>
