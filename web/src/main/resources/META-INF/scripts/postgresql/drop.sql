@@ -72,6 +72,9 @@ DROP TABLE diagrams.architecture_model_layers CASCADE;
 DROP TABLE diagrams.layer_systems CASCADE;
 DROP TABLE diagrams.layer_containers CASCADE;
 DROP TABLE diagrams.layer_components CASCADE;
+DROP TABLE diagrams.system_systems CASCADE;
+DROP TABLE diagrams.system_containers CASCADE;
+DROP TABLE diagrams.system_components CASCADE;
 DROP TABLE diagrams.models CASCADE;
 DROP TABLE diagrams.point CASCADE;
 

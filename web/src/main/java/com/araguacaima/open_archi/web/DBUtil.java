@@ -121,15 +121,7 @@ public class DBUtil {
             JPAEntityManagerUtils.persist(entity);
             persistedObjects.add(entity);
         } else {
-            if (log.isDebugEnabled()) {
-                Object id = reflectionUtils.invokeGetter(entity, "id");
-                Field nameField = reflectionUtils.getFieldByFieldName(entity, "name");
-                if (nameField != null) {
-                    log.debug("Entity of type '" + entity.getClass().getName() + "' with name '" + nameField + "' is already processed");
-                } else {
-                    log.debug("Entity of type '" + entity.getClass().getName() + "' with id '" + id + "' is already processed");
-                }
-            }
+            logProcessing(entity);
         }
     }
 
@@ -147,15 +139,7 @@ public class DBUtil {
                 JPAEntityManagerUtils.persist(entity);
                 persistedObjects.add(entity);
             } else {
-                if (log.isDebugEnabled()) {
-                    Object id = reflectionUtils.invokeGetter(entity, "id");
-                    Field nameField = reflectionUtils.getFieldByFieldName(entity, "name");
-                    if (nameField != null) {
-                        log.debug(" Entity of type '" + entity.getClass().getName() + "' with name '" + nameField + "' is already processed");
-                    } else {
-                        log.debug(" Entity of type '" + entity.getClass().getName() + "' with id '" + id + "' is already processed");
-                    }
-                }
+                logProcessing(entity);
             }
         } catch (Throwable t) {
             if (!EntityExistsException.class.isAssignableFrom(t.getClass())) {
@@ -178,14 +162,7 @@ public class DBUtil {
                     JPAEntityManagerUtils.persist(entity);
                     persistedObjects.add(entity);
                 } else {
-                    if (log.isDebugEnabled()) {
-                        Field nameField = reflectionUtils.getFieldByFieldName(entity, "name");
-                        if (nameField != null) {
-                            log.debug(" Entity of type '" + entity.getClass().getName() + "' with name '" + nameField + "' is already processed");
-                        } else {
-                            log.debug(" Entity of type '" + entity.getClass().getName() + "' with id '" + id + "' is already processed");
-                        }
-                    }
+                    logProcessing(entity);
                 }
             }
         } catch (Throwable t) {
@@ -242,44 +219,25 @@ public class DBUtil {
         if (ReflectionUtils.isCollectionImplementation(type)) {
             for (Object innerCollection : (Collection) object_) {
                 Object result = innerPopulationCreateIfNotExists(innerCollection);
-                if (result != null) {
-                    if (!persistedObjects.contains(result)) {
-                        Object entity = JPAEntityManagerUtils.merge(result);
-                        persistedObjects.add(entity);
-                    } else {
-                        if (log.isDebugEnabled()) {
-                            Object id = reflectionUtils.invokeGetter(result, "id");
-                            Field nameField = reflectionUtils.getFieldByFieldName(result, "name");
-                            if (nameField != null) {
-                                log.debug(" Entity of type '" + result.getClass().getName() + "' with name '" + nameField + "' is already processed");
-                            } else {
-                                log.debug(" Entity of type '" + result.getClass().getName() + "' with id '" + id + "' is already processed");
-                            }
-                        }
-                    }
-                }
+                processInnerIterable(result);
             }
         } else if (ReflectionUtils.isMapImplementation(type)) {
             Map<Object, Object> map = (Map<Object, Object>) object_;
             Set<Map.Entry<Object, Object>> set = map.entrySet();
             for (Map.Entry innerMapValues : set) {
                 Object result = innerPopulationCreateIfNotExists(innerMapValues.getValue());
-                if (result != null) {
-                    if (!persistedObjects.contains(result)) {
-                        Object entity_ = JPAEntityManagerUtils.merge(result);
-                        persistedObjects.add(entity_);
-                    } else {
-                        if (log.isDebugEnabled()) {
-                            Object id = reflectionUtils.invokeGetter(result, "id");
-                            Field nameField = reflectionUtils.getFieldByFieldName(result, "name");
-                            if (nameField != null) {
-                                log.debug(" Entity of type '" + result.getClass().getName() + "' with name '" + nameField + "' is already processed");
-                            } else {
-                                log.debug(" Entity of type '" + result.getClass().getName() + "' with id '" + id + "' is already processed");
-                            }
-                        }
-                    }
-                }
+                processInnerIterable(result);
+            }
+        }
+    }
+
+    private static void processInnerIterable(Object result) {
+        if (result != null) {
+            if (!persistedObjects.contains(result)) {
+                Object entity = JPAEntityManagerUtils.merge(result);
+                persistedObjects.add(entity);
+            } else {
+                logProcessing(result);
             }
         }
     }
@@ -306,43 +264,24 @@ public class DBUtil {
                 field.set(entity, result);
                 if (!ReflectionUtils.isCollectionImplementation(result.getClass()) && !ReflectionUtils.isMapImplementation(result.getClass())) {
                     Class<?> type = result.getClass();
-                    if (reflectionUtils.getFullyQualifiedJavaTypeOrNull(type) == null && !type.isEnum() && !Enum.class.isAssignableFrom(type)) {
-                        if (!persistedObjects.contains(result)) {
-                            Object entity_ = JPAEntityManagerUtils.merge(result);
-                            persistedObjects.add(entity_);
-                        } else {
-                            if (log.isDebugEnabled()) {
-                                Object id = reflectionUtils.invokeGetter(result, "id");
-                                Field nameField = reflectionUtils.getFieldByFieldName(result, "name");
-                                if (nameField != null) {
-                                    log.debug(" Entity of type '" + result.getClass().getName() + "' with name '" + nameField + "' is already processed");
-                                } else {
-                                    log.debug(" Entity of type '" + result.getClass().getName() + "' with id '" + id + "' is already processed");
-                                }
-                            }
-                        }
-                    }
+                    processInnerComplex(result, type);
                 } else {
                     ((Collection) result).forEach(value -> {
                         Class<?> type = value.getClass();
-                        if (reflectionUtils.getFullyQualifiedJavaTypeOrNull(type) == null && !type.isEnum() && !Enum.class.isAssignableFrom(type)) {
-                            if (!persistedObjects.contains(value)) {
-                                Object entity_ = JPAEntityManagerUtils.merge(value);
-                                persistedObjects.add(entity_);
-                            } else {
-                                if (log.isDebugEnabled()) {
-                                    Object id = reflectionUtils.invokeGetter(value, "id");
-                                    Field nameField = reflectionUtils.getFieldByFieldName(value, "name");
-                                    if (nameField != null) {
-                                        log.debug(" Entity of type '" + value.getClass().getName() + "' with name '" + nameField + "' is already processed");
-                                    } else {
-                                        log.debug(" Entity of type '" + value.getClass().getName() + "' with id '" + id + "' is already processed");
-                                    }
-                                }
-                            }
-                        }
+                        processInnerComplex(value, type);
                     });
                 }
+            }
+        }
+    }
+
+    private static void processInnerComplex(Object value, Class<?> type) {
+        if (reflectionUtils.getFullyQualifiedJavaTypeOrNull(type) == null && !type.isEnum() && !Enum.class.isAssignableFrom(type)) {
+            if (!persistedObjects.contains(value)) {
+                Object entity_ = JPAEntityManagerUtils.merge(value);
+                persistedObjects.add(entity_);
+            } else {
+                logProcessing(value);
             }
         }
     }
@@ -355,15 +294,7 @@ public class DBUtil {
                 if (!persistedObjects.contains(object_)) {
                     processFieldFlatten(entity, field, object_);
                 } else {
-                    if (log.isDebugEnabled()) {
-                        Object id = reflectionUtils.invokeGetter(object_, "id");
-                        Field nameField = reflectionUtils.getFieldByFieldName(object_, "name");
-                        if (nameField != null) {
-                            log.debug(" Entity of type '" + object_.getClass().getName() + "' with name '" + nameField + "' is already processed");
-                        } else {
-                            log.debug(" Entity of type '" + object_.getClass().getName() + "' with id '" + id + "' is already processed");
-                        }
-                    }
+                    logProcessing(object_);
                 }
             }
         }, Utils::filterMethod);
@@ -406,15 +337,7 @@ public class DBUtil {
                     Object entity = JPAEntityManagerUtils.merge(value);
                     persistedObjects.add(entity);
                 } else {
-                    if (log.isDebugEnabled()) {
-                        Object id = reflectionUtils.invokeGetter(value, "id");
-                        Field nameField = reflectionUtils.getFieldByFieldName(value, "name");
-                        if (nameField != null) {
-                            log.debug(" Entity of type '" + value.getClass().getName() + "' with name '" + nameField + "' is already processed");
-                        } else {
-                            log.debug(" Entity of type '" + value.getClass().getName() + "' with id '" + id + "' is already processed");
-                        }
-                    }
+                    logProcessing(value);
                 }
                 valuesToAdd.add(value);
             }
@@ -434,15 +357,7 @@ public class DBUtil {
                     Object entity = JPAEntityManagerUtils.merge(value);
                     persistedObjects.add(entity);
                 } else {
-                    if (log.isDebugEnabled()) {
-                        Object id = reflectionUtils.invokeGetter(value, "id");
-                        Field nameField = reflectionUtils.getFieldByFieldName(value, "name");
-                        if (nameField != null) {
-                            log.debug(" Entity of type '" + value.getClass().getName() + "' with name '" + nameField + "' is already processed");
-                        } else {
-                            log.debug(" Entity of type '" + value.getClass().getName() + "' with id '" + id + "' is already processed");
-                        }
-                    }
+                    logProcessing(value);
                 }
                 map.put(innerMapValues.getKey(), value);
             }
@@ -460,6 +375,26 @@ public class DBUtil {
         }
 
         return object_;
+    }
+
+    private static void logProcessing(Object object) {
+        if (log.isDebugEnabled()) {
+            Object id = reflectionUtils.invokeGetter(object, "id");
+            String type = object.getClass().getSimpleName();
+            Field field = reflectionUtils.getFieldByFieldName(object, "name");
+            if (field != null) {
+                Object name = null;
+                try {
+                    field.setAccessible(true);
+                    name = field.get(object);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+                log.debug(" Entity of type '" + type + "' with name '" + name + "' is already processed");
+            } else {
+                log.debug(" Entity of type '" + type + "' with id '" + id + "' is already processed");
+            }
+        }
     }
 
     public static void replace(BaseEntity entity) throws Throwable {

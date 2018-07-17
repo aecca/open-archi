@@ -118,29 +118,13 @@ public class JPAEntityManagerUtils {
         try {
             Object key = extractId(entity);
             if (key != null && find(entity.getClass(), key) == null) {
-                if (log.isDebugEnabled()) {
-                    Object id = reflectionUtils.invokeGetter(entity, "id");
-                    Field nameField = reflectionUtils.getFieldByFieldName(entity, "name");
-                    if (nameField != null) {
-                        log.debug("Attempting to persist entity of type '" + entity.getClass().getName() + "' with name '" + nameField + "' and id '" + id + "'");
-                    } else {
-                        log.debug("Attempting to persist entity of type '" + entity.getClass().getName() + "' with id '" + id + "'");
-                    }
-                }
+                logProcessing(entity, "persist");
                 entityManager.persist(entity);
                 if (log.isDebugEnabled()) {
                     log.debug("Done!");
                 }
             } else {
-                if (log.isDebugEnabled()) {
-                    Object id = reflectionUtils.invokeGetter(entity, "id");
-                    Field nameField = reflectionUtils.getFieldByFieldName(entity, "name");
-                    if (nameField != null) {
-                        log.debug("Attempting to merge entity of type '" + entity.getClass().getName() + "' with name '" + reflectionUtils.invokeGetter(entity, "name") + "' and id '" + id + "'");
-                    } else {
-                        log.debug("Attempting to merge entity of type '" + entity.getClass().getName() + "' with id '" + id + "'");
-                    }
-                }
+                logProcessing(entity, "merge");
                 entity = entityManager.merge(entity);
                 if (log.isDebugEnabled()) {
                     log.debug("Done!");
@@ -179,15 +163,7 @@ public class JPAEntityManagerUtils {
             begin();
         }
         try {
-            if (log.isDebugEnabled()) {
-                Object id = reflectionUtils.invokeGetter(entity, "id");
-                Field nameField = reflectionUtils.getFieldByFieldName(entity, "name");
-                if (nameField != null) {
-                    log.debug("Attempting to persist entity of type '" + entity.getClass().getName() + "' with name '" + nameField + "' and id '" + id + "'");
-                } else {
-                    log.debug("Attempting to persist entity of type '" + entity.getClass().getName() + "' with id '" + id + "'");
-                }
-            }
+            logProcessing(entity, "persist");
             entityManager.persist(entity);
             if (log.isDebugEnabled()) {
                 log.debug("Done!");
@@ -311,6 +287,27 @@ public class JPAEntityManagerUtils {
             }
         }
     }
+
+    private static void logProcessing(Object entity, String action) {
+        if (log.isDebugEnabled()) {
+            String type = entity.getClass().getSimpleName();
+            Object id = reflectionUtils.invokeGetter(entity, "id");
+            Field field = reflectionUtils.getFieldByFieldName(entity, "name");
+            if (field != null) {
+                Object name = null;
+                try {
+                    field.setAccessible(true);
+                    name = field.get(entity);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+                log.debug("Attempting to " + action + " entity of type '" + type + "' with name '" + name + "' and id '" + id + "'");
+            } else {
+                log.debug("Attempting to " + action + " entity of type '" + type + "' with id '" + id + "'");
+            }
+        }
+    }
+
 
     public static void commit() {
         entityManager.getTransaction().commit();
