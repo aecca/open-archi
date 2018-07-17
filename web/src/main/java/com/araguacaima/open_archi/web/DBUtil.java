@@ -10,6 +10,8 @@ import com.araguacaima.open_archi.persistence.meta.BasicEntity;
 import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
 import io.github.benas.randombeans.EnhancedRandomBuilder;
 import io.github.benas.randombeans.api.EnhancedRandom;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.Entity;
 import javax.persistence.EntityExistsException;
@@ -25,6 +27,7 @@ import static java.nio.charset.Charset.forName;
 @SuppressWarnings("WeakerAccess")
 public class DBUtil {
 
+    private static final Logger log = LoggerFactory.getLogger(DBUtil.class);
     private static Set<Class<? extends BaseEntity>> classes = new HashSet<>();
     private static Set<Object> persistedObjects = new HashSet<>();
     private static ReflectionUtils reflectionUtils = new ReflectionUtils(null);
@@ -115,7 +118,9 @@ public class DBUtil {
             }
         }, Utils::filterMethod);
         if (!persistedObjects.contains(entity)) {
+            log.debug("Attempting to persist entity with id = '" + entity.getId() + "'");
             JPAEntityManagerUtils.persist(entity);
+            log.debug("Done!");
             persistedObjects.add(entity);
         }
     }
@@ -131,7 +136,9 @@ public class DBUtil {
         }, Utils::filterMethod);
         try {
             if (!persistedObjects.contains(entity)) {
+                log.debug("Attempting to persist entity with id = '" + ((BaseEntity) entity).getId() + "'");
                 JPAEntityManagerUtils.persist(entity);
+                log.debug("Done!");
                 persistedObjects.add(entity);
             }
         } catch (Throwable t) {
@@ -151,7 +158,9 @@ public class DBUtil {
         try {
             if (JPAEntityManagerUtils.find(entity.getClass(), ((BaseEntity) entity).getId()) == null) {
                 if (!persistedObjects.contains(entity)) {
+                    log.debug("Attempting to persist entity with id = '" + ((BaseEntity) entity).getId() + "'");
                     JPAEntityManagerUtils.persist(entity);
+                    log.debug("Done!");
                     persistedObjects.add(entity);
                 }
             }
@@ -211,7 +220,9 @@ public class DBUtil {
                 Object result = innerPopulationCreateIfNotExists(innerCollection);
                 if (result != null) {
                     if (!persistedObjects.contains(result)) {
+                        log.debug("Attempting to merge entity with id = '" + ((BaseEntity) object_).getId() + "'");
                         Object entity = JPAEntityManagerUtils.merge(result);
+                        log.debug("Done!");
                         persistedObjects.add(entity);
                     }
                 }
@@ -223,7 +234,9 @@ public class DBUtil {
                 Object result = innerPopulationCreateIfNotExists(innerMapValues.getValue());
                 if (result != null) {
                     if (!persistedObjects.contains(result)) {
+                        log.debug("Attempting to merge entity with id = '" + ((BaseEntity) result).getId() + "'");
                         Object entity_ = JPAEntityManagerUtils.merge(result);
+                        log.debug("Done!");
                         persistedObjects.add(entity_);
                     }
                 }
@@ -255,7 +268,9 @@ public class DBUtil {
                     Class<?> type = result.getClass();
                     if (reflectionUtils.getFullyQualifiedJavaTypeOrNull(type) == null && !type.isEnum() && !Enum.class.isAssignableFrom(type)) {
                         if (!persistedObjects.contains(result)) {
+                            log.debug("Attempting to merge entity with id = '" + ((BaseEntity) result).getId() + "'");
                             Object entity_ = JPAEntityManagerUtils.merge(result);
+                            log.debug("Done!");
                             persistedObjects.add(entity_);
                         }
                     }
@@ -264,7 +279,9 @@ public class DBUtil {
                         Class<?> type = value.getClass();
                         if (reflectionUtils.getFullyQualifiedJavaTypeOrNull(type) == null && !type.isEnum() && !Enum.class.isAssignableFrom(type)) {
                             if (!persistedObjects.contains(value)) {
+                                log.debug("Attempting to merge entity with id = '" + ((BaseEntity) value).getId() + "'");
                                 Object entity_ = JPAEntityManagerUtils.merge(value);
+                                log.debug("Done!");
                                 persistedObjects.add(entity_);
                             }
                         }
@@ -318,7 +335,9 @@ public class DBUtil {
                 Object value = innerFlatten(innerCollection);
                 valuesToRemove.add(innerCollection);
                 if (!persistedObjects.contains(value)) {
+                    log.debug("Attempting to merge entity with id = '" + ((BaseEntity) value).getId() + "'");
                     Object entity = JPAEntityManagerUtils.merge(value);
+                    log.debug("Done!");
                     persistedObjects.add(entity);
                 }
                 valuesToAdd.add(value);
@@ -336,7 +355,9 @@ public class DBUtil {
             for (Map.Entry innerMapValues : set) {
                 Object value = innerFlatten(innerMapValues.getValue());
                 if (!persistedObjects.contains(value)) {
+                    log.debug("Attempting to merge entity with id = '" + ((BaseEntity) value).getId() + "'");
                     Object entity = JPAEntityManagerUtils.merge(value);
+                    log.debug("Done!");
                     persistedObjects.add(entity);
                 }
                 map.put(innerMapValues.getKey(), value);
@@ -411,7 +432,9 @@ public class DBUtil {
         JPAEntityManagerUtils.setAutocommit(false);
         JPAEntityManagerUtils.begin();
         try {
+            log.debug("Attempting to persist entity with id = '" + ((BaseEntity) entity).getId() + "'");
             JPAEntityManagerUtils.persist(entity);
+            log.debug("Done!");
         } catch (Throwable t) {
             JPAEntityManagerUtils.rollback();
             throw t;
