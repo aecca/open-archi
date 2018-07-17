@@ -174,7 +174,7 @@ function processContainerToDiagram(container, nodes, links, parentId) {
         nodes.push(fulfill(container, true, parentId, rank));
         rank++;
         components.forEach(function (component) {
-            processComponentToDiagram(diagram, component, nodes, links, component.key)
+            processComponentToDiagram(component, nodes, links, component.key)
         });
     } else {
         nodes.push(fulfill(container, false, parentId, rank));
@@ -188,7 +188,7 @@ function processContainerToDiagram(container, nodes, links, parentId) {
 
 }
 
-function processComponentToDiagram(diagram, component, nodes, links, parentId) {
+function processComponentToDiagram(component, nodes, links, parentId) {
     let componentElement = commonInnerModelElement(component);
     //TODO Añadir campos propios del component
     //Los components sólo se pueden agrupar en layers u otros components
