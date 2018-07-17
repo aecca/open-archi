@@ -321,7 +321,9 @@ public class Item extends Taggable {
 
         Item item = (Item) o;
 
-        return name.equals(item.name) && kind == item.kind && description.equals(item.description);
+        return (name != null ? name.equals(item.name) : item.name == null)
+                && kind == item.kind
+                && (description != null ? description.equals(item.description) : item.description == null);
     }
 
     @Override
