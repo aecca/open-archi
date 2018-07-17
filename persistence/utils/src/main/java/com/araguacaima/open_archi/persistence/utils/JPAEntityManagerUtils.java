@@ -118,12 +118,33 @@ public class JPAEntityManagerUtils {
         try {
             Object key = extractId(entity);
             if (key != null && find(entity.getClass(), key) == null) {
-                log.debug("Attempting to persist entity with name '" + reflectionUtils.invokeGetter(entity, "name") + "' and id '" + reflectionUtils.invokeGetter(entity, "id") + "'");
+                if (log.isDebugEnabled()) {
+                    Object id = reflectionUtils.invokeGetter(entity, "id");
+                    Field nameField = reflectionUtils.getFieldByFieldName(entity, "getName");
+                    if (nameField != null) {
+                        log.debug("Attempting to persist entity with name '" + nameField + "' and id '" + id + "'");
+                    } else {
+                        log.debug("Attempting to persist entity with id '" + id + "'");
+                    }
+                }
                 entityManager.persist(entity);
+                if (log.isDebugEnabled()) {
+                    log.debug("Done!");
+                }
             } else {
-                log.debug("Attempting to merge entity with name '" + reflectionUtils.invokeGetter(entity, "name") + "' and id '" + reflectionUtils.invokeGetter(entity, "id") + "'");
+                if (log.isDebugEnabled()) {
+                    Object id = reflectionUtils.invokeGetter(entity, "id");
+                    Field nameField = reflectionUtils.getFieldByFieldName(entity, "getName");
+                    if (nameField != null) {
+                        log.debug("Attempting to merge entity with name '" + reflectionUtils.invokeGetter(entity, "name") + "' and id '" + id + "'");
+                    } else {
+                        log.debug("Attempting to merge entity with id '" + id + "'");
+                    }
+                }
                 entity = entityManager.merge(entity);
-                log.debug("Done!");
+                if (log.isDebugEnabled()) {
+                    log.debug("Done!");
+                }
             }
             if (autocommit) {
                 commit();
@@ -158,9 +179,19 @@ public class JPAEntityManagerUtils {
             begin();
         }
         try {
-            log.debug("Attempting to persist entity with name '" + reflectionUtils.invokeGetter(entity, "name") + "' and id '" + reflectionUtils.invokeGetter(entity, "id") + "'");
+            if (log.isDebugEnabled()) {
+                Object id = reflectionUtils.invokeGetter(entity, "id");
+                Field nameField = reflectionUtils.getFieldByFieldName(entity, "getName");
+                if (nameField != null) {
+                    log.debug("Attempting to persist entity with name '" + nameField + "' and id '" + id + "'");
+                } else {
+                    log.debug("Attempting to persist entity with id '" + id + "'");
+                }
+            }
             entityManager.persist(entity);
-            log.debug("Done!");
+            if (log.isDebugEnabled()) {
+                log.debug("Done!");
+            }
             if (autocommit) {
                 commit();
             }
