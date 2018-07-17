@@ -55,8 +55,7 @@ function commonInnerDiagramElement(node) {
 function commonInnerModelElement(model) {
     let object = {};
     object.id = model.id;
-    object.key = model.key;
-    object.meta = model.meta;
+    object.key = model.id;
     object.status = model.status;
     object.name = model.name;
     object.kind = model.kind;
@@ -66,7 +65,14 @@ function commonInnerModelElement(model) {
     if (loc) {
         object.loc = loc.x + " " + loc.y;
     }
-    object.shape = model.shape;
+    let shape = model.shape;
+    if (shape) {
+        object.category = shape.type;
+        object.size = shape.size.width + " " + shape.size.height;
+    } else {
+        object.category = model.kind;
+    }
+    object.figure = "RoundedRectangle";
     return object;
 }
 
@@ -114,8 +120,9 @@ function processComponentToArchitectureModel(node, parent, links) {
     alreadyProcessedNodes.push(component.key);
 }
 
-function processLayerToDiagram(diagram, layer, nodes, links, parentId) {
+function processLayerToDiagram(layer, nodes, links, parentId) {
     let layerElement = commonInnerModelElement(layer);
+    layerElement.isGroup = true;
     //TODO Añadir campos propios del layer
     //Los layer sólo se pueden agrupar en el modelo directamente, no en otros layers, systems, containers o components
     if (parentId !== undefined) {
@@ -125,7 +132,19 @@ function processLayerToDiagram(diagram, layer, nodes, links, parentId) {
 
     if (layer.systems) {
         layer.systems.forEach(item => {
-            processElementToDiagram(item, diagram);
+            processSystemToDiagram(item, nodes, links, layer.id);
+        });
+    }
+
+    if (layer.containers) {
+        layer.containers.forEach(item => {
+            processContainerToDiagram(item, nodes, links, layer.id);
+        });
+    }
+
+    if (layer.components) {
+        layer.components.forEach(item => {
+            processComponentToDiagram(item, nodes, links, layer.id);
         });
     }
 }
@@ -141,7 +160,7 @@ function processSystemToDiagram(system, nodes, links, parentId) {
         nodes.push(fulfill(system, true, parentId, rank));
         rank++;
         containers.forEach(function (container) {
-            processContainerToDiagram(diagram, container, nodes, links, system.id)
+            processContainerToDiagram(container, nodes, links, system.id)
         });
     }
 
@@ -151,7 +170,7 @@ function processSystemToDiagram(system, nodes, links, parentId) {
         nodes.push(fulfill(system, true, parentId, rank));
         rank++;
         components.forEach(function (component) {
-            processComponentToDiagram(diagram, component, nodes, links, system.id)
+            processComponentToDiagram(component, nodes, links, system.id)
         });
     }
 
@@ -174,7 +193,7 @@ function processContainerToDiagram(container, nodes, links, parentId) {
         nodes.push(fulfill(container, true, parentId, rank));
         rank++;
         components.forEach(function (component) {
-            processComponentToDiagram(component, nodes, links, component.key)
+            processComponentToDiagram(component, nodes, links, container.id)
         });
     } else {
         nodes.push(fulfill(container, false, parentId, rank));
@@ -274,7 +293,7 @@ function diagramToBpmModel(model, node, links) {
 
 function processElementToDiagram(model, diagram) {
     if (model.layers) {
-        model.layers.forEach(layer => processLayerToDiagram(diagram, layer, diagram.nodeDataArray, diagram.linkDataArray));
+        model.layers.forEach(layer => processLayerToDiagram(layer, diagram.nodeDataArray, diagram.linkDataArray));
     }
     if (model.systems) {
         model.systems.forEach(system => processSystemToDiagram(system, diagram.nodeDataArray, diagram.linkDataArray));
