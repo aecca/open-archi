@@ -5,7 +5,7 @@
              http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
              version="2.1">
 
-    <!--<persistence-unit name="open-archi" transaction-type="RESOURCE_LOCAL">
+    <persistence-unit name="open-archi" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
         <properties>
@@ -25,8 +25,7 @@
             <property name="hibernate.c3p0.idle_test_period" value="3000"/>
         </properties>
     </persistence-unit>
--->
-    <persistence-unit name="open-archi" transaction-type="RESOURCE_LOCAL">
+<!--    <persistence-unit name="open-archi" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
         <properties>
@@ -52,7 +51,7 @@
             <property name="hibernate.c3p0.max_statements" value="50"/>
             <property name="hibernate.c3p0.idle_test_period" value="3000"/>
         </properties>
-    </persistence-unit>
+    </persistence-unit>-->
 
     <!--    <persistence-unit name="open-archi" transaction-type="RESOURCE_LOCAL">
             <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
