@@ -276,8 +276,8 @@ function expand(data) {
         model = data;
     }
     meta.id = model.id;
-    const diagram = OpenArchiWrapper.toDiagram(model);
-    const newDiagram = go.Model.fromJson(diagram);
+    const newDiagram = OpenArchiWrapper.toDiagram(model);
+    //const newDiagram = go.Model.fromJson(diagram);
 
     myDiagram.startTransaction("Adding new element");
     myDiagram.model.addNodeDataCollection(newDiagram.nodeDataArray);
