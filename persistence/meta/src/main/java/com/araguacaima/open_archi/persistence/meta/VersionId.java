@@ -95,4 +95,8 @@ public class VersionId implements Serializable, Comparable<VersionId>, Cloneable
         }
     }
 
+    @Override
+    public String toString() {
+        return major + "." + minor + "." + build;
+    }
 }

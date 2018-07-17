@@ -49,12 +49,11 @@ public class LogbackConfig {
     @PostConstruct
     public void initialize() {
         loggersMap.put("org.springframework", "INFO");
-        loggersMap.put("net.sf.jxls", "ERROR");
-        loggersMap.put("net.sf.jxls.reader", "ERROR");
-        loggersMap.put("org.thymeleaf", "ERROR");
-        loggersMap.put("com.bbva.templates.validation", "DEBUG");
+        loggersMap.put("com.araguacaima.open_archi.web.DBUtil", "DEBUG");
+        loggersMap.put("com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils", "DEBUG");
         loggersMap.put("com.mchange.v2", "ERROR");
         loggersMap.put("org.apache.catalina", "ERROR");
+        loggersMap.put("org.hibernate", "INFO");
 
         for (Map.Entry<String, String> logger : loggersMap.entrySet()) {
             loggers.add(createLogger(logger.getKey(), Level.toLevel(logger.getValue())));

@@ -118,10 +118,10 @@ public class DBUtil {
             }
         }, Utils::filterMethod);
         if (!persistedObjects.contains(entity)) {
-            log.debug("Attempting to persist entity with id = '" + entity.getId() + "'");
             JPAEntityManagerUtils.persist(entity);
-            log.debug("Done!");
             persistedObjects.add(entity);
+        } else {
+            log.debug("Entity with name '" + reflectionUtils.invokeGetter(entity, "name") + "' is already processed");
         }
     }
 
@@ -136,10 +136,10 @@ public class DBUtil {
         }, Utils::filterMethod);
         try {
             if (!persistedObjects.contains(entity)) {
-                log.debug("Attempting to persist entity with id = '" + ((BaseEntity) entity).getId() + "'");
                 JPAEntityManagerUtils.persist(entity);
-                log.debug("Done!");
                 persistedObjects.add(entity);
+            } else {
+                log.debug("Entity with name '" + reflectionUtils.invokeGetter(entity, "name") + "' is already processed");
             }
         } catch (Throwable t) {
             if (!EntityExistsException.class.isAssignableFrom(t.getClass())) {
@@ -156,12 +156,13 @@ public class DBUtil {
             processCreateIfNotExists(field.getType(), object_);
         }, Utils::filterMethod);
         try {
-            if (JPAEntityManagerUtils.find(entity.getClass(), ((BaseEntity) entity).getId()) == null) {
+            Object id = reflectionUtils.invokeGetter(entity, "id");
+            if (JPAEntityManagerUtils.find(entity.getClass(), id) == null) {
                 if (!persistedObjects.contains(entity)) {
-                    log.debug("Attempting to persist entity with id = '" + ((BaseEntity) entity).getId() + "'");
                     JPAEntityManagerUtils.persist(entity);
-                    log.debug("Done!");
                     persistedObjects.add(entity);
+                } else {
+                    log.debug("Entity with name '" + reflectionUtils.invokeGetter(entity, "name") + "' is already processed");
                 }
             }
         } catch (Throwable t) {
@@ -220,10 +221,10 @@ public class DBUtil {
                 Object result = innerPopulationCreateIfNotExists(innerCollection);
                 if (result != null) {
                     if (!persistedObjects.contains(result)) {
-                        log.debug("Attempting to merge entity with id = '" + ((BaseEntity) object_).getId() + "'");
                         Object entity = JPAEntityManagerUtils.merge(result);
-                        log.debug("Done!");
                         persistedObjects.add(entity);
+                    } else {
+                        log.debug("Entity with name '" + reflectionUtils.invokeGetter(result, "name") + "' is already processed");
                     }
                 }
             }
@@ -234,10 +235,10 @@ public class DBUtil {
                 Object result = innerPopulationCreateIfNotExists(innerMapValues.getValue());
                 if (result != null) {
                     if (!persistedObjects.contains(result)) {
-                        log.debug("Attempting to merge entity with id = '" + ((BaseEntity) result).getId() + "'");
                         Object entity_ = JPAEntityManagerUtils.merge(result);
-                        log.debug("Done!");
                         persistedObjects.add(entity_);
+                    } else {
+                        log.debug("Entity with name '" + reflectionUtils.invokeGetter(result, "name") + "' is already processed");
                     }
                 }
             }
@@ -268,10 +269,10 @@ public class DBUtil {
                     Class<?> type = result.getClass();
                     if (reflectionUtils.getFullyQualifiedJavaTypeOrNull(type) == null && !type.isEnum() && !Enum.class.isAssignableFrom(type)) {
                         if (!persistedObjects.contains(result)) {
-                            log.debug("Attempting to merge entity with id = '" + ((BaseEntity) result).getId() + "'");
                             Object entity_ = JPAEntityManagerUtils.merge(result);
-                            log.debug("Done!");
                             persistedObjects.add(entity_);
+                        } else {
+                            log.debug("Entity with name '" + reflectionUtils.invokeGetter(result, "name") + "' is already processed");
                         }
                     }
                 } else {
@@ -279,10 +280,10 @@ public class DBUtil {
                         Class<?> type = value.getClass();
                         if (reflectionUtils.getFullyQualifiedJavaTypeOrNull(type) == null && !type.isEnum() && !Enum.class.isAssignableFrom(type)) {
                             if (!persistedObjects.contains(value)) {
-                                log.debug("Attempting to merge entity with id = '" + ((BaseEntity) value).getId() + "'");
                                 Object entity_ = JPAEntityManagerUtils.merge(value);
-                                log.debug("Done!");
                                 persistedObjects.add(entity_);
+                            } else {
+                                log.debug("Entity with name '" + reflectionUtils.invokeGetter(value, "name") + "' is already processed");
                             }
                         }
                     });
@@ -296,7 +297,11 @@ public class DBUtil {
             field.setAccessible(true);
             Object object_ = field.get(entity);
             if (object_ != null) {
-                processFieldFlatten(entity, field, object_);
+                if (!persistedObjects.contains(object_)) {
+                    processFieldFlatten(entity, field, object_);
+                } else {
+                    log.debug("Entity with name '" + reflectionUtils.invokeGetter(object_, "name") + "' is already processed");
+                }
             }
         }, Utils::filterMethod);
         try {
@@ -335,10 +340,10 @@ public class DBUtil {
                 Object value = innerFlatten(innerCollection);
                 valuesToRemove.add(innerCollection);
                 if (!persistedObjects.contains(value)) {
-                    log.debug("Attempting to merge entity with id = '" + ((BaseEntity) value).getId() + "'");
                     Object entity = JPAEntityManagerUtils.merge(value);
-                    log.debug("Done!");
                     persistedObjects.add(entity);
+                } else {
+                    log.debug("Entity with name '" + reflectionUtils.invokeGetter(value, "name") + "' is already processed");
                 }
                 valuesToAdd.add(value);
             }
@@ -355,10 +360,10 @@ public class DBUtil {
             for (Map.Entry innerMapValues : set) {
                 Object value = innerFlatten(innerMapValues.getValue());
                 if (!persistedObjects.contains(value)) {
-                    log.debug("Attempting to merge entity with id = '" + ((BaseEntity) value).getId() + "'");
                     Object entity = JPAEntityManagerUtils.merge(value);
-                    log.debug("Done!");
                     persistedObjects.add(entity);
+                } else {
+                    log.debug("Entity with name '" + reflectionUtils.invokeGetter(value, "name") + "' is already processed");
                 }
                 map.put(innerMapValues.getKey(), value);
             }
@@ -432,9 +437,7 @@ public class DBUtil {
         JPAEntityManagerUtils.setAutocommit(false);
         JPAEntityManagerUtils.begin();
         try {
-            log.debug("Attempting to persist entity with id = '" + ((BaseEntity) entity).getId() + "'");
             JPAEntityManagerUtils.persist(entity);
-            log.debug("Done!");
         } catch (Throwable t) {
             JPAEntityManagerUtils.rollback();
             throw t;

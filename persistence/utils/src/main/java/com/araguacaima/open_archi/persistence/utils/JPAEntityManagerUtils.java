@@ -118,9 +118,12 @@ public class JPAEntityManagerUtils {
         try {
             Object key = extractId(entity);
             if (key != null && find(entity.getClass(), key) == null) {
+                log.debug("Attempting to persist entity with name '" + reflectionUtils.invokeGetter(entity, "name") + "' and id '" + reflectionUtils.invokeGetter(entity, "id") + "'");
                 entityManager.persist(entity);
             } else {
+                log.debug("Attempting to merge entity with name '" + reflectionUtils.invokeGetter(entity, "name") + "' and id '" + reflectionUtils.invokeGetter(entity, "id") + "'");
                 entity = entityManager.merge(entity);
+                log.debug("Done!");
             }
             if (autocommit) {
                 commit();
@@ -155,7 +158,9 @@ public class JPAEntityManagerUtils {
             begin();
         }
         try {
+            log.debug("Attempting to persist entity with name '" + reflectionUtils.invokeGetter(entity, "name") + "' and id '" + reflectionUtils.invokeGetter(entity, "id") + "'");
             entityManager.persist(entity);
+            log.debug("Done!");
             if (autocommit) {
                 commit();
             }
