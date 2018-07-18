@@ -52,7 +52,6 @@ DROP TABLE diagrams.range CASCADE;
 DROP TABLE diagrams.rate CASCADE;
 DROP TABLE diagrams.sequence_model_relationships CASCADE;
 DROP TABLE diagrams.sequence_model_sequences CASCADE;
-DROP TABLE diagrams.system_containers CASCADE;
 DROP TABLE diagrams.taggable_cloned_by_ids CASCADE;
 DROP TABLE diagrams.tags CASCADE;
 DROP TABLE diagrams.umlclass_fields CASCADE;
@@ -79,8 +78,8 @@ DROP TABLE diagrams.models CASCADE;
 DROP TABLE diagrams.point CASCADE;
 DROP TABLE diagrams.category CASCADE;
 DROP TABLE diagrams.defaultcategory CASCADE;
-DROP TABLE diagrams.layer_items CASCADE;
 DROP TABLE diagrams.shape CASCADE;
+DROP TABLE diagrams.size CASCADE;
 
 DROP TABLE meta.account CASCADE;
 DROP TABLE meta.account_roles CASCADE;

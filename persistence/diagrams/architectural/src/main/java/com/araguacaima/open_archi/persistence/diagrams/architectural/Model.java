@@ -135,14 +135,14 @@ public class Model extends Element implements DiagramableElement<Model> {
             newSystem.override(software, keepMeta, suffix);
             this.systems.add(newSystem);
         }
-        for (Container software : source.getContainers()) {
+        for (Container container : source.getContainers()) {
             Container newContainer = new Container();
-            newContainer.override(software, keepMeta, suffix);
+            newContainer.override(container, keepMeta, suffix);
             this.containers.add(newContainer);
         }
-        for (Component software : source.getComponents()) {
+        for (Component component : source.getComponents()) {
             Component newComponent = new Component();
-            newComponent.override(software, keepMeta, suffix);
+            newComponent.override(component, keepMeta, suffix);
             this.components.add(newComponent);
         }
         for (DeploymentNode deploymentNode : source.getDeploymentNodes()) {

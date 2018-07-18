@@ -6,7 +6,9 @@ function fulfill(item, isGroup, group, rank) {
     if (group) {
         item.group = group;
     }
-    item.rank = rank;
+    if (rank !== undefined) {
+        item.rank = rank;
+    }
     return item;
 }
 
@@ -20,12 +22,14 @@ function fillShape(model, node) {
             output: node.output
         };
         if (node.size) {
-            shape.size = {
-                size: {
-                    width: node.size.width,
-                    height: node.size.height
-                }
+            shape.minSize = {
+                width: node.size.width,
+                height: node.size.height
             };
+        } else {
+            if (node.minSize) {
+                shape.minSize = node.minSize;
+            }
         }
         model.shape = shape;
     }
@@ -155,33 +159,25 @@ function processSystemToDiagram(system, nodes, links, parentId) {
     systemElement.isGroup = true;
     //TODO Añadir campos propios del system
     //Los systems sólo se pueden agrupar en layers u otros systems
-    let rank = 0;
     let containers = system.containers;
     let hasContainers = containers !== undefined && !commons.prototype.isEmpty(containers);
     if (hasContainers) {
-        nodes.push(fulfill(system, true, parentId, rank));
-        rank++;
         containers.forEach(function (container) {
             processContainerToDiagram(container, nodes, links, system.id)
         });
     }
-
     let components = system.components;
     let hasComponents = components !== undefined && !commons.prototype.isEmpty(components);
     if (hasComponents) {
-        nodes.push(fulfill(system, true, parentId, rank));
-        rank++;
         components.forEach(function (component) {
             processComponentToDiagram(component, nodes, links, system.id)
         });
     }
-
     if (parentId !== undefined) {
         systemElement.group = parentId;
     }
     addNodeToTemplateByType(systemElement);
-    nodes.push(systemElement);
-
+    nodes.push(fulfill(systemElement, true, parentId));
 }
 
 function processContainerToDiagram(container, nodes, links, parentId) {
@@ -189,27 +185,18 @@ function processContainerToDiagram(container, nodes, links, parentId) {
     containerElement.isGroup = true;
     //TODO Añadir campos propios del container
     //Los containers sólo se pueden agrupar en layers u otros containers
-
-    let rank = 0;
     let components = container.components;
     let hasComponents = components !== undefined && !commons.prototype.isEmpty(components);
     if (hasComponents) {
-        nodes.push(fulfill(container, true, parentId, rank));
-        rank++;
         components.forEach(function (component) {
             processComponentToDiagram(component, nodes, links, container.id)
         });
-    } else {
-        nodes.push(fulfill(container, false, parentId, rank));
-        rank++;
     }
-
     if (parentId !== undefined) {
         containerElement.group = parentId;
     }
     addNodeToTemplateByType(containerElement);
-    nodes.push(containerElement);
-
+    nodes.push(fulfill(containerElement, true, parentId));
 }
 
 function processComponentToDiagram(component, nodes, links, parentId) {
@@ -221,8 +208,7 @@ function processComponentToDiagram(component, nodes, links, parentId) {
         componentElement.group = parentId;
     }
     addNodeToTemplateByType(componentElement);
-    nodes.push(componentElement);
-
+    nodes.push(fulfill(componentElement, false, parentId));
 }
 
 function findValues(obj, key) {

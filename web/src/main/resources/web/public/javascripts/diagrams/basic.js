@@ -10,6 +10,25 @@ function initBasic(nodeDataArray, linkDataArray) {
                 // position the graph in the middle of the diagram
                 initialContentAlignment: go.Spot.Center,
 
+                // use a custom ResizingTool (along with a custom ResizeAdornment on each Group)
+                resizingTool: new LaneResizingTool(),
+                // use a simple layout that ignores links to stack the top-level Pool Groups next to each other
+                layout: gojs(PoolLayout),
+                // use a simple layout that ignores links to stack the top-level Pool Groups next to each other
+                mouseDragOver: function (e) {
+                    if (!e.diagram.selection.all(function (n) {
+                            return n instanceof go.Group;
+                        })) {
+                        e.diagram.currentCursor = 'not-allowed';
+                    }
+                },
+                // a clipboard copied node is pasted into the original node's group (i.e. lane).
+                "commandHandler.copiesGroupKey": true,
+                // automatically re-layout the swim lanes after dragging the selection
+                "SelectionMoved": relayoutDiagram,  // this DiagramEvent listener is
+                "SelectionCopied": relayoutDiagram, // defined above
+                "animationManager.isEnabled": false,
+
                 // allow double-click in background to create a new node
                 "clickCreatingTool.archetypeNodeData": {
                     name: "Element",
@@ -24,7 +43,6 @@ function initBasic(nodeDataArray, linkDataArray) {
                                         { wrappingWidth: Infinity, alignment: go.GridLayout.Position, cellSize: new go.Size(1, 1) }),*/
                 // allow Ctrl-G to call groupSelection()
                 "commandHandler.archetypeGroupData": {name: "Group", isGroup: true, color: "blue"},
-                "commandHandler.copiesGroupKey": true,
                 "LinkDrawn": showLinkLabel,  // this DiagramEvent listener is defined below
                 "LinkRelinked": showLinkLabel,
                 scrollsPageOnFocus: false,
@@ -240,6 +258,34 @@ function initBasic(nodeDataArray, linkDataArray) {
                 // the same context menu Adornment is shared by all groups
                 contextMenu: partContextMenu
             }
+        );
+
+    // define a custom resize adornment that has two resize handles if the group is expanded
+    myDiagram.groupTemplate.resizeAdornmentTemplate =
+        gojs(go.Adornment, "Spot",
+            gojs(go.Placeholder),
+            gojs(go.Shape,  // for changing the length of a lane
+                {
+                    alignment: go.Spot.Right,
+                    desiredSize: new go.Size(7, 50),
+                    fill: "lightblue", stroke: "dodgerblue",
+                    cursor: "col-resize"
+                },
+                new go.Binding("visible", "", function (ad) {
+                    if (ad.adornedPart === null) return false;
+                    return ad.adornedPart.isSubGraphExpanded;
+                }).ofObject()),
+            gojs(go.Shape,  // for changing the breadth of a lane
+                {
+                    alignment: go.Spot.Bottom,
+                    desiredSize: new go.Size(50, 7),
+                    fill: "lightblue", stroke: "dodgerblue",
+                    cursor: "row-resize"
+                },
+                new go.Binding("visible", "", function (ad) {
+                    if (ad.adornedPart === null) return false;
+                    return ad.adornedPart.isSubGraphExpanded;
+                }).ofObject())
         );
 
     // Define the behavior for the Diagram background:

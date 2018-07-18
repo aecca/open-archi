@@ -57,7 +57,11 @@ public class Container extends StaticElement {
     public void override(Container source, boolean keepMeta, String suffix) {
         super.override(source, keepMeta, suffix);
         this.setTechnology(source.getTechnology());
-        this.setComponents(source.getComponents());
+        for (Component component : source.getComponents()) {
+            Component newComponent = new Component();
+            newComponent.override(component, keepMeta, suffix);
+            this.components.add(newComponent);
+        }
     }
 
     public void copyNonEmpty(Container source, boolean keepMeta) {
@@ -66,7 +70,11 @@ public class Container extends StaticElement {
             this.setTechnology(source.getTechnology());
         }
         if (source.getComponents() != null && !source.getComponents().isEmpty()) {
-            this.setComponents(source.getComponents());
+            for (Component component : source.getComponents()) {
+                Component newComponent = new Component();
+                newComponent.copyNonEmpty(component, keepMeta);
+                this.components.add(newComponent);
+            }
         }
     }
 

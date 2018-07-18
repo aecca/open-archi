@@ -106,12 +106,12 @@ public class System extends StaticElement {
         }
         for (System system : source.getSystems()) {
             System newSystem = new System();
-            newSystem.copyNonEmpty(system, keepMeta);
+            newSystem.override(system, keepMeta, suffix);
             this.systems.add(newSystem);
         }
         for (Component component : source.getComponents()) {
             Component newComponent = new Component();
-            newComponent.copyNonEmpty(component, keepMeta);
+            newComponent.override(component, keepMeta, suffix);
             this.components.add(newComponent);
         }
     }

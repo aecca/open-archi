@@ -78,8 +78,8 @@ DELETE FROM diagrams.shape;
 DELETE FROM diagrams.point;
 DELETE FROM diagrams.category;
 DELETE FROM diagrams.defaultcategory;
-DELETE FROM diagrams.layer_items;
 DELETE FROM diagrams.shape;
+DELETE FROM diagrams.size;
 
 DELETE FROM meta.account CASCADE;
 DELETE FROM meta.account_roles CASCADE;
