@@ -128,6 +128,7 @@ function processLayerToDiagram(layer, nodes, links, parentId) {
     if (parentId !== undefined) {
         layerElement.group = parentId;
     }
+    addNodeToTemplateByType(layerElement);
     nodes.push(layerElement);
 
     if (layer.systems) {
@@ -151,6 +152,7 @@ function processLayerToDiagram(layer, nodes, links, parentId) {
 
 function processSystemToDiagram(system, nodes, links, parentId) {
     let systemElement = commonInnerModelElement(system);
+    systemElement.isGroup = true;
     //TODO Añadir campos propios del system
     //Los systems sólo se pueden agrupar en layers u otros systems
     let rank = 0;
@@ -177,12 +179,14 @@ function processSystemToDiagram(system, nodes, links, parentId) {
     if (parentId !== undefined) {
         systemElement.group = parentId;
     }
+    addNodeToTemplateByType(systemElement);
     nodes.push(systemElement);
 
 }
 
 function processContainerToDiagram(container, nodes, links, parentId) {
     let containerElement = commonInnerModelElement(container);
+    containerElement.isGroup = true;
     //TODO Añadir campos propios del container
     //Los containers sólo se pueden agrupar en layers u otros containers
 
@@ -203,17 +207,20 @@ function processContainerToDiagram(container, nodes, links, parentId) {
     if (parentId !== undefined) {
         containerElement.group = parentId;
     }
+    addNodeToTemplateByType(containerElement);
     nodes.push(containerElement);
 
 }
 
 function processComponentToDiagram(component, nodes, links, parentId) {
     let componentElement = commonInnerModelElement(component);
+    componentElement.isGroup = false;
     //TODO Añadir campos propios del component
     //Los components sólo se pueden agrupar en layers u otros components
     if (parentId !== undefined) {
         componentElement.group = parentId;
     }
+    addNodeToTemplateByType(componentElement);
     nodes.push(componentElement);
 
 }

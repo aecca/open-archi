@@ -613,6 +613,20 @@ $(function () {
     });
 });
 
+function addNodeToTemplateByType(data, type) {
+    const templateNode = getNodeByType(data);
+    let isGroup = templateNode.isGroup !== undefined ? templateNode.isGroup : data.isGroup;
+    let type_ = type;
+    if (type_ === undefined) {
+        type_ =  data.category !== undefined ? data.category : data.kind
+    }
+    if (isGroup) {
+        myDiagram.groupTemplateMap.add(type_, templateNode);
+    } else {
+        myDiagram.nodeTemplateMap.add(type_, templateNode);
+    }
+}
+
 function checkAndSave() {
     let basicElementData = $('#basic-element-data');
     const key = basicElementData.attr("data-key");
@@ -625,13 +639,7 @@ function checkAndSave() {
         delete data["text"];
         data.kind = type;
         data.name = name;
-        const newNode = getNodeByType(data);
-        let group = newNode.isGroup;
-        if (group) {
-            myDiagram.groupTemplateMap.add(type, newNode);
-        } else {
-            myDiagram.nodeTemplateMap.add(type, newNode);
-        }
+        addNodeToTemplateByType(data, type);
         data.category = type;
         myDiagram.model.removeNodeData(data);
         myDiagram.model.addNodeData(data);
