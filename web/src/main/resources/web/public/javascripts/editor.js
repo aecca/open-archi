@@ -280,8 +280,6 @@ function expand(data) {
     }
     meta.id = model.id;
     const newDiagram = OpenArchiWrapper.toDiagram(model);
-    //const newDiagram = go.Model.fromJson(diagram);
-
     myDiagram.startTransaction("Adding new element");
     myDiagram.model.addNodeDataCollection(newDiagram.nodeDataArray);
     myDiagram.model.addLinkDataCollection(newDiagram.linkDataArray);
@@ -308,6 +306,7 @@ function reexpand(e) {
     myDiagram.findTopLevelGroups().each(function (g) {
         expandGroups(g, 0, level);
     });
+    relayoutDiagram();
     myDiagram.commitTransaction("reexpand");
 }
 
@@ -990,8 +989,7 @@ function handleImageSelect(evt) {
 // this may be called to force the lanes to be laid out again
 function relayoutLanes() {
     myDiagram.nodes.each(function (lane) {
-        if (!(lane instanceof go.Group)) return;
-        if (lane.category === "Pool") return;
+        if (!(lane instanceof go.Group) || lane.category !== "Lane") return;
         lane.layout.isValidLayout = false;  // force it to be invalid
     });
     myDiagram.layoutDiagram();
@@ -1001,7 +999,7 @@ function relayoutLanes() {
 function relayoutDiagram() {
     myDiagram.layout.invalidateLayout();
     myDiagram.findTopLevelGroups().each(function (g) {
-        if (g.category === "Pool") g.layout.invalidateLayout();
+        if (g.category === "LANE") g.layout.invalidateLayout();
     });
     myDiagram.layoutDiagram();
 }
