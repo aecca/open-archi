@@ -1,6 +1,8 @@
 package com.araguacaima.open_archi.persistence.diagrams.core;
 
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
@@ -12,9 +14,10 @@ import javax.persistence.*;
 public class Image extends BaseEntity {
 
     @Column
-    @Enumerated(EnumType.STRING)
+    @Convert(converter = MimeTypeConverter.class)
     private MimeType type;
     @Column
+    @JsonDeserialize(using = StringToByteArray.class)
     private byte[] raw = new byte[0];
     @Column
     private String url;

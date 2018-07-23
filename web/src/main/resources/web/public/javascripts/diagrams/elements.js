@@ -479,7 +479,8 @@ function getNodeByType(paletteModel) {
                             shp.height = NaN;
                         }
                         updateCrossLaneLinks(grp);
-                    }
+                    },
+                    contextMenu: partContextMenu
                 },
                 new go.Binding("isSubGraphExpanded", "expanded").makeTwoWay(),
                 // the lane header consisting of a Shape and a TextBlock

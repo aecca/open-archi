@@ -1,5 +1,7 @@
 package com.araguacaima.open_archi.persistence.diagrams.core;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum MimeType {
 
     BMP("image/bmp"),
@@ -15,6 +17,7 @@ public enum MimeType {
         this.value = value;
     }
 
+    @JsonValue
     public String getValue() {
         return value;
     }

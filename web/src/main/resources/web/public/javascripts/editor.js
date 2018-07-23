@@ -939,7 +939,14 @@ function handleImageSelect(evt) {
                         panel.remove(panelImage);
                     }
                     panel.insertAt(0, imagePanel);
-                    //myDiagram.add(imagePanel);
+                    let model = myDiagram.model;
+                    const modelData = JSON.parse(model.toJson());
+                    let nodes = findValues(modelData, "key");
+                    model.nodeDataArray.forEach(node => {
+                        if (node.key === parseInt(elementKey)) {
+                            model.setDataProperty(node, "image", {raw: raw, type: type});
+                        }
+                    });
                     myDiagram.requestUpdate();
                 }
                 $element.modal('hide');
@@ -1143,4 +1150,31 @@ function stayInGroup(part, pt, gridpt) {
     const x = Math.max(p1.x + m.left, Math.min(pt.x, p2.x - m.right - b.width - 1)) + (loc.x - b.x);
     const y = Math.max(p1.y + m.top, Math.min(pt.y, p2.y - m.bottom - b.height - 1)) + (loc.y - b.y);
     return new go.Point(x, y);
+}
+
+
+function findValues(obj, key) {
+    return findValuesHelper(obj, key, []);
+}
+
+function findValuesHelper(obj, key, list) {
+    let i;
+    if (!obj) return list;
+    if (obj instanceof Array) {
+        for (i in obj) {
+            list = list.concat(findValuesHelper(obj[i], key, []));
+        }
+        return list;
+    }
+    if (obj[key]) list.push(obj);
+
+    if ((typeof obj === "object") && (obj !== null)) {
+        let children = Object.keys(obj);
+        if (children.length > 0) {
+            for (i = 0; i < children.length; i++) {
+                list = list.concat(findValuesHelper(obj[children[i]], key, []));
+            }
+        }
+    }
+    return list;
 }
