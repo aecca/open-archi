@@ -181,6 +181,21 @@ public class Version implements Serializable, Comparable<Version>, Cloneable, Si
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Version version = (Version) o;
+
+        return id != null ? id.equals(version.id) : version.id == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
+
+    @Override
     public void override(Version source, boolean keepMeta, String suffix) {
         this.id.override(source.getId(), keepMeta, suffix);
     }
