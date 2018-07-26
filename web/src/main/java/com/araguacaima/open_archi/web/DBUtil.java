@@ -10,6 +10,7 @@ import com.araguacaima.open_archi.persistence.meta.BasicEntity;
 import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
 import io.github.benas.randombeans.EnhancedRandomBuilder;
 import io.github.benas.randombeans.api.EnhancedRandom;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -313,6 +314,13 @@ public class DBUtil {
                     }
                 } else {
                     ((Item) entity_).override((Item) entity, false, null);
+                    return entity_;
+                }
+            } else {
+                Object entity_ = JPAEntityManagerUtils.find(entity);
+                if (entity_ != null) {
+                    Object[] args = new Object[]{entity, false, StringUtils.EMPTY};
+                    reflectionUtils.invokeMethod(entity_, "override", args);
                     return entity_;
                 }
             }

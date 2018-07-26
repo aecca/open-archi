@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Embeddable
-public class VersionId implements Serializable, Comparable<VersionId>, Cloneable {
+public class VersionId implements Serializable, Comparable<VersionId>, Cloneable, SimpleOverridable<VersionId> {
 
     private static final long serialVersionUID = -5350803918802322500L;
 
@@ -98,5 +98,19 @@ public class VersionId implements Serializable, Comparable<VersionId>, Cloneable
     @Override
     public String toString() {
         return major + "." + minor + "." + build;
+    }
+
+    @Override
+    public void override(VersionId source, boolean keepMeta, String suffix) {
+        this.major = source.getMajor();
+        this.minor = source.getMinor();
+        this.build = source.getBuild();
+    }
+
+    @Override
+    public void copyNonEmpty(VersionId source, boolean keepMeta) {
+        this.major = source.getMajor();
+        this.minor = source.getMinor();
+        this.build = source.getBuild();
     }
 }

@@ -23,7 +23,7 @@ import java.util.ResourceBundle;
 @PersistenceUnit(unitName = "open-archi")
 @Table(name = "CompositeElement", schema = "DIAGRAMS")
 @DynamicUpdate
-public class CompositeElement<T extends ElementKind> implements Valuable {
+public class CompositeElement<T extends ElementKind>  {
 
     private static SpecificationMapBuilder specificationMapBuilder = new SpecificationMapBuilder(MapUtils.getInstance());
 
@@ -74,60 +74,4 @@ public class CompositeElement<T extends ElementKind> implements Valuable {
         this.version = version;
     }
 
-    @Override
-    public void validateRequest() throws EntityError {
-        //Do nothing. All request are valid on this entity
-    }
-
-    @Override
-    public void validateCreation() throws EntityError {
-        try {
-            SpecificationMap specificationMap = specificationMapBuilder.getInstance(this.getClass(), true);
-            Specification specification = specificationMap.getSpecificationFromMethod("validateCreation");
-            if (specification != null) {
-                Map map = new HashMap<>();
-                if (!specification.isSatisfiedBy(this, map)) {
-                    throw new EntityError(map.get("ERROR").toString());
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new EntityError(e.getMessage(), e);
-        }
-
-    }
-
-    @Override
-    public void validateModification() throws EntityError {
-        try {
-            SpecificationMap specificationMap = specificationMapBuilder.getInstance(this.getClass(), true);
-            Specification specification = specificationMap.getSpecificationFromMethod("validateModification");
-            if (specification != null) {
-                Map map = new HashMap<>();
-                if (!specification.isSatisfiedBy(this, map)) {
-                    throw new EntityError(map.get("ERROR").toString());
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new EntityError(e.getMessage(), e);
-        }
-    }
-
-    @Override
-    public void validateReplacement() throws EntityError {
-        try {
-            SpecificationMap specificationMap = specificationMapBuilder.getInstance(this.getClass(), true);
-            Specification specification = specificationMap.getSpecificationFromMethod("validateReplacement");
-            if (specification != null) {
-                Map map = new HashMap<>();
-                if (!specification.isSatisfiedBy(this, map)) {
-                    throw new EntityError(map.get("ERROR").toString());
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new EntityError(e.getMessage(), e);
-        }
-    }
 }

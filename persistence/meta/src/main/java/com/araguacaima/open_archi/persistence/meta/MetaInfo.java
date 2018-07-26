@@ -2,6 +2,7 @@ package com.araguacaima.open_archi.persistence.meta;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.Cascade;
@@ -26,7 +27,7 @@ import java.util.UUID;
         query = "select count(a) from MetaInfo a"), @NamedQuery(
         name = MetaInfo.GET_ALL_META_INFO,
         query = "select a from MetaInfo a order by a.created")})
-public class MetaInfo implements Serializable, Comparable<MetaInfo> {
+public class MetaInfo implements Serializable, Comparable<MetaInfo>, SimpleOverridable<MetaInfo> {
 
     public static final String GET_ALL_META_INFO = "MetaInfo.getAllMetaInfo";
     public static final String COUNT_ALL_META_INFO = "MetaInfo.countAllMetaInfo";
@@ -148,5 +149,43 @@ public class MetaInfo implements Serializable, Comparable<MetaInfo> {
             return 0;
         }
         return this.created.compareTo(o.getCreated());
+    }
+
+    @Override
+    public void override(MetaInfo source, boolean keepMeta, String suffix) {
+        this.id = source.getId();
+        if (source.getHistory() != null) {
+            source.getHistory().forEach(history -> {
+                History history_ = new History();
+                history_.override(history, keepMeta, suffix);
+                this.history.add(history_);
+            });
+        }
+        if (source.getCreatedBy() == null) {
+            this.createdBy = null;
+        } else {
+            this.createdBy.override(source.getCreatedBy(), keepMeta, suffix);
+        }
+        this.created = source.getCreated();
+    }
+
+    @Override
+    public void copyNonEmpty(MetaInfo source, boolean keepMeta) {
+        if (StringUtils.isNotBlank(source.getId())) {
+            this.id = source.getId();
+        }
+        if (source.getHistory() != null) {
+            source.getHistory().forEach(history -> {
+                History history_ = new History();
+                history_.copyNonEmpty(history, keepMeta);
+                this.history.add(history_);
+            });
+        }
+        if (source.getCreatedBy() != null) {
+            this.createdBy.copyNonEmpty(source.getCreatedBy(), keepMeta);
+        }
+        if (source.getCreated() != null) {
+            this.created = source.getCreated();
+        }
     }
 }

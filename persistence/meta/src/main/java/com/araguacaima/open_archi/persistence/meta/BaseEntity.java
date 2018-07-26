@@ -178,6 +178,8 @@ public abstract class BaseEntity implements Serializable, BasicEntity, Cloneable
             } else {
                 this.meta = buildDefaultMeta();
             }
+        } else {
+            this.meta = null;
         }
     }
 

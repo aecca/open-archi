@@ -1,5 +1,6 @@
 package com.araguacaima.open_archi.persistence.meta;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -20,7 +21,7 @@ import java.util.UUID;
         @NamedQuery(
                 name = History.GET_DEFAULT_ACTIVE_VERSION,
                 query = "select a from History a where a.status = 'ACTIVE'")})
-public class History implements Serializable, Comparable<History> {
+public class History implements Serializable, Comparable<History>, SimpleOverridable<History> {
 
     public static final String GET_DEFAULT_HISTORY_VERSION = "get.default.history.version";
     public static final String GET_DEFAULT_ACTIVE_VERSION = "get.default.active.version";
@@ -99,6 +100,46 @@ public class History implements Serializable, Comparable<History> {
         } else {
             //TODO completar
             return compare;
+        }
+    }
+
+    @Override
+    public void override(History source, boolean keepMeta, String suffix) {
+        this.id = source.getId();
+        if (source.getVersion() != null) {
+            Version version_ = new Version();
+            version_.override(source.getVersion(), keepMeta, suffix);
+            this.version = version_;
+        }
+        this.status = source.getStatus();
+        this.modified = source.modified;
+        if (source.getModifiedBy() != null) {
+            Account account_ = new Account();
+            account_.override(source.getModifiedBy(), keepMeta, suffix);
+            this.modifiedBy = account_;
+        } else {
+            this.modifiedBy = null;
+        }
+    }
+
+    @Override
+    public void copyNonEmpty(History source, boolean keepMeta) {
+        if (StringUtils.isNotBlank(source.getId())) {
+            this.id = source.getId();
+        }
+        if (source.getVersion() != null) {
+            Version version_ = new Version();
+            version_.copyNonEmpty(source.getVersion(), keepMeta);
+            this.version = version_;
+        }
+        this.status = source.getStatus();
+        if (source.getModified() != null) {
+            this.modified = source.getModified();
+        }
+        if (source.getModifiedBy() != null) {
+            Account account_ = new Account();
+            account_.copyNonEmpty(source.getModifiedBy(), keepMeta);
+            this.modifiedBy = account_;
         }
     }
 }

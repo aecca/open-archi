@@ -1266,7 +1266,6 @@ public class Server {
                         if (feature == null) {
                             throw new Exception("Invalid kind of feature");
                         }
-                        feature.validateReplacement();
                         DBUtil.persist(feature);
                         response.status(HTTP_CREATED);
                         response.header("Location", request.pathInfo() + "/" + feature.getId());

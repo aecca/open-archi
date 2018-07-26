@@ -47,7 +47,6 @@ public class Component extends StaticElement {
         this.size = size;
     }
 
-
     public void override(Component source, boolean keepMeta, String suffix) {
         super.override(source, keepMeta, suffix);
         this.setTechnology(source.getTechnology());

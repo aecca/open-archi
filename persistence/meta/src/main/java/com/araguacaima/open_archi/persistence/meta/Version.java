@@ -24,7 +24,7 @@ import java.io.Serializable;
                 + "FROM Version v1 LEFT OUTER JOIN Version v2 ON ( "
                 + "  (v1.id.major = v2.id.major AND v1.id.minor < v2.id.minor) OR (v1.id.major = v2.id.major AND v1.id.minor = v2.id.minor AND v1.id.build < v2.id.build) "
                 + "  OR (v1.id.major < v2.id.major))")})
-public class Version implements Serializable, Comparable<Version>, Cloneable {
+public class Version implements Serializable, Comparable<Version>, Cloneable, SimpleOverridable<Version> {
 
     public static final String GET_ALL_VERSIONS = "Version.getAllVersions";
     public static final String COUNT_ALL_VERSIONS = "Version.countAllVersions";
@@ -175,9 +175,20 @@ public class Version implements Serializable, Comparable<Version>, Cloneable {
         return this;
     }
 
-
     @Override
     public int compareTo(Version version) {
         return this.id.compareTo(version.getId());
+    }
+
+    @Override
+    public void override(Version source, boolean keepMeta, String suffix) {
+        this.id.override(source.getId(), keepMeta, suffix);
+    }
+
+    @Override
+    public void copyNonEmpty(Version source, boolean keepMeta) {
+        if (source.getId() != null) {
+            this.id.copyNonEmpty(source.getId(), keepMeta);
+        }
     }
 }
