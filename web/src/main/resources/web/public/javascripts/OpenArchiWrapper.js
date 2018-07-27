@@ -53,8 +53,11 @@ function commonInnerDiagramElement(node) {
         object.location.y = loc.split(" ")[1];
     }
     object = fillShape(object, node);
-    if (node.image) {
-        object.image = node.image;
+    let image = node.image;
+    if (image) {
+        let raw = image.raw;
+        raw = window.atob(raw.replace(/^data:image\/svg\+xml;base64,/, ""));
+        object.image = {raw: raw, type: image.type};
     }
     return object;
 }
@@ -78,6 +81,13 @@ function commonInnerModelElement(model) {
         object.size = shape.size.width + " " + shape.size.height;
     } else {
         object.category = model.kind;
+    }
+
+    let image = model.image;
+    if (image) {
+        let raw = image.raw;
+        raw = "data:image/svg+xml;base64," + window.btoa(raw);
+        object.image = {raw: raw, type: image.type};
     }
     object.figure = "RoundedRectangle";
     return object;
@@ -477,6 +487,14 @@ class OpenArchiWrapper {
     static fromTitle(text, data, model) {
         model.setDataProperty(data, "text", text);
         model.setDataProperty(data, "name", text);
+    }
+
+    static toImage(data, node) {
+        return data.image ? data.image.raw : "";
+    }
+
+    static fromImage(text, data, model) {
+        model.setDataProperty(data, "source", data.image.raw);
     }
 
     static toName(data, node) {

@@ -17,6 +17,24 @@ public enum MimeType {
         this.value = value;
     }
 
+    public static MimeType findValue(String value) throws IllegalArgumentException {
+        MimeType result = null;
+        try {
+            result = MimeType.valueOf(value);
+        } catch (IllegalArgumentException ignored) {
+            for (MimeType mimeType : MimeType.values()) {
+                String accionEnumStr = mimeType.getValue();
+                if (accionEnumStr.equalsIgnoreCase(value)) {
+                    return mimeType;
+                }
+            }
+        }
+        if (result == null) {
+            throw new IllegalArgumentException("No enum const " + MimeType.class.getName() + "." + value);
+        }
+        return result;
+    }
+
     @JsonValue
     public String getValue() {
         return value;

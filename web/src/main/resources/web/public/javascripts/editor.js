@@ -809,6 +809,96 @@ function processCss(style, shape, path) {
     }
 }
 
+function buildSVGComponents(raw) {
+    const xmldoc = new DOMParser().parseFromString(raw, "text/xml");
+    let svgComponents = gojs(go.Panel, {
+        /* desiredSize: new go.Size(60, 60),
+                     width: 60,
+                     height: 60*/
+    });  // this Panel holds all of the Shapes for the drawing
+    const circles = xmldoc.getElementsByTagName("circle");
+    for (let i = 0; i < circles.length; i++) {
+        // represent each SVG path by a Shape of type Path with its own fill and stroke
+        let circle = circles[i];
+        let shape = new go.Shape();
+        let style = circle.getAttribute("style");
+        if (style && typeof style === "string" && style !== "none") {
+            processCss(style, shape, circle);
+        } else {
+            let stroke = circle.getAttribute("stroke");
+            if (typeof stroke === "string" && stroke !== "none") {
+                shape.stroke = stroke;
+            } else {
+                shape.stroke = null;
+            }
+            let strokewidth = parseFloat(circle.getAttribute("stroke-width"));
+            if (!isNaN(strokewidth)) shape.strokeWidth = strokewidth;
+            let fill = circle.getAttribute("fill");
+            if (typeof fill === "string") {
+                shape.fill = (fill === "none") ? null : fill;
+            }
+        }
+
+        let id = circle.getAttribute("id");
+        if (typeof id === "string") shape.name = id;
+
+        let cx = circle.getAttribute("cx");
+        let cy = circle.getAttribute("cy");
+        let r = circle.getAttribute("r");
+        let d = parseFloat(r) * 2;
+        let data = "M cx, cy m -r, 0 a r,r 0 1,0 d,0 a r,r 0 1,0 -d,0".replace(/cx/g, cx).replace(/cy/g, cy).replace(/r/g, r.toString()).replace(/d/g, d.toString());
+        shape.geometry = go.Geometry.parse(data, true);
+
+        // collect these Shapes in the single Panel
+        svgComponents.add(shape);
+    }
+
+    const paths = xmldoc.getElementsByTagName("path");
+    for (let i = 0; i < paths.length; i++) {
+        // represent each SVG path by a Shape of type Path with its own fill and stroke
+        let path = paths[i];
+        let shape = new go.Shape();
+        let style = path.getAttribute("style");
+        if (style && typeof style === "string" && style !== "none") {
+            processCss(style, shape, path);
+        } else {
+            let stroke = path.getAttribute("stroke");
+            if (typeof stroke === "string" && stroke !== "none") {
+                shape.stroke = stroke;
+            } else {
+                shape.stroke = null;
+            }
+            let strokewidth = parseFloat(path.getAttribute("stroke-width"));
+            if (!isNaN(strokewidth)) shape.strokeWidth = strokewidth;
+            let fill = path.getAttribute("fill");
+            if (typeof fill === "string") {
+                shape.fill = (fill === "none") ? null : fill;
+            }
+        }
+
+        let transform = path.getAttribute("transform");
+        if (transform && typeof transform === "string" && transform !== "none") {
+            let tokens = transform.split(";");
+            for (let j = 0; j < tokens.length; j++) {
+                let token = tokens[j];
+                if (token.match('^scale\\(')) {
+                    let split = token.split("(")[1];
+                    let x = split.substr(0, split.length - 1);
+                    shape.scale = parseFloat(x);
+                }
+            }
+        }
+
+        let id = path.getAttribute("id");
+        if (typeof id === "string") shape.name = id;
+        // convert the path data string into a go.Geometry
+        let data = path.getAttribute("d");
+        if (typeof data === "string") shape.geometry = go.Geometry.parse(data, true);
+        // collect these Shapes in the single Panel
+        svgComponents.add(shape);
+    }
+}
+
 function handleImageSelect(evt) {
     let files = evt.target.files;
     let i = 0, file;
@@ -829,159 +919,53 @@ function handleImageSelect(evt) {
                 rawImage = window.atob(rawImage);
                 let raw = rawImage;
                 raw = parseSVG(raw);
-                const xmldoc = new DOMParser().parseFromString(raw, "text/xml");
-                let svgComponents = gojs(go.Panel, {
-                    /* desiredSize: new go.Size(60, 60),
-                     width: 60,
-                     height: 60*/
-                });  // this Panel holds all of the Shapes for the drawing
-                const circles = xmldoc.getElementsByTagName("circle");
-                for (let i = 0; i < circles.length; i++) {
-                    // represent each SVG path by a Shape of type Path with its own fill and stroke
-                    let circle = circles[i];
-                    let shape = new go.Shape();
-                    let style = circle.getAttribute("style");
-                    if (style && typeof style === "string" && style !== "none") {
-                        processCss(style, shape, circle);
-                    } else {
-                        let stroke = circle.getAttribute("stroke");
-                        if (typeof stroke === "string" && stroke !== "none") {
-                            shape.stroke = stroke;
-                        } else {
-                            shape.stroke = null;
-                        }
-                        let strokewidth = parseFloat(circle.getAttribute("stroke-width"));
-                        if (!isNaN(strokewidth)) shape.strokeWidth = strokewidth;
-                        let fill = circle.getAttribute("fill");
-                        if (typeof fill === "string") {
-                            shape.fill = (fill === "none") ? null : fill;
-                        }
-                    }
 
-                    let id = circle.getAttribute("id");
-                    if (typeof id === "string") shape.name = id;
-
-                    let cx = circle.getAttribute("cx");
-                    let cy = circle.getAttribute("cy");
-                    let r = circle.getAttribute("r");
-                    let d = parseFloat(r) * 2;
-                    let data = "M cx, cy m -r, 0 a r,r 0 1,0 d,0 a r,r 0 1,0 -d,0".replace(/cx/g, cx).replace(/cy/g, cy).replace(/r/g, r.toString()).replace(/d/g, d.toString());
-                    shape.geometry = go.Geometry.parse(data, true);
-
-                    // collect these Shapes in the single Panel
-                    svgComponents.add(shape);
-                }
-
-                const paths = xmldoc.getElementsByTagName("path");
-                for (let i = 0; i < paths.length; i++) {
-                    // represent each SVG path by a Shape of type Path with its own fill and stroke
-                    let path = paths[i];
-                    let shape = new go.Shape();
-                    let style = path.getAttribute("style");
-                    if (style && typeof style === "string" && style !== "none") {
-                        processCss(style, shape, path);
-                    } else {
-                        let stroke = path.getAttribute("stroke");
-                        if (typeof stroke === "string" && stroke !== "none") {
-                            shape.stroke = stroke;
-                        } else {
-                            shape.stroke = null;
-                        }
-                        let strokewidth = parseFloat(path.getAttribute("stroke-width"));
-                        if (!isNaN(strokewidth)) shape.strokeWidth = strokewidth;
-                        let fill = path.getAttribute("fill");
-                        if (typeof fill === "string") {
-                            shape.fill = (fill === "none") ? null : fill;
-                        }
-                    }
-
-                    let transform = path.getAttribute("transform");
-                    if (transform && typeof transform === "string" && transform !== "none") {
-                        let tokens = transform.split(";");
-                        for (let j = 0; j < tokens.length; j++) {
-                            let token = tokens[j];
-                            if (token.match('^scale\\(')) {
-                                let split = token.split("(")[1];
-                                let x = split.substr(0, split.length - 1);
-                                shape.scale = parseFloat(x);
-                            }
-                        }
-                    }
-
-                    let id = path.getAttribute("id");
-                    if (typeof id === "string") shape.name = id;
-                    // convert the path data string into a go.Geometry
-                    let data = path.getAttribute("d");
-                    if (typeof data === "string") shape.geometry = go.Geometry.parse(data, true);
-                    // collect these Shapes in the single Panel
-                    svgComponents.add(shape);
-                }
-
-                // add the Panel as the only element in the Part
-                let imagePanel = gojs(go.Panel, {
-                        width: 60,
-                        height: 60,
-                        name: "IMAGE"
-                    },
-                    new go.Binding("isSubGraphExpanded", "expanded").makeTwoWay(),
-                    new go.Binding("visible", "isSubGraphExpanded").ofObject());
-                // the default position of the Panel drawing in the Part is (0,0)
-                //  imagePanel.add(svgComponents);
-                imagePanel.add(gojs(go.Picture, {desiredSize: new go.Size(60, 60), source: rawImage_}));
                 let $element = $('#element-image-data');
                 const elementKey = $element.attr("key");
-                let node = myDiagram.findNodeForKey(elementKey);
-                let panel;
-                panel = node.findObject("HEADER");
-                if (panel) {
-                    let panelImage = node.findObject("IMAGE");
-                    if (panelImage) {
-                        panel.remove(panelImage);
+
+                myDiagram.model.nodeDataArray.forEach(node => {
+                    if (node.key === parseInt(elementKey)) {
+                        myDiagram.model.setDataProperty(node, "image", {raw: rawImage_, type: type});
                     }
-                    panel.insertAt(0, imagePanel);
-                    let model = myDiagram.model;
-                    const modelData = JSON.parse(model.toJson());
-                    let nodes = findValues(modelData, "key");
-                    model.nodeDataArray.forEach(node => {
-                        if (node.key === parseInt(elementKey)) {
-                            model.setDataProperty(node, "image", {raw: raw, type: type});
-                        }
-                    });
-                    myDiagram.requestUpdate();
-                }
+                });
+                myDiagram.requestUpdate();
+
                 $element.modal('hide');
-                /*const id = 1;
-                let image = {
-                    type: type,
-                    raw: rawImage
-                };
-                $.ajax({
-                    url: '/open-archi/api/models/' + id,
-                    data: JSON.stringify(image),
-                    type: 'PUT',
-                    dataType: "json",
-                    crossDomain: true,
-                    contentType: 'application/json',
-                    xhr: function () {
-                        return window.XMLHttpRequest === null || new window.XMLHttpRequest().addEventListener === null
-                            ? new window.ActiveXObject("Microsoft.XMLHTTP")
-                            : $.ajaxSettings.xhr();
+            };
+        })(file);
+        // Read in the image file as a data URL.
+        reader.readAsDataURL(file);
+    }
+}
+
+/*
+
+function handleImageSelect(evt) {
+    let files = evt.target.files;
+    let i = 0, file;
+    for (; file = files[i]; i++) {
+        const type = file.type;
+        // Only process SVG image files.
+        if (type !== 'image/svg+xml') {
+            continue;
+        }
+
+        const reader = new FileReader();
+
+        // Closure to capture the file information.
+        reader.onload = (function (file) {
+            return function (e) {
+                let raw = window.atob(e.target.result.replace(/^data:image\/svg\+xml;base64,/, ""));
+                let $element = $('#element-image-data');
+                const elementKey = $element.attr("key");
+                let model = myDiagram.model;
+                model.nodeDataArray.forEach(node => {
+                    if (node.key === parseInt(elementKey)) {
+                        model.setDataProperty(node, "image", {raw: raw, type: type});
                     }
-                }).done(function (data) {
-                        if (response === 200) {
-                            alert("created");
-                        } else {
-                            if (response === 201) {
-                                alert("accepted");
-                            } else {
-                                alert(data);
-                            }
-                        }
-                    }
-                ).fail(function (data) {
-                        alert("fail");
-                    }
-                )*/
+                });
+                myDiagram.requestUpdate();
+                $element.modal('hide');
             };
         })(file);
 
@@ -991,6 +975,7 @@ function handleImageSelect(evt) {
     }
 
 }
+*/
 
 
 // this may be called to force the lanes to be laid out again

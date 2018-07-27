@@ -1,5 +1,7 @@
 package com.araguacaima.open_archi.persistence.diagrams.core;
 
+import com.araguacaima.commons.utils.EnumsUtils;
+
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
@@ -10,7 +12,6 @@ public class MimeTypeConverter implements AttributeConverter<MimeType, String> {
         if (value == null) {
             return null;
         }
-
         return value.getValue();
     }
 
@@ -18,7 +19,6 @@ public class MimeTypeConverter implements AttributeConverter<MimeType, String> {
         if (value == null) {
             return null;
         }
-
-        return MimeType.valueOf(value);
+        return MimeType.findValue(value);
     }
 }
