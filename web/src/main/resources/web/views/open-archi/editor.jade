@@ -111,8 +111,10 @@ append scripts
                 });
                 viewMode.on('slideStop', reexpand);
             }
-            $("#element-image").on("change", handleImageSelect);
-            $("#element-image-2").on("change", handleImageSelect);
+            var $element1 = $("#element-image");
+            $element1.on("change", handleImageSelect);
+            var $element2 = $("#element-image-2");
+            $element2.on("change", handleImageSelect);
 
             if (fullView) {
                 $("#infoDraggable").show();

@@ -900,6 +900,11 @@ function buildSVGComponents(raw) {
     }
 }
 
+
+function cleanImage(evt) {
+    alert(evt.target);
+}
+
 function handleImageSelect(evt) {
     let files = evt.target.files;
     let i = 0, file;

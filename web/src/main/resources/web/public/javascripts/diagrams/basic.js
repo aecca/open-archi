@@ -345,6 +345,8 @@ function initBasic(nodeDataArray, linkDataArray) {
             }
             let modal = $('#basic-element-data');
             modal.attr("data-key", data.key);
+            $('#element-image-2').val('');
+            $('#elementTypesDropdown').val('');
             modal.on('show.bs.modal', function (event) {
                 const button = $(event.relatedTarget); // Button that triggered the modal
                 const modal = $(this);
