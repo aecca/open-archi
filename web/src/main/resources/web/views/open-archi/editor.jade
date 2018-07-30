@@ -112,7 +112,7 @@ append scripts
                 viewMode.on('slideStop', reexpand);
             }
             $("#element-image").on("change", handleImageSelect);
-
+            $("#element-image-2").on("change", handleImageSelect);
 
             if (fullView) {
                 $("#infoDraggable").show();
@@ -169,6 +169,11 @@ block content
                         | &nbsp;
                         span.caret
                     ul.dropdown-menu#elementTypesDropdown(role="menu", aria-labelledby="elementTypesDropdown")
+            .form-group
+                label.col-form-label Image (Only svg is permitted):
+                .dropdown
+                    input#element-image-2(type="file", name="image", accept="image/svg+xml")
+
     +modal("Element role", "element-role-data")
         form#element-role-form
             .form-group

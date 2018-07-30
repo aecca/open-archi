@@ -147,17 +147,12 @@ function getNodeByType(paletteModel) {
                         },
                         gojs("SubGraphExpanderButton",
                             {alignment: go.Spot.Right, margin: 5}),
-
-
                         gojs(go.Panel, "Table",
                             {
                                 margin: 6,
                                 maxSize: new go.Size(200, NaN),
                                 name: "IMAGE"
                             },
-                            new go.Binding("visible", "isSubGraphExpanded", function (e) {
-                                return !e;
-                            }).ofObject(),
                             // the two TextBlocks in column 0 both stretch in width
                             // but align on the left side
                             gojs(go.RowColumnDefinition,
@@ -172,7 +167,7 @@ function getNodeByType(paletteModel) {
                                     row: 0,
                                     column: 0,
                                     margin: 2,
-                                    desiredSize: new go.Size(40, 40),
+                                    maxSize: new go.Size(30, 30),
                                     imageStretch: go.GraphObject.Uniform,
                                     alignment: go.Spot.TopLeft
                                 },
@@ -184,46 +179,13 @@ function getNodeByType(paletteModel) {
                                     row: 0,
                                     column: 1,
                                     angle: 0,
-                                    margin: 3,
-                                    alignment: go.Spot.TopLeft,
-                                    font: "bold 18px sans-serif",
+                                    margin: 2,
+                                    font: "bold 13pt sans-serif",
+                                    alignment: go.Spot.BottomRight,
                                     stroke: "white"
                                 },
                                 new go.Binding("text", "", OpenArchiWrapper.toTitle).makeTwoWay(OpenArchiWrapper.fromTitle))
-                        ),
-
-
-                        /*gojs(go.Panel, {
-                                width: 60,
-                                height: 60,
-                                name: "IMAGE",
-                                visible: true
-                            },
-                            new go.Binding("isSubGraphExpanded", "expanded").makeTwoWay(),
-                            new go.Binding("visible", "isSubGraphExpanded").ofObject(),
-                            gojs(go.Picture,
-                                {
-                                    name: "IMAGE",
-                                    row: 0,
-                                    visible: true,
-                                    column: 1,
-                                    margin: 2,
-                                    desiredSize: new go.Size(60, 60),
-                                    imageStretch: go.GraphObject.Uniform,
-                                    alignment: go.Spot.TopRight
-                                },
-                                new go.Binding("source", "", OpenArchiWrapper.toImage).makeTwoWay(OpenArchiWrapper.fromImage))
-                        ),
-                        gojs(go.TextBlock,
-                            {
-                                alignment: go.Spot.Left,
-                                editable: true,
-                                margin: 5,
-                                font: "bold 18px sans-serif",
-                                stroke: "white",
-                                click: toogleCollapseGroup
-                            },
-                            new go.Binding("text", "", OpenArchiWrapper.toTitle).makeTwoWay(OpenArchiWrapper.fromTitle))*/
+                        )
                     ),  // end Horizontal Panel
                     gojs(go.Placeholder,
                         {
@@ -296,37 +258,45 @@ function getNodeByType(paletteModel) {
                         },
                         gojs("SubGraphExpanderButton",
                             {alignment: go.Spot.Right, margin: 5}),
-                        gojs(go.Panel, {
-                                width: 60,
-                                height: 60,
-                                name: "IMAGE",
-                                visible: true
+                        gojs(go.Panel, "Table",
+                            {
+                                margin: 6,
+                                maxSize: new go.Size(200, NaN),
+                                name: "IMAGE"
                             },
-                            new go.Binding("isSubGraphExpanded", "expanded").makeTwoWay(),
-                            new go.Binding("visible", "isSubGraphExpanded").ofObject(),
+                            // the two TextBlocks in column 0 both stretch in width
+                            // but align on the left side
+                            gojs(go.RowColumnDefinition,
+                                {
+                                    column: 0,
+                                    stretch: go.GraphObject.Horizontal,
+                                    alignment: go.Spot.Left
+                                }),
                             gojs(go.Picture,
                                 {
                                     name: "IMAGE",
                                     row: 0,
-                                    visible: true,
-                                    column: 1,
+                                    column: 0,
                                     margin: 2,
-                                    desiredSize: new go.Size(60, 60),
+                                    maxSize: new go.Size(30, 30),
                                     imageStretch: go.GraphObject.Uniform,
-                                    alignment: go.Spot.TopRight
+                                    alignment: go.Spot.TopLeft
                                 },
-                                new go.Binding("source", "", OpenArchiWrapper.toImage).makeTwoWay(OpenArchiWrapper.fromImage))
-                        ),
-                        gojs(go.TextBlock,
-                            {
-                                alignment: go.Spot.Left,
-                                editable: true,
-                                margin: 5,
-                                font: "bold 18px sans-serif",
-                                stroke: "white",
-                                click: toogleCollapseGroup
-                            },
-                            new go.Binding("text", "", OpenArchiWrapper.toTitle).makeTwoWay(OpenArchiWrapper.fromTitle))
+                                new go.Binding("source", "", OpenArchiWrapper.toImage).makeTwoWay(OpenArchiWrapper.fromImage)),
+                            gojs(go.TextBlock,  // this TextBlock is only seen when the swimlane is collapsed
+                                {
+                                    name: "LABEL",
+                                    editable: true,
+                                    row: 0,
+                                    column: 1,
+                                    angle: 0,
+                                    margin: 2,
+                                    font: "bold 13pt sans-serif",
+                                    alignment: go.Spot.BottomRight,
+                                    stroke: "white"
+                                },
+                                new go.Binding("text", "", OpenArchiWrapper.toTitle).makeTwoWay(OpenArchiWrapper.fromTitle))
+                        )
                     ),  // end Horizontal Panel
                     gojs(go.Placeholder,
                         {
@@ -368,49 +338,45 @@ function getNodeByType(paletteModel) {
                         },
                         new go.Binding("figure", "", OpenArchiWrapper.toFigure).makeTwoWay(OpenArchiWrapper.fromFigure),
                         new go.Binding("minSize", "", OpenArchiWrapper.toSize).makeTwoWay(OpenArchiWrapper.fromSize)),
-                    gojs(go.Panel, {
-                            width: 60,
-                            height: 60,
-                            name: "IMAGE",
-                            visible: true
+                    gojs(go.Panel, "Table",
+                        {
+                            margin: 6,
+                            maxSize: new go.Size(200, NaN),
+                            name: "IMAGE"
                         },
-                        new go.Binding("isSubGraphExpanded", "expanded").makeTwoWay(),
-                        new go.Binding("visible", "isSubGraphExpanded").ofObject(),
+                        // the two TextBlocks in column 0 both stretch in width
+                        // but align on the left side
+                        gojs(go.RowColumnDefinition,
+                            {
+                                column: 0,
+                                stretch: go.GraphObject.Horizontal,
+                                alignment: go.Spot.Left
+                            }),
                         gojs(go.Picture,
                             {
                                 name: "IMAGE",
                                 row: 0,
-                                visible: true,
-                                column: 1,
+                                column: 0,
                                 margin: 2,
-                                desiredSize: new go.Size(60, 60),
+                                maxSize: new go.Size(30, 30),
                                 imageStretch: go.GraphObject.Uniform,
-                                alignment: go.Spot.TopRight
+                                alignment: go.Spot.TopLeft
                             },
-                            new go.Binding("source", "", OpenArchiWrapper.toImage).makeTwoWay(OpenArchiWrapper.fromImage))
-                    ),
-                    gojs(go.TextBlock, "Text",
-                        {
-                            text: paletteModel.name,
-                            font: "bold 11pt Helvetica, Arial, sans-serif",
-                            stroke: lightText,
-                            margin: 8,
-                            maxSize: new go.Size(160, NaN),
-                            wrap: go.TextBlock.WrapFit,
-                            editable: true
-                        },
-                        new go.Binding("text", "", OpenArchiWrapper.toTitle),
-                        new go.Binding("minSize", "", OpenArchiWrapper.toSize).makeTwoWay(OpenArchiWrapper.fromSize)),
-                    { // this tooltip Adornment is shared by all nodes
-                        toolTip:
-                            gojs(go.Adornment, "Auto",
-                                gojs(go.Shape, {fill: "#FFFFCC"}),
-                                gojs(go.TextBlock, {margin: 4},  // the tooltip shows the result of calling nodeInfo(data)
-                                    new go.Binding("text", "", nodeInfo))
-                            ),
-                        // this context menu Adornment is shared by all nodes
-                        contextMenu: partContextMenu
-                    }
+                            new go.Binding("source", "", OpenArchiWrapper.toImage).makeTwoWay(OpenArchiWrapper.fromImage)),
+                        gojs(go.TextBlock,  // this TextBlock is only seen when the swimlane is collapsed
+                            {
+                                name: "LABEL",
+                                editable: true,
+                                row: 0,
+                                column: 1,
+                                angle: 0,
+                                margin: 2,
+                                font: "bold 13pt sans-serif",
+                                alignment: go.Spot.BottomRight,
+                                stroke: "white"
+                            },
+                            new go.Binding("text", "", OpenArchiWrapper.toTitle).makeTwoWay(OpenArchiWrapper.fromTitle))
+                    )
                 ),
                 // three named ports, one on each side except the top, all output only:
                 // four named ports, one on each side:
@@ -429,6 +395,8 @@ function getNodeByType(paletteModel) {
                     contextMenu: partContextMenu
                 }
             );
+            break;
+        case "Layer":
         case "LAYER":
             return gojs(go.Group, "Horizontal", groupStyle(),
                 {
@@ -508,7 +476,10 @@ function getNodeByType(paletteModel) {
                                     imageStretch: go.GraphObject.Uniform,
                                     alignment: go.Spot.TopRight
                                 },
-                                new go.Binding("source", "", OpenArchiWrapper.toImage).makeTwoWay(OpenArchiWrapper.fromImage))),
+                                new go.Binding("source", "", OpenArchiWrapper.toImage).makeTwoWay(OpenArchiWrapper.fromImage),
+                                new go.Binding("minSize", "source", function (e) {
+                                    return e === undefined ? new go.Size(0, 0) : new go.Size(30, 30);
+                                }).ofObject())),
                         gojs(go.TextBlock,  // the lane label
                             {
                                 font: "bold 13pt sans-serif",
@@ -560,7 +531,12 @@ function getNodeByType(paletteModel) {
                                 imageStretch: go.GraphObject.Uniform,
                                 alignment: go.Spot.TopLeft
                             },
-                            new go.Binding("source", "", OpenArchiWrapper.toImage).makeTwoWay(OpenArchiWrapper.fromImage)),
+                            new go.Binding("source", "", OpenArchiWrapper.toImage).makeTwoWay(OpenArchiWrapper.fromImage),
+                            new go.Binding("minSize", "source", function (e) {
+                                return e === undefined ? new go.Size(0, 0) : new go.Size(30, 30);
+                            }).ofObject()
+                        ),
+
                         gojs(go.TextBlock,  // this TextBlock is only seen when the swimlane is collapsed
                             {
                                 name: "LABEL",
@@ -576,6 +552,7 @@ function getNodeByType(paletteModel) {
                     )
                 )  // end Auto Panel
             );  // end Layer
+            break;
         default:
             return gojs(
                 go.Node, "Spot", nodeStyle(),
@@ -624,5 +601,6 @@ function getNodeByType(paletteModel) {
                 makePort("R", go.Spot.Right, paletteModel.shape.input, paletteModel.shape.output),
                 makePort("B", go.Spot.Bottom, paletteModel.shape.input, paletteModel.shape.output)
             );
+            break;
     }
 }

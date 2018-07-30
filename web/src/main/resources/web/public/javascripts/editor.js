@@ -642,6 +642,7 @@ function checkAndSave() {
         delete data["text"];
         data.kind = type;
         data.name = name;
+        data.image = meta.image;
         addNodeToTemplateByType(data, type);
         data.category = type;
         myDiagram.model.removeNodeData(data);
@@ -923,14 +924,18 @@ function handleImageSelect(evt) {
                 let $element = $('#element-image-data');
                 const elementKey = $element.attr("key");
 
-                myDiagram.model.nodeDataArray.forEach(node => {
-                    if (node.key === parseInt(elementKey)) {
-                        myDiagram.model.setDataProperty(node, "image", {raw: rawImage_, type: type});
-                    }
-                });
-                myDiagram.requestUpdate();
+                if (elementKey !== undefined) {
+                    myDiagram.model.nodeDataArray.forEach(node => {
+                        if (node.key.toString() === elementKey) {
+                            myDiagram.model.setDataProperty(node, "image", {raw: rawImage_, type: type});
+                        }
+                    });
+                    myDiagram.requestUpdate();
 
-                $element.modal('hide');
+                    $element.modal('hide');
+                } else {
+                    meta.image = {raw: rawImage_, type: type};
+                }
             };
         })(file);
         // Read in the image file as a data URL.

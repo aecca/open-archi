@@ -98,7 +98,13 @@ function toPalette(data, category) {
     paletteModel.name = data.name;
     paletteModel.figure = data.shape.type;
     paletteModel.fill = data.shape.fill;
-    paletteModel.stroke = data.shape.stroke;
+/*    paletteModel.stroke = "transparent";
+    let shape = paletteModel.shape;
+    if (shape) {
+        shape.stroke = "transparent";
+    } else {
+        paletteModel.shape = {stroke: "transparent"};
+    }*/
     paletteModel.minSize = OpenArchiWrapper.toSize(data);
     paletteModel.input = data.input;
     paletteModel.output = data.output;
