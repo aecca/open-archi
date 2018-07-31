@@ -283,8 +283,6 @@ function expand(data) {
     myDiagram.startTransaction("Adding new element");
     myDiagram.model.addNodeDataCollection(newDiagram.nodeDataArray);
     myDiagram.model.addLinkDataCollection(newDiagram.linkDataArray);
-    myDiagram.commitTransaction("Adding new element");
-
     const pos = myDiagram.model.modelData.position;
     if (pos) {
         myDiagram.initialPosition = go.Point.parse(pos);
@@ -948,50 +946,10 @@ function handleImageSelect(evt) {
     }
 }
 
-/*
-
-function handleImageSelect(evt) {
-    let files = evt.target.files;
-    let i = 0, file;
-    for (; file = files[i]; i++) {
-        const type = file.type;
-        // Only process SVG image files.
-        if (type !== 'image/svg+xml') {
-            continue;
-        }
-
-        const reader = new FileReader();
-
-        // Closure to capture the file information.
-        reader.onload = (function (file) {
-            return function (e) {
-                let raw = window.atob(e.target.result.replace(/^data:image\/svg\+xml;base64,/, ""));
-                let $element = $('#element-image-data');
-                const elementKey = $element.attr("key");
-                let model = myDiagram.model;
-                model.nodeDataArray.forEach(node => {
-                    if (node.key === parseInt(elementKey)) {
-                        model.setDataProperty(node, "image", {raw: raw, type: type});
-                    }
-                });
-                myDiagram.requestUpdate();
-                $element.modal('hide');
-            };
-        })(file);
-
-        // Read in the image file as a data URL.
-        reader.readAsDataURL(file);
-
-    }
-
-}
-*/
-
-
 // this may be called to force the lanes to be laid out again
 function relayoutLanes() {
     myDiagram.nodes.each(function (lane) {
-        if (!(lane instanceof go.Group) || lane.category !== "Lane") return;
+        if (!(lane instanceof go.Group) || lane.category !== "Lane" || lane.category !== "LANE" || lane.category !== "Layer" || lane.category !== "LAYER") return;
         lane.layout.isValidLayout = false;  // force it to be invalid
     });
     myDiagram.layoutDiagram();
@@ -1001,7 +959,9 @@ function relayoutLanes() {
 function relayoutDiagram() {
     myDiagram.layout.invalidateLayout();
     myDiagram.findTopLevelGroups().each(function (g) {
-        if (g.category === "LANE") g.layout.invalidateLayout();
+        if (g.category === "LANE" || g.category === "Lane" || g.category === "LAYER" || g.category === "Layer") {
+            g.layout.invalidateLayout();
+        }
     });
     myDiagram.layoutDiagram();
 }

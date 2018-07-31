@@ -16,5 +16,5 @@ public enum ShapeType {
     COMPONENT,
     GROUP,
     LAYER,
-    MODEL
+    ARCHITECTURE_MODEL
 }

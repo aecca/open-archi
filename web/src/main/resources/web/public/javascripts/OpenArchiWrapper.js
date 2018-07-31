@@ -3,7 +3,7 @@ let alreadyProcessedNodes;
 function fulfill(item, isGroup, group, rank) {
     item.key = item.id;
     item.isGroup = isGroup;
-    if (group) {
+    if (group !== undefined) {
         item.group = group;
     }
     if (rank !== undefined) {
@@ -79,6 +79,7 @@ function commonInnerModelElement(model) {
     if (shape) {
         object.category = shape.type;
         object.size = shape.size.width + " " + shape.size.height;
+        object.shape = shape;
     } else {
         object.category = model.kind;
     }
@@ -135,6 +136,14 @@ function processComponentToArchitectureModel(node, parent, links) {
     }
     parent.components.push(component);
     alreadyProcessedNodes.push(component.key);
+}
+
+function processModelToDiagram(model, nodes) {
+    let modelElement = commonInnerModelElement(model);
+    modelElement.isGroup = true;
+    //TODO Añadir campos propios del model
+    addNodeToTemplateByType(modelElement);
+    nodes.push(fulfill(modelElement, true));
 }
 
 function processLayerToDiagram(layer, nodes, links, parentId) {
@@ -272,17 +281,18 @@ function diagramToBpmModel(model, node, links) {
 }
 
 function processElementToDiagram(model, diagram) {
+    processModelToDiagram(model, diagram.nodeDataArray);
     if (model.layers) {
-        model.layers.forEach(layer => processLayerToDiagram(layer, diagram.nodeDataArray, diagram.linkDataArray));
+        model.layers.forEach(layer => processLayerToDiagram(layer, diagram.nodeDataArray, diagram.linkDataArray, model.id));
     }
     if (model.systems) {
-        model.systems.forEach(system => processSystemToDiagram(system, diagram.nodeDataArray, diagram.linkDataArray));
+        model.systems.forEach(system => processSystemToDiagram(system, diagram.nodeDataArray, diagram.linkDataArray, model.id));
     }
     if (model.containers) {
-        model.containers.forEach(container => processContainerToDiagram(container, diagram.nodeDataArray, diagram.linkDataArray));
+        model.containers.forEach(container => processContainerToDiagram(container, diagram.nodeDataArray, diagram.linkDataArray, model.id));
     }
     if (model.components) {
-        model.components.forEach(component => processComponentToDiagram(component, diagram.nodeDataArray, diagram.linkDataArray));
+        model.components.forEach(component => processComponentToDiagram(component, diagram.nodeDataArray, diagram.linkDataArray, model.id));
     }
 }
 
@@ -427,11 +437,11 @@ class OpenArchiWrapper {
         model.kind = meta.kind;
         model.description = meta.description;
         model.prototype = meta.prototype;
+        model.shape = {type: model.kind};
         alreadyProcessedNodes = [];
         if (!commons.prototype.isEmpty(nodes)) {
             nodes.forEach(function (node) {
                 if (!alreadyProcessedNodes.includes(node.key)) {
-                    model = fillShape(model, node);
                     switch (model.kind) {
                         case "FLOWCHART_MODEL":
                             model = diagramToFlowchartModel(model, node, links);

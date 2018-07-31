@@ -32,8 +32,8 @@ function initBasic(nodeDataArray, linkDataArray) {
                 // allow double-click in background to create a new node
                 "clickCreatingTool.archetypeNodeData": {
                     name: "Element",
-                    shape: {fill: "#01203A"},
-                    kind: "SYSTEM"
+                    shape: {fill: "white"},
+                    kind: "LAYER"
                 },
                 mouseDrop: function (e) {
                     finishDrop(e, null);

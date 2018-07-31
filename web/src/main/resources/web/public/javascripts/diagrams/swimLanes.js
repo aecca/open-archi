@@ -201,7 +201,8 @@ function initSwimLanes() {
             "SelectionCopied": relayoutDiagram, // defined above
             "animationManager.isEnabled": false,
             // enable undo & redo
-            "undoManager.isEnabled": true
+            "undoManager.isEnabled": true,
+            allowDrop: true
         });
 
     // this is a Part.dragComputation function for limiting where a Node may be dragged

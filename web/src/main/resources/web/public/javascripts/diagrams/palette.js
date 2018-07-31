@@ -98,18 +98,12 @@ function toPalette(data, category) {
     paletteModel.name = data.name;
     paletteModel.figure = data.shape.type;
     paletteModel.fill = data.shape.fill;
-/*    paletteModel.stroke = "transparent";
-    let shape = paletteModel.shape;
-    if (shape) {
-        shape.stroke = "transparent";
-    } else {
-        paletteModel.shape = {stroke: "transparent"};
-    }*/
     paletteModel.minSize = OpenArchiWrapper.toSize(data);
     paletteModel.input = data.input;
     paletteModel.output = data.output;
     paletteModel.description = data.description;
     paletteModel.prototype = data.prototype;
+    paletteModel.shift = true;
     return paletteModel;
 }
 
@@ -130,12 +124,14 @@ function showPaletteByType(paletteData) {
             let paletteModelArray = [];
             paletteData.basicElements.forEach(function (data) {
                 paletteModelArray.push(toPalette(data, data.shape.type));
+                let shape = data.shape;
+                shape.stroke = "transparent";
                 myPalette.nodeTemplateMap.add(data.shape.type, getNodeByType(data));
             });
             if (paletteData.complexElements) {
                 paletteData.complexElements.forEach(function (data) {
                     paletteModelArray.push(toPalette(data, data.shape.type));
-                    myPalette.nodeTemplateMap.add(data.shape.type, getNodeByType(data));
+                    myPalette.nodeTemplateMap.add(data.shape.type, getNodeByType(data, "_PALETTE"));
                 });
             }
             myPalette.model = new go.GraphLinksModel(paletteModelArray);
@@ -177,7 +173,7 @@ function makePort(name, spot, output, input) {
             alignment: spot, alignmentFocus: spot,  // align the port on the main Shape
             portId: name,  // declare this object to be a "port"
             fromSpot: spot, toSpot: spot,  // declare where links may connect at this port
-            fromLinkable: output, toLinkable: input,  // declare whether the user may draw links to/from here
+            fromLinkable: output ? output : true, toLinkable: input ? input : true,  // declare whether the user may draw links to/from here
             cursor: "pointer"  // show a different cursor to indicate potential link point
         });
 }

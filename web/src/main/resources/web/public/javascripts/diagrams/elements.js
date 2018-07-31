@@ -47,11 +47,111 @@ go.Shape.defineFigureGenerator("RoundedBottomRectangle", function (shape, w, h) 
     return geo;
 });
 
-function getNodeByType(paletteModel) {
+function getNodeByType(paletteModel, suffix) {
     let type = paletteModel.shape !== undefined ? paletteModel.shape.type : paletteModel.kind;
+    if (suffix) {
+        type = type + suffix;
+    }
     switch (type) {
-        case "MODEL":
-        case "Model":
+        case "ARCHITECTURE_MODEL":
+            return gojs(go.Group, "Auto",
+                { // use a simple layout that ignores links to stack the "lane" Groups on top of each other
+                    selectionObjectName: "SHAPE",  // selecting a lane causes the body of the lane to be highlit, not the label
+                    resizable: false,
+                    resizeObjectName: "SHAPE",  // the custom resizeAdornmentTemplate only permits two kinds of resizing
+                    movable: true, // allows users to re-order by dragging
+                    copyable: false,  // can't copy lanes or pools
+                    avoidable: false,  // don't impede AvoidsNodes routed Links
+                    minLocation: new go.Point(NaN, -Infinity),  // only allow vertical movement
+                    maxLocation: new go.Point(NaN, Infinity),
+                    layerName: "Background",  // all pools and lanes are always behind all nodes and links
+                    layout: gojs(PoolLayout, {spacing: new go.Size(3, 3)}),  // no space between lanes
+                    mouseDragEnter: function (e, grp, prev) {
+                        highlightGroup(e, grp, true);
+                    },
+                    mouseDragLeave: function (e, grp, next) {
+                        highlightGroup(e, grp, false);
+                    },
+                    zOrder: 100,
+                    ungroupable: true,
+                    computesBoundsAfterDrag: true,  // needed to prevent recomputing Group.placeholder bounds too soon
+                    computesBoundsIncludingLinks: false,  // to reduce occurrences of links going briefly outside the lane
+                    computesBoundsIncludingLocation: true,  // to support empty space at top-left corner of lane
+                    handlesDragDropForMembers: true,  // don't need to define handlers on member Nodes and Links
+                    mouseDrop: finishDrop,
+                    subGraphExpandedChanged: function (grp) {
+                        const shp = grp.resizeObject;
+                        if (grp.diagram.undoManager.isUndoingRedoing) return;
+                        if (grp.isSubGraphExpanded) {
+                            shp.height = grp._savedBreadth;
+                        } else {
+                            grp._savedBreadth = shp.height;
+                            shp.height = NaN;
+                        }
+                        updateCrossLaneLinks(grp);
+                    },
+                    contextMenu: partContextMenu,
+                    // the Node.location is at the center of each node
+                    locationSpot: go.Spot.Center,
+                    //isShadowed: true,
+                    //shadowColor: "#888",
+                    // handle mouse enter/leave events to show/hide the ports
+                    mouseEnter: function (e, obj) {
+                        showPorts(obj.part, true);
+                        obj.part.background = "rgba(240, 173, 75,0.2)";
+                    },
+                    mouseLeave: function (e, obj) {
+                        showPorts(obj.part, false);
+                        obj.part.background = "transparent";
+                    }
+                },
+                new go.Binding("location", "", OpenArchiWrapper.toLocation).makeTwoWay(OpenArchiWrapper.fromLocation),
+                new go.Binding("background", "isHighlighted", function (h) {
+                    return h ? "rgba(255,0,0,0.2)" : "transparent";
+                }).ofObject(),
+                gojs(go.Shape,
+                    {
+                        fill: paletteModel.shape !== undefined ? paletteModel.shape.fill : "white",
+                        stroke: paletteModel.shape !== undefined ? paletteModel.shape.stroke : "black",
+                        minSize: OpenArchiWrapper.toSize(paletteModel)
+                    },
+                    new go.Binding("figure", "", OpenArchiWrapper.toFigure).makeTwoWay(OpenArchiWrapper.fromFigure),
+                    new go.Binding("fill", "", OpenArchiWrapper.toFill).makeTwoWay(OpenArchiWrapper.fromFill),
+                    new go.Binding("minSize", "", OpenArchiWrapper.toSize).makeTwoWay(OpenArchiWrapper.fromSize),
+                    new go.Binding("stroke", "", OpenArchiWrapper.toStroke).makeTwoWay(OpenArchiWrapper.fromStroke)),
+                gojs(go.Panel, "Table",
+                    {
+                        defaultColumnSeparatorStroke: "black",
+                        padding: 10
+                    },
+                    gojs(go.Panel, "Horizontal",
+                        {
+                            column: 0,
+                            angle: 270
+                        },
+                        gojs(go.TextBlock, "Text",
+                            {
+                                text: paletteModel.name,
+                                font: "bold 11pt Helvetica, Arial, sans-serif",
+                                stroke: "black",
+                                maxSize: new go.Size(160, NaN),
+                                wrap: go.TextBlock.WrapFit,
+                                editable: true
+                            },
+                            new go.Binding("text", "", OpenArchiWrapper.toTitle),
+                            new go.Binding("stroke", "", OpenArchiWrapper.toStroke).makeTwoWay(OpenArchiWrapper.fromStroke),
+                            new go.Binding("minSize", "", OpenArchiWrapper.toSize).makeTwoWay(OpenArchiWrapper.fromSize)),
+                    ),
+                    gojs(go.Placeholder,
+                        {column: 1, padding: 5})
+                ),
+                makePort("T", go.Spot.Top, paletteModel.shape.input, paletteModel.shape.output),
+                makePort("L", go.Spot.Left, paletteModel.shape.input, paletteModel.shape.output),
+                makePort("R", go.Spot.Right, paletteModel.shape.input, paletteModel.shape.output),
+                makePort("B", go.Spot.Bottom, paletteModel.shape.input, paletteModel.shape.output)
+            );
+            break;
+        case "ARCHITECTURE_MODEL_PALETTE":
             return gojs(
                 go.Node, "Spot", nodeStyle(),
                 {
@@ -91,13 +191,7 @@ function getNodeByType(paletteModel) {
                         // this context menu Adornment is shared by all nodes
                         contextMenu: partContextMenu
                     }
-                ),
-                // three named ports, one on each side except the top, all output only:
-                // four named ports, one on each side:
-                makePort("T", go.Spot.Top, paletteModel.shape.input, paletteModel.shape.output),
-                makePort("L", go.Spot.Left, paletteModel.shape.input, paletteModel.shape.output),
-                makePort("R", go.Spot.Right, paletteModel.shape.input, paletteModel.shape.output),
-                makePort("B", go.Spot.Bottom, paletteModel.shape.input, paletteModel.shape.output)
+                )
             );
             break;
         case "SYSTEM":
@@ -116,7 +210,13 @@ function getNodeByType(paletteModel) {
                     computesBoundsAfterDrag: true,
                     // when the selection is dropped into a Group, add the selected Parts into that Group;
                     // if it fails, cancel the tool, rolling back any changes
-                    mouseDrop: finishDrop,
+                    mouseDrop: function (e, grp) {
+                        let selection = e.diagram.selection;
+                        let ok = (grp !== null
+                            ? grp.addMembers(grp.diagram.selection, true)
+                            : e.diagram.commandHandler.addTopLevelParts(selection, true));
+                        if (!ok) e.diagram.currentTool.doCancel();
+                    },
                     handlesDragDropForMembers: true,  // don't need to define handlers on member Nodes and Links
                     // Groups containing Groups lay out their members horizontally
                     layout:
@@ -124,7 +224,15 @@ function getNodeByType(paletteModel) {
                             {
                                 wrappingWidth: Infinity, alignment: go.GridLayout.Position,
                                 cellSize: new go.Size(1, 1), spacing: new go.Size(12, 12)
-                            })
+                            }),
+
+                    mouseEnter: function (e, obj) {
+                        obj.part.background = "rgba(240, 173, 75,0.2)";
+                    },
+                    mouseLeave: function (e, obj) {
+                        obj.part.background = "transparent";
+                    },
+                    dragComputation: stayInGroup
                 },
                 nodeStyle(),
                 new go.Binding("background", "isHighlighted", function (h) {
@@ -235,7 +343,15 @@ function getNodeByType(paletteModel) {
                             {
                                 wrappingWidth: Infinity, alignment: go.GridLayout.Position,
                                 cellSize: new go.Size(1, 1), spacing: new go.Size(12, 12)
-                            })
+                            }),
+
+                    mouseEnter: function (e, obj) {
+                        obj.part.background = "rgba(240, 173, 75,0.2)";
+                    },
+                    mouseLeave: function (e, obj) {
+                        obj.part.background = "transparent";
+                    },
+                    dragComputation: stayInGroup
                 },
                 nodeStyle(),
                 new go.Binding("background", "isHighlighted", function (h) {
@@ -327,7 +443,14 @@ function getNodeByType(paletteModel) {
             return gojs(
                 go.Node, "Spot", nodeStyle(),
                 {
-                    name: paletteModel.name
+                    name: paletteModel.name,
+                    mouseEnter: function (e, obj) {
+                        obj.part.background = "rgba(240, 173, 75,0.2)";
+                    },
+                    mouseLeave: function (e, obj) {
+                        obj.part.background = "transparent";
+                    },
+                    dragComputation: stayInGroup
                 },
                 gojs(go.Panel, "Auto",
                     gojs(go.Shape,
@@ -402,33 +525,62 @@ function getNodeByType(paletteModel) {
                 {
                     selectionObjectName: "SHAPE",  // selecting a lane causes the body of the lane to be highlit, not the label
                     resizable: true, resizeObjectName: "SHAPE",  // the custom resizeAdornmentTemplate only permits two kinds of resizing
+                    resizeAdornmentTemplate:
+                        gojs(go.Adornment, "Spot",
+                            gojs(go.Placeholder),
+                            gojs(go.Shape,  // for changing the length of a lane
+                                {
+                                    alignment: go.Spot.Right,
+                                    desiredSize: new go.Size(7, 50),
+                                    fill: "lightblue", stroke: "dodgerblue",
+                                    cursor: "col-resize"
+                                },
+                                new go.Binding("visible", "", function (ad) {
+                                    if (ad.adornedPart === null) return false;
+                                    return ad.adornedPart.isSubGraphExpanded;
+                                }).ofObject()),
+                            gojs(go.Shape,  // for changing the breadth of a lane
+                                {
+                                    alignment: go.Spot.Bottom,
+                                    desiredSize: new go.Size(50, 7),
+                                    fill: "lightblue",
+                                    stroke: "dodgerblue",
+                                    cursor: "row-resize"
+                                },
+                                new go.Binding("visible", "", function (ad) {
+                                    if (ad.adornedPart === null) return false;
+                                    return ad.adornedPart.isSubGraphExpanded;
+                                }).ofObject())
+                        ),
                     layout: gojs(go.LayeredDigraphLayout,  // automatically lay out the lane's subgraph
                         {
                             isInitial: false,  // don't even do initial layout
                             isOngoing: false,  // don't invalidate layout when nodes or links are added or removed
                             direction: 0,
                             columnSpacing: 10,
+                            layerSpacing: 10,
                             layeringOption: go.LayeredDigraphLayout.LayerLongestPathSource
                         }),
+                    zOrder: 1000,
                     computesBoundsAfterDrag: true,  // needed to prevent recomputing Group.placeholder bounds too soon
                     computesBoundsIncludingLinks: false,  // to reduce occurrences of links going briefly outside the lane
                     computesBoundsIncludingLocation: true,  // to support empty space at top-left corner of lane
                     handlesDragDropForMembers: true,  // don't need to define handlers on member Nodes and Links
                     mouseDrop: function (e, grp) {  // dropping a copy of some Nodes and Links onto this Group adds them to this Group
-
-                        // don't allow drag-and-dropping a mix of regular Nodes and Groups
+                        if (!e.shift && e.key !== "") return;
+                        updateCrossLaneLinks(grp); /*// don't allow drag-and-dropping a mix of regular Nodes and Groups
                         if (!e.diagram.selection.any(function (n) {
                                 return n instanceof go.Group;
                             })) {
                             const ok = grp.addMembers(grp.diagram.selection, true);
                             if (ok) {
-                                updateCrossLaneLinks(grp);
+
                             } else {
                                 grp.diagram.currentTool.doCancel();
                             }
                         } else {
                             e.diagram.currentTool.doCancel();
-                        }
+                        }*/
                     },
                     mouseDragEnter: function (e, group, prev) {
                         highlightGroup(e, group, true);
@@ -446,6 +598,12 @@ function getNodeByType(paletteModel) {
                             shp.height = NaN;
                         }
                         updateCrossLaneLinks(grp);
+                    },
+                    mouseEnter: function (e, obj) {
+                        obj.part.background = "rgba(240, 173, 75,0.2)";
+                    },
+                    mouseLeave: function (e, obj) {
+                        obj.part.background = "transparent";
                     },
                     contextMenu: partContextMenu
                 },
@@ -498,7 +656,7 @@ function getNodeByType(paletteModel) {
                             fill: "white"
                         },
                         new go.Binding("fill", "color"),
-                        new go.Binding("desiredSize", "size", go.Size.parse).makeTwoWay(go.Size.stringify)),
+                        new go.Binding("minSize", "size", go.Size.parse).makeTwoWay(go.Size.stringify)),
                     gojs(go.Placeholder,
                         {
                             padding: 12,

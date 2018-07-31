@@ -1565,7 +1565,7 @@ public class Server {
         models = JPAEntityManagerUtils.executeQuery(IdName.class, Item.GET_ALL_PROTOTYPE_NAMES_BY_TYPE, params);
         rank = 0;
         for (IdName model : models) {
-            rank = buildPalette(palette, rank, model, ((ElementKind) model.getKind()).name(), true, Model.SHAPE_COLOR, ShapeType.MODEL);
+            rank = buildPalette(palette, rank, model, ((ElementKind) model.getKind()).name(), true, Model.SHAPE_COLOR, ShapeType.ARCHITECTURE_MODEL);
         }
         return palette;
     }
@@ -1625,7 +1625,7 @@ public class Server {
         models = JPAEntityManagerUtils.executeQuery(IdName.class, Item.GET_ALL_PROTOTYPE_NAMES_BY_TYPE, params);
         rank = 0;
         for (IdName model : models) {
-            rank = buildPalette(palette, rank, model, ElementKind.ARCHITECTURE_MODEL.name(), true, Model.SHAPE_COLOR, ShapeType.MODEL);
+            rank = buildPalette(palette, rank, model, ElementKind.ARCHITECTURE_MODEL.name(), true, Model.SHAPE_COLOR, ShapeType.ARCHITECTURE_MODEL);
         }
         return palette;
     }
