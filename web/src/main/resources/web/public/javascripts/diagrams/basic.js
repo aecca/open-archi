@@ -15,13 +15,13 @@ function initBasic(nodeDataArray, linkDataArray) {
                 // use a simple layout that ignores links to stack the top-level Pool Groups next to each other
                 layout: gojs(PoolLayout),
                 // use a simple layout that ignores links to stack the top-level Pool Groups next to each other
-                mouseDragOver: function (e) {
+/*                mouseDragOver: function (e) {
                     if (!e.diagram.selection.all(function (n) {
                             return n instanceof go.Group;
                         })) {
                         e.diagram.currentCursor = 'not-allowed';
                     }
-                },
+                },*/
                 // a clipboard copied node is pasted into the original node's group (i.e. lane).
                 "commandHandler.copiesGroupKey": true,
                 // automatically re-layout the swim lanes after dragging the selection

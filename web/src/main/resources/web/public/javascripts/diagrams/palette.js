@@ -194,9 +194,11 @@ function nodeStyle() {
             //shadowColor: "#888",
             // handle mouse enter/leave events to show/hide the ports
             mouseEnter: function (e, obj) {
+                obj.part.background = "rgba(240, 173, 75,0.2)";
                 showPorts(obj.part, true);
             },
             mouseLeave: function (e, obj) {
+                obj.part.background = "transparent";
                 showPorts(obj.part, false);
             }
         }

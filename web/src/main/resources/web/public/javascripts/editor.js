@@ -288,6 +288,7 @@ function expand(data) {
         myDiagram.initialPosition = go.Point.parse(pos);
     }
     relayoutLanes();
+    myDiagram.commitTransaction("Adding new element");
 }
 
 function expandGroups(g, i, level) {

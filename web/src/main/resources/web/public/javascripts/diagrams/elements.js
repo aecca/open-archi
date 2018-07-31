@@ -212,10 +212,20 @@ function getNodeByType(paletteModel, suffix) {
                     // if it fails, cancel the tool, rolling back any changes
                     mouseDrop: function (e, grp) {
                         let selection = e.diagram.selection;
-                        let ok = (grp !== null
-                            ? grp.addMembers(grp.diagram.selection, true)
-                            : e.diagram.commandHandler.addTopLevelParts(selection, true));
-                        if (!ok) e.diagram.currentTool.doCancel();
+                        let ok = true;
+                        selection.each(selection => {
+                            ok = ok && (selection.data.group === grp.key);
+                        });
+                        if (ok) {
+                            grp.diagram.currentTool.doCancel();
+                        } else {
+                            ok = (grp !== null
+                                ? grp.addMembers(grp.diagram.selection, true)
+                                : e.diagram.commandHandler.addTopLevelParts(selection, true));
+                            if (!ok) {
+                                e.diagram.currentTool.doCancel();
+                            }
+                        }
                     },
                     handlesDragDropForMembers: true,  // don't need to define handlers on member Nodes and Links
                     // Groups containing Groups lay out their members horizontally
@@ -224,15 +234,7 @@ function getNodeByType(paletteModel, suffix) {
                             {
                                 wrappingWidth: Infinity, alignment: go.GridLayout.Position,
                                 cellSize: new go.Size(1, 1), spacing: new go.Size(12, 12)
-                            }),
-
-                    mouseEnter: function (e, obj) {
-                        obj.part.background = "rgba(240, 173, 75,0.2)";
-                    },
-                    mouseLeave: function (e, obj) {
-                        obj.part.background = "transparent";
-                    },
-                    dragComputation: stayInGroup
+                            })
                 },
                 nodeStyle(),
                 new go.Binding("background", "isHighlighted", function (h) {
@@ -335,7 +337,6 @@ function getNodeByType(paletteModel, suffix) {
                     computesBoundsAfterDrag: true,
                     // when the selection is dropped into a Group, add the selected Parts into that Group;
                     // if it fails, cancel the tool, rolling back any changes
-                    mouseDrop: finishDrop,
                     handlesDragDropForMembers: true,  // don't need to define handlers on member Nodes and Links
                     // Groups containing Groups lay out their members horizontally
                     layout:
@@ -344,14 +345,23 @@ function getNodeByType(paletteModel, suffix) {
                                 wrappingWidth: Infinity, alignment: go.GridLayout.Position,
                                 cellSize: new go.Size(1, 1), spacing: new go.Size(12, 12)
                             }),
-
-                    mouseEnter: function (e, obj) {
-                        obj.part.background = "rgba(240, 173, 75,0.2)";
-                    },
-                    mouseLeave: function (e, obj) {
-                        obj.part.background = "transparent";
-                    },
-                    dragComputation: stayInGroup
+                    mouseDrop: function (e, grp) {
+                        let selection = e.diagram.selection;
+                        let ok = true;
+                        selection.each(selection => {
+                            ok = ok && (selection.data.group === grp.key);
+                        });
+                        if (ok) {
+                            grp.diagram.currentTool.doCancel();
+                        } else {
+                            ok = (grp !== null
+                                ? grp.addMembers(grp.diagram.selection, true)
+                                : e.diagram.commandHandler.addTopLevelParts(selection, true));
+                            if (!ok) {
+                                e.diagram.currentTool.doCancel();
+                            }
+                        }
+                    }
                 },
                 nodeStyle(),
                 new go.Binding("background", "isHighlighted", function (h) {
@@ -443,15 +453,9 @@ function getNodeByType(paletteModel, suffix) {
             return gojs(
                 go.Node, "Spot", nodeStyle(),
                 {
-                    name: paletteModel.name,
-                    mouseEnter: function (e, obj) {
-                        obj.part.background = "rgba(240, 173, 75,0.2)";
-                    },
-                    mouseLeave: function (e, obj) {
-                        obj.part.background = "transparent";
-                    },
-                    dragComputation: stayInGroup
+                    name: paletteModel.name
                 },
+                nodeStyle(),
                 gojs(go.Panel, "Auto",
                     gojs(go.Shape,
                         {
@@ -554,9 +558,9 @@ function getNodeByType(paletteModel, suffix) {
                         ),
                     layout: gojs(go.LayeredDigraphLayout,  // automatically lay out the lane's subgraph
                         {
-                            isInitial: false,  // don't even do initial layout
-                            isOngoing: false,  // don't invalidate layout when nodes or links are added or removed
-                            direction: 0,
+                            isInitial: true,  // don't even do initial layout
+                            isOngoing: true,  // don't invalidate layout when nodes or links are added or removed
+                            direction: 90,
                             columnSpacing: 10,
                             layerSpacing: 10,
                             layeringOption: go.LayeredDigraphLayout.LayerLongestPathSource
@@ -567,20 +571,21 @@ function getNodeByType(paletteModel, suffix) {
                     computesBoundsIncludingLocation: true,  // to support empty space at top-left corner of lane
                     handlesDragDropForMembers: true,  // don't need to define handlers on member Nodes and Links
                     mouseDrop: function (e, grp) {  // dropping a copy of some Nodes and Links onto this Group adds them to this Group
-                        if (!e.shift && e.key !== "") return;
-                        updateCrossLaneLinks(grp); /*// don't allow drag-and-dropping a mix of regular Nodes and Groups
-                        if (!e.diagram.selection.any(function (n) {
-                                return n instanceof go.Group;
-                            })) {
-                            const ok = grp.addMembers(grp.diagram.selection, true);
-                            if (ok) {
-
-                            } else {
-                                grp.diagram.currentTool.doCancel();
-                            }
+                        let ok = true;
+                        e.targetDiagram.selection.each(selection => {
+                            ok = ok && (selection.data.group === grp.key);
+                        });
+                        if (ok) {
+                            grp.diagram.currentTool.doCancel();
                         } else {
-                            e.diagram.currentTool.doCancel();
-                        }*/
+                            ok = grp.addMembers(grp.diagram.selection, true);
+                        }
+                        if (ok) {
+                            relayoutLanes();
+                            updateCrossLaneLinks(grp);
+                        } else {
+                            grp.diagram.currentTool.doCancel();
+                        }
                     },
                     mouseDragEnter: function (e, group, prev) {
                         highlightGroup(e, group, true);
