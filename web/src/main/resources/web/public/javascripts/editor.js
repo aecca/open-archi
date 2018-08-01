@@ -1096,14 +1096,21 @@ LaneResizingTool.prototype.isLengthening = function () {
     return (this.handle.alignment === go.Spot.Right);
 };
 
+LaneResizingTool.prototype.isHeightening = function () {
+    return (this.handle.alignment === go.Spot.Top);
+};
+
+
 /** @override */
 LaneResizingTool.prototype.computeMinSize = function () {
     const lane = this.adornedObject.part;
     // assert(lane instanceof go.Group && lane.category !== "Pool");
     const msz = computeMinLaneSize(lane);  // get the absolute minimum size
+    const sz = computeLaneSize(lane);
     if (!this.isLengthening()) {  // compute the minimum length of all lanes
-        var sz = computeLaneSize(lane);
         msz.width = Math.max(msz.width, sz.width);
+    }
+    if (!this.isHeightening()) {  // compute the minimum length of all lanes
         msz.height = Math.max(msz.height, sz.height);
     }
     return msz;
