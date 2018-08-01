@@ -998,16 +998,16 @@ function relayoutLanes() {
         if (node.isSubGraphExpanded) {
             const holder = node.placeholder;
             if (holder !== null) {
-                const hsz = holder.actualBounds;
+                const hsz = holder.measuredBounds;
                 topBottomPadding = holder.padding.top + holder.padding.bottom;
                 leftRightPadding = holder.padding.left + holder.padding.right;
 
                 let computedHeight = 0;
                 let computedWidth = 0;
                 node.memberParts.each(function (node) {
-                    const bound = node.actualBounds;
+                    const bound = node.measuredBounds;
                     computedHeight = computedHeight + bound.height;
-                    computedWidth = computedHeight + bound.width;
+                    computedWidth = computedHeight + bound.width + node.layout.columnSpacing;
                 });
                 sz.height = computedHeight;
                 sz.width = computedWidth;
