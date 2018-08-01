@@ -50,6 +50,39 @@ function groupInfo(adornment) {  // takes the tooltip or context menu, not a gro
 // a context menu is an Adornment with a bunch of buttons in them
 const partContextMenu =
     gojs(go.Adornment, "Vertical",
+
+        makeButton("Diagrams",
+            function (e, obj) {
+                const model = e.diagram.model;
+                const node = obj.part.data;
+                $.get("/open-archi/api/catalogs/element-roles")
+                    .done(function (data) {
+                        let modal = $('#element-role-data');
+                        let elementRoleItems = [];
+                        i = 0;
+                        data.forEach(function (elementRole, i) {
+                            elementRoleItems.push('<li role="presentation"><a role="menuitem" tabindex="' + i + '" href="#">' + elementRole.name + '</a></li>');
+                        });
+                        let elementRolesDropdown = $("#elementRolesDropdown");
+                        elementRolesDropdown.append(elementRoleItems.join(''));
+                        elementRolesDropdown.on('click', 'a', function () {
+                            const text = $(this).html();
+                            const htmlText = text + ' <span class="caret"></span>';
+                            $(this).closest('.dropdown').find('.dropdown-toggle').html(htmlText);
+                        });
+                        modal.modal({
+                            backdrop: 'static',
+                            keyboard: false,
+                            show: true
+                        });
+                        modal.on('hidden.bs.modal', function () {
+                            const role = $("#elementRolesDropdown").find("a.active").html();
+                            model.setDataProperty(node, "role", role);
+                        })
+                    });
+            }, function (o) {
+                return true;
+            }),
         makeButton("Role",
             function (e, obj) {
                 const model = e.diagram.model;
@@ -271,6 +304,34 @@ function load() {
     expand(jsonString);
 }
 
+
+function checkAndSave() {
+    let basicElementData = $('#basic-element-data');
+    const key = basicElementData.attr("data-key");
+    let data = myDiagram.model.findNodeDataForKey(key);
+
+    if (data !== null) {
+        const name = $("#element-name").val();
+        const type = getElementType();
+        const prototype = $("#element-prototype").prop("checked");
+        delete data["text"];
+        data.kind = type;
+        data.name = name;
+        data.image = meta.image;
+        myDiagram.startTransaction("Adding new element");
+        addNodeToTemplateByType(data, type);
+        data.category = type;
+        myDiagram.model.removeNodeData(data);
+        myDiagram.model.addNodeData(data);
+        delete meta.image;
+        myDiagram.requestUpdate();
+        myDiagram.commitTransaction("Adding new element");
+        relayoutLanes();
+    }
+    basicElementData.modal('hide')
+}
+
+
 function expand(data) {
     let model;
     if (!commons.prototype.isObject(data)) {
@@ -280,7 +341,7 @@ function expand(data) {
     }
     meta.id = model.id;
     const newDiagram = OpenArchiWrapper.toDiagram(model);
-    myDiagram.startTransaction("Adding new element");
+    myDiagram.startTransaction("Expand element");
     myDiagram.model.addNodeDataCollection(newDiagram.nodeDataArray);
     myDiagram.model.addLinkDataCollection(newDiagram.linkDataArray);
     const pos = myDiagram.model.modelData.position;
@@ -288,7 +349,7 @@ function expand(data) {
         myDiagram.initialPosition = go.Point.parse(pos);
     }
     relayoutLanes();
-    myDiagram.commitTransaction("Adding new element");
+    myDiagram.commitTransaction("Expand element");
 }
 
 function expandGroups(g, i, level) {
@@ -629,29 +690,6 @@ function addNodeToTemplateByType(data, type) {
     }
 }
 
-function checkAndSave() {
-    let basicElementData = $('#basic-element-data');
-    const key = basicElementData.attr("data-key");
-    let data = myDiagram.model.findNodeDataForKey(key);
-
-    if (data !== null) {
-        const name = $("#element-name").val();
-        const type = getElementType();
-        const prototype = $("#element-prototype").prop("checked");
-        delete data["text"];
-        data.kind = type;
-        data.name = name;
-        data.image = meta.image;
-        addNodeToTemplateByType(data, type);
-        data.category = type;
-        myDiagram.model.removeNodeData(data);
-        myDiagram.model.addNodeData(data);
-        myDiagram.requestUpdate();
-        relayoutLanes();
-    }
-    basicElementData.modal('hide')
-}
-
 function openMore() {
 
 }
@@ -949,9 +987,44 @@ function handleImageSelect(evt) {
 
 // this may be called to force the lanes to be laid out again
 function relayoutLanes() {
-    myDiagram.nodes.each(function (lane) {
-        if (!(lane instanceof go.Group) || lane.category !== "Lane" || lane.category !== "LANE" || lane.category !== "Layer" || lane.category !== "LAYER") return;
-        lane.layout.isValidLayout = false;  // force it to be invalid
+    myDiagram.nodes.each(function (node) {
+        if (node.category !== "Lane" && node.category !== "LANE" && node.category !== "Layer" && node.category !== "LAYER") {
+            return;
+        }
+        node.layout.isValidLayout = false;  // force it to be invalid
+        const sz = computeMinLaneSize(node);
+        let topBottomPadding = 0;
+        let leftRightPadding = 0;
+        if (node.isSubGraphExpanded) {
+            const holder = node.placeholder;
+            if (holder !== null) {
+                const hsz = holder.actualBounds;
+                topBottomPadding = holder.padding.top + holder.padding.bottom;
+                leftRightPadding = holder.padding.left + holder.padding.right;
+
+                let computedHeight = 0;
+                let computedWidth = 0;
+                node.memberParts.each(function (node) {
+                    const bound = node.actualBounds;
+                    computedHeight = computedHeight + bound.height;
+                    computedWidth = computedHeight + bound.width;
+                });
+                sz.height = computedHeight;
+                sz.width = computedWidth;
+            }
+        }
+        // minimum breadth needs to be big enough to hold the header
+        const hdr = node.findObject("HEADER");
+        if (hdr !== null) {
+            sz.height = Math.max(sz.height, hdr.actualBounds.height);
+            sz.width = Math.max(sz.width, hdr.actualBounds.width);
+        }
+        const shape = node.resizeObject;
+        if (shape !== null) {
+            shape.height = sz.height + topBottomPadding;
+            shape.width = sz.width + leftRightPadding;
+        }
+        updateCrossLaneLinks(node);
     });
     myDiagram.layoutDiagram();
 }
@@ -968,7 +1041,7 @@ function relayoutDiagram() {
 }
 
 // compute the minimum size of a Pool Group needed to hold all of the Lane Groups
-function computeMinPoolSize(pool) {
+/*function computeMinPoolSize(pool) {
     // assert(pool instanceof go.Group && pool.category === "Pool");
     let len = MINLENGTH;
     pool.memberParts.each(function (lane) {
@@ -981,7 +1054,7 @@ function computeMinPoolSize(pool) {
         }
     });
     return new go.Size(len, NaN);
-}
+}*/
 
 // compute the minimum size for a particular Lane Group
 function computeLaneSize(lane) {
@@ -992,11 +1065,15 @@ function computeLaneSize(lane) {
         if (holder !== null) {
             const hsz = holder.actualBounds;
             sz.height = Math.max(sz.height, hsz.height);
+            sz.width = Math.max(sz.width, hsz.width);
         }
     }
     // minimum breadth needs to be big enough to hold the header
     const hdr = lane.findObject("HEADER");
-    if (hdr !== null) sz.height = Math.max(sz.height, hdr.actualBounds.height);
+    if (hdr !== null) {
+        sz.height = Math.max(sz.height, hdr.actualBounds.height);
+        sz.width = Math.max(sz.width, hdr.actualBounds.width);
+    }
     return sz;
 }
 
@@ -1010,6 +1087,7 @@ function computeMinLaneSize(lane) {
 // define a custom ResizingTool to limit how far one can shrink a lane Group
 function LaneResizingTool() {
     go.ResizingTool.call(this);
+    this.isRealtime = false;
 }
 
 go.Diagram.inherit(LaneResizingTool, go.ResizingTool);
@@ -1040,6 +1118,7 @@ LaneResizingTool.prototype.resize = function (newr) {
             const shape = lane.resizeObject;
             if (shape !== null) {  // set its desiredSize length, but leave each breadth alone
                 shape.width = newr.width;
+                shape.height = newr.height;
             }
         });
     } else {  // changing the breadth of a single lane

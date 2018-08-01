@@ -143,7 +143,7 @@ function getNodeByType(paletteModel, suffix) {
                             new go.Binding("minSize", "", OpenArchiWrapper.toSize).makeTwoWay(OpenArchiWrapper.fromSize)),
                     ),
                     gojs(go.Placeholder,
-                        {column: 1, padding: 5})
+                        {column: 1, padding: 10})
                 ),
                 makePort("T", go.Spot.Top, paletteModel.shape.input, paletteModel.shape.output),
                 makePort("L", go.Spot.Left, paletteModel.shape.input, paletteModel.shape.output),
@@ -205,6 +205,17 @@ function getNodeByType(paletteModel, suffix) {
                     },
                     mouseDragLeave: function (e, grp, next) {
                         highlightGroup(e, grp, false);
+                        let selection = e.diagram.selection;
+                        if (selection.size === 0) return;
+                        let ok = true;
+                        selection.each(selection => {
+                            ok = ok && (selection.data.group === grp.key);
+                        });
+                        if (ok) {
+                            if (!e.diagram.lastInput.shift) {
+                                e.diagram.currentTool.doCancel();
+                            }
+                        }
                     },
                     ungroupable: true,
                     computesBoundsAfterDrag: true,
@@ -299,7 +310,7 @@ function getNodeByType(paletteModel, suffix) {
                     ),  // end Horizontal Panel
                     gojs(go.Placeholder,
                         {
-                            padding: 5,
+                            padding: 10,
                             alignment: go.Spot.TopLeft
                         }
                     )
@@ -332,6 +343,17 @@ function getNodeByType(paletteModel, suffix) {
                     },
                     mouseDragLeave: function (e, grp, next) {
                         highlightGroup(e, grp, false);
+                        let selection = e.diagram.selection;
+                        if (selection.size === 0) return;
+                        let ok = true;
+                        selection.each(selection => {
+                            ok = ok && (selection.data.group === group.key);
+                        });
+                        if (ok) {
+                            if (!e.diagram.lastInput.shift) {
+                                e.diagram.currentTool.doCancel();
+                            }
+                        }
                     },
                     ungroupable: true,
                     computesBoundsAfterDrag: true,
@@ -426,7 +448,7 @@ function getNodeByType(paletteModel, suffix) {
                     ),  // end Horizontal Panel
                     gojs(go.Placeholder,
                         {
-                            padding: 5,
+                            padding: 10,
                             alignment: go.Spot.TopLeft
                         }
                     )
@@ -528,7 +550,8 @@ function getNodeByType(paletteModel, suffix) {
             return gojs(go.Group, "Horizontal", groupStyle(),
                 {
                     selectionObjectName: "SHAPE",  // selecting a lane causes the body of the lane to be highlit, not the label
-                    resizable: true, resizeObjectName: "SHAPE",  // the custom resizeAdornmentTemplate only permits two kinds of resizing
+                    resizable: true,
+                    resizeObjectName: "SHAPE",  // the custom resizeAdornmentTemplate only permits two kinds of resizing
                     resizeAdornmentTemplate:
                         gojs(go.Adornment, "Spot",
                             gojs(go.Placeholder),
@@ -581,7 +604,7 @@ function getNodeByType(paletteModel, suffix) {
                             ok = grp.addMembers(grp.diagram.selection, true);
                         }
                         if (ok) {
-                            relayoutLanes();
+                            //relayoutLanes();
                             updateCrossLaneLinks(grp);
                         } else {
                             grp.diagram.currentTool.doCancel();
@@ -592,6 +615,17 @@ function getNodeByType(paletteModel, suffix) {
                     },
                     mouseDragLeave: function (e, group, next) {
                         highlightGroup(e, group, false);
+                        let selection = e.diagram.selection;
+                        if (selection.size === 0) return;
+                        let ok = true;
+                        selection.each(selection => {
+                            ok = ok && (selection.data.group === group.key);
+                        });
+                        if (ok) {
+                            if (!e.diagram.lastInput.shift) {
+                                e.diagram.currentTool.doCancel();
+                            }
+                        }
                     },
                     subGraphExpandedChanged: function (grp) {
                         const shp = grp.resizeObject;
@@ -658,13 +692,38 @@ function getNodeByType(paletteModel, suffix) {
                     gojs(go.Shape, "Rectangle",  // this is the resized object
                         {
                             name: "SHAPE",
-                            fill: "white"
+                            fill: "white",
+                            stroke: "grey"
                         },
-                        new go.Binding("fill", "color"),
-                        new go.Binding("minSize", "size", go.Size.parse).makeTwoWay(go.Size.stringify)),
+                        new go.Binding("fill", "", OpenArchiWrapper.toFill).makeTwoWay(OpenArchiWrapper.fromFill),
+                        new go.Binding("stroke", "", OpenArchiWrapper.toStroke).makeTwoWay(OpenArchiWrapper.fromStroke)/*,
+                        new go.Binding("desiredSize", "", function (data, obj) {
+                            const lane = obj.part;
+                            const sz = computeMinLaneSize(lane);
+                            let topBottomPadding = 0;
+                            let leftRightPadding = 0;
+                            if (lane.isSubGraphExpanded) {
+                                const holder = lane.placeholder;
+                                if (holder !== null) {
+                                    const hsz = holder.actualBounds;
+                                    topBottomPadding = holder.padding.top + holder.padding.bottom;
+                                    leftRightPadding = holder.padding.left + holder.padding.right;
+                                    sz.height = Math.max(sz.height, hsz.height);
+                                }
+                            }
+                            // minimum breadth needs to be big enough to hold the header
+                            const hdr = lane.findObject("HEADER");
+                            if (hdr !== null) {
+                                sz.height = Math.max(sz.height, hdr.actualBounds.height);
+                            }
+                            sz.height = sz.height - topBottomPadding;
+                            sz.width = sz.width - leftRightPadding;
+                            return sz;
+                        })*/
+                    ),
                     gojs(go.Placeholder,
                         {
-                            padding: 12,
+                            padding: 10,
                             alignment: go.Spot.TopLeft
                         }),
                     gojs(go.Panel, "Table",

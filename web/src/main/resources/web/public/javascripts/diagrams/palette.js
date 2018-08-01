@@ -201,7 +201,8 @@ function nodeStyle() {
                 obj.part.background = "transparent";
                 showPorts(obj.part, false);
             }
-        }
+        },
+        {dragComputation: stayInGroup}
     ];
 }
 
