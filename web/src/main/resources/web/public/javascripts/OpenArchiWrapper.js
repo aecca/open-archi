@@ -181,6 +181,13 @@ function processSystemToDiagram(system, nodes, links, parentId) {
     systemElement.isGroup = true;
     //TODO Añadir campos propios del system
     //Los systems sólo se pueden agrupar en layers u otros systems
+    let systems = system.systems;
+    let hasSystems = systems !== undefined && !commons.prototype.isEmpty(systems);
+    if (hasSystems) {
+        systems.forEach(function (system_) {
+            processSystemToDiagram(system_, nodes, links, system.id)
+        });
+    }
     let containers = system.containers;
     let hasContainers = containers !== undefined && !commons.prototype.isEmpty(containers);
     if (hasContainers) {
