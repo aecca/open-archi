@@ -8,7 +8,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
- * A software architecture model.
+ * A system architecture model.
  */
 @Entity
 @PersistenceUnit(unitName = "open-archi")
@@ -48,7 +48,7 @@ public class Models extends Elements {
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "System_Id",
                     referencedColumnName = "Id")})
-    private Set<Systems> softwares = new LinkedHashSet<>();
+    private Set<Systems> systems = new LinkedHashSet<>();
 
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
@@ -79,11 +79,11 @@ public class Models extends Elements {
     }
 
     public Set<Systems> getSystems() {
-        return softwares;
+        return systems;
     }
 
-    public void setSystems(Set<Systems> softwares) {
-        this.softwares = softwares;
+    public void setSystems(Set<Systems> systems) {
+        this.systems = systems;
     }
 
     public Set<DeploymentNodes> getDeploymentNodes() {
@@ -114,10 +114,10 @@ public class Models extends Elements {
             newConsumer.override(consumer, keepMeta, suffix);
             this.consumers.add(newConsumer);
         }
-        for (Systems software : source.getSystems()) {
+        for (Systems system : source.getSystems()) {
             Systems newSystem = new Systems();
-            newSystem.override(software, keepMeta, suffix);
-            this.softwares.add(newSystem);
+            newSystem.override(system, keepMeta, suffix);
+            this.systems.add(newSystem);
         }
         for (DeploymentNodes deploymentNode : source.getDeploymentNodes()) {
             DeploymentNodes newDeploymentNode = new DeploymentNodes();
@@ -143,10 +143,10 @@ public class Models extends Elements {
             }
         }
         if (source.getSystems() != null && !source.getSystems().isEmpty()) {
-            for (Systems software : source.getSystems()) {
+            for (Systems system : source.getSystems()) {
                 Systems newSystem = new Systems();
-                newSystem.copyNonEmpty(software, keepMeta);
-                this.softwares.add(newSystem);
+                newSystem.copyNonEmpty(system, keepMeta);
+                this.systems.add(newSystem);
             }
         }
         if (source.getDeploymentNodes() != null && !source.getDeploymentNodes().isEmpty()) {

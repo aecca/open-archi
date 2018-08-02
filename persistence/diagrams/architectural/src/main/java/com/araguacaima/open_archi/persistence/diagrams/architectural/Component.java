@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.PersistenceUnit;
 
 /**
- * The word "component" is a hugely overloaded term in the software development
+ * The word "component" is a hugely overloaded term in the system development
  * industry, but in this context a component is simply a grouping of related
  * functionality encapsulated behind a well-defined interface. If you're using a
  * language like Java or C#, the simplest way to think of a component is that

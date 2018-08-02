@@ -8,7 +8,7 @@ import java.util.Set;
 
 /**
  * A container represents something that hosts code or data. A container is
- * something that needs to be running in order for the overall software system
+ * something that needs to be running in order for the overall system
  * to work. In real terms, a container is something like a server-side web application,
  * a client-side web application, client-side desktop application, a mobile app,
  * a microservice, a database schema, a file system, etc.

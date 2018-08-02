@@ -7,12 +7,12 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
- * A software system is the highest level of abstraction and describes something
+ * A system is the highest level of abstraction and describes something
  * that delivers value to its users, whether they are human or not. This includes
- * the software system you are modelling, and the other software systems upon
- * which your software system depends.
+ * the system you are modelling, and the other systems upon
+ * which your system depends.
  * <p>
- * See <a href="https://structurizr.com/help/model#System">Model - Software System</a>
+ * See <a href="https://structurizr.com/help/model#System">Model - System System</a>
  * on the Structurizr website for more information.
  */
 @Entity

@@ -550,9 +550,8 @@ function getNodeByType(paletteModel, suffix) {
         case "ARCHITECTURE_MODEL":
             return gojs(go.Group, "Auto",
                 { // use a simple layout that ignores links to stack the "lane" Groups on top of each other
-                    selectionObjectName: "SHAPE",  // selecting a lane causes the body of the lane to be highlit, not the label
+
                     resizable: false,
-                    resizeObjectName: "SHAPE",  // the custom resizeAdornmentTemplate only permits two kinds of resizing
                     movable: true, // allows users to re-order by dragging
                     copyable: false,  // can't copy lanes or pools
                     avoidable: false,  // don't impede AvoidsNodes routed Links
@@ -560,19 +559,12 @@ function getNodeByType(paletteModel, suffix) {
                     maxLocation: new go.Point(NaN, Infinity),
                     layerName: "Background",  // all pools and lanes are always behind all nodes and links
                     layout: gojs(PoolLayout, {spacing: new go.Size(3, 3)}),  // no space between lanes
-                    mouseDragEnter: function (e, grp, prev) {
-                        highlightGroup(e, grp, true);
-                    },
-                    mouseDragLeave: function (e, grp, next) {
-                        highlightGroup(e, grp, false);
-                    },
-                    zOrder: 100,
+                    zOrder: 10,
                     ungroupable: true,
                     computesBoundsAfterDrag: true,  // needed to prevent recomputing Group.placeholder bounds too soon
                     computesBoundsIncludingLinks: false,  // to reduce occurrences of links going briefly outside the lane
                     computesBoundsIncludingLocation: true,  // to support empty space at top-left corner of lane
                     handlesDragDropForMembers: true,  // don't need to define handlers on member Nodes and Links
-                    mouseDrop: finishDrop,
                     subGraphExpandedChanged: function (grp) {
                         const shp = grp.resizeObject;
                         if (grp.diagram.undoManager.isUndoingRedoing) return;
@@ -592,27 +584,22 @@ function getNodeByType(paletteModel, suffix) {
                     // handle mouse enter/leave events to show/hide the ports
                     mouseEnter: function (e, obj) {
                         showPorts(obj.part, true);
-                        obj.part.background = "rgba(240, 173, 75,0.2)";
                     },
                     mouseLeave: function (e, obj) {
                         showPorts(obj.part, false);
-                        obj.part.background = "transparent";
                     }
                 },
-                new go.Binding("location", "", OpenArchiWrapper.toLocation).makeTwoWay(OpenArchiWrapper.fromLocation),
-                new go.Binding("background", "isHighlighted", function (h) {
-                    return h ? "rgba(255,0,0,0.2)" : "transparent";
-                }).ofObject(),
                 gojs(go.Shape,
                     {
                         fill: paletteModel.shape !== undefined ? paletteModel.shape.fill : "white",
-                        stroke: paletteModel.shape !== undefined ? paletteModel.shape.stroke : "black",
-                        minSize: OpenArchiWrapper.toSize(paletteModel)
+                        stroke: paletteModel.shape !== undefined ? paletteModel.shape.stroke : "black"
                     },
                     new go.Binding("figure", "", OpenArchiWrapper.toFigure).makeTwoWay(OpenArchiWrapper.fromFigure),
                     new go.Binding("fill", "", OpenArchiWrapper.toFill).makeTwoWay(OpenArchiWrapper.fromFill),
                     new go.Binding("minSize", "", OpenArchiWrapper.toSize).makeTwoWay(OpenArchiWrapper.fromSize),
-                    new go.Binding("stroke", "", OpenArchiWrapper.toStroke).makeTwoWay(OpenArchiWrapper.fromStroke)),
+                    new go.Binding("stroke", "", OpenArchiWrapper.toStroke).makeTwoWay(OpenArchiWrapper.fromStroke),
+                    new go.Binding("isSubGraphExpanded", "expanded").makeTwoWay()
+                ),
                 gojs(go.Panel, "Table",
                     {
                         defaultColumnSeparatorStroke: "black",
@@ -623,10 +610,30 @@ function getNodeByType(paletteModel, suffix) {
                             column: 0,
                             angle: 270
                         },
+                        new go.Binding("visible", "isSubGraphExpanded").ofObject(),
+                        gojs("SubGraphExpanderButton", {margin: 5}),
+                        gojs(go.Panel, {
+                                name: "IMAGE"
+                            },
+                            new go.Binding("isSubGraphExpanded", "expanded").makeTwoWay(),
+                            new go.Binding("visible", "isSubGraphExpanded").ofObject(),
+                            gojs(go.Picture,
+                                {
+                                    row: 0,
+                                    column: 1,
+                                    margin: 2,
+                                    maxSize: new go.Size(60, 60),
+                                    imageStretch: go.GraphObject.Uniform,
+                                    alignment: go.Spot.TopRight
+                                },
+                                new go.Binding("source", "", OpenArchiWrapper.toImage).makeTwoWay(OpenArchiWrapper.fromImage),
+                                new go.Binding("minSize", "source", function (e) {
+                                    return e === undefined ? new go.Size(0, 0) : new go.Size(30, 30);
+                                }).ofObject())),
                         gojs(go.TextBlock, "Text",
                             {
                                 text: paletteModel.name,
-                                font: "bold 11pt Helvetica, Arial, sans-serif",
+                                font: "bold 17pt Helvetica, Arial, sans-serif",
                                 stroke: "black",
                                 maxSize: new go.Size(160, NaN),
                                 wrap: go.TextBlock.WrapFit,
@@ -634,11 +641,70 @@ function getNodeByType(paletteModel, suffix) {
                             },
                             new go.Binding("text", "", OpenArchiWrapper.toTitle),
                             new go.Binding("stroke", "", OpenArchiWrapper.toStroke).makeTwoWay(OpenArchiWrapper.fromStroke),
-                            new go.Binding("minSize", "", OpenArchiWrapper.toSize).makeTwoWay(OpenArchiWrapper.fromSize)),
+                            new go.Binding("minSize", "", OpenArchiWrapper.toSize).makeTwoWay(OpenArchiWrapper.fromSize)
+                        )
                     ),
                     gojs(go.Placeholder,
                         {column: 1, padding: 10})
                 ),
+                gojs(go.Panel, "Auto",  // the lane consisting of a background Shape and a Placeholder representing the subgraph
+                    gojs(go.Shape, "Rectangle",  // this is the resized object
+                        {
+                            name: "SHAPE",
+                            fill: "white",
+                            stroke: "grey"
+                        },
+                        new go.Binding("fill", "", OpenArchiWrapper.toFill).makeTwoWay(OpenArchiWrapper.fromFill),
+                        new go.Binding("stroke", "", OpenArchiWrapper.toStroke).makeTwoWay(OpenArchiWrapper.fromStroke)
+                    ),
+                    gojs(go.Panel, "Table",
+                        {
+                            margin: 2,
+                            maxSize: new go.Size(200, NaN),
+                            name: "HEADER"
+                        },
+                        new go.Binding("visible", "isSubGraphExpanded", function (e) {
+                            return !e;
+                        }).ofObject(),
+                        // the two TextBlocks in column 0 both stretch in width
+                        // but align on the left side
+                        gojs(go.RowColumnDefinition,
+                            {
+                                column: 0,
+                                stretch: go.GraphObject.Horizontal,
+                                alignment: go.Spot.Left
+                            }),
+                        gojs("SubGraphExpanderButton", {row: 0, column:0}),  // but this remains always visible!
+                        gojs(go.Picture,
+                            {
+                                name: "IMAGE",
+                                row: 0,
+                                column: 1,
+                                margin: 2,
+                                maxSize: new go.Size(30, 30),
+                                imageStretch: go.GraphObject.Uniform,
+                                alignment: go.Spot.TopLeft
+                            },
+                            new go.Binding("source", "", OpenArchiWrapper.toImage).makeTwoWay(OpenArchiWrapper.fromImage),
+                            new go.Binding("minSize", "source", function (e) {
+                                return e === undefined ? new go.Size(0, 0) : new go.Size(30, 30);
+                            }).ofObject()
+                        ),
+
+                        gojs(go.TextBlock,  // this TextBlock is only seen when the swimlane is collapsed
+                            {
+                                name: "LABEL",
+                                editable: true,
+                                row: 0,
+                                column: 2,
+                                angle: 0,
+                                margin: 2,
+                                font: "bold 13pt sans-serif",
+                                alignment: go.Spot.BottomRight
+                            },
+                            new go.Binding("text", "", OpenArchiWrapper.toTitle).makeTwoWay(OpenArchiWrapper.fromTitle))
+                    )
+                ),  // end Auto Panel
                 makePort("T", go.Spot.Top, paletteModel.shape.input, paletteModel.shape.output),
                 makePort("L", go.Spot.Left, paletteModel.shape.input, paletteModel.shape.output),
                 makePort("R", go.Spot.Right, paletteModel.shape.input, paletteModel.shape.output),

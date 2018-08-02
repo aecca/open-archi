@@ -21,17 +21,17 @@ import java.util.Set;
                 query = "select a.consumers from com.araguacaima.open_archi.persistence.diagrams.architectural.Model a where a.id=:id"),
         @NamedQuery(name = Model.GET_CONSUMER_FOR_MODEL,
                 query = "select c from com.araguacaima.open_archi.persistence.diagrams.architectural.Model a JOIN a.consumers c where a.id=:id and c.id=:cid"),
-        @NamedQuery(name = Model.GET_ALL_SOFTWARE_SYSTEMS,
+        @NamedQuery(name = Model.GET_ALL_SYSTEMS,
                 query = "select a.systems from com.araguacaima.open_archi.persistence.diagrams.architectural.Model a where a.id=:id"),
-        @NamedQuery(name = Model.GET_SOFTWARE_SYSTEM,
+        @NamedQuery(name = Model.GET_SYSTEM,
                 query = "select s from com.araguacaima.open_archi.persistence.diagrams.architectural.Model a JOIN a.systems s where a.id=:id and s.id=:sid")})
 public class Model extends Element implements DiagramableElement<Model> {
 
     public static final String GET_ALL_RELATIONSHIPS = "get.all.relationships";
     public static final String GET_ALL_CONSUMERS_FOR_MODEL = "get.all.consumers.for.model";
     public static final String GET_CONSUMER_FOR_MODEL = "get.consumer.for.model";
-    public static final String GET_ALL_SOFTWARE_SYSTEMS = "get.all.software.systems";
-    public static final String GET_SOFTWARE_SYSTEM = "get.software.system";
+    public static final String GET_ALL_SYSTEMS = "get.all.systems";
+    public static final String GET_SYSTEM = "get.system";
     public static final String SHAPE_COLOR = "#FFFFFF";
 
     @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
@@ -130,9 +130,9 @@ public class Model extends Element implements DiagramableElement<Model> {
             newLayer.override(layer, keepMeta, suffix);
             this.layers.add(newLayer);
         }
-        for (System software : source.getSystems()) {
+        for (System system : source.getSystems()) {
             System newSystem = new System();
-            newSystem.override(software, keepMeta, suffix);
+            newSystem.override(system, keepMeta, suffix);
             this.systems.add(newSystem);
         }
         for (Container container : source.getContainers()) {
@@ -170,30 +170,30 @@ public class Model extends Element implements DiagramableElement<Model> {
             }
         }
         if (source.getLayers() != null && !source.getLayers().isEmpty()) {
-            for (Layer software : source.getLayers()) {
+            for (Layer system : source.getLayers()) {
                 Layer newLayer = new Layer();
-                newLayer.copyNonEmpty(software, keepMeta);
+                newLayer.copyNonEmpty(system, keepMeta);
                 this.layers.add(newLayer);
             }
         }
         if (source.getSystems() != null && !source.getSystems().isEmpty()) {
-            for (System software : source.getSystems()) {
+            for (System system : source.getSystems()) {
                 System newSystem = new System();
-                newSystem.copyNonEmpty(software, keepMeta);
+                newSystem.copyNonEmpty(system, keepMeta);
                 this.systems.add(newSystem);
             }
         }
         if (source.getContainers() != null && !source.getContainers().isEmpty()) {
-            for (Container software : source.getContainers()) {
+            for (Container system : source.getContainers()) {
                 Container newContainer = new Container();
-                newContainer.copyNonEmpty(software, keepMeta);
+                newContainer.copyNonEmpty(system, keepMeta);
                 this.containers.add(newContainer);
             }
         }
         if (source.getComponents() != null && !source.getComponents().isEmpty()) {
-            for (Component software : source.getComponents()) {
+            for (Component system : source.getComponents()) {
                 Component newComponent = new Component();
-                newComponent.copyNonEmpty(software, keepMeta);
+                newComponent.copyNonEmpty(system, keepMeta);
                 this.components.add(newComponent);
             }
         }
@@ -218,8 +218,8 @@ public class Model extends Element implements DiagramableElement<Model> {
         return systems;
     }
 
-    public void setSystems(Set<System> softwares) {
-        this.systems = softwares;
+    public void setSystems(Set<System> systems) {
+        this.systems = systems;
     }
 
     public Set<DeploymentNode> getDeploymentNodes() {
