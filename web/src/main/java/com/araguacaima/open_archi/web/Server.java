@@ -708,7 +708,7 @@ public class Server {
                         return throwError(response, ex);
                     }
                 });
-                get("/diagrams/architectures/systems/{system-id}", (request, response) -> {
+                get("/diagrams/architectures/systems/:suuid", (request, response) -> {
                     try {
                         String id = request.params(":cuuid");
                         System system = JPAEntityManagerUtils.find(System.class, id);
@@ -722,7 +722,7 @@ public class Server {
                         return throwError(response, ex);
                     }
                 });
-                patch("/diagrams/architectures/systems/{system-id}", (request, response) -> {
+                patch("/diagrams/architectures/systems/:suuid", (request, response) -> {
                     try {
                         System system = jsonUtils.fromJSON(request.body(), System.class);
                         if (system == null) {
@@ -741,7 +741,7 @@ public class Server {
                         return throwError(response, ex);
                     }
                 });
-                put("/diagrams/architectures/systems/{system-id}", (request, response) -> {
+                put("/diagrams/architectures/systems/:suuid", (request, response) -> {
                     try {
                         System system = jsonUtils.fromJSON(request.body(), System.class);
                         if (system == null) {
@@ -760,12 +760,12 @@ public class Server {
                         return throwError(response, ex);
                     }
                 });
-                get("/diagrams/architectures/systems/{system-id}/systems", (request, response) -> {
+                get("/diagrams/architectures/systems/:suuid/systems", (request, response) -> {
                     Map<String, Object> params = new HashMap<>();
                     params.put("id", request.params(":suuid"));
                     return getList(request, response, System.GET_ALL_SYSTEMS_FROM_SYSTEM, params, Collection.class);
                 });
-                post("/diagrams/architectures/systems/{system-id}/systems", (request, response) -> {
+                post("/diagrams/architectures/systems/:suuid/systems", (request, response) -> {
                     try {
                         System system = jsonUtils.fromJSON(request.body(), System.class);
                         if (system == null) {
@@ -786,13 +786,12 @@ public class Server {
                         return throwError(response, ex);
                     }
                 });
-
-                get("/diagrams/architectures/systems/{system-id}/containers", (request, response) -> {
+                get("/diagrams/architectures/systems/:suuid/containers", (request, response) -> {
                     Map<String, Object> params = new HashMap<>();
                     params.put("id", request.params(":suuid"));
                     return getList(request, response, System.GET_ALL_CONTAINERS_FROM_SYSTEM, params, Collection.class);
                 });
-                post("/diagrams/architectures/systems/{system-id}/containers", (request, response) -> {
+                post("/diagrams/architectures/systems/:suuid/containers", (request, response) -> {
                     try {
                         Container container = jsonUtils.fromJSON(request.body(), Container.class);
                         if (container == null) {
@@ -813,12 +812,12 @@ public class Server {
                         return throwError(response, ex);
                     }
                 });
-                get("/diagrams/architectures/systems/{system-id}/components", (request, response) -> {
+                get("/diagrams/architectures/systems/:suuid/components", (request, response) -> {
                     Map<String, Object> params = new HashMap<>();
                     params.put("id", request.params(":suuid"));
                     return getList(request, response, System.GET_ALL_COMPONENTS_FROM_SYSTEM, params, Collection.class);
                 });
-                post("/diagrams/architectures/systems/{system-id}/components", (request, response) -> {
+                post("/diagrams/architectures/systems/:suuid/components", (request, response) -> {
                     try {
                         Component component = jsonUtils.fromJSON(request.body(), Component.class);
                         if (component == null) {
@@ -856,7 +855,7 @@ public class Server {
                         return throwError(response, ex);
                     }
                 });
-                get("/diagrams/architectures/containers/{container-id}", (request, response) -> {
+                get("/diagrams/architectures/containers/:cuuid", (request, response) -> {
                     try {
                         String id = request.params(":cuuid");
                         Container container = JPAEntityManagerUtils.find(Container.class, id);
@@ -870,7 +869,7 @@ public class Server {
                         return throwError(response, ex);
                     }
                 });
-                patch("/diagrams/architectures/containers/{container-id}", (request, response) -> {
+                patch("/diagrams/architectures/containers/:cuuid", (request, response) -> {
                     try {
                         Container container = jsonUtils.fromJSON(request.body(), Container.class);
                         if (container == null) {
@@ -889,7 +888,7 @@ public class Server {
                         return throwError(response, ex);
                     }
                 });
-                put("/diagrams/architectures/containers/{container-id}", (request, response) -> {
+                put("/diagrams/architectures/containers/:cuuid", (request, response) -> {
                     try {
                         Container container = jsonUtils.fromJSON(request.body(), Container.class);
                         if (container == null) {
@@ -908,12 +907,12 @@ public class Server {
                         return throwError(response, ex);
                     }
                 });
-                get("/diagrams/architectures/containers/{container-id}/components", (request, response) -> {
+                get("/diagrams/architectures/containers/:cuuid/components", (request, response) -> {
                     Map<String, Object> params = new HashMap<>();
                     params.put("id", request.params(":cuuid"));
                     return getList(request, response, Container.GET_ALL_COMPONENTS_FROM_CONTAINER, params, Collection.class);
                 });
-                post("/diagrams/architectures/containers/{container-id}/components", (request, response) -> {
+                post("/diagrams/architectures/containers/:cuuid/components", (request, response) -> {
                     try {
                         Component component = jsonUtils.fromJSON(request.body(), Component.class);
                         if (component == null) {
@@ -951,7 +950,7 @@ public class Server {
                         return throwError(response, ex);
                     }
                 });
-                get("/diagrams/architectures/components/{component-id}", (request, response) -> {
+                get("/diagrams/architectures/components/:cuuid", (request, response) -> {
                     try {
                         String id = request.params(":cuuid");
                         Component component = JPAEntityManagerUtils.find(Component.class, id);
@@ -965,7 +964,7 @@ public class Server {
                         return throwError(response, ex);
                     }
                 });
-                patch("/diagrams/architectures/components/{component-id}", (request, response) -> {
+                patch("/diagrams/architectures/components/:cuuid", (request, response) -> {
                     try {
                         Component component = jsonUtils.fromJSON(request.body(), Component.class);
                         if (component == null) {
@@ -984,7 +983,7 @@ public class Server {
                         return throwError(response, ex);
                     }
                 });
-                put("/diagrams/architectures/components/{component-id}", (request, response) -> {
+                put("/diagrams/architectures/components/:cuuid", (request, response) -> {
                     try {
                         Component component = jsonUtils.fromJSON(request.body(), Component.class);
                         if (component == null) {
