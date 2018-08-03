@@ -18,14 +18,24 @@ import java.util.Set;
 @Entity
 @PersistenceUnit(unitName = "open-archi")
 @NamedQueries({
-        @NamedQuery(name = System.GET_ALL_CONTAINERS,
+        @NamedQuery(name = System.GET_ALL_SYSTEMS,
+                query = "select a from System a"),
+        @NamedQuery(name = System.GET_ALL_SYSTEMS_FROM_SYSTEM,
+                query = "select a.systems from System a where a.id=:id"),
+        @NamedQuery(name = System.GET_ALL_COMPONENTS_FROM_SYSTEM,
+                query = "select a.components from System a where a.id=:id"),
+        @NamedQuery(name = System.GET_ALL_CONTAINERS_FROM_SYSTEM,
                 query = "select a.containers from System a where a.id=:id"),
         @NamedQuery(name = System.GET_CONTAINER,
                 query = "select c from System a JOIN a.containers c where a.id=:id and c.id=:cid")})
 public class System extends StaticElement {
 
-    public static final String GET_ALL_CONTAINERS = "get.all.containers";
+    public static final String GET_ALL_SYSTEMS_FROM_SYSTEM = "get.all.systems.from.system";
+    public static final String GET_ALL_COMPONENTS_FROM_SYSTEM = "get.all.components.from.system";
+    public static final String GET_ALL_SYSTEMS = "get.all.systems";
+    public static final String GET_ALL_CONTAINERS_FROM_SYSTEM = "get.all.containers.from.system";
     public static final String GET_CONTAINER = "get.container";
+
     @Column
     @Enumerated(EnumType.STRING)
     private Scope scope = Scope.Unspecified;

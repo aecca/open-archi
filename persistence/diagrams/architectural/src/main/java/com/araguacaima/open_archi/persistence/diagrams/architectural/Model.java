@@ -21,7 +21,7 @@ import java.util.Set;
                 query = "select a.consumers from com.araguacaima.open_archi.persistence.diagrams.architectural.Model a where a.id=:id"),
         @NamedQuery(name = Model.GET_CONSUMER_FOR_MODEL,
                 query = "select c from com.araguacaima.open_archi.persistence.diagrams.architectural.Model a JOIN a.consumers c where a.id=:id and c.id=:cid"),
-        @NamedQuery(name = Model.GET_ALL_SYSTEMS,
+        @NamedQuery(name = Model.GET_ALL_SYSTEMS_FROM_MODEL,
                 query = "select a.systems from com.araguacaima.open_archi.persistence.diagrams.architectural.Model a where a.id=:id"),
         @NamedQuery(name = Model.GET_SYSTEM,
                 query = "select s from com.araguacaima.open_archi.persistence.diagrams.architectural.Model a JOIN a.systems s where a.id=:id and s.id=:sid")})
@@ -30,7 +30,7 @@ public class Model extends Element implements DiagramableElement<Model> {
     public static final String GET_ALL_RELATIONSHIPS = "get.all.relationships";
     public static final String GET_ALL_CONSUMERS_FOR_MODEL = "get.all.consumers.for.model";
     public static final String GET_CONSUMER_FOR_MODEL = "get.consumer.for.model";
-    public static final String GET_ALL_SYSTEMS = "get.all.systems";
+    public static final String GET_ALL_SYSTEMS_FROM_MODEL = "get.all.systems.from.model";
     public static final String GET_SYSTEM = "get.system";
     public static final String SHAPE_COLOR = "#FFFFFF";
 

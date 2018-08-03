@@ -18,8 +18,13 @@ import java.util.Set;
  */
 @Entity
 @PersistenceUnit(unitName = "open-archi")
+@NamedQueries({
+        @NamedQuery(name = Container.GET_ALL_CONTAINERS,
+                query = "select a from Container a")})
 public class Container extends StaticElement {
 
+    public static final String GET_ALL_CONTAINERS = "get.all.containers";
+    public static final String GET_ALL_COMPONENTS_FROM_CONTAINER = "get.all.components.from.container";
     @Column
     private String technology;
 

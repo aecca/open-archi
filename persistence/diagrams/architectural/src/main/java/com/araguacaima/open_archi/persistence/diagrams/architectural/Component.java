@@ -2,9 +2,7 @@ package com.araguacaima.open_archi.persistence.diagrams.architectural;
 
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.PersistenceUnit;
+import javax.persistence.*;
 
 /**
  * The word "component" is a hugely overloaded term in the system development
@@ -17,8 +15,13 @@ import javax.persistence.PersistenceUnit;
  */
 @Entity
 @PersistenceUnit(unitName = "open-archi")
+@NamedQueries({
+        @NamedQuery(name = Component.GET_ALL_COMPONENTS,
+                query = "select a from Component a")})
 public class Component extends StaticElement {
 
+
+    public static final String GET_ALL_COMPONENTS = "get.all.components";
     @Column
     private String technology;
 
