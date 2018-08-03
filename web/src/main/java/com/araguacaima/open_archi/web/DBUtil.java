@@ -154,7 +154,9 @@ public class DBUtil {
         ReflectionUtils.doWithFields(entity.getClass(), field -> {
             field.setAccessible(true);
             Object object_ = field.get(entity);
-            processCreateIfNotExists(field.getType(), object_);
+            if (object_ != null) {
+                processCreateIfNotExists(field.getType(), object_);
+            }
         }, Utils::filterMethod);
         try {
             Object id = reflectionUtils.invokeGetter(entity, "id");

@@ -710,7 +710,7 @@ public class Server {
                 });
                 get("/diagrams/architectures/systems/:suuid", (request, response) -> {
                     try {
-                        String id = request.params(":cuuid");
+                        String id = request.params(":suuid");
                         System system = JPAEntityManagerUtils.find(System.class, id);
                         if (system != null) {
                             system.validateRequest();
@@ -728,7 +728,7 @@ public class Server {
                         if (system == null) {
                             throw new Exception("Invalid kind of system");
                         }
-                        String id = request.params(":cuuid");
+                        String id = request.params(":suuid");
                         system.setId(id);
                         system.validateModification();
                         DBUtil.update(system);
@@ -894,7 +894,7 @@ public class Server {
                         if (container == null) {
                             throw new Exception("Invalid kind of container");
                         }
-                        String id = request.params(":suuid");
+                        String id = request.params(":cuuid");
                         container.setId(id);
                         container.validateReplacement();
                         DBUtil.replace(container);
@@ -918,11 +918,11 @@ public class Server {
                         if (component == null) {
                             throw new Exception("Invalid kind of component");
                         }
-                        String id = request.params(":suuid");
-                        String containerId = component.getId();
+                        String id = request.params(":cuuid");
+
                         component.validateCreation();
                         Container container = JPAEntityManagerUtils.find(Container.class, id);
-                        DBUtil.populate(component, containerId == null);
+                        DBUtil.populate(component, true);
                         container.getComponents().add(component);
                         DBUtil.update(container);
                         response.status(HTTP_CREATED);
@@ -989,7 +989,7 @@ public class Server {
                         if (component == null) {
                             throw new Exception("Invalid kind of container");
                         }
-                        String id = request.params(":suuid");
+                        String id = request.params(":cuuid");
                         component.setId(id);
                         component.validateReplacement();
                         DBUtil.replace(component);
