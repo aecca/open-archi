@@ -123,8 +123,8 @@ public class Feature extends Item {
         this.kind = kind;
     }
 
-    public void override(Feature source, boolean keepMeta, String suffix) {
-        super.override(source, keepMeta, suffix);
+    public void override(Feature source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+        super.override(source, keepMeta, suffix, clonedFrom);
         this.setRole(source.getRole());
         this.setUrl(source.getUrl());
         this.setCategory(source.getCategory());

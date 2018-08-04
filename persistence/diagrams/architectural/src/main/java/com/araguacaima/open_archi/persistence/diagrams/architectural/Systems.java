@@ -1,5 +1,7 @@
 package com.araguacaima.open_archi.persistence.diagrams.architectural;
 
+import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
+
 import javax.persistence.*;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -49,12 +51,12 @@ public class Systems extends StaticElements {
         this.containers = containers;
     }
 
-    public void override(Systems source, boolean keepMeta, String suffix) {
-        super.override(source, keepMeta, suffix);
+    public void override(Systems source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+        super.override(source, keepMeta, suffix, clonedFrom);
         this.setScope(source.getScope());
         for (Containers container : source.getContainers()) {
             Containers newContainer = new Containers();
-            newContainer.override(container, keepMeta, suffix);
+            newContainer.override(container, keepMeta, suffix, clonedFrom);
             this.containers.add(newContainer);
         }
     }

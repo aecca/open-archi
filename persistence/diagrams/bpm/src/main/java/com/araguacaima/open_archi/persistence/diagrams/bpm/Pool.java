@@ -1,5 +1,6 @@
 package com.araguacaima.open_archi.persistence.diagrams.bpm;
 
+import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 import com.araguacaima.open_archi.persistence.diagrams.core.Item;
 
@@ -31,15 +32,23 @@ public class Pool extends Item {
         this.lanes = lanes;
     }
 
-    public void override(Pool source, boolean keepMeta, String suffix) {
-        super.override(source, keepMeta, suffix);
-        this.setLanes(source.getLanes());
+    public void override(Pool source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+        super.override(source, keepMeta, suffix, clonedFrom);
+        for (Lane consumer : source.getLanes()) {
+            Lane newLane = new Lane();
+            newLane.override(consumer, keepMeta, suffix, clonedFrom);
+            this.lanes.add(newLane);
+        }
     }
 
     public void copyNonEmpty(Pool source, boolean keepMeta) {
         super.copyNonEmpty(source, keepMeta);
         if (source.getLanes() != null && !source.getLanes().isEmpty()) {
-            this.setLanes(source.getLanes());
+            for (Lane consumer : source.getLanes()) {
+                Lane newLane = new Lane();
+                newLane.copyNonEmpty(consumer, keepMeta);
+                this.lanes.add(newLane);
+            }
         }
     }
 

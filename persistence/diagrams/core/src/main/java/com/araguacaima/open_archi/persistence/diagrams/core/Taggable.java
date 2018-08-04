@@ -92,8 +92,11 @@ public class Taggable extends BaseEntity {
         this.clonedBy = clonedBy;
     }
 
-    public void override(Taggable source, boolean keepMeta, String suffix) {
+    public void override(Taggable source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
         super.override(source, keepMeta, suffix);
+        if (clonedFrom != null) {
+            this.setClonedFrom(clonedFrom);
+        }
         this.tags = source.getTags();
         this.role = source.getRole();
     }

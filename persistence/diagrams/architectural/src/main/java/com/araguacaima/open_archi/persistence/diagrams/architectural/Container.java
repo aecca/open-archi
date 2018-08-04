@@ -1,5 +1,6 @@
 package com.araguacaima.open_archi.persistence.diagrams.architectural;
 
+import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 
 import javax.persistence.*;
@@ -59,12 +60,12 @@ public class Container extends StaticElement {
         this.components = components;
     }
 
-    public void override(Container source, boolean keepMeta, String suffix) {
-        super.override(source, keepMeta, suffix);
+    public void override(Container source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+        super.override(source, keepMeta, suffix, clonedFrom);
         this.setTechnology(source.getTechnology());
         for (Component component : source.getComponents()) {
             Component newComponent = new Component();
-            newComponent.override(component, keepMeta, suffix);
+            newComponent.override(component, keepMeta, suffix, clonedFrom);
             this.components.add(newComponent);
         }
     }

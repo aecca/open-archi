@@ -1,5 +1,6 @@
 package com.araguacaima.open_archi.persistence.diagrams.architectural;
 
+import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 import com.araguacaima.open_archi.persistence.diagrams.core.Elements;
 
@@ -102,26 +103,26 @@ public class Models extends Elements {
         this.relationships = relationships;
     }
 
-    public void override(Models source, boolean keepMeta, String suffix) {
-        super.override(source, keepMeta, suffix);
+    public void override(Models source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+        super.override(source, keepMeta, suffix, clonedFrom);
         for (Relationships relationship : source.getRelationships()) {
             Relationships newRelationship = new Relationships();
-            newRelationship.override(relationship, keepMeta, suffix);
+            newRelationship.override(relationship, keepMeta, suffix, clonedFrom);
             this.relationships.add(newRelationship);
         }
         for (Consumers consumer : source.getConsumers()) {
             Consumers newConsumer = new Consumers();
-            newConsumer.override(consumer, keepMeta, suffix);
+            newConsumer.override(consumer, keepMeta, suffix, clonedFrom);
             this.consumers.add(newConsumer);
         }
         for (Systems system : source.getSystems()) {
             Systems newSystem = new Systems();
-            newSystem.override(system, keepMeta, suffix);
+            newSystem.override(system, keepMeta, suffix, clonedFrom);
             this.systems.add(newSystem);
         }
         for (DeploymentNodes deploymentNode : source.getDeploymentNodes()) {
             DeploymentNodes newDeploymentNode = new DeploymentNodes();
-            newDeploymentNode.override(deploymentNode, keepMeta, suffix);
+            newDeploymentNode.override(deploymentNode, keepMeta, suffix, clonedFrom);
             this.deploymentNodes.add(newDeploymentNode);
         }
     }

@@ -315,7 +315,7 @@ public class DBUtil {
                         return entity_;
                     }
                 } else {
-                    ((Item) entity_).override((Item) entity, false, null);
+                    ((Item) entity_).override((Item) entity, false, null, null);
                     return entity_;
                 }
             } else {

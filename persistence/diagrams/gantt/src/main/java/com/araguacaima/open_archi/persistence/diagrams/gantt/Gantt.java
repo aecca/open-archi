@@ -1,5 +1,6 @@
 package com.araguacaima.open_archi.persistence.diagrams.gantt;
 
+import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 import com.araguacaima.open_archi.persistence.diagrams.core.Item;
 import com.araguacaima.open_archi.persistence.diagrams.core.ItemCategory;
@@ -57,8 +58,8 @@ public class Gantt extends Item {
         this.kind = kind;
     }
 
-    public void override(Gantt source, boolean keepMeta, String suffix) {
-        super.override(source, keepMeta, suffix);
+    public void override(Gantt source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+        super.override(source, keepMeta, suffix, clonedFrom);
         this.setCategory(source.getCategory());
         this.setDiagramStart(source.getDiagramStart());
         this.setDiagramEnd(source.getDiagramEnd());

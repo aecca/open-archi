@@ -1,5 +1,7 @@
 package com.araguacaima.open_archi.persistence.diagrams.classes;
 
+import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
+
 import javax.persistence.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -41,8 +43,8 @@ public class UmlClass extends UmlItem {
         this.methods = methods;
     }
 
-    public void override(UmlClass source, boolean keepMeta, String suffix) {
-        super.override(source, keepMeta, suffix);
+    public void override(UmlClass source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+        super.override(source, keepMeta, suffix, clonedFrom);
         this.fields = source.getFields();
         this.methods = source.getMethods();
     }

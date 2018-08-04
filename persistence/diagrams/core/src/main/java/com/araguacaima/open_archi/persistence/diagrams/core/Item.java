@@ -242,8 +242,11 @@ public class Item extends Taggable {
         this.prototype = prototype;
     }
 
-    public void override(Item source, boolean keepMeta, String suffix) {
+    public void override(Item source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
         super.override(source, keepMeta, suffix);
+        if (clonedFrom != null) {
+            this.setClonedFrom(clonedFrom);
+        }
         this.name = StringUtils.isNotBlank(suffix) ? source.getName() + " " + suffix : source.getName();
         this.description = source.getDescription();
         this.location = source.getLocation();
