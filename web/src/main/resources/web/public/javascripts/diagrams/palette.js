@@ -202,6 +202,7 @@ function nodeStyle() {
                 showPorts(obj.part, false);
             }
         },
+        new go.Binding("clonedFrom", "clonedFrom"),
         {dragComputation: stayInGroup}
     ];
 }
