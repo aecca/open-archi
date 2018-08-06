@@ -445,7 +445,7 @@ public class DBUtil {
                 throw new EntityNotFoundException("Can not replace due object with id '" + entity.getId() + "' does not exists");
             }
             createIfNotExists(entity);
-            reflectionUtils.invokeMethod(persistedEntity, "copyNonEmpty", new Object[]{entity});
+            reflectionUtils.invokeMethod(persistedEntity, "copyNonEmpty", new Object[]{entity, true});
             JPAEntityManagerUtils.update(persistedEntity);
         } catch (Throwable t) {
             JPAEntityManagerUtils.rollback();
