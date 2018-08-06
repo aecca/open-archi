@@ -95,11 +95,7 @@ public class DBUtil {
         try {
             Class clazz = entity.getClass();
             populate(entity, clazz);
-            try {
-                JPAEntityManagerUtils.commit();
-            } catch (Throwable ignored) {
-
-            }
+            JPAEntityManagerUtils.commit();
         } catch (Throwable t) {
             JPAEntityManagerUtils.rollback();
             throw t;
