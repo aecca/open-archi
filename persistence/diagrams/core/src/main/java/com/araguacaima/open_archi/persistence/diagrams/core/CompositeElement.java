@@ -25,8 +25,6 @@ import java.util.ResourceBundle;
 @DynamicUpdate
 public class CompositeElement<T extends ElementKind>  {
 
-    private static SpecificationMapBuilder specificationMapBuilder = new SpecificationMapBuilder(MapUtils.getInstance());
-
     @Id
     @NotNull
     @Column(name = "Id")

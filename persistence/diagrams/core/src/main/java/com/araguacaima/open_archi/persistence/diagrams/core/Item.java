@@ -286,9 +286,12 @@ public class Item extends Taggable {
             this.children = source.getChildren();
         }
         if (source.getShape() != null) {
-            Shape shape = new Shape();
+            Shape shape = this.shape;
+            if (shape == null) {
+                shape = new Shape();
+            }
             shape.copyNonEmpty(source.getShape(), keepMeta);
-            this.shape = shape;
+            this.setShape(shape);
         }
         if (source.getImage() != null) {
             this.image = source.getImage();
@@ -300,12 +303,14 @@ public class Item extends Taggable {
             this.canBeConnectedTo = source.getCanBeConnectedTo();
         }
         if (source.getMetaData() != null) {
-            MetaData metaData = new MetaData();
+            MetaData metaData = this.metaData;
+            if (metaData == null) {
+                metaData = new MetaData();
+            }
             metaData.copyNonEmpty(source.getMetaData(), keepMeta);
-            this.metaData = source.getMetaData();
+            this.setMetaData(metaData);
         }
         this.prototype = source.isPrototype();
-
     }
 
     public CompositeElement buildCompositeElement() {

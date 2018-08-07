@@ -108,7 +108,10 @@ public class Shape extends BaseEntity {
             this.setStroke(source.getStroke());
         }
         if (source.getSize() != null) {
-            Size size = new Size();
+            Size size = this.size;
+            if(size == null) {
+                size = new Size();
+            }
             size.copyNonEmpty(source.getSize(), keepMeta);
             this.setSize(size);
         }
