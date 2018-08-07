@@ -1427,7 +1427,7 @@ public class Server {
                         Object clonedModel = model.getClass().newInstance();
                         CompositeElement clonedFrom = ((Item) model).buildCompositeElement();
                         if (DiagramableElement.class.isAssignableFrom(clonedModel.getClass()) || BaseEntity.class.isAssignableFrom(clonedModel.getClass())) {
-                            Object[] overrideArgs = new Object[3];
+                            Object[] overrideArgs = new Object[4];
                             overrideArgs[0] = model;
                             overrideArgs[1] = false;
                             overrideArgs[2] = suffix;
