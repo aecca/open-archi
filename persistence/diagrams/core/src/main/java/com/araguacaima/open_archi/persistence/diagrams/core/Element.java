@@ -72,12 +72,9 @@ public class Element extends Item {
         super.override(source, keepMeta, suffix, clonedFrom);
         this.url = source.getUrl();
         this.properties = source.getProperties();
-        if (clonedFrom != null) {
-            this.setClonedFrom(clonedFrom);
-        }
         for (Feature feature : source.getFeatures()) {
             Feature newFeature = new Feature();
-            newFeature.override(feature, keepMeta, suffix);
+            newFeature.override(feature, keepMeta, suffix, clonedFrom);
             this.features.add(newFeature);
         }
     }

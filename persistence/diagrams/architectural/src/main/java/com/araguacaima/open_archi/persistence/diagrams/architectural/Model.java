@@ -123,12 +123,12 @@ public class Model extends Element implements DiagramableElement<Model> {
         }
         for (Relationship relationship : source.getRelationships()) {
             Relationship newRelationship = new Relationship();
-            newRelationship.override(relationship, keepMeta, suffix);
+            newRelationship.override(relationship, keepMeta, suffix, clonedFrom);
             this.relationships.add(newRelationship);
         }
         for (Layer layer : source.getLayers()) {
             Layer newLayer = new Layer();
-            newLayer.override(layer, keepMeta, suffix);
+            newLayer.override(layer, keepMeta, suffix, clonedFrom);
             this.layers.add(newLayer);
         }
         for (System system : source.getSystems()) {
