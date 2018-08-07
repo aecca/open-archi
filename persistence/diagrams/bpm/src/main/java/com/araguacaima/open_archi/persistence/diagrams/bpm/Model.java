@@ -1,5 +1,6 @@
 package com.araguacaima.open_archi.persistence.diagrams.bpm;
 
+import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.DiagramableElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.Element;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
@@ -53,20 +54,36 @@ public class Model extends Element implements DiagramableElement<Model> {
     }
 
     @Override
-    public void override(Model source, boolean keepMeta, String suffix) {
-        super.override(source, keepMeta, suffix);
-        this.setRelationships(source.getRelationships());
-        this.setPools(source.getPools());
+    public void override(Model source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+        super.override(source, keepMeta, suffix, clonedFrom);
+        for (Relationship consumer : source.getRelationships()) {
+            Relationship newRelationship = new Relationship();
+            newRelationship.override(consumer, keepMeta, suffix, clonedFrom);
+            this.relationships.add(newRelationship);
+        }
+        for (Pool consumer : source.getPools()) {
+            Pool newPool = new Pool();
+            newPool.override(consumer, keepMeta, suffix, clonedFrom);
+            this.pools.add(newPool);
+        }
     }
 
     @Override
     public void copyNonEmpty(Model source, boolean keepMeta) {
         super.copyNonEmpty(source, keepMeta);
         if (source.getRelationships() != null && !source.getRelationships().isEmpty()) {
-            this.setRelationships(source.getRelationships());
+            for (Relationship consumer : source.getRelationships()) {
+                Relationship newRelationship = new Relationship();
+                newRelationship.copyNonEmpty(consumer, keepMeta);
+                this.relationships.add(newRelationship);
+            }
         }
         if (source.getPools() != null && !source.getPools().isEmpty()) {
-            this.setPools(source.getPools());
+            for (Pool consumer : source.getPools()) {
+                Pool newPool = new Pool();
+                newPool.copyNonEmpty(consumer, keepMeta);
+                this.pools.add(newPool);
+            }
         }
     }
 }

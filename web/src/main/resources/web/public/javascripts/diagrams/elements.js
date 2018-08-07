@@ -203,6 +203,26 @@ const partContextMenu =
             },
             function (o) {
                 return o.diagram.commandHandler.canGroupSelection();
+            }),
+        makeButton("Copy Basic Info",
+            function (e, obj) {
+
+                let data = obj.part.data;
+                let text = "id: " + data.key + "\n";
+                if (data.clonedFrom) {
+                    text = text + "Cloned from id: " + data.clonedFrom.id + "\n";
+                }
+                copyTextToClipboard(text);
+            },
+            function (o) {
+                return true;
+            }),
+        makeButton("Copy Data",
+            function (e, obj) {
+                copyTextToClipboard(JSON.stringify(obj.part.data));
+            },
+            function (o) {
+                return true;
             })
     );
 
@@ -215,12 +235,15 @@ function showLinkLabel(e) {
 }
 
 function nodeInfo(d) {  // Tooltip info for a node data object
-    let str;
+    let str = "Element id: " + d.key + ".\n";
     if (d.description) {
         str = d.description + "\n";
     }
     if (d.group) {
-        str += "Forma parte de: " + d.group;
+        str += " Grouped in: " + d.group + "\n";
+    }
+    if (d.clonedFrom) {
+        str += " Cloned from: " + d.group + "\n";
     }
     if (str === undefined) {
         str = d.name;
@@ -319,7 +342,8 @@ function groupStyle() {  // common settings for both Lane and Pool Groups
             minLocation: new go.Point(NaN, -Infinity),  // only allow vertical movement
             maxLocation: new go.Point(NaN, Infinity)
         },
-        new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify)
+        new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
+        new go.Binding("clonedFrom", "clonedFrom")
     ];
 }
 
@@ -353,7 +377,7 @@ function relayoutLanes() {
                 node.memberParts.each(function (node) {
                     const bound = node.measuredBounds;
                     computedHeight = computedHeight + bound.height;
-                    computedWidth = computedHeight + bound.width + node.layout.columnSpacing;
+                    computedWidth = computedHeight + bound.width + ((node.layout && node.layout.columnSpacing) ? node.layout.columnSpacing : 0);
                 });
                 sz.height = computedHeight;
                 sz.width = computedWidth;
@@ -589,6 +613,7 @@ function getNodeByType(paletteModel, suffix) {
                         showPorts(obj.part, false);
                     }
                 },
+                new go.Binding("clonedFrom", "clonedFrom"),
                 gojs(go.Shape,
                     {
                         fill: paletteModel.shape !== undefined ? paletteModel.shape.fill : "white",
@@ -674,7 +699,7 @@ function getNodeByType(paletteModel, suffix) {
                                 stretch: go.GraphObject.Horizontal,
                                 alignment: go.Spot.Left
                             }),
-                        gojs("SubGraphExpanderButton", {row: 0, column:0}),  // but this remains always visible!
+                        gojs("SubGraphExpanderButton", {row: 0, column: 0}),  // but this remains always visible!
                         gojs(go.Picture,
                             {
                                 name: "IMAGE",
@@ -710,13 +735,13 @@ function getNodeByType(paletteModel, suffix) {
                 makePort("R", go.Spot.Right, paletteModel.shape.input, paletteModel.shape.output),
                 makePort("B", go.Spot.Bottom, paletteModel.shape.input, paletteModel.shape.output)
             );
-            break;
         case "ARCHITECTURE_MODEL_PALETTE":
             return gojs(
                 go.Node, "Spot", nodeStyle(),
                 {
                     name: paletteModel.name
                 },
+                new go.Binding("clonedFrom", "clonedFrom"),
                 gojs(go.Panel, "Auto",
                     gojs(go.Shape,
                         {
@@ -1341,6 +1366,7 @@ function getNodeByType(paletteModel, suffix) {
                 {
                     name: paletteModel.name
                 },
+                new go.Binding("clonedFrom", "clonedFrom"),
                 gojs(go.Panel, "Auto",
                     gojs(go.Shape,
                         {

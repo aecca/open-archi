@@ -83,7 +83,9 @@ function commonInnerModelElement(model) {
     } else {
         object.category = model.kind;
     }
-
+    if (model.clonedFrom) {
+        object.clonedFrom = model.clonedFrom;
+    }
     let image = model.image;
     if (image) {
         let raw = image.raw;
@@ -393,11 +395,7 @@ class OpenArchiWrapper {
 
     static toDiagram(model) {
         const type = model.kind;
-        let diagram = {
-            class: "go.GraphLinksModel"
-        };
-        diagram.nodeDataArray = [];
-        diagram.linkDataArray = [];
+        let diagram;
         alreadyProcessedNodes = [];
 
         switch (type) {

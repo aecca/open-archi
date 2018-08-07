@@ -135,7 +135,7 @@ function expand(data) {
     }
     myDiagram.requestUpdate();
     myDiagram.commitTransaction("Expand element");
-    relayoutLanes();
+    //relayoutLanes();
 }
 
 function expandGroups(g, i, level) {
@@ -453,9 +453,9 @@ function findValuesHelper(obj, key, list) {
 
 $(function () {
 
-/*    $.getScript("/javascripts/menu.js").done(function (script, textStatus) {
-        showMenu();
-    });*/
+    /*    $.getScript("/javascripts/menu.js").done(function (script, textStatus) {
+            showMenu();
+        });*/
 
     relocateDataModelDiv();
     relocatePaletteDiv();
@@ -571,6 +571,51 @@ $(function () {
         show: false
     });
 });
+
+function copyTextToClipboard(text) {
+    const textArea = document.createElement("textArea");
+
+    // Place in top-left corner of screen regardless of scroll position.
+    textArea.style.position = 'fixed';
+    textArea.style.top = 0;
+    textArea.style.left = 0;
+
+    // Ensure it has a small width and height. Setting to 1px / 1em
+    // doesn't work as this gives a negative w/h on some browsers.
+    textArea.style.width = '2em';
+    textArea.style.height = '2em';
+
+    // We don't need padding, reducing the size if it does flash render.
+    textArea.style.padding = 0;
+
+    // Clean up any borders.
+    textArea.style.border = 'none';
+    textArea.style.outline = 'none';
+    textArea.style.boxShadow = 'none';
+
+    // Avoid flash of white box if rendered for any reason.
+    textArea.style.background = 'transparent';
+
+
+    textArea.value = text;
+
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+
+    try {
+        const successful = document.execCommand('copy');
+        if (successful) {
+            const msg = successful ? 'successful' : 'unsuccessful';
+            console.log('Copying text command was ' + msg);
+            alert('"' + msg + '" was copied to clipboard')
+        }
+    } catch (err) {
+        console.log('Oops, unable to copy');
+    }
+    document.body.removeChild(textArea);
+}
+
 
 /*
 

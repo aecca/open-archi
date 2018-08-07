@@ -1,5 +1,6 @@
 package com.araguacaima.open_archi.persistence.diagrams.architectural;
 
+import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 
 import javax.persistence.*;
@@ -45,8 +46,8 @@ public class Consumers extends StaticElements {
     }
 
 
-    public void override(Consumers source, boolean keepMeta, String suffix) {
-        super.override(source, keepMeta, suffix);
+    public void override(Consumers source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+        super.override(source, keepMeta, suffix, clonedFrom);
         this.setScope(source.getScope());
     }
 

@@ -1,5 +1,6 @@
 package com.araguacaima.open_archi.persistence.diagrams.bpm;
 
+import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.RelationshipType;
 
 import javax.persistence.*;
@@ -27,8 +28,8 @@ public class Relationships extends com.araguacaima.open_archi.persistence.diagra
         this.type = type;
     }
 
-    public void override(Relationships source, boolean keepMeta, String suffix) {
-        super.override(source, keepMeta, suffix);
+    public void override(Relationships source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+        super.override(source, keepMeta, suffix, clonedFrom);
         this.type = source.getType();
     }
 

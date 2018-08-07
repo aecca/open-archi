@@ -1,5 +1,6 @@
 package com.araguacaima.open_archi.persistence.diagrams.architectural;
 
+import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 
 import javax.persistence.*;
@@ -106,22 +107,22 @@ public class System extends StaticElement {
         this.components = components;
     }
 
-    public void override(System source, boolean keepMeta, String suffix) {
-        super.override(source, keepMeta, suffix);
+    public void override(System source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+        super.override(source, keepMeta, suffix, clonedFrom);
         this.setScope(source.getScope());
         for (Container container : source.getContainers()) {
             Container newContainer = new Container();
-            newContainer.override(container, keepMeta, suffix);
+            newContainer.override(container, keepMeta, suffix, clonedFrom);
             this.containers.add(newContainer);
         }
         for (System system : source.getSystems()) {
             System newSystem = new System();
-            newSystem.override(system, keepMeta, suffix);
+            newSystem.override(system, keepMeta, suffix, clonedFrom);
             this.systems.add(newSystem);
         }
         for (Component component : source.getComponents()) {
             Component newComponent = new Component();
-            newComponent.override(component, keepMeta, suffix);
+            newComponent.override(component, keepMeta, suffix, clonedFrom);
             this.components.add(newComponent);
         }
     }

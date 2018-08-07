@@ -1,5 +1,6 @@
 package com.araguacaima.open_archi.persistence.diagrams.sequence;
 
+import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 import com.araguacaima.open_archi.persistence.diagrams.core.Item;
 
@@ -47,8 +48,8 @@ public class Sequence extends Item {
         this.kind = kind;
     }
 
-    public void override(Sequence source, boolean keepMeta, String suffix) {
-        super.override(source, keepMeta, suffix);
+    public void override(Sequence source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+        super.override(source, keepMeta, suffix, clonedFrom);
         this.setStart(source.getStart());
         this.setDuration(source.getDuration());
     }

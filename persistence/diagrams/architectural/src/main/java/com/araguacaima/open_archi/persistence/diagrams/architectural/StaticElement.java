@@ -1,5 +1,6 @@
 package com.araguacaima.open_archi.persistence.diagrams.architectural;
 
+import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.Element;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 
@@ -18,8 +19,8 @@ public abstract class StaticElement extends Element {
         setKind(ElementKind.COMPONENT);
     }
 
-    public void override(StaticElement source, boolean keepMeta, String suffix) {
-        super.override(source, keepMeta, suffix);
+    public void override(StaticElement source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+        super.override(source, keepMeta, suffix, clonedFrom);
     }
 
     public void copyNonEmpty(StaticElement source, boolean keepMeta) {

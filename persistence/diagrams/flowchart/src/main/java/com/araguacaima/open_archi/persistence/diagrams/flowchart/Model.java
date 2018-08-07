@@ -1,5 +1,6 @@
 package com.araguacaima.open_archi.persistence.diagrams.flowchart;
 
+import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.DiagramableElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.Element;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
@@ -53,8 +54,8 @@ public class Model extends Element implements DiagramableElement<Model> {
     }
 
     @Override
-    public void override(Model source, boolean keepMeta, String suffix) {
-        super.override(source, keepMeta, suffix);
+    public void override(Model source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+        super.override(source, keepMeta, suffix, clonedFrom);
         this.setFlowcharts(source.getFlowcharts());
         this.setRelationships(source.getRelationships());
     }

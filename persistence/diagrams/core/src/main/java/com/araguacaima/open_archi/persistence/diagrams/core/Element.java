@@ -68,10 +68,13 @@ public class Element extends Item {
         this.features = features;
     }
 
-    public void override(Element source, boolean keepMeta, String suffix) {
-        super.override(source, keepMeta, suffix);
+    public void override(Element source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+        super.override(source, keepMeta, suffix, clonedFrom);
         this.url = source.getUrl();
         this.properties = source.getProperties();
+        if (clonedFrom != null) {
+            this.setClonedFrom(clonedFrom);
+        }
         for (Feature feature : source.getFeatures()) {
             Feature newFeature = new Feature();
             newFeature.override(feature, keepMeta, suffix);

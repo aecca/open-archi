@@ -1425,17 +1425,19 @@ public class Server {
                             throw new Exception("Model with id of '" + id + "' not found");
                         }
                         Object clonedModel = model.getClass().newInstance();
+                        CompositeElement clonedFrom = ((Item) model).buildCompositeElement();
                         if (DiagramableElement.class.isAssignableFrom(clonedModel.getClass()) || BaseEntity.class.isAssignableFrom(clonedModel.getClass())) {
                             Object[] overrideArgs = new Object[3];
                             overrideArgs[0] = model;
                             overrideArgs[1] = false;
                             overrideArgs[2] = suffix;
+                            overrideArgs[3] = clonedFrom;
                             reflectionUtils.invokeMethod(clonedModel, "override", overrideArgs);
                         } else {
                             throw new Exception("Invalid model");
                         }
                         Item clonedModelItem = (Item) clonedModel;
-                        clonedModelItem.setClonedFrom(((Item) model).buildCompositeElement());
+                        clonedModelItem.setClonedFrom(clonedFrom);
                         String name = clonedModelItem.getName();
                         Map<String, Object> map = new HashMap<>();
                         map.put("type", model.getClass());
