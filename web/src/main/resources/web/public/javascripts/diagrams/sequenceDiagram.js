@@ -1,21 +1,24 @@
-function initSequenceDiagram() {
+function initSequenceDiagram(nodeDataArray, linkDataArray) {
 
-    const $ = go.GraphObject.make;
+    if (myDiagram !== undefined) {
+        myDiagram.clear();
+        myDiagram.div = null;
+    }
 
-    myDiagram =
-        $(go.Diagram, diagramDiv, // must be the ID or reference to an HTML DIV
-            {
-                initialContentAlignment: go.Spot.Center,
-                allowCopy: false,
-                linkingTool: $(MessagingTool),  // defined below
-                "resizingTool.isGridSnapEnabled": true,
-                "draggingTool.gridSnapCellSize": new go.Size(1, MessageSpacing / 4),
-                "draggingTool.isGridSnapEnabled": true,
-                // automatically extend Lifelines as Activities are moved or resized
-                "SelectionMoved": ensureLifelineHeights,
-                "PartResized": ensureLifelineHeights,
-                "undoManager.isEnabled": true
-            });
+    // noinspection JSUndeclaredVariable
+    myDiagram = gojs(go.Diagram, "diagramDiv",  // create a Diagram for the DIV HTML element
+        {
+            initialContentAlignment: go.Spot.Center,
+            allowCopy: false,
+            linkingTool: gojs(MessagingTool),  // defined below
+            "resizingTool.isGridSnapEnabled": true,
+            "draggingTool.gridSnapCellSize": new go.Size(1, MessageSpacing / 4),
+            "draggingTool.isGridSnapEnabled": true,
+            // automatically extend Lifelines as Activities are moved or resized
+            "SelectionMoved": ensureLifelineHeights,
+            "PartResized": ensureLifelineHeights,
+            "undoManager.isEnabled": true
+        });
 
     // when the document is modified, add a "*" to the title and enable the "Save" button
     myDiagram.addDiagramListener("Modified", function (e) {
@@ -31,7 +34,7 @@ function initSequenceDiagram() {
 
     // define the Lifeline Node template.
     myDiagram.groupTemplate =
-        $(go.Group, "Vertical",
+        gojs(go.Group, "Vertical",
             {
                 locationSpot: go.Spot.Bottom,
                 locationObjectName: "HEADER",
@@ -40,21 +43,21 @@ function initSequenceDiagram() {
                 selectionObjectName: "HEADER"
             },
             new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
-            $(go.Panel, "Auto",
+            gojs(go.Panel, "Auto",
                 {name: "HEADER"},
-                $(go.Shape, "Rectangle",
+                gojs(go.Shape, "Rectangle",
                     {
-                        fill: $(go.Brush, "Linear", {0: "#bbdefb", 1: go.Brush.darkenBy("#bbdefb", 0.1)}),
+                        fill: gojs(go.Brush, "Linear", {0: "#bbdefb", 1: go.Brush.darkenBy("#bbdefb", 0.1)}),
                         stroke: null
                     }),
-                $(go.TextBlock,
+                gojs(go.TextBlock,
                     {
                         margin: 5,
                         font: "400 10pt Source Sans Pro, sans-serif"
                     },
                     new go.Binding("text", "text"))
             ),
-            $(go.Shape,
+            gojs(go.Shape,
                 {
                     figure: "LineV",
                     fill: null,
@@ -74,7 +77,7 @@ function initSequenceDiagram() {
 
     // define the Activity Node template
     myDiagram.nodeTemplate =
-        $(go.Node,
+        gojs(go.Node,
             {
                 locationSpot: go.Spot.Top,
                 locationObjectName: "SHAPE",
@@ -84,9 +87,9 @@ function initSequenceDiagram() {
                 resizable: true,
                 resizeObjectName: "SHAPE",
                 resizeAdornmentTemplate:
-                    $(go.Adornment, "Spot",
-                        $(go.Placeholder),
-                        $(go.Shape,  // only a bottom resize handle
+                    gojs(go.Adornment, "Spot",
+                        gojs(go.Placeholder),
+                        gojs(go.Shape,  // only a bottom resize handle
                             {
                                 alignment: go.Spot.Bottom, cursor: "col-resize",
                                 desiredSize: new go.Size(6, 6), fill: "yellow"
@@ -94,7 +97,7 @@ function initSequenceDiagram() {
                     )
             },
             new go.Binding("location", "", computeActivityLocation).makeTwoWay(backComputeActivityLocation),
-            $(go.Shape, "Rectangle",
+            gojs(go.Shape, "Rectangle",
                 {
                     name: "SHAPE",
                     fill: "white", stroke: "black",
@@ -107,13 +110,13 @@ function initSequenceDiagram() {
 
     // define the Message Link template.
     myDiagram.linkTemplate =
-        $(MessageLink,  // defined below
+        gojs(MessageLink,  // defined below
             {selectionAdorned: true, curviness: 0},
-            $(go.Shape, "Rectangle",
+            gojs(go.Shape, "Rectangle",
                 {stroke: "black"}),
-            $(go.Shape,
+            gojs(go.Shape,
                 {toArrow: "OpenTriangle", stroke: "black"}),
-            $(go.TextBlock,
+            gojs(go.TextBlock,
                 {
                     font: "400 9pt Source Sans Pro, sans-serif",
                     segmentIndex: 0,
@@ -125,6 +128,7 @@ function initSequenceDiagram() {
         );
 
     // create the graph by reading the JSON data saved in "modelToSaveOrLoad" textarea element
+    myDiagram.model = new go.GraphLinksModel(nodeDataArray, linkDataArray);
     load();
 }
 
@@ -266,12 +270,11 @@ MessageLink.prototype.computePoints = function () {
 // for both the temporaryLink and the actual newly created Link
 function MessagingTool() {
     go.LinkingTool.call(this);
-    const $ = go.GraphObject.make;
     this.temporaryLink =
-        $(MessageLink,
-            $(go.Shape, "Rectangle",
+        gojs(MessageLink,
+            gojs(go.Shape, "Rectangle",
                 {stroke: "magenta", strokeWidth: 2}),
-            $(go.Shape,
+            gojs(go.Shape,
                 {toArrow: "OpenTriangle", stroke: "magenta"}));
 };
 go.Diagram.inherit(MessagingTool, go.LinkingTool);
@@ -313,8 +316,4 @@ function save() {
     document.getElementById("modelToSaveOrLoad").value = JSON.stringify(myDiagram.model, null, 2);
     let textContent = myDiagram.model.toJson();
     myDiagram.isModified = false;
-}
-
-function load() {
-    myDiagram.model = go.Model.fromJson(document.getElementById("modelToSaveOrLoad").value);
 }

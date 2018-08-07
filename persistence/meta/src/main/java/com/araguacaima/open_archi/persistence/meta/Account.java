@@ -1,5 +1,6 @@
 package com.araguacaima.open_archi.persistence.meta;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.DynamicUpdate;
@@ -8,6 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -38,7 +40,7 @@ import java.util.UUID;
         name = Account.GET_ACCOUNT_COUNT,
         query = "select count(a) from Account a"), @NamedQuery(name = Account.GET_ALL_ACCOUNTS,
         query = "select a from Account a order by a.login, a.email")})
-public class Account implements Serializable {
+public class Account implements Serializable, SimpleOverridable<Account> {
 
     public static final String FIND_BY_EMAIL = "Account.findByEmail";
     public static final String FIND_BY_LOGIN = "Account.findByLogin";
@@ -175,5 +177,54 @@ public class Account implements Serializable {
                 .append(firstAccess)
                 .append(roles)
                 .toHashCode();
+    }
+
+    @Override
+    public void override(Account source, boolean keepMeta, String suffix) {
+        this.id = source.getId();
+        this.email = source.getEmail();
+        this.login = source.getLogin();
+        this.password = source.getPassword();
+        this.firstAccess = source.isFirstAccess();
+        if (source.getRoles() != null) {
+            if (this.roles == null) {
+                this.roles = new LinkedHashSet<>();
+            }
+            source.getRoles().forEach(role -> {
+                Role role_ = new Role();
+                role_.override(role, keepMeta, suffix);
+                this.roles.add(role_);
+            });
+        } else {
+            this.roles = null;
+        }
+
+    }
+
+    @Override
+    public void copyNonEmpty(Account source, boolean keepMeta) {
+        if (StringUtils.isNotBlank(source.getId())) {
+            this.id = source.getId();
+        }
+        if (StringUtils.isNotBlank(source.getEmail())) {
+            this.email = source.getEmail();
+        }
+        if (StringUtils.isNotBlank(source.getLogin())) {
+            this.login = source.getLogin();
+        }
+        if (StringUtils.isNotBlank(source.getPassword())) {
+            this.password = source.getPassword();
+        }
+        this.firstAccess = source.isFirstAccess();
+        if (source.getRoles() != null) {
+            if (this.roles == null) {
+                this.roles = new LinkedHashSet<>();
+            }
+            source.getRoles().forEach(role -> {
+                Role role_ = new Role();
+                role_.copyNonEmpty(role, keepMeta);
+                this.roles.add(role_);
+            });
+        }
     }
 }

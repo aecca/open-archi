@@ -3,7 +3,7 @@ package com.araguacaima.open_archi.persistence.meta;
 import com.araguacaima.open_archi.persistence.commons.exceptions.EntityError;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-public interface Valuable {
+public interface Valuable extends Overridable {
 
 
     @JsonIgnore

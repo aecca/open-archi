@@ -5,7 +5,7 @@ package com.araguacaima.open_archi.persistence.diagrams.core;
  * one primary feature, and zero or more supporting features
  * associated with it.
  */
-public enum FeatureRole {
+public enum FeatureType {
 
     Primary,
     Supporting

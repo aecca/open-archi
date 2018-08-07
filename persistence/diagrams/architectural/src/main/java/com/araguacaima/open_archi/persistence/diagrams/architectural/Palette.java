@@ -8,10 +8,8 @@ import java.util.Set;
 public class Palette implements Palettable {
 
     private Set<PaletteItem> basicElements = new LinkedHashSet<>();
-    private Set<PaletteItem> softwareSystems = new LinkedHashSet<>();
-    private Set<PaletteItem> containers = new LinkedHashSet<>();
-    private Set<PaletteItem> components = new LinkedHashSet<>();
-    private Set<PaletteItem> prototypes = new LinkedHashSet<>();
+    private Set<PaletteItem> complexElements = new LinkedHashSet<>();
+
     private static PaletteKind kind = PaletteKind.ARCHITECTURE;
 
     public Palette() {
@@ -31,23 +29,23 @@ public class Palette implements Palettable {
         Shape shapePerson = new Shape();
         shapePerson.setFill("#ED5656");
         shapePerson.setSize(new Size(40,40));
-        shapePerson.setType(ShapeType.Person);
+        shapePerson.setType(ShapeType.PERSON);
         person.setShape(shapePerson);
         person.setKind(ElementKind.CONSUMER);
         person.setRank(1);
-        person.setCategory(DefaultCategoryItem.DEFAULT.name());
+        person.setCategory("PERSON");
         person.setPrototype(false);
         basicElements.add(person);
         PaletteItem consumer = new PaletteItem();
         Shape shapeConsumer = new Shape();
         shapeConsumer.setFill("#F0AD4B");
         shapeConsumer.setSize(new Size(40,40));
-        shapeConsumer.setType(ShapeType.Rectangle);
+        shapeConsumer.setType(ShapeType.CONSUMER);
         consumer.setName("Consumer");
         consumer.setShape(shapeConsumer);
         consumer.setKind(ElementKind.CONSUMER);
         consumer.setRank(2);
-        consumer.setCategory(DefaultCategoryItem.DEFAULT.name());
+        consumer.setCategory("Consumer");
         consumer.setPrototype(false);
         basicElements.add(consumer);
     }
@@ -66,35 +64,11 @@ public class Palette implements Palettable {
         this.basicElements = basicElements;
     }
 
-    public Set<PaletteItem> getSoftwareSystems() {
-        return softwareSystems;
+    public Set<PaletteItem> getComplexElements() {
+        return complexElements;
     }
 
-    public void setSoftwareSystems(Set<PaletteItem> softwareSystems) {
-        this.softwareSystems = softwareSystems;
-    }
-
-    public Set<PaletteItem> getContainers() {
-        return containers;
-    }
-
-    public void setContainers(Set<PaletteItem> containers) {
-        this.containers = containers;
-    }
-
-    public Set<PaletteItem> getComponents() {
-        return components;
-    }
-
-    public void setComponents(Set<PaletteItem> components) {
-        this.components = components;
-    }
-
-    public Set<PaletteItem> getPrototypes() {
-        return prototypes;
-    }
-
-    public void setPrototypes(Set<PaletteItem> prototypes) {
-        this.prototypes = prototypes;
+    public void setComplexElements(Set<PaletteItem> complexElements) {
+        this.complexElements = complexElements;
     }
 }

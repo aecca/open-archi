@@ -19,7 +19,7 @@ import java.io.Serializable;
  */
 @Entity
 @PersistenceUnit(unitName = "open-archi")
-@Table(name = "Point", schema = "DIAGRAMS")
+@Table(name = "Size", schema = "DIAGRAMS")
 @DynamicUpdate
 public class Size extends BaseEntity implements Serializable, Cloneable {
 

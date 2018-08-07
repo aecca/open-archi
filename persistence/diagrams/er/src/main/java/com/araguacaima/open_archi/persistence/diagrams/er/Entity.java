@@ -1,5 +1,6 @@
 package com.araguacaima.open_archi.persistence.diagrams.er;
 
+import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.Element;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 
@@ -37,8 +38,8 @@ public class Entity extends Element {
         this.attributes = attributes;
     }
 
-    public void override(Entity source, boolean keepMeta, String suffix) {
-        super.override(source, keepMeta, suffix);
+    public void override(Entity source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+        super.override(source, keepMeta, suffix, clonedFrom);
         this.setAttributes(source.getAttributes());
     }
 

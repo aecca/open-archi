@@ -1,9 +1,12 @@
 function initUpdateDemo() {
 
-    const $ = go.GraphObject.make;  // for conciseness in defining templates
+    if (myDiagram !== undefined) {
+        myDiagram.clear();
+        myDiagram.div = null;
+    }
 
     blueDiagram =
-        $(go.Diagram, "blueDiagram",
+        gojs(go.Diagram, "blueDiagram",
             {
                 // start everything in the middle of the viewport
                 initialContentAlignment: go.Spot.Center,
@@ -12,30 +15,30 @@ function initUpdateDemo() {
             });
 
     blueDiagram.nodeTemplate =
-        $(go.Node, "Auto",
+        gojs(go.Node, "Auto",
             new go.Binding("location", "loc").makeTwoWay(),
-            $(go.Shape, "RoundedRectangle",
+            gojs(go.Shape, "RoundedRectangle",
                 {
-                    fill: $(go.Brush, "Linear", {0: "#00ACED", 0.5: "#00ACED", 1: "#0079A6"}),
+                    fill: gojs(go.Brush, "Linear", {0: "#00ACED", 0.5: "#00ACED", 1: "#0079A6"}),
                     stroke: "#0079A6",
                     portId: "", cursor: "pointer",  // the node's only port is the Shape
                     fromLinkable: true, fromLinkableDuplicates: true, fromLinkableSelfNode: true,
                     toLinkable: true, toLinkableDuplicates: true, toLinkableSelfNode: true
                 }),
-            $(go.TextBlock,
+            gojs(go.TextBlock,
                 {margin: 3, font: "bold 10pt Arial, sans-serif", stroke: "whitesmoke", editable: true},
                 new go.Binding("text").makeTwoWay())
         );
 
     blueDiagram.linkTemplate =
-        $(go.Link,
+        gojs(go.Link,
             {
                 curve: go.Link.Bezier, adjusting: go.Link.Stretch,
                 relinkableFrom: true, relinkableTo: true, reshapable: true
             },
-            $(go.Shape,  // the link shape
+            gojs(go.Shape,  // the link shape
                 {strokeWidth: 2, stroke: "blue"}),
-            $(go.Shape,  // the arrowhead
+            gojs(go.Shape,  // the arrowhead
                 {
                     toArrow: "standard",
                     fill: "blue", stroke: null
@@ -44,7 +47,7 @@ function initUpdateDemo() {
 
 
     greenDiagram =
-        $(go.Diagram, "greenDiagram",
+        gojs(go.Diagram, "greenDiagram",
             {
                 // start everything in the middle of the viewport
                 initialContentAlignment: go.Spot.Center,
@@ -53,20 +56,20 @@ function initUpdateDemo() {
             });
 
     greenDiagram.nodeTemplate =
-        $(go.Node, "Vertical",
+        gojs(go.Node, "Vertical",
             new go.Binding("location", "loc").makeTwoWay(),
-            $(go.Shape, "Ellipse",
+            gojs(go.Shape, "Ellipse",
                 {fill: "lightgreen", width: 20, height: 20, portId: ""}),
-            $(go.TextBlock,
+            gojs(go.TextBlock,
                 {margin: 3, font: "bold 12px Georgia, sans-serif"},
                 new go.Binding("text"))
         );
 
     greenDiagram.linkTemplate =
-        $(go.Link,
-            $(go.Shape,  // the link shape
+        gojs(go.Link,
+            gojs(go.Shape,  // the link shape
                 {strokeWidth: 2, stroke: "#76C176"}),
-            $(go.Shape,  // the arrowhead
+            gojs(go.Shape,  // the arrowhead
                 {
                     toArrow: "standard",
                     fill: "#76C176", stroke: null
@@ -99,12 +102,12 @@ function initUpdateDemo() {
     // **********************************************************
 
     const undoDisplay =
-        $(go.Diagram, "undoDisplay",
+        gojs(go.Diagram, "undoDisplay",
             {
                 allowMove: false,
                 maxSelectionCount: 1,
                 layout:
-                    $(go.TreeLayout,
+                    gojs(go.TreeLayout,
                         {
                             alignment: go.TreeLayout.AlignmentStart,
                             angle: 0,
@@ -122,21 +125,21 @@ function initUpdateDemo() {
             });
 
     undoDisplay.nodeTemplate =
-        $(go.Node,
-            $("TreeExpanderButton",
+        gojs(go.Node,
+            gojs("TreeExpanderButton",
                 {width: 14, "ButtonBorder.fill": "whitesmoke"}),
-            $(go.Panel, "Horizontal",
+            gojs(go.Panel, "Horizontal",
                 {position: new go.Point(16, 0)},
                 new go.Binding("background", "color"),
-                $(go.TextBlock, {margin: 2},
+                gojs(go.TextBlock, {margin: 2},
                     new go.Binding("text", "text"))
             )
         );
 
-    undoDisplay.linkTemplate = $(go.Link);  // not really used
+    undoDisplay.linkTemplate = gojs(go.Link);  // not really used
 
     const undoModel =
-        $(go.TreeModel,  // initially empty
+        gojs(go.TreeModel,  // initially empty
             {isReadOnly: true});
     undoDisplay.model = undoModel;
 

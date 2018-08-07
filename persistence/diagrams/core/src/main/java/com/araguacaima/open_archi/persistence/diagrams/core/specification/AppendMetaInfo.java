@@ -1,6 +1,7 @@
 package com.araguacaima.open_archi.persistence.diagrams.core.specification;
 
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
+import com.araguacaima.open_archi.persistence.meta.History;
 import com.araguacaima.open_archi.persistence.meta.MetaInfo;
 import com.araguacaima.open_archi.persistence.meta.Version;
 import com.araguacaima.specification.AbstractSpecification;
@@ -25,26 +26,23 @@ public class AppendMetaInfo extends AbstractSpecification {
             if (entity.getMeta() == null) {
                 if (map.get("meta") == null) {
                     meta = new MetaInfo();
-                    //map.put("meta", meta);
+                    meta.addNewHistory(thisTime);
+                    meta.setCreated(thisTime);
+                    map.put("meta", meta);
                 } else {
                     meta = (MetaInfo) map.get("meta");
                 }
-                Version version = new Version();
-                meta.setVersion(version);
-                meta.setCreated(thisTime);
-                meta.setModified(thisTime);
                 entity.setMeta(meta);
             } else {
                 meta = entity.getMeta();
-                meta.setModified(thisTime);
-                meta.getVersion().nextBuild();
-                //map.put("meta", meta);
+                meta.addNewHistory(thisTime);
+                map.put("meta", meta);
             }
         }
         return true;
     }
 
-    public Collection/*<Object>*/ getTerms() {
-        return new ArrayList();
+    public Collection<Object> getTerms() {
+        return new ArrayList<>();
     }
 }

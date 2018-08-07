@@ -7,12 +7,12 @@
 </head>
 
 <body>
-<div id="explanation">
+<div>
     <h2 style="margin-top: 0; padding-top: 0; margin-bottom: 30px;">
         Seguimiento de cambios
     </h2>
     <p>
-        Estamos en un modelo de operaci´no colaborativa. El tracking de cambios es crucial. No sería sensato abrir la
+        Estamos en un modelo de operación colaborativa. El tracking de cambios es crucial. No sería sensato abrir la
         operatividad yb mantenimiento de los modelos de solución a través de Open Archi, forzando a que cada quien
         declare los cambios que ha ido haciendo. La herramienta, de manera automática deberá poder hacer un tracking de
         cambios efectuados. incluso swería posible guardar una secuencia de estados, para volver a estados anteriores,
@@ -41,7 +41,8 @@
              Estos eventos son un reflejo de ambos cambios en el modelo (con el prefijo "! M") y en el diagrama
         (prefijado con "! d").
              Notará que a menudo hay varios cambios de diagrama para cada cambio de modelo.
-    </p></div>
+    </p>
+</div>
 <div style="width:100%; white-space:nowrap">
     <div style="display: inline-block; vertical-align: top; width:50%">
         <div id="blueDiagram" style="border: solid 1px blue; width:100%; height:300px;"></div>
@@ -63,30 +64,20 @@
             <div id="undoDisplay" style="height:280px; border: solid 1px gray"></div>
         </div>
     </div>
-    <p>
-        Aquí se pueden visualizar los datos que permiten almacenar y/o recuperar el diagrama expuesto arriba (Utilizando
-        las
-        APIs definidas en: /open-archi/api), en formato JSON y en tiempo real
-    </p>
-    <div style="display: inline">
-        <textarea id="modelToSaveOrLoad" style="width:100%;height:300px"></textarea>
-    </div>
-</div>
-
-<pre>
-  model.addChangedListener(function(e) {
-    if (e.isTransactionFinished) {
-      var tx = e.object;
-      if (tx instanceof go.Transaction && window.console) {
-            window.console.log(tx.toString());
-        tx.changes.each(function(c) {
-          // consider which ChangedEvents to record
-          if (c.model) window.console.log("  " + c.toString());
+    <pre>
+        model.addChangedListener(function(e) {
+          if (e.isTransactionFinished) {
+            var tx = e.object;
+            if (tx instanceof go.Transaction && window.console) {
+                  window.console.log(tx.toString());
+              tx.changes.each(function(c) {
+                // consider which ChangedEvents to record
+                if (c.model) window.console.log("  " + c.toString());
+              });
+            }
+          }
         });
-      }
-    }
-  });
-  </pre>
+    </pre>
 </div>
 </body>
 </html>

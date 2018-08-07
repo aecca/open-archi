@@ -3,35 +3,33 @@
 function GuidedDraggingTool() {
     go.DraggingTool.call(this);
 
-    // temporary parts for horizonal guidelines
-    const $ = go.GraphObject.make;
     const partProperties = {layerName: "Tool", isInDocumentBounds: false};
     const shapeProperties = {stroke: "gray", isGeometryPositioned: true};
     /** @ignore */
     this.guidelineHtop =
-        $(go.Part, partProperties,
-            $(go.Shape, shapeProperties, {geometryString: "M0 0 100 0"}));
+        gojs(go.Part, partProperties,
+            gojs(go.Shape, shapeProperties, {geometryString: "M0 0 100 0"}));
     /** @ignore */
     this.guidelineHbottom =
-        $(go.Part, partProperties,
-            $(go.Shape, shapeProperties, {geometryString: "M0 0 100 0"}));
+        gojs(go.Part, partProperties,
+            gojs(go.Shape, shapeProperties, {geometryString: "M0 0 100 0"}));
     /** @ignore */
     this.guidelineHcenter =
-        $(go.Part, partProperties,
-            $(go.Shape, shapeProperties, {geometryString: "M0 0 100 0"}));
+        gojs(go.Part, partProperties,
+            gojs(go.Shape, shapeProperties, {geometryString: "M0 0 100 0"}));
     // temporary parts for vertical guidelines
     /** @ignore */
     this.guidelineVleft =
-        $(go.Part, partProperties,
-            $(go.Shape, shapeProperties, {geometryString: "M0 0 0 100"}));
+        gojs(go.Part, partProperties,
+            gojs(go.Shape, shapeProperties, {geometryString: "M0 0 0 100"}));
     /** @ignore */
     this.guidelineVright =
-        $(go.Part, partProperties,
-            $(go.Shape, shapeProperties, {geometryString: "M0 0 0 100"}));
+        gojs(go.Part, partProperties,
+            gojs(go.Shape, shapeProperties, {geometryString: "M0 0 0 100"}));
     /** @ignore */
     this.guidelineVcenter =
-        $(go.Part, partProperties,
-            $(go.Shape, shapeProperties, {geometryString: "M0 0 0 100"}));
+        gojs(go.Part, partProperties,
+            gojs(go.Shape, shapeProperties, {geometryString: "M0 0 0 100"}));
 
     // properties that the programmer can modify
     /** @type {number} */
@@ -534,9 +532,12 @@ Object.defineProperty(GuidedDraggingTool.prototype, "isGuidelineSnapEnabled", {
 function initGuidedDragging() {
 
 
-    const $ = go.GraphObject.make;  // for conciseness in defining templates
+    if (myDiagram !== undefined) {
+        myDiagram.clear();
+        myDiagram.div = null;
+    }
 
-    myDiagram = $(go.Diagram, diagramDiv,  // create a Diagram for the DIV HTML element
+    myDiagram = gojs(go.Diagram, "diagramDiv",  // create a Diagram for the DIV HTML element
         {
             initialContentAlignment: go.Spot.Center,  // center the content
             draggingTool: new GuidedDraggingTool(),  // defined in GuidedDraggingTool.js
@@ -549,11 +550,11 @@ function initGuidedDragging() {
 
     // define a simple Node template
     myDiagram.nodeTemplate =
-        $(go.Node, "Auto",  // the Shape will go around the TextBlock
-            $(go.Shape, "RoundedRectangle", {strokeWidth: 0},
+        gojs(go.Node, "Auto",  // the Shape will go around the TextBlock
+            gojs(go.Shape, "RoundedRectangle", {strokeWidth: 0},
                 // Shape.fill is bound to Node.data.color
                 new go.Binding("fill", "color")),
-            $(go.TextBlock,
+            gojs(go.TextBlock,
                 {margin: 8},  // some room around the text
                 // TextBlock.text is bound to Node.data.key
                 new go.Binding("text", "key"))

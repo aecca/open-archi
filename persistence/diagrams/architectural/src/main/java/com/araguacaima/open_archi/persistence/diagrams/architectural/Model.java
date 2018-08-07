@@ -1,5 +1,6 @@
 package com.araguacaima.open_archi.persistence.diagrams.architectural;
 
+import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.DiagramableElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.Element;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
@@ -21,17 +22,18 @@ import java.util.Set;
                 query = "select a.consumers from com.araguacaima.open_archi.persistence.diagrams.architectural.Model a where a.id=:id"),
         @NamedQuery(name = Model.GET_CONSUMER_FOR_MODEL,
                 query = "select c from com.araguacaima.open_archi.persistence.diagrams.architectural.Model a JOIN a.consumers c where a.id=:id and c.id=:cid"),
-        @NamedQuery(name = Model.GET_ALL_SOFTWARE_SYSTEMS,
-                query = "select a.softwareSystems from com.araguacaima.open_archi.persistence.diagrams.architectural.Model a where a.id=:id"),
-        @NamedQuery(name = Model.GET_SOFTWARE_SYSTEM,
-                query = "select s from com.araguacaima.open_archi.persistence.diagrams.architectural.Model a JOIN a.softwareSystems s where a.id=:id and s.id=:sid")})
+        @NamedQuery(name = Model.GET_ALL_SYSTEMS_FROM_MODEL,
+                query = "select a.systems from com.araguacaima.open_archi.persistence.diagrams.architectural.Model a where a.id=:id"),
+        @NamedQuery(name = Model.GET_SYSTEM,
+                query = "select s from com.araguacaima.open_archi.persistence.diagrams.architectural.Model a JOIN a.systems s where a.id=:id and s.id=:sid")})
 public class Model extends Element implements DiagramableElement<Model> {
 
     public static final String GET_ALL_RELATIONSHIPS = "get.all.relationships";
     public static final String GET_ALL_CONSUMERS_FOR_MODEL = "get.all.consumers.for.model";
     public static final String GET_CONSUMER_FOR_MODEL = "get.consumer.for.model";
-    public static final String GET_ALL_SOFTWARE_SYSTEMS = "get.all.software.systems";
-    public static final String GET_SOFTWARE_SYSTEM = "get.software.system";
+    public static final String GET_ALL_SYSTEMS_FROM_MODEL = "get.all.systems.from.model";
+    public static final String GET_SYSTEM = "get.system";
+    public static final String SHAPE_COLOR = "#FFFFFF";
 
     @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinTable(schema = "DIAGRAMS",
@@ -54,12 +56,41 @@ public class Model extends Element implements DiagramableElement<Model> {
 
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
-            name = "Architecture_Model_SoftwareSystems",
+            name = "Architecture_Model_Layers",
             joinColumns = {@JoinColumn(name = "Architecture_Model_Id",
                     referencedColumnName = "Id")},
-            inverseJoinColumns = {@JoinColumn(name = "SoftwareSystem_Id",
+            inverseJoinColumns = {@JoinColumn(name = "Layer_Id",
                     referencedColumnName = "Id")})
-    private Set<SoftwareSystem> softwareSystems = new LinkedHashSet<>();
+    private Set<Layer> layers = new LinkedHashSet<>();
+
+    @ManyToMany(cascade = CascadeType.REMOVE)
+    @JoinTable(schema = "DIAGRAMS",
+            name = "Architecture_Model_Systems",
+            joinColumns = {@JoinColumn(name = "Architecture_Model_Id",
+                    referencedColumnName = "Id")},
+            inverseJoinColumns = {@JoinColumn(name = "System_Id",
+                    referencedColumnName = "Id")})
+    private Set<System> systems = new LinkedHashSet<>();
+
+
+    @ManyToMany(cascade = CascadeType.REMOVE)
+    @JoinTable(schema = "DIAGRAMS",
+            name = "Architecture_Model_Containers",
+            joinColumns = {@JoinColumn(name = "Architecture_Model_Id",
+                    referencedColumnName = "Id")},
+            inverseJoinColumns = {@JoinColumn(name = "Container_Id",
+                    referencedColumnName = "Id")})
+    private Set<Container> containers = new LinkedHashSet<>();
+
+
+    @ManyToMany(cascade = CascadeType.REMOVE)
+    @JoinTable(schema = "DIAGRAMS",
+            name = "Architecture_Model_Components",
+            joinColumns = {@JoinColumn(name = "Architecture_Model_Id",
+                    referencedColumnName = "Id")},
+            inverseJoinColumns = {@JoinColumn(name = "Component_Id",
+                    referencedColumnName = "Id")})
+    private Set<Component> components = new LinkedHashSet<>();
 
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
@@ -74,27 +105,50 @@ public class Model extends Element implements DiagramableElement<Model> {
         setKind(ElementKind.ARCHITECTURE_MODEL);
     }
 
+    public Set<Layer> getLayers() {
+        return layers;
+    }
+
+    public void setLayers(Set<Layer> layers) {
+        this.layers = layers;
+    }
+
     @Override
-    public void override(Model source, boolean keepMeta, String suffix) {
-        super.override(source, keepMeta, suffix);
+    public void override(Model source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+        super.override(source, keepMeta, suffix, clonedFrom);
+        for (Consumer consumer : source.getConsumers()) {
+            Consumer newConsumer = new Consumer();
+            newConsumer.override(consumer, keepMeta, suffix, clonedFrom);
+            this.consumers.add(newConsumer);
+        }
         for (Relationship relationship : source.getRelationships()) {
             Relationship newRelationship = new Relationship();
             newRelationship.override(relationship, keepMeta, suffix);
             this.relationships.add(newRelationship);
         }
-        for (Consumer consumer : source.getConsumers()) {
-            Consumer newConsumer = new Consumer();
-            newConsumer.override(consumer, keepMeta, suffix);
-            this.consumers.add(newConsumer);
+        for (Layer layer : source.getLayers()) {
+            Layer newLayer = new Layer();
+            newLayer.override(layer, keepMeta, suffix);
+            this.layers.add(newLayer);
         }
-        for (SoftwareSystem softwareSystem : source.getSoftwareSystems()) {
-            SoftwareSystem newSoftwareSystem = new SoftwareSystem();
-            newSoftwareSystem.override(softwareSystem, keepMeta, suffix);
-            this.softwareSystems.add(newSoftwareSystem);
+        for (System system : source.getSystems()) {
+            System newSystem = new System();
+            newSystem.override(system, keepMeta, suffix, clonedFrom);
+            this.systems.add(newSystem);
+        }
+        for (Container container : source.getContainers()) {
+            Container newContainer = new Container();
+            newContainer.override(container, keepMeta, suffix, clonedFrom);
+            this.containers.add(newContainer);
+        }
+        for (Component component : source.getComponents()) {
+            Component newComponent = new Component();
+            newComponent.override(component, keepMeta, suffix, clonedFrom);
+            this.components.add(newComponent);
         }
         for (DeploymentNode deploymentNode : source.getDeploymentNodes()) {
             DeploymentNode newDeploymentNode = new DeploymentNode();
-            newDeploymentNode.override(deploymentNode, keepMeta, suffix);
+            newDeploymentNode.override(deploymentNode, keepMeta, suffix, clonedFrom);
             this.deploymentNodes.add(newDeploymentNode);
         }
     }
@@ -102,13 +156,6 @@ public class Model extends Element implements DiagramableElement<Model> {
     @Override
     public void copyNonEmpty(Model source, boolean keepMeta) {
         super.copyNonEmpty(source, keepMeta);
-        if (source.getRelationships() != null && !source.getRelationships().isEmpty()) {
-            for (Relationship relationship : source.getRelationships()) {
-                Relationship newRelationship = new Relationship();
-                newRelationship.copyNonEmpty(relationship, keepMeta);
-                this.relationships.add(newRelationship);
-            }
-        }
         if (source.getConsumers() != null && !source.getConsumers().isEmpty()) {
             for (Consumer consumer : source.getConsumers()) {
                 Consumer newConsumer = new Consumer();
@@ -116,11 +163,39 @@ public class Model extends Element implements DiagramableElement<Model> {
                 this.consumers.add(newConsumer);
             }
         }
-        if (source.getSoftwareSystems() != null && !source.getSoftwareSystems().isEmpty()) {
-            for (SoftwareSystem softwareSystem : source.getSoftwareSystems()) {
-                SoftwareSystem newSoftwareSystem = new SoftwareSystem();
-                newSoftwareSystem.copyNonEmpty(softwareSystem, keepMeta);
-                this.softwareSystems.add(newSoftwareSystem);
+        if (source.getRelationships() != null && !source.getRelationships().isEmpty()) {
+            for (Relationship relationship : source.getRelationships()) {
+                Relationship newRelationship = new Relationship();
+                newRelationship.copyNonEmpty(relationship, keepMeta);
+                this.relationships.add(newRelationship);
+            }
+        }
+        if (source.getLayers() != null && !source.getLayers().isEmpty()) {
+            for (Layer system : source.getLayers()) {
+                Layer newLayer = new Layer();
+                newLayer.copyNonEmpty(system, keepMeta);
+                this.layers.add(newLayer);
+            }
+        }
+        if (source.getSystems() != null && !source.getSystems().isEmpty()) {
+            for (System system : source.getSystems()) {
+                System newSystem = new System();
+                newSystem.copyNonEmpty(system, keepMeta);
+                this.systems.add(newSystem);
+            }
+        }
+        if (source.getContainers() != null && !source.getContainers().isEmpty()) {
+            for (Container system : source.getContainers()) {
+                Container newContainer = new Container();
+                newContainer.copyNonEmpty(system, keepMeta);
+                this.containers.add(newContainer);
+            }
+        }
+        if (source.getComponents() != null && !source.getComponents().isEmpty()) {
+            for (Component system : source.getComponents()) {
+                Component newComponent = new Component();
+                newComponent.copyNonEmpty(system, keepMeta);
+                this.components.add(newComponent);
             }
         }
         if (source.getDeploymentNodes() != null && !source.getDeploymentNodes().isEmpty()) {
@@ -140,12 +215,12 @@ public class Model extends Element implements DiagramableElement<Model> {
         this.consumers = people;
     }
 
-    public Set<SoftwareSystem> getSoftwareSystems() {
-        return softwareSystems;
+    public Set<System> getSystems() {
+        return systems;
     }
 
-    public void setSoftwareSystems(Set<SoftwareSystem> softwareSystems) {
-        this.softwareSystems = softwareSystems;
+    public void setSystems(Set<System> systems) {
+        this.systems = systems;
     }
 
     public Set<DeploymentNode> getDeploymentNodes() {
@@ -162,5 +237,21 @@ public class Model extends Element implements DiagramableElement<Model> {
 
     public void setRelationships(Set<Relationship> relationships) {
         this.relationships = relationships;
+    }
+
+    public Set<Container> getContainers() {
+        return containers;
+    }
+
+    public void setContainers(Set<Container> containers) {
+        this.containers = containers;
+    }
+
+    public Set<Component> getComponents() {
+        return components;
+    }
+
+    public void setComponents(Set<Component> components) {
+        this.components = components;
     }
 }

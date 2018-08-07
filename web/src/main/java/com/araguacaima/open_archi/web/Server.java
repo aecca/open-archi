@@ -5,6 +5,7 @@ import com.araguacaima.commons.utils.JsonUtils;
 import com.araguacaima.commons.utils.ReflectionUtils;
 import com.araguacaima.open_archi.persistence.commons.IdName;
 import com.araguacaima.open_archi.persistence.diagrams.architectural.*;
+import com.araguacaima.open_archi.persistence.diagrams.architectural.System;
 import com.araguacaima.open_archi.persistence.diagrams.core.*;
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
@@ -269,20 +270,21 @@ public class Server {
         deeplyFulfilledIdValueCollection.add(deeplyFulfilledIdValue_1);
         deeplyFulfilledIdValueCollection.add(deeplyFulfilledIdValue_2);
 
-        elementTypesCollection.add("ARCHITECTURE");
-        elementTypesCollection.add("FLOWCHART");
-        elementTypesCollection.add("SEQUENCE");
-        elementTypesCollection.add("GANTT");
-        elementTypesCollection.add("ENTITY_RELATIONSHIP");
-        elementTypesCollection.add("UML_CLASS");
-        elementTypesCollection.add("FEATURE");
-        elementTypesCollection.add("COMPONENT");
-        elementTypesCollection.add("CONSUMER");
+//        elementTypesCollection.add("ARCHITECTURE");
+        elementTypesCollection.add("SYSTEM");
+//        elementTypesCollection.add("FLOWCHART");
+//        elementTypesCollection.add("SEQUENCE");
+//        elementTypesCollection.add("GANTT");
+//        elementTypesCollection.add("ENTITY_RELATIONSHIP");
+//        elementTypesCollection.add("UML_CLASS");
+//        elementTypesCollection.add("FEATURE");
         elementTypesCollection.add("CONTAINER");
-        elementTypesCollection.add("DEPLOYMENT");
-        elementTypesCollection.add("BPM");
-        elementTypesCollection.add("SOFTWARE_SYSTEM");
-
+        elementTypesCollection.add("COMPONENT");
+//        elementTypesCollection.add("CONSUMER");
+//        elementTypesCollection.add("DEPLOYMENT");
+//        elementTypesCollection.add("BPM");
+//        elementTypesCollection.add("GROUP");
+        elementTypesCollection.add("LAYER");
         //noinspection ResultOfMethodCallIgnored
         JPAEntityManagerUtils.getEntityManager();
     }
@@ -338,6 +340,7 @@ public class Server {
             });
             redirect.get("/api", "/open-archi/api/", Redirect.Status.PERMANENT_REDIRECT);
             redirect.get("/editor", "/open-archi/editor/", Redirect.Status.PERMANENT_REDIRECT);
+            redirect.get("/prototyper", "/open-archi/prototyper/", Redirect.Status.TEMPORARY_REDIRECT);
             Map<String, Object> mapHome = new HashMap<>();
             mapHome.put("title", "Open Archi");
             get("/", (req, res) -> new ModelAndView(mapHome, "/open-archi/home"), engine);
@@ -345,7 +348,6 @@ public class Server {
                 Map<String, Object> mapEditor = new HashMap<>();
                 exception(Exception.class, exceptionHandler);
                 mapEditor.put("title", "Editor");
-
                 Map<String, Boolean> diagramTypesMap = new HashMap<>();
                 for (String diagramType : deeplyFulfilledDiagramTypesCollection) {
                     diagramTypesMap.put(diagramType, diagramType.equals(ElementKind.ARCHITECTURE_MODEL.name()));
@@ -355,13 +357,11 @@ public class Server {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
                 try {
                     mapEditor.put("elementTypes", jsonUtils.toJSON(elementTypesCollection));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
                 get("/", (req, res) -> {
                     mapEditor.put("palette", jsonUtils.toJSON(getArchitecturePalette()));
                     mapEditor.put("source", "basic");
@@ -375,6 +375,12 @@ public class Server {
                             diagramTypesMap_.put(diagramType, diagramType.equals(type));
                         }
                         mapEditor.put("diagramTypes", jsonUtils.toJSON(diagramTypesMap_));
+                    }
+                    if (req.queryParams("fullView") != null) {
+                        mapEditor.put("fullView", true);
+
+                    } else {
+                        mapEditor.remove("fullView");
                     }
                     return new ModelAndView(mapEditor, "/open-archi/editor");
                 }, engine);
@@ -443,6 +449,50 @@ public class Server {
                         mapEditor.put("palette", jsonUtils.toJSON(getArchitecturePalette()));
                         mapEditor.put("source", "basic");
                         return new ModelAndView(mapEditor, "/open-archi/editor");
+                    } catch (Exception ex) {
+                        mapEditor.put("title", "Error");
+                        mapEditor.put("message", ex.getMessage());
+                        mapEditor.put("stack", ex.getStackTrace());
+                        return new ModelAndView(mapEditor, "/error");
+                    }
+                }, engine);
+            });
+            path("/prototyper", () -> {
+                Map<String, Object> mapEditor = new HashMap<>();
+                exception(Exception.class, exceptionHandler);
+                mapEditor.put("title", "Prototyper");
+                Map<String, Boolean> diagramTypesMap = new HashMap<>();
+                for (String diagramType : deeplyFulfilledDiagramTypesCollection) {
+                    diagramTypesMap.put(diagramType, diagramType.equals(ElementKind.ARCHITECTURE_MODEL.name()));
+                }
+                try {
+                    mapEditor.put("diagramTypes", jsonUtils.toJSON(diagramTypesMap));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    mapEditor.put("elementTypes", jsonUtils.toJSON(elementTypesCollection));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                get("/", (req, res) -> {
+                    mapEditor.put("palette", jsonUtils.toJSON(getPrototypesPalette()));
+                    mapEditor.put("source", "basic");
+                    mapEditor.put("nodeDataArray", "[]");
+                    mapEditor.put("linkDataArray", "[]");
+                    return new ModelAndView(mapEditor, "/open-archi/editor");
+                }, engine);
+                get("/:uuid", (request, response) -> {
+                    try {
+                        String id = request.params(":uuid");
+                        Taggable model = JPAEntityManagerUtils.find(Taggable.class, id);
+                        if (model != null) {
+                            model.validateRequest();
+                        }
+                        mapEditor.put("model", jsonUtils.toJSON(model));
+                        mapEditor.put("palette", jsonUtils.toJSON(getPrototypesPalette()));
+                        mapEditor.put("source", "basic");
+                        return new ModelAndView(mapEditor, "/open-archi/prototyper");
                     } catch (Exception ex) {
                         mapEditor.put("title", "Error");
                         mapEditor.put("message", ex.getMessage());
@@ -636,50 +686,52 @@ public class Server {
                         return throwError(response, ex);
                     }
                 });
-                get("/diagrams/architectures/:uuid/software-systems", (request, response) -> {
+                get("/diagrams/architectures/:uuid/systems", (request, response) -> {
                     Map<String, Object> params = new HashMap<>();
                     params.put("id", request.params(":uuid"));
-                    return getList(request, response, com.araguacaima.open_archi.persistence.diagrams.architectural.Model.GET_ALL_SOFTWARE_SYSTEMS, params, Collection.class);
+                    return getList(request, response, com.araguacaima.open_archi.persistence.diagrams.architectural.Model.GET_ALL_SYSTEMS_FROM_MODEL, params, Collection.class);
                 });
-                post("/diagrams/architectures/:uuid/software-systems", (request, response) -> {
+                get("/diagrams/architectures/systems", (request, response) -> getList(request, response, System.GET_ALL_SYSTEMS, null, null));
+                post("/diagrams/architectures/systems", (request, response) -> {
                     try {
-                        com.araguacaima.open_archi.persistence.diagrams.architectural.SoftwareSystem softwareSystem = jsonUtils.fromJSON(request.body(), com.araguacaima.open_archi.persistence.diagrams.architectural.SoftwareSystem.class);
-                        if (softwareSystem == null) {
-                            throw new Exception("Invalid kind of container");
+                        System system = jsonUtils.fromJSON(request.body(), System.class);
+                        if (system == null) {
+                            throw new Exception("Invalid kind of system");
                         }
-                        String id = request.params(":uuid");
-                        softwareSystem.validateCreation();
-                        Model model = JPAEntityManagerUtils.find(com.araguacaima.open_archi.persistence.diagrams.architectural.Model.class, id);
-                        DBUtil.persist(softwareSystem);
-                        model.getSoftwareSystems().add(softwareSystem);
-                        DBUtil.update(model);
+                        system.validateCreation();
+                        DBUtil.populate(system);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
-                        response.header("Location", request.pathInfo() + "/" + softwareSystem.getId());
+                        response.header("Location", request.pathInfo() + "/" + system.getId());
                         return EMPTY_RESPONSE;
                     } catch (Throwable ex) {
                         return throwError(response, ex);
                     }
                 });
-                get("/diagrams/architectures/:uuid/software-systems/:suuid", (request, response) -> {
-                    Map<String, Object> params = new HashMap<>();
-                    String id = request.params(":uuid");
-                    String sid = request.params(":suuid");
-                    params.put("id", id);
-                    params.put("sid", sid);
-                    response.type(JSON_CONTENT_TYPE);
-                    return getList(request, response, com.araguacaima.open_archi.persistence.diagrams.architectural.Model.GET_SOFTWARE_SYSTEM, params, null);
-                });
-                put("/diagrams/architectures/:uuid/software-systems/:suuid", (request, response) -> {
+                get("/diagrams/architectures/systems/:suuid", (request, response) -> {
                     try {
-                        Container model = jsonUtils.fromJSON(request.body(), Container.class);
-                        if (model == null) {
-                            throw new Exception("Invalid kind of container");
+                        String id = request.params(":suuid");
+                        System system = JPAEntityManagerUtils.find(System.class, id);
+                        if (system != null) {
+                            system.validateRequest();
                         }
-                        String id = request.params(":cuuid");
-                        model.setId(id);
-                        model.validateReplacement();
-                        DBUtil.replace(model);
+                        response.status(HTTP_OK);
+                        response.type(JSON_CONTENT_TYPE);
+                        return jsonUtils.toJSON(system);
+                    } catch (Exception ex) {
+                        return throwError(response, ex);
+                    }
+                });
+                patch("/diagrams/architectures/systems/:suuid", (request, response) -> {
+                    try {
+                        System system = jsonUtils.fromJSON(request.body(), System.class);
+                        if (system == null) {
+                            throw new Exception("Invalid kind of system");
+                        }
+                        String id = request.params(":suuid");
+                        system.setId(id);
+                        system.validateModification();
+                        DBUtil.update(system);
                         response.status(HTTP_OK);
                         return EMPTY_RESPONSE;
                     } catch (EntityNotFoundException ex) {
@@ -689,7 +741,135 @@ public class Server {
                         return throwError(response, ex);
                     }
                 });
-                patch("/diagrams/architectures/:uuid/software-systems/:suuid", (request, response) -> {
+                put("/diagrams/architectures/systems/:suuid", (request, response) -> {
+                    try {
+                        System system = jsonUtils.fromJSON(request.body(), System.class);
+                        if (system == null) {
+                            throw new Exception("Invalid kind of container");
+                        }
+                        String id = request.params(":suuid");
+                        system.setId(id);
+                        system.validateReplacement();
+                        DBUtil.replace(system);
+                        response.status(HTTP_OK);
+                        return EMPTY_RESPONSE;
+                    } catch (EntityNotFoundException ex) {
+                        response.status(HTTP_NOT_FOUND);
+                        return EMPTY_RESPONSE;
+                    } catch (Throwable ex) {
+                        return throwError(response, ex);
+                    }
+                });
+                get("/diagrams/architectures/systems/:suuid/systems", (request, response) -> {
+                    Map<String, Object> params = new HashMap<>();
+                    params.put("id", request.params(":suuid"));
+                    return getList(request, response, System.GET_ALL_SYSTEMS_FROM_SYSTEM, params, Collection.class);
+                });
+                post("/diagrams/architectures/systems/:suuid/systems", (request, response) -> {
+                    try {
+                        System system = jsonUtils.fromJSON(request.body(), System.class);
+                        if (system == null) {
+                            throw new Exception("Invalid kind of system");
+                        }
+                        String id = request.params(":suuid");
+                        String systemId = system.getId();
+                        system.validateCreation();
+                        System system_ = JPAEntityManagerUtils.find(System.class, id);
+                        DBUtil.populate(system, systemId == null);
+                        system_.getSystems().add(system);
+                        DBUtil.update(system);
+                        response.status(HTTP_CREATED);
+                        response.type(JSON_CONTENT_TYPE);
+                        response.header("Location", request.pathInfo() + "/" + system.getId());
+                        return EMPTY_RESPONSE;
+                    } catch (Throwable ex) {
+                        return throwError(response, ex);
+                    }
+                });
+                get("/diagrams/architectures/systems/:suuid/containers", (request, response) -> {
+                    Map<String, Object> params = new HashMap<>();
+                    params.put("id", request.params(":suuid"));
+                    return getList(request, response, System.GET_ALL_CONTAINERS_FROM_SYSTEM, params, Collection.class);
+                });
+                post("/diagrams/architectures/systems/:suuid/containers", (request, response) -> {
+                    try {
+                        Container container = jsonUtils.fromJSON(request.body(), Container.class);
+                        if (container == null) {
+                            throw new Exception("Invalid kind of container");
+                        }
+                        String id = request.params(":suuid");
+                        String containerId = container.getId();
+                        container.validateCreation();
+                        System system = JPAEntityManagerUtils.find(System.class, id);
+                        DBUtil.populate(container, containerId == null);
+                        system.getContainers().add(container);
+                        DBUtil.update(system);
+                        response.status(HTTP_CREATED);
+                        response.type(JSON_CONTENT_TYPE);
+                        response.header("Location", request.pathInfo() + "/" + container.getId());
+                        return EMPTY_RESPONSE;
+                    } catch (Throwable ex) {
+                        return throwError(response, ex);
+                    }
+                });
+                get("/diagrams/architectures/systems/:suuid/components", (request, response) -> {
+                    Map<String, Object> params = new HashMap<>();
+                    params.put("id", request.params(":suuid"));
+                    return getList(request, response, System.GET_ALL_COMPONENTS_FROM_SYSTEM, params, Collection.class);
+                });
+                post("/diagrams/architectures/systems/:suuid/components", (request, response) -> {
+                    try {
+                        Component component = jsonUtils.fromJSON(request.body(), Component.class);
+                        if (component == null) {
+                            throw new Exception("Invalid kind of component");
+                        }
+                        String id = request.params(":suuid");
+                        String componentId = component.getId();
+                        component.validateCreation();
+                        System system = JPAEntityManagerUtils.find(System.class, id);
+                        DBUtil.populate(component, componentId == null);
+                        system.getComponents().add(component);
+                        DBUtil.update(system);
+                        response.status(HTTP_CREATED);
+                        response.type(JSON_CONTENT_TYPE);
+                        response.header("Location", request.pathInfo() + "/" + component.getId());
+                        return EMPTY_RESPONSE;
+                    } catch (Throwable ex) {
+                        return throwError(response, ex);
+                    }
+                });
+                get("/diagrams/architectures/containers", (request, response) -> getList(request, response, Container.GET_ALL_CONTAINERS, null, null));
+                post("/diagrams/architectures/containers", (request, response) -> {
+                    try {
+                        Container container = jsonUtils.fromJSON(request.body(), Container.class);
+                        if (container == null) {
+                            throw new Exception("Invalid kind of container");
+                        }
+                        container.validateCreation();
+                        DBUtil.populate(container);
+                        response.status(HTTP_CREATED);
+                        response.type(JSON_CONTENT_TYPE);
+                        response.header("Location", request.pathInfo() + "/" + container.getId());
+                        return EMPTY_RESPONSE;
+                    } catch (Throwable ex) {
+                        return throwError(response, ex);
+                    }
+                });
+                get("/diagrams/architectures/containers/:cuuid", (request, response) -> {
+                    try {
+                        String id = request.params(":cuuid");
+                        Container container = JPAEntityManagerUtils.find(Container.class, id);
+                        if (container != null) {
+                            container.validateRequest();
+                        }
+                        response.status(HTTP_OK);
+                        response.type(JSON_CONTENT_TYPE);
+                        return jsonUtils.toJSON(container);
+                    } catch (Exception ex) {
+                        return throwError(response, ex);
+                    }
+                });
+                patch("/diagrams/architectures/containers/:cuuid", (request, response) -> {
                     try {
                         Container container = jsonUtils.fromJSON(request.body(), Container.class);
                         if (container == null) {
@@ -708,41 +888,151 @@ public class Server {
                         return throwError(response, ex);
                     }
                 });
-                get("/diagrams/architectures/:uuid/software-systems/:suuid/containers", (request, response) -> {
-                    Map<String, Object> params = new HashMap<>();
-                    params.put("id", request.params(":suuid"));
-                    return getList(request, response, SoftwareSystem.GET_ALL_CONTAINERS, params, Collection.class);
-                });
-                post("/diagrams/architectures/:uuid/software-systems/:suuid/containers", (request, response) -> {
+                put("/diagrams/architectures/containers/:cuuid", (request, response) -> {
                     try {
-                        com.araguacaima.open_archi.persistence.diagrams.architectural.Container container = jsonUtils.fromJSON(request.body(), com.araguacaima.open_archi.persistence.diagrams.architectural.Container.class);
+                        Container container = jsonUtils.fromJSON(request.body(), Container.class);
                         if (container == null) {
                             throw new Exception("Invalid kind of container");
                         }
-                        String id = request.params(":suuid");
-                        container.validateCreation();
-                        SoftwareSystem softwareSystem = JPAEntityManagerUtils.find(SoftwareSystem.class, id);
-                        DBUtil.persist(container);
-                        softwareSystem.getContainers().add(container);
-                        DBUtil.update(softwareSystem);
-                        response.status(HTTP_CREATED);
-                        response.type(JSON_CONTENT_TYPE);
-                        response.header("Location", request.pathInfo() + "/" + container.getId());
+                        String id = request.params(":cuuid");
+                        container.setId(id);
+                        container.validateReplacement();
+                        DBUtil.replace(container);
+                        response.status(HTTP_OK);
+                        return EMPTY_RESPONSE;
+                    } catch (EntityNotFoundException ex) {
+                        response.status(HTTP_NOT_FOUND);
                         return EMPTY_RESPONSE;
                     } catch (Throwable ex) {
                         return throwError(response, ex);
                     }
                 });
-                get("/diagrams/architectures/:uuid/software-systems/:suuid/containers/:cuuid", (request, response) -> {
+                get("/diagrams/architectures/containers/:cuuid/components", (request, response) -> {
                     Map<String, Object> params = new HashMap<>();
-                    String id = request.params(":suuid");
-                    String cid = request.params(":cuuid");
-                    params.put("id", id);
-                    params.put("cid", cid);
-                    response.type(JSON_CONTENT_TYPE);
-                    return getList(request, response, SoftwareSystem.GET_CONTAINER, params, null);
+                    params.put("id", request.params(":cuuid"));
+                    return getList(request, response, Container.GET_ALL_COMPONENTS_FROM_CONTAINER, params, Collection.class);
                 });
-                put("/diagrams/architectures/:uuid/software-systems/:suuid/containers/:cuuid", (request, response) -> {
+                post("/diagrams/architectures/containers/:cuuid/components", (request, response) -> {
+                    try {
+                        Component component = jsonUtils.fromJSON(request.body(), Component.class);
+                        if (component == null) {
+                            throw new Exception("Invalid kind of component");
+                        }
+                        String id = request.params(":cuuid");
+
+                        component.validateCreation();
+                        Container container = JPAEntityManagerUtils.find(Container.class, id);
+                        DBUtil.populate(component, true);
+                        container.getComponents().add(component);
+                        DBUtil.update(container);
+                        response.status(HTTP_CREATED);
+                        response.type(JSON_CONTENT_TYPE);
+                        response.header("Location", request.pathInfo() + "/" + component.getId());
+                        return EMPTY_RESPONSE;
+                    } catch (Throwable ex) {
+                        return throwError(response, ex);
+                    }
+                });
+                get("/diagrams/architectures/components", (request, response) -> getList(request, response, Component.GET_ALL_COMPONENTS, null, null));
+                post("/diagrams/architectures/components", (request, response) -> {
+                    try {
+                        Component component = jsonUtils.fromJSON(request.body(), Component.class);
+                        if (component == null) {
+                            throw new Exception("Invalid kind of relationship");
+                        }
+                        component.validateCreation();
+                        DBUtil.populate(component);
+                        response.status(HTTP_CREATED);
+                        response.type(JSON_CONTENT_TYPE);
+                        response.header("Location", request.pathInfo() + "/" + component.getId());
+                        return EMPTY_RESPONSE;
+                    } catch (Throwable ex) {
+                        return throwError(response, ex);
+                    }
+                });
+                get("/diagrams/architectures/components/:cuuid", (request, response) -> {
+                    try {
+                        String id = request.params(":cuuid");
+                        Component component = JPAEntityManagerUtils.find(Component.class, id);
+                        if (component != null) {
+                            component.validateRequest();
+                        }
+                        response.status(HTTP_OK);
+                        response.type(JSON_CONTENT_TYPE);
+                        return jsonUtils.toJSON(component);
+                    } catch (Exception ex) {
+                        return throwError(response, ex);
+                    }
+                });
+                patch("/diagrams/architectures/components/:cuuid", (request, response) -> {
+                    try {
+                        Component component = jsonUtils.fromJSON(request.body(), Component.class);
+                        if (component == null) {
+                            throw new Exception("Invalid kind of component");
+                        }
+                        String id = request.params(":cuuid");
+                        component.setId(id);
+                        component.validateModification();
+                        DBUtil.update(component);
+                        response.status(HTTP_OK);
+                        return EMPTY_RESPONSE;
+                    } catch (EntityNotFoundException ex) {
+                        response.status(HTTP_NOT_FOUND);
+                        return EMPTY_RESPONSE;
+                    } catch (Throwable ex) {
+                        return throwError(response, ex);
+                    }
+                });
+                put("/diagrams/architectures/components/:cuuid", (request, response) -> {
+                    try {
+                        Component component = jsonUtils.fromJSON(request.body(), Component.class);
+                        if (component == null) {
+                            throw new Exception("Invalid kind of container");
+                        }
+                        String id = request.params(":cuuid");
+                        component.setId(id);
+                        component.validateReplacement();
+                        DBUtil.replace(component);
+                        response.status(HTTP_OK);
+                        return EMPTY_RESPONSE;
+                    } catch (EntityNotFoundException ex) {
+                        response.status(HTTP_NOT_FOUND);
+                        return EMPTY_RESPONSE;
+                    } catch (Throwable ex) {
+                        return throwError(response, ex);
+                    }
+                });
+                post("/diagrams/architectures/:uuid/systems", (request, response) -> {
+                    try {
+                        com.araguacaima.open_archi.persistence.diagrams.architectural.System system = jsonUtils.fromJSON(request.body(), com.araguacaima.open_archi.persistence.diagrams.architectural.System.class);
+                        if (system == null) {
+                            throw new Exception("Invalid kind of container");
+                        }
+                        String id = request.params(":uuid");
+                        String systemId = system.getId();
+                        system.validateCreation();
+                        Model model = JPAEntityManagerUtils.find(com.araguacaima.open_archi.persistence.diagrams.architectural.Model.class, id);
+                        DBUtil.populate(system, systemId == null);
+                        model.getSystems().add(system);
+                        DBUtil.update(model);
+                        response.status(HTTP_CREATED);
+                        response.type(JSON_CONTENT_TYPE);
+                        response.header("Location", request.pathInfo() + "/" + system.getId());
+                        return EMPTY_RESPONSE;
+                    } catch (Throwable ex) {
+                        return throwError(response, ex);
+                    }
+                });
+                get("/diagrams/architectures/:uuid/systems/:suuid", (request, response) -> {
+                    Map<String, Object> params = new HashMap<>();
+                    String id = request.params(":uuid");
+                    String sid = request.params(":suuid");
+                    params.put("id", id);
+                    params.put("sid", sid);
+                    response.type(JSON_CONTENT_TYPE);
+                    return getList(request, response, com.araguacaima.open_archi.persistence.diagrams.architectural.Model.GET_SYSTEM, params, null);
+                });
+                put("/diagrams/architectures/:uuid/systems/:suuid", (request, response) -> {
                     try {
                         Container model = jsonUtils.fromJSON(request.body(), Container.class);
                         if (model == null) {
@@ -761,7 +1051,80 @@ public class Server {
                         return throwError(response, ex);
                     }
                 });
-                patch("/diagrams/architectures/:uuid/software-systems/:suuid/containers/:cuuid", (request, response) -> {
+                patch("/diagrams/architectures/:uuid/systems/:suuid", (request, response) -> {
+                    try {
+                        Container container = jsonUtils.fromJSON(request.body(), Container.class);
+                        if (container == null) {
+                            throw new Exception("Invalid kind of container");
+                        }
+                        String id = request.params(":cuuid");
+                        container.setId(id);
+                        container.validateModification();
+                        DBUtil.update(container);
+                        response.status(HTTP_OK);
+                        return EMPTY_RESPONSE;
+                    } catch (EntityNotFoundException ex) {
+                        response.status(HTTP_NOT_FOUND);
+                        return EMPTY_RESPONSE;
+                    } catch (Throwable ex) {
+                        return throwError(response, ex);
+                    }
+                });
+                get("/diagrams/architectures/:uuid/systems/:suuid/containers", (request, response) -> {
+                    Map<String, Object> params = new HashMap<>();
+                    params.put("id", request.params(":suuid"));
+                    return getList(request, response, System.GET_ALL_CONTAINERS_FROM_SYSTEM, params, Collection.class);
+                });
+                post("/diagrams/architectures/:uuid/systems/:suuid/containers", (request, response) -> {
+                    try {
+                        com.araguacaima.open_archi.persistence.diagrams.architectural.Container container = jsonUtils.fromJSON(request.body(), com.araguacaima.open_archi.persistence.diagrams.architectural.Container.class);
+                        if (container == null) {
+                            throw new Exception("Invalid kind of container");
+                        }
+                        String id = request.params(":suuid");
+                        String containerId = container.getId();
+                        container.validateCreation();
+                        System system = JPAEntityManagerUtils.find(System.class, id);
+                        DBUtil.populate(container, containerId == null);
+                        system.getContainers().add(container);
+                        DBUtil.update(system);
+                        response.status(HTTP_CREATED);
+                        response.type(JSON_CONTENT_TYPE);
+                        response.header("Location", request.pathInfo() + "/" + container.getId());
+                        return EMPTY_RESPONSE;
+                    } catch (Throwable ex) {
+                        return throwError(response, ex);
+                    }
+                });
+                get("/diagrams/architectures/:uuid/systems/:suuid/containers/:cuuid", (request, response) -> {
+                    Map<String, Object> params = new HashMap<>();
+                    String id = request.params(":suuid");
+                    String cid = request.params(":cuuid");
+                    params.put("id", id);
+                    params.put("cid", cid);
+                    response.type(JSON_CONTENT_TYPE);
+                    return getList(request, response, System.GET_CONTAINER, params, null);
+                });
+                put("/diagrams/architectures/:uuid/systems/:suuid/containers/:cuuid", (request, response) -> {
+                    try {
+                        Container model = jsonUtils.fromJSON(request.body(), Container.class);
+                        if (model == null) {
+                            throw new Exception("Invalid kind of container");
+                        }
+                        String id = request.params(":cuuid");
+                        model.setId(id);
+                        model.validateReplacement();
+                        DBUtil.replace(model);
+                        response.status(HTTP_OK);
+                        return EMPTY_RESPONSE;
+                    } catch (EntityNotFoundException ex) {
+                        response.status(HTTP_NOT_FOUND);
+                        return EMPTY_RESPONSE;
+                    } catch (Throwable ex) {
+                        return throwError(response, ex);
+                    }
+                });
+                patch("/diagrams/architectures/:uuid/systems/:suuid/containers/:cuuid", (request, response) -> {
                     try {
                         Container container = jsonUtils.fromJSON(request.body(), Container.class);
                         if (container == null) {
@@ -968,7 +1331,8 @@ public class Server {
                 post("/models", (request, response) -> {
                     try {
                         Taggable model = null;
-                        Map<String, Object> incomingModel = (Map<String, Object>) jsonUtils.fromJSON(request.body(), Map.class);
+                        String body = request.body();
+                        Map<String, Object> incomingModel = (Map<String, Object>) jsonUtils.fromJSON(body, Map.class);
                         Object kind = incomingModel.get("kind");
                         Object id = incomingModel.get("id");
                         for (Class<? extends Taggable> modelClass : modelsClasses) {
@@ -979,7 +1343,7 @@ public class Server {
                                 Object thisKind = field.get(obj);
                                 thisKind = enumsUtils.getStringValue((Enum) thisKind);
                                 if (kind.equals(thisKind)) {
-                                    model = jsonUtils.fromJSON(request.body(), modelClass);
+                                    model = jsonUtils.fromJSON(body, modelClass);
                                     break;
                                 }
                             }
@@ -994,6 +1358,7 @@ public class Server {
                         response.header("Location", request.pathInfo() + "/" + model.getId());
                         return EMPTY_RESPONSE;
                     } catch (Throwable ex) {
+                        ex.printStackTrace();
                         return throwError(response, ex);
                     }
                 });
@@ -1060,16 +1425,19 @@ public class Server {
                             throw new Exception("Model with id of '" + id + "' not found");
                         }
                         Object clonedModel = model.getClass().newInstance();
+                        CompositeElement clonedFrom = ((Item) model).buildCompositeElement();
                         if (DiagramableElement.class.isAssignableFrom(clonedModel.getClass()) || BaseEntity.class.isAssignableFrom(clonedModel.getClass())) {
-                            Object[] overrideArgs = new Object[3];
+                            Object[] overrideArgs = new Object[4];
                             overrideArgs[0] = model;
                             overrideArgs[1] = false;
                             overrideArgs[2] = suffix;
+                            overrideArgs[3] = clonedFrom;
                             reflectionUtils.invokeMethod(clonedModel, "override", overrideArgs);
                         } else {
                             throw new Exception("Invalid model");
                         }
                         Item clonedModelItem = (Item) clonedModel;
+                        clonedModelItem.setClonedFrom(clonedFrom);
                         String name = clonedModelItem.getName();
                         Map<String, Object> map = new HashMap<>();
                         map.put("type", model.getClass());
@@ -1085,6 +1453,22 @@ public class Server {
                         response.type(JSON_CONTENT_TYPE);
                         return jsonUtils.toJSON(clonedModel);
                     } catch (Exception ex) {
+                        return throwError(response, ex);
+                    }
+                });
+                put("/models/:uuid/image", (request, response) -> {
+                    try {
+                        Image image = jsonUtils.fromJSON(request.body(), Image.class);
+                        if (image == null) {
+                            throw new Exception("Invalid kind of relationship");
+                        }
+                        image.validateReplacement();
+                        DBUtil.populate(image);
+                        response.status(HTTP_CREATED);
+                        response.type(JSON_CONTENT_TYPE);
+                        response.header("Location", request.pathInfo() + "/" + image.getId());
+                        return EMPTY_RESPONSE;
+                    } catch (Throwable ex) {
                         return throwError(response, ex);
                     }
                 });
@@ -1197,7 +1581,6 @@ public class Server {
                         if (feature == null) {
                             throw new Exception("Invalid kind of feature");
                         }
-                        feature.validateReplacement();
                         DBUtil.persist(feature);
                         response.status(HTTP_CREATED);
                         response.header("Location", request.pathInfo() + "/" + feature.getId());
@@ -1253,6 +1636,30 @@ public class Server {
                     String diagramNames = (String) getList(request, response, Item.GET_ALL_CONSUMER_NAMES, null, IdName.class);
                     List diagramNamesList = getListIdName(diagramNames);
                     return getList(request, response, diagramNamesList);
+                });
+                post("/catalogs/element-roles", (request, response) -> {
+                    try {
+                        String body = request.body();
+                        ElementRole model;
+                        try {
+                            model = jsonUtils.fromJSON(body, ElementRole.class);
+                        } catch (Throwable ignored) {
+                            throw new Exception("Invalid element role of '" + body + "'");
+                        }
+                        DBUtil.populate(model, false);
+                        response.status(HTTP_OK);
+                        response.type(JSON_CONTENT_TYPE);
+                        response.header("Location", request.pathInfo() + "/" + model.getId());
+                        return EMPTY_RESPONSE;
+                    } catch (Throwable ex) {
+                        return throwError(response, ex);
+                    }
+                });
+                get("/catalogs/element-roles", (request, response) -> {
+                    String roleNames = (String) getList(request, response, ElementRole.GET_ALL_ROLES, null, ElementRole.class);
+                    List diagramNamesList = getListIdName(roleNames);
+                    return getList(request, response, diagramNamesList);
+
                 });
                 get("/consumers", (request, response) -> getList(request, response, Item.GET_ALL_CONSUMERS, null, null));
                 post("/consumers", (request, response) -> {
@@ -1409,20 +1816,17 @@ public class Server {
 
     private static Collection<ExampleData> getExamples() {
         Collection<ExampleData> result = new ArrayList<>();
-//        result.add(new ExampleData("/diagrams/basic.html", "Diagrama Básico"));
         result.add(new ExampleData("/diagrams/checkBoxes.html", "Features (checkbox)"));
         result.add(new ExampleData("/diagrams/columnResizing.html", "Ajuste de tamaños"));
         result.add(new ExampleData("/diagrams/comments.html", "Comentarios"));
-        result.add(new ExampleData("/diagrams/contextMenu.html", "Menú Contextual"));
-        result.add(new ExampleData("/diagrams/dataInspector.html", "Meta Datos"));
         result.add(new ExampleData("/diagrams/dragCreating.html", "Creación Ágil"));
         result.add(new ExampleData("/diagrams/draggableLink.html", "Constraints"));
         result.add(new ExampleData("/diagrams/entityRelationship.html", "Entidad Relación"));
         result.add(new ExampleData("/diagrams/flowchart.html", "Flujo de Secuencia"));
         result.add(new ExampleData("/diagrams/gantt.html", "Diagramas Gantt"));
         result.add(new ExampleData("/diagrams/grouping.html", "Expansión"));
+        result.add(new ExampleData("/diagrams/regrouping.html", "Re-agrupación"));
         result.add(new ExampleData("/diagrams/guidedDragging.html", "Guías visuales"));
-//        result.add(new ExampleData("/diagrams/htmlInteraction.html", "Interoperatividad HTML"));
         result.add(new ExampleData("/diagrams/icons.html", "Iconos SVG"));
         result.add(new ExampleData("/diagrams/kanban.html", "Tablero Kanban"));
         result.add(new ExampleData("/diagrams/logicCircuit.html", "Flujo y Secuencia 1"));
@@ -1442,85 +1846,101 @@ public class Server {
     private static Palette getArchitecturePalette() {
         Palette palette = new Palette();
         Map<String, Object> params = new HashMap<>();
-        params.put("type", SoftwareSystem.class);
+
+        params.put("type", Layer.class);
         List<IdName> models;
         models = JPAEntityManagerUtils.executeQuery(IdName.class, Item.GET_ALL_PROTOTYPE_NAMES_BY_TYPE, params);
         int rank = 0;
         for (IdName model : models) {
-            PaletteItem item = new PaletteItem();
-            item.setId(model.getId());
-            item.setRank(rank);
-            item.setKind(ElementKind.ARCHITECTURE_MODEL);
-            item.setName(model.getName());
-            Shape shape = new Shape();
-            shape.setType(ShapeType.RoundedRectangle);
-            shape.setFill(SoftwareSystem.SHAPE_COLOR);
-            shape.setSize(new Size(40, 40));
-            item.setShape(shape);
-            item.setCategory(ElementKind.SOFTWARE_SYSTEM.name());
-            item.setPrototype(true);
-            palette.getSoftwareSystems().add(item);
-            rank++;
+            rank = buildPalette(palette, rank, model, ElementKind.LAYER.name(), true, Layer.SHAPE_COLOR, ShapeType.RoundedRectangle);
+        }
+
+        params.put("type", System.class);
+        models = JPAEntityManagerUtils.executeQuery(IdName.class, Item.GET_ALL_PROTOTYPE_NAMES_BY_TYPE, params);
+        rank = 0;
+        for (IdName model : models) {
+            rank = buildPalette(palette, rank, model, ElementKind.SYSTEM.name(), true, System.SHAPE_COLOR, ShapeType.RoundedRectangle);
         }
 
         params.put("type", Container.class);
         models = JPAEntityManagerUtils.executeQuery(IdName.class, Item.GET_ALL_PROTOTYPE_NAMES_BY_TYPE, params);
         rank = 0;
         for (IdName model : models) {
-            PaletteItem item = new PaletteItem();
-            item.setId(model.getId());
-            item.setRank(rank);
-            item.setKind(ElementKind.ARCHITECTURE_MODEL);
-            item.setName(model.getName());
-            Shape shape = new Shape();
-            shape.setType(ShapeType.RoundedRectangle);
-            shape.setFill(Container.SHAPE_COLOR);
-            shape.setSize(new Size(40, 40));
-            item.setShape(shape);
-            item.setCategory(ElementKind.CONTAINER.name());
-            item.setPrototype(true);
-            palette.getContainers().add(item);
-            rank++;
+            rank = buildPalette(palette, rank, model, ElementKind.CONTAINER.name(), true, Container.SHAPE_COLOR, ShapeType.RoundedRectangle);
         }
 
         params.put("type", Component.class);
         models = JPAEntityManagerUtils.executeQuery(IdName.class, Item.GET_ALL_PROTOTYPE_NAMES_BY_TYPE, params);
         rank = 0;
         for (IdName model : models) {
-            PaletteItem item = new PaletteItem();
-            item.setId(model.getId());
-            item.setRank(rank);
-            item.setKind(ElementKind.ARCHITECTURE_MODEL);
-            item.setName(model.getName());
-            Shape shape = new Shape();
-            shape.setType(ShapeType.RoundedRectangle);
-            shape.setFill(Component.SHAPE_COLOR);
-            shape.setSize(new Size(40, 40));
-            item.setShape(shape);
-            item.setCategory(ElementKind.COMPONENT.name());
-            item.setPrototype(true);
-            palette.getComponents().add(item);
-            rank++;
+            rank = buildPalette(palette, rank, model, ElementKind.COMPONENT.name(), true, Component.SHAPE_COLOR, ShapeType.RoundedRectangle);
         }
 
         params.put("type", Model.class);
         models = JPAEntityManagerUtils.executeQuery(IdName.class, Item.GET_ALL_PROTOTYPE_NAMES_BY_TYPE, params);
         rank = 0;
         for (IdName model : models) {
-            PaletteItem item = new PaletteItem();
-            item.setId(model.getId());
-            item.setRank(rank);
-            item.setKind(ElementKind.ARCHITECTURE_MODEL);
-            item.setName(model.getName());
-            Shape shape = new Shape();
-            shape.setType(ShapeType.RoundedRectangle);
-            shape.setFill(Item.PROTOTYPE_SHAPE_COLOR);
-            shape.setSize(new Size(40, 40));
-            item.setShape(shape);
-            item.setCategory(ElementKind.ARCHITECTURE_MODEL.name());
-            item.setPrototype(true);
-            palette.getPrototypes().add(item);
-            rank++;
+            rank = buildPalette(palette, rank, model, ((ElementKind) model.getKind()).name(), true, Model.SHAPE_COLOR, ShapeType.ARCHITECTURE_MODEL);
+        }
+        return palette;
+    }
+
+    private static int buildPalette(Palette palette, int rank, IdName model, String category, boolean prototype, String color, ShapeType type) {
+        PaletteItem item = new PaletteItem();
+        item.setId(model.getId());
+        item.setRank(rank);
+        item.setKind(ElementKind.ARCHITECTURE_MODEL);
+        item.setName(model.getName());
+        Shape shape = new Shape();
+        shape.setType(type);
+        shape.setFill(color);
+        shape.setSize(new Size(40, 40));
+        item.setShape(shape);
+        item.setCategory(category);
+        item.setPrototype(prototype);
+        palette.getComplexElements().add(item);
+        rank++;
+        return rank;
+    }
+
+    private static Palette getPrototypesPalette() {
+        Palette palette = new Palette();
+        Map<String, Object> params = new HashMap<>();
+
+
+        params.put("type", Layer.class);
+        List<IdName> models;
+        models = JPAEntityManagerUtils.executeQuery(IdName.class, Item.GET_ALL_NON_CLONED_PROTOTYPE_NAMES_BY_TYPE, params);
+        int rank = 0;
+        for (IdName model : models) {
+            rank = buildPalette(palette, rank, model, ElementKind.LAYER.name(), true, Layer.SHAPE_COLOR, ShapeType.RoundedRectangle);
+        }
+
+        params.put("type", System.class);
+        models = JPAEntityManagerUtils.executeQuery(IdName.class, Item.GET_ALL_NON_CLONED_PROTOTYPE_NAMES_BY_TYPE, params);
+        for (IdName model : models) {
+            rank = buildPalette(palette, rank, model, ElementKind.SYSTEM.name(), true, System.SHAPE_COLOR, ShapeType.RoundedRectangle);
+        }
+
+        params.put("type", Container.class);
+        models = JPAEntityManagerUtils.executeQuery(IdName.class, Item.GET_ALL_PROTOTYPE_NAMES_BY_TYPE, params);
+        rank = 0;
+        for (IdName model : models) {
+            rank = buildPalette(palette, rank, model, ElementKind.CONTAINER.name(), true, Container.SHAPE_COLOR, ShapeType.RoundedRectangle);
+        }
+
+        params.put("type", Component.class);
+        models = JPAEntityManagerUtils.executeQuery(IdName.class, Item.GET_ALL_PROTOTYPE_NAMES_BY_TYPE, params);
+        rank = 0;
+        for (IdName model : models) {
+            rank = buildPalette(palette, rank, model, ElementKind.COMPONENT.name(), true, Component.SHAPE_COLOR, ShapeType.RoundedRectangle);
+        }
+
+        params.put("type", Model.class);
+        models = JPAEntityManagerUtils.executeQuery(IdName.class, Item.GET_ALL_PROTOTYPE_NAMES_BY_TYPE, params);
+        rank = 0;
+        for (IdName model : models) {
+            rank = buildPalette(palette, rank, model, ElementKind.ARCHITECTURE_MODEL.name(), true, Model.SHAPE_COLOR, ShapeType.ARCHITECTURE_MODEL);
         }
         return palette;
     }
@@ -1531,13 +1951,17 @@ public class Server {
             String className = map.get("clazz");
             Class<?> clazz;
             try {
-                clazz = Class.forName(className);
-                boolean assignableFrom = DiagramableElement.class.isAssignableFrom(clazz);
-                if (assignableFrom) {
-                    map.put("type", ((DiagramableElement) clazz.newInstance()).getKind().name());
-                    map.remove("clazz");
+                if (StringUtils.isNotBlank(className)) {
+                    clazz = Class.forName(className);
+                    boolean assignableFrom = DiagramableElement.class.isAssignableFrom(clazz);
+                    if (assignableFrom) {
+                        map.put("type", ((DiagramableElement) clazz.newInstance()).getKind().name());
+                        map.remove("clazz");
+                    }
+                    return assignableFrom;
+                } else {
+                    return true;
                 }
-                return assignableFrom;
             } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
                 e.printStackTrace();
             }

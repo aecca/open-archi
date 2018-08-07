@@ -10,13 +10,37 @@ function initBasic(nodeDataArray, linkDataArray) {
                 // position the graph in the middle of the diagram
                 initialContentAlignment: go.Spot.Center,
 
+                // use a custom ResizingTool (along with a custom ResizeAdornment on each Group)
+                resizingTool: new LaneResizingTool(),
+                // use a simple layout that ignores links to stack the top-level Pool Groups next to each other
+                layout: gojs(PoolLayout),
+                // use a simple layout that ignores links to stack the top-level Pool Groups next to each other
+/*                mouseDragOver: function (e) {
+                    if (!e.diagram.selection.all(function (n) {
+                            return n instanceof go.Group;
+                        })) {
+                        e.diagram.currentCursor = 'not-allowed';
+                    }
+                },*/
+                // a clipboard copied node is pasted into the original node's group (i.e. lane).
+                "commandHandler.copiesGroupKey": true,
+                // automatically re-layout the swim lanes after dragging the selection
+                "SelectionMoved": relayoutDiagram,  // this DiagramEvent listener is
+                "SelectionCopied": relayoutDiagram, // defined above
+                "animationManager.isEnabled": false,
+
                 // allow double-click in background to create a new node
                 "clickCreatingTool.archetypeNodeData": {
                     name: "Element",
-                    shape: {fill: "#01203A"},
-                    kind: "SOFTWARE_SYSTEM"
+                    shape: {fill: "white"},
+                    kind: "LAYER"
                 },
-
+                mouseDrop: function (e) {
+                    finishDrop(e, null);
+                },
+                /*                layout:  // Diagram has simple horizontal layout
+                                    gojs(go.GridLayout,
+                                        { wrappingWidth: Infinity, alignment: go.GridLayout.Position, cellSize: new go.Size(1, 1) }),*/
                 // allow Ctrl-G to call groupSelection()
                 "commandHandler.archetypeGroupData": {name: "Group", isGroup: true, color: "blue"},
                 "LinkDrawn": showLinkLabel,  // this DiagramEvent listener is defined below
@@ -36,9 +60,12 @@ function initBasic(nodeDataArray, linkDataArray) {
         gojs(go.Node, "Spot", nodeStyle(),
             // the main object is a Panel that surrounds a TextBlock with a rectangular Shape
             gojs(go.Panel, "Auto",
+                {
+                    name: "New Element"
+                },
                 gojs(go.Shape, "RoundedRectangle",
                     {
-                        fill: "blue", // the default fill, if there is no data bound value
+                        fill: "black", // the default fill, if there is no data bound value
                         portId: "",
                         cursor: "pointer",  // the Shape is the port, not the whole Node
                         // allow all kinds of links from and to this port
@@ -77,6 +104,58 @@ function initBasic(nodeDataArray, linkDataArray) {
             makePort("R", go.Spot.Right, true, true),
             makePort("B", go.Spot.Bottom, true, true)
         ));
+    myDiagram.nodeTemplateMap.add("MODEL",
+        gojs(go.Node, "Spot", nodeStyle(),
+            // the main object is a Panel that surrounds a TextBlock with a rectangular Shape
+            gojs(go.Panel, "Auto",
+                {
+                    name: "Model"
+                },
+                gojs(go.Shape, "RoundedRectangle",
+                    {
+                        fill: "white", // the default fill, if there is no data bound value
+                        stroke: "blue",
+                        portId: "",
+                        cursor: "pointer",  // the Shape is the port, not the whole Node
+                        // allow all kinds of links from and to this port
+                        fromLinkable: true,
+                        fromLinkableSelfNode: true,
+                        fromLinkableDuplicates: true,
+                        toLinkable: true,
+                        toLinkableSelfNode: true,
+                        toLinkableDuplicates: true
+                    },
+                    new go.Binding("fill", "", OpenArchiWrapper.toFill).makeTwoWay(OpenArchiWrapper.fromFill),
+                    new go.Binding("stroke", "", OpenArchiWrapper.toStroke).makeTwoWay(OpenArchiWrapper.fromStroke)),
+                gojs(go.TextBlock, "text",
+                    {
+                        font: "bold 11pt Helvetica, Arial, sans-serif",
+                        stroke: 'black',
+                        margin: 4,  // make some extra space for the shape around the text
+                        isMultiline: true,
+                        wrap: go.TextBlock.WrapFit,
+                        editable: true  // allow in-place editing by user
+                    },
+                    new go.Binding("text", "", OpenArchiWrapper.toTitle).makeTwoWay(OpenArchiWrapper.fromTitle)),  // the label shows the node data's text
+                { // this tooltip Adornment is shared by all nodes
+                    toolTip:
+                        gojs(go.Adornment, "Auto",
+                            gojs(go.Shape, {fill: "#FFFFCC"}),
+                            gojs(go.TextBlock, {margin: 4},  // the tooltip shows the result of calling nodeInfo(data)
+                                new go.Binding("text", "", nodeInfo))
+                        ),
+                    // this context menu Adornment is shared by all nodes
+                    contextMenu: partContextMenu
+                }
+            ),
+            // four named ports, one on each side:
+            makePort("T", go.Spot.Top, true, true),
+            makePort("L", go.Spot.Left, true, true),
+            makePort("R", go.Spot.Right, true, true),
+            makePort("B", go.Spot.Bottom, true, true)
+        )
+    );
+
     // The link shape and arrowhead have their stroke brush data bound to the "color" property
     myDiagram.linkTemplate =
         gojs(go.Link,  // the whole link panel
@@ -181,6 +260,34 @@ function initBasic(nodeDataArray, linkDataArray) {
             }
         );
 
+    // define a custom resize adornment that has two resize handles if the group is expanded
+    myDiagram.groupTemplate.resizeAdornmentTemplate =
+        gojs(go.Adornment, "Spot",
+            gojs(go.Placeholder),
+            gojs(go.Shape,  // for changing the length of a lane
+                {
+                    alignment: go.Spot.Right,
+                    desiredSize: new go.Size(7, 50),
+                    fill: "lightblue", stroke: "dodgerblue",
+                    cursor: "col-resize"
+                },
+                new go.Binding("visible", "", function (ad) {
+                    if (ad.adornedPart === null) return false;
+                    return ad.adornedPart.isSubGraphExpanded;
+                }).ofObject()),
+            gojs(go.Shape,  // for changing the breadth of a lane
+                {
+                    alignment: go.Spot.Bottom,
+                    desiredSize: new go.Size(50, 7),
+                    fill: "lightblue", stroke: "dodgerblue",
+                    cursor: "row-resize"
+                },
+                new go.Binding("visible", "", function (ad) {
+                    if (ad.adornedPart === null) return false;
+                    return ad.adornedPart.isSubGraphExpanded;
+                }).ofObject())
+        );
+
     // Define the behavior for the Diagram background:
 
     function diagramInfo(model) {  // Tooltip info for the diagram's model
@@ -238,6 +345,8 @@ function initBasic(nodeDataArray, linkDataArray) {
             }
             let modal = $('#basic-element-data');
             modal.attr("data-key", data.key);
+            $('#element-image-2').val('');
+            $('#elementTypesDropdown').val('');
             modal.on('show.bs.modal', function (event) {
                 const button = $(event.relatedTarget); // Button that triggered the modal
                 const modal = $(this);

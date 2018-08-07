@@ -1,21 +1,23 @@
 package com.araguacaima.open_archi.persistence.diagrams.architectural;
 
+import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
+
 import javax.persistence.*;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
- * A software system is the highest level of abstraction and describes something
+ * A system is the highest level of abstraction and describes something
  * that delivers value to its users, whether they are human or not. This includes
- * the software system you are modelling, and the other software systems upon
- * which your software system depends.
+ * the system you are modelling, and the other systems upon
+ * which your system depends.
  * <p>
- * See <a href="https://structurizr.com/help/model#SoftwareSystem">Model - Software System</a>
+ * See <a href="https://structurizr.com/help/model#System">Model - System System</a>
  * on the Structurizr website for more information.
  */
 @Entity
 @PersistenceUnit(unitName = "open-archi")
-public class SoftwareSystems extends StaticElements {
+public class Systems extends StaticElements {
 
     @Column
     @Enumerated(EnumType.STRING)
@@ -23,14 +25,14 @@ public class SoftwareSystems extends StaticElements {
 
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
-            name = "SoftwareSystem_Containers",
-            joinColumns = {@JoinColumn(name = "SoftwareSystem_Id",
+            name = "System_Containers",
+            joinColumns = {@JoinColumn(name = "System_Id",
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Container_Id",
                     referencedColumnName = "Id")})
     private Set<Containers> containers = new LinkedHashSet<>();
 
-    public SoftwareSystems() {
+    public Systems() {
     }
 
     public Scope getScope() {
@@ -49,17 +51,17 @@ public class SoftwareSystems extends StaticElements {
         this.containers = containers;
     }
 
-    public void override(SoftwareSystems source, boolean keepMeta, String suffix) {
-        super.override(source, keepMeta, suffix);
+    public void override(Systems source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+        super.override(source, keepMeta, suffix, clonedFrom);
         this.setScope(source.getScope());
         for (Containers container : source.getContainers()) {
             Containers newContainer = new Containers();
-            newContainer.override(container, keepMeta, suffix);
+            newContainer.override(container, keepMeta, suffix, clonedFrom);
             this.containers.add(newContainer);
         }
     }
 
-    public void copyNonEmpty(SoftwareSystems source, boolean keepMeta) {
+    public void copyNonEmpty(Systems source, boolean keepMeta) {
         super.copyNonEmpty(source, keepMeta);
         if (source.getScope() != null) {
             this.setScope(source.getScope());

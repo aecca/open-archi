@@ -1,9 +1,12 @@
 function initContextMenu() {
 
-    const $ = go.GraphObject.make;  // for conciseness in defining templates
+    if (myDiagram !== undefined) {
+        myDiagram.clear();
+        myDiagram.div = null;
+    }
 
     myDiagram =
-        $(go.Diagram, "diagramDiv",  // create a Diagram for the DIV HTML element
+        gojs(go.Diagram, "diagramDiv",  // create a Diagram for the DIV HTML element
             {initialContentAlignment: go.Spot.Center, "undoManager.isEnabled": true});
 
     // This is the actual HTML context menu:
@@ -11,19 +14,19 @@ function initContextMenu() {
 
     // Since we have only one main element, we don't have to declare a hide method,
     // we can set mainElement and GoJS will hide it automatically
-    const myContextMenu = $(go.HTMLInfo, {
+    const myContextMenu = gojs(go.HTMLInfo, {
         show: showContextMenu,
         mainElement: cxElement
     });
 
     // define a simple Node template (but use the default Link template)
     myDiagram.nodeTemplate =
-        $(go.Node, "Auto",
+        gojs(go.Node, "Auto",
             {contextMenu: myContextMenu},
-            $(go.Shape, "RoundedRectangle",
+            gojs(go.Shape, "RoundedRectangle",
                 // Shape.fill is bound to Node.data.color
                 new go.Binding("fill", "color")),
-            $(go.TextBlock,
+            gojs(go.TextBlock,
                 {margin: 3},  // some room around the text
                 // TextBlock.text is bound to Node.data.key
                 new go.Binding("text", "key"))

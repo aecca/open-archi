@@ -1,9 +1,12 @@
-function initShopFloorMonitor() {
+function initShopFloorMonitor(nodeDataArray, linkDataArray) {
 
-    const $ = go.GraphObject.make;  // for conciseness in defining templates
+    if (myDiagram !== undefined) {
+        myDiagram.clear();
+        myDiagram.div = null;
+    }
 
     myDiagram =
-        $(go.Diagram, diagramDiv,
+        gojs(go.Diagram, "diagramDiv",
             {
                 "animationManager.isEnabled": false,
                 initialContentAlignment: go.Spot.Center
@@ -54,33 +57,33 @@ function initShopFloorMonitor() {
     }
 
     myDiagram.nodeTemplate =
-        $(go.Node, "Vertical",
+        gojs(go.Node, "Vertical",
             {locationObjectName: "ICON"},
             new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
-            $(go.Panel, "Spot",
-                $(go.Panel, "Auto",
+            gojs(go.Panel, "Spot",
+                gojs(go.Panel, "Auto",
                     {name: "ICON"},
-                    $(go.Shape,
+                    gojs(go.Shape,
                         {fill: null, stroke: null},
                         new go.Binding("background", "problem", nodeProblemConverter)),
-                    $(go.Picture,
+                    gojs(go.Picture,
                         {margin: 5},
                         new go.Binding("source", "type", nodeTypeImage))
                 ),  // end Auto Panel
-                $(go.Shape, "Circle",
+                gojs(go.Shape, "Circle",
                     {
                         alignment: go.Spot.TopLeft, alignmentFocus: go.Spot.TopLeft,
                         width: 12, height: 12, fill: "orange"
                     },
                     new go.Binding("figure", "operation", nodeOperationConverter)),
-                $(go.Shape, "Triangle",
+                gojs(go.Shape, "Triangle",
                     {
                         alignment: go.Spot.TopRight, alignmentFocus: go.Spot.TopRight,
                         width: 12, height: 12, fill: "blue"
                     },
                     new go.Binding("fill", "status", nodeStatusConverter))
             ),  // end Spot Panel
-            $(go.TextBlock,
+            gojs(go.TextBlock,
                 new go.Binding("text"))
         );  // end Node
 
@@ -93,14 +96,14 @@ function initShopFloorMonitor() {
     }
 
     myDiagram.linkTemplate =
-        $(go.Link, go.Link.AvoidsNodes,
+        gojs(go.Link, go.Link.AvoidsNodes,
             {corner: 3},
-            $(go.Shape,
+            gojs(go.Shape,
                 {strokeWidth: 2, stroke: "gray"},
                 new go.Binding("stroke", "problem", linkProblemConverter))
         );
 
-    load();
+    myDiagram.model = new go.GraphLinksModel(nodeDataArray, linkDataArray);
 
 
     // simulate some real-time problem monitoring, once every two seconds:
@@ -134,6 +137,3 @@ function initShopFloorMonitor() {
     loop();  // start the simulation
 }
 
-function load() {
-    myDiagram.model = go.Model.fromJson(document.getElementById("modelToSaveOrLoad").value);
-}

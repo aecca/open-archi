@@ -166,41 +166,44 @@ PoolLayout.prototype.doLayout = function (coll) {
 
 function initSwimLanes() {
 
-    const $ = go.GraphObject.make;
+    if (myDiagram !== undefined) {
+        myDiagram.clear();
+        myDiagram.div = null;
+    }
 
-    myDiagram =
-        $(go.Diagram, diagramDiv,
-            {
-                // start everything in the middle of the viewport
-                initialContentAlignment: go.Spot.Center,
-                // use a custom ResizingTool (along with a custom ResizeAdornment on each Group)
-                resizingTool: new LaneResizingTool(),
-                // use a simple layout that ignores links to stack the top-level Pool Groups next to each other
-                layout: $(PoolLayout),
-                // don't allow dropping onto the diagram's background unless they are all Groups (lanes or pools)
-                mouseDragOver: function (e) {
-                    if (!e.diagram.selection.all(function (n) {
-                            return n instanceof go.Group;
-                        })) {
-                        e.diagram.currentCursor = 'not-allowed';
-                    }
-                },
-                mouseDrop: function (e) {
-                    if (!e.diagram.selection.all(function (n) {
-                            return n instanceof go.Group;
-                        })) {
-                        e.diagram.currentTool.doCancel();
-                    }
-                },
-                // a clipboard copied node is pasted into the original node's group (i.e. lane).
-                "commandHandler.copiesGroupKey": true,
-                // automatically re-layout the swim lanes after dragging the selection
-                "SelectionMoved": relayoutDiagram,  // this DiagramEvent listener is
-                "SelectionCopied": relayoutDiagram, // defined above
-                "animationManager.isEnabled": false,
-                // enable undo & redo
-                "undoManager.isEnabled": true
-            });
+    myDiagram = gojs(go.Diagram, "diagramDiv",  // create a Diagram for the DIV HTML element
+        {
+            // start everything in the middle of the viewport
+            initialContentAlignment: go.Spot.Center,
+            // use a custom ResizingTool (along with a custom ResizeAdornment on each Group)
+            resizingTool: new LaneResizingTool(),
+            // use a simple layout that ignores links to stack the top-level Pool Groups next to each other
+            layout: gojs(PoolLayout),
+            // don't allow dropping onto the diagram's background unless they are all Groups (lanes or pools)
+            mouseDragOver: function (e) {
+                if (!e.diagram.selection.all(function (n) {
+                        return n instanceof go.Group;
+                    })) {
+                    e.diagram.currentCursor = 'not-allowed';
+                }
+            },
+            mouseDrop: function (e) {
+                if (!e.diagram.selection.all(function (n) {
+                        return n instanceof go.Group;
+                    })) {
+                    e.diagram.currentTool.doCancel();
+                }
+            },
+            // a clipboard copied node is pasted into the original node's group (i.e. lane).
+            "commandHandler.copiesGroupKey": true,
+            // automatically re-layout the swim lanes after dragging the selection
+            "SelectionMoved": relayoutDiagram,  // this DiagramEvent listener is
+            "SelectionCopied": relayoutDiagram, // defined above
+            "animationManager.isEnabled": false,
+            // enable undo & redo
+            "undoManager.isEnabled": true,
+            allowDrop: true
+        });
 
     // this is a Part.dragComputation function for limiting where a Node may be dragged
     function stayInGroup(part, pt, gridpt) {
@@ -225,11 +228,11 @@ function initSwimLanes() {
     }
 
     myDiagram.nodeTemplate =
-        $(go.Node, "Auto",
+        gojs(go.Node, "Auto",
             new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
-            $(go.Shape, "Rectangle",
+            gojs(go.Shape, "Rectangle",
                 {fill: "white", portId: "", cursor: "pointer", fromLinkable: true, toLinkable: true}),
-            $(go.TextBlock, {margin: 5},
+            gojs(go.TextBlock, {margin: 5},
                 new go.Binding("text", "key")),
             {dragComputation: stayInGroup} // limit dragging of Nodes to stay within the containing Group, defined above
         );
@@ -258,11 +261,11 @@ function initSwimLanes() {
 
     // each Group is a "swimlane" with a header on the left and a resizable lane on the right
     myDiagram.groupTemplate =
-        $(go.Group, "Horizontal", groupStyle(),
+        gojs(go.Group, "Horizontal", groupStyle(),
             {
                 selectionObjectName: "SHAPE",  // selecting a lane causes the body of the lane to be highlit, not the label
                 resizable: true, resizeObjectName: "SHAPE",  // the custom resizeAdornmentTemplate only permits two kinds of resizing
-                layout: $(go.LayeredDigraphLayout,  // automatically lay out the lane's subgraph
+                layout: gojs(go.LayeredDigraphLayout,  // automatically lay out the lane's subgraph
                     {
                         isInitial: false,  // don't even do initial layout
                         isOngoing: false,  // don't invalidate layout when nodes or links are added or removed
@@ -304,31 +307,31 @@ function initSwimLanes() {
             },
             new go.Binding("isSubGraphExpanded", "expanded").makeTwoWay(),
             // the lane header consisting of a Shape and a TextBlock
-            $(go.Panel, "Horizontal",
+            gojs(go.Panel, "Horizontal",
                 {
                     name: "HEADER",
                     angle: 270,  // maybe rotate the header to read sideways going up
                     alignment: go.Spot.Center
                 },
-                $(go.Panel, "Horizontal",  // this is hidden when the swimlane is collapsed
+                gojs(go.Panel, "Horizontal",  // this is hidden when the swimlane is collapsed
                     new go.Binding("visible", "isSubGraphExpanded").ofObject(),
-                    $(go.Shape, "Diamond",
+                    gojs(go.Shape, "Diamond",
                         {width: 8, height: 8, fill: "white"},
                         new go.Binding("fill", "color")),
-                    $(go.TextBlock,  // the lane label
+                    gojs(go.TextBlock,  // the lane label
                         {font: "bold 13pt sans-serif", editable: true, margin: new go.Margin(2, 0, 0, 0)},
                         new go.Binding("text", "text").makeTwoWay())
                 ),
-                $("SubGraphExpanderButton", {margin: 5})  // but this remains always visible!
+                gojs("SubGraphExpanderButton", {margin: 5})  // but this remains always visible!
             ),  // end Horizontal Panel
-            $(go.Panel, "Auto",  // the lane consisting of a background Shape and a Placeholder representing the subgraph
-                $(go.Shape, "Rectangle",  // this is the resized object
+            gojs(go.Panel, "Auto",  // the lane consisting of a background Shape and a Placeholder representing the subgraph
+                gojs(go.Shape, "Rectangle",  // this is the resized object
                     {name: "SHAPE", fill: "white"},
                     new go.Binding("fill", "color"),
                     new go.Binding("desiredSize", "size", go.Size.parse).makeTwoWay(go.Size.stringify)),
-                $(go.Placeholder,
+                gojs(go.Placeholder,
                     {padding: 12, alignment: go.Spot.TopLeft}),
-                $(go.TextBlock,  // this TextBlock is only seen when the swimlane is collapsed
+                gojs(go.TextBlock,  // this TextBlock is only seen when the swimlane is collapsed
                     {
                         name: "LABEL",
                         font: "bold 13pt sans-serif", editable: true,
@@ -343,9 +346,9 @@ function initSwimLanes() {
 
     // define a custom resize adornment that has two resize handles if the group is expanded
     myDiagram.groupTemplate.resizeAdornmentTemplate =
-        $(go.Adornment, "Spot",
-            $(go.Placeholder),
-            $(go.Shape,  // for changing the length of a lane
+        gojs(go.Adornment, "Spot",
+            gojs(go.Placeholder),
+            gojs(go.Shape,  // for changing the length of a lane
                 {
                     alignment: go.Spot.Right,
                     desiredSize: new go.Size(7, 50),
@@ -356,7 +359,7 @@ function initSwimLanes() {
                     if (ad.adornedPart === null) return false;
                     return ad.adornedPart.isSubGraphExpanded;
                 }).ofObject()),
-            $(go.Shape,  // for changing the breadth of a lane
+            gojs(go.Shape,  // for changing the breadth of a lane
                 {
                     alignment: go.Spot.Bottom,
                     desiredSize: new go.Size(50, 7),
@@ -370,32 +373,32 @@ function initSwimLanes() {
         );
 
     myDiagram.groupTemplateMap.add("Pool",
-        $(go.Group, "Auto", groupStyle(),
+        gojs(go.Group, "Auto", groupStyle(),
             { // use a simple layout that ignores links to stack the "lane" Groups on top of each other
-                layout: $(PoolLayout, {spacing: new go.Size(0, 0)})  // no space between lanes
+                layout: gojs(PoolLayout, {spacing: new go.Size(0, 0)})  // no space between lanes
             },
-            $(go.Shape,
+            gojs(go.Shape,
                 {fill: "white"},
                 new go.Binding("fill", "color")),
-            $(go.Panel, "Table",
+            gojs(go.Panel, "Table",
                 {defaultColumnSeparatorStroke: "black"},
-                $(go.Panel, "Horizontal",
+                gojs(go.Panel, "Horizontal",
                     {column: 0, angle: 270},
-                    $(go.TextBlock,
+                    gojs(go.TextBlock,
                         {font: "bold 16pt sans-serif", editable: true, margin: new go.Margin(2, 0, 0, 0)},
                         new go.Binding("text").makeTwoWay())
                 ),
-                $(go.Placeholder,
+                gojs(go.Placeholder,
                     {column: 1})
             )
         ));
 
     myDiagram.linkTemplate =
-        $(go.Link,
+        gojs(go.Link,
             {routing: go.Link.AvoidsNodes, corner: 5},
             {relinkableFrom: true, relinkableTo: true},
-            $(go.Shape),
-            $(go.Shape, {toArrow: "Standard"})
+            gojs(go.Shape),
+            gojs(go.Shape, {toArrow: "Standard"})
         );
 
     // define some sample graphs in some of the lanes

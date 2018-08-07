@@ -1,7 +1,6 @@
 package com.araguacaima.open_archi.persistence.diagrams.core.specification;
 
 import com.araguacaima.open_archi.persistence.commons.Constants;
-import com.araguacaima.open_archi.persistence.commons.OperationType;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 import com.araguacaima.open_archi.persistence.diagrams.core.Item;
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
@@ -14,27 +13,21 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CheckModelDoesNotExist extends AbstractSpecification {
+public class CheckModelDoesNotExists extends AbstractSpecification {
 
-    private static final String GENERAL_ERROR = "ModelAlreadyExistsError";
-
-    public CheckModelDoesNotExist() {
+    public CheckModelDoesNotExists() {
         this(false);
     }
 
-    public CheckModelDoesNotExist(boolean evaluateAllTerms) {
+    public CheckModelDoesNotExists(boolean evaluateAllTerms) {
         super(evaluateAllTerms);
     }
 
+    @Override
     public boolean isSatisfiedBy(Object object, Map map) {
         Class<?> clazz = object.getClass();
         if (BaseEntity.class.isAssignableFrom(clazz)) {
             BaseEntity entity = (BaseEntity) object;
-            Object key = entity.getId();
-            if (JPAEntityManagerUtils.find(clazz, key) != null) {
-                map.put(Constants.SPECIFICATION_ERROR, "Key '" + key + "' already exists");
-                return false;
-            }
             if (Item.class.isAssignableFrom(clazz)) {
                 Item item = (Item) entity;
                 Map<String, Object> params = new HashMap<>();
@@ -51,8 +44,9 @@ public class CheckModelDoesNotExist extends AbstractSpecification {
         return true;
     }
 
-    public Collection/*<Object>*/ getTerms() {
-        return new ArrayList();
+    @Override
+    public Collection<Object> getTerms() {
+        return new ArrayList<>();
     }
 
 }

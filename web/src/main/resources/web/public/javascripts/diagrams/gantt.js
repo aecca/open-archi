@@ -1,9 +1,12 @@
 function initGantt() {
 
-    const $ = go.GraphObject.make;  // for conciseness in defining templates
+    if (myDiagram !== undefined) {
+        myDiagram.clear();
+        myDiagram.div = null;
+    }
 
     myDiagram =
-        $(go.Diagram, diagramDiv,  // Diagram refers to its DIV HTML element by id
+        gojs(go.Diagram, "diagramDiv",  // Diagram refers to its DIV HTML element by id
             {
                 _widthFactor: 1,        // a scale for the nodes' positions and widths
                 isReadOnly: true,       // deny the user permission to alter the diagram or zoom in or out
@@ -14,16 +17,16 @@ function initGantt() {
 
     // create the template for the standard nodes
     myDiagram.nodeTemplateMap.add("",
-        $(go.Node, "Auto",
+        gojs(go.Node, "Auto",
             // links come from the right and go to the left side of the top of the node
             {fromSpot: go.Spot.Right, toSpot: new go.Spot(0.001, 0, 11, 0)},
-            $(go.Shape, "Rectangle",
+            gojs(go.Shape, "Rectangle",
                 {height: 15},
                 new go.Binding("fill", "color"),
                 new go.Binding("width", "width", function (w) {
                     return scaleWidth(w);
                 })),
-            $(go.TextBlock,
+            gojs(go.TextBlock,
                 {margin: 2, alignment: go.Spot.Left},
                 new go.Binding("text", "key")),
             // using a function in the Binding allows the value to
@@ -36,9 +39,9 @@ function initGantt() {
 
     // create the template for the start node
     myDiagram.nodeTemplateMap.add("start",
-        $(go.Node,
+        gojs(go.Node,
             {fromSpot: go.Spot.Right, toSpot: go.Spot.Top, selectable: false},
-            $(go.Shape, "Diamond",
+            gojs(go.Shape, "Diamond",
                 {height: 15, width: 15}),
             // make the location of the start node is not scalable
             new go.Binding("location", "loc")
@@ -46,9 +49,9 @@ function initGantt() {
 
     // create the template for the end node
     myDiagram.nodeTemplateMap.add("end",
-        $(go.Node,
+        gojs(go.Node,
             {fromSpot: go.Spot.Right, toSpot: go.Spot.Top, selectable: false},
-            $(go.Shape, "Diamond",
+            gojs(go.Shape, "Diamond",
                 {height: 15, width: 15}),
             // make the location of the end node (with location.x < 0) scalable
             new go.Binding("location", "loc",
@@ -60,15 +63,15 @@ function initGantt() {
 
     // create the link template
     myDiagram.linkTemplate =
-        $(go.Link,
+        gojs(go.Link,
             {
                 routing: go.Link.Orthogonal,
                 corner: 3, toShortLength: 2,
                 selectable: false
             },
-            $(go.Shape,
+            gojs(go.Shape,
                 {strokeWidth: 2}),
-            $(go.Shape,
+            gojs(go.Shape,
                 {toArrow: "OpenTriangle"})
         );
 
@@ -100,15 +103,15 @@ function initGantt() {
 
     // add a Graduated panel to show the dates, globally scoped
     dateScale =
-        $(go.Part, "Graduated",
+        gojs(go.Part, "Graduated",
             {
                 graduatedTickUnit: 1, graduatedMin: 0, graduatedMax: 3,
                 pickable: false, location: new go.Point(0, 0)
             },
-            $(go.Shape,
+            gojs(go.Shape,
                 {name: "line", strokeWidth: 0, geometryString: "M0 0 H" + scaleWidth(450)}
             ),
-            $(go.TextBlock,
+            gojs(go.TextBlock,
                 {
                     name: "labels",
                     font: "10pt sans-serif",

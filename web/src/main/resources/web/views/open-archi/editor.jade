@@ -59,6 +59,7 @@ append scripts
         let viewMode;
         var diagramTypes = !{diagramTypes};
         var elementTypes = !{elementTypes};
+        var fullView = '!{fullView}';
         $(function () {
             var items = [];
             var i = 0;
@@ -97,23 +98,39 @@ append scripts
                 var htmlText = text + ' <span class="caret"></span>';
                 $(this).closest('.dropdown').find('.dropdown-toggle').html(htmlText);
             });
+            if ($("#viewMode").length > 0) {
+                viewMode = new Slider("#viewMode", {
+                    id: "viewMode",
+                    ticks: [1, 2, 3],
+                    ticks_labels: ['Compact', 'Moderated', 'Full'],
+                    tooltip: "hide",
+                    min: 1,
+                    max: 3,
+                    step: 1,
+                    value: 3
+                });
+                viewMode.on('slideStop', reexpand);
+            }
+            var $element1 = $("#element-image");
+            $element1.on("change", handleImageSelect);
+            var $element2 = $("#element-image-2");
+            $element2.on("change", handleImageSelect);
 
-            viewMode = new Slider("#viewMode", {
-                id: "viewMode",
-                ticks: [1, 2, 3],
-                ticks_labels: ['Compact', 'Moderated', 'Full'],
-                tooltip: "hide",
-                min: 1,
-                max: 3,
-                step: 1,
-                value: 3
-            });
-            viewMode.on('slideStop', changeView);
+            if (fullView) {
+                $("#infoDraggable").show();
+                $("#controlsDraggable").show();
+                $("#dataModelDraggable").show();
+            } else {
+                $("#infoDraggable").hide();
+                $("#controlsDraggable").hide();
+                $("#dataModelDraggable").hide();
+            }
 
         });
+    script(type='text/javascript', src='/javascripts/editor.js')
     script(type='text/javascript', src='/javascripts/diagrams/basic.js')
     script(type='text/javascript', src='/javascripts/diagrams/palette.js')
-    script(type='text/javascript', src='/javascripts/editor.js')
+    script(type='text/javascript', src='/javascripts/diagrams/elements.js')
 
 block extra-menu-elements
     +nav_item_dropdown("#", null, "diagramTypesDropdown")(label="Diagram Type")
@@ -126,12 +143,12 @@ block extra-menu-elements
     if examples
         +nav_item_dropdown("#", null, "sectionsExamples")(label="Examples")
             each example in examples
-                +nav_item("#")(onclick="openContent('" + example.url + "');", resource=example.url)= example.name
+                +nav_item("#")(onclick="openExample('" + example.url + "', 'myExamples');", resource=example.url)= example.name
     +nav_item("#")
         input#diagramId(name='diagramId', placeholder='Template name...')
 
 block content
-    +modal-force("Diagram info", "diagram-info")(save="confirm")
+    +modal-force("Diagram info", "diagram-info")(save="save")
         form#diagram-info-form
             .form-group
                 label.col-form-label(for="element-name") Name:
@@ -154,6 +171,21 @@ block content
                         | &nbsp;
                         span.caret
                     ul.dropdown-menu#elementTypesDropdown(role="menu", aria-labelledby="elementTypesDropdown")
+            .form-group
+                label.col-form-label Image (Only svg is permitted):
+                .dropdown
+                    input#element-image-2(type="file", name="image", accept="image/svg+xml")
+
+    +modal("Element role", "element-role-data")
+        form#element-role-form
+            .form-group
+                label.col-form-label Role:
+                .dropdown
+                    button.btn.btn-default.dropdown-toggle#element-role(type="button", data-toggle="dropdown")
+                        | Element Roles
+                        | &nbsp;
+                        span.caret
+                    ul.dropdown-menu#elementRolesDropdown(role="menu", aria-labelledby="elementRolesDropdown")
     +modal("Model Validation", "model-validation")
         h4 The entire JSON Model will be passed the to the Rules as a Service that use a Drools' Desition Table based model's validation implementation
         p [Later it could be a Cucumber based Test set]
@@ -164,22 +196,12 @@ block content
                 Validation issue #2
     #diagramDiv
     #diagramsCanvas.container(style="justify-content: space-between")
-        if explanation
-            #explanation
-                h2#mainTitle(style="margin-top: 0; padding-top: 0; margin-bottom: 30px;")= mainTitle
-                h2#caption(style="margin-top: 0; padding-top: 0; margin-bottom: 30px; color: red; text-align: right;")= caption
-                p= fullDescription
-                if steps
-                    ul
-                        each step in steps
-                            li= step
-                if mainTitle
-                    strong Like all other elements, we can combine these features with those in other examples to create more complex capabilities
     div.draggable#paletteDraggable(style="height: 300px; position: relative")
         div.handle#paletteDraggableHandle
             | Palette
         div#paletteContainer
             div#paletteDiv
+    div.#myExamples
     div.draggable#infoDraggable(style="display: inline-block; vertical-align: top; top: 20px; left: 380px; position: relative")
         div.handle#infoDraggableHandle
             | Info
@@ -200,3 +222,9 @@ block content
             | Model
         div#dataModelContainer
             span#modelToSaveOrLoad(style="display: block")
+    +modal("Element image", "element-image-data")
+        form#element-image-form
+            .form-group
+                label.col-form-label Image (Only svg is permitted):
+                .dropdown
+                    input#element-image(type="file", name="image", accept="image/svg+xml")

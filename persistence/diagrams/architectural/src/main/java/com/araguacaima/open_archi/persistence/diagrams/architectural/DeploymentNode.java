@@ -1,5 +1,6 @@
 package com.araguacaima.open_archi.persistence.diagrams.architectural;
 
+import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.Element;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 
@@ -77,13 +78,13 @@ public class DeploymentNode extends Element {
         this.containerInstances = containerInstances;
     }
 
-    public void override(DeploymentNode source, boolean keepMeta, String suffix) {
-        super.override(source, keepMeta, suffix);
+    public void override(DeploymentNode source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+        super.override(source, keepMeta, suffix, clonedFrom);
         this.setInstances(source.getInstances());
         this.setTechnology(source.getTechnology());
         for (ContainerInstance container: source.getContainerInstances()) {
             ContainerInstance newContainerInstance = new ContainerInstance();
-            newContainerInstance.override(container, keepMeta, suffix);
+            newContainerInstance.override(container, keepMeta, suffix, clonedFrom);
             this.containerInstances.add(newContainerInstance);
         }
     }

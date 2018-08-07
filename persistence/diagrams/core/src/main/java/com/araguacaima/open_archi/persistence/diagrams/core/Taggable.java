@@ -37,6 +37,21 @@ public class Taggable extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Status status = Status.INITIAL;
 
+    @OneToOne
+    private ElementRole role;
+
+    @OneToOne
+    private CompositeElement clonedFrom;
+
+    @ManyToMany(cascade = CascadeType.REMOVE)
+    @JoinTable(schema = "DIAGRAMS",
+            name = "Taggable_Cloned_By_Ids",
+            joinColumns = {@JoinColumn(name = "Taggable_Id",
+                    referencedColumnName = "Id")},
+            inverseJoinColumns = {@JoinColumn(name = "Cloned_Tagabble_Id",
+                    referencedColumnName = "Id")})
+    private Set<CompositeElement> clonedBy;
+
     public Set<String> getTags() {
         return tags;
     }
@@ -53,9 +68,37 @@ public class Taggable extends BaseEntity {
         this.status = status;
     }
 
-    public void override(Taggable source, boolean keepMeta, String suffix) {
+    public ElementRole getRole() {
+        return role;
+    }
+
+    public void setRole(ElementRole role) {
+        this.role = role;
+    }
+
+    public CompositeElement getClonedFrom() {
+        return clonedFrom;
+    }
+
+    public void setClonedFrom(CompositeElement clonedFrom) {
+        this.clonedFrom = clonedFrom;
+    }
+
+    public Set<CompositeElement> getClonedBy() {
+        return clonedBy;
+    }
+
+    public void setClonedBy(Set<CompositeElement> clonedBy) {
+        this.clonedBy = clonedBy;
+    }
+
+    public void override(Taggable source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
         super.override(source, keepMeta, suffix);
+        if (clonedFrom != null) {
+            this.setClonedFrom(clonedFrom);
+        }
         this.tags = source.getTags();
+        this.role = source.getRole();
     }
 
     public void copyNonEmpty(Taggable source, boolean keepMeta) {
@@ -63,6 +106,10 @@ public class Taggable extends BaseEntity {
         if (source.getTags() != null && !source.getTags().isEmpty()) {
             this.tags = source.getTags();
         }
-
+        if (source.getRole() != null) {
+            this.role = source.getRole();
+        }
     }
+
+
 }

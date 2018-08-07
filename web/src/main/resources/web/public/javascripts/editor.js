@@ -1,3 +1,6 @@
+MINLENGTH = 200;  // this controls the minimum length of any swimlane
+MINBREADTH = 20;  // this controls the minimum breadth of any non-collapsed swimlane
+
 const gojs = go.GraphObject.make;
 let meta = {};
 
@@ -5,141 +8,30 @@ function capitalize(text) {
     return text.substr(0, 1).toUpperCase() + text.substr(2, text.length).toLowerCase();
 }
 
-// Make link labels visible if coming out of a "conditional" node.
-// This listener is called by the "LinkDrawn" and "LinkRelinked" DiagramEvents.
-function showLinkLabel(e) {
-    const label = e.subject.findObject("LABEL");
-    if (label !== null) label.visible = (e.subject.fromNode.data.figure === "Diamond");
+function fixMetaData() {
+    const name = $("#diagram-name").val();
+    const type = $("#diagramTypesDropdown").find("a.active").html();
+    const prototype = $("#diagram-prototype").prop("checked");
+    meta.name = name;
+    meta.kind = type;
+    meta.prototype = prototype;
 }
-
-function nodeInfo(d) {  // Tooltip info for a node data object
-    let str;
-    if (d.description) {
-        str = d.description + "\n";
-    }
-    if (d.group) {
-        str += "Forma parte de: " + d.group;
-    }
-    if (str === undefined) {
-        str = d.name;
-    }
-    return str;
-}
-
-// Define the appearance and behavior for Links:
-
-function linkInfo(d) {  // Tooltip info for a link data object
-    return "Link:\nfrom " + d.from + " to " + d.to;
-}
-
-// Define the appearance and behavior for Groups:
-
-function groupInfo(adornment) {  // takes the tooltip or context menu, not a group node data object
-    const g = adornment.adornedPart;  // get the Group that the tooltip adorns
-    const mems = g.memberParts.count;
-    let links = 0;
-    g.memberParts.each(function (part) {
-        if (part instanceof go.Link) links++;
-    });
-    return "Group " + g.data.key + ": " + g.data.text + "\n" + mems + " members including " + links + " links";
-}
-
-// a context menu is an Adornment with a bunch of buttons in them
-const partContextMenu =
-    gojs(go.Adornment, "Vertical",
-        makeButton("Properties",
-            function (e, obj) {  // OBJ is this Button
-                const contextmenu = obj.part;  // the Button is in the context menu Adornment
-                const part = contextmenu.adornedPart;  // the adornedPart is the Part that the context menu adorns
-                // now can do something with PART, or with its data, or with the Adornment (the context menu)
-                if (part instanceof go.Link) alert(linkInfo(part.data));
-                else if (part instanceof go.Group) alert(groupInfo(contextmenu));
-                else alert(nodeInfo(part.data));
-            }),
-        makeButton("Cut",
-            function (e, obj) {
-                e.diagram.commandHandler.cutSelection();
-            },
-            function (o) {
-                return o.diagram.commandHandler.canCutSelection();
-            }),
-        makeButton("Copy",
-            function (e, obj) {
-                e.diagram.commandHandler.copySelection();
-            },
-            function (o) {
-                return o.diagram.commandHandler.canCopySelection();
-            }),
-        makeButton("Paste",
-            function (e, obj) {
-                e.diagram.commandHandler.pasteSelection(e.diagram.lastInput.documentPoint);
-            },
-            function (o) {
-                return o.diagram.commandHandler.canPasteSelection();
-            }),
-        makeButton("Delete",
-            function (e, obj) {
-                e.diagram.commandHandler.deleteSelection();
-            },
-            function (o) {
-                return o.diagram.commandHandler.canDeleteSelection();
-            }),
-        makeButton("Undo",
-            function (e, obj) {
-                e.diagram.commandHandler.undo();
-            },
-            function (o) {
-                return o.diagram.commandHandler.canUndo();
-            }),
-        makeButton("Redo",
-            function (e, obj) {
-                e.diagram.commandHandler.redo();
-            },
-            function (o) {
-                return o.diagram.commandHandler.canRedo();
-            }),
-        makeButton("Group",
-            function (e, obj) {
-                e.diagram.commandHandler.groupSelection();
-            },
-            function (o) {
-                return o.diagram.commandHandler.canGroupSelection();
-            }),
-        makeButton("Ungroup",
-            function (e, obj) {
-                e.diagram.commandHandler.ungroupSelection();
-            },
-            function (o) {
-                return o.diagram.commandHandler.canUngroupSelection();
-            }),
-        makeButton("Re-Group",
-            function (e, obj) {
-                e.diagram.commandHandler.groupSelection();
-            },
-            function (o) {
-                return o.diagram.commandHandler.canGroupSelection();
-            })
-    );
-
-// Define the appearance and behavior for Nodes:
-
-// First, define the shared context menu for all Nodes, Links, and Groups.
-
-// To simplify this code we define a function for creating a context menu button:
-function makeButton(text, action, visiblePredicate) {
-    return gojs("ContextMenuButton",
-        gojs(go.TextBlock, text),
-        {click: action},
-        // don't bother with binding GraphObject.visible if there's no predicate
-        visiblePredicate ? new go.Binding("visible", "", function (o, e) {
-            return o.diagram ? visiblePredicate(o, e) : false;
-        }).ofObject() : {});
-}
-
 
 // Show the diagram's model in JSON format that the user may edit
-function save() {
-    let value_ = OpenArchiWrapper.fromDiagram(myDiagram.model);
+function save(model) {
+    fixMetaData();
+    let value_;
+    if (model === undefined) {
+        value_ = OpenArchiWrapper.fromDiagram(myDiagram.model);
+    } else {
+        let model_;
+        if (typeof model === "string") {
+            value_ = JSON.parse(model);
+        } else {
+            model_ = model;
+        }
+        value_ = OpenArchiWrapper.fromDiagram(model_);
+    }
     let value = JSON.stringify(value_);
     let modelToSaveOrLoad = $("#modelToSaveOrLoad");
     modelToSaveOrLoad.empty();
@@ -147,32 +39,82 @@ function save() {
     resizeDataModelDiv();
     myDiagram.isModified = false;
     myDiagram.model.modelData.position = go.Point.stringify(myDiagram.position);
-    $.post("/open-archi/api/models", value, function (response) {
-        if (response === 201) {
-            alert("created");
-        } else {
-            commons.prototype.put("/open-archi/api/models", value_, 'application/json')
-                .then(function (data) {
-                    if (response === 200) {
-                        alert("created");
-                    } else {
-                        if (response === 201) {
-                            alert("accepted");
-                        } else {
-                            alert(data);
+    $.ajax({
+        url: "/open-archi/api/models",
+        data: JSON.stringify(value_),
+        type: 'POST',
+        crossDomain: true,
+        contentType: "application/json",
+        converters: {
+            "text json": function (response) {
+                return (response === "") ? null : JSON.parse(response);
+            }
+        }
+    }).always(data => {
+        const diagramInfo = $('#diagram-info');
+        diagramInfo.modal('hide');
+    }).done((data, textStatus, response) => {
+            if (response.status === 201) {
+                alert(response.statusText);
+            } else {
+                $.ajax({
+                    url: "/open-archi/api/models",
+                    data: JSON.stringify(value_),
+                    type: 'PUT',
+                    crossDomain: true,
+                    contentType: "application/json",
+                    converters: {
+                        "text json": function (response) {
+                            return (response === "") ? null : JSON.parse(response);
                         }
                     }
-                }).catch(function (data) {
-                alert(data);
-            });
+                }).done((data, textStatus, response) => {
+                        if (response.status === 200) {
+                            alert(response.statusText);
+                        } else {
+                            if (response.status === 201) {
+                                alert(response.statusText);
+                            } else {
+                                alert("Not created!");
+                            }
+                        }
+                    }
+                ).fail((jqXHR, textStatus, errorThrown) => alert(errorThrown))
+            }
         }
-    }, "application/json");
+    ).fail((jqXHR, textStatus, errorThrown) => alert(errorThrown));
 }
 
 function load() {
     let modelToSaveOrLoad = $("#modelToSaveOrLoad");
     let jsonString = modelToSaveOrLoad.children()[0].innerText;
     expand(jsonString);
+}
+
+function checkAndSave() {
+    let basicElementData = $('#basic-element-data');
+    const key = basicElementData.attr("data-key");
+    let data = myDiagram.model.findNodeDataForKey(key);
+
+    if (data !== null) {
+        const name = $("#element-name").val();
+        const type = getElementType();
+        const prototype = $("#element-prototype").prop("checked");
+        delete data["text"];
+        data.kind = type;
+        data.name = name;
+        data.image = meta.image;
+        myDiagram.startTransaction("Adding new element");
+        addNodeToTemplateByType(data, type);
+        data.category = type;
+        myDiagram.model.removeNodeData(data);
+        myDiagram.model.addNodeData(data);
+        delete meta.image;
+        myDiagram.requestUpdate();
+        myDiagram.commitTransaction("Adding new element");
+        relayoutLanes();
+    }
+    basicElementData.modal('hide')
 }
 
 function expand(data) {
@@ -183,18 +125,35 @@ function expand(data) {
         model = data;
     }
     meta.id = model.id;
-    const diagram = OpenArchiWrapper.toDiagram(model);
-    const newElement = go.Model.fromJson(diagram);
-
-    myDiagram.startTransaction("Adding new element");
-    myDiagram.model.addNodeDataCollection(newElement.nodeDataArray);
-    myDiagram.model.addLinkDataCollection(newElement.linkDataArray);
-    myDiagram.commitTransaction("Adding new element");
-
+    const newDiagram = OpenArchiWrapper.toDiagram(model);
+    myDiagram.startTransaction("Expand element");
+    myDiagram.model.addNodeDataCollection(newDiagram.nodeDataArray);
+    myDiagram.model.addLinkDataCollection(newDiagram.linkDataArray);
     const pos = myDiagram.model.modelData.position;
     if (pos) {
         myDiagram.initialPosition = go.Point.parse(pos);
     }
+    myDiagram.requestUpdate();
+    myDiagram.commitTransaction("Expand element");
+    //relayoutLanes();
+}
+
+function expandGroups(g, i, level) {
+    if (!(g instanceof go.Group)) return;
+    g.isSubGraphExpanded = i < level;
+    g.memberParts.each(function (m) {
+        expandGroups(m, i + 1, level);
+    })
+}
+
+function reexpand(e) {
+    myDiagram.startTransaction("reexpand");
+    let level = getCurrentViewModeValue();
+    myDiagram.findTopLevelGroups().each(function (g) {
+        expandGroups(g, 0, level);
+    });
+    relayoutDiagram();
+    myDiagram.commitTransaction("reexpand");
 }
 
 function relocate(el, top, left) {
@@ -263,20 +222,30 @@ function relocateInfoDiv() {
     relocate(infoDraggable, menuHeight + 20, width - infoDraggableWidth - 10);
 }
 
-
-function openContent(url) {
-    getPageContent(url);
+function openExample(url, targetDiv) {
+    $("#dataModelDraggable").show();
+    getPageContent(url, targetDiv);
 }
 
-function getPageContent(url) {
+function openContent(url, targetDiv) {
+    getPageContent(url, targetDiv);
+}
+
+function getPageContent(url, targetDiv) {
     $.ajax({
         url: url,
         beforeSend: function (xhr) {
             xhr.overrideMimeType("text/html; charset=utf-8");
         }
     }).done(function (data) {
-        $("<div id='explanation'></div>").insertAfter("#diagramsCanvas");
-        $("#diagramsCanvas").html(data);
+        let target;
+        if (targetDiv === undefined) {
+            target = $("#myInfo");
+        } else {
+            target = $("#" + targetDiv);
+        }
+        target.html(data);
+        target.show();
     });
 }
 
@@ -306,7 +275,6 @@ function getJsonContent(url, callback) {
 
 function openModel(model) {
     let graphicalModel = OpenArchiWrapper.toDiagram(model);
-    $("#explanation").remove();
     const type = model.kind;
     switch (type) {
         case "FLOWCHART_MODEL":
@@ -350,11 +318,144 @@ function openSVG() {
     newDocument.body.appendChild(svg);
 }
 
+function addNodeToTemplateByType(data, type) {
+    const templateNode = getNodeByType(data);
+    let isGroup = templateNode.isGroup !== undefined ? templateNode.isGroup : data.isGroup;
+    let type_ = type;
+    if (type_ === undefined) {
+        type_ = data.category !== undefined ? data.category : data.kind
+    }
+    if (isGroup) {
+        myDiagram.groupTemplateMap.add(type_, templateNode);
+    } else {
+        myDiagram.nodeTemplateMap.add(type_, templateNode);
+    }
+}
+
+function openMore() {
+
+}
+
+function confirm() {
+    let diagramInfo = $('#diagram-info');
+    const name = $("#diagram-name").val();
+    const type = $("#diagramTypesDropdown").find("a.active").html();
+    const prototype = $("#diagram-prototype").prop("checked");
+    meta.name = name;
+    meta.kind = type;
+    meta.prototype = prototype;
+    diagramInfo.modal('hide');
+}
+
+function validateModel() {
+    $('#model-validation').modal('show')
+}
+
+
+function confirmAndSave() {
+    $('#diagram-info').modal('show');
+}
+
+function getCurrentViewMode() {
+    if (viewMode) {
+        let viewMode_ = $(viewMode.tickLabels[viewMode.getValue() - 1]);
+        return viewMode_.html();
+    }
+    return "";
+}
+
+function getCurrentViewModeValue() {
+    if (viewMode) {
+        return viewMode.getValue();
+    }
+    return 0;
+}
+
+function getElementType() {
+    const elementType = $("#elementTypesDropdown").closest('.dropdown').find('.dropdown-toggle');
+    if (elementType) {
+        let type = elementType.html();
+        if (type) {
+            return type.split(" ")[0];
+        }
+    }
+    return undefined;
+}
+
+function handleImageSelect(evt) {
+    let files = evt.target.files;
+    let i = 0, file;
+    for (; file = files[i]; i++) {
+        const type = file.type;
+        // Only process SVG image files.
+        if (type !== 'image/svg+xml') {
+            continue;
+        }
+
+        const reader = new FileReader();
+
+        // Closure to capture the file information.
+        reader.onload = (function (file) {
+            return function (e) {
+                let rawImage_ = e.target.result;
+                let rawImage = rawImage_.replace(/^data:image\/svg\+xml;base64,/, "");
+                rawImage = window.atob(rawImage);
+                let raw = rawImage;
+                raw = parseSVG(raw);
+
+                let $element = $('#element-image-data');
+                const elementKey = $element.attr("key");
+
+                if (elementKey !== undefined) {
+                    myDiagram.model.nodeDataArray.forEach(node => {
+                        if (node.key.toString() === elementKey) {
+                            myDiagram.model.setDataProperty(node, "image", {raw: rawImage_, type: type});
+                        }
+                    });
+                    myDiagram.requestUpdate();
+
+                    $element.modal('hide');
+                } else {
+                    meta.image = {raw: rawImage_, type: type};
+                }
+            };
+        })(file);
+        // Read in the image file as a data URL.
+        reader.readAsDataURL(file);
+    }
+}
+
+function findValues(obj, key) {
+    return findValuesHelper(obj, key, []);
+}
+
+function findValuesHelper(obj, key, list) {
+    let i;
+    if (!obj) return list;
+    if (obj instanceof Array) {
+        for (i in obj) {
+            list = list.concat(findValuesHelper(obj[i], key, []));
+        }
+        return list;
+    }
+    if (obj[key]) list.push(obj);
+
+    if ((typeof obj === "object") && (obj !== null)) {
+        let children = Object.keys(obj);
+        if (children.length > 0) {
+            for (i = 0; i < children.length; i++) {
+                list = list.concat(findValuesHelper(obj[children[i]], key, []));
+            }
+        }
+    }
+    return list;
+}
+
 $(function () {
 
-    $.getScript("/javascripts/menu.js").done(function (script, textStatus) {
-        showMenu();
-    });
+    /*    $.getScript("/javascripts/menu.js").done(function (script, textStatus) {
+            showMenu();
+        });*/
 
     relocateDataModelDiv();
     relocatePaletteDiv();
@@ -471,56 +572,207 @@ $(function () {
     });
 });
 
-function checkAndSave() {
-    let basicElementData = $('#basic-element-data');
-    const key = basicElementData.attr("data-key");
-    let data = myDiagram.model.findNodeDataForKey(key);
+function copyTextToClipboard(text) {
+    const textArea = document.createElement("textArea");
 
-    if (data !== null) {
-        const name = $("#element-name").val();
-        const type = $("#elementTypesDropdown").find("a.active").html();
-        const prototype = $("#element-prototype").prop("checked");
-        delete data["text"];
-        myDiagram.model.setDataProperty(data, "name", name);
-        myDiagram.model.setDataProperty(data, "kind", type);
-        myDiagram.requestUpdate();
+    // Place in top-left corner of screen regardless of scroll position.
+    textArea.style.position = 'fixed';
+    textArea.style.top = 0;
+    textArea.style.left = 0;
+
+    // Ensure it has a small width and height. Setting to 1px / 1em
+    // doesn't work as this gives a negative w/h on some browsers.
+    textArea.style.width = '2em';
+    textArea.style.height = '2em';
+
+    // We don't need padding, reducing the size if it does flash render.
+    textArea.style.padding = 0;
+
+    // Clean up any borders.
+    textArea.style.border = 'none';
+    textArea.style.outline = 'none';
+    textArea.style.boxShadow = 'none';
+
+    // Avoid flash of white box if rendered for any reason.
+    textArea.style.background = 'transparent';
+
+
+    textArea.value = text;
+
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+
+    try {
+        const successful = document.execCommand('copy');
+        if (successful) {
+            const msg = successful ? 'successful' : 'unsuccessful';
+            console.log('Copying text command was ' + msg);
+            alert('"' + msg + '" was copied to clipboard')
+        }
+    } catch (err) {
+        console.log('Oops, unable to copy');
     }
-    basicElementData.modal('hide')
-}
-
-function openMore() {
-
-}
-
-function confirm() {
-    let diagramInfo = $('#diagram-info');
-    const name = $("#diagram-name").val();
-    const type = $("#diagramTypesDropdown").find("a.active").html();
-    const prototype = $("#diagram-prototype").prop("checked");
-    meta.name = name;
-    meta.kind = type;
-    meta.prototype = prototype;
-    diagramInfo.modal('hide');
-}
-
-function validateModel() {
-    $('#model-validation').modal('show')
+    document.body.removeChild(textArea);
 }
 
 
-function confirmAndSave() {
-    let $diagramInfo = $('#diagram-info');
-    $diagramInfo.modal('show');
-    $diagramInfo.on('hidden.bs.modal', function () {
-        save();
-    })
+/*
+
+function toogleCollapseGroup(element, obj) {
+    let root = obj.part.findTreeRoot();
+    const elementData = root.data;
+    const groupId = elementData.key;
+    if (!groupId) return;
+    if (!(root instanceof go.Group)) return;
+    if (root.isSubGraphExpanded) {
+        if (myDiagram.commandHandler.canCollapseSubGraph(root)) {
+            myDiagram.startTransaction("Collapse group");
+            root.collapseSubGraph();
+            myDiagram.commitTransaction("Collapse group");
+        }
+    } else {
+        if (myDiagram.commandHandler.canExpandSubGraph(root)) {
+            myDiagram.startTransaction("Expand group");
+            root.expandTree();
+            myDiagram.commitTransaction("Expand group");
+        }
+    }
+
 }
 
-function changeView() {
-
+function convertSVGPolygonPolylineToPath(svg) {
+    return svg
+    // close path for polygon
+        .replace(/(<polygon[\w\W]+?)points=(["'])([\.\d, ]+?)(["'])/g, "$1d=$2M$3z$4")
+        // dont close path for polyline
+        .replace(/(<polyline[\w\W]+?)points=(["'])([\.\d, ]+?)(["'])/g, "$1d=$2M$3$4")
+        .replace(/poly(gon|line)/g, "path");
 }
 
-function getCurrentViewMode() {
-    let viewMode_ = $(viewMode.tickLabels[viewMode.getValue()-1]);
-    return viewMode_.html();
+function parseSVG(svg) {
+    svg = convertSVGPolygonPolylineToPath(svg);
+    return svg;
 }
+
+function processCss(style, shape, path) {
+    let tokens = style.split(";");
+    for (let j = 0; j < tokens.length; j++) {
+        let token = tokens[j];
+        if (token.match('^fill:')) {
+            shape.fill = token.split(":")[1];
+        }
+        if (token.match('^fill-opacity:')) {
+            shape.opacity = parseFloat(token.split(":")[1]);
+        }
+        if (token.match('^stroke-width:')) {
+            let strokewidth = parseFloat(path.getAttribute(token.split(":")[1]));
+            if (!isNaN(strokewidth)) shape.strokeWidth = strokewidth;
+        }
+        if (token.match('^stroke:')) {
+            shape.stroke = token.split(":")[1];
+        }
+    }
+    if (!tokens.find(function (token) {
+            return token.match('^stroke:');
+        })) {
+        shape.stroke = null;
+    }
+}
+
+
+function buildSVGComponents(raw) {
+    const xmldoc = new DOMParser().parseFromString(raw, "text/xml");
+    let svgComponents = gojs(go.Panel, {
+        /!* desiredSize: new go.Size(60, 60),
+                     width: 60,
+                     height: 60*!/
+    });  // this Panel holds all of the Shapes for the drawing
+    const circles = xmldoc.getElementsByTagName("circle");
+    for (let i = 0; i < circles.length; i++) {
+        // represent each SVG path by a Shape of type Path with its own fill and stroke
+        let circle = circles[i];
+        let shape = new go.Shape();
+        let style = circle.getAttribute("style");
+        if (style && typeof style === "string" && style !== "none") {
+            processCss(style, shape, circle);
+        } else {
+            let stroke = circle.getAttribute("stroke");
+            if (typeof stroke === "string" && stroke !== "none") {
+                shape.stroke = stroke;
+            } else {
+                shape.stroke = null;
+            }
+            let strokewidth = parseFloat(circle.getAttribute("stroke-width"));
+            if (!isNaN(strokewidth)) shape.strokeWidth = strokewidth;
+            let fill = circle.getAttribute("fill");
+            if (typeof fill === "string") {
+                shape.fill = (fill === "none") ? null : fill;
+            }
+        }
+
+        let id = circle.getAttribute("id");
+        if (typeof id === "string") shape.name = id;
+
+        let cx = circle.getAttribute("cx");
+        let cy = circle.getAttribute("cy");
+        let r = circle.getAttribute("r");
+        let d = parseFloat(r) * 2;
+        let data = "M cx, cy m -r, 0 a r,r 0 1,0 d,0 a r,r 0 1,0 -d,0".replace(/cx/g, cx).replace(/cy/g, cy).replace(/r/g, r.toString()).replace(/d/g, d.toString());
+        shape.geometry = go.Geometry.parse(data, true);
+
+        // collect these Shapes in the single Panel
+        svgComponents.add(shape);
+    }
+
+    const paths = xmldoc.getElementsByTagName("path");
+    for (let i = 0; i < paths.length; i++) {
+        // represent each SVG path by a Shape of type Path with its own fill and stroke
+        let path = paths[i];
+        let shape = new go.Shape();
+        let style = path.getAttribute("style");
+        if (style && typeof style === "string" && style !== "none") {
+            processCss(style, shape, path);
+        } else {
+            let stroke = path.getAttribute("stroke");
+            if (typeof stroke === "string" && stroke !== "none") {
+                shape.stroke = stroke;
+            } else {
+                shape.stroke = null;
+            }
+            let strokewidth = parseFloat(path.getAttribute("stroke-width"));
+            if (!isNaN(strokewidth)) shape.strokeWidth = strokewidth;
+            let fill = path.getAttribute("fill");
+            if (typeof fill === "string") {
+                shape.fill = (fill === "none") ? null : fill;
+            }
+        }
+
+        let transform = path.getAttribute("transform");
+        if (transform && typeof transform === "string" && transform !== "none") {
+            let tokens = transform.split(";");
+            for (let j = 0; j < tokens.length; j++) {
+                let token = tokens[j];
+                if (token.match('^scale\\(')) {
+                    let split = token.split("(")[1];
+                    let x = split.substr(0, split.length - 1);
+                    shape.scale = parseFloat(x);
+                }
+            }
+        }
+
+        let id = path.getAttribute("id");
+        if (typeof id === "string") shape.name = id;
+        // convert the path data string into a go.Geometry
+        let data = path.getAttribute("d");
+        if (typeof data === "string") shape.geometry = go.Geometry.parse(data, true);
+        // collect these Shapes in the single Panel
+        svgComponents.add(shape);
+    }
+}
+
+
+function cleanImage(evt) {
+    alert(evt.target);
+}
+*/

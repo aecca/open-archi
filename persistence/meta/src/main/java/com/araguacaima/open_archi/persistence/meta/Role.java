@@ -1,5 +1,6 @@
 package com.araguacaima.open_archi.persistence.meta;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.DynamicUpdate;
@@ -27,7 +28,7 @@ import java.util.UUID;
         query = "select count(a) from Role a"), @NamedQuery(
         name = Role.GET_ALL_ROLES,
         query = "select a from Role a order by a.priority, a.name")})
-public class Role implements Serializable, Comparable {
+public class Role implements Serializable, Comparable, SimpleOverridable<Role> {
 
     public static final String FIND_BY_PRIORITY = "Role.findByOrder";
     public static final String FIND_BY_ID = "Role.findById";
@@ -123,5 +124,23 @@ public class Role implements Serializable, Comparable {
                 .append(name)
                 .append(priority)
                 .toHashCode();
+    }
+
+    @Override
+    public void override(Role source, boolean keepMeta, String suffix) {
+        this.id = source.getId();
+        this.name = source.getName();
+        this.priority = source.getPriority();
+    }
+
+    @Override
+    public void copyNonEmpty(Role source, boolean keepMeta) {
+        if (StringUtils.isNotBlank(source.getId())) {
+            this.id = source.getId();
+        }
+        if (StringUtils.isNotBlank(source.getName())) {
+            this.name = source.getName();
+        }
+        this.priority = source.getPriority();
     }
 }

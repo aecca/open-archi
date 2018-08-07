@@ -24,7 +24,7 @@ public class Elements extends Items {
             name = "Element_FeatureIds",
             joinColumns = {@JoinColumn(name = "Architecture_Model_Id",
                     referencedColumnName = "Id")},
-            inverseJoinColumns = {@JoinColumn(name = "SoftwareSystem_Id",
+            inverseJoinColumns = {@JoinColumn(name = "System_Id",
                     referencedColumnName = "Id")})
     protected Set<Features> features = new LinkedHashSet<>();
 
@@ -52,11 +52,17 @@ public class Elements extends Items {
         this.features = features;
     }
 
-
-    public void override(Elements source, boolean keepMeta, String suffix) {
+    public void override(Elements source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
         super.override(source, keepMeta, suffix);
+        if (clonedFrom != null) {
+            this.setClonedFrom(clonedFrom);
+        }
         this.url = source.getUrl();
-        this.features = source.getFeatures();
+        for (Features feature : source.getFeatures()) {
+            Features newFeatures = new Features();
+            newFeatures.override(feature, keepMeta, suffix, clonedFrom);
+            this.features.add(newFeatures);
+        }
     }
 
     public void copyNonEmpty(Elements source, boolean keepMeta) {
@@ -65,7 +71,11 @@ public class Elements extends Items {
             this.url = source.getUrl();
         }
         if (source.getFeatures() != null && !source.getFeatures().isEmpty()) {
-            this.features = source.getFeatures();
+            for (Features feature : source.getFeatures()) {
+                Features newFeatures = new Features();
+                newFeatures.copyNonEmpty(feature, keepMeta);
+                this.features.add(newFeatures);
+            }
         }
     }
 }

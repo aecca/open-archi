@@ -210,6 +210,7 @@ function initFlowchart(nodeDataArray, linkDataArray) {
     }
 
     // initialize the Palette that is on the left side of the page
+    // noinspection JSUndeclaredVariable
     myPalette =
         gojs(go.Palette, "paletteDiv",  // must name or refer to the DIV HTML element
             {

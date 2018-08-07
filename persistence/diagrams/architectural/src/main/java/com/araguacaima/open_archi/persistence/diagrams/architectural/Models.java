@@ -1,5 +1,6 @@
 package com.araguacaima.open_archi.persistence.diagrams.architectural;
 
+import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 import com.araguacaima.open_archi.persistence.diagrams.core.Elements;
 
@@ -8,7 +9,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
- * A software architecture model.
+ * A system architecture model.
  */
 @Entity
 @PersistenceUnit(unitName = "open-archi")
@@ -43,12 +44,12 @@ public class Models extends Elements {
 
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
-            name = "Architecture_Model_SoftwareSystems",
+            name = "Architecture_Model_Systems",
             joinColumns = {@JoinColumn(name = "Architecture_Model_Id",
                     referencedColumnName = "Id")},
-            inverseJoinColumns = {@JoinColumn(name = "SoftwareSystem_Id",
+            inverseJoinColumns = {@JoinColumn(name = "System_Id",
                     referencedColumnName = "Id")})
-    private Set<SoftwareSystems> softwareSystems = new LinkedHashSet<>();
+    private Set<Systems> systems = new LinkedHashSet<>();
 
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
@@ -78,12 +79,12 @@ public class Models extends Elements {
         this.consumers = people;
     }
 
-    public Set<SoftwareSystems> getSoftwareSystems() {
-        return softwareSystems;
+    public Set<Systems> getSystems() {
+        return systems;
     }
 
-    public void setSoftwareSystems(Set<SoftwareSystems> softwareSystems) {
-        this.softwareSystems = softwareSystems;
+    public void setSystems(Set<Systems> systems) {
+        this.systems = systems;
     }
 
     public Set<DeploymentNodes> getDeploymentNodes() {
@@ -102,26 +103,26 @@ public class Models extends Elements {
         this.relationships = relationships;
     }
 
-    public void override(Models source, boolean keepMeta, String suffix) {
-        super.override(source, keepMeta, suffix);
+    public void override(Models source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+        super.override(source, keepMeta, suffix, clonedFrom);
         for (Relationships relationship : source.getRelationships()) {
             Relationships newRelationship = new Relationships();
-            newRelationship.override(relationship, keepMeta, suffix);
+            newRelationship.override(relationship, keepMeta, suffix, clonedFrom);
             this.relationships.add(newRelationship);
         }
         for (Consumers consumer : source.getConsumers()) {
             Consumers newConsumer = new Consumers();
-            newConsumer.override(consumer, keepMeta, suffix);
+            newConsumer.override(consumer, keepMeta, suffix, clonedFrom);
             this.consumers.add(newConsumer);
         }
-        for (SoftwareSystems softwareSystem : source.getSoftwareSystems()) {
-            SoftwareSystems newSoftwareSystem = new SoftwareSystems();
-            newSoftwareSystem.override(softwareSystem, keepMeta, suffix);
-            this.softwareSystems.add(newSoftwareSystem);
+        for (Systems system : source.getSystems()) {
+            Systems newSystem = new Systems();
+            newSystem.override(system, keepMeta, suffix, clonedFrom);
+            this.systems.add(newSystem);
         }
         for (DeploymentNodes deploymentNode : source.getDeploymentNodes()) {
             DeploymentNodes newDeploymentNode = new DeploymentNodes();
-            newDeploymentNode.override(deploymentNode, keepMeta, suffix);
+            newDeploymentNode.override(deploymentNode, keepMeta, suffix, clonedFrom);
             this.deploymentNodes.add(newDeploymentNode);
         }
     }
@@ -142,11 +143,11 @@ public class Models extends Elements {
                 this.consumers.add(newConsumer);
             }
         }
-        if (source.getSoftwareSystems() != null && !source.getSoftwareSystems().isEmpty()) {
-            for (SoftwareSystems softwareSystem : source.getSoftwareSystems()) {
-                SoftwareSystems newSoftwareSystem = new SoftwareSystems();
-                newSoftwareSystem.copyNonEmpty(softwareSystem, keepMeta);
-                this.softwareSystems.add(newSoftwareSystem);
+        if (source.getSystems() != null && !source.getSystems().isEmpty()) {
+            for (Systems system : source.getSystems()) {
+                Systems newSystem = new Systems();
+                newSystem.copyNonEmpty(system, keepMeta);
+                this.systems.add(newSystem);
             }
         }
         if (source.getDeploymentNodes() != null && !source.getDeploymentNodes().isEmpty()) {

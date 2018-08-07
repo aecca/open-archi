@@ -18,7 +18,7 @@ public class Palette implements Palettable {
         box.setKind(ElementKind.SEQUENCE);
         basicElements.add(box);
         PaletteItem target = new PaletteItem();
-        target.setShape(new Shape(ShapeType.Consumer));
+        target.setShape(new Shape(ShapeType.CONSUMER));
         target.setRank(1);
         target.setName("Actor");
         target.setKind(ElementKind.CONSUMER);

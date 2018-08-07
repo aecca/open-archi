@@ -65,8 +65,11 @@ public class Relationships extends Taggable {
         this.destinationPort = destinationPort;
     }
 
-    public void override(Relationships source, boolean keepMeta, String suffix) {
+    public void override(Relationships source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
         super.override(source, keepMeta, suffix);
+        if (clonedFrom != null) {
+            this.setClonedFrom(clonedFrom);
+        }
         this.sourceId = source.getSourceId();
         this.destinationId = source.getDestinationId();
         this.description = source.getDescription();

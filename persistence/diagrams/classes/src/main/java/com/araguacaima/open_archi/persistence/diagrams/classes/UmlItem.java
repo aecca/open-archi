@@ -1,5 +1,6 @@
 package com.araguacaima.open_archi.persistence.diagrams.classes;
 
+import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 import com.araguacaima.open_archi.persistence.diagrams.core.Item;
 
@@ -17,8 +18,8 @@ public abstract class UmlItem extends Item {
         setKind(ElementKind.UML_CLASS);
     }
 
-    public void override(UmlItem source, boolean keepMeta, String suffix) {
-        super.override(source, keepMeta, suffix);
+    public void override(UmlItem source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+        super.override(source, keepMeta, suffix, clonedFrom);
     }
 
     public void copyNonEmpty(UmlItem source, boolean keepMeta) {

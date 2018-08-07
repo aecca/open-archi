@@ -57,7 +57,7 @@
         <com.google.oauth-client-google-oauth-client-java6>1.22.0</com.google.oauth-client-google-oauth-client-java6>
         <com.google.oauth-client-google-oauth-client-jetty>1.22.0</com.google.oauth-client-google-oauth-client-jetty>
         <com.h2database-h2>1.4.196</com.h2database-h2>
-        <com.mchange-c3p0>0.9.5</com.mchange-c3p0>
+        <com.mchange-c3p0>0.9.5.2</com.mchange-c3p0>
         <com.sparkjava-spark-core>2.5.5</com.sparkjava-spark-core>
         <com.sparkjava-spark-template-jade>2.5.5</com.sparkjava-spark-template-jade>
         <com.thoughtworks.paranamer-paranamer>2.7</com.thoughtworks.paranamer-paranamer>
@@ -559,13 +559,6 @@
             </dependency>
 
             <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-simple</artifactId>
-                <version>${org.slf4j-slf4j-simple}</version>
-                <scope>compile</scope>
-            </dependency>
-
-            <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-collections4</artifactId>
                 <version>${org.apache.commons-commons-collections4}</version>
@@ -743,7 +736,6 @@
                 <version>${tomcat-jdbc.version}</version>
                 <scope>compile</scope>
             </dependency>
-
 
             <dependency>
                 <groupId>com.mchange</groupId>

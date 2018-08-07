@@ -1,5 +1,6 @@
 package com.araguacaima.open_archi.persistence.diagrams.flowchart;
 
+import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 import com.araguacaima.open_archi.persistence.diagrams.core.Item;
 import com.araguacaima.open_archi.persistence.diagrams.core.ItemCategory;
@@ -36,8 +37,8 @@ public class Flowchart extends Item {
     }
 
 
-    public void override(Flowchart source, boolean keepMeta, String suffix) {
-        super.override(source, keepMeta, suffix);
+    public void override(Flowchart source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+        super.override(source, keepMeta, suffix, clonedFrom);
         this.setCategory(source.getCategory());
     }
 

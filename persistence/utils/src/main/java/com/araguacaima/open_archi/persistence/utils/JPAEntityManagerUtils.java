@@ -1,10 +1,14 @@
 package com.araguacaima.open_archi.persistence.utils;
 
+import com.araguacaima.commons.utils.ReflectionUtils;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.persistence.*;
+import java.lang.reflect.Field;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +16,10 @@ public class JPAEntityManagerUtils {
     private static EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("open-archi");
     private static EntityManager entityManager = entityManagerFactory.createEntityManager();
     private static boolean autocommit = true;
+
+    @Transient
+    @JsonIgnore
+    private static ReflectionUtils reflectionUtils = new ReflectionUtils(null);
 
     private static Logger log = LoggerFactory.getLogger(JPAEntityManagerUtils.class);
 
@@ -46,6 +54,19 @@ public class JPAEntityManagerUtils {
         return entityManager.find(clazz, key);
     }
 
+    public static <T> T find(T entity) {
+        try {
+            Object key = extractId(entity);
+            if (key != null) {
+                return find((Class<T>) entity.getClass(), key);
+            }
+        } catch (Throwable t) {
+            log.error(t.getMessage());
+            throw new RuntimeException(t);
+        }
+        return null;
+    }
+
     public static <T> List<T> executeQuery(Class<T> clazz, String query) {
         return executeQuery(clazz, query, null);
     }
@@ -57,7 +78,11 @@ public class JPAEntityManagerUtils {
                 namedQuery.setParameter(param.getKey(), param.getValue());
             }
         }
-        return namedQuery.getResultList();
+        try {
+            return namedQuery.getResultList();
+        } catch (javax.persistence.NoResultException ignored) {
+            return null;
+        }
     }
 
     public static <T> T findByQuery(Class<T> clazz, String query) {
@@ -79,12 +104,54 @@ public class JPAEntityManagerUtils {
     }
 
 
-    public static void merge(Object entity) {
-        merge(entity, getAutocommit());
+    public static <T> T merge(T entity) {
+        return merge(entity, getAutocommit());
     }
 
-    public static void merge(Object entity, boolean autocommit) {
-        entityManager.merge(entity);
+    public static <T> T merge(T entity, boolean autocommit) {
+        if (entity == null) {
+            return null;
+        }
+        if (autocommit) {
+            begin();
+        }
+        try {
+            Object key = extractId(entity);
+            if (key != null && find(entity.getClass(), key) == null) {
+                logProcessing(entity, "persist");
+                entityManager.persist(entity);
+                if (log.isDebugEnabled()) {
+                    log.debug("Done!");
+                }
+            } else {
+                logProcessing(entity, "merge");
+                entity = entityManager.merge(entity);
+                if (log.isDebugEnabled()) {
+                    log.debug("Done!");
+                }
+            }
+            if (autocommit) {
+                commit();
+            }
+        } catch (Throwable t) {
+            log.error(t.getMessage());
+            if (autocommit) {
+                rollback();
+            }
+            throw new RuntimeException(t);
+        }
+        return entity;
+    }
+
+    private static <T> Object extractId(T entity) throws IllegalAccessException {
+        Collection<Field> fields = reflectionUtils.getAllFieldsIncludingParents(entity);
+        for (Field field : fields) {
+            if (field.getAnnotation(Id.class) != null || field.getAnnotation(EmbeddedId.class) != null) {
+                field.setAccessible(true);
+                return field.get(entity);
+            }
+        }
+        return null;
     }
 
     public static void persist(Object entity) {
@@ -92,18 +159,47 @@ public class JPAEntityManagerUtils {
     }
 
     public static void persist(Object entity, boolean autocommit) {
-        entityManager.persist(entity);
+        if (autocommit) {
+            begin();
+        }
+        try {
+            logProcessing(entity, "persist");
+            entityManager.persist(entity);
+            if (log.isDebugEnabled()) {
+                log.debug("Done!");
+            }
+            if (autocommit) {
+                commit();
+            }
+        } catch (Throwable t) {
+            log.error(t.getMessage());
+            if (autocommit) {
+                rollback();
+            }
+            throw t;
+        }
     }
 
     public static void delete(Object entity) {
-        begin();
+        delete(entity, getAutocommit());
+    }
+
+    public static void delete(Object entity, boolean autocommit) {
+        if (autocommit) {
+            begin();
+        }
         try {
             entityManager.remove(entity);
-            flush();
-            commit();
+            if (autocommit) {
+                flush();
+                commit();
+            }
         } catch (Throwable t) {
             log.error(t.getMessage());
-            rollback();
+            if (autocommit) {
+                rollback();
+            }
+            throw t;
         }
     }
 
@@ -122,16 +218,33 @@ public class JPAEntityManagerUtils {
             commit();
         } catch (Throwable t) {
             log.error(t.getMessage());
-            rollback();
+            if (autocommit) {
+                rollback();
+            }
+            throw t;
         }
     }
 
     public static void detach(Object entity) {
-        detach(entity, true);
+        detach(entity, getAutocommit());
     }
 
     public static void detach(Object entity, boolean autocommit) {
-        entityManager.detach(entity);
+        if (autocommit) {
+            begin();
+        }
+        try {
+            entityManager.detach(entity);
+            if (autocommit) {
+                commit();
+            }
+        } catch (Throwable t) {
+            log.error(t.getMessage());
+            if (autocommit) {
+                rollback();
+            }
+            throw t;
+        }
     }
 
     public static void update(Object entity) {
@@ -139,12 +252,62 @@ public class JPAEntityManagerUtils {
     }
 
     public static void update(Object entity, boolean autocommit) {
-        entityManager.merge(entity);
+        merge(entity, autocommit);
+    }
+
+    public static void executeNativeQuery(String query) {
+        executeNativeQuery(query, getAutocommit());
+    }
+
+    public static void executeNativeQuery(String query, boolean autocommit) {
+        if (autocommit) {
+            begin();
+        }
+        try {
+            Query nativeQuery = entityManager.createNativeQuery(query);
+            nativeQuery.executeUpdate();
+            if (autocommit) {
+                commit();
+            }
+        } catch (Throwable t) {
+            log.error(t.getMessage());
+            if (autocommit) {
+                rollback();
+            }
+            throw t;
+        }
     }
 
     public static void begin() {
-        entityManager.getTransaction().begin();
+        try {
+            entityManager.getTransaction().begin();
+        } catch (java.lang.IllegalStateException ex) {
+            if (!"Transaction already active".equals(ex.getMessage())) {
+                throw ex;
+            }
+        }
     }
+
+    private static void logProcessing(Object entity, String action) {
+        if (log.isDebugEnabled()) {
+            String type = entity.getClass().getSimpleName();
+            Object id = reflectionUtils.invokeGetter(entity, "id");
+            Field field = reflectionUtils.getFieldByFieldName(entity, "name");
+            if (field != null) {
+                Object name = null;
+                try {
+                    field.setAccessible(true);
+                    name = field.get(entity);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+                log.debug("Attempting to " + action + " entity of type '" + type + "' with name '" + name + "' and id '" + id + "'");
+            } else {
+                log.debug("Attempting to " + action + " entity of type '" + type + "' with id '" + id + "'");
+            }
+        }
+    }
+
 
     public static void commit() {
         entityManager.getTransaction().commit();

@@ -27,23 +27,27 @@ import java.util.Set;
                 query = "select a.metaData " +
                         "from com.araguacaima.open_archi.persistence.diagrams.core.Item a where a.prototype=true"),
         @NamedQuery(name = Item.GET_ALL_PROTOTYPE_NAMES,
-                query = "select new com.araguacaima.open_archi.persistence.commons.IdName(a.id, a.name, TYPE(a)) " +
+                query = "select new com.araguacaima.open_archi.persistence.commons.IdName(a.id, a.name, TYPE(a), a.kind) " +
                         "from com.araguacaima.open_archi.persistence.diagrams.core.Item a where a.prototype=true"),
         @NamedQuery(name = Item.GET_ALL_CONSUMER_NAMES,
-                query = "select new com.araguacaima.open_archi.persistence.commons.IdName(a.id, a.name, TYPE(a)) " +
+                query = "select new com.araguacaima.open_archi.persistence.commons.IdName(a.id, a.name, TYPE(a), a.kind) " +
                         "from com.araguacaima.open_archi.persistence.diagrams.core.Item a where a.kind=Consumer"),
         @NamedQuery(name = Item.GET_ALL_DIAGRAM_NAMES,
-                query = "select new com.araguacaima.open_archi.persistence.commons.IdName(a.id, a.name, TYPE(a)) " +
+                query = "select new com.araguacaima.open_archi.persistence.commons.IdName(a.id, a.name, TYPE(a), a.kind) " +
                         "from com.araguacaima.open_archi.persistence.diagrams.core.Item a where a.prototype=false"),
         @NamedQuery(name = Item.GET_ALL_MODEL_NAMES_BY_TYPE,
-                query = "select new com.araguacaima.open_archi.persistence.commons.IdName(a.id, a.name, TYPE(a)) " +
+                query = "select new com.araguacaima.open_archi.persistence.commons.IdName(a.id, a.name, TYPE(a), a.kind) " +
                         "from com.araguacaima.open_archi.persistence.diagrams.core.Item a where TYPE(a)=:type"),
         @NamedQuery(name = Item.GET_ALL_PROTOTYPE_NAMES_BY_TYPE,
-                query = "select new com.araguacaima.open_archi.persistence.commons.IdName(a.id, a.name, TYPE(a)) " +
+                query = "select new com.araguacaima.open_archi.persistence.commons.IdName(a.id, a.name, TYPE(a), a.kind) " +
                         "from com.araguacaima.open_archi.persistence.diagrams.core.Item a where TYPE(a)=:type " +
                         "and a.prototype=true"),
+        @NamedQuery(name = Item.GET_ALL_NON_CLONED_PROTOTYPE_NAMES_BY_TYPE,
+                query = "select new com.araguacaima.open_archi.persistence.commons.IdName(a.id, a.name, TYPE(a), a.kind) " +
+                        "from com.araguacaima.open_archi.persistence.diagrams.core.Item a where TYPE(a)=:type " +
+                        "and a.prototype=true and a.clonedFrom IS NULL"),
         @NamedQuery(name = Item.GET_MODEL_NAMES_BY_NAME_AND_TYPE,
-                query = "select new com.araguacaima.open_archi.persistence.commons.IdName(a.id, a.name, TYPE(a)) " +
+                query = "select new com.araguacaima.open_archi.persistence.commons.IdName(a.id, a.name, TYPE(a), a.kind) " +
                         "from com.araguacaima.open_archi.persistence.diagrams.core.Item a where a.name like concat(:name,'%') and TYPE(a)=:type "),
         @NamedQuery(name = Item.GET_ALL_CONSUMERS,
                 query = "select a " +
@@ -59,11 +63,12 @@ public class Item extends Taggable {
     public static final String GET_ALL_PROTOTYPE_NAMES = "get.all.prototype.names";
     public static final String GET_ALL_DIAGRAM_NAMES = "get.all.diagram.names";
     public static final String GET_ITEM_ID_BY_NAME = "get.item.id.by.name";
-    public static final String GET_ALL_CONSUMER_NAMES = "get.all.conmsumer.names";
+    public static final String GET_ALL_CONSUMER_NAMES = "get.all.consumer.names";
     public static final String GET_ALL_CONSUMERS = "get.all.consumers";
     public static final String GET_MODEL_NAMES_BY_NAME_AND_TYPE = "get.model.names.by.name.and.type";
     public static final String GET_ALL_MODEL_NAMES_BY_TYPE = "get.all.model.names.by.type";
     public static final String GET_ALL_PROTOTYPE_NAMES_BY_TYPE = "get.all.prototype.names.by.type";
+    public static final String GET_ALL_NON_CLONED_PROTOTYPE_NAMES_BY_TYPE = "get.all.non.cloned.prototype.names.by.type";
     public static final String GET_ITEMS_BY_NAME_AND_KIND = "get.items.by.name.and.kind";
 
     public static final String PROTOTYPE_SHAPE_COLOR = "#E00000";
@@ -99,6 +104,11 @@ public class Item extends Taggable {
     @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     protected Shape shape;
+
+
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
+    protected Image image;
 
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
@@ -216,6 +226,14 @@ public class Item extends Taggable {
         this.children = children;
     }
 
+    public Image getImage() {
+        return image;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
+    }
+
     public boolean isPrototype() {
         return prototype;
     }
@@ -224,8 +242,11 @@ public class Item extends Taggable {
         this.prototype = prototype;
     }
 
-    public void override(Item source, boolean keepMeta, String suffix) {
+    public void override(Item source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
         super.override(source, keepMeta, suffix);
+        if (clonedFrom != null) {
+            this.setClonedFrom(clonedFrom);
+        }
         this.name = StringUtils.isNotBlank(suffix) ? source.getName() + " " + suffix : source.getName();
         this.description = source.getDescription();
         this.location = source.getLocation();
@@ -236,6 +257,7 @@ public class Item extends Taggable {
             shape.override(source.getShape(), keepMeta, suffix);
             this.shape = shape;
         }
+        this.image = source.getImage();
         this.canBeConnectedFrom = source.getCanBeConnectedFrom();
         this.canBeConnectedTo = source.getCanBeConnectedTo();
         if (source.getMetaData() != null) {
@@ -264,9 +286,15 @@ public class Item extends Taggable {
             this.children = source.getChildren();
         }
         if (source.getShape() != null) {
-            Shape shape = new Shape();
+            Shape shape = this.shape;
+            if (shape == null) {
+                shape = new Shape();
+            }
             shape.copyNonEmpty(source.getShape(), keepMeta);
-            this.shape = shape;
+            this.setShape(shape);
+        }
+        if (source.getImage() != null) {
+            this.image = source.getImage();
         }
         if (source.getCanBeConnectedFrom() != null && !source.getCanBeConnectedFrom().isEmpty()) {
             this.canBeConnectedFrom = source.getCanBeConnectedFrom();
@@ -275,12 +303,23 @@ public class Item extends Taggable {
             this.canBeConnectedTo = source.getCanBeConnectedTo();
         }
         if (source.getMetaData() != null) {
-            MetaData metaData = new MetaData();
+            MetaData metaData = this.metaData;
+            if (metaData == null) {
+                metaData = new MetaData();
+            }
             metaData.copyNonEmpty(source.getMetaData(), keepMeta);
-            this.metaData = source.getMetaData();
+            this.setMetaData(metaData);
         }
         this.prototype = source.isPrototype();
+    }
 
+    public CompositeElement buildCompositeElement() {
+        CompositeElement compositeElement = new CompositeElement();
+        compositeElement.setId(this.getId());
+        compositeElement.setType(this.getKind());
+        compositeElement.setLink("/models/" + this.getId());
+        compositeElement.setVersion(this.getMeta().getActiveVersion());
+        return compositeElement;
     }
 
     @Override
@@ -290,12 +329,17 @@ public class Item extends Taggable {
 
         Item item = (Item) o;
 
-        return name.equals(item.name) && kind == item.kind && description.equals(item.description);
+        return (name != null ? name.equals(item.name) : item.name == null)
+                && kind == item.kind
+                && (description != null ? description.equals(item.description) : item.description == null);
     }
 
     @Override
     public int hashCode() {
-        int result = name.hashCode();
+        int result = 0;
+        if (StringUtils.isNotBlank(name)) {
+            result = name.hashCode();
+        }
         result = 31 * result + kind.hashCode();
         return result;
     }

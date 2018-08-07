@@ -1,13 +1,12 @@
 package com.araguacaima.open_archi.persistence.diagrams.architectural;
 
+import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.PersistenceUnit;
+import javax.persistence.*;
 
 /**
- * The word "component" is a hugely overloaded term in the software development
+ * The word "component" is a hugely overloaded term in the system development
  * industry, but in this context a component is simply a grouping of related
  * functionality encapsulated behind a well-defined interface. If you're using a
  * language like Java or C#, the simplest way to think of a component is that
@@ -17,8 +16,13 @@ import javax.persistence.PersistenceUnit;
  */
 @Entity
 @PersistenceUnit(unitName = "open-archi")
+@NamedQueries({
+        @NamedQuery(name = Component.GET_ALL_COMPONENTS,
+                query = "select a from Component a")})
 public class Component extends StaticElement {
 
+
+    public static final String GET_ALL_COMPONENTS = "get.all.components";
     @Column
     private String technology;
 
@@ -47,9 +51,8 @@ public class Component extends StaticElement {
         this.size = size;
     }
 
-
-    public void override(Component source, boolean keepMeta, String suffix) {
-        super.override(source, keepMeta, suffix);
+    public void override(Component source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+        super.override(source, keepMeta, suffix, clonedFrom);
         this.setTechnology(source.getTechnology());
         this.setSize(source.getSize());
     }

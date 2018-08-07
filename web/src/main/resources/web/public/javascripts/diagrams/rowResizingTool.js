@@ -4,24 +4,33 @@
 */
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        ({__proto__: []} instanceof Array && function (d, b) {
+            d.__proto__ = b;
+        }) ||
+        function (d, b) {
+            for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+        };
     return function (d, b) {
         extendStatics(d, b);
-        function __() { this.constructor = d; }
+
+        function __() {
+            this.constructor = d;
+        }
+
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", {value: true});
 var go = require("../go");
 // A custom Tool for resizing each row of a named Table Panel in a selected Part.
 /**
-* @constructor
-* @extends Tool
-* @class
-*/
+ * @constructor
+ * @extends Tool
+ * @class
+ */
 var RowResizingTool = (function (_super) {
     __extends(RowResizingTool, _super);
+
     function RowResizingTool() {
         var _this = _super.call(this) || this;
         _this.name = "RowResizing";
@@ -42,6 +51,7 @@ var RowResizingTool = (function (_super) {
         _this._handleArchetype = h;
         return _this;
     }
+
     Object.defineProperty(RowResizingTool.prototype, "handleArchetype", {
         /*
         * A small GraphObject used as a resize handle for each row.
@@ -50,8 +60,12 @@ var RowResizingTool = (function (_super) {
         * @function.
         * @return {GraphObject}
         */
-        get: function () { return this._handleArchetype; },
-        set: function (val) { this._handleArchetype = val; },
+        get: function () {
+            return this._handleArchetype;
+        },
+        set: function (val) {
+            this._handleArchetype = val;
+        },
         enumerable: true,
         configurable: true
     });
@@ -62,8 +76,12 @@ var RowResizingTool = (function (_super) {
         * @function.
         * @return {string}
         */
-        get: function () { return this._tableName; },
-        set: function (val) { this._tableName = val; },
+        get: function () {
+            return this._tableName;
+        },
+        set: function (val) {
+            this._tableName = val;
+        },
         enumerable: true,
         configurable: true
     });
@@ -76,7 +94,9 @@ var RowResizingTool = (function (_super) {
         * @function.
         * @return {GraphObject}
         */
-        get: function () { return this._handle; },
+        get: function () {
+            return this._handle;
+        },
         enumerable: true,
         configurable: true
     });
@@ -88,17 +108,19 @@ var RowResizingTool = (function (_super) {
         * @function.
         * @return {Panel}
         */
-        get: function () { return this._adornedTable; },
+        get: function () {
+            return this._adornedTable;
+        },
         enumerable: true,
         configurable: true
     });
     /**
-    * Show an {@link Adornment} with a resize handle at each row.
-    * Don't show anything if {@link #tableName} doesn't identify a {@link Panel}
-    * that has a {@link Panel#type} of type {@link Panel#Table}.
-    * @this {RowResizingTool}
-    * @param {Part} part the part.
-    */
+     * Show an {@link Adornment} with a resize handle at each row.
+     * Don't show anything if {@link #tableName} doesn't identify a {@link Panel}
+     * that has a {@link Panel#type} of type {@link Panel#Table}.
+     * @this {RowResizingTool}
+     * @param {Part} part the part.
+     */
     RowResizingTool.prototype.updateAdornments = function (part) {
         if (part === null || part instanceof go.Link)
             return; // this tool never applies to Links
@@ -147,10 +169,10 @@ var RowResizingTool = (function (_super) {
     };
     ;
     /**
-    * @this {RowResizingTool}
-    * @param {Panel} table the Table Panel whose rows may be resized
-    * @return {Adornment}
-    */
+     * @this {RowResizingTool}
+     * @param {Panel} table the Table Panel whose rows may be resized
+     * @return {Adornment}
+     */
     RowResizingTool.prototype.makeAdornment = function (table) {
         // the Adornment is a Spot Panel holding resize handles
         var adornment = new go.Adornment();
@@ -172,11 +194,11 @@ var RowResizingTool = (function (_super) {
     };
     ;
     /**
-    * @this {RowResizingTool}
-    * @param {Panel} table the Table Panel whose rows may be resized
-    * @param {RowColumnDefinition} rowdef the row definition to be resized
-    * @return a copy of the {@link #handleArchetype}
-    */
+     * @this {RowResizingTool}
+     * @param {Panel} table the Table Panel whose rows may be resized
+     * @param {RowColumnDefinition} rowdef the row definition to be resized
+     * @return a copy of the {@link #handleArchetype}
+     */
     RowResizingTool.prototype.makeHandle = function (table, rowdef) {
         var h = this.handleArchetype;
         if (h === null)
@@ -187,10 +209,10 @@ var RowResizingTool = (function (_super) {
     };
     ;
     /**
-    * This predicate is true when there is a resize handle at the mouse down point.
-    * @this {RowResizingTool}
-    * @return {boolean}
-    */
+     * This predicate is true when there is a resize handle at the mouse down point.
+     * @this {RowResizingTool}
+     * @return {boolean}
+     */
     RowResizingTool.prototype.canStart = function () {
         if (!this.isEnabled)
             return false;
@@ -204,8 +226,8 @@ var RowResizingTool = (function (_super) {
     };
     ;
     /**
-    * @this {RowResizingTool}
-    */
+     * @this {RowResizingTool}
+     */
     RowResizingTool.prototype.doActivate = function () {
         var diagram = this.diagram;
         if (diagram === null)
@@ -223,8 +245,8 @@ var RowResizingTool = (function (_super) {
     };
     ;
     /**
-    * @this {RowResizingTool}
-    */
+     * @this {RowResizingTool}
+     */
     RowResizingTool.prototype.doDeactivate = function () {
         this.stopTransaction();
         this._handle = null;
@@ -236,8 +258,8 @@ var RowResizingTool = (function (_super) {
     };
     ;
     /**
-    * @this {RowResizingTool}
-    */
+     * @this {RowResizingTool}
+     */
     RowResizingTool.prototype.doMouseMove = function () {
         var diagram = this.diagram;
         if (this.isActive && diagram !== null) {
@@ -247,8 +269,8 @@ var RowResizingTool = (function (_super) {
     };
     ;
     /**
-    * @this {RowResizingTool}
-    */
+     * @this {RowResizingTool}
+     */
     RowResizingTool.prototype.doMouseUp = function () {
         var diagram = this.diagram;
         if (this.isActive && diagram !== null) {
@@ -260,12 +282,12 @@ var RowResizingTool = (function (_super) {
     };
     ;
     /**
-    * This should change the {@link RowRowDefinition#height} of the row being resized
-    * to a value corresponding to the given mouse point.
-    * @expose
-    * @this {RowResizingTool}
-    * @param {Point} newPoint the value of the call to {@link #computeResize}.
-    */
+     * This should change the {@link RowRowDefinition#height} of the row being resized
+     * to a value corresponding to the given mouse point.
+     * @expose
+     * @this {RowResizingTool}
+     * @param {Point} newPoint the value of the call to {@link #computeResize}.
+     */
     RowResizingTool.prototype.resize = function (newPoint) {
         var table = this.adornedTable;
         var pad = table.padding;
@@ -286,20 +308,20 @@ var RowResizingTool = (function (_super) {
     };
     ;
     /**
-    * This can be overridden in order to customize the resizing process.
-    * @expose
-    * @this {RowResizingTool}
-    * @param {Point} p the point where the handle is being dragged.
-    * @return {Point}
-    */
+     * This can be overridden in order to customize the resizing process.
+     * @expose
+     * @this {RowResizingTool}
+     * @param {Point} p the point where the handle is being dragged.
+     * @return {Point}
+     */
     RowResizingTool.prototype.computeResize = function (p) {
         return p;
     };
     ;
     /**
-    * Pressing the Delete key removes any row width setting and stops this tool.
-    * @this {RowResizingTool}
-    */
+     * Pressing the Delete key removes any row width setting and stops this tool.
+     * @this {RowResizingTool}
+     */
     RowResizingTool.prototype.doKeyDown = function () {
         if (!this.isActive)
             return;

@@ -1,12 +1,13 @@
 package com.araguacaima.open_archi.persistence.diagrams.architectural;
 
+import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 
 import javax.persistence.*;
 
 /**
  * However you think about your users (as actors, roles, persons, etc),
- * people are the various human users of your software system.
+ * people are the various human users of your system.
  * <p>
  * See <a href="https://structurizr.com/help/model#Consumer">Model - Consumer</a>
  * on the Structurizr website for more information.
@@ -45,8 +46,8 @@ public class Consumers extends StaticElements {
     }
 
 
-    public void override(Consumers source, boolean keepMeta, String suffix) {
-        super.override(source, keepMeta, suffix);
+    public void override(Consumers source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+        super.override(source, keepMeta, suffix, clonedFrom);
         this.setScope(source.getScope());
     }
 

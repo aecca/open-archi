@@ -1,9 +1,6 @@
 package com.araguacaima.open_archi.persistence.diagrams.core;
 
-import org.springframework.stereotype.Component;
-
 import java.util.Set;
-
 
 public class PaletteItem extends PaletteInfo {
 

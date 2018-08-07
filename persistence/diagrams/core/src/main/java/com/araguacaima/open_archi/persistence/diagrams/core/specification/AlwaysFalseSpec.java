@@ -20,7 +20,7 @@ public class AlwaysFalseSpec extends AbstractSpecification {
         return false;
     }
 
-    public Collection/*<Object>*/ getTerms() {
-        return new ArrayList();
+    public Collection<Object> getTerms() {
+        return new ArrayList<>();
     }
 }

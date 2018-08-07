@@ -1,8 +1,11 @@
 function initColumnResizingTool() {
-    const $ = go.GraphObject.make;  // for conciseness in defining templates
+    if (myDiagram !== undefined) {
+        myDiagram.clear();
+        myDiagram.div = null;
+    }
 
     myDiagram =
-        $(go.Diagram, diagramDiv,
+        gojs(go.Diagram, "diagramDiv",
             {
                 initialContentAlignment: go.Spot.Center,
                 validCycle: go.Diagram.CycleNotDirected,  // don't allow loops
@@ -15,7 +18,7 @@ function initColumnResizingTool() {
     // This template is a Panel that is used to represent each item in a Panel.itemArray.
     // The Panel is data bound to the item object.
     const fieldTemplate =
-        $(go.Panel, "TableRow",  // this Panel is a row in the containing Table
+        gojs(go.Panel, "TableRow",  // this Panel is a row in the containing Table
             new go.Binding("portId", "name"),  // this Panel is a "port"
             {
                 background: "transparent",  // so this port's background can be picked by the mouse
@@ -24,7 +27,7 @@ function initColumnResizingTool() {
                 // allow drawing links from or to this port:
                 fromLinkable: true, toLinkable: true
             },
-            $(go.Shape,
+            gojs(go.Shape,
                 {
                     column: 0,
                     width: 12, height: 12, margin: 4,
@@ -33,7 +36,7 @@ function initColumnResizingTool() {
                 },
                 new go.Binding("figure", "figure"),
                 new go.Binding("fill", "color")),
-            $(go.TextBlock,
+            gojs(go.TextBlock,
                 {
                     column: 1,
                     margin: new go.Margin(0, 2),
@@ -45,7 +48,7 @@ function initColumnResizingTool() {
                     fromLinkable: false, toLinkable: false
                 },
                 new go.Binding("text", "name")),
-            $(go.TextBlock,
+            gojs(go.TextBlock,
                 {
                     column: 2,
                     margin: new go.Margin(0, 2),
@@ -87,20 +90,20 @@ function initColumnResizingTool() {
 
     // This template represents a whole "record".
     myDiagram.nodeTemplate =
-        $(go.Node, "Auto",
+        gojs(go.Node, "Auto",
             new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
             // this rectangular shape surrounds the content of the node
-            $(go.Shape,
+            gojs(go.Shape,
                 {fill: "#EEEEEE"}),
             // the content consists of a header and a list of items
-            $(go.Panel, "Vertical",
+            gojs(go.Panel, "Vertical",
                 {stretch: go.GraphObject.Horizontal, alignment: go.Spot.TopLeft},
                 // this is the header for the whole node
-                $(go.Panel, "Auto",
+                gojs(go.Panel, "Auto",
                     {stretch: go.GraphObject.Horizontal},  // as wide as the whole node
-                    $(go.Shape,
+                    gojs(go.Shape,
                         {fill: "#1570A6", stroke: null}),
-                    $(go.TextBlock,
+                    gojs(go.TextBlock,
                         {
                             alignment: go.Spot.Center,
                             margin: 3,
@@ -111,7 +114,7 @@ function initColumnResizingTool() {
                         new go.Binding("text", "key"))),
                 // this Panel holds a Panel for each item object in the itemArray;
                 // each item Panel is defined by the itemTemplate to be a TableRow in this Table
-                $(go.Panel, "Table",
+                gojs(go.Panel, "Table",
                     {
                         name: "TABLE", stretch: go.GraphObject.Horizontal,
                         minSize: new go.Size(100, 10),
@@ -121,23 +124,23 @@ function initColumnResizingTool() {
                         defaultRowSeparatorStroke: "gray",
                         itemTemplate: fieldTemplate
                     },
-                    $(go.RowColumnDefinition, makeWidthBinding(0)),
-                    $(go.RowColumnDefinition, makeWidthBinding(1)),
-                    $(go.RowColumnDefinition, makeWidthBinding(2)),
+                    gojs(go.RowColumnDefinition, makeWidthBinding(0)),
+                    gojs(go.RowColumnDefinition, makeWidthBinding(1)),
+                    gojs(go.RowColumnDefinition, makeWidthBinding(2)),
                     new go.Binding("itemArray", "fields")
                 )  // end Table Panel of items
             )  // end Vertical Panel
         );  // end Node
 
     myDiagram.linkTemplate =
-        $(go.Link,
+        gojs(go.Link,
             {relinkableFrom: true, relinkableTo: true, toShortLength: 4},  // let user reconnect links
-            $(go.Shape, {strokeWidth: 1.5}),
-            $(go.Shape, {toArrow: "Standard", stroke: null})
+            gojs(go.Shape, {strokeWidth: 1.5}),
+            gojs(go.Shape, {toArrow: "Standard", stroke: null})
         );
 
     myDiagram.model =
-        $(go.GraphLinksModel,
+        gojs(go.GraphLinksModel,
             {
                 linkFromPortIdProperty: "fromPort",
                 linkToPortIdProperty: "toPort",
@@ -231,6 +234,7 @@ function RowResizingTool() {
     /** @type {Panel} */
     this._adornedTable = null;
 }
+
 go.Diagram.inherit(RowResizingTool, go.Tool);
 
 
@@ -242,8 +246,12 @@ go.Diagram.inherit(RowResizingTool, go.Tool);
 * @return {GraphObject}
 */
 Object.defineProperty(RowResizingTool.prototype, "handleArchetype", {
-    get: function() { return this._handleArchetype; },
-    set: function(value) { this._handleArchetype = value; }
+    get: function () {
+        return this._handleArchetype;
+    },
+    set: function (value) {
+        this._handleArchetype = value;
+    }
 });
 
 /*
@@ -253,8 +261,12 @@ Object.defineProperty(RowResizingTool.prototype, "handleArchetype", {
 * @return {string}
 */
 Object.defineProperty(RowResizingTool.prototype, "tableName", {
-    get: function() { return this._tableName; },
-    set: function(value) { this._tableName = value; }
+    get: function () {
+        return this._tableName;
+    },
+    set: function (value) {
+        this._tableName = value;
+    }
 });
 
 /*
@@ -266,7 +278,9 @@ Object.defineProperty(RowResizingTool.prototype, "tableName", {
 * @return {GraphObject}
 */
 Object.defineProperty(RowResizingTool.prototype, "handle", {
-    get: function() { return this._handle; }
+    get: function () {
+        return this._handle;
+    }
 });
 
 /*
@@ -277,7 +291,9 @@ Object.defineProperty(RowResizingTool.prototype, "handle", {
 * @return {Panel}
 */
 Object.defineProperty(RowResizingTool.prototype, "adornedTable", {
-    get: function() { return this._adornedTable; }
+    get: function () {
+        return this._adornedTable;
+    }
 });
 
 
@@ -288,7 +304,7 @@ Object.defineProperty(RowResizingTool.prototype, "adornedTable", {
  * @this {RowResizingTool}
  * @param {Part} part the part.
  */
-RowResizingTool.prototype.updateAdornments = function(part) {
+RowResizingTool.prototype.updateAdornments = function (part) {
     if (part === null || part instanceof go.Link) return;  // this tool never applies to Links
     if (part.isSelected && !this.diagram.isReadOnly) {
         const selelt = part.findObject(this.tableName);
@@ -305,7 +321,7 @@ RowResizingTool.prototype.updateAdornments = function(part) {
                 const pad = table.padding;
                 const numrows = table.rowCount;
                 // update the position/alignment of each handle
-                adornment.elements.each(function(h) {
+                adornment.elements.each(function (h) {
                     if (!h.pickable) return;
                     const rowdef = table.getRowDefinition(h.row);
                     let hgt = rowdef.actual;
@@ -318,7 +334,7 @@ RowResizingTool.prototype.updateAdornments = function(part) {
                         sep = table.getRowDefinition(idx).separatorStrokeWidth;
                         if (isNaN(sep)) sep = table.defaultRowSeparatorStrokeWidth;
                     }
-                    h.alignment = new go.Spot(0, 0, pad.left + h.width/2, pad.top + rowdef.position + hgt + sep/2);
+                    h.alignment = new go.Spot(0, 0, pad.left + h.width / 2, pad.top + rowdef.position + hgt + sep / 2);
                 });
                 adornment.locationObject.desiredSize = table.actualBounds.size;
                 adornment.location = table.getDocumentPoint(adornment.locationSpot);
@@ -335,7 +351,7 @@ RowResizingTool.prototype.updateAdornments = function(part) {
 * @param {Panel} table the Table Panel whose rows may be resized
 * @return {Adornment}
 */
-RowResizingTool.prototype.makeAdornment = function(table) {
+RowResizingTool.prototype.makeAdornment = function (table) {
     // the Adornment is a Spot Panel holding resize handles
     const adornment = new go.Adornment();
     adornment.category = this.name;
@@ -361,7 +377,7 @@ RowResizingTool.prototype.makeAdornment = function(table) {
 * @param {RowRowDefinition} rowdef the row definition to be resized
 * @return a copy of the {@link #handleArchetype}
 */
-RowResizingTool.prototype.makeHandle = function(table, rowdef) {
+RowResizingTool.prototype.makeHandle = function (table, rowdef) {
     const h = this.handleArchetype;
     if (h === null) return null;
     const c = h.copy();
@@ -375,7 +391,7 @@ RowResizingTool.prototype.makeHandle = function(table, rowdef) {
 * @this {RowResizingTool}
 * @return {boolean}
 */
-RowResizingTool.prototype.canStart = function() {
+RowResizingTool.prototype.canStart = function () {
     if (!this.isEnabled) return false;
 
     const diagram = this.diagram;
@@ -388,7 +404,7 @@ RowResizingTool.prototype.canStart = function() {
 /**
  * @this {RowResizingTool}
  */
-RowResizingTool.prototype.doActivate = function() {
+RowResizingTool.prototype.doActivate = function () {
     const diagram = this.diagram;
     if (diagram === null) return;
     this._handle = this.findToolHandleAt(diagram.firstInput.documentPoint, this.name);
@@ -404,7 +420,7 @@ RowResizingTool.prototype.doActivate = function() {
 /**
  * @this {RowResizingTool}
  */
-RowResizingTool.prototype.doDeactivate = function() {
+RowResizingTool.prototype.doDeactivate = function () {
     this.stopTransaction();
     this._handle = null;
     this._adornedTable = null;
@@ -416,7 +432,7 @@ RowResizingTool.prototype.doDeactivate = function() {
 /**
  * @this {RowResizingTool}
  */
-RowResizingTool.prototype.doMouseMove = function() {
+RowResizingTool.prototype.doMouseMove = function () {
     const diagram = this.diagram;
     if (this.isActive && diagram !== null) {
         const newpt = this.computeResize(diagram.lastInput.documentPoint);
@@ -427,7 +443,7 @@ RowResizingTool.prototype.doMouseMove = function() {
 /**
  * @this {RowResizingTool}
  */
-RowResizingTool.prototype.doMouseUp = function() {
+RowResizingTool.prototype.doMouseUp = function () {
     const diagram = this.diagram;
     if (this.isActive && diagram !== null) {
         const newpt = this.computeResize(diagram.lastInput.documentPoint);
@@ -444,7 +460,7 @@ RowResizingTool.prototype.doMouseUp = function() {
  * @this {RowResizingTool}
  * @param {Point} newPoint the value of the call to {@link #computeResize}.
  */
-RowResizingTool.prototype.resize = function(newPoint) {
+RowResizingTool.prototype.resize = function (newPoint) {
     const table = this.adornedTable;
     const pad = table.padding;
     const numrows = table.rowCount;
@@ -458,7 +474,7 @@ RowResizingTool.prototype.resize = function(newPoint) {
         sep = table.getRowDefinition(idx).separatorStrokeWidth;
         if (isNaN(sep)) sep = table.defaultRowSeparatorStrokeWidth;
     }
-    rowdef.height = Math.max(0, locpt.y - pad.top - rowdef.position - (rowdef.total - rowdef.actual) - sep/2);
+    rowdef.height = Math.max(0, locpt.y - pad.top - rowdef.position - (rowdef.total - rowdef.actual) - sep / 2);
 };
 
 
@@ -469,7 +485,7 @@ RowResizingTool.prototype.resize = function(newPoint) {
  * @param {Point} p the point where the handle is being dragged.
  * @return {Point}
  */
-RowResizingTool.prototype.computeResize = function(p) {
+RowResizingTool.prototype.computeResize = function (p) {
     return p;
 };
 
@@ -477,7 +493,7 @@ RowResizingTool.prototype.computeResize = function(p) {
  * Pressing the Delete key removes any row width setting and stops this tool.
  * @this {RowResizingTool}
  */
-RowResizingTool.prototype.doKeyDown = function() {
+RowResizingTool.prototype.doKeyDown = function () {
     if (!this.isActive) return;
     const e = this.diagram.lastInput;
     if (e.key === 'Del' || e.key === '\t') {  // remove height setting
@@ -764,10 +780,13 @@ ColumnResizingTool.prototype.doKeyDown = function () {
 
 function initColumnResizing() {
 
-    const $ = go.GraphObject.make;  // for conciseness in defining templates
+    if (myDiagram !== undefined) {
+        myDiagram.clear();
+        myDiagram.div = null;
+    }
 
     myDiagram =
-        $(go.Diagram, diagramDiv,
+        gojs(go.Diagram, "diagramDiv",
             {
                 initialContentAlignment: go.Spot.Center,
                 validCycle: go.Diagram.CycleNotDirected,  // don't allow loops
@@ -780,7 +799,7 @@ function initColumnResizing() {
     // This template is a Panel that is used to represent each item in a Panel.itemArray.
     // The Panel is data bound to the item object.
     const fieldTemplate =
-        $(go.Panel, "TableRow",  // this Panel is a row in the containing Table
+        gojs(go.Panel, "TableRow",  // this Panel is a row in the containing Table
             new go.Binding("portId", "name"),  // this Panel is a "port"
             {
                 background: "transparent",  // so this port's background can be picked by the mouse
@@ -789,7 +808,7 @@ function initColumnResizing() {
                 // allow drawing links from or to this port:
                 fromLinkable: true, toLinkable: true
             },
-            $(go.Shape,
+            gojs(go.Shape,
                 {
                     column: 0,
                     width: 12, height: 12, margin: 4,
@@ -798,7 +817,7 @@ function initColumnResizing() {
                 },
                 new go.Binding("figure", "figure"),
                 new go.Binding("fill", "color")),
-            $(go.TextBlock,
+            gojs(go.TextBlock,
                 {
                     column: 1,
                     margin: new go.Margin(0, 2),
@@ -810,7 +829,7 @@ function initColumnResizing() {
                     fromLinkable: false, toLinkable: false
                 },
                 new go.Binding("text", "name")),
-            $(go.TextBlock,
+            gojs(go.TextBlock,
                 {
                     column: 2,
                     margin: new go.Margin(0, 2),
@@ -852,20 +871,20 @@ function initColumnResizing() {
 
     // This template represents a whole "record".
     myDiagram.nodeTemplate =
-        $(go.Node, "Auto",
+        gojs(go.Node, "Auto",
             new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
             // this rectangular shape surrounds the content of the node
-            $(go.Shape,
+            gojs(go.Shape,
                 {fill: "#EEEEEE"}),
             // the content consists of a header and a list of items
-            $(go.Panel, "Vertical",
+            gojs(go.Panel, "Vertical",
                 {stretch: go.GraphObject.Horizontal, alignment: go.Spot.TopLeft},
                 // this is the header for the whole node
-                $(go.Panel, "Auto",
+                gojs(go.Panel, "Auto",
                     {stretch: go.GraphObject.Horizontal},  // as wide as the whole node
-                    $(go.Shape,
+                    gojs(go.Shape,
                         {fill: "#1570A6", stroke: null}),
-                    $(go.TextBlock,
+                    gojs(go.TextBlock,
                         {
                             alignment: go.Spot.Center,
                             margin: 3,
@@ -876,7 +895,7 @@ function initColumnResizing() {
                         new go.Binding("text", "key"))),
                 // this Panel holds a Panel for each item object in the itemArray;
                 // each item Panel is defined by the itemTemplate to be a TableRow in this Table
-                $(go.Panel, "Table",
+                gojs(go.Panel, "Table",
                     {
                         name: "TABLE", stretch: go.GraphObject.Horizontal,
                         minSize: new go.Size(100, 10),
@@ -886,23 +905,23 @@ function initColumnResizing() {
                         defaultRowSeparatorStroke: "gray",
                         itemTemplate: fieldTemplate
                     },
-                    $(go.RowColumnDefinition, makeWidthBinding(0)),
-                    $(go.RowColumnDefinition, makeWidthBinding(1)),
-                    $(go.RowColumnDefinition, makeWidthBinding(2)),
+                    gojs(go.RowColumnDefinition, makeWidthBinding(0)),
+                    gojs(go.RowColumnDefinition, makeWidthBinding(1)),
+                    gojs(go.RowColumnDefinition, makeWidthBinding(2)),
                     new go.Binding("itemArray", "fields")
                 )  // end Table Panel of items
             )  // end Vertical Panel
         );  // end Node
 
     myDiagram.linkTemplate =
-        $(go.Link,
+        gojs(go.Link,
             {relinkableFrom: true, relinkableTo: true, toShortLength: 4},  // let user reconnect links
-            $(go.Shape, {strokeWidth: 1.5}),
-            $(go.Shape, {toArrow: "Standard", stroke: null})
+            gojs(go.Shape, {strokeWidth: 1.5}),
+            gojs(go.Shape, {toArrow: "Standard", stroke: null})
         );
 
     myDiagram.model =
-        $(go.GraphLinksModel,
+        gojs(go.GraphLinksModel,
             {
                 linkFromPortIdProperty: "fromPort",
                 linkToPortIdProperty: "toPort",
