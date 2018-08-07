@@ -96,24 +96,27 @@ public abstract class BaseEntity implements Serializable, BasicEntity, Cloneable
     @Override
     @JsonIgnore
     public void validateCreation() throws EntityError {
-        Map<String, OperationType> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         map.put("OperationType", OperationType.CREATION);
+        map.put("Initiator", this);
         traverse(this, "validateCreation", map);
     }
 
     @Override
     @JsonIgnore
     public void validateModification() throws EntityError {
-        Map<String, OperationType> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         map.put("OperationType", OperationType.MODIFICATION);
+        map.put("Initiator", this);
         traverse(this, "validateModification", map);
     }
 
     @Override
     @JsonIgnore
     public void validateReplacement() throws EntityError {
-        Map<String, OperationType> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         map.put("OperationType", OperationType.REPLACEMENT);
+        map.put("Initiator", this);
         traverse(this, "validateReplacement", map);
     }
 

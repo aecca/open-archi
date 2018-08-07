@@ -400,8 +400,6 @@ function handleImageSelect(evt) {
                 let rawImage_ = e.target.result;
                 let rawImage = rawImage_.replace(/^data:image\/svg\+xml;base64,/, "");
                 rawImage = window.atob(rawImage);
-                let raw = rawImage;
-                raw = parseSVG(raw);
 
                 let $element = $('#element-image-data');
                 const elementKey = $element.attr("key");
