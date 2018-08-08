@@ -1593,7 +1593,8 @@ public class Server {
                     Map<String, Object> params = new HashMap<>();
                     ElementKind type = (ElementKind) enumsUtils.getEnum(ElementKind.class, request.params(":elementTypeId"));
                     params.put("type", type);
-                    return getElement(request, response, ElementShape.GET_ELEMENT_SHAPE_BY_TYPE, params, ElementShape.class);
+                    ElementShape elementShape = JPAEntityManagerUtils.findByQuery(ElementShape.class, ElementShape.GET_ELEMENT_SHAPE_BY_TYPE, params);
+                    return jsonUtils.toJSON(elementShape);
                 });
                 put("/catalogs/element-types/:elementTypeId/shape", (request, response) -> {
                     try {

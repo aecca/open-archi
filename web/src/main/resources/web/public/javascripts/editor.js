@@ -100,7 +100,7 @@ function checkAndSave() {
         const name = $("#element-name").val();
         const type = getElementType();
         $.ajax({
-            url: "/catalogs/element-types/" + type+ "/shape",
+            url: "/open-archi/api/catalogs/element-types/" + type+ "/shape",
             type: 'GET',
             crossDomain: true,
             contentType: "application/json",
@@ -110,7 +110,7 @@ function checkAndSave() {
                 }
             }
         }).done((shape, textStatus, response) => {
-                if (response.status === 201) {
+                if (response.status === 200) {
 
                     //const prototype = $("#element-prototype").prop("checked");
                     myDiagram.startTransaction("Deleting new element");
