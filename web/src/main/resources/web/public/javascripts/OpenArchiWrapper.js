@@ -144,7 +144,6 @@ function processModelToDiagram(model, nodes) {
     let modelElement = commonInnerModelElement(model);
     modelElement.isGroup = true;
     //TODO Añadir campos propios del model
-    addNodeToTemplateByType(modelElement);
     nodes.push(fulfill(modelElement, true));
 }
 
@@ -156,7 +155,6 @@ function processLayerToDiagram(layer, nodes, links, parentId) {
     if (parentId !== undefined) {
         layerElement.group = parentId;
     }
-    addNodeToTemplateByType(layerElement);
     nodes.push(layerElement);
 
     if (layer.systems) {
@@ -207,7 +205,6 @@ function processSystemToDiagram(system, nodes, links, parentId) {
     if (parentId !== undefined) {
         systemElement.group = parentId;
     }
-    addNodeToTemplateByType(systemElement);
     nodes.push(fulfill(systemElement, true, parentId));
 }
 
@@ -226,7 +223,6 @@ function processContainerToDiagram(container, nodes, links, parentId) {
     if (parentId !== undefined) {
         containerElement.group = parentId;
     }
-    addNodeToTemplateByType(containerElement);
     nodes.push(fulfill(containerElement, true, parentId));
 }
 
@@ -238,7 +234,6 @@ function processComponentToDiagram(component, nodes, links, parentId) {
     if (parentId !== undefined) {
         componentElement.group = parentId;
     }
-    addNodeToTemplateByType(componentElement);
     nodes.push(fulfill(componentElement, false, parentId));
 }
 
@@ -488,11 +483,13 @@ class OpenArchiWrapper {
     }
 
     static toFill(data, node) {
-        return new Brush(data.shape.fill);
+        const fill = data.shape.fill;
+        return new Brush(fill ? fill : data.fill);
     }
 
     static fromFill(loc, data, model) {
-        model.setDataProperty(data, "fill", data.shape.fill);
+        const fill = data.shape.fill;
+        model.setDataProperty(data, "fill", fill ? fill : data.fill);
     }
 
     static toTitle(data, node) {
@@ -523,8 +520,12 @@ class OpenArchiWrapper {
 
     static toSize(data, node) {
         let size;
-        if (data.shape && data.shape.size) {
-            size = new go.Size(data.shape.size.width, data.shape.size.height);
+        const shape = data.shape;
+        const size2 = shape.size;
+        if (shape && size2) {
+            const width = size2.width;
+            const height = size2.height;
+            size = new go.Size(width === 0 ? 25 : width, height === 0 ? 15 : height);
         } else {
             size = new go.Size(25, 15);
         }
@@ -532,7 +533,6 @@ class OpenArchiWrapper {
     }
 
     static fromSize(size, data, model) {
-
         model.setDataProperty(data, "width", size.width);
         model.setDataProperty(data, "height", size.height);
     }
@@ -546,11 +546,48 @@ class OpenArchiWrapper {
     }
 
     static toStroke(data, node) {
-        return new Brush(data.shape.stroke);
+        const stroke = data.shape.stroke;
+        return new Brush(stroke ? stroke : data.stroke);
     }
 
     static fromStroke(stroke, data, model) {
-        model.setDataProperty(data, "stroke", data.shape.stroke);
+        const stroke = data.shape.stroke;
+        model.setDataProperty(data, "stroke", stroke ? stroke : data.stroke);
+    }
+
+    static toFromLinkable(data, node) {
+        const shape = data.shape;
+        if (shape) {
+            return shape.output;
+        }
+        return true;
+    }
+
+    static fromFromLinkable(loc, data, model) {
+        let fromLinkable = true;
+        const shape = data.shape;
+        if (shape) {
+            fromLinkable = shape.output;
+        }
+        model.setDataProperty(data, "fromLinkable", fromLinkable);
+    }
+
+
+    static toToLinkable(data, node) {
+        const shape = data.shape;
+        if (shape) {
+            return shape.input;
+        }
+        return true;
+    }
+
+    static fromToLinkable(loc, data, model) {
+        let toLinkable = true;
+        const shape = data.shape;
+        if (shape) {
+            toLinkable = shape.input;
+        }
+        model.setDataProperty(data, "toLinkable", toLinkable);
     }
 
 }

@@ -7,6 +7,7 @@ public enum ShapeType {
     Diamond,
     Ellipse,
     Circle,
+    DEFAULT,
     LANE,
     POOL,
     CONSUMER,

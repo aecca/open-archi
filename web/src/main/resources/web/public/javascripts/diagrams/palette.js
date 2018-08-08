@@ -1,39 +1,3 @@
-const GeneratorEllipseSpot1 = new go.Spot(0.156, 0.156);
-const GeneratorEllipseSpot2 = new go.Spot(0.844, 0.844);
-
-go.Shape.defineFigureGenerator("Circle", function (shape, w, h) {  // predefined in 2.0
-    const geo = new go.Geometry(go.Geometry.Ellipse);
-    geo.startX = 0;
-    geo.startY = 0;
-    geo.endX = w;
-    geo.endY = h;
-    geo.spot1 = GeneratorEllipseSpot1;
-    geo.spot2 = GeneratorEllipseSpot2;
-    geo.defaultStretch = go.GraphObject.Uniform;
-    return geo;
-});
-
-go.Shape.defineFigureGenerator("Consumer", function (shape, w, h) {
-    const geo = new go.Geometry();
-    const fig = new go.PathFigure(.5 * w, h, true);
-    geo.add(fig);
-
-    fig.add(new go.PathSegment(go.PathSegment.Line, w, .85 * h));
-    fig.add(new go.PathSegment(go.PathSegment.Line, w, .15 * h));
-    fig.add(new go.PathSegment(go.PathSegment.Line, .5 * w, 0));
-    fig.add(new go.PathSegment(go.PathSegment.Line, 0, .15 * h));
-    fig.add(new go.PathSegment(go.PathSegment.Line, 0, .85 * h).close());
-    const fig2 = new go.PathFigure(.5 * w, h, false);
-    geo.add(fig2);
-    fig2.add(new go.PathSegment(go.PathSegment.Line, .5 * w, .3 * h));
-    fig2.add(new go.PathSegment(go.PathSegment.Line, 0, .15 * h));
-    fig2.add(new go.PathSegment(go.PathSegment.Move, .5 * w, .3 * h));
-    fig2.add(new go.PathSegment(go.PathSegment.Line, w, .15 * h));
-    geo.spot1 = new go.Spot(0, .3);
-    geo.spot2 = new go.Spot(.5, .85);
-    return geo;
-});
-
 go.Shape.defineFigureGenerator("Person", function (shape, w, h) {
     const geo = new go.Geometry();
     const fig = new go.PathFigure(0, 0, false);
@@ -88,8 +52,140 @@ go.Shape.defineFigureGenerator("Person", function (shape, w, h) {
     return geo;
 });
 
+
+function getDefaultTemplate() {
+    return gojs(
+        go.Node, "Spot", nodeStyle(),
+        {
+            name: "Default"
+        },
+        new go.Binding("clonedFrom", "clonedFrom"),
+        gojs(go.Panel, "Auto",
+            gojs(go.Shape,
+                new go.Binding("fill", "", OpenArchiWrapper.toFill).makeTwoWay(OpenArchiWrapper.fromFill),
+                new go.Binding("stroke", "", OpenArchiWrapper.toStroke).makeTwoWay(OpenArchiWrapper.fromStroke),
+            ),
+            gojs(go.TextBlock, "Text",
+                {
+                    font: "bold 11pt Helvetica, Arial, sans-serif",
+                    stroke: lightText,
+                    margin: 8,
+                    maxSize: new go.Size(160, NaN),
+                    wrap: go.TextBlock.WrapFit,
+                    editable: true
+                },
+                new go.Binding("text", "", OpenArchiWrapper.toTitle),
+                new go.Binding("stroke", "", OpenArchiWrapper.toStroke).makeTwoWay(OpenArchiWrapper.fromStroke),
+                new go.Binding("minSize", "", OpenArchiWrapper.toSize).makeTwoWay(OpenArchiWrapper.fromSize)),
+            { // this tooltip Adornment is shared by all nodes
+                toolTip:
+                    gojs(go.Adornment, "Auto",
+                        gojs(go.Shape, {fill: "#FFFFCC"}),
+                        gojs(go.TextBlock, {margin: 4},  // the tooltip shows the result of calling nodeInfo(data)
+                            new go.Binding("text", "", nodeInfo))
+                    ),
+                // this context menu Adornment is shared by all nodes
+                contextMenu: partContextMenu
+            }
+        ),
+        // three named ports, one on each side except the top, all output only:
+        // four named ports, one on each side:
+        makePort("T", go.Spot.Top),
+        makePort("L", go.Spot.Left),
+        makePort("R", go.Spot.Right),
+        makePort("B", go.Spot.Bottom)
+    );
+}
+
+function getPersonTemplate() {
+    return gojs(
+        go.Node, "Spot",
+        {
+            name: "Person",
+            locationSpot: go.Spot.Center,
+            maxSize: new go.Size(60, 50)
+        },
+        gojs(go.Panel, "Auto",
+            gojs(go.Shape,
+                {
+                    figure: "Actor",
+                    alignment: go.Spot.Center,
+                    maxSize: new go.Size(40, 60),
+                },
+                new go.Binding("stroke", "", OpenArchiWrapper.toStroke).makeTwoWay(OpenArchiWrapper.fromStroke),
+                new go.Binding("fill", "", OpenArchiWrapper.toFill).makeTwoWay(OpenArchiWrapper.fromFill),
+            ),
+            { // this tooltip Adornment is shared by all nodes
+                toolTip:
+                    gojs(go.Adornment, "Auto",
+                        gojs(go.Shape, {fill: "#FFFFCC"}),
+                        gojs(go.TextBlock, {margin: 4},  // the tooltip shows the result of calling nodeInfo(data)
+                            new go.Binding("text", "", nodeInfo))
+                    ),
+                // this context menu Adornment is shared by all nodes
+                contextMenu: partContextMenu
+            }
+        ),
+        // three named ports, one on each side except the top, all output only:
+        // four named ports, one on each side:
+        makePort("T", go.Spot.Top),
+        makePort("L", go.Spot.Left),
+        makePort("R", go.Spot.Right),
+        makePort("B", go.Spot.Bottom)
+    );
+}
+
+function getConsumerTemplate() {
+    return gojs(
+        go.Node, "Spot",
+        {
+            name: "Consumer",
+            locationSpot: go.Spot.Center
+        },
+        gojs(go.Panel, "Spot",
+            gojs(go.Shape,
+                {
+                    figure: "PrimitiveToCall",
+                    maxSize: new go.Size(NaN, 40),
+                },
+                new go.Binding("stroke", "", OpenArchiWrapper.toStroke).makeTwoWay(OpenArchiWrapper.fromStroke),
+                new go.Binding("fill", "", OpenArchiWrapper.toFill).makeTwoWay(OpenArchiWrapper.fromFill)
+            ),
+            gojs(go.TextBlock, "Text",
+                {
+                    font: "bold 11pt Helvetica, Arial, sans-serif",
+                    stroke: lightText,
+                    margin: 8,
+                    maxSize: new go.Size(160, NaN),
+                    wrap: go.TextBlock.WrapFit,
+                    editable: true,
+                    alignment: go.Spot.Center
+                },
+                new go.Binding("text", "", OpenArchiWrapper.toTitle),
+                new go.Binding("stroke", "", OpenArchiWrapper.toStroke).makeTwoWay(OpenArchiWrapper.fromStroke),
+                new go.Binding("minSize", "", OpenArchiWrapper.toSize).makeTwoWay(OpenArchiWrapper.fromSize)),
+            { // this tooltip Adornment is shared by all nodes
+                toolTip:
+                    gojs(go.Adornment, "Auto",
+                        gojs(go.Shape, {fill: "#FFFFCC"}),
+                        gojs(go.TextBlock, {margin: 4},  // the tooltip shows the result of calling nodeInfo(data)
+                            new go.Binding("text", "", nodeInfo))
+                    ),
+                // this context menu Adornment is shared by all nodes
+                contextMenu: partContextMenu
+            }
+        ),
+        // three named ports, one on each side except the top, all output only:
+        // four named ports, one on each side:
+        makePort("T", go.Spot.Top),
+        makePort("L", go.Spot.Left),
+        makePort("R", go.Spot.Right),
+        makePort("B", go.Spot.Bottom)
+    );
+}
+
 function toPalette(data, category) {
-    let paletteModel = {};
+    let paletteModel = data;
     if (data.id !== undefined && data.id !== null) {
         paletteModel.id = data.id;
     }
@@ -123,17 +219,56 @@ function showPaletteByType(paletteData) {
                     });
             let paletteModelArray = [];
             paletteData.basicElements.forEach(function (data) {
-                paletteModelArray.push(toPalette(data, data.shape.type));
-                let shape = data.shape;
-                shape.stroke = "transparent";
-                myPalette.nodeTemplateMap.add(data.shape.type, getNodeByType(data));
+                const category = data.shape.type;
+                const item = toPalette(data, category);
+                paletteModelArray.push(item);
             });
             if (paletteData.complexElements) {
                 paletteData.complexElements.forEach(function (data) {
-                    paletteModelArray.push(toPalette(data, data.shape.type));
-                    myPalette.nodeTemplateMap.add(data.shape.type, getNodeByType(data, "_PALETTE"));
+                    const category = data.shape.type;
+                    const item = toPalette(data, category);
+                    paletteModelArray.push(item);
                 });
             }
+
+            myPalette.nodeTemplateMap.add("DEFAULT", getDefaultTemplate());
+            myPalette.nodeTemplateMap.add("PERSON", getPersonTemplate());
+            myPalette.nodeTemplateMap.add("CONSUMER", getConsumerTemplate());
+            myPalette.nodeTemplateMap.add("", gojs(
+                go.Node, "Spot", nodeStyle(),
+                new go.Binding("clonedFrom", "clonedFrom"),
+                gojs(go.Panel, "Auto",
+                    gojs(go.Shape,
+                        {
+                            figure: "RoundedRectangle"
+                        },
+                        new go.Binding("fill", "", OpenArchiWrapper.toFill).makeTwoWay(OpenArchiWrapper.fromFill),
+                        new go.Binding("minSize", "", OpenArchiWrapper.toSize).makeTwoWay(OpenArchiWrapper.fromSize),
+                        new go.Binding("stroke", "", OpenArchiWrapper.toStroke).makeTwoWay(OpenArchiWrapper.fromStroke)),
+                    gojs(go.TextBlock, "Text",
+                        {
+                            font: "bold 11pt Helvetica, Arial, sans-serif",
+                            stroke: lightText,
+                            margin: 8,
+                            maxSize: new go.Size(160, NaN),
+                            wrap: go.TextBlock.WrapFit,
+                            editable: true
+                        },
+                        new go.Binding("text", "", OpenArchiWrapper.toTitle),
+                        new go.Binding("minSize", "", OpenArchiWrapper.toSize).makeTwoWay(OpenArchiWrapper.fromSize)),
+                    { // this tooltip Adornment is shared by all nodes
+                        toolTip:
+                            gojs(go.Adornment, "Auto",
+                                gojs(go.Shape, {fill: "#FFFFCC"}),
+                                gojs(go.TextBlock, {margin: 4},  // the tooltip shows the result of calling nodeInfo(data)
+                                    new go.Binding("text", "", nodeInfo))
+                            ),
+                        // this context menu Adornment is shared by all nodes
+                        contextMenu: partContextMenu
+                    }
+                )
+            ));
+
             myPalette.model = new go.GraphLinksModel(paletteModelArray);
             myPalette.addDiagramListener("InitialLayoutCompleted", function (diagramEvent) {
                 const pdrag = document.getElementById("paletteDraggable");
@@ -157,63 +292,5 @@ function showPaletteByType(paletteData) {
         default:
             console.log("Still not implemented");
     }
-}
-
-// Define a function for creating a "port" that is normally transparent.
-// The "name" is used as the GraphObject.portId, the "spot" is used to control how links connect
-// and where the port is positioned on the node, and the boolean "output" and "input" arguments
-// control whether the user can draw links from or to the port.
-function makePort(name, spot, output, input) {
-    // the port is basically just a small circle that has a white stroke when it is made visible
-    return gojs(go.Shape, "Circle",
-        {
-            fill: "transparent",
-            stroke: null,  // this is changed to "white" in the showPorts function
-            desiredSize: new go.Size(8, 8),
-            alignment: spot, alignmentFocus: spot,  // align the port on the main Shape
-            portId: name,  // declare this object to be a "port"
-            fromSpot: spot, toSpot: spot,  // declare where links may connect at this port
-            fromLinkable: output ? output : true, toLinkable: input ? input : true,  // declare whether the user may draw links to/from here
-            cursor: "pointer"  // show a different cursor to indicate potential link point
-        });
-}
-
-// helper definitions for node templates
-
-function nodeStyle() {
-    return [
-        // The Node.location comes from the "loc" property of the node data,
-        // converted by the Point.parse static method.
-        // If the Node.location is changed, it updates the "loc" property of the node data,
-        // converting back using the Point.stringify static method.
-        new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
-        {
-            // the Node.location is at the center of each node
-            locationSpot: go.Spot.Center,
-            //isShadowed: true,
-            //shadowColor: "#888",
-            // handle mouse enter/leave events to show/hide the ports
-            mouseEnter: function (e, obj) {
-                obj.part.background = "rgba(240, 173, 75,0.2)";
-                showPorts(obj.part, true);
-            },
-            mouseLeave: function (e, obj) {
-                obj.part.background = "transparent";
-                showPorts(obj.part, false);
-            }
-        },
-        new go.Binding("clonedFrom", "clonedFrom"),
-        {dragComputation: stayInGroup}
-    ];
-}
-
-// Make all ports on a node visible when the mouse is over the node
-function showPorts(node, show) {
-    let diagram = node.diagram;
-    if (!diagram || diagram.isReadOnly || !diagram.allowLink) return;
-    node.ports.each(function (port) {
-        port.stroke = (show ? "white" : null);
-        port.fill = (show ? "orange" : "transparent");
-        port.zOrder = 1000;
-    });
+    myPalette.requestUpdate();
 }

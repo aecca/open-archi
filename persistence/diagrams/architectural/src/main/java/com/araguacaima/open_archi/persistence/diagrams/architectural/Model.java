@@ -16,7 +16,10 @@ import java.util.Set;
 @Entity
 @PersistenceUnit(unitName = "open-archi")
 @DiscriminatorValue(value = "ArchitectureModel")
-@NamedQueries({@NamedQuery(name = Model.GET_ALL_RELATIONSHIPS,
+@NamedQueries({
+        @NamedQuery(name = Model.GET_ALL_MODEL_PROTOTYPES,
+                query = "select a from com.araguacaima.open_archi.persistence.diagrams.architectural.Model a where a.prototype=true"),
+        @NamedQuery(name = Model.GET_ALL_RELATIONSHIPS,
         query = "select a.relationships from com.araguacaima.open_archi.persistence.diagrams.architectural.Model a where a.id=:id"),
         @NamedQuery(name = Model.GET_ALL_CONSUMERS_FOR_MODEL,
                 query = "select a.consumers from com.araguacaima.open_archi.persistence.diagrams.architectural.Model a where a.id=:id"),
@@ -28,6 +31,7 @@ import java.util.Set;
                 query = "select s from com.araguacaima.open_archi.persistence.diagrams.architectural.Model a JOIN a.systems s where a.id=:id and s.id=:sid")})
 public class Model extends Element implements DiagramableElement<Model> {
 
+    public static final String GET_ALL_MODEL_PROTOTYPES = "get.all.model.prototypes";
     public static final String GET_ALL_RELATIONSHIPS = "get.all.relationships";
     public static final String GET_ALL_CONSUMERS_FOR_MODEL = "get.all.consumers.for.model";
     public static final String GET_CONSUMER_FOR_MODEL = "get.consumer.for.model";

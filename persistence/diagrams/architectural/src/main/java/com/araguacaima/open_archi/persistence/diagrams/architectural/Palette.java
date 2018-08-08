@@ -16,8 +16,9 @@ public class Palette implements Palettable {
         PaletteItem element = new PaletteItem();
         Shape shape = new Shape();
         shape.setFill("#0000FF");
-        shape.setSize(new Size(40,40));
-        shape.setType(ShapeType.RoundedRectangle);
+        shape.setStroke("transparent");
+        shape.setSize(new Size(25,15));
+        shape.setType(ShapeType.DEFAULT);
         element.setName("New Element");
         element.setShape(shape);
         element.setRank(0);
@@ -28,7 +29,8 @@ public class Palette implements Palettable {
         person.setName("Person");
         Shape shapePerson = new Shape();
         shapePerson.setFill("#ED5656");
-        shapePerson.setSize(new Size(40,40));
+        shapePerson.setStroke("transparent");
+        shapePerson.setSize(new Size(30,30));
         shapePerson.setType(ShapeType.PERSON);
         person.setShape(shapePerson);
         person.setKind(ElementKind.CONSUMER);
@@ -39,7 +41,8 @@ public class Palette implements Palettable {
         PaletteItem consumer = new PaletteItem();
         Shape shapeConsumer = new Shape();
         shapeConsumer.setFill("#F0AD4B");
-        shapeConsumer.setSize(new Size(40,40));
+        shapeConsumer.setStroke("transparent");
+        shapeConsumer.setSize(new Size(15,15));
         shapeConsumer.setType(ShapeType.CONSUMER);
         consumer.setName("Consumer");
         consumer.setShape(shapeConsumer);

@@ -105,7 +105,6 @@ function checkAndSave() {
         data.name = name;
         data.image = meta.image;
         myDiagram.startTransaction("Adding new element");
-        addNodeToTemplateByType(data, type);
         data.category = type;
         myDiagram.model.removeNodeData(data);
         myDiagram.model.addNodeData(data);
@@ -450,11 +449,6 @@ function findValuesHelper(obj, key, list) {
 }
 
 $(function () {
-
-    /*    $.getScript("/javascripts/menu.js").done(function (script, textStatus) {
-            showMenu();
-        });*/
-
     relocateDataModelDiv();
     relocatePaletteDiv();
     showPaletteByType(paletteData);
