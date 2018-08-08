@@ -43,8 +43,9 @@ append scripts
             nodeDataArray = !{nodeDataArray};
         }
         let paletteModelArray = [];
-        if (!{palette}) {
-            paletteModelArray = !{palette}.elements;
+        let palette = !{palette};
+        if (palette) {
+            paletteModelArray = palette.elements;
         }
         let linkDataArray = [];
         if (!{linkDataArray}) {

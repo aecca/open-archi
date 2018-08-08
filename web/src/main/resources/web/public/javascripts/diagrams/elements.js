@@ -389,6 +389,7 @@ function nodeStyle() {
         },
         new go.Binding("clonedFrom", "clonedFrom"),
         new go.Binding("name", "", OpenArchiWrapper.toTitle).makeTwoWay(OpenArchiWrapper.fromTitle),
+        new go.Binding("category", "", OpenArchiWrapper.toCategory).makeTwoWay(OpenArchiWrapper.fromCategory),
         {dragComputation: stayInGroup}
     ];
 }

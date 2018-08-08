@@ -20,7 +20,6 @@ function getDefaultTemplate() {
                     editable: true
                 },
                 new go.Binding("text", "", OpenArchiWrapper.toTitle),
-                new go.Binding("stroke", "", OpenArchiWrapper.toStroke).makeTwoWay(OpenArchiWrapper.fromStroke),
                 new go.Binding("minSize", "", OpenArchiWrapper.toSize).makeTwoWay(OpenArchiWrapper.fromSize)),
             { // this tooltip Adornment is shared by all nodes
                 toolTip:
@@ -46,16 +45,17 @@ function getPersonTemplate() {
     return gojs(
         go.Node, "Spot",
         {
-            name: "Person",
             locationSpot: go.Spot.Center,
             maxSize: new go.Size(60, 50)
         },
+        new go.Binding("name", "", OpenArchiWrapper.toCategory).makeTwoWay(OpenArchiWrapper.fromCategory),
         gojs(go.Panel, "Auto",
             gojs(go.Shape,
                 {
                     figure: "Actor",
                     alignment: go.Spot.Center,
                     maxSize: new go.Size(40, 60),
+
                 },
                 new go.Binding("stroke", "", OpenArchiWrapper.toStroke).makeTwoWay(OpenArchiWrapper.fromStroke),
                 new go.Binding("fill", "", OpenArchiWrapper.toFill).makeTwoWay(OpenArchiWrapper.fromFill),
@@ -87,6 +87,7 @@ function getConsumerTemplate() {
             name: "Consumer",
             locationSpot: go.Spot.Center
         },
+        new go.Binding("category", "", OpenArchiWrapper.toCategory).makeTwoWay(OpenArchiWrapper.fromCategory),
         gojs(go.Panel, "Spot",
             gojs(go.Shape,
                 {
@@ -107,7 +108,6 @@ function getConsumerTemplate() {
                     alignment: go.Spot.Center
                 },
                 new go.Binding("text", "", OpenArchiWrapper.toTitle),
-                new go.Binding("stroke", "", OpenArchiWrapper.toStroke).makeTwoWay(OpenArchiWrapper.fromStroke),
                 new go.Binding("minSize", "", OpenArchiWrapper.toSize).makeTwoWay(OpenArchiWrapper.fromSize)),
             { // this tooltip Adornment is shared by all nodes
                 toolTip:

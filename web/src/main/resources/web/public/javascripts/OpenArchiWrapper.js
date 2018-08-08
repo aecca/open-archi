@@ -474,7 +474,7 @@ class OpenArchiWrapper {
     };
 
     static toLocation(data, node) {
-        return new Point(data.x, data.y);
+        return new go.Point(data.x, data.y);
     }
 
     static fromLocation(loc, data, model) {
@@ -484,7 +484,9 @@ class OpenArchiWrapper {
 
     static toFill(data, node) {
         const fill = data.shape.fill;
-        return new Brush(fill ? fill : data.fill);
+        const brush = new go.Brush(go.Brush.Solid);
+        brush.color = fill ? fill : data.fill;
+        return brush;
     }
 
     static fromFill(loc, data, model) {
@@ -547,7 +549,9 @@ class OpenArchiWrapper {
 
     static toStroke(data, node) {
         const stroke = data.shape.stroke;
-        return new Brush(stroke ? stroke : data.stroke);
+        const brush = new go.Brush(go.Brush.Solid);
+        brush.color = stroke ? stroke : data.stroke;
+        return brush;
     }
 
     static fromStroke(stroke, data, model) {
@@ -588,6 +592,23 @@ class OpenArchiWrapper {
             toLinkable = shape.input;
         }
         model.setDataProperty(data, "toLinkable", toLinkable);
+    }
+
+    static toCategory(data, node) {
+        const shape = data.shape;
+        if (shape) {
+            return shape.type;
+        }
+        return "DEFAULT";
+    }
+
+    static fromCategory(loc, data, model) {
+        let category = "DEFAULT";
+        const shape = data.shape;
+        if (shape) {
+            category = shape.type;
+        }
+        model.setDataProperty(data, "category", category);
     }
 
 }
