@@ -7,7 +7,7 @@ import java.util.Set;
 
 public class Palette implements Palettable {
 
-    private Set<PaletteItem> basicElements = new LinkedHashSet<>();
+    private Set<PaletteItem> elements = new LinkedHashSet<>();
     private static PaletteKind kind = PaletteKind.GANTT;
 
     public Palette() {
@@ -16,7 +16,7 @@ public class Palette implements Palettable {
         box.setRank(0);
         box.setName("Feature");
         box.setKind(ElementKind.GANTT);
-        basicElements.add(box);
+        elements.add(box);
     }
 
     @Override
@@ -25,12 +25,15 @@ public class Palette implements Palettable {
     }
 
     @Override
-    public Set<PaletteItem> getBasicElements() {
-        return basicElements;
+    public Set<PaletteItem> getElements() {
+        return elements;
     }
 
-    public void setBasicElements(Set<PaletteItem> basicElements) {
-        this.basicElements = basicElements;
+    public void setElements(Set<PaletteItem> elements) {
+        this.elements = elements;
     }
 
+    public void addElement(PaletteItem element) {
+        this.elements.add(element);
+    }
 }

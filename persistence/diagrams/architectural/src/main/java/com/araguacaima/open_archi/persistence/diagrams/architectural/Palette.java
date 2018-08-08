@@ -7,8 +7,7 @@ import java.util.Set;
 
 public class Palette implements Palettable {
 
-    private Set<PaletteItem> basicElements = new LinkedHashSet<>();
-    private Set<PaletteItem> complexElements = new LinkedHashSet<>();
+    private Set<PaletteItem> elements = new LinkedHashSet<>();
 
     private static PaletteKind kind = PaletteKind.ARCHITECTURE;
 
@@ -17,40 +16,37 @@ public class Palette implements Palettable {
         Shape shape = new Shape();
         shape.setFill("#0000FF");
         shape.setStroke("transparent");
-        shape.setSize(new Size(25,15));
+        shape.setSize(new Size(25, 15));
         shape.setType(ShapeType.DEFAULT);
         element.setName("New Element");
         element.setShape(shape);
         element.setRank(0);
-        element.setCategory(DefaultCategoryItem.DEFAULT.name());
         element.setPrototype(false);
-        basicElements.add(element);
+        elements.add(element);
         PaletteItem person = new PaletteItem();
         person.setName("Person");
         Shape shapePerson = new Shape();
         shapePerson.setFill("#ED5656");
         shapePerson.setStroke("transparent");
-        shapePerson.setSize(new Size(30,30));
+        shapePerson.setSize(new Size(30, 30));
         shapePerson.setType(ShapeType.PERSON);
         person.setShape(shapePerson);
         person.setKind(ElementKind.CONSUMER);
         person.setRank(1);
-        person.setCategory("PERSON");
         person.setPrototype(false);
-        basicElements.add(person);
+        elements.add(person);
         PaletteItem consumer = new PaletteItem();
         Shape shapeConsumer = new Shape();
         shapeConsumer.setFill("#F0AD4B");
         shapeConsumer.setStroke("transparent");
-        shapeConsumer.setSize(new Size(15,15));
+        shapeConsumer.setSize(new Size(15, 15));
         shapeConsumer.setType(ShapeType.CONSUMER);
         consumer.setName("Consumer");
         consumer.setShape(shapeConsumer);
         consumer.setKind(ElementKind.CONSUMER);
         consumer.setRank(2);
-        consumer.setCategory("Consumer");
         consumer.setPrototype(false);
-        basicElements.add(consumer);
+        elements.add(consumer);
     }
 
     @Override
@@ -59,19 +55,17 @@ public class Palette implements Palettable {
     }
 
     @Override
-    public Set<PaletteItem> getBasicElements() {
-        return basicElements;
+    public Set<PaletteItem> getElements() {
+        return elements;
     }
 
-    public void setBasicElements(Set<PaletteItem> basicElements) {
-        this.basicElements = basicElements;
+    public void setElements(Set<PaletteItem> elements) {
+        this.elements = elements;
     }
 
-    public Set<PaletteItem> getComplexElements() {
-        return complexElements;
+    public void addElement(PaletteItem element) {
+        this.elements.add(element);
     }
 
-    public void setComplexElements(Set<PaletteItem> complexElements) {
-        this.complexElements = complexElements;
-    }
+
 }

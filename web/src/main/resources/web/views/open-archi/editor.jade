@@ -30,6 +30,10 @@ append scripts
     script(type='text/javascript', src='/javascripts/OpenArchiWrapper.js')
     script(type='text/javascript', src='/javascripts/diagrams/dataInspector.js')
     script(type='text/javascript', src='/javascripts/bootstrap-slider.js')
+    script(type='text/javascript', src='/javascripts/editor.js')
+    script(type='text/javascript', src='/javascripts/diagrams/basic.js')
+    script(type='text/javascript', src='/javascripts/diagrams/palette.js')
+    script(type='text/javascript', src='/javascripts/diagrams/elements.js')
     script#code(type="text/javascript")
     script.
         let myDiagram;
@@ -37,6 +41,10 @@ append scripts
         let nodeDataArray = [];
         if (!{nodeDataArray}) {
             nodeDataArray = !{nodeDataArray};
+        }
+        let paletteModelArray = [];
+        if (!{palette}) {
+            paletteModelArray = !{palette}.elements;
         }
         let linkDataArray = [];
         if (!{linkDataArray}) {
@@ -54,13 +62,13 @@ append scripts
         let ActivityStart = '!{ActivityStart}';  // height before start message time
         let ActivityEnd = '!{ActivityEnd}';  // height beyond end message time
         let source = '!{source}';
-        let paletteData = !{palette};
         let lightText = 'whitesmoke';
         let viewMode;
         var diagramTypes = !{diagramTypes};
         var elementTypes = !{elementTypes};
         var fullView = '!{fullView}';
         $(function () {
+            init();
             var items = [];
             var i = 0;
             var activeText;
@@ -127,10 +135,7 @@ append scripts
             }
 
         });
-    script(type='text/javascript', src='/javascripts/editor.js')
-    script(type='text/javascript', src='/javascripts/diagrams/basic.js')
-    script(type='text/javascript', src='/javascripts/diagrams/palette.js')
-    script(type='text/javascript', src='/javascripts/diagrams/elements.js')
+
 
 block extra-menu-elements
     +nav_item_dropdown("#", null, "diagramTypesDropdown")(label="Diagram Type")

@@ -3320,7 +3320,7 @@ definitions:
     description: Architecture model palette
     type: object
     properties:
-      basicElements:
+      elements:
         type: array
         items:
           $ref: "#/definitions/Palette_Item"
@@ -3344,7 +3344,7 @@ definitions:
     description: Architecture model palette
     type: object
     properties:
-      basicElements:
+      elements:
         type: array
         items:
           $ref: "#/definitions/Palette_Item_Create"
@@ -3499,7 +3499,7 @@ definitions:
     description: BPM model palette
     type: object
     properties:
-      basicElements:
+      elements:
         type: array
         items:
           $ref: "#/definitions/Palette_Item"
@@ -3507,7 +3507,7 @@ definitions:
     description: BPM model palette
     type: object
     properties:
-      basicElements:
+      elements:
         type: array
         items:
           $ref: "#/definitions/Palette_Item_Create"
@@ -4242,7 +4242,7 @@ definitions:
     description: Flowchart model palette
     type: object
     properties:
-      basicElements:
+      elements:
         type: array
         items:
           $ref: "#/definitions/Palette_Item"
@@ -4250,7 +4250,7 @@ definitions:
     description: Flowchart model palette
     type: object
     properties:
-      basicElements:
+      elements:
         type: array
         items:
           $ref: "#/definitions/Palette_Item_Create"
@@ -4551,7 +4551,7 @@ definitions:
     description: Gantt model palette
     type: object
     properties:
-      basicElements:
+      elements:
         type: array
         items:
           $ref: "#/definitions/Palette_Item_Create"
@@ -4559,7 +4559,7 @@ definitions:
     description: Gantt model palette
     type: object
     properties:
-      basicElements:
+      elements:
         type: array
         items:
           $ref: "#/definitions/Palette_Item"
@@ -5998,7 +5998,7 @@ definitions:
     description: Sequence model palette
     type: object
     properties:
-      basicElements:
+      elements:
         type: array
         items:
           $ref: "#/definitions/Palette_Item"
@@ -6006,7 +6006,7 @@ definitions:
     description: Sequence model palette
     type: object
     properties:
-      basicElements:
+      elements:
         type: array
         items:
           $ref: "#/definitions/Palette_Item_Create"

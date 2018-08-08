@@ -1,4 +1,61 @@
-function initBasic(nodeDataArray, linkDataArray) {
+function initBasic(nodeDataArray, linkDataArray, paletteModelArray) {
+
+    if (myPalette !== undefined) {
+        myPalette.clear();
+        myPalette.div = null;
+    }
+    // initialize the Palette that is on the left side of the page
+    // noinspection JSUndeclaredVariable
+    myPalette =
+        gojs(go.Palette, "paletteDiv",  // must name or refer to the DIV HTML element
+            {
+                scrollsPageOnFocus: false
+            });
+    myPalette.nodeTemplateMap.add("DEFAULT", getDefaultTemplate());
+    myPalette.nodeTemplateMap.add("PERSON", getPersonTemplate());
+    myPalette.nodeTemplateMap.add("CONSUMER", getConsumerTemplate());
+    myPalette.nodeTemplateMap.add("", gojs(
+        go.Node, "Spot", nodeStyle(),
+        new go.Binding("clonedFrom", "clonedFrom"),
+        gojs(go.Panel, "Auto",
+            gojs(go.Shape,
+                {
+                    figure: "RoundedRectangle"
+                },
+                new go.Binding("fill", "", OpenArchiWrapper.toFill).makeTwoWay(OpenArchiWrapper.fromFill),
+                new go.Binding("minSize", "", OpenArchiWrapper.toSize).makeTwoWay(OpenArchiWrapper.fromSize),
+                new go.Binding("stroke", "", OpenArchiWrapper.toStroke).makeTwoWay(OpenArchiWrapper.fromStroke)),
+            gojs(go.TextBlock, "Text",
+                {
+                    font: "bold 11pt Helvetica, Arial, sans-serif",
+                    stroke: lightText,
+                    margin: 8,
+                    maxSize: new go.Size(160, NaN),
+                    wrap: go.TextBlock.WrapFit,
+                    editable: true
+                },
+                new go.Binding("text", "", OpenArchiWrapper.toTitle),
+                new go.Binding("minSize", "", OpenArchiWrapper.toSize).makeTwoWay(OpenArchiWrapper.fromSize)),
+            { // this tooltip Adornment is shared by all nodes
+                toolTip:
+                    gojs(go.Adornment, "Auto",
+                        gojs(go.Shape, {fill: "#FFFFCC"}),
+                        gojs(go.TextBlock, {margin: 4},  // the tooltip shows the result of calling nodeInfo(data)
+                            new go.Binding("text", "", nodeInfo))
+                    ),
+                // this context menu Adornment is shared by all nodes
+                contextMenu: partContextMenu
+            }
+        )
+    ));
+    myPalette.addDiagramListener("InitialLayoutCompleted", function (diagramEvent) {
+        const pdrag = document.getElementById("paletteDraggable");
+        const palette = diagramEvent.diagram;
+        pdrag.style.width = palette.documentBounds.width + 28 + "px"; // account for padding/borders
+        pdrag.style.height = palette.documentBounds.height + 38 + "px";
+    });
+
+    myPalette.model = new go.GraphLinksModel(paletteModelArray);
 
     if (myDiagram !== undefined) {
         myDiagram.clear();

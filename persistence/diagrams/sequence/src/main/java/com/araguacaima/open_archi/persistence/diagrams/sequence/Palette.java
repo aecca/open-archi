@@ -7,7 +7,7 @@ import java.util.Set;
 
 public class Palette implements Palettable {
 
-    private Set<PaletteItem> basicElements = new LinkedHashSet<>();
+    private Set<PaletteItem> elements = new LinkedHashSet<>();
     private static PaletteKind kind = PaletteKind.SEQUENCE;
 
     public Palette() {
@@ -16,13 +16,13 @@ public class Palette implements Palettable {
         box.setRank(0);
         box.setName("Activity");
         box.setKind(ElementKind.SEQUENCE);
-        basicElements.add(box);
+        elements.add(box);
         PaletteItem target = new PaletteItem();
         target.setShape(new Shape(ShapeType.CONSUMER));
         target.setRank(1);
         target.setName("Actor");
         target.setKind(ElementKind.CONSUMER);
-        basicElements.add(target);
+        elements.add(target);
     }
 
     @Override
@@ -31,12 +31,15 @@ public class Palette implements Palettable {
     }
 
     @Override
-    public Set<PaletteItem> getBasicElements() {
-        return basicElements;
+    public Set<PaletteItem> getElements() {
+        return elements;
     }
 
-    public void setBasicElements(Set<PaletteItem> basicElements) {
-        this.basicElements = basicElements;
+    public void setElements(Set<PaletteItem> elements) {
+        this.elements = elements;
     }
 
+    public void addElement(PaletteItem element) {
+        this.elements.add(element);
+    }
 }

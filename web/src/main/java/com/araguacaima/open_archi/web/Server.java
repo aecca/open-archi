@@ -1852,7 +1852,7 @@ public class Server {
         int rank = 0;
         if (models != null) {
             for (Item model : models) {
-                palette.getComplexElements().add(buildPalette(rank, model));
+                palette.addElement(buildPalette(rank, model));
                 rank++;
             }
         }
@@ -1867,7 +1867,6 @@ public class Server {
         item.setName(model.getName());
         Shape shape = model.getShape();
         item.setShape(shape);
-        item.setCategory(model.getClass().getSimpleName().toUpperCase());
         item.setPrototype(model.isPrototype());
         return item;
     }
@@ -1883,9 +1882,8 @@ public class Server {
         shape.setFill(color);
         shape.setSize(new Size(40, 40));
         item.setShape(shape);
-        item.setCategory(category);
         item.setPrototype(prototype);
-        palette.getComplexElements().add(item);
+        palette.addElement(item);
         rank++;
         return rank;
     }

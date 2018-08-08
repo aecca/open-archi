@@ -7,7 +7,7 @@ import java.util.Set;
 
 public class Palette implements Palettable {
 
-    private Set<PaletteItem> basicElements = new LinkedHashSet<>();
+    private Set<PaletteItem> elements = new LinkedHashSet<>();
     private static PaletteKind kind = PaletteKind.BPM;
 
     public Palette() {
@@ -16,37 +16,37 @@ public class Palette implements Palettable {
         box.setRank(0);
         box.setName("Activity");
         box.setKind(ElementKind.BPM);
-        basicElements.add(box);
+        elements.add(box);
         PaletteItem start = new PaletteItem();
         start.setShape(new Shape(ShapeType.Ellipse));
         start.setRank(1);
         start.setName("Start");
         start.setKind(ElementKind.BPM);
-        basicElements.add(start);
+        elements.add(start);
         PaletteItem end = new PaletteItem();
         end.setShape(new Shape(ShapeType.Ellipse));
         end.setRank(2);
         end.setName("End");
         end.setKind(ElementKind.BPM);
-        basicElements.add(end);
+        elements.add(end);
         PaletteItem diamond = new PaletteItem();
         diamond.setShape(new Shape(ShapeType.Diamond));
         diamond.setRank(3);
         diamond.setName("?");
         diamond.setKind(ElementKind.BPM);
-        basicElements.add(diamond);
+        elements.add(diamond);
         PaletteItem lane = new PaletteItem();
         lane.setShape(new Shape(ShapeType.LANE));
         lane.setRank(4);
         lane.setName("Lane");
         lane.setKind(ElementKind.BPM);
-        basicElements.add(lane);
+        elements.add(lane);
         PaletteItem pool = new PaletteItem();
         pool.setShape(new Shape(ShapeType.POOL));
         pool.setRank(5);
         pool.setName("Pool");
         pool.setKind(ElementKind.BPM);
-        basicElements.add(pool);
+        elements.add(pool);
     }
 
     @Override
@@ -55,12 +55,15 @@ public class Palette implements Palettable {
     }
 
     @Override
-    public Set<PaletteItem> getBasicElements() {
-        return basicElements;
+    public Set<PaletteItem> getElements() {
+        return elements;
     }
 
-    public void setBasicElements(Set<PaletteItem> basicElements) {
-        this.basicElements = basicElements;
+    public void setElements(Set<PaletteItem> elements) {
+        this.elements = elements;
     }
 
+    public void addElement(PaletteItem element) {
+        this.elements.add(element);
+    }
 }

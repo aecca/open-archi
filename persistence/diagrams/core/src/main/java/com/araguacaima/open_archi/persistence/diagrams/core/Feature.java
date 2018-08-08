@@ -28,12 +28,6 @@ public class Feature extends Item {
     private String url;
 
     /**
-     * the category of feature; e.g. class, interface, etc
-     */
-    @OneToOne(targetEntity = Category.class)
-    private Category category;
-
-    /**
      * the visibility of the feature; e.g. public, package, private
      */
     @Column
@@ -81,16 +75,6 @@ public class Feature extends Item {
         this.url = url;
     }
 
-    @Override
-    public Category getCategory() {
-        return this.category;
-    }
-
-    @Override
-    public void setCategory(ItemCategory category) {
-        this.category = (Category) category;
-    }
-
     public String getVisibility() {
         return visibility;
     }
@@ -127,7 +111,6 @@ public class Feature extends Item {
         super.override(source, keepMeta, suffix, clonedFrom);
         this.setRole(source.getRole());
         this.setUrl(source.getUrl());
-        this.setCategory(source.getCategory());
         this.setVisibility(source.getVisibility());
         this.setIncomingConstraints(source.getIncomingConstraints());
         this.setOutgoingConstraints(source.getOutgoingConstraints());
@@ -140,9 +123,6 @@ public class Feature extends Item {
         }
         if (source.getUrl() != null) {
             this.setUrl(source.getUrl());
-        }
-        if (source.getCategory() != null) {
-            this.setCategory(source.getCategory());
         }
         if (source.getVisibility() != null) {
             this.setVisibility(source.getVisibility());

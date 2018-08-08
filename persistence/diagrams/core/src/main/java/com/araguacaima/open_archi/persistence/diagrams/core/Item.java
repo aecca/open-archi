@@ -76,9 +76,6 @@ public class Item extends Taggable {
     @Column
     protected String name;
 
-    @OneToOne(targetEntity = DefaultCategory.class)
-    protected ItemCategory category;
-
     @Column
     @Enumerated(EnumType.STRING)
     protected ElementKind kind;
@@ -144,14 +141,6 @@ public class Item extends Taggable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public ItemCategory getCategory() {
-        return category;
-    }
-
-    public void setCategory(ItemCategory category) {
-        this.category = category;
     }
 
     public ElementKind getKind() {

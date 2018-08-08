@@ -350,7 +350,6 @@ function validateModel() {
     $('#model-validation').modal('show')
 }
 
-
 function confirmAndSave() {
     $('#diagram-info').modal('show');
 }
@@ -448,15 +447,14 @@ function findValuesHelper(obj, key, list) {
     return list;
 }
 
-$(function () {
+function init() {
     relocateDataModelDiv();
     relocatePaletteDiv();
-    showPaletteByType(paletteData);
 
     switch (source) {
         case "basic":
-            initBasic(nodeDataArray, linkDataArray);
-
+            initBasic(nodeDataArray, linkDataArray, paletteModelArray);
+            myPalette.requestUpdate();
             myDiagram.requestUpdate();
             // when the document is modified, add a "*" to the title and enable the "Save" button
             myDiagram.addDiagramListener("Modified", function (e) {
@@ -562,7 +560,7 @@ $(function () {
         keyboard: false,
         show: false
     });
-});
+}
 
 function copyTextToClipboard(text) {
     const textArea = document.createElement("textArea");

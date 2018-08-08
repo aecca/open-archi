@@ -5,7 +5,6 @@ public abstract class PaletteInfo {
     private String id;
     private String name;
     private ElementKind kind;
-    private String category;
 
     public PaletteInfo() {
 
@@ -35,11 +34,4 @@ public abstract class PaletteInfo {
         this.kind = kind;
     }
 
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
 }
