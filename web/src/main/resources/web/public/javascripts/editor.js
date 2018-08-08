@@ -99,33 +99,44 @@ function checkAndSave() {
     if (data !== null) {
         const name = $("#element-name").val();
         const type = getElementType();
-        //const prototype = $("#element-prototype").prop("checked");
-        myDiagram.startTransaction("Deleting new element");
-        myDiagram.model.removeNodeData(data);
-        console.log("\nBefore\n");
-        console.log(myDiagram.model.toJSON());
-        myDiagram.requestUpdate();
-        myDiagram.commitTransaction("Deleting new element");
-        myDiagram.startTransaction("Adding new element");
-        delete data["text"];
-        delete data["__gohashid"];
-        data.kind = type;
-        data.name = name;
-        data.image = meta.image;
-        let shape = data.shape;
-        if (shape === undefined) {
-            shape = {};
-        }
-        shape.type = type;
-        data.category = type;
-        data.isGroup = OpenArchiWrapper.toIsGroup(data);
-        myDiagram.model.addNodeData(data);
-        console.log("\nAfter\n");
-        console.log(myDiagram.model.toJSON());
-        myDiagram.requestUpdate();
-        myDiagram.commitTransaction("Adding new element");
-        delete meta.image;
-        relayoutLanes();
+        $.ajax({
+            url: "/catalogs/element-types/" + type+ "/shape",
+            type: 'GET',
+            crossDomain: true,
+            contentType: "application/json",
+            converters: {
+                "text json": function (response) {
+                    return (response === "") ? null : JSON.parse(response);
+                }
+            }
+        }).done((shape, textStatus, response) => {
+                if (response.status === 201) {
+
+                    //const prototype = $("#element-prototype").prop("checked");
+                    myDiagram.startTransaction("Deleting new element");
+                    myDiagram.model.removeNodeData(data);
+                    myDiagram.requestUpdate();
+                    myDiagram.commitTransaction("Deleting new element");
+                    myDiagram.startTransaction("Adding new element");
+                    delete data["text"];
+                    delete data["__gohashid"];
+                    data.kind = type;
+                    data.name = name;
+                    data.image = meta.image;
+                    data.shape = shape;
+                    data.category = type;
+                    data.isGroup = OpenArchiWrapper.toIsGroup(data);
+                    myDiagram.model.addNodeData(data);
+                    myDiagram.requestUpdate();
+                    myDiagram.commitTransaction("Adding new element");
+                    delete meta.image;
+                    relayoutLanes();
+                } else {
+
+                }
+            }
+        ).fail((jqXHR, textStatus, errorThrown) => alert(errorThrown));
+
     }
 }
 

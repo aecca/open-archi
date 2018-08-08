@@ -46,9 +46,9 @@ function getPersonTemplate() {
         go.Node, "Spot",
         {
             locationSpot: go.Spot.Center,
-            maxSize: new go.Size(60, 50)
+            maxSize: new go.Size(60, 50),
+            name: "Person"
         },
-        new go.Binding("name", "", OpenArchiWrapper.toCategory).makeTwoWay(OpenArchiWrapper.fromCategory),
         gojs(go.Panel, "Auto",
             gojs(go.Shape,
                 {

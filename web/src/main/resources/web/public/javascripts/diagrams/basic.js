@@ -363,14 +363,14 @@ function initBasic(nodeDataArray, linkDataArray, paletteModelArray) {
         },
         new go.Binding("isSubGraphExpanded", "expanded").makeTwoWay(),
         // the lane header consisting of a Shape and a TextBlock
-        new go.Binding("background", "isHighlighted", function (h) {
+/*        new go.Binding("background", "isHighlighted", function (h) {
             return h ? "rgba(255,0,0,0.2)" : "transparent";
-        }).ofObject(),
+        }).ofObject(),*/
         gojs(go.Panel, "Horizontal",
             {
                 name: "HEADER",
                 angle: 270,  // maybe rotate the header to read sideways going up
-                alignment: go.Spot.Center
+                alignment: go.Spot.Center,
             },
             gojs(go.Panel, "Horizontal",  // this is hidden when the swimlane is collapsed
                 new go.Binding("visible", "isSubGraphExpanded").ofObject(),
@@ -397,7 +397,8 @@ function initBasic(nodeDataArray, linkDataArray, paletteModelArray) {
                         font: "bold 13pt sans-serif",
                         editable: true,
                         margin: new go.Margin(2, 0, 0, 0),
-                        alignment: go.Spot.BottomCenter
+                        alignment: go.Spot.BottomCenter,
+                        stroke: lightText
                     },
                     new go.Binding("text", "", OpenArchiWrapper.toTitle).makeTwoWay(OpenArchiWrapper.fromTitle))
             ),
@@ -406,10 +407,13 @@ function initBasic(nodeDataArray, linkDataArray, paletteModelArray) {
         gojs(go.Panel, "Auto",  // the lane consisting of a background Shape and a Placeholder representing the subgraph
             gojs(go.Shape, "Rectangle",  // this is the resized object
                 {
-                    name: "SHAPE"
+                    name: "SHAPE",
+                    fill: "white",
+                    stroke: "grey",
+                    strokeWidth: 4,
                 },
-                new go.Binding("fill", "", OpenArchiWrapper.toFill).makeTwoWay(OpenArchiWrapper.fromFill),
-                new go.Binding("stroke", "", OpenArchiWrapper.toStroke).makeTwoWay(OpenArchiWrapper.fromStroke)),
+                //new go.Binding("stroke", "", OpenArchiWrapper.toStroke).makeTwoWay(OpenArchiWrapper.fromStroke)
+            ),
             gojs(go.Placeholder,
                 {
                     padding: 10,

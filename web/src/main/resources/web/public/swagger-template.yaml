@@ -2757,6 +2757,65 @@ paths:
       security:
       - openarchi_auth:
         - read:catalogs
+    put:
+      tags:
+      - Catalogs
+      summary: Completelly update an existent element shape or creates a new one
+      description: If the element shape object does not exists previously, it will be created. The existent element shape will be deleted completelly before updating, so the element shape remains only those fields passed in this request.
+      operationId: completelly-update-element-shape
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: "element-type-id"
+        in: path
+        description: The incoming element type for replacing or creating its shape
+        required: true
+        type: string
+        enum:
+          - PERSON
+          - DEFAULT
+          - ARCHITECTURE_MODEL
+          - FLOWCHART_MODEL
+          - SEQUENCE_MODEL
+          - GANTT_MODEL
+          - ENTITY_RELATIONSHIP_MODEL
+          - UML_CLASS_MODEL
+          - BPM_MODEL
+          - ARCHITECTURE
+          - FLOWCHART
+          - SEQUENCE
+          - GANTT
+          - ENTITY_RELATIONSHIP
+          - UML_CLASS
+          - FEATURE
+          - COMPONENT
+          - CONSUMER
+          - CONTAINER
+          - DEPLOYMENT
+          - BPM
+          - SYSTEM
+          - GROUP
+          - LAYER
+      - name: body
+        in: body
+        description: Consumer object that needs to be replaced
+        required: true
+        schema:
+          $ref: "#/definitions/Shape_Create"
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Element type not found
+        '405':
+          description: Invalid input
+      security:
+      - openarchi_auth:
+        - write:catalog
   "/catalogs/prototype-names":
 #    options:
 #      tags:

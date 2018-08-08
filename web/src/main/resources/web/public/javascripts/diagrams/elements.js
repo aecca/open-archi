@@ -405,6 +405,7 @@ function groupStyle() {  // common settings for both Lane and Pool Groups
             minLocation: new go.Point(NaN, -Infinity),  // only allow vertical movement
             maxLocation: new go.Point(NaN, Infinity)
         },
+        new go.Binding("background", "", OpenArchiWrapper.toFill).makeTwoWay(OpenArchiWrapper.fromFill),
         new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
         new go.Binding("name", "", OpenArchiWrapper.toTitle).makeTwoWay(OpenArchiWrapper.fromTitle),
         new go.Binding("clonedFrom", "clonedFrom")

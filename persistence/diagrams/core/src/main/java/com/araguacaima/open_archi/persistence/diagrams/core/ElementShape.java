@@ -1,6 +1,5 @@
 package com.araguacaima.open_archi.persistence.diagrams.core;
 
-import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -8,31 +7,36 @@ import javax.persistence.*;
 
 @Entity
 @PersistenceUnit(unitName = "open-archi")
-@Table(name = "Shape", schema = "DIAGRAMS")
+@Table(name = "ElementShape", schema = "DIAGRAMS")
 @DynamicUpdate
-public class Shape extends BaseEntity {
+@NamedQueries({@NamedQuery(name = ElementShape.GET_ELEMENT_SHAPE_BY_TYPE,
+        query = "select a " +
+                "from ElementShape a where a.type=:type")})
+public class ElementShape {
 
+    public static final String GET_ELEMENT_SHAPE_BY_TYPE = "get.element.shape.by.type";
     @Column
     @Enumerated(EnumType.STRING)
+    @Id
     private ElementKind type;
     @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Size size = new Size();
-    @Column
-    private String fill = "#ffffff";
-    @Column
-    private String stroke = "#333333";
+    @Column(nullable = false)
+    private String fill;
+    @Column(nullable = false)
+    private String stroke;
     @Column
     private boolean input = true;
     @Column
     private boolean output = true;
-    @Column
+    @Column(nullable = false)
     private String figure;
 
-    public Shape(ElementKind type) {
+    public ElementShape(ElementKind type) {
         this.type = type;
     }
 
-    public Shape() {
+    public ElementShape() {
     }
 
     public ElementKind getType() {
@@ -92,8 +96,6 @@ public class Shape extends BaseEntity {
     }
 
     public void override(Shape source, boolean keepMeta, String suffix) {
-        super.override(source, keepMeta, suffix);
-        this.setType(source.getType());
         this.setFill(source.getFill());
         this.setOutput(source.isOutput());
         this.setInput(source.isInput());
@@ -107,10 +109,6 @@ public class Shape extends BaseEntity {
     }
 
     public void copyNonEmpty(Shape source, boolean keepMeta) {
-        super.copyNonEmpty(source, keepMeta);
-        if (source.getType() != null) {
-            this.setType(source.getType());
-        }
         if (source.getFill() != null) {
             this.setFill(source.getFill());
         }

@@ -1591,8 +1591,23 @@ public class Server {
                 });
                 get("/catalogs/element-types/:elementTypeId/shape", (request, response) -> {
                     Map<String, Object> params = new HashMap<>();
-                    params.put("id", request.params(":uuid"));
-                    return getElement(request, response, Item.GET_META_DATA, params, MetaData.class);
+                    ElementKind type = (ElementKind) enumsUtils.getEnum(ElementKind.class, request.params(":elementTypeId"));
+                    params.put("type", type);
+                    return getElement(request, response, ElementShape.GET_ELEMENT_SHAPE_BY_TYPE, params, ElementShape.class);
+                });
+                put("/catalogs/element-types/:elementTypeId/shape", (request, response) -> {
+                    try {
+                        ElementShape elementShape = jsonUtils.fromJSON(request.body(), ElementShape.class);
+                        if (elementShape == null) {
+                            throw new Exception("Invalid kind of elementShape");
+                        }
+                        DBUtil.update(elementShape);
+                        response.status(HTTP_CREATED);
+                        response.header("Location", request.pathInfo() + "/" + elementShape.getId());
+                        return EMPTY_RESPONSE;
+                    } catch (Throwable ex) {
+                        return throwError(response, ex);
+                    }
                 });
                 options("/catalogs/diagram-types", (request, response) -> {
                     setCORS(request, response);
