@@ -611,4 +611,12 @@ class OpenArchiWrapper {
         model.setDataProperty(data, "category", category);
     }
 
+    static toIsGroup(data, node) {
+        const shape = data.shape;
+        let isGroup = false;
+        if (shape) {
+            isGroup =  shape.type === "ARCHITECTURE_MODEL" || shape.type === "LAYER" || shape.type === "SYSTEM" || shape.type === "CONTAINER";
+        }
+        return isGroup;
+    }
 }

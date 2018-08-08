@@ -390,6 +390,7 @@ function nodeStyle() {
         new go.Binding("clonedFrom", "clonedFrom"),
         new go.Binding("name", "", OpenArchiWrapper.toTitle).makeTwoWay(OpenArchiWrapper.fromTitle),
         new go.Binding("category", "", OpenArchiWrapper.toCategory).makeTwoWay(OpenArchiWrapper.fromCategory),
+        new go.Binding("isGroup", "", OpenArchiWrapper.toIsGroup),
         {dragComputation: stayInGroup}
     ];
 }
@@ -406,6 +407,8 @@ function groupStyle() {  // common settings for both Lane and Pool Groups
             maxLocation: new go.Point(NaN, Infinity)
         },
         new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
+        new go.Binding("name", "", OpenArchiWrapper.toTitle).makeTwoWay(OpenArchiWrapper.fromTitle),
+        new go.Binding("category", "", OpenArchiWrapper.toCategory).makeTwoWay(OpenArchiWrapper.fromCategory),
         new go.Binding("clonedFrom", "clonedFrom")
     ];
 }
@@ -421,6 +424,9 @@ function updateCrossLaneLinks(group) {
 // this may be called to force the lanes to be laid out again
 function relayoutLanes() {
     myDiagram.nodes.each(function (node) {
+        if (!(node instanceof go.Group)) {
+            return;
+        }
         if (node.category !== "Lane" && node.category !== "LANE" && node.category !== "Layer" && node.category !== "LAYER") {
             return;
         }

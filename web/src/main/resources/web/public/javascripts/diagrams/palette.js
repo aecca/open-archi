@@ -54,8 +54,7 @@ function getPersonTemplate() {
                 {
                     figure: "Actor",
                     alignment: go.Spot.Center,
-                    maxSize: new go.Size(40, 60),
-
+                    maxSize: new go.Size(40, 60)
                 },
                 new go.Binding("stroke", "", OpenArchiWrapper.toStroke).makeTwoWay(OpenArchiWrapper.fromStroke),
                 new go.Binding("fill", "", OpenArchiWrapper.toFill).makeTwoWay(OpenArchiWrapper.fromFill),

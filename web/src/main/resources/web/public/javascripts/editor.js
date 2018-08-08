@@ -105,7 +105,11 @@ function checkAndSave() {
         data.name = name;
         data.image = meta.image;
         myDiagram.startTransaction("Adding new element");
-        data.category = type;
+        let shape = data.shape;
+        if (shape === undefined) {
+            shape = {};
+        }
+        shape.type = type;
         myDiagram.model.removeNodeData(data);
         myDiagram.model.addNodeData(data);
         delete meta.image;
