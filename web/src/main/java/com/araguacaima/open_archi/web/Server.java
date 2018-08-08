@@ -1603,7 +1603,7 @@ public class Server {
                         }
                         DBUtil.update(elementShape);
                         response.status(HTTP_CREATED);
-                        response.header("Location", request.pathInfo() + "/" + elementShape.getId());
+                        response.header("Location", request.pathInfo() + "/" + elementShape.getType());
                         return EMPTY_RESPONSE;
                     } catch (Throwable ex) {
                         return throwError(response, ex);

@@ -143,7 +143,7 @@ public class JPAEntityManagerUtils {
         return entity;
     }
 
-    private static <T> Object extractId(T entity) throws IllegalAccessException {
+    public static <T> Object extractId(T entity) throws IllegalAccessException {
         Collection<Field> fields = reflectionUtils.getAllFieldsIncludingParents(entity);
         for (Field field : fields) {
             if (field.getAnnotation(Id.class) != null || field.getAnnotation(EmbeddedId.class) != null) {
