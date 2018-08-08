@@ -1,6 +1,8 @@
 package com.araguacaima.open_archi.persistence.diagrams.core;
 
 public enum ElementKind {
+    PERSON,
+    DEFAULT,
     ARCHITECTURE_MODEL,
     FLOWCHART_MODEL,
     SEQUENCE_MODEL,
@@ -22,5 +24,10 @@ public enum ElementKind {
     BPM,
     SYSTEM,
     GROUP,
-    LAYER
+    LAYER,
+    INITIATOR,
+    FINISHER,
+    CONDITION,
+    LANE,
+    POOL
 }

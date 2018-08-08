@@ -86,7 +86,6 @@ function getConsumerTemplate() {
             name: "Consumer",
             locationSpot: go.Spot.Center
         },
-        new go.Binding("category", "", OpenArchiWrapper.toCategory).makeTwoWay(OpenArchiWrapper.fromCategory),
         gojs(go.Panel, "Spot",
             gojs(go.Shape,
                 {

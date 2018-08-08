@@ -13,7 +13,7 @@ public class Shape extends BaseEntity {
 
     @Column
     @Enumerated(EnumType.STRING)
-    private ShapeType type;
+    private ElementKind type;
     @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Size size = new Size();
     @Column
@@ -25,18 +25,18 @@ public class Shape extends BaseEntity {
     @Column
     private boolean output = true;
 
-    public Shape(ShapeType type) {
+    public Shape(ElementKind type) {
         this.type = type;
     }
 
     public Shape() {
     }
 
-    public ShapeType getType() {
+    public ElementKind getType() {
         return type;
     }
 
-    public void setType(ShapeType type) {
+    public void setType(ElementKind type) {
         this.type = type;
     }
 

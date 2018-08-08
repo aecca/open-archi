@@ -95,29 +95,38 @@ function checkAndSave() {
     let basicElementData = $('#basic-element-data');
     const key = basicElementData.attr("data-key");
     let data = myDiagram.model.findNodeDataForKey(key);
-
+    basicElementData.modal('hide');
     if (data !== null) {
         const name = $("#element-name").val();
         const type = getElementType();
-        const prototype = $("#element-prototype").prop("checked");
+        //const prototype = $("#element-prototype").prop("checked");
+        myDiagram.startTransaction("Deleting new element");
+        myDiagram.model.removeNodeData(data);
+        console.log("\nBefore\n");
+        console.log(myDiagram.model.toJSON());
+        myDiagram.requestUpdate();
+        myDiagram.commitTransaction("Deleting new element");
+        myDiagram.startTransaction("Adding new element");
         delete data["text"];
+        delete data["__gohashid"];
         data.kind = type;
         data.name = name;
         data.image = meta.image;
-        myDiagram.startTransaction("Adding new element");
         let shape = data.shape;
         if (shape === undefined) {
             shape = {};
         }
         shape.type = type;
-        myDiagram.model.removeNodeData(data);
+        data.category = type;
+        data.isGroup = OpenArchiWrapper.toIsGroup(data);
         myDiagram.model.addNodeData(data);
-        delete meta.image;
+        console.log("\nAfter\n");
+        console.log(myDiagram.model.toJSON());
         myDiagram.requestUpdate();
         myDiagram.commitTransaction("Adding new element");
+        delete meta.image;
         relayoutLanes();
     }
-    basicElementData.modal('hide')
 }
 
 function expand(data) {

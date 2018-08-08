@@ -12,7 +12,7 @@ public class Palette implements Palettable {
 
     public Palette() {
         PaletteItem box = new PaletteItem();
-        box.setShape(new Shape(ShapeType.Rectangle));
+        box.setShape(new Shape(ElementKind.DEFAULT));
         box.setRank(0);
         box.setName("Feature");
         box.setKind(ElementKind.GANTT);

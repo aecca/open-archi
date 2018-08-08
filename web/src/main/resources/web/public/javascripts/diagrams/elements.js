@@ -389,7 +389,6 @@ function nodeStyle() {
         },
         new go.Binding("clonedFrom", "clonedFrom"),
         new go.Binding("name", "", OpenArchiWrapper.toTitle).makeTwoWay(OpenArchiWrapper.fromTitle),
-        new go.Binding("category", "", OpenArchiWrapper.toCategory).makeTwoWay(OpenArchiWrapper.fromCategory),
         new go.Binding("isGroup", "", OpenArchiWrapper.toIsGroup),
         {dragComputation: stayInGroup}
     ];
@@ -408,7 +407,6 @@ function groupStyle() {  // common settings for both Lane and Pool Groups
         },
         new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
         new go.Binding("name", "", OpenArchiWrapper.toTitle).makeTwoWay(OpenArchiWrapper.fromTitle),
-        new go.Binding("category", "", OpenArchiWrapper.toCategory).makeTwoWay(OpenArchiWrapper.fromCategory),
         new go.Binding("clonedFrom", "clonedFrom")
     ];
 }

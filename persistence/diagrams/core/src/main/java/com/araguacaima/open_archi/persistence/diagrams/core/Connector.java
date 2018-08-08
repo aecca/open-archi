@@ -13,15 +13,15 @@ public class Connector extends BaseEntity {
 
     @Column
     @Enumerated(EnumType.STRING)
-    private ShapeType type;
+    private ElementKind type;
     @Column
     private String stroke = "#333333";
 
-    public ShapeType getType() {
+    public ElementKind getType() {
         return type;
     }
 
-    public void setType(ShapeType type) {
+    public void setType(ElementKind type) {
         this.type = type;
     }
 

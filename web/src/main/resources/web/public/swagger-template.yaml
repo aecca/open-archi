@@ -2707,6 +2707,56 @@ paths:
       - openarchi_auth:
         - write:catalogs
         - read:catalogs
+  "/catalogs/element-types/{element-type-id}/shape":
+    get:
+      tags:
+      - Catalogs
+      summary: Finds shapes
+      description: Returns the shape asociated with the incoming element
+      operationId: get-element-type-shape
+      produces:
+      - application/json
+      parameters:
+      - name: "element-type-id"
+        in: path
+        description: The incoming element type for searching its shape
+        required: true
+        type: string
+        enum:
+          - PERSON
+          - DEFAULT
+          - ARCHITECTURE_MODEL
+          - FLOWCHART_MODEL
+          - SEQUENCE_MODEL
+          - GANTT_MODEL
+          - ENTITY_RELATIONSHIP_MODEL
+          - UML_CLASS_MODEL
+          - BPM_MODEL
+          - ARCHITECTURE
+          - FLOWCHART
+          - SEQUENCE
+          - GANTT
+          - ENTITY_RELATIONSHIP
+          - UML_CLASS
+          - FEATURE
+          - COMPONENT
+          - CONSUMER
+          - CONTAINER
+          - DEPLOYMENT
+          - BPM
+          - SYSTEM
+          - GROUP
+          - LAYER
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: "#/definitions/Shape"
+        '400':
+          description: Bad request
+      security:
+      - openarchi_auth:
+        - read:catalogs
   "/catalogs/prototype-names":
 #    options:
 #      tags:
@@ -5746,11 +5796,30 @@ definitions:
         type: string
         description: Shape type
         enum:
-        - Person
-        - RoundedRectangle
-        - Rectangle
-        - Diamond
-        - Ellipse
+          - PERSON
+          - DEFAULT
+          - ARCHITECTURE_MODEL
+          - FLOWCHART_MODEL
+          - SEQUENCE_MODEL
+          - GANTT_MODEL
+          - ENTITY_RELATIONSHIP_MODEL
+          - UML_CLASS_MODEL
+          - BPM_MODEL
+          - ARCHITECTURE
+          - FLOWCHART
+          - SEQUENCE
+          - GANTT
+          - ENTITY_RELATIONSHIP
+          - UML_CLASS
+          - FEATURE
+          - COMPONENT
+          - CONSUMER
+          - CONTAINER
+          - DEPLOYMENT
+          - BPM
+          - SYSTEM
+          - GROUP
+          - LAYER
       size:
         $ref: "#/definitions/Size"
       fill:
@@ -5781,11 +5850,30 @@ definitions:
         type: string
         description: Shape type
         enum:
-        - Person
-        - RoundedRectangle
-        - Rectangle
-        - Diamond
-        - Ellipse
+          - PERSON
+          - DEFAULT
+          - ARCHITECTURE_MODEL
+          - FLOWCHART_MODEL
+          - SEQUENCE_MODEL
+          - GANTT_MODEL
+          - ENTITY_RELATIONSHIP_MODEL
+          - UML_CLASS_MODEL
+          - BPM_MODEL
+          - ARCHITECTURE
+          - FLOWCHART
+          - SEQUENCE
+          - GANTT
+          - ENTITY_RELATIONSHIP
+          - UML_CLASS
+          - FEATURE
+          - COMPONENT
+          - CONSUMER
+          - CONTAINER
+          - DEPLOYMENT
+          - BPM
+          - SYSTEM
+          - GROUP
+          - LAYER
       size:
         $ref: "#/definitions/Size"
       fill:
@@ -5820,11 +5908,30 @@ definitions:
         type: string
         description: Shape type
         enum:
-        - Person
-        - RoundedRectangle
-        - Rectangle
-        - Diamond
-        - Ellipse
+          - PERSON
+          - DEFAULT
+          - ARCHITECTURE_MODEL
+          - FLOWCHART_MODEL
+          - SEQUENCE_MODEL
+          - GANTT_MODEL
+          - ENTITY_RELATIONSHIP_MODEL
+          - UML_CLASS_MODEL
+          - BPM_MODEL
+          - ARCHITECTURE
+          - FLOWCHART
+          - SEQUENCE
+          - GANTT
+          - ENTITY_RELATIONSHIP
+          - UML_CLASS
+          - FEATURE
+          - COMPONENT
+          - CONSUMER
+          - CONTAINER
+          - DEPLOYMENT
+          - BPM
+          - SYSTEM
+          - GROUP
+          - LAYER
       size:
         $ref: "#/definitions/Size_Create"
       fill:

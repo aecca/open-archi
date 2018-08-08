@@ -12,13 +12,13 @@ public class Palette implements Palettable {
 
     public Palette() {
         PaletteItem box = new PaletteItem();
-        box.setShape(new Shape(ShapeType.RoundedRectangle));
+        box.setShape(new Shape(ElementKind.DEFAULT));
         box.setRank(0);
         box.setName("Activity");
         box.setKind(ElementKind.SEQUENCE);
         elements.add(box);
         PaletteItem target = new PaletteItem();
-        target.setShape(new Shape(ShapeType.CONSUMER));
+        target.setShape(new Shape(ElementKind.CONSUMER));
         target.setRank(1);
         target.setName("Actor");
         target.setKind(ElementKind.CONSUMER);
