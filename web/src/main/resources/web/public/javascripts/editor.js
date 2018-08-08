@@ -99,6 +99,7 @@ function checkAndSave() {
     if (data !== null) {
         const name = $("#element-name").val();
         const type = getElementType();
+        //const prototype = $("#element-prototype").prop("checked");
         $.ajax({
             url: "/open-archi/api/catalogs/element-types/" + type+ "/shape",
             type: 'GET',
@@ -109,10 +110,9 @@ function checkAndSave() {
                     return (response === "") ? null : JSON.parse(response);
                 }
             }
-        }).done((shape, textStatus, response) => {
+        }).done((shapeText, textStatus, response) => {
                 if (response.status === 200) {
-
-                    //const prototype = $("#element-prototype").prop("checked");
+                    let shape = JSON.parse(shapeText);
                     myDiagram.startTransaction("Deleting new element");
                     myDiagram.model.removeNodeData(data);
                     myDiagram.requestUpdate();
