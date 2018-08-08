@@ -2751,7 +2751,7 @@ paths:
         '200':
           description: OK
           schema:
-            $ref: "#/definitions/Shape"
+            $ref: "#/definitions/ElementShape"
         '400':
           description: Bad request
       security:
@@ -2803,7 +2803,7 @@ paths:
         description: Consumer object that needs to be replaced
         required: true
         schema:
-          $ref: "#/definitions/Shape_Create"
+          $ref: "#/definitions/Element_Shape_Create"
       responses:
         '200':
           description: OK
@@ -4098,6 +4098,81 @@ definitions:
           description: Features that conforms the model
           items:
             $ref: "#/definitions/Feature_Create"
+  Element_Shape:
+    type: object
+    description: Shape related to an element according its type
+    properties:
+      id:
+        type: string
+        description: Shape identifier
+      type:
+        type: string
+        description: Shape type
+        enum:
+          - PERSON
+          - DEFAULT
+          - ARCHITECTURE_MODEL
+          - FLOWCHART_MODEL
+          - SEQUENCE_MODEL
+          - GANTT_MODEL
+          - ENTITY_RELATIONSHIP_MODEL
+          - UML_CLASS_MODEL
+          - BPM_MODEL
+          - ARCHITECTURE
+          - FLOWCHART
+          - SEQUENCE
+          - GANTT
+          - ENTITY_RELATIONSHIP
+          - UML_CLASS
+          - FEATURE
+          - COMPONENT
+          - CONSUMER
+          - CONTAINER
+          - DEPLOYMENT
+          - BPM
+          - SYSTEM
+          - GROUP
+          - LAYER
+      size:
+        $ref: "#/definitions/Size"
+      fill:
+        type: string
+        description: Hex string that represents the filling color of the shape
+        default: #ffffff
+      stroke:
+        type: string
+        description: Hex string that represents the line surrounding the shape (stroke)
+        default: #333333
+      input:
+        type: boolean
+        default: true
+      output:
+        type: boolean
+        default: true
+    required:
+    - id
+    - type
+  Element_Shape_Create:
+    type: object
+    description: Concrete shape that univocally identify o model
+    properties:
+      size:
+        $ref: "#/definitions/Size_Create"
+      fill:
+         type: string
+         default: #ffffff
+      stroke:
+         type: string
+         default: #333333
+      input:
+         type: boolean
+         default: true
+      output:
+         type: boolean
+         default: true
+    required:
+    - id
+    - type
   Elements:
     type: object
     description: Abstract element object

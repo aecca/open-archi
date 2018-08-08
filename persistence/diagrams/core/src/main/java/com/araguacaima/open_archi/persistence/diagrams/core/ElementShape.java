@@ -1,5 +1,6 @@
 package com.araguacaima.open_archi.persistence.diagrams.core;
 
+import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -12,12 +13,11 @@ import javax.persistence.*;
 @NamedQueries({@NamedQuery(name = ElementShape.GET_ELEMENT_SHAPE_BY_TYPE,
         query = "select a " +
                 "from ElementShape a where a.type=:type")})
-public class ElementShape {
+public class ElementShape extends BaseEntity{
 
     public static final String GET_ELEMENT_SHAPE_BY_TYPE = "get.element.shape.by.type";
     @Column
     @Enumerated(EnumType.STRING)
-    @Id
     private ElementKind type;
     @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Size size = new Size();
@@ -29,7 +29,7 @@ public class ElementShape {
     private boolean input = true;
     @Column
     private boolean output = true;
-    @Column(nullable = false)
+
     private String figure;
 
     public ElementShape(ElementKind type) {
@@ -95,7 +95,7 @@ public class ElementShape {
         this.figure = figure;
     }
 
-    public void override(Shape source, boolean keepMeta, String suffix) {
+    public void override(ElementShape source, boolean keepMeta, String suffix) {
         this.setFill(source.getFill());
         this.setOutput(source.isOutput());
         this.setInput(source.isInput());
@@ -108,7 +108,7 @@ public class ElementShape {
         this.setFigure(source.getFigure());
     }
 
-    public void copyNonEmpty(Shape source, boolean keepMeta) {
+    public void copyNonEmpty(ElementShape source, boolean keepMeta) {
         if (source.getFill() != null) {
             this.setFill(source.getFill());
         }

@@ -1601,7 +1601,17 @@ public class Server {
                         if (elementShape == null) {
                             throw new Exception("Invalid kind of elementShape");
                         }
-                        DBUtil.update(elementShape);
+                        Map<String, Object> params = new HashMap<>();
+                        ElementKind type = (ElementKind) enumsUtils.getEnum(ElementKind.class, request.params(":elementTypeId"));
+                        params.put("type", type);
+                        ElementShape elementShape1 = JPAEntityManagerUtils.findByQuery(ElementShape.class, ElementShape.GET_ELEMENT_SHAPE_BY_TYPE, params);
+                        if (elementShape1 == null) {
+                            elementShape.setType(type);
+                            DBUtil.populate(elementShape);
+                        } else {
+                            elementShape1.override(elementShape, false, "");
+                            DBUtil.update(elementShape1);
+                        }
                         response.status(HTTP_CREATED);
                         response.header("Location", request.pathInfo() + "/" + elementShape.getType());
                         return EMPTY_RESPONSE;

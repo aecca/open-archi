@@ -430,14 +430,15 @@ public class DBUtil {
         ReflectionUtils.doWithFields(entity.getClass(), field -> processFieldWhenCreationIfNotExists(entity, field), Utils::filterMethod);
     }
 
-    public static void update(Object entity) throws Throwable {
+    public static void update(BaseEntity entity) throws Throwable {
         boolean autocommit = JPAEntityManagerUtils.getAutocommit();
         JPAEntityManagerUtils.setAutocommit(false);
         JPAEntityManagerUtils.begin();
-        Object persistedEntity = JPAEntityManagerUtils.find(entity);
+        Class<?> clazz = entity.getClass();
+        Object persistedEntity = JPAEntityManagerUtils.find(clazz, entity.getId());
         try {
             if (persistedEntity == null) {
-                throw new EntityNotFoundException("Can not replace due object does not exists");
+                throw new EntityNotFoundException("Can not replace due object with id '" + entity.getId() + "' does not exists");
             }
             createIfNotExists(entity);
             reflectionUtils.invokeMethod(persistedEntity, "copyNonEmpty", new Object[]{entity, true});
