@@ -13,7 +13,7 @@ import javax.persistence.*;
 @NamedQueries({@NamedQuery(name = ElementShape.GET_ELEMENT_SHAPE_BY_TYPE,
         query = "select a " +
                 "from ElementShape a where a.type=:type")})
-public class ElementShape extends BaseEntity{
+public class ElementShape extends BaseEntity {
 
     public static final String GET_ELEMENT_SHAPE_BY_TYPE = "get.element.shape.by.type";
     @Column
@@ -29,8 +29,10 @@ public class ElementShape extends BaseEntity{
     private boolean input = true;
     @Column
     private boolean output = true;
-
+    @Column
     private String figure;
+    @Column
+    private boolean isGroup;
 
     public ElementShape(ElementKind type) {
         this.type = type;
@@ -95,6 +97,14 @@ public class ElementShape extends BaseEntity{
         this.figure = figure;
     }
 
+    public boolean isIsGroup() {
+        return isGroup;
+    }
+
+    public void setIsGroup(boolean group) {
+        this.isGroup = group;
+    }
+
     public void override(ElementShape source, boolean keepMeta, String suffix) {
         this.setFill(source.getFill());
         this.setOutput(source.isOutput());
@@ -106,6 +116,7 @@ public class ElementShape extends BaseEntity{
             this.setSize(size);
         }
         this.setFigure(source.getFigure());
+        this.setIsGroup(source.isIsGroup());
     }
 
     public void copyNonEmpty(ElementShape source, boolean keepMeta) {
@@ -128,5 +139,6 @@ public class ElementShape extends BaseEntity{
         if (StringUtils.isNotBlank(source.getFigure())) {
             this.setFigure(source.getFigure());
         }
+        this.setIsGroup(source.isIsGroup());
     }
 }

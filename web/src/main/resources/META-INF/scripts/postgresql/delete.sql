@@ -76,11 +76,9 @@ DELETE FROM diagrams.models;
 DELETE FROM diagrams.image;
 DELETE FROM diagrams.shape;
 DELETE FROM diagrams.point;
-DELETE FROM diagrams.category;
-DELETE FROM diagrams.defaultcategory;
 DELETE FROM diagrams.shape;
-DELETE FROM diagrams.size;
 DELETE FROM diagrams.elementshape;
+DELETE FROM diagrams.size;
 
 DELETE FROM meta.metainfo_history_ids CASCADE;
 DELETE FROM meta.metainfo CASCADE;

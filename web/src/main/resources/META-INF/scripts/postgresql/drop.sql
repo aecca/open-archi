@@ -76,11 +76,9 @@ DROP TABLE diagrams.system_components CASCADE;
 DROP TABLE diagrams.models CASCADE;
 DROP TABLE diagrams.image CASCADE;
 DROP TABLE diagrams.point CASCADE;
-DROP TABLE diagrams.category CASCADE;
-DROP TABLE diagrams.defaultcategory CASCADE;
 DROP TABLE diagrams.shape CASCADE;
-DROP TABLE diagrams.size CASCADE;
 DROP TABLE diagrams.elementshape CASCADE;
+DROP TABLE diagrams.size CASCADE;
 
 DROP TABLE meta.account CASCADE;
 DROP TABLE meta.account_roles CASCADE;

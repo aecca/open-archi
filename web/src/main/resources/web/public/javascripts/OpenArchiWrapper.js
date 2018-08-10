@@ -613,12 +613,16 @@ class OpenArchiWrapper {
     }
 
     static toIsGroup(data, node) {
-        const shape = data.shape;
-        let isGroup = false;
-        if (shape) {
-            isGroup = shape.type === "ARCHITECTURE_MODEL" || shape.type === "LAYER" || shape.type === "SYSTEM" || shape.type === "CONTAINER";
+        if (data === undefined) {
+            return false;
         }
-        return isGroup;
+        const shape = data.shape;
+        if (shape) {
+            //isGroup = shape.type === "ARCHITECTURE_MODEL" || shape.type === "LAYER" || shape.type === "SYSTEM" || shape.type === "CONTAINER";
+            return shape.isGroup;
+        } else {
+            return data.isGroup;
+        }
     }
 
     static fixCategory(elements) {
