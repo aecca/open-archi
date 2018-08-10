@@ -80,6 +80,7 @@ DROP TABLE diagrams.category CASCADE;
 DROP TABLE diagrams.defaultcategory CASCADE;
 DROP TABLE diagrams.shape CASCADE;
 DROP TABLE diagrams.size CASCADE;
+DROP TABLE diagrams.elementshape CASCADE;
 
 DROP TABLE meta.account CASCADE;
 DROP TABLE meta.account_roles CASCADE;

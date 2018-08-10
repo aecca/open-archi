@@ -76,7 +76,7 @@ public abstract class Item extends Taggable {
 
     @Column
     @Enumerated(EnumType.STRING)
-    protected ElementKind kind;
+    protected ElementKind kind = ElementKind.ITEM;
 
     @Column
     protected String description;

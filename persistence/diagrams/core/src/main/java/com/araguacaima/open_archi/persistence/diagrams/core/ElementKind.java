@@ -29,5 +29,6 @@ public enum ElementKind {
     FINISHER,
     CONDITION,
     LANE,
-    POOL
+    POOL,
+    ITEM
 }
