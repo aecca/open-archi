@@ -59,4 +59,14 @@ public class Gantt extends Item {
             this.setDiagramEnd(source.getDiagramEnd());
         }
     }
+
+    @Override
+    public boolean isGroup() {
+        return false;
+    }
+
+    @Override
+    public void setGroup(boolean container) {
+
+    }
 }

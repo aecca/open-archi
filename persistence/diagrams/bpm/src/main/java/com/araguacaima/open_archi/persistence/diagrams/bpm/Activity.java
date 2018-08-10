@@ -19,4 +19,13 @@ public class Activity extends Item {
         super.copyNonEmpty(source, keepMeta);
     }
 
+    @Override
+    public boolean isGroup() {
+        return false;
+    }
+
+    @Override
+    public void setGroup(boolean container) {
+
+    }
 }

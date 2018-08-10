@@ -1,9 +1,6 @@
 package com.araguacaima.open_archi.persistence.diagrams.sequence;
 
-import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
-import com.araguacaima.open_archi.persistence.diagrams.core.DiagramableElement;
-import com.araguacaima.open_archi.persistence.diagrams.core.Element;
-import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
+import com.araguacaima.open_archi.persistence.diagrams.core.*;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -22,7 +19,7 @@ import java.util.Set;
         @NamedQuery(
                 name = Model.GET_ALL_SEQUENCE_MODELS,
                 query = "select a from com.araguacaima.open_archi.persistence.diagrams.sequence.Model a")})
-public class Model extends Element implements DiagramableElement<Model> {
+public class Model extends ModelElement implements DiagramableElement<Model> {
 
     public static final String FIND_BY_NAME = "SequenceModel.findByName";
     public static final String GET_MODELS_COUNT = "SequenceModel.getModelsCount";

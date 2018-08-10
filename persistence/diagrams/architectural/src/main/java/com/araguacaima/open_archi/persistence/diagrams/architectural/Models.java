@@ -3,6 +3,7 @@ package com.araguacaima.open_archi.persistence.diagrams.architectural;
 import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 import com.araguacaima.open_archi.persistence.diagrams.core.Elements;
+import com.araguacaima.open_archi.persistence.diagrams.core.ModelElements;
 
 import javax.persistence.*;
 import java.util.LinkedHashSet;
@@ -16,7 +17,7 @@ import java.util.Set;
 @DiscriminatorValue(value = "ArchitectureModels")
 @NamedQueries({@NamedQuery(name = Models.GET_ALL_RELATIONSHIPS,
         query = "select a.relationships from Models a where a.id=:id"),})
-public class Models extends Elements {
+public class Models extends ModelElements {
 
     public static final String GET_ALL_RELATIONSHIPS = "get.all.relationships_list";
 

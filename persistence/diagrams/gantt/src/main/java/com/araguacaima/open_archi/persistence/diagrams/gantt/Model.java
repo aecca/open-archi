@@ -1,9 +1,6 @@
 package com.araguacaima.open_archi.persistence.diagrams.gantt;
 
-import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
-import com.araguacaima.open_archi.persistence.diagrams.core.DiagramableElement;
-import com.araguacaima.open_archi.persistence.diagrams.core.Element;
-import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
+import com.araguacaima.open_archi.persistence.diagrams.core.*;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -13,7 +10,7 @@ import java.util.Set;
 @Entity
 @PersistenceUnit(unitName = "open-archi")
 @DiscriminatorValue(value = "GanttModel")
-public class Model extends Element implements DiagramableElement<Model> {
+public class Model extends ModelElement implements DiagramableElement<Model> {
 
     @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinTable(schema = "DIAGRAMS",

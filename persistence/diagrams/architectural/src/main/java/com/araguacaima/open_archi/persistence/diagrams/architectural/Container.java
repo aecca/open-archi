@@ -22,7 +22,7 @@ import java.util.Set;
 @NamedQueries({
         @NamedQuery(name = Container.GET_ALL_CONTAINERS,
                 query = "select a from Container a")})
-public class Container extends StaticElement {
+public class Container extends GroupStaticElement {
 
     public static final String GET_ALL_CONTAINERS = "get.all.containers";
     public static final String GET_ALL_COMPONENTS_FROM_CONTAINER = "get.all.components.from.container";
@@ -37,8 +37,6 @@ public class Container extends StaticElement {
             inverseJoinColumns = {@JoinColumn(name = "Component_Id",
                     referencedColumnName = "Id")})
     private Set<Component> components = new LinkedHashSet<>();
-
-    public static final String SHAPE_COLOR = "#08427B";
 
     public Container() {
         setKind(ElementKind.CONTAINER);

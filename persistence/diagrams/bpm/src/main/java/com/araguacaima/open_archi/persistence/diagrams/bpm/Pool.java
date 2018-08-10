@@ -52,4 +52,13 @@ public class Pool extends Item {
         }
     }
 
+    @Override
+    public boolean isGroup() {
+        return true;
+    }
+
+    @Override
+    public void setGroup(boolean container) {
+
+    }
 }

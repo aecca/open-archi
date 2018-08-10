@@ -44,4 +44,14 @@ public class Lane extends Item {
             this.activities = source.getActivities();
         }
     }
+
+    @Override
+    public boolean isGroup() {
+        return true;
+    }
+
+    @Override
+    public void setGroup(boolean container) {
+
+    }
 }

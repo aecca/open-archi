@@ -90,4 +90,13 @@ public class Features extends Items {
         }
     }
 
+    @Override
+    public boolean isGroup() {
+        return false;
+    }
+
+    @Override
+    public void setGroup(boolean container) {
+
+    }
 }

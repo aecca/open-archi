@@ -58,4 +58,13 @@ public class Consumers extends StaticElements {
         }
     }
 
+    @Override
+    public boolean isGroup() {
+        return false;
+    }
+
+    @Override
+    public void setGroup(boolean container) {
+
+    }
 }

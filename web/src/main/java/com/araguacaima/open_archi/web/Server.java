@@ -476,7 +476,7 @@ public class Server {
                     e.printStackTrace();
                 }
                 get("/", (req, res) -> {
-                    mapEditor.put("palette", jsonUtils.toJSON(getPrototypesPalette()));
+                    mapEditor.put("palette", jsonUtils.toJSON(getArchitecturePalette()));
                     mapEditor.put("source", "basic");
                     mapEditor.put("nodeDataArray", "[]");
                     mapEditor.put("linkDataArray", "[]");
@@ -490,7 +490,7 @@ public class Server {
                             model.validateRequest();
                         }
                         mapEditor.put("model", jsonUtils.toJSON(model));
-                        mapEditor.put("palette", jsonUtils.toJSON(getPrototypesPalette()));
+                        mapEditor.put("palette", jsonUtils.toJSON(getArchitecturePalette()));
                         mapEditor.put("source", "basic");
                         return new ModelAndView(mapEditor, "/open-archi/prototyper");
                     } catch (Exception ex) {
@@ -1900,65 +1900,6 @@ public class Server {
         item.setShape(shape);
         item.setPrototype(model.isPrototype());
         return item;
-    }
-
-    private static int buildPalette(Palette palette, int rank, IdName model, boolean prototype, String color, ElementKind type) {
-        PaletteItem item = new PaletteItem();
-        item.setId(model.getId());
-        item.setRank(rank);
-        item.setKind(ElementKind.ARCHITECTURE_MODEL);
-        item.setName(model.getName());
-        Shape shape = new Shape();
-        shape.setType(type);
-        shape.setFill(color);
-        shape.setSize(new Size(40, 40));
-        item.setShape(shape);
-        item.setPrototype(prototype);
-        palette.addElement(item);
-        rank++;
-        return rank;
-    }
-
-    private static Palette getPrototypesPalette() {
-        Palette palette = new Palette();
-        Map<String, Object> params = new HashMap<>();
-        params.put("type", Layer.class);
-        List<IdName> models;
-        models = JPAEntityManagerUtils.executeQuery(IdName.class, Item.GET_ALL_NON_CLONED_PROTOTYPE_NAMES_BY_TYPE, params);
-        int rank = 0;
-        if (models != null) {
-            for (IdName model : models) {
-                rank = buildPalette(palette, rank, model, true, Layer.SHAPE_COLOR, ElementKind.LAYER);
-            }
-
-            params.put("type", System.class);
-            models = JPAEntityManagerUtils.executeQuery(IdName.class, Item.GET_ALL_NON_CLONED_PROTOTYPE_NAMES_BY_TYPE, params);
-            for (IdName model : models) {
-                rank = buildPalette(palette, rank, model, true, System.SHAPE_COLOR, ElementKind.SYSTEM);
-            }
-
-            params.put("type", Container.class);
-            models = JPAEntityManagerUtils.executeQuery(IdName.class, Item.GET_ALL_PROTOTYPE_NAMES_BY_TYPE, params);
-            rank = 0;
-            for (IdName model : models) {
-                rank = buildPalette(palette, rank, model, true, Container.SHAPE_COLOR, ElementKind.CONTAINER);
-            }
-
-            params.put("type", Component.class);
-            models = JPAEntityManagerUtils.executeQuery(IdName.class, Item.GET_ALL_PROTOTYPE_NAMES_BY_TYPE, params);
-            rank = 0;
-            for (IdName model : models) {
-                rank = buildPalette(palette, rank, model, true, Component.SHAPE_COLOR, ElementKind.COMPONENT);
-            }
-
-            params.put("type", Model.class);
-            models = JPAEntityManagerUtils.executeQuery(IdName.class, Item.GET_ALL_PROTOTYPE_NAMES_BY_TYPE, params);
-            rank = 0;
-            for (IdName model : models) {
-                rank = buildPalette(palette, rank, model, true, Model.SHAPE_COLOR, ElementKind.ARCHITECTURE_MODEL);
-            }
-        }
-        return palette;
     }
 
     private static List getListIdName(String diagramNames) throws IOException {

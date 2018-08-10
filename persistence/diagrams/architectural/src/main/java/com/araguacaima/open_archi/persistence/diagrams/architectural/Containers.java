@@ -18,7 +18,7 @@ import java.util.Set;
  */
 @Entity
 @PersistenceUnit(unitName = "open-archi")
-public class Containers extends StaticElements {
+public class Containers extends GroupStaticElements {
 
     @Column
     private String technology;

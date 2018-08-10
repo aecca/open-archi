@@ -55,7 +55,7 @@ import java.util.Set;
         @NamedQuery(name = Item.GET_ITEMS_BY_NAME_AND_KIND,
                 query = "select a " +
                         "from com.araguacaima.open_archi.persistence.diagrams.core.Item a where a.kind=:kind and a.name=:name")})
-public class Item extends Taggable {
+public abstract class Item extends Taggable {
 
     public static final String GET_ALL_CHILDREN = "get.all.children";
     public static final String GET_META_DATA = "get.meta.data";
@@ -70,8 +70,6 @@ public class Item extends Taggable {
     public static final String GET_ALL_PROTOTYPE_NAMES_BY_TYPE = "get.all.prototype.names.by.type";
     public static final String GET_ALL_NON_CLONED_PROTOTYPE_NAMES_BY_TYPE = "get.all.non.cloned.prototype.names.by.type";
     public static final String GET_ITEMS_BY_NAME_AND_KIND = "get.items.by.name.and.kind";
-
-    public static final String PROTOTYPE_SHAPE_COLOR = "#E00000";
 
     @Column
     protected String name;

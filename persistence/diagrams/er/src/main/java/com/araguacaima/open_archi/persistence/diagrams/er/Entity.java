@@ -49,4 +49,14 @@ public class Entity extends Element {
             this.setAttributes(source.getAttributes());
         }
     }
+
+    @Override
+    public boolean isGroup() {
+        return true;
+    }
+
+    @Override
+    public void setGroup(boolean container) {
+
+    }
 }

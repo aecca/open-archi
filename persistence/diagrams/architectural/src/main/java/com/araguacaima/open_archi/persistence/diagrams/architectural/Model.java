@@ -1,9 +1,6 @@
 package com.araguacaima.open_archi.persistence.diagrams.architectural;
 
-import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
-import com.araguacaima.open_archi.persistence.diagrams.core.DiagramableElement;
-import com.araguacaima.open_archi.persistence.diagrams.core.Element;
-import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
+import com.araguacaima.open_archi.persistence.diagrams.core.*;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
@@ -29,7 +26,7 @@ import java.util.Set;
                 query = "select a.systems from com.araguacaima.open_archi.persistence.diagrams.architectural.Model a where a.id=:id"),
         @NamedQuery(name = Model.GET_SYSTEM,
                 query = "select s from com.araguacaima.open_archi.persistence.diagrams.architectural.Model a JOIN a.systems s where a.id=:id and s.id=:sid")})
-public class Model extends Element implements DiagramableElement<Model> {
+public class Model extends ModelElement implements DiagramableElement<Model> {
 
     public static final String GET_ALL_MODEL_PROTOTYPES = "get.all.model.prototypes";
     public static final String GET_ALL_RELATIONSHIPS = "get.all.relationships";
@@ -37,7 +34,6 @@ public class Model extends Element implements DiagramableElement<Model> {
     public static final String GET_CONSUMER_FOR_MODEL = "get.consumer.for.model";
     public static final String GET_ALL_SYSTEMS_FROM_MODEL = "get.all.systems.from.model";
     public static final String GET_SYSTEM = "get.system";
-    public static final String SHAPE_COLOR = "#FFFFFF";
 
     @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinTable(schema = "DIAGRAMS",

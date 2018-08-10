@@ -21,7 +21,7 @@ import java.util.Set;
         @NamedQuery(name = Taggable.GET_MODELS_BY_STATUS,
                 query = "select a from Taggable a where a.status=:status")})
 @Component
-public class Taggable extends BaseEntity {
+public abstract class Taggable extends BaseEntity {
 
     public static final String GET_ALL_MODELS = "get.all.models";
     public static final String GET_MODELS_BY_TYPE = "get.models.by.type";
@@ -91,6 +91,10 @@ public class Taggable extends BaseEntity {
     public void setClonedBy(Set<CompositeElement> clonedBy) {
         this.clonedBy = clonedBy;
     }
+
+    abstract public boolean isGroup();
+
+    abstract public void setGroup(boolean container);
 
     public void override(Taggable source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
         super.override(source, keepMeta, suffix);

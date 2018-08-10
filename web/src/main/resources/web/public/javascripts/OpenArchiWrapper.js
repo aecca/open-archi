@@ -413,6 +413,7 @@ class OpenArchiWrapper {
                 diagram = bpmModelToDiagram(model);
                 break;
             case "ARCHITECTURE_MODEL":
+            case "LAYER":
             case "SYSTEM":
             case "CONTAINER":
             case "COMPONENT":

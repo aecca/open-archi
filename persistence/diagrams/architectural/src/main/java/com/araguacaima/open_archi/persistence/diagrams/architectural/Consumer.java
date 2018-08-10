@@ -14,13 +14,11 @@ import javax.persistence.*;
  */
 @Entity
 @PersistenceUnit(unitName = "open-archi")
-public class Consumer extends StaticElement {
+public class Consumer extends LeafStaticElement {
 
     @Column
     @Enumerated(EnumType.STRING)
     private Scope scope = Scope.Unspecified;
-
-    public static final String SHAPE_COLOR = "#F0AD4B";
 
     public Consumer() {
         setKind(ElementKind.CONSUMER);

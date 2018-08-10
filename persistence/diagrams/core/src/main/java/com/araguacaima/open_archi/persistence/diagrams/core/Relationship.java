@@ -151,4 +151,13 @@ public class Relationship extends Taggable {
         }
     }
 
+    @Override
+    public boolean isGroup() {
+        return false;
+    }
+
+    @Override
+    public void setGroup(boolean container) {
+
+    }
 }

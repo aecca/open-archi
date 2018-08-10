@@ -17,7 +17,7 @@ import javax.persistence.PersistenceUnit;
  */
 @Entity
 @PersistenceUnit(unitName = "open-archi")
-public class Components extends StaticElements {
+public class Components extends LeafStaticElements {
 
     @Column
     private String technology;

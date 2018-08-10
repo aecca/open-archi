@@ -29,7 +29,7 @@ import java.util.Set;
                 query = "select a.containers from System a where a.id=:id"),
         @NamedQuery(name = System.GET_CONTAINER,
                 query = "select c from System a JOIN a.containers c where a.id=:id and c.id=:cid")})
-public class System extends StaticElement {
+public class System extends GroupStaticElement {
 
     public static final String GET_ALL_SYSTEMS_FROM_SYSTEM = "get.all.systems.from.system";
     public static final String GET_ALL_COMPONENTS_FROM_SYSTEM = "get.all.components.from.system";
@@ -68,8 +68,6 @@ public class System extends StaticElement {
             inverseJoinColumns = {@JoinColumn(name = "Component_Id",
                     referencedColumnName = "Id")})
     private Set<Component> components = new LinkedHashSet<>();
-
-    public static final String SHAPE_COLOR = "#01203A";
 
     public System() {
         setKind(ElementKind.SYSTEM);

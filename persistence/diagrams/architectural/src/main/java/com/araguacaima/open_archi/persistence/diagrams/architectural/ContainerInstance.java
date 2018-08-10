@@ -66,4 +66,13 @@ public class ContainerInstance extends Element {
         }
     }
 
+    @Override
+    public boolean isGroup() {
+        return false;
+    }
+
+    @Override
+    public void setGroup(boolean container) {
+
+    }
 }

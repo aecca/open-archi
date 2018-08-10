@@ -63,4 +63,14 @@ public class Sequence extends Item {
             this.setDuration(source.getDuration());
         }
     }
+
+    @Override
+    public boolean isGroup() {
+        return false;
+    }
+
+    @Override
+    public void setGroup(boolean container) {
+
+    }
 }

@@ -30,4 +30,14 @@ public class Flowchart extends Item {
     public void copyNonEmpty(Flowchart source, boolean keepMeta) {
         super.copyNonEmpty(source, keepMeta);
     }
+
+    @Override
+    public boolean isGroup() {
+        return false;
+    }
+
+    @Override
+    public void setGroup(boolean container) {
+
+    }
 }

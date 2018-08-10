@@ -17,7 +17,7 @@ import java.util.Set;
  */
 @Entity
 @PersistenceUnit(unitName = "open-archi")
-public class Systems extends StaticElements {
+public class Systems extends GroupStaticElements {
 
     @Column
     @Enumerated(EnumType.STRING)
@@ -31,6 +31,16 @@ public class Systems extends StaticElements {
             inverseJoinColumns = {@JoinColumn(name = "Container_Id",
                     referencedColumnName = "Id")})
     private Set<Containers> containers = new LinkedHashSet<>();
+
+
+    @ManyToMany(cascade = CascadeType.REMOVE)
+    @JoinTable(schema = "DIAGRAMS",
+            name = "System_Components",
+            joinColumns = {@JoinColumn(name = "System_Id",
+                    referencedColumnName = "Id")},
+            inverseJoinColumns = {@JoinColumn(name = "Component_Id",
+                    referencedColumnName = "Id")})
+    private Set<Components> components = new LinkedHashSet<>();
 
     public Systems() {
     }
@@ -51,6 +61,14 @@ public class Systems extends StaticElements {
         this.containers = containers;
     }
 
+    public Set<Components> getComponents() {
+        return components;
+    }
+
+    public void setComponents(Set<Components> components) {
+        this.components = components;
+    }
+
     public void override(Systems source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
         super.override(source, keepMeta, suffix, clonedFrom);
         this.setScope(source.getScope());
@@ -58,6 +76,12 @@ public class Systems extends StaticElements {
             Containers newContainer = new Containers();
             newContainer.override(container, keepMeta, suffix, clonedFrom);
             this.containers.add(newContainer);
+        }
+
+        for (Components component : source.getComponents()) {
+            Components newComponent = new Components();
+            newComponent.override(component, keepMeta, suffix, clonedFrom);
+            this.components.add(newComponent);
         }
     }
 
@@ -71,6 +95,13 @@ public class Systems extends StaticElements {
                 Containers newContainer = new Containers();
                 newContainer.copyNonEmpty(container, keepMeta);
                 this.containers.add(newContainer);
+            }
+        }
+        if (source.getComponents() != null && !source.getComponents().isEmpty()) {
+            for (Components component : source.getComponents()) {
+                Components newComponent = new Components();
+                newComponent.copyNonEmpty(component, keepMeta);
+                this.components.add(newComponent);
             }
         }
     }

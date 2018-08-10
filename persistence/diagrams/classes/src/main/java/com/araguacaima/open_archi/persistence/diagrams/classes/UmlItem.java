@@ -25,4 +25,14 @@ public abstract class UmlItem extends Item {
     public void copyNonEmpty(UmlItem source, boolean keepMeta) {
         super.copyNonEmpty(source, keepMeta);
     }
+
+    @Override
+    public boolean isGroup() {
+        return true;
+    }
+
+    @Override
+    public void setGroup(boolean container) {
+
+    }
 }

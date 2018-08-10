@@ -19,7 +19,7 @@ import javax.persistence.*;
 @NamedQueries({
         @NamedQuery(name = Component.GET_ALL_COMPONENTS,
                 query = "select a from Component a")})
-public class Component extends StaticElement {
+public class Component extends LeafStaticElement {
 
 
     public static final String GET_ALL_COMPONENTS = "get.all.components";
@@ -28,8 +28,6 @@ public class Component extends StaticElement {
 
     @Column
     private long size;
-
-    public static final String SHAPE_COLOR = "#1368BD";
 
     public Component() {
         setKind(ElementKind.COMPONENT);

@@ -11,7 +11,7 @@ import java.util.Set;
 @Entity
 @PersistenceUnit(unitName = "open-archi")
 @DiscriminatorValue(value = "ClassesModel")
-public class Model extends Element implements DiagramableElement<Model> {
+public class Model extends ModelElement implements DiagramableElement<Model> {
 
     @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinTable(schema = "DIAGRAMS",

@@ -134,4 +134,14 @@ public class Feature extends Item {
             this.setOutgoingConstraints(source.getOutgoingConstraints());
         }
     }
+
+    @Override
+    public boolean isGroup() {
+        return false;
+    }
+
+    @Override
+    public void setGroup(boolean container) {
+
+    }
 }

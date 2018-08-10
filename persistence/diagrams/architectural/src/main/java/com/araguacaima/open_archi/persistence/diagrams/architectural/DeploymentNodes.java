@@ -74,4 +74,14 @@ public class DeploymentNodes extends Elements {
             this.setTechnology(source.getTechnology());
         }
     }
+
+    @Override
+    public boolean isGroup() {
+        return false;
+    }
+
+    @Override
+    public void setGroup(boolean container) {
+
+    }
 }

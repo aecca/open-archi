@@ -65,4 +65,14 @@ public class ContainerInstances extends Elements {
             this.setInstanceId(source.getInstanceId());
         }
     }
+
+    @Override
+    public boolean isGroup() {
+        return false;
+    }
+
+    @Override
+    public void setGroup(boolean container) {
+
+    }
 }

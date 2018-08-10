@@ -14,7 +14,7 @@ import java.util.Set;
                 query = "select l from Layer l"),
         @NamedQuery(name = Layer.GET_LAYER,
                 query = "select l from Layer l where l.id=:lid")})
-public class Layer extends StaticElement {
+public class Layer extends GroupStaticElement {
 
     public static final String GET_ALL_LAYERS = "get.all.layers";
     public static final String GET_LAYER = "get.layer";
@@ -45,8 +45,6 @@ public class Layer extends StaticElement {
             inverseJoinColumns = {@JoinColumn(name = "Component_Id",
                     referencedColumnName = "Id")})
     private Set<Component> components = new LinkedHashSet<>();
-
-    public static final String SHAPE_COLOR = "green";
 
     public Layer() {
         setKind(ElementKind.LAYER);

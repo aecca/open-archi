@@ -1,8 +1,6 @@
 package com.araguacaima.open_archi.persistence.diagrams.architectural;
 
 import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
-import com.araguacaima.open_archi.persistence.diagrams.core.Element;
-import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 
 import javax.persistence.Entity;
 import javax.persistence.PersistenceUnit;
@@ -13,18 +11,23 @@ import javax.persistence.PersistenceUnit;
  */
 @Entity
 @PersistenceUnit(unitName = "open-archi")
-public abstract class StaticElement extends Element {
+public abstract class GroupStaticElement extends StaticElement {
 
-    public StaticElement() {
-        setKind(ElementKind.COMPONENT);
+    @Override
+    public boolean isGroup() {
+        return true;
     }
 
-    public void override(StaticElement source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+    @Override
+    public void setGroup(boolean container) {
+
+    }
+
+    public void override(GroupStaticElement source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
         super.override(source, keepMeta, suffix, clonedFrom);
     }
 
-    public void copyNonEmpty(StaticElement source, boolean keepMeta) {
+    public void copyNonEmpty(GroupStaticElement source, boolean keepMeta) {
         super.copyNonEmpty(source, keepMeta);
     }
-
 }

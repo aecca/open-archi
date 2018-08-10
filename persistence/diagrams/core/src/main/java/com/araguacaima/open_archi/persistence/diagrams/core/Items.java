@@ -17,7 +17,7 @@ import java.util.Set;
         query = "select a.children from Item a where a.id=:id"),
         @NamedQuery(name = Items.GET_META_DATA,
                 query = "select a.metaData from Item a where a.id=:id")})
-public class Items extends Taggable {
+public abstract class Items extends Taggable {
 
     public static final String GET_ALL_CHILDREN = "get.all.children_list";
     public static final String GET_META_DATA = "get.meta.data_list";
