@@ -10,7 +10,6 @@ import java.util.Set;
 
 @Entity
 @PersistenceUnit(unitName = "open-archi")
-@Table(name = "Lane", schema = "DIAGRAMS")
 @DynamicUpdate
 public class Lane extends Item {
 

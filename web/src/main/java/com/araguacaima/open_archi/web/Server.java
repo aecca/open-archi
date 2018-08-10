@@ -1880,7 +1880,7 @@ public class Server {
         params.put("type", Layer.class);
         List<Item> models;
         models = JPAEntityManagerUtils.executeQuery(Item.class, Item.GET_ALL_PROTOTYPES);
-        int rank = 0;
+        int rank = 3;
         if (models != null) {
             for (Item model : models) {
                 palette.addElement(buildPalette(rank, model));

@@ -14,18 +14,22 @@ block content
                         i.fab.fa-github
                         strong &nbsp;Clone
     .container
+        video(controls)
+            source(src="/videos/OpenArchi - Intro.webm", type="video/webm")
+    .container
         hr
         .well
             p
-                | <strong>Open Archi is a social network for the management of enterprise architecture</strong>, including:
+                | <strong>Open Archi is a social network for the management of enterprise architecture</strong>, using the concept of <strong>AMaaS</strong> - Architecture Model as a Service, including:
                 ul
                     li Knowledge base of architectural components
-                    li Intergration witd the main business concepts (TOGAF and C4Model based Architecture Framework):
+                    li Intergration with the main business concepts (TOGAF and C4Model based Architecture Framework):
                         ul
                             li Enterprise Architecture
                             li Applications Architecture
                             li Data Architecture
                             li Technological Architecture
+                    li Whole capabilities fully APIfied
                     li Administration and interrelation of component thru DevOps
                     li Automation of communication about its evolution
                     li Ease of design of architectural models
@@ -204,7 +208,7 @@ block content
                         td
                             | Implementation of C4-Model DB
                             br
-                            +progress-bar-success(80)(style="margin-bottom: 5px;")
+                            +progress-bar-success(90)(style="margin-bottom: 5px;")
                     tr
                         td
                             | Sandbox per organization
@@ -219,12 +223,12 @@ block content
                         td
                             | API layer
                             br
-                            +progress-bar-success(75)(style="margin-bottom: 5px;")
+                            +progress-bar-success(85)(style="margin-bottom: 5px;")
                     tr
                         td
                             | Architecture diagrams editor
                             br
-                            +progress-bar-info(60)(style="margin-bottom: 5px;")
+                            +progress-bar-info(80)(style="margin-bottom: 5px;")
                     tr
                         td
                             | Integration with Architect Solution Model

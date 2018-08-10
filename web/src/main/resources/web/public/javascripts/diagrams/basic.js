@@ -9,7 +9,10 @@ function initBasic(nodeDataArray, linkDataArray, paletteModelArray) {
     myPalette =
         gojs(go.Palette, "paletteDiv",  // must name or refer to the DIV HTML element
             {
-                scrollsPageOnFocus: false
+                scrollsPageOnFocus: false,
+                layout: gojs(PoolLayout, {
+                    sorting: go.GridLayout.Forward
+                })
             });
     myPalette.nodeTemplateMap.add("DEFAULT", getDefaultTemplate());
     myPalette.nodeTemplateMap.add("PERSON", getPersonTemplate());
@@ -20,20 +23,21 @@ function initBasic(nodeDataArray, linkDataArray, paletteModelArray) {
         gojs(go.Panel, "Auto",
             gojs(go.Shape,
                 {
-                    figure: "RoundedRectangle"
+                    figure: "RoundedRectangle",
+                    stroke: "transparent"
                 },
                 new go.Binding("fill", "", OpenArchiWrapper.toFill).makeTwoWay(OpenArchiWrapper.fromFill),
-                new go.Binding("minSize", "", OpenArchiWrapper.toSize).makeTwoWay(OpenArchiWrapper.fromSize),
-                new go.Binding("stroke", "", OpenArchiWrapper.toStroke).makeTwoWay(OpenArchiWrapper.fromStroke)),
+                new go.Binding("minSize", "", OpenArchiWrapper.toSize).makeTwoWay(OpenArchiWrapper.fromSize)
+            ),
             gojs(go.TextBlock, "Text",
                 {
                     font: "bold 11pt Helvetica, Arial, sans-serif",
-                    stroke: lightText,
                     margin: 8,
                     maxSize: new go.Size(160, NaN),
                     wrap: go.TextBlock.WrapFit,
                     editable: true
                 },
+                new go.Binding("stroke", "", OpenArchiWrapper.toComplementColor),
                 new go.Binding("text", "", OpenArchiWrapper.toTitle),
                 new go.Binding("minSize", "", OpenArchiWrapper.toSize).makeTwoWay(OpenArchiWrapper.fromSize)),
             { // this tooltip Adornment is shared by all nodes
@@ -185,13 +189,12 @@ function initBasic(nodeDataArray, linkDataArray, paletteModelArray) {
                 gojs(go.TextBlock, "Text",
                     {
                         font: "bold 17pt Helvetica, Arial, sans-serif",
-                        stroke: "black",
                         maxSize: new go.Size(160, NaN),
                         wrap: go.TextBlock.WrapFit,
                         editable: true
                     },
                     new go.Binding("text", "", OpenArchiWrapper.toTitle),
-                    new go.Binding("stroke", "", OpenArchiWrapper.toStroke).makeTwoWay(OpenArchiWrapper.fromStroke),
+                    new go.Binding("stroke", "", OpenArchiWrapper.toComplementColor),
                     new go.Binding("minSize", "", OpenArchiWrapper.toSize).makeTwoWay(OpenArchiWrapper.fromSize)
                 )
             ),
@@ -253,7 +256,9 @@ function initBasic(nodeDataArray, linkDataArray, paletteModelArray) {
                         font: "bold 13pt sans-serif",
                         alignment: go.Spot.BottomRight
                     },
-                    new go.Binding("text", "", OpenArchiWrapper.toTitle).makeTwoWay(OpenArchiWrapper.fromTitle))
+                    new go.Binding("text", "", OpenArchiWrapper.toTitle).makeTwoWay(OpenArchiWrapper.fromTitle),
+                    new go.Binding("stroke", "", OpenArchiWrapper.toComplementColor)
+                )
             )
         ),  // end Auto Panel
         makePort("T", go.Spot.Top),
@@ -363,9 +368,9 @@ function initBasic(nodeDataArray, linkDataArray, paletteModelArray) {
         },
         new go.Binding("isSubGraphExpanded", "expanded").makeTwoWay(),
         // the lane header consisting of a Shape and a TextBlock
-/*        new go.Binding("background", "isHighlighted", function (h) {
+        new go.Binding("background", "isHighlighted", function (h) {
             return h ? "rgba(255,0,0,0.2)" : "transparent";
-        }).ofObject(),*/
+        }).ofObject(),
         gojs(go.Panel, "Horizontal",
             {
                 name: "HEADER",
@@ -397,9 +402,9 @@ function initBasic(nodeDataArray, linkDataArray, paletteModelArray) {
                         font: "bold 13pt sans-serif",
                         editable: true,
                         margin: new go.Margin(2, 0, 0, 0),
-                        alignment: go.Spot.BottomCenter,
-                        stroke: lightText
+                        alignment: go.Spot.BottomCenter
                     },
+                    new go.Binding("stroke", "", OpenArchiWrapper.toComplementColor),
                     new go.Binding("text", "", OpenArchiWrapper.toTitle).makeTwoWay(OpenArchiWrapper.fromTitle))
             ),
             gojs("SubGraphExpanderButton", {margin: 5})  // but this remains always visible!
@@ -464,6 +469,7 @@ function initBasic(nodeDataArray, linkDataArray, paletteModelArray) {
                         font: "bold 13pt sans-serif",
                         alignment: go.Spot.BottomRight
                     },
+                    new go.Binding("stroke", "", OpenArchiWrapper.toComplementColor),
                     new go.Binding("text", "", OpenArchiWrapper.toTitle).makeTwoWay(OpenArchiWrapper.fromTitle))
             )
         )  // end Auto Panel
@@ -578,6 +584,7 @@ function initBasic(nodeDataArray, linkDataArray, paletteModelArray) {
                             alignment: go.Spot.BottomRight,
                             stroke: "white"
                         },
+                        new go.Binding("stroke", "", OpenArchiWrapper.toComplementColor),
                         new go.Binding("text", "", OpenArchiWrapper.toTitle).makeTwoWay(OpenArchiWrapper.fromTitle))
                 )
             ),  // end Horizontal Panel
@@ -713,6 +720,7 @@ function initBasic(nodeDataArray, linkDataArray, paletteModelArray) {
                             alignment: go.Spot.BottomRight,
                             stroke: "white"
                         },
+                        new go.Binding("stroke", "", OpenArchiWrapper.toComplementColor),
                         new go.Binding("text", "", OpenArchiWrapper.toTitle).makeTwoWay(OpenArchiWrapper.fromTitle))
                 )
             ),  // end Horizontal Panel
@@ -788,6 +796,7 @@ function initBasic(nodeDataArray, linkDataArray, paletteModelArray) {
                         alignment: go.Spot.BottomRight,
                         stroke: "white"
                     },
+                    new go.Binding("stroke", "", OpenArchiWrapper.toComplementColor),
                     new go.Binding("text", "", OpenArchiWrapper.toTitle).makeTwoWay(OpenArchiWrapper.fromTitle))
             )
         ),
@@ -837,13 +846,14 @@ function initBasic(nodeDataArray, linkDataArray, paletteModelArray) {
                 gojs(go.TextBlock, "text",
                     {
                         font: "bold 11pt Helvetica, Arial, sans-serif",
-                        stroke: 'white',
                         margin: 4,  // make some extra space for the shape around the text
                         isMultiline: true,
                         wrap: go.TextBlock.WrapFit,
                         editable: true  // allow in-place editing by user
                     },
-                    new go.Binding("text", "", OpenArchiWrapper.toTitle).makeTwoWay(OpenArchiWrapper.fromTitle)),  // the label shows the node data's text
+                    new go.Binding("stroke", "", OpenArchiWrapper.toComplementColor),
+                    new go.Binding("text", "", OpenArchiWrapper.toTitle).makeTwoWay(OpenArchiWrapper.fromTitle)
+                ),  // the label shows the node data's text
                 { // this tooltip Adornment is shared by all nodes
                     toolTip:
                         gojs(go.Adornment, "Auto",
@@ -931,7 +941,7 @@ function initBasic(nodeDataArray, linkDataArray, paletteModelArray) {
                     editable: true  // allow in-place editing by user
                 },
                 new go.Binding("text", "", OpenArchiWrapper.toName).makeTwoWay(OpenArchiWrapper.fromName),
-                new go.Binding("stroke", "", OpenArchiWrapper.toStroke).makeTwoWay(OpenArchiWrapper.fromStroke)),
+                new go.Binding("stroke", "", OpenArchiWrapper.toComplementColor)),
             gojs(go.Panel, "Auto",
                 {name: "PANEL"},
                 gojs(go.Shape, "Rectangle",  // the rectangular shape around the members

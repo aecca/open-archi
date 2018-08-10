@@ -47,7 +47,7 @@ append scripts
         let paletteModelArray = [];
         let palette = !{palette};
         if (palette) {
-            paletteModelArray = palette.elements;
+            paletteModelArray.pushAll(OpenArchiWrapper.fixCategory(palette.elements));
         }
         let linkDataArray = [];
         if (!{linkDataArray}) {
@@ -71,6 +71,15 @@ append scripts
         var elementTypes = !{elementTypes};
         var fullView = '!{fullView}';
         $(function () {
+            if (fullView) {
+                $("#infoDraggable").show();
+                $("#controlsDraggable").show();
+                $("#dataModelDraggable").show();
+            } else {
+                $("#infoDraggable").hide();
+                $("#controlsDraggable").hide();
+                $("#dataModelDraggable").hide();
+            }
             init();
             var items = [];
             var i = 0;
@@ -126,16 +135,6 @@ append scripts
             $element1.on("change", handleImageSelect);
             var $element2 = $("#element-image-2");
             $element2.on("change", handleImageSelect);
-
-            if (fullView) {
-                $("#infoDraggable").show();
-                $("#controlsDraggable").show();
-                $("#dataModelDraggable").show();
-            } else {
-                $("#infoDraggable").hide();
-                $("#controlsDraggable").hide();
-                $("#dataModelDraggable").hide();
-            }
 
         });
 
@@ -210,12 +209,12 @@ block content
         div#paletteContainer
             div#paletteDiv
     div.#myExamples
-    div.draggable#infoDraggable(style="display: inline-block; vertical-align: top; top: 20px; left: 380px; position: relative")
+    div.draggable#infoDraggable(style="display: none; vertical-align: top; top: 20px; left: 380px; position: relative")
         div.handle#infoDraggableHandle
             | Info
         div
             div#myInfo
-    div.draggable#controlsDraggable(style="display: inline-block; vertical-align: top; top: 20px; left: 380px; position: relative; width: 380px; padding-bottom: 10px;")
+    div.draggable#controlsDraggable(style="display: none; vertical-align: top; top: 20px; left: 380px; position: relative; width: 380px; padding-bottom: 10px;")
         div.handle#controlsDraggableHandle
             | Controls
         div
@@ -225,7 +224,7 @@ block content
                 .col-sm-4.text-right
                     input#viewMode(type="text")
     br
-    div.container-fluid.draggable#dataModelDraggable(style="height: 100px; width: 400px;")
+    div.container-fluid.draggable#dataModelDraggable(style="height: 100px; width: 400px; display: none")
         div.handle#dataModelDraggableHandle
             | Model
         div#dataModelContainer

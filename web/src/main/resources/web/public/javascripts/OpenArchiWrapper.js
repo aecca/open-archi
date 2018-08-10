@@ -615,8 +615,30 @@ class OpenArchiWrapper {
         const shape = data.shape;
         let isGroup = false;
         if (shape) {
-            isGroup =  shape.type === "ARCHITECTURE_MODEL" || shape.type === "LAYER" || shape.type === "SYSTEM" || shape.type === "CONTAINER";
+            isGroup = shape.type === "ARCHITECTURE_MODEL" || shape.type === "LAYER" || shape.type === "SYSTEM" || shape.type === "CONTAINER";
         }
         return isGroup;
     }
+
+    static fixCategory(elements) {
+        elements.forEach(function (element) {
+            element.category = OpenArchiWrapper.toCategory(element);
+        });
+        return elements.sort(function (a, b) {
+            return a.rank - b.rank;
+        });
+    }
+
+    static toComplementColor(data, node) {
+        let color = "#ffffff";
+        if (data !== undefined) {
+            const shape = data.shape;
+            if (shape && shape.fill) {
+                color = complementRBG(shape.fill);
+            }
+        }
+        return color;
+    }
+
+
 }
