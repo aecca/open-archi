@@ -138,7 +138,6 @@ public class Server {
 
     private static Set<Class<? extends Taggable>> modelsClasses;
     private static Reflections diagramsReflections;
-    private static List<String> elementTypesCollection = new ArrayList<>();
 
     private enum HttpMethod {
         get,
@@ -270,22 +269,6 @@ public class Server {
         deeplyFulfilledIdValueCollection.add(deeplyFulfilledIdValue_1);
         deeplyFulfilledIdValueCollection.add(deeplyFulfilledIdValue_2);
 
-//        elementTypesCollection.add("ARCHITECTURE");
-        elementTypesCollection.add("SYSTEM");
-//        elementTypesCollection.add("FLOWCHART");
-//        elementTypesCollection.add("SEQUENCE");
-//        elementTypesCollection.add("GANTT");
-//        elementTypesCollection.add("ENTITY_RELATIONSHIP");
-//        elementTypesCollection.add("UML_CLASS");
-//        elementTypesCollection.add("FEATURE");
-        elementTypesCollection.add("CONTAINER");
-        elementTypesCollection.add("COMPONENT");
-//        elementTypesCollection.add("CONSUMER");
-//        elementTypesCollection.add("DEPLOYMENT");
-//        elementTypesCollection.add("BPM");
-//        elementTypesCollection.add("GROUP");
-        elementTypesCollection.add("LAYER");
-        //noinspection ResultOfMethodCallIgnored
         JPAEntityManagerUtils.getEntityManager();
     }
 
@@ -358,7 +341,7 @@ public class Server {
                     e.printStackTrace();
                 }
                 try {
-                    mapEditor.put("elementTypes", jsonUtils.toJSON(elementTypesCollection));
+                    mapEditor.put("elementTypes", jsonUtils.toJSON(getElementTypes()));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -471,7 +454,7 @@ public class Server {
                     e.printStackTrace();
                 }
                 try {
-                    mapEditor.put("elementTypes", jsonUtils.toJSON(elementTypesCollection));
+                    mapEditor.put("elementTypes", jsonUtils.toJSON(getElementTypes()));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -1835,6 +1818,10 @@ public class Server {
         });
     }
 
+    private static Object getElementTypes() {
+        return JPAEntityManagerUtils.executeQuery(ElementShape.class, ElementShape.GET_ALL_ELEMENT_SHAPES);
+    }
+
     private static Object getItemNames(Request request, Response response, String query) throws IOException, URISyntaxException {
         return getItemNames(request, response, query, null);
     }
@@ -1876,8 +1863,6 @@ public class Server {
 
     private static Palette getArchitecturePalette() {
         Palette palette = new Palette();
-        Map<String, Object> params = new HashMap<>();
-        params.put("type", Layer.class);
         List<Item> models;
         models = JPAEntityManagerUtils.executeQuery(Item.class, Item.GET_ALL_PROTOTYPES);
         int rank = 3;

@@ -12,10 +12,14 @@ import javax.persistence.*;
 @DynamicUpdate
 @NamedQueries({@NamedQuery(name = ElementShape.GET_ELEMENT_SHAPE_BY_TYPE,
         query = "select a " +
-                "from ElementShape a where a.type=:type")})
+                "from ElementShape a where a.type=:type"),
+        @NamedQuery(name = ElementShape.GET_ALL_ELEMENT_SHAPES,
+                query = "select a " +
+                        "from ElementShape a")})
 public class ElementShape extends BaseEntity {
 
     public static final String GET_ELEMENT_SHAPE_BY_TYPE = "get.element.shape.by.type";
+    public static final String GET_ALL_ELEMENT_SHAPES = "get.all.element.types";
     @Column
     @Enumerated(EnumType.STRING)
     private ElementKind type;

@@ -613,7 +613,7 @@ class OpenArchiWrapper {
     }
 
     static toIsGroup(data, node) {
-        if (data === undefined) {
+        if (data === undefined || data === null) {
             return false;
         }
         const shape = data.shape;
