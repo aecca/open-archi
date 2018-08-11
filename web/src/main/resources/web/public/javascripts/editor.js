@@ -101,7 +101,7 @@ function checkAndSave() {
         const elementType = getElementType();
         //const prototype = $("#element-prototype").prop("checked");
         $.ajax({
-            url: "/open-archi/api/catalogs/element-types/" + elementType + "/shape",
+            url: "/open-archi/api/catalogs/element-types/" + elementType.type + "/shape",
             type: 'GET',
             crossDomain: true,
             contentType: "application/json",
@@ -394,13 +394,16 @@ function getCurrentViewModeValue() {
 }
 
 function getElementType() {
-    const elementType = $("#elementTypesDropdown").closest('.dropdown').find('.dropdown-toggle');
+    let elementTypesDropdown = $("#elementTypesDropdown");
+    const elementType = elementTypesDropdown.closest('.dropdown').find('.dropdown-toggle');
     if (elementType) {
         let type = elementType.html();
         if (type) {
             let elementType_ = {};
-            elementType_.type = type.split(" ")[0];
-            elementType_.group = elementType.attr("isGroup");
+            elementType_.type = type.split(" ")[0].trim();
+            let isGroup = false;
+            let selectedLi = elementTypesDropdown.children("li:contains('" + elementType_.type + "')");
+            elementType_.group = selectedLi.attr("data-isgroup");
             return elementType_;
         }
     }
