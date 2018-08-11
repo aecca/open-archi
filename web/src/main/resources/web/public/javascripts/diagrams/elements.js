@@ -3,14 +3,14 @@ const rightRoundedRectangleGeometry = new go.Geometry.parse("M 92.993545,143.040
 
 go.Shape.defineFigureGenerator("RoundedTopRectangle", function (shape, w, h) {
     // this figure takes one parameter, the size of the corner
-    var p1 = 5;  // default corner size
+    let p1 = 5;  // default corner size
     if (shape !== null) {
-        var param1 = shape.parameter1;
+        const param1 = shape.parameter1;
         if (!isNaN(param1) && param1 >= 0) p1 = param1;  // can't be negative or NaN
     }
     p1 = Math.min(p1, w / 2);
     p1 = Math.min(p1, h / 2);  // limit by whole height or by half height?
-    var geo = new go.Geometry();
+    const geo = new go.Geometry();
     // a single figure consisting of straight lines and quarter-circle arcs
     geo.add(new go.PathFigure(0, p1)
         .add(new go.PathSegment(go.PathSegment.Arc, 180, 90, p1, p1, p1, p1))
@@ -374,27 +374,41 @@ function nodeStyle() {
         {
             // the Node.location is at the center of each node
             locationSpot: go.Spot.Center,
-            //isShadowed: true,
-            //shadowColor: "#888",
+            isShadowed: true,
+            shadowColor: "#888",
             // handle mouse enter/leave events to show/hide the ports
             mouseEnter: function (e, obj) {
                 const object = obj.findObject("HEADER");
-                if (object !== undefined) {
-                    obj.background = go.Brush.lighten(object.background.color);
+                if (object !== undefined && object !== null) {
+                    let background = object.background;
+                    let color;
+                    if (background !== undefined && background !== null) {
+                        color = background.color;
+                    } else {
+                        color = object.fill;
+                    }
                     const object_ = obj.findObject("SHAPE");
                     if (object_ !== undefined) {
                         object_.stroke = "red";
+                        object_.fill = go.Brush.lighten(color);
+                    }
+                } else {
+                    const object_ = obj.findObject("SHAPE");
+                    if (object_ !== undefined && object_ !== null) {
+                        object_.stroke = "red";
+                        object_.fill = go.Brush.lighten(object.fill);
                     }
                 }
                 showPorts(obj.part, true);
             },
             mouseLeave: function (e, obj) {
-                obj.background = "transparent";
+                obj.background = "white";
                 const object_ = obj.findObject("SHAPE");
-                if (object_ !== undefined) {
+                if (object_ !== undefined && object_ !== null) {
                     const object = obj.findObject("HEADER");
-                    if (object !== undefined) {
+                    if (object !== undefined && object !== null) {
                         object_.stroke = object.background.color;
+                        object_.fill = "white"
                     }
                 }
                 showPorts(obj.part, false);
@@ -417,7 +431,9 @@ function groupStyle() {  // common settings for both Lane and Pool Groups
             copyable: false,  // can't copy lanes or pools
             avoidable: false,  // don't impede AvoidsNodes routed Links
             minLocation: new go.Point(NaN, -Infinity),  // only allow vertical movement
-            maxLocation: new go.Point(NaN, Infinity)
+            maxLocation: new go.Point(NaN, Infinity),
+            isShadowed: true,
+            shadowColor: "#888"
         },
         new go.Binding("background", "", OpenArchiWrapper.toFill).makeTwoWay(OpenArchiWrapper.fromFill),
         new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
@@ -648,3 +664,53 @@ function stayInGroup(part, pt, gridpt) {
     const y = Math.max(p1.y + m.top, Math.min(pt.y, p2.y - m.bottom - b.height - 1)) + (loc.y - b.y);
     return new go.Point(x, y);
 }
+
+const basicElement = gojs(go.Node, "Spot",
+    nodeStyle(),
+    // the main object is a Panel that surrounds a TextBlock with a rectangular Shape
+    gojs(go.Panel, "Auto",
+        {
+            name: "New Element"
+        },
+        gojs(go.Shape, "RoundedRectangle",
+            {
+                fill: "black", // the default fill, if there is no data bound value
+                portId: "",
+                cursor: "pointer",  // the Shape is the port, not the whole Node
+                // allow all kinds of links from and to this port
+                fromLinkable: true,
+                fromLinkableSelfNode: true,
+                fromLinkableDuplicates: true,
+                toLinkable: true,
+                toLinkableSelfNode: true,
+                toLinkableDuplicates: true
+            },
+            new go.Binding("fill", "", OpenArchiWrapper.toFill).makeTwoWay(OpenArchiWrapper.fromFill)),
+        gojs(go.TextBlock, "text",
+            {
+                font: "bold 11pt Helvetica, Arial, sans-serif",
+                margin: 4,  // make some extra space for the shape around the text
+                isMultiline: true,
+                wrap: go.TextBlock.WrapFit,
+                editable: true  // allow in-place editing by user
+            },
+            new go.Binding("stroke", "", OpenArchiWrapper.toComplementColor),
+            new go.Binding("text", "", OpenArchiWrapper.toTitle).makeTwoWay(OpenArchiWrapper.fromTitle)
+        ),  // the label shows the node data's text
+        { // this tooltip Adornment is shared by all nodes
+            toolTip:
+                gojs(go.Adornment, "Auto",
+                    gojs(go.Shape, {fill: "#FFFFCC"}),
+                    gojs(go.TextBlock, {margin: 4},  // the tooltip shows the result of calling nodeInfo(data)
+                        new go.Binding("text", "", nodeInfo))
+                ),
+            // this context menu Adornment is shared by all nodes
+            contextMenu: partContextMenu
+        }
+    ),
+    // four named ports, one on each side:
+    makePort("T", go.Spot.Top, true, true),
+    makePort("L", go.Spot.Left, true, true),
+    makePort("R", go.Spot.Right, true, true),
+    makePort("B", go.Spot.Bottom, true, true)
+);

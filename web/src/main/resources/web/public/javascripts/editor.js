@@ -124,6 +124,7 @@ function checkAndSave() {
                     data.name = name;
                     data.image = meta.image;
                     data.shape = shape;
+                    data.fill = shape.fill;
                     data.category = elementType.type;
                     data.isGroup = OpenArchiWrapper.toIsGroup(shape, null, elementType.group);
                     myDiagram.model.addNodeData(data);

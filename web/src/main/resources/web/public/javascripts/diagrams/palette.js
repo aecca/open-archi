@@ -136,4 +136,43 @@ const consumerTemplate = gojs(
     makePort("R", go.Spot.Right),
     makePort("B", go.Spot.Bottom)
 );
-}
+
+
+const defaultTemplate = gojs(
+    go.Node, "Spot", nodeStyle(),
+    new go.Binding("isGroup", "", function () {
+        return false;
+    }),
+    new go.Binding("clonedFrom", "clonedFrom"),
+    gojs(go.Panel, "Auto",
+        gojs(go.Shape,
+            {
+                figure: "RoundedRectangle",
+                stroke: "transparent"
+            },
+            new go.Binding("fill", "", OpenArchiWrapper.toFill).makeTwoWay(OpenArchiWrapper.fromFill),
+            new go.Binding("minSize", "", OpenArchiWrapper.toSize).makeTwoWay(OpenArchiWrapper.fromSize)
+        ),
+        gojs(go.TextBlock, "Text",
+            {
+                font: "bold 11pt Helvetica, Arial, sans-serif",
+                margin: 8,
+                maxSize: new go.Size(160, NaN),
+                wrap: go.TextBlock.WrapFit,
+                editable: true
+            },
+            new go.Binding("stroke", "", OpenArchiWrapper.toComplementColor),
+            new go.Binding("text", "", OpenArchiWrapper.toTitle),
+            new go.Binding("minSize", "", OpenArchiWrapper.toSize).makeTwoWay(OpenArchiWrapper.fromSize)),
+        { // this tooltip Adornment is shared by all nodes
+            toolTip:
+                gojs(go.Adornment, "Auto",
+                    gojs(go.Shape, {fill: "#FFFFCC"}),
+                    gojs(go.TextBlock, {margin: 4},  // the tooltip shows the result of calling nodeInfo(data)
+                        new go.Binding("text", "", nodeInfo))
+                ),
+            // this context menu Adornment is shared by all nodes
+            contextMenu: partContextMenu
+        }
+    )
+);
