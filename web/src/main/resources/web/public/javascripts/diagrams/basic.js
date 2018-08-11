@@ -12,13 +12,17 @@ function initBasic(nodeDataArray, linkDataArray, paletteModelArray) {
                 scrollsPageOnFocus: false,
                 layout: gojs(PoolLayout, {
                     sorting: go.GridLayout.Forward
-                })
+                }),
+                hoverDelay: 100
             });
     myPalette.nodeTemplateMap.add("DEFAULT", getDefaultTemplate());
     myPalette.nodeTemplateMap.add("PERSON", getPersonTemplate());
     myPalette.nodeTemplateMap.add("CONSUMER", getConsumerTemplate());
     myPalette.nodeTemplateMap.add("", gojs(
         go.Node, "Spot", nodeStyle(),
+        new go.Binding("isGroup", "", function () {
+            return false;
+        }),
         new go.Binding("clonedFrom", "clonedFrom"),
         gojs(go.Panel, "Auto",
             gojs(go.Shape,
@@ -70,7 +74,7 @@ function initBasic(nodeDataArray, linkDataArray, paletteModelArray) {
             {
                 // position the graph in the middle of the diagram
                 initialContentAlignment: go.Spot.Center,
-
+                hoverDelay: 100,
                 // use a custom ResizingTool (along with a custom ResizeAdornment on each Group)
                 resizingTool: new LaneResizingTool(),
                 // use a simple layout that ignores links to stack the top-level Pool Groups next to each other
@@ -142,11 +146,15 @@ function initBasic(nodeDataArray, linkDataArray, paletteModelArray) {
             //shadowColor: "#888",
             // handle mouse enter/leave events to show/hide the ports
             mouseEnter: function (e, obj) {
+                const object = obj.findObject("SHAPE");
+                object.fill = go.Brush.lighten(obj.part.background.color);
                 showPorts(obj.part, true);
             },
             mouseLeave: function (e, obj) {
+                const object = obj.findObject("SHAPE");
+                object.fill = "white";
                 showPorts(obj.part, false);
-            }
+            },
         },
         new go.Binding("clonedFrom", "clonedFrom"),
         gojs(go.Shape,
@@ -264,7 +272,17 @@ function initBasic(nodeDataArray, linkDataArray, paletteModelArray) {
         makePort("T", go.Spot.Top),
         makePort("L", go.Spot.Left),
         makePort("R", go.Spot.Right),
-        makePort("B", go.Spot.Bottom)
+        makePort("B", go.Spot.Bottom),
+        { // this tooltip Adornment is shared by all nodes
+            toolTip:
+                gojs(go.Adornment, "Auto",
+                    gojs(go.Shape, {fill: "#FFFFCC"}),
+                    gojs(go.TextBlock, {margin: 4},  // the tooltip shows the result of calling nodeInfo(data)
+                        new go.Binding("text", "", nodeInfo))
+                ),
+            // this context menu Adornment is shared by all nodes
+            contextMenu: partContextMenu
+        }
     ));
     myDiagram.groupTemplateMap.add("LAYER", gojs(go.Group, "Horizontal", groupStyle(),
         {
@@ -359,10 +377,12 @@ function initBasic(nodeDataArray, linkDataArray, paletteModelArray) {
                 updateCrossLaneLinks(grp);
             },
             mouseEnter: function (e, obj) {
-                obj.part.background = "rgba(240, 173, 75,0.2)";
+                const object = obj.findObject("SHAPE");
+                object.fill = go.Brush.lighten(obj.part.background.color);
             },
             mouseLeave: function (e, obj) {
-                obj.part.background = "transparent";
+                const object = obj.findObject("SHAPE");
+                object.fill = "white";
             },
             contextMenu: partContextMenu
         },
@@ -472,7 +492,17 @@ function initBasic(nodeDataArray, linkDataArray, paletteModelArray) {
                     new go.Binding("stroke", "", OpenArchiWrapper.toComplementColor),
                     new go.Binding("text", "", OpenArchiWrapper.toTitle).makeTwoWay(OpenArchiWrapper.fromTitle))
             )
-        )  // end Auto Panel
+        ),  // end Auto Panel
+        { // this tooltip Adornment is shared by all nodes
+            toolTip:
+                gojs(go.Adornment, "Auto",
+                    gojs(go.Shape, {fill: "#FFFFCC"}),
+                    gojs(go.TextBlock, {margin: 4},  // the tooltip shows the result of calling nodeInfo(data)
+                        new go.Binding("text", "", nodeInfo))
+                ),
+            // this context menu Adornment is shared by all nodes
+            contextMenu: partContextMenu
+        }
     ));  // end Layer
 
     myDiagram.groupTemplateMap.add("SYSTEM", gojs(go.Group, "Auto",
@@ -532,19 +562,19 @@ function initBasic(nodeDataArray, linkDataArray, paletteModelArray) {
         }).ofObject(),
         gojs(go.Shape, "Rectangle",
             {
+                name: "SHAPE",
                 fill: null,
-                stroke: "#01203A",
                 stretch: go.GraphObject.Horizontal,
                 strokeWidth: 2
-            },
+            }
         ),
         gojs(go.Panel, "Vertical",  // title above Placeholder
             gojs(go.Panel, "Horizontal",  // button next to TextBlock
                 {
                     name: "HEADER",
-                    stretch: go.GraphObject.Horizontal,
-                    background: "#01203A"
+                    stretch: go.GraphObject.Horizontal
                 },
+                new go.Binding("background", "", OpenArchiWrapper.toFill),
                 gojs("SubGraphExpanderButton",
                     {alignment: go.Spot.Right, margin: 5}),
                 gojs(go.Panel, "Table",
@@ -1108,3 +1138,23 @@ function fillDiagram(nodeDataArray, linkDataArray) {
         }
     }
 }
+
+// this is shown by the mouseHover event handler
+const nodeHoverAdornment =
+    gojs(go.Adornment, "Spot",
+        {
+            background: "transparent",
+            // hide the Adornment when the mouse leaves it
+            zOrder: 2800
+        },
+        gojs(go.Placeholder,
+            {
+                background: "transparent",  // to allow this Placeholder to be "seen" by mouse events
+                isActionable: true,  // needed because this is in a temporary Layer
+                click: function (e, obj) {
+                    const node = obj.part.adornedPart;
+                    node.diagram.select(node);
+                }
+            })
+    );
+

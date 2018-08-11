@@ -617,11 +617,10 @@ class OpenArchiWrapper {
             return false;
         }
         const shape = data.shape;
-        if (shape) {
-            //isGroup = shape.type === "ARCHITECTURE_MODEL" || shape.type === "LAYER" || shape.type === "SYSTEM" || shape.type === "CONTAINER";
-            return shape.isGroup;
-        } else {
+        if (shape !== undefined) {
             return data.isGroup;
+        } else {
+            return data.group;
         }
     }
 

@@ -379,12 +379,27 @@ function nodeStyle() {
             //shadowColor: "#888",
             // handle mouse enter/leave events to show/hide the ports
             mouseEnter: function (e, obj) {
-                obj.part.background = "rgba(240, 173, 75,0.2)";
+                const object = obj.findObject("HEADER");
+                if (object !== undefined) {
+                    obj.background = go.Brush.lighten(object.background.color);
+                    const object_ = obj.findObject("SHAPE");
+                    if (object_ !== undefined) {
+                        object_.stroke = "red";
+                    }
+                }
                 showPorts(obj.part, true);
             },
             mouseLeave: function (e, obj) {
-                obj.part.background = "transparent";
+                obj.background = "transparent";
+                const object_ = obj.findObject("SHAPE");
+                if (object_ !== undefined) {
+                    const object = obj.findObject("HEADER");
+                    if (object !== undefined) {
+                        object_.stroke = object.background.color;
+                    }
+                }
                 showPorts(obj.part, false);
+                obj.stroke = "transparent";
             }
         },
         new go.Binding("clonedFrom", "clonedFrom"),

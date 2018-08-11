@@ -1,9 +1,16 @@
 function getDefaultTemplate() {
     return gojs(
-        go.Node, "Spot", nodeStyle(),
+        go.Node, "Spot",
         {
-            name: "Default"
+            name: "Default",
+            locationSpot: go.Spot.Center,
+
         },
+        new go.Binding("clonedFrom", "clonedFrom"),
+        new go.Binding("name", "", OpenArchiWrapper.toTitle).makeTwoWay(OpenArchiWrapper.fromTitle),
+        new go.Binding("isGroup", "", function () {
+            return false;
+        }),
         gojs(go.Panel, "Auto",
             gojs(go.Shape,
                 {
@@ -51,6 +58,9 @@ function getPersonTemplate() {
             maxSize: new go.Size(60, 50),
             name: "Person"
         },
+        new go.Binding("isGroup", "", function () {
+            return false;
+        }),
         gojs(go.Panel, "Auto",
             gojs(go.Shape,
                 {
@@ -66,9 +76,7 @@ function getPersonTemplate() {
                     gojs(go.Adornment, "Auto",
                         gojs(go.Shape, {fill: "#FFFFCC"}),
                         gojs(go.TextBlock, {margin: 4},  // the tooltip shows the result of calling nodeInfo(data)
-                            new go.Binding("text", "", function (d) {
-                                return "TEST";
-                            }))
+                            new go.Binding("text", "", nodeInfo))
                     ),
                 // this context menu Adornment is shared by all nodes
                 contextMenu: partContextMenu
@@ -90,6 +98,9 @@ function getConsumerTemplate() {
             name: "Consumer",
             locationSpot: go.Spot.Center
         },
+        new go.Binding("isGroup", "", function () {
+            return false;
+        }),
         gojs(go.Panel, "Spot",
             gojs(go.Shape,
                 {
