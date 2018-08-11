@@ -31,7 +31,7 @@ public class ElementShape extends BaseEntity {
     private boolean output = true;
     @Column
     private String figure;
-    @Column
+    @Column(name = "\"group\"")
     private boolean group;
 
     public ElementShape(ElementKind type) {
