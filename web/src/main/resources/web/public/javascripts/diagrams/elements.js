@@ -371,7 +371,6 @@ function nodeStyle() {
         // converted by the Point.parse static method.
         // If the Node.location is changed, it updates the "loc" property of the node data,
         // converting back using the Point.stringify static method.
-        new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
         {
             // the Node.location is at the center of each node
             locationSpot: go.Spot.Center,
@@ -400,12 +399,13 @@ function nodeStyle() {
                 }
                 showPorts(obj.part, false);
                 obj.stroke = "transparent";
-            }
+            },
+            dragComputation: stayInGroup
         },
-        new go.Binding("clonedFrom", "clonedFrom"),
+        new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
         new go.Binding("name", "", OpenArchiWrapper.toTitle).makeTwoWay(OpenArchiWrapper.fromTitle),
-        new go.Binding("isGroup", "", OpenArchiWrapper.toIsGroup),
-        {dragComputation: stayInGroup}
+        new go.Binding("clonedFrom", "clonedFrom"),
+        new go.Binding("isGroup", "", OpenArchiWrapper.toIsGroup)
     ];
 }
 
@@ -413,7 +413,6 @@ function groupStyle() {  // common settings for both Lane and Pool Groups
     return [
         {
             layerName: "Background",  // all pools and lanes are always behind all nodes and links
-            background: "transparent",  // can grab anywhere in bounds
             movable: true, // allows users to re-order by dragging
             copyable: false,  // can't copy lanes or pools
             avoidable: false,  // don't impede AvoidsNodes routed Links
@@ -423,7 +422,8 @@ function groupStyle() {  // common settings for both Lane and Pool Groups
         new go.Binding("background", "", OpenArchiWrapper.toFill).makeTwoWay(OpenArchiWrapper.fromFill),
         new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
         new go.Binding("name", "", OpenArchiWrapper.toTitle).makeTwoWay(OpenArchiWrapper.fromTitle),
-        new go.Binding("clonedFrom", "clonedFrom")
+        new go.Binding("clonedFrom", "clonedFrom"),
+        new go.Binding("isGroup", "", OpenArchiWrapper.toIsGroup)
     ];
 }
 
