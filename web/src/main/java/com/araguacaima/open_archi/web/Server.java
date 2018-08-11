@@ -340,13 +340,9 @@ public class Server {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                try {
-                    mapEditor.put("elementTypes", jsonUtils.toJSON(getElementTypes()));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
                 get("/", (req, res) -> {
                     mapEditor.put("palette", jsonUtils.toJSON(getArchitecturePalette()));
+                    mapEditor.put("elementTypes", jsonUtils.toJSON(getElementTypes()));
                     mapEditor.put("source", "basic");
                     mapEditor.put("examples", getExamples());
                     mapEditor.put("nodeDataArray", "[]");
@@ -453,13 +449,9 @@ public class Server {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                try {
-                    mapEditor.put("elementTypes", jsonUtils.toJSON(getElementTypes()));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
                 get("/", (req, res) -> {
                     mapEditor.put("palette", jsonUtils.toJSON(getArchitecturePalette()));
+                    mapEditor.put("elementTypes", jsonUtils.toJSON(getElementTypes()));
                     mapEditor.put("source", "basic");
                     mapEditor.put("nodeDataArray", "[]");
                     mapEditor.put("linkDataArray", "[]");

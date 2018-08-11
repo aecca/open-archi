@@ -109,7 +109,7 @@ append scripts
             var elementTypeItems = [];
             i = 0;
             elementTypes.forEach(function (elementType, i) {
-                elementTypeItems.push('<li role="presentation"><a role="menuitem" tabindex="' + i + '" href="#">' + elementType + '</a></li>');
+                elementTypeItems.push('<li role="presentation" data-isGroup="' + elementType.group + '"><a role="menuitem" tabindex="' + i + '" href="#">' + elementType.type + '</a></li>');
             });
             var elementTypesDropdown = $("#elementTypesDropdown");
             elementTypesDropdown.append(elementTypeItems.join(''));
@@ -182,7 +182,6 @@ block content
                 label.col-form-label Image (Only svg is permitted):
                 .dropdown
                     input#element-image-2(type="file", name="image", accept="image/svg+xml")
-
     +modal("Element role", "element-role-data")
         form#element-role-form
             .form-group

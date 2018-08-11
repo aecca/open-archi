@@ -612,13 +612,17 @@ class OpenArchiWrapper {
         model.setDataProperty(data, "category", category);
     }
 
-    static toIsGroup(data, node) {
+    static toIsGroup(data, node, isGroup) {
         if (data === undefined || data === null) {
             return false;
         }
         const shape = data.shape;
         if (shape !== undefined) {
-            return data.isGroup;
+            if (isGroup !== undefined) {
+                return isGroup;
+            } else {
+                return data.isGroup;
+            }
         } else {
             return data.group;
         }

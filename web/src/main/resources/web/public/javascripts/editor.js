@@ -98,10 +98,10 @@ function checkAndSave() {
     basicElementData.modal('hide');
     if (data !== null) {
         const name = $("#element-name").val();
-        const type = getElementType();
+        const elementType = getElementType();
         //const prototype = $("#element-prototype").prop("checked");
         $.ajax({
-            url: "/open-archi/api/catalogs/element-types/" + type+ "/shape",
+            url: "/open-archi/api/catalogs/element-types/" + elementType + "/shape",
             type: 'GET',
             crossDomain: true,
             contentType: "application/json",
@@ -120,12 +120,12 @@ function checkAndSave() {
                     myDiagram.startTransaction("Adding new element");
                     delete data["text"];
                     delete data["__gohashid"];
-                    data.kind = type;
+                    data.kind = elementType.type;
                     data.name = name;
                     data.image = meta.image;
                     data.shape = shape;
-                    data.category = type;
-                    data.isGroup = OpenArchiWrapper.toIsGroup(shape);
+                    data.category = elementType.type;
+                    data.isGroup = OpenArchiWrapper.toIsGroup(shape, null, elementType.group);
                     myDiagram.model.addNodeData(data);
                     myDiagram.requestUpdate();
                     myDiagram.commitTransaction("Adding new element");
@@ -398,10 +398,13 @@ function getElementType() {
     if (elementType) {
         let type = elementType.html();
         if (type) {
-            return type.split(" ")[0];
+            let elementType_ = {};
+            elementType_.type = type.split(" ")[0];
+            elementType_.group = elementType.attr("isGroup");
+            return elementType_;
         }
     }
-    return undefined;
+    return null;
 }
 
 function handleImageSelect(evt) {
