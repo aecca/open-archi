@@ -64,11 +64,13 @@ const layerTemplate = gojs(go.Group, "Horizontal",
             }
         },
         mouseDragEnter: function (e, group, prev) {
-            highlightGroup(e, group, true);
+            //TODO AMM: This highlaighing doesn't works
+            //highlight(group, true);
             e.handled = true;
         },
         mouseDragLeave: function (e, group, next) {
-            highlightGroup(e, group, false);
+            //TODO AMM: This highlaighing doesn't works
+            //highlight(group, false);
             let selection = e.diagram.selection;
             if (selection.size === 0) return;
             let ok = true;

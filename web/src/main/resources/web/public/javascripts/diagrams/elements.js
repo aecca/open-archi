@@ -299,17 +299,17 @@ function finishDrop(e, grp) {
 function highlightGroup(e, grp, show) {
     if (!grp) return;
     e.handled = true;
-/*    if (show) {
-        // cannot depend on the grp.diagram.selection in the case of external drag-and-drops;
-        // instead depend on the DraggingTool.draggedParts or .copiedParts
-        let tool = grp.diagram.toolManager.draggingTool;
-        let map = tool.draggedParts || tool.copiedParts;  // this is a Map
-        // now we can check to see if the Group will accept membership of the dragged Parts
-        if (grp.canAddMembers(map.toKeySet())) {
-            grp.isHighlighted = true;
-            return;
-        }
-    }*/
+    /*    if (show) {
+            // cannot depend on the grp.diagram.selection in the case of external drag-and-drops;
+            // instead depend on the DraggingTool.draggedParts or .copiedParts
+            let tool = grp.diagram.toolManager.draggingTool;
+            let map = tool.draggedParts || tool.copiedParts;  // this is a Map
+            // now we can check to see if the Group will accept membership of the dragged Parts
+            if (grp.canAddMembers(map.toKeySet())) {
+                grp.isHighlighted = true;
+                return;
+            }
+        }*/
     grp.isHighlighted = false;
 }
 
@@ -346,6 +346,48 @@ function showPorts(node, show) {
     });
 }
 
+function highlight(obj, show) {
+    if (show) {
+        const object = obj.findObject("HEADER");
+        if (object !== undefined && object !== null) {
+            let background = object.background;
+            let color;
+            if (background !== undefined && background !== null) {
+                color = background.color;
+            } else {
+                color = object.fill;
+            }
+            const object_ = obj.findObject("SHAPE");
+            if (object_ !== undefined) {
+                object_.stroke = "red";
+                object_.fill = go.Brush.lighten(color);
+            }
+        } else {
+            const object_ = obj.findObject("SHAPE");
+            if (object_ !== undefined && object_ !== null) {
+                object_.stroke = "red";
+                object_.fill = go.Brush.lighten(object_.fill);
+            }
+        }
+    } else {
+        obj.background = "white";
+        const object_ = obj.findObject("SHAPE");
+        if (object_ !== undefined && object_ !== null) {
+            const object = obj.findObject("HEADER");
+            if (object !== undefined && object !== null) {
+                object_.stroke = object.part.data.shape.fill;
+                object_.fill = "white"
+            } else {
+                object_.fill = object_.part.data.shape.fill;
+                object_.stroke = object_.part.data.shape.fill;
+            }
+        } else {
+            obj.fill = obj.part.data.shape.fill;
+            obj.stroke = obj.part.data.shape.fill;
+        }
+    }
+}
+
 // helper definitions for node templates
 function nodeStyle() {
     return [
@@ -360,46 +402,13 @@ function nodeStyle() {
             shadowColor: "#888",
             // handle mouse enter/leave events to show/hide the ports
             mouseEnter: function (e, obj) {
-                const object = obj.findObject("HEADER");
-                if (object !== undefined && object !== null) {
-                    let background = object.background;
-                    let color;
-                    if (background !== undefined && background !== null) {
-                        color = background.color;
-                    } else {
-                        color = object.fill;
-                    }
-                    const object_ = obj.findObject("SHAPE");
-                    if (object_ !== undefined) {
-                        object_.stroke = "red";
-                        object_.fill = go.Brush.lighten(color);
-                    }
-                } else {
-                    const object_ = obj.findObject("SHAPE");
-                    if (object_ !== undefined && object_ !== null) {
-                        object_.stroke = "red";
-                        object_.fill = go.Brush.lighten(object_.fill);
-                    }
-                }
+                highlight(obj, true);
                 showPorts(obj.part, true);
                 e.handled = true;
             },
             mouseLeave: function (e, obj) {
-                obj.background = "white";
-                const object_ = obj.findObject("SHAPE");
-                if (object_ !== undefined && object_ !== null) {
-                    const object = obj.findObject("HEADER");
-                    if (object !== undefined && object !== null) {
-                        object_.stroke = object.part.data.shape.fill;
-                        object_.fill = "white"
-                    } else {
-                        object_.fill = object_.part.data.shape.fill;
-                    }
-                } else {
-                    obj.fill = obj.part.data.shape.fill;
-                }
+                highlight(obj, false);
                 showPorts(obj.part, false);
-                obj.stroke = "transparent";
                 e.handled = true;
             },
             dragComputation: stayInGroup
