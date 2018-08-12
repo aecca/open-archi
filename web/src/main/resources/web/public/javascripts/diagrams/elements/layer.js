@@ -79,7 +79,7 @@ const layerTemplate = gojs(go.Group, "Horizontal",
                 if (!e.diagram.lastInput.shift) {
                     e.diagram.currentTool.doCancel();
                 }
-            };
+            }
             relayoutLanes();
             e.handled = true;
         },

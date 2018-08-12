@@ -70,10 +70,30 @@ function initBasic(nodeDataArray, linkDataArray, paletteModelArray) {
                 // enable undo & redo
                 "undoManager.isEnabled": true
             });
-
-    myDiagram.nodeTemplateMap.add("DEFAULT", newElementTemplate);
-    myDiagram.nodeTemplateMap.add("PERSON", personTemplate);
-    myDiagram.nodeTemplateMap.add("CONSUMER", consumerTemplate);
+    const newElementTemplate_ = newElementTemplate;
+    newElementTemplate_.mouseEnter = function (e, obj) {
+        showPorts(obj.part, true);
+    };
+    newElementTemplate_.mouseLeave = function (e, obj) {
+        showPorts(obj.part, false);
+    };
+    myDiagram.nodeTemplateMap.add("DEFAULT", newElementTemplate_);
+    const personTemplate_ = personTemplate;
+    personTemplate_.mouseEnter = function (e, obj) {
+        showPorts(obj.part, true);
+    };
+    personTemplate_.mouseLeave = function (e, obj) {
+        showPorts(obj.part, false);
+    };
+    myDiagram.nodeTemplateMap.add("PERSON", personTemplate_);
+    const consumerTemplate_ = consumerTemplate;
+    consumerTemplate_.mouseEnter = function (e, obj) {
+        showPorts(obj.part, true);
+    };
+    consumerTemplate_.mouseLeave = function (e, obj) {
+        showPorts(obj.part, false);
+    };
+    myDiagram.nodeTemplateMap.add("CONSUMER", consumerTemplate_);
     myDiagram.groupTemplateMap.add("ARCHITECTURE_MODEL", architectureModelTemplate);
     myDiagram.groupTemplateMap.add("LAYER", layerTemplate);
     myDiagram.groupTemplateMap.add("SYSTEM", systemTemplate);

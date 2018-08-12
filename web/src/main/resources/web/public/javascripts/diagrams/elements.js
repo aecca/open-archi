@@ -299,7 +299,7 @@ function finishDrop(e, grp) {
 function highlightGroup(e, grp, show) {
     if (!grp) return;
     e.handled = true;
-    if (show) {
+/*    if (show) {
         // cannot depend on the grp.diagram.selection in the case of external drag-and-drops;
         // instead depend on the DraggingTool.draggedParts or .copiedParts
         let tool = grp.diagram.toolManager.draggingTool;
@@ -309,26 +309,8 @@ function highlightGroup(e, grp, show) {
             grp.isHighlighted = true;
             return;
         }
-    }
+    }*/
     grp.isHighlighted = false;
-}
-
-// this function is used to highlight a Panel that the selection may be dropped into
-function highlight(e, element, show) {
-    if (!element) return;
-    e.handled = true;
-    if (show) {
-        // cannot depend on the grp.diagram.selection in the case of external drag-and-drops;
-        // instead depend on the DraggingTool.draggedParts or .copiedParts
-        let tool = element.diagram.toolManager.draggingTool;
-        let map = tool.draggedParts || tool.copiedParts;  // this is a Map
-        // now we can check to see if the Group will accept membership of the dragged Parts
-        if (element.canAddMembers(map.toKeySet())) {
-            element.isHighlighted = true;
-            return;
-        }
-    }
-    element.isHighlighted = false;
 }
 
 // Define a function for creating a "port" that is normally transparent.

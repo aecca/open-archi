@@ -2,8 +2,7 @@ const newElementTemplate = gojs(
     go.Node, "Spot",
     {
         name: "Default",
-        locationSpot: go.Spot.Center,
-
+        locationSpot: go.Spot.Center
     },
     new go.Binding("clonedFrom", "clonedFrom"),
     new go.Binding("name", "", OpenArchiWrapper.toTitle).makeTwoWay(OpenArchiWrapper.fromTitle),
