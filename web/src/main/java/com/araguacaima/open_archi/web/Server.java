@@ -244,7 +244,7 @@ public class Server {
 
         diagramsReflections = new Reflections(DIAGRAMS_PACKAGES, Taggable.class.getClassLoader());
         modelsClasses = diagramsReflections.getSubTypesOf(Taggable.class);
-        CollectionUtils.filter(modelsClasses, clazz -> clazz.getSuperclass().equals(Element.class) && !Modifier.isAbstract(clazz.getModifiers()));
+        CollectionUtils.filter(modelsClasses, clazz -> clazz.getSuperclass().equals(ModelElement.class) && !Modifier.isAbstract(clazz.getModifiers()));
 
         Set<Class<? extends DiagramableElement>> diagramTypes = diagramsReflections.getSubTypesOf(DiagramableElement.class);
         IterableUtils.forEach(diagramTypes, input -> {
