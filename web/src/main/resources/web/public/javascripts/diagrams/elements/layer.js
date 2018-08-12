@@ -57,7 +57,7 @@ const layerTemplate = gojs(go.Group, "Horizontal",
                 ok = grp.addMembers(grp.diagram.selection, true);
             }
             if (ok) {
-                //relayoutLanes();
+                relayoutLanes();
                 updateCrossLaneLinks(grp);
             } else {
                 grp.diagram.currentTool.doCancel();
@@ -65,6 +65,7 @@ const layerTemplate = gojs(go.Group, "Horizontal",
         },
         mouseDragEnter: function (e, group, prev) {
             highlightGroup(e, group, true);
+            e.handled = true;
         },
         mouseDragLeave: function (e, group, next) {
             highlightGroup(e, group, false);
@@ -78,7 +79,9 @@ const layerTemplate = gojs(go.Group, "Horizontal",
                 if (!e.diagram.lastInput.shift) {
                     e.diagram.currentTool.doCancel();
                 }
-            }
+            };
+            relayoutLanes();
+            e.handled = true;
         },
         subGraphExpandedChanged: function (grp) {
             const shp = grp.resizeObject;
@@ -95,18 +98,20 @@ const layerTemplate = gojs(go.Group, "Horizontal",
             const object = obj.findObject("SHAPE");
             object.fill = go.Brush.lighten(obj.part.background.color);
             object.stroke = "red";
+            e.handled = true;
         },
         mouseLeave: function (e, obj) {
             const object = obj.findObject("SHAPE");
             object.fill = "white";
             object.stroke = obj.part.background.color;
+            e.handled = true;
         },
         contextMenu: partContextMenu
     },
     new go.Binding("isSubGraphExpanded", "expanded").makeTwoWay(),
     // the lane header consisting of a Shape and a TextBlock
-    new go.Binding("background", "isHighlighted", function (h) {
-        return h ? "rgba(255,0,0,0.2)" : "transparent";
+    new go.Binding("background", "isHighlighted", function (h, obj) {
+        return h ? "rgba(255,0,0,0.2)" : obj.part.data.shape.fill;
     }).ofObject(),
     gojs(go.Panel, "Horizontal",
         {

@@ -396,10 +396,11 @@ function nodeStyle() {
                     const object_ = obj.findObject("SHAPE");
                     if (object_ !== undefined && object_ !== null) {
                         object_.stroke = "red";
-                        object_.fill = go.Brush.lighten(object.fill);
+                        object_.fill = go.Brush.lighten(object_.fill);
                     }
                 }
                 showPorts(obj.part, true);
+                e.handled = true;
             },
             mouseLeave: function (e, obj) {
                 obj.background = "white";
@@ -407,12 +408,17 @@ function nodeStyle() {
                 if (object_ !== undefined && object_ !== null) {
                     const object = obj.findObject("HEADER");
                     if (object !== undefined && object !== null) {
-                        object_.stroke = object.background.color;
+                        object_.stroke = object.part.data.shape.fill;
                         object_.fill = "white"
+                    } else {
+                        object_.fill = object_.part.data.shape.fill;
                     }
+                } else {
+                    obj.fill = obj.part.data.shape.fill;
                 }
                 showPorts(obj.part, false);
                 obj.stroke = "transparent";
+                e.handled = true;
             },
             dragComputation: stayInGroup
         },
