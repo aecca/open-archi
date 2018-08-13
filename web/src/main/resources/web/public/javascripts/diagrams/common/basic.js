@@ -13,7 +13,9 @@ function initBasic(nodeDataArray, linkDataArray, paletteModelArray) {
                 layout: gojs(PoolLayout, {
                     sorting: go.GridLayout.Forward
                 }),
-                hoverDelay: 100
+                hoverDelay: 100,
+                nodeSelectionAdornmentTemplate: emptyAdornment,
+                groupSelectionAdornmentTemplate: emptyAdornment
             });
     myPalette.nodeTemplateMap.add("DEFAULT", newElementTemplate);
     myPalette.nodeTemplateMap.add("PERSON", personTemplate);

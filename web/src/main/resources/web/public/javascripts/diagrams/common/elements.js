@@ -398,8 +398,8 @@ function nodeStyle() {
         {
             // the Node.location is at the center of each node
             locationSpot: go.Spot.Center,
-            isShadowed: true,
-            shadowColor: "#888",
+            // isShadowed: true,
+            // shadowColor: "#888",
             // handle mouse enter/leave events to show/hide the ports
             mouseEnter: function (e, obj) {
                 highlight(obj, true);
@@ -710,4 +710,13 @@ const basicElement = gojs(go.Node, "Spot",
     makePort("L", go.Spot.Left, true, true),
     makePort("R", go.Spot.Right, true, true),
     makePort("B", go.Spot.Bottom, true, true)
+);
+
+const emptyAdornment = gojs(go.Adornment, "Auto",
+    gojs(go.Shape, "RoundedRectangle",
+        {
+            fill: null,
+            stroke: null
+        }),
+    gojs(go.Placeholder)
 );

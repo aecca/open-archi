@@ -36,7 +36,6 @@ DELETE FROM diagrams.gantt_model_relationships;
 DELETE FROM diagrams.item_can_be_connected_from_ids;
 DELETE FROM diagrams.item_can_be_connected_to_ids;
 DELETE FROM diagrams.item_children_ids;
-DELETE FROM diagrams.lane;
 DELETE FROM diagrams.lane_activities;
 DELETE FROM diagrams.measurable;
 DELETE FROM diagrams.metadata;

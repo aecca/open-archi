@@ -21,19 +21,19 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", {value: true});
-var go = require("../go");
-// A custom Tool for resizing each column of a named Table Panel in a selected Part.
+var go = require("../../go");
+// A custom Tool for resizing each row of a named Table Panel in a selected Part.
 /**
  * @constructor
  * @extends Tool
  * @class
  */
-var ColumnResizingTool = (function (_super) {
-    __extends(ColumnResizingTool, _super);
+var RowResizingTool = (function (_super) {
+    __extends(RowResizingTool, _super);
 
-    function ColumnResizingTool() {
+    function RowResizingTool() {
         var _this = _super.call(this) || this;
-        _this.name = "ColumnResizing";
+        _this.name = "RowResizing";
         /** @type {string} */
         _this._tableName = "TABLE";
         // internal state
@@ -42,9 +42,9 @@ var ColumnResizingTool = (function (_super) {
         /** @type {Panel} */
         _this._adornedTable = null;
         var h = new go.Shape;
-        h.geometryString = "M0 0 V14 M2 0 V14";
-        h.desiredSize = new go.Size(2, 14);
-        h.cursor = "col-resize";
+        h.geometryString = "M0 0 H14 M0 2 H14";
+        h.desiredSize = new go.Size(14, 2);
+        h.cursor = "row-resize";
         h.geometryStretch = go.GraphObject.None;
         h.background = "rgba(255,255,255,0.5)";
         h.stroke = "rgba(30,144,255,0.5)";
@@ -52,14 +52,14 @@ var ColumnResizingTool = (function (_super) {
         return _this;
     }
 
-    Object.defineProperty(ColumnResizingTool.prototype, "handleArchetype", {
-        /**
-         * A small GraphObject used as a resize handle for each column.
-         * This tool expects that this object's {@link GraphObject#desiredSize} (a.k.a width and height) has been set to real numbers.
-         * @name ColumnResizingTool#handleArchetype
-         * @function.
-         * @return {Shape}
-         */
+    Object.defineProperty(RowResizingTool.prototype, "handleArchetype", {
+        /*
+        * A small GraphObject used as a resize handle for each row.
+        * This tool expects that this object's {@link GraphObject#desiredSize} (a.k.a width and height) has been set to real numbers.
+        * @name RowResizingTool#handleArchetype
+        * @function.
+        * @return {GraphObject}
+        */
         get: function () {
             return this._handleArchetype;
         },
@@ -69,13 +69,13 @@ var ColumnResizingTool = (function (_super) {
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(ColumnResizingTool.prototype, "tableName", {
-        /**
-         * The name of the Table Panel to be resized, by default the name "TABLE".
-         * @name ColumnResizingTool#tableName
-         * @function.
-         * @return {string}
-         */
+    Object.defineProperty(RowResizingTool.prototype, "tableName", {
+        /*
+        * The name of the Table Panel to be resized, by default the name "TABLE".
+        * @name RowResizingTool#tableName
+        * @function.
+        * @return {string}
+        */
         get: function () {
             return this._tableName;
         },
@@ -85,29 +85,29 @@ var ColumnResizingTool = (function (_super) {
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(ColumnResizingTool.prototype, "handle", {
-        /**
-         * This read-only property returns the {@link GraphObject} that is the tool handle being dragged by the user.
-         * This will be contained by an {@link Adornment} whose category is "ColumnResizing".
-         * Its {@link Adornment#adornedObject} is the same as the {@link #adornedTable}.
-         * @name ColumnResizingTool#handle
-         * @function.
-         * @return {GraphObject}
-         */
+    Object.defineProperty(RowResizingTool.prototype, "handle", {
+        /*
+        * This read-only property returns the {@link GraphObject} that is the tool handle being dragged by the user.
+        * This will be contained by an {@link Adornment} whose category is "RowResizing".
+        * Its {@link Adornment#adornedObject} is the same as the {@link #adornedTable}.
+        * @name RowResizingTool#handle
+        * @function.
+        * @return {GraphObject}
+        */
         get: function () {
             return this._handle;
         },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(ColumnResizingTool.prototype, "adornedTable", {
-        /**
-         * Gets the {@link Panel} of type {@link Panel#Table} whose columns may be resized.
-         * This must be contained within the selected Part.
-         * @name ColumnResizingTool#adornedTable
-         * @function.
-         * @return {Panel}
-         */
+    Object.defineProperty(RowResizingTool.prototype, "adornedTable", {
+        /*
+        * Gets the {@link Panel} of type {@link Panel#Table} whose rows may be resized.
+        * This must be contained within the selected Part.
+        * @name RowResizingTool#adornedTable
+        * @function.
+        * @return {Panel}
+        */
         get: function () {
             return this._adornedTable;
         },
@@ -115,13 +115,13 @@ var ColumnResizingTool = (function (_super) {
         configurable: true
     });
     /**
-     * Show an {@link Adornment} with a resize handle at each column.
+     * Show an {@link Adornment} with a resize handle at each row.
      * Don't show anything if {@link #tableName} doesn't identify a {@link Panel}
      * that has a {@link Panel#type} of type {@link Panel#Table}.
-     * @this {ColumnResizingTool}
+     * @this {RowResizingTool}
      * @param {Part} part the part.
      */
-    ColumnResizingTool.prototype.updateAdornments = function (part) {
+    RowResizingTool.prototype.updateAdornments = function (part) {
         if (part === null || part instanceof go.Link)
             return; // this tool never applies to Links
         if (part.isSelected && !this.diagram.isReadOnly) {
@@ -137,26 +137,26 @@ var ColumnResizingTool = (function (_super) {
                 }
                 if (adornment !== null) {
                     var pad = table.padding;
-                    var numcols = table.columnCount;
+                    var numrows = table.rowCount;
                     // update the position/alignment of each handle
                     adornment.elements.each(function (h) {
                         if (!h.pickable)
                             return;
-                        var coldef = table.getColumnDefinition(h.column);
-                        var wid = coldef.actual;
-                        if (wid > 0)
-                            wid = coldef.total;
+                        var rowdef = table.getRowDefinition(h.row);
+                        var hgt = rowdef.actual;
+                        if (hgt > 0)
+                            hgt = rowdef.total;
                         var sep = 0;
-                        // find next non-zero-width column's separatorStrokeWidth
-                        var idx = h.column + 1;
-                        while (idx < numcols && table.getColumnDefinition(idx).actual === 0)
+                        // find next non-zero-height row's separatorStrokeWidth
+                        var idx = h.row + 1;
+                        while (idx < numrows && table.getRowDefinition(idx).actual === 0)
                             idx++;
-                        if (idx < numcols) {
-                            sep = table.getColumnDefinition(idx).separatorStrokeWidth;
+                        if (idx < numrows) {
+                            sep = table.getRowDefinition(idx).separatorStrokeWidth;
                             if (isNaN(sep))
-                                sep = table.defaultColumnSeparatorStrokeWidth;
+                                sep = table.defaultRowSeparatorStrokeWidth;
                         }
-                        h.alignment = new go.Spot(0, 0, pad.left + coldef.position + wid + sep / 2, pad.top + h.height / 2);
+                        h.alignment = new go.Spot(0, 0, pad.left + h.width / 2, pad.top + rowdef.position + hgt + sep / 2);
                     });
                     adornment.locationObject.desiredSize = table.actualBounds.size;
                     adornment.location = table.getDocumentPoint(adornment.locationSpot);
@@ -169,11 +169,11 @@ var ColumnResizingTool = (function (_super) {
     };
     ;
     /**
-     * @this {ColumnResizingTool}
-     * @param {Panel} table the Table Panel whose columns may be resized
+     * @this {RowResizingTool}
+     * @param {Panel} table the Table Panel whose rows may be resized
      * @return {Adornment}
      */
-    ColumnResizingTool.prototype.makeAdornment = function (table) {
+    RowResizingTool.prototype.makeAdornment = function (table) {
         // the Adornment is a Spot Panel holding resize handles
         var adornment = new go.Adornment();
         adornment.category = this.name;
@@ -185,35 +185,35 @@ var ColumnResizingTool = (function (_super) {
         block.name = "BLOCK";
         block.pickable = false; // it's transparent and not pickable
         adornment.add(block);
-        // now add resize handles for each column
-        for (var i = 0; i < table.columnCount; i++) {
-            var coldef = table.getColumnDefinition(i);
-            adornment.add(this.makeHandle(table, coldef));
+        // now add resize handles for each row
+        for (var i = 0; i < table.rowCount; i++) {
+            var rowdef = table.getRowDefinition(i);
+            adornment.add(this.makeHandle(table, rowdef));
         }
         return adornment;
     };
     ;
     /**
-     * @this {ColumnResizingTool}
-     * @param {Panel} table the Table Panel whose columns may be resized
-     * @param {RowColumnDefinition} coldef the column definition to be resized
+     * @this {RowResizingTool}
+     * @param {Panel} table the Table Panel whose rows may be resized
+     * @param {RowColumnDefinition} rowdef the row definition to be resized
      * @return a copy of the {@link #handleArchetype}
      */
-    ColumnResizingTool.prototype.makeHandle = function (table, coldef) {
+    RowResizingTool.prototype.makeHandle = function (table, rowdef) {
         var h = this.handleArchetype;
         if (h === null)
             return null;
         var c = h.copy();
-        c.column = coldef.index;
+        c.row = rowdef.index;
         return c;
     };
     ;
     /**
      * This predicate is true when there is a resize handle at the mouse down point.
-     * @this {ColumnResizingTool}
+     * @this {RowResizingTool}
      * @return {boolean}
      */
-    ColumnResizingTool.prototype.canStart = function () {
+    RowResizingTool.prototype.canStart = function () {
         if (!this.isEnabled)
             return false;
         var diagram = this.diagram;
@@ -226,9 +226,9 @@ var ColumnResizingTool = (function (_super) {
     };
     ;
     /**
-     * @this {ColumnResizingTool}
+     * @this {RowResizingTool}
      */
-    ColumnResizingTool.prototype.doActivate = function () {
+    RowResizingTool.prototype.doActivate = function () {
         var diagram = this.diagram;
         if (diagram === null)
             return;
@@ -245,9 +245,9 @@ var ColumnResizingTool = (function (_super) {
     };
     ;
     /**
-     * @this {ColumnResizingTool}
+     * @this {RowResizingTool}
      */
-    ColumnResizingTool.prototype.doDeactivate = function () {
+    RowResizingTool.prototype.doDeactivate = function () {
         this.stopTransaction();
         this._handle = null;
         this._adornedTable = null;
@@ -258,9 +258,9 @@ var ColumnResizingTool = (function (_super) {
     };
     ;
     /**
-     * @this {ColumnResizingTool}
+     * @this {RowResizingTool}
      */
-    ColumnResizingTool.prototype.doMouseMove = function () {
+    RowResizingTool.prototype.doMouseMove = function () {
         var diagram = this.diagram;
         if (this.isActive && diagram !== null) {
             var newpt = this.computeResize(diagram.lastInput.documentPoint);
@@ -269,9 +269,9 @@ var ColumnResizingTool = (function (_super) {
     };
     ;
     /**
-     * @this {ColumnResizingTool}
+     * @this {RowResizingTool}
      */
-    ColumnResizingTool.prototype.doMouseUp = function () {
+    RowResizingTool.prototype.doMouseUp = function () {
         var diagram = this.diagram;
         if (this.isActive && diagram !== null) {
             var newpt = this.computeResize(diagram.lastInput.documentPoint);
@@ -282,60 +282,60 @@ var ColumnResizingTool = (function (_super) {
     };
     ;
     /**
-     * This should change the {@link RowColumnDefinition#width} of the column being resized
+     * This should change the {@link RowRowDefinition#height} of the row being resized
      * to a value corresponding to the given mouse point.
      * @expose
-     * @this {ColumnResizingTool}
+     * @this {RowResizingTool}
      * @param {Point} newPoint the value of the call to {@link #computeResize}.
      */
-    ColumnResizingTool.prototype.resize = function (newPoint) {
+    RowResizingTool.prototype.resize = function (newPoint) {
         var table = this.adornedTable;
         var pad = table.padding;
-        var numcols = table.columnCount;
+        var numrows = table.rowCount;
         var locpt = table.getLocalPoint(newPoint);
         var h = this.handle;
-        var coldef = table.getColumnDefinition(h.column);
+        var rowdef = table.getRowDefinition(h.row);
         var sep = 0;
-        var idx = h.column + 1;
-        while (idx < numcols && table.getColumnDefinition(idx).actual === 0)
+        var idx = h.row + 1;
+        while (idx < numrows && table.getRowDefinition(idx).actual === 0)
             idx++;
-        if (idx < numcols) {
-            sep = table.getColumnDefinition(idx).separatorStrokeWidth;
+        if (idx < numrows) {
+            sep = table.getRowDefinition(idx).separatorStrokeWidth;
             if (isNaN(sep))
-                sep = table.defaultColumnSeparatorStrokeWidth;
+                sep = table.defaultRowSeparatorStrokeWidth;
         }
-        coldef.width = Math.max(0, locpt.x - pad.left - coldef.position - (coldef.total - coldef.actual) - sep / 2);
+        rowdef.height = Math.max(0, locpt.y - pad.top - rowdef.position - (rowdef.total - rowdef.actual) - sep / 2);
     };
     ;
     /**
      * This can be overridden in order to customize the resizing process.
      * @expose
-     * @this {ColumnResizingTool}
+     * @this {RowResizingTool}
      * @param {Point} p the point where the handle is being dragged.
      * @return {Point}
      */
-    ColumnResizingTool.prototype.computeResize = function (p) {
+    RowResizingTool.prototype.computeResize = function (p) {
         return p;
     };
     ;
     /**
-     * Pressing the Delete key removes any column width setting and stops this tool.
-     * @this {ColumnResizingTool}
+     * Pressing the Delete key removes any row width setting and stops this tool.
+     * @this {RowResizingTool}
      */
-    ColumnResizingTool.prototype.doKeyDown = function () {
+    RowResizingTool.prototype.doKeyDown = function () {
         if (!this.isActive)
             return;
         var e = this.diagram.lastInput;
         if (e.key === 'Del' || e.key === '\t') {
-            var coldef = this.adornedTable.getColumnDefinition(this.handle.column);
-            coldef.width = NaN;
+            var rowdef = this.adornedTable.getRowDefinition(this.handle.row);
+            rowdef.height = NaN;
             this.transactionResult = this.name; // success
             this.stopTool();
         }
         else {
-            this.doKeyDown.call(this);
+            _super.prototype.doKeyDown.call(this);
         }
     };
     ;
-    return ColumnResizingTool;
+    return RowResizingTool;
 }(go.Tool));

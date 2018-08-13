@@ -43,6 +43,7 @@ const architectureModelTemplate = gojs(go.Group, "Auto",
             showPorts(obj.part, false);
         },
     },
+    groupStyle(),
     new go.Binding("clonedFrom", "clonedFrom"),
     gojs(go.Shape,
         new go.Binding("figure", "", OpenArchiWrapper.toFigure).makeTwoWay(OpenArchiWrapper.fromFigure),
@@ -101,10 +102,9 @@ const architectureModelTemplate = gojs(go.Group, "Auto",
             {
                 name: "SHAPE",
                 fill: "white",
-                stroke: "grey"
+                strokeWidth: 2,
             },
-            new go.Binding("fill", "", OpenArchiWrapper.toFill).makeTwoWay(OpenArchiWrapper.fromFill),
-            new go.Binding("stroke", "", OpenArchiWrapper.toStroke).makeTwoWay(OpenArchiWrapper.fromStroke)
+            new go.Binding("stroke", "", OpenArchiWrapper.toFill)
         ),
         gojs(go.Panel, "Table",
             {

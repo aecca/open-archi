@@ -3,6 +3,7 @@ package com.araguacaima.open_archi.persistence.diagrams.core.specification;
 import com.araguacaima.open_archi.persistence.diagrams.core.Item;
 import com.araguacaima.open_archi.persistence.diagrams.core.Shape;
 import com.araguacaima.specification.AbstractSpecification;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,67 +24,72 @@ public class ApplyColorScheme extends AbstractSpecification {
             Item item = (Item) object;
             if (item.getShape() != null) {
                 Shape shape = item.getShape();
-                switch (item.getKind()) {
-                    case ARCHITECTURE_MODEL:
-                        shape.setFill("#01203A");
-                        break;
-                    case FLOWCHART_MODEL:
-                        shape.setFill("#01203A");
-                        break;
-                    case SEQUENCE_MODEL:
-                        shape.setFill("#01203A");
-                        break;
-                    case GANTT_MODEL:
-                        shape.setFill("#01203A");
-                        break;
-                    case ENTITY_RELATIONSHIP_MODEL:
-                        shape.setFill("#01203A");
-                        break;
-                    case UML_CLASS_MODEL:
-                        shape.setFill("#01203A");
-                        break;
-                    case BPM_MODEL:
-                        shape.setFill("#01203A");
-                        break;
-                    case ARCHITECTURE:
-                        shape.setFill("#01203A");
-                        break;
-                    case FLOWCHART:
-                        shape.setFill("#01203A");
-                        break;
-                    case SEQUENCE:
-                        shape.setFill("#01203A");
-                        break;
-                    case GANTT:
-                        shape.setFill("#01203A");
-                        break;
-                    case ENTITY_RELATIONSHIP:
-                        shape.setFill("#01203A");
-                        break;
-                    case UML_CLASS:
-                        shape.setFill("#01203A");
-                        break;
-                    case FEATURE:
-                        shape.setFill("#01203A");
-                        break;
-                    case COMPONENT:
-                        shape.setFill("#1368BD");
-                        break;
-                    case CONSUMER:
-                        shape.setFill("#F0AD4B");
-                        break;
-                    case CONTAINER:
-                        shape.setFill("#08427B");
-                        break;
-                    case DEPLOYMENT:
-                        shape.setFill("#01203A");
-                        break;
-                    case BPM:
-                        shape.setFill("#01203A");
-                        break;
-                    case SYSTEM:
-                        shape.setFill("#01203A");
-                        break;
+                if (shape != null && StringUtils.isNotBlank(shape.getFill())) {
+                    switch (item.getKind()) {
+                        case ARCHITECTURE_MODEL:
+                            shape.setFill("White");
+                            break;
+                        case FLOWCHART_MODEL:
+                            shape.setFill("#01203A");
+                            break;
+                        case SEQUENCE_MODEL:
+                            shape.setFill("#01203A");
+                            break;
+                        case GANTT_MODEL:
+                            shape.setFill("#01203A");
+                            break;
+                        case ENTITY_RELATIONSHIP_MODEL:
+                            shape.setFill("#01203A");
+                            break;
+                        case UML_CLASS_MODEL:
+                            shape.setFill("#01203A");
+                            break;
+                        case BPM_MODEL:
+                            shape.setFill("#01203A");
+                            break;
+                        case ARCHITECTURE:
+                            shape.setFill("#01203A");
+                            break;
+                        case FLOWCHART:
+                            shape.setFill("#01203A");
+                            break;
+                        case SEQUENCE:
+                            shape.setFill("#01203A");
+                            break;
+                        case GANTT:
+                            shape.setFill("#01203A");
+                            break;
+                        case ENTITY_RELATIONSHIP:
+                            shape.setFill("#01203A");
+                            break;
+                        case UML_CLASS:
+                            shape.setFill("#01203A");
+                            break;
+                        case FEATURE:
+                            shape.setFill("#01203A");
+                            break;
+                        case COMPONENT:
+                            shape.setFill("#1368BD");
+                            break;
+                        case CONSUMER:
+                            shape.setFill("#F0AD4B");
+                            break;
+                        case CONTAINER:
+                            shape.setFill("#08427B");
+                            break;
+                        case DEPLOYMENT:
+                            shape.setFill("#01203A");
+                            break;
+                        case BPM:
+                            shape.setFill("#01203A");
+                            break;
+                        case SYSTEM:
+                            shape.setFill("#01203A");
+                            break;
+                        default:
+                            shape.setFill("blue");
+                            break;
+                    }
                 }
             }
         }

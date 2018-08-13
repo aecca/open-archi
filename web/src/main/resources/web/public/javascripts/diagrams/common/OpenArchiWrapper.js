@@ -142,9 +142,8 @@ function processComponentToArchitectureModel(node, parent, links) {
 
 function processModelToDiagram(model, nodes) {
     let modelElement = commonInnerModelElement(model);
-    modelElement.isGroup = true;
     //TODO Añadir campos propios del model
-    nodes.push(fulfill(modelElement, true));
+    nodes.push(fulfill(modelElement));
 }
 
 function processLayerToDiagram(layer, nodes, links, parentId) {
@@ -242,6 +241,16 @@ function findParent(parentId, model) {
         let nodes = findValues(model, "key");
         return nodes.find(node => {
             return node.key === parentId;
+        })
+    }
+    return undefined;
+}
+
+function findById(model, id) {
+    if (id !== undefined && model !== undefined) {
+        let nodes = findValues(model, "id");
+        return nodes.find(node => {
+            return node.id === id;
         })
     }
     return undefined;

@@ -150,6 +150,11 @@ function expand(data) {
     }
     meta.id = model.id;
     const newDiagram = OpenArchiWrapper.toDiagram(model);
+    myDiagram.startTransaction("Deleting new element");
+    const nodedata = findById(myDiagram.model.nodeDataArray, model.id);
+    myDiagram.model.removeNodeData(nodedata);
+    myDiagram.requestUpdate();
+    myDiagram.commitTransaction("Deleting new element");
     myDiagram.startTransaction("Expand element");
     myDiagram.model.addNodeDataCollection(newDiagram.nodeDataArray);
     myDiagram.model.addLinkDataCollection(newDiagram.linkDataArray);

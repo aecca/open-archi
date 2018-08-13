@@ -2,7 +2,8 @@ const newElementTemplate = gojs(
     go.Node, "Spot",
     {
         name: "Default",
-        locationSpot: go.Spot.Center
+        locationSpot: go.Spot.Center,
+        selectionAdornmentTemplate: emptyAdornment
     },
     new go.Binding("clonedFrom", "clonedFrom"),
     new go.Binding("name", "", OpenArchiWrapper.toTitle).makeTwoWay(OpenArchiWrapper.fromTitle),
@@ -52,7 +53,8 @@ const personTemplate = gojs(
     {
         locationSpot: go.Spot.Center,
         maxSize: new go.Size(60, 50),
-        name: "Person"
+        name: "Person",
+        selectionAdornmentTemplate: emptyAdornment
     },
     new go.Binding("isGroup", "", function () {
         return false;
@@ -90,7 +92,8 @@ const consumerTemplate = gojs(
     go.Node, "Spot",
     {
         name: "Consumer",
-        locationSpot: go.Spot.Center
+        locationSpot: go.Spot.Center,
+        selectionAdornmentTemplate: emptyAdornment
     },
     new go.Binding("isGroup", "", function () {
         return false;
@@ -139,6 +142,9 @@ const consumerTemplate = gojs(
 
 const defaultTemplate = gojs(
     go.Node, "Spot", nodeStyle(),
+    {
+        selectionAdornmentTemplate: emptyAdornment
+    },
     new go.Binding("isGroup", "", function () {
         return false;
     }),
@@ -147,9 +153,11 @@ const defaultTemplate = gojs(
         gojs(go.Shape,
             {
                 figure: "RoundedRectangle",
-                stroke: "transparent"
+                stroke: "transparent",
+                strokeWidth: 3
             },
             new go.Binding("fill", "", OpenArchiWrapper.toFill).makeTwoWay(OpenArchiWrapper.fromFill),
+            new go.Binding("stroke", "", OpenArchiWrapper.toComplementColor),
             new go.Binding("minSize", "", OpenArchiWrapper.toSize).makeTwoWay(OpenArchiWrapper.fromSize)
         ),
         gojs(go.TextBlock, "Text",
