@@ -80,8 +80,12 @@ function commonInnerModelElement(model) {
         object.category = shape.type;
         object.size = shape.size.width + " " + shape.size.height;
         object.shape = shape;
+        object.figure = shape.figure;
+        object.fill = shape.fill;
+        object.stroke = shape.stroke;
     } else {
         object.category = model.kind;
+        object.figure = (model.figure === undefined || model.figure === "") ? "RoundedRectangle" : model.figure;
     }
     if (model.clonedFrom) {
         object.clonedFrom = model.clonedFrom;
@@ -92,7 +96,7 @@ function commonInnerModelElement(model) {
         raw = "data:image/svg+xml;base64," + window.btoa(raw);
         object.image = {raw: raw, type: image.type};
     }
-    object.figure = "RoundedRectangle";
+    object.isGroup = model.group;
     return object;
 }
 
@@ -143,7 +147,7 @@ function processComponentToArchitectureModel(node, parent, links) {
 function processModelToDiagram(model, nodes) {
     let modelElement = commonInnerModelElement(model);
     //TODO Añadir campos propios del model
-    nodes.push(fulfill(modelElement));
+    nodes.push(fulfill(modelElement, modelElement.isGroup));
 }
 
 function processLayerToDiagram(layer, nodes, links, parentId) {

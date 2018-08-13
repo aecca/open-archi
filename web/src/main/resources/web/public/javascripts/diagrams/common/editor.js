@@ -151,8 +151,15 @@ function expand(data) {
     meta.id = model.id;
     const newDiagram = OpenArchiWrapper.toDiagram(model);
     myDiagram.startTransaction("Deleting new element");
-    const nodedata = findById(myDiagram.model.nodeDataArray, model.id);
-    myDiagram.model.removeNodeData(nodedata);
+    let id;
+    const clonedFrom = data.clonedFrom;
+    if (clonedFrom === undefined) {
+        id = data.id;
+    } else {
+        id = clonedFrom.id
+    }
+    const nodedata = findById(myDiagram.model.nodeDataArray, id);
+    myDiagram.model.removeNodeData(myDiagram.model.findNodeDataForKey(nodedata.key));
     myDiagram.requestUpdate();
     myDiagram.commitTransaction("Deleting new element");
     myDiagram.startTransaction("Expand element");

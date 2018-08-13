@@ -429,8 +429,8 @@ function groupStyle() {  // common settings for both Lane and Pool Groups
             avoidable: false,  // don't impede AvoidsNodes routed Links
             minLocation: new go.Point(NaN, -Infinity),  // only allow vertical movement
             maxLocation: new go.Point(NaN, Infinity),
-            isShadowed: true,
-            shadowColor: "#888"
+            // isShadowed: true,
+            // shadowColor: "#888"
         },
         new go.Binding("background", "", OpenArchiWrapper.toFill).makeTwoWay(OpenArchiWrapper.fromFill),
         new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
