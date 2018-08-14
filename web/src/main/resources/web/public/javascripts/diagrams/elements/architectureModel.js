@@ -46,9 +46,13 @@ const architectureModelTemplate = gojs(go.Group, "Auto",
     groupStyle(),
     new go.Binding("clonedFrom", "clonedFrom"),
     gojs(go.Shape,
+        {
+          strokeWidth: 3
+        },
+        new go.Binding("fill", "", OpenArchiWrapper.toFill),
         new go.Binding("figure", "", OpenArchiWrapper.toFigure).makeTwoWay(OpenArchiWrapper.fromFigure),
         new go.Binding("minSize", "", OpenArchiWrapper.toSize).makeTwoWay(OpenArchiWrapper.fromSize),
-        new go.Binding("stroke", "", OpenArchiWrapper.toStroke).makeTwoWay(OpenArchiWrapper.fromStroke),
+        new go.Binding("stroke", "", OpenArchiWrapper.toStroke),
         new go.Binding("isSubGraphExpanded", "expanded").makeTwoWay()
     ),
     gojs(go.Panel, "Table",
@@ -61,7 +65,6 @@ const architectureModelTemplate = gojs(go.Group, "Auto",
                 column: 0,
                 angle: 270
             },
-            new go.Binding("fill", "", OpenArchiWrapper.toFill).makeTwoWay(OpenArchiWrapper.fromFill),
             new go.Binding("visible", "isSubGraphExpanded").ofObject(),
             gojs("SubGraphExpanderButton", {margin: 5}),
             gojs(go.Panel, {
@@ -101,10 +104,10 @@ const architectureModelTemplate = gojs(go.Group, "Auto",
         gojs(go.Shape, "Rectangle",  // this is the resized object
             {
                 name: "SHAPE",
-                fill: "white",
                 strokeWidth: 2,
             },
-            new go.Binding("stroke", "", OpenArchiWrapper.toFill)
+            new go.Binding("fill", "", OpenArchiWrapper.toStroke),
+            new go.Binding("stroke", "", OpenArchiWrapper.toComplementColor)
         ),
         gojs(go.Panel, "Table",
             {
