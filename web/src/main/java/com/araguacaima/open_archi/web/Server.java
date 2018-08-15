@@ -301,11 +301,11 @@ public class Server {
             mapHome.put("title", "Contact araguacaima");
             get("/", (req, res) -> new ModelAndView(mapHome, "/contact"), engine);
         });
-        redirect.get("/raas", "/raas/", Redirect.Status.TEMPORARY_REDIRECT);
-        path("/raas", () -> {
+        redirect.get("/braas", "/braas/", Redirect.Status.TEMPORARY_REDIRECT);
+        path("/braas", () -> {
             Map<String, Object> mapHome = new HashMap<>();
             mapHome.put("title", "Rules as a Service");
-            get("/", (req, res) -> new ModelAndView(mapHome, "/raas/home"), engine);
+            get("/", (req, res) -> new ModelAndView(mapHome, "/braas/home"), engine);
         });
         redirect.get("/composite-specification", "/composite-specification/", Redirect.Status.TEMPORARY_REDIRECT);
         path("/composite-specification", () -> {
