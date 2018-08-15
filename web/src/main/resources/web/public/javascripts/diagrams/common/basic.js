@@ -108,7 +108,7 @@ function initBasic(nodeDataArray, linkDataArray, paletteModelArray) {
         gojs(go.Link,  // the whole link panel
             {
                 routing: go.Link.Orthogonal,
-                curve: go.Link.Bezier,
+                curve: go.Link.None,
                 corner: 5,
                 toShortLength: 4,
                 relinkableFrom: true,

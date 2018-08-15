@@ -1,4 +1,5 @@
 let alreadyProcessedNodes;
+let alreadyProcessedLinks;
 
 function fulfill(item, isGroup, group, rank) {
     item.key = item.id;
@@ -100,6 +101,23 @@ function commonInnerModelElement(model) {
     return object;
 }
 
+function addLinksToArchitectureModel(element, links) {
+    if (element !== undefined && links !== undefined && Array.isArray(links) && links.length > 0) {
+        if (element.relationships === undefined) {
+            element.relationships = [];
+        }
+        links.forEach(link => {
+            if (link.from === element.key || link.to === element.key) {
+                let relationship = {};
+                relationship.sourceId = link.from;
+                relationship.destinationId = link.to;
+                element.relationships.push(relationship);
+                alreadyProcessedLinks.push(relationship);
+            }
+        });
+    }
+}
+
 function processLayerToArchitectureModel(node, parent, links) {
     let layer = commonInnerDiagramElement(node);
     //TODO Añadir campos propios del layer
@@ -107,7 +125,8 @@ function processLayerToArchitectureModel(node, parent, links) {
     if (!parent.layers) {
         parent.layers = [];
     }
-    parent.layers.push(layer);
+    addLinksToArchitectureModel(layer, links);
+    parent.layers.push(layer, links);
     alreadyProcessedNodes.push(layer.key);
 }
 
@@ -118,6 +137,7 @@ function processSystemToArchitectureModel(node, parent, links) {
     if (!parent.systems) {
         parent.systems = [];
     }
+    addLinksToArchitectureModel(system, links);
     parent.systems.push(system);
     alreadyProcessedNodes.push(system.key);
 }
@@ -129,6 +149,7 @@ function processContainerToArchitectureModel(node, parent, links) {
     if (!parent.containers) {
         parent.containers = [];
     }
+    addLinksToArchitectureModel(container, links);
     parent.containers.push(container);
     alreadyProcessedNodes.push(container.key);
 }
@@ -140,6 +161,7 @@ function processComponentToArchitectureModel(node, parent, links) {
     if (!parent.components) {
         parent.components = [];
     }
+    addLinksToArchitectureModel(component, links);
     parent.components.push(component);
     alreadyProcessedNodes.push(component.key);
 }
@@ -147,7 +169,8 @@ function processComponentToArchitectureModel(node, parent, links) {
 function processModelToDiagram(model, nodes, links) {
     let modelElement = commonInnerModelElement(model);
     //TODO Añadir campos propios del model
-    nodes.push(fulfill(modelElement, modelElement.isGroup));
+    let model_ = fulfill(modelElement, modelElement.isGroup);
+    nodes.push(model_);
     let links_;
     links.push(links_);
 }
@@ -407,7 +430,7 @@ class OpenArchiWrapper {
         const type = model.kind;
         let diagram;
         alreadyProcessedNodes = [];
-
+        alreadyProcessedLinks = [];
         switch (type) {
             case "FLOWCHART_MODEL":
                 diagram = flowchartModelToDiagram(model);
@@ -455,6 +478,7 @@ class OpenArchiWrapper {
         model.prototype = meta.prototype;
         model.shape = {type: model.kind};
         alreadyProcessedNodes = [];
+        alreadyProcessedLinks = [];
         if (!commons.prototype.isEmpty(nodes)) {
             nodes.forEach(function (node) {
                 if (!alreadyProcessedNodes.includes(node.key)) {

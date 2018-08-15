@@ -6,6 +6,7 @@ import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
@@ -130,6 +131,16 @@ public abstract class Item extends Taggable {
     @Column
     protected boolean prototype;
 
+    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @JoinTable(schema = "DIAGRAMS",
+            name = "Item_Relationships",
+            joinColumns = {@JoinColumn(name = "Item_Id",
+                    referencedColumnName = "Id")},
+            inverseJoinColumns = {@JoinColumn(name = "Relationship_Id",
+                    referencedColumnName = "Id")})
+    @Cascade(org.hibernate.annotations.CascadeType.REMOVE)
+    private Set<Relationship> relationships = new LinkedHashSet<>();
+
     public Item() {
     }
 
@@ -229,6 +240,14 @@ public abstract class Item extends Taggable {
         this.prototype = prototype;
     }
 
+    public Set<Relationship> getRelationships() {
+        return relationships;
+    }
+
+    public void setRelationships(Set<Relationship> relationships) {
+        this.relationships = relationships;
+    }
+
     public void override(Item source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
         super.override(source, keepMeta, suffix);
         if (clonedFrom != null) {
@@ -251,6 +270,14 @@ public abstract class Item extends Taggable {
             MetaData metaData = new MetaData();
             metaData.override(source.getMetaData(), keepMeta, suffix);
             this.metaData = source.getMetaData();
+        }
+        Set<Relationship> relationships = source.getRelationships();
+        if (relationships != null) {
+            for (Relationship relationship : source.getRelationships()) {
+                Relationship newRelationship = new Relationship();
+                newRelationship.override(relationship, keepMeta, suffix, clonedFrom);
+                this.relationships.add(newRelationship);
+            }
         }
         this.prototype = source.isPrototype();
     }
@@ -298,6 +325,14 @@ public abstract class Item extends Taggable {
             this.setMetaData(metaData);
         }
         this.prototype = source.isPrototype();
+        Set<Relationship> relationships = source.getRelationships();
+        if (relationships != null && !relationships.isEmpty()) {
+            for (Relationship relationship : relationships) {
+                Relationship newRelationship = new Relationship();
+                newRelationship.copyNonEmpty(relationship, keepMeta);
+                this.relationships.add(newRelationship);
+            }
+        }
     }
 
     public CompositeElement buildCompositeElement() {

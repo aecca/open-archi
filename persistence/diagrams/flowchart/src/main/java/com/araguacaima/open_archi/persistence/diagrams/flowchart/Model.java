@@ -42,14 +42,6 @@ public class Model extends ModelElement implements DiagramableElement<Model> {
         this.flowcharts = flowchart;
     }
 
-    public Set<Relationship> getRelationships() {
-        return relationships;
-    }
-
-    public void setRelationships(Set<Relationship> relationships) {
-        this.relationships = relationships;
-    }
-
     @Override
     public void override(Model source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
         super.override(source, keepMeta, suffix, clonedFrom);

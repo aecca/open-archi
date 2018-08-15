@@ -42,22 +42,9 @@ public class Model extends ModelElement implements DiagramableElement<Model> {
         this.pools = pools;
     }
 
-    public Set<Relationship> getRelationships() {
-        return relationships;
-    }
-
-    public void setRelationships(Set<Relationship> relationships) {
-        this.relationships = relationships;
-    }
-
     @Override
     public void override(Model source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
         super.override(source, keepMeta, suffix, clonedFrom);
-        for (Relationship consumer : source.getRelationships()) {
-            Relationship newRelationship = new Relationship();
-            newRelationship.override(consumer, keepMeta, suffix, clonedFrom);
-            this.relationships.add(newRelationship);
-        }
         for (Pool consumer : source.getPools()) {
             Pool newPool = new Pool();
             newPool.override(consumer, keepMeta, suffix, clonedFrom);
@@ -68,13 +55,6 @@ public class Model extends ModelElement implements DiagramableElement<Model> {
     @Override
     public void copyNonEmpty(Model source, boolean keepMeta) {
         super.copyNonEmpty(source, keepMeta);
-        if (source.getRelationships() != null && !source.getRelationships().isEmpty()) {
-            for (Relationship consumer : source.getRelationships()) {
-                Relationship newRelationship = new Relationship();
-                newRelationship.copyNonEmpty(consumer, keepMeta);
-                this.relationships.add(newRelationship);
-            }
-        }
         if (source.getPools() != null && !source.getPools().isEmpty()) {
             for (Pool consumer : source.getPools()) {
                 Pool newPool = new Pool();

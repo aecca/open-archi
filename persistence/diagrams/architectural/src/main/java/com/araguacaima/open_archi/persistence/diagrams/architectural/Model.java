@@ -121,11 +121,6 @@ public class Model extends ModelElement implements DiagramableElement<Model> {
             newConsumer.override(consumer, keepMeta, suffix, clonedFrom);
             this.consumers.add(newConsumer);
         }
-        for (Relationship relationship : source.getRelationships()) {
-            Relationship newRelationship = new Relationship();
-            newRelationship.override(relationship, keepMeta, suffix, clonedFrom);
-            this.relationships.add(newRelationship);
-        }
         for (Layer layer : source.getLayers()) {
             Layer newLayer = new Layer();
             newLayer.override(layer, keepMeta, suffix, clonedFrom);
@@ -163,13 +158,7 @@ public class Model extends ModelElement implements DiagramableElement<Model> {
                 this.consumers.add(newConsumer);
             }
         }
-        if (source.getRelationships() != null && !source.getRelationships().isEmpty()) {
-            for (Relationship relationship : source.getRelationships()) {
-                Relationship newRelationship = new Relationship();
-                newRelationship.copyNonEmpty(relationship, keepMeta);
-                this.relationships.add(newRelationship);
-            }
-        }
+
         if (source.getLayers() != null && !source.getLayers().isEmpty()) {
             for (Layer system : source.getLayers()) {
                 Layer newLayer = new Layer();
@@ -229,14 +218,6 @@ public class Model extends ModelElement implements DiagramableElement<Model> {
 
     public void setDeploymentNodes(Set<DeploymentNode> deploymentNodes) {
         this.deploymentNodes = deploymentNodes;
-    }
-
-    public Set<Relationship> getRelationships() {
-        return relationships;
-    }
-
-    public void setRelationships(Set<Relationship> relationships) {
-        this.relationships = relationships;
     }
 
     public Set<Container> getContainers() {

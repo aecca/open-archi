@@ -28,7 +28,7 @@
         <com.fasterxml.jackson.core-jackson-annotations>2.9.2</com.fasterxml.jackson.core-jackson-annotations>
         <org.apache.commons-commons-lang3>3.5</org.apache.commons-commons-lang3>
         <org.apache.commons-commons-collections4>4.0</org.apache.commons-commons-collections4>
-        <!--<org.eclipse.persistence-org.eclipse.persistence.jpa>2.7.0</org.eclipse.persistence-org.eclipse.persistence.jpa>-->
+        <org.springframework-spring-core>4.3.10.RELEASE</org.springframework-spring-core>
         <org.hibernate-hibernate-core>5.2.12.Final</org.hibernate-hibernate-core>
         <commons-io-commons-io>2.6</commons-io-commons-io>
         <junit.version>4.11</junit.version>
@@ -115,6 +115,14 @@
                 <version>${org.hibernate-hibernate-core}</version>
                 <scope>compile</scope>
             </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-core</artifactId>
+                <version>${org.springframework-spring-core}</version>
+                <scope>compile</scope>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
