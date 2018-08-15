@@ -1,26 +1,15 @@
 package com.araguacaima.open_archi.persistence.diagrams.core.specification;
 
 import com.araguacaima.commons.utils.ReflectionUtils;
-import com.araguacaima.open_archi.persistence.diagrams.core.Item;
 import com.araguacaima.open_archi.persistence.diagrams.core.Taggable;
 import com.araguacaima.specification.AbstractSpecification;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.reflections.Reflections;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.*;
 
 public class ExtractTaggables extends AbstractSpecification {
 
-    private ReflectionUtils reflectionUtils = new ReflectionUtils(null);
-    private static String DIAGRAMS_PACKAGES = "com.araguacaima.open_archi.persistence.diagrams";
-    private static Reflections diagramsReflections;
-
-    static {
-        diagramsReflections = new Reflections(DIAGRAMS_PACKAGES, Taggable.class.getClassLoader());
-    }
+    private static ReflectionUtils reflectionUtils = new ReflectionUtils(null);
 
     public ExtractTaggables() {
         this(false);
@@ -40,15 +29,32 @@ public class ExtractTaggables extends AbstractSpecification {
         return true;
     }
 
+    private void traverse(Object entity, Class clazz, Set<Taggable> taggables) {
+        ReflectionUtils.doWithFields(clazz, field -> {
+            field.setAccessible(true);
+            Object object_ = field.get(entity);
+
+            if (object_ != null) {
+                if (!taggables.contains(object_)) {
+                    Class<?> type = ReflectionUtils.extractGenerics(field);
+                    if (Taggable.class.isAssignableFrom(type)) {
+                        taggables.add((Taggable) object_);
+                    }
+                    traverse(object_, type, taggables);
+                }
+            }
+        }, ExtractTaggables::getComplexFields);
+
+    }
+
+    private static boolean getComplexFields(Field field) {
+        return reflectionUtils.getFullyQualifiedJavaTypeOrNull(field.getType()) == null;
+    }
+
     private Set<Taggable> extractTaggables(Object object) {
         Set<Taggable> taggables = new HashSet<>();
-        ReflectionUtils.doWithFields(object.getClass(), field -> {
-            if (Taggable.class.isAssignableFrom(field.getType())) {
-                Taggable taggable = (Taggable) field.get(object);
-                taggables.add(taggable);
-            }
-        });
-        return taggables.isEmpty() ? null : taggables;
+        traverse(object, object.getClass(), taggables);
+        return taggables;
     }
 
     public Collection<Object> getTerms() {

@@ -1,9 +1,8 @@
 package com.araguacaima.open_archi.persistence.diagrams.core.specification;
 
+import com.araguacaima.commons.utils.ReflectionUtils;
 import com.araguacaima.open_archi.persistence.diagrams.core.Item;
-import com.araguacaima.open_archi.persistence.diagrams.core.Relationship;
 import com.araguacaima.open_archi.persistence.diagrams.core.Taggable;
-import com.araguacaima.open_archi.persistence.meta.MetaInfo;
 import com.araguacaima.specification.AbstractSpecification;
 import org.apache.commons.lang3.StringUtils;
 
@@ -54,10 +53,6 @@ public class FixRelationships extends AbstractSpecification {
             }
         }
         return true;
-    }
-
-    private Set<Taggable> extractTaggables(Object object) {
-        return null;
     }
 
     public Collection<Object> getTerms() {
