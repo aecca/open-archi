@@ -144,10 +144,12 @@ function processComponentToArchitectureModel(node, parent, links) {
     alreadyProcessedNodes.push(component.key);
 }
 
-function processModelToDiagram(model, nodes) {
+function processModelToDiagram(model, nodes, links) {
     let modelElement = commonInnerModelElement(model);
     //TODO Añadir campos propios del model
     nodes.push(fulfill(modelElement, modelElement.isGroup));
+    let links_;
+    links.push(links_);
 }
 
 function processLayerToDiagram(layer, nodes, links, parentId) {
@@ -298,7 +300,7 @@ function diagramToBpmModel(model, node, links) {
 }
 
 function processElementToDiagram(model, diagram) {
-    processModelToDiagram(model, diagram.nodeDataArray);
+    processModelToDiagram(model, diagram.nodeDataArray, diagram.linkDataArray);
     if (model.layers) {
         model.layers.forEach(layer => processLayerToDiagram(layer, diagram.nodeDataArray, diagram.linkDataArray, model.id));
     }

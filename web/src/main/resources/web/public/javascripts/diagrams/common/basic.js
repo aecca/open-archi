@@ -107,9 +107,10 @@ function initBasic(nodeDataArray, linkDataArray, paletteModelArray) {
     myDiagram.linkTemplate =
         gojs(go.Link,  // the whole link panel
             {
-                routing: go.Link.AvoidsNodes,
-                curve: go.Link.JumpOver,
-                corner: 5, toShortLength: 4,
+                routing: go.Link.Orthogonal,
+                curve: go.Link.Bezier,
+                corner: 5,
+                toShortLength: 4,
                 relinkableFrom: true,
                 relinkableTo: true,
                 reshapable: true,
