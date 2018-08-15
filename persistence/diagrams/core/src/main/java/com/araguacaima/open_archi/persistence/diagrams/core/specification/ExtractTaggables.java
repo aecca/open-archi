@@ -5,6 +5,7 @@ import com.araguacaima.open_archi.persistence.diagrams.core.Taggable;
 import com.araguacaima.specification.AbstractSpecification;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.*;
 
 public class ExtractTaggables extends AbstractSpecification {
@@ -33,22 +34,53 @@ public class ExtractTaggables extends AbstractSpecification {
         ReflectionUtils.doWithFields(clazz, field -> {
             field.setAccessible(true);
             Object object_ = field.get(entity);
-
             if (object_ != null) {
-                if (!taggables.contains(object_)) {
-                    Class<?> type = ReflectionUtils.extractGenerics(field);
-                    if (Taggable.class.isAssignableFrom(type)) {
-                        taggables.add((Taggable) object_);
+
+                if (ReflectionUtils.isCollectionImplementation(object_.getClass())) {
+                    ((Collection) object_).forEach(iter -> {
+                        traverse(iter, iter.getClass(), taggables);
+                        Taggable iter1 = (Taggable) iter;
+                        taggables.add(iter1);
+                    });
+                } else {
+                    if (!taggables.contains(object_)) {
+                        Class<?> generic = ReflectionUtils.extractGenerics(field);
+                        if (Taggable.class.isAssignableFrom(generic)) {
+                            Class<?> fieldType = field.getType();
+                            if (ReflectionUtils.isCollectionImplementation(fieldType)) {
+                                ((Collection) object_).forEach(iter -> {
+                                    traverse(iter, generic, taggables);
+                                    Taggable iter1 = (Taggable) iter;
+                                    taggables.add(iter1);
+                                });
+                            } else {
+                                Taggable taggable = (Taggable) field.get(entity);
+                                taggables.add(taggable);
+                            }
+                        } else {
+                            String genericType = reflectionUtils.getFullyQualifiedJavaTypeOrNull(generic);
+                            if (genericType == null) {
+                                traverse(object_, generic, taggables);
+                            }
+                        }
                     }
-                    traverse(object_, type, taggables);
                 }
             }
-        }, ExtractTaggables::getComplexFields);
+        }, ExtractTaggables::isComplex);
 
     }
 
-    private static boolean getComplexFields(Field field) {
-        return reflectionUtils.getFullyQualifiedJavaTypeOrNull(field.getType()) == null;
+    private static boolean isComplex(Field field) {
+        if ((field.getModifiers() & Modifier.STATIC) != 0) {
+            return false;
+        }
+        Class aClass = null;
+        try {
+            aClass = ReflectionUtils.extractGenerics(field);
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+        return aClass != null && (reflectionUtils.getFullyQualifiedJavaTypeOrNull(aClass) == null && !aClass.isEnum() && !Enum.class.isAssignableFrom(aClass));
     }
 
     private Set<Taggable> extractTaggables(Object object) {
