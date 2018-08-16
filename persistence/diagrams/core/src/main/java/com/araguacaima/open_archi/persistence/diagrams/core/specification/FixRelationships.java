@@ -32,7 +32,7 @@ public class FixRelationships extends AbstractSpecification {
                         if (StringUtils.isNotBlank(sourceId)) {
                             if (taggables != null) {
                                 taggables.forEach(taggable -> {
-                                    if (taggable.getId().equals(sourceId) || taggable.getKey().equals(sourceId)) {
+                                    if (sourceId.equals(taggable.getId()) || sourceId.equals(taggable.getKey())) {
                                         relationship.setSource(taggable);
                                     }
                                 });
@@ -43,7 +43,7 @@ public class FixRelationships extends AbstractSpecification {
                         if (StringUtils.isNotBlank(destinationId)) {
                             if (taggables != null) {
                                 taggables.forEach(taggable -> {
-                                    if (taggable.getId().equals(destinationId) || taggable.getKey().equals(destinationId)) {
+                                    if (destinationId.equals(taggable.getId()) || destinationId.equals(taggable.getKey())) {
                                         relationship.setDestination(taggable);
                                     }
                                 });

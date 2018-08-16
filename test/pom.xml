@@ -18,89 +18,149 @@
         <dependency>
             <groupId>com.araguacaima.open_archi</groupId>
             <artifactId>persistence-core</artifactId>
-            <scope>test</scope>
+
         </dependency>
         <dependency>
             <groupId>com.araguacaima.open_archi</groupId>
             <artifactId>persistence-architectural</artifactId>
-            <scope>test</scope>
+
         </dependency>
         <dependency>
             <groupId>com.araguacaima.open_archi</groupId>
             <artifactId>persistence-bpm</artifactId>
-            <scope>test</scope>
+
         </dependency>
         <dependency>
             <groupId>com.araguacaima.open_archi</groupId>
             <artifactId>persistence-uml-classes</artifactId>
-            <scope>test</scope>
+
         </dependency>
         <dependency>
             <groupId>com.araguacaima.open_archi</groupId>
             <artifactId>persistence-er</artifactId>
-            <scope>test</scope>
+
         </dependency>
         <dependency>
             <groupId>com.araguacaima.open_archi</groupId>
             <artifactId>persistence-flowchart</artifactId>
-            <scope>test</scope>
+
         </dependency>
         <dependency>
             <groupId>com.araguacaima.open_archi</groupId>
             <artifactId>persistence-sequence</artifactId>
-            <scope>test</scope>
+
         </dependency>
         <dependency>
             <groupId>com.araguacaima.open_archi</groupId>
             <artifactId>persistence-gantt</artifactId>
-            <scope>test</scope>
+
         </dependency>
 
         <!-- araguacaima libraries -->
         <dependency>
             <groupId>com.araguacaima</groupId>
             <artifactId>commons-utils</artifactId>
-            <scope>test</scope>
+
         </dependency>
 
         <dependency>
             <groupId>com.araguacaima</groupId>
             <artifactId>composite-specification</artifactId>
-            <scope>test</scope>
+
         </dependency>
 
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
-            <scope>test</scope>
+
         </dependency>
 
         <dependency>
             <groupId>org.hibernate.javax.persistence</groupId>
             <artifactId>hibernate-jpa-2.1-api</artifactId>
-            <scope>test</scope>
+
         </dependency>
 
         <!-- Hibernate c3p0 connection pool -->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-c3p0</artifactId>
-            <scope>test</scope>
+
         </dependency>
 
         <!-- Testing -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <scope>test</scope>
+            <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <scope>test</scope>
+
         </dependency>
 
     </dependencies>
+
+    <build>
+        <defaultGoal>clean package</defaultGoal>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>${org.apache.maven.plugins-maven-dependency-plugin}</version>
+                <configuration>
+                    <includeScope>test</includeScope>
+                    <includeScope>compile</includeScope>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>unpack-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <includeGroupIds>com.araguacaima.open_archi</includeGroupIds>
+                            <outputDirectory>${project.build.directory}/test-classes</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>${org.apache.maven.plugins-maven-jar-plugin}</version>
+                <configuration>
+                    <finalName>open-archi</finalName>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>test-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${org.apache.maven.plugins-maven-compiler-plugin}</version>
+                <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${org.apache.maven.plugin-maven-surefire-plugin}</version>
+                <configuration>
+                    <skipTests>${maven.skipTests}</skipTests>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
