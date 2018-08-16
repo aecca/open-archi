@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>test</artifactId>
+    <packaging>jar</packaging>
+    <name>Test</name>
+
+    <parent>
+        <groupId>com.araguacaima.open_archi</groupId>
+        <artifactId>parent</artifactId>
+        <version>1.0.1</version>
+    </parent>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.araguacaima.open_archi</groupId>
+            <artifactId>persistence-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.araguacaima.open_archi</groupId>
+            <artifactId>persistence-architectural</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.araguacaima.open_archi</groupId>
+            <artifactId>persistence-bpm</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.araguacaima.open_archi</groupId>
+            <artifactId>persistence-uml-classes</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.araguacaima.open_archi</groupId>
+            <artifactId>persistence-er</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.araguacaima.open_archi</groupId>
+            <artifactId>persistence-flowchart</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.araguacaima.open_archi</groupId>
+            <artifactId>persistence-sequence</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.araguacaima.open_archi</groupId>
+            <artifactId>persistence-gantt</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- araguacaima libraries -->
+        <dependency>
+            <groupId>com.araguacaima</groupId>
+            <artifactId>commons-utils</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.araguacaima</groupId>
+            <artifactId>composite-specification</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate.javax.persistence</groupId>
+            <artifactId>hibernate-jpa-2.1-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Hibernate c3p0 connection pool -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-c3p0</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Testing -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+</project>

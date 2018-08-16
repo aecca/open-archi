@@ -10,7 +10,7 @@
 
     <parent>
         <groupId>com.araguacaima.open_archi</groupId>
-        <artifactId>persistence</artifactId>
+        <artifactId>parent</artifactId>
         <version>1.0.1</version>
     </parent>
 
@@ -36,6 +36,15 @@
             <artifactId>commons-io</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.araguacaima</groupId>
+            <artifactId>commons-utils</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

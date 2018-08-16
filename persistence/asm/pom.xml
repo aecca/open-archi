@@ -10,12 +10,11 @@
 
     <parent>
         <groupId>com.araguacaima.open_archi</groupId>
-        <artifactId>persistence</artifactId>
+        <artifactId>parent</artifactId>
         <version>1.0.1</version>
     </parent>
 
     <dependencies>
-
         <dependency>
             <groupId>com.araguacaima.open_archi</groupId>
             <artifactId>persistence-meta</artifactId>

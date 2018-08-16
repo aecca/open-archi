@@ -1,12 +1,14 @@
 package com.araguacaima.open_archi.persistence.diagrams.core.specification;
 
-import com.araguacaima.commons.utils.ReflectionUtils;
 import com.araguacaima.open_archi.persistence.diagrams.core.Item;
 import com.araguacaima.open_archi.persistence.diagrams.core.Taggable;
 import com.araguacaima.specification.AbstractSpecification;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
 
 public class FixRelationships extends AbstractSpecification {
 
@@ -22,15 +24,15 @@ public class FixRelationships extends AbstractSpecification {
         if (Item.class.isAssignableFrom(object.getClass())) {
             Item item = (Item) object;
             if (item.getRelationships() != null && !item.getRelationships().isEmpty()) {
+                Set<Taggable> taggables = (Set<Taggable>) map.get("Taggables");
                 item.getRelationships().forEach(relationship -> {
                     String sourceId = relationship.getSourceId();
                     String destinationId = relationship.getDestinationId();
                     if (relationship.getSource() == null) {
                         if (StringUtils.isNotBlank(sourceId)) {
-                            Set<Taggable> taggables = (Set<Taggable>) map.get("Taggables");
                             if (taggables != null) {
                                 taggables.forEach(taggable -> {
-                                    if (taggable.getId().equals(sourceId)) {
+                                    if (taggable.getId().equals(sourceId) || taggable.getKey().equals(sourceId)) {
                                         relationship.setSource(taggable);
                                     }
                                 });
@@ -39,10 +41,9 @@ public class FixRelationships extends AbstractSpecification {
                     }
                     if (relationship.getDestination() == null) {
                         if (StringUtils.isNotBlank(destinationId)) {
-                            Set<Taggable> taggables = (Set<Taggable>) map.get("Taggables");
                             if (taggables != null) {
                                 taggables.forEach(taggable -> {
-                                    if (taggable.getId().equals(destinationId)) {
+                                    if (taggable.getId().equals(destinationId) || taggable.getKey().equals(destinationId)) {
                                         relationship.setDestination(taggable);
                                     }
                                 });

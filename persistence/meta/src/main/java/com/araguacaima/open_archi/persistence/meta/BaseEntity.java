@@ -38,6 +38,9 @@ public abstract class BaseEntity implements Serializable, BasicEntity, Cloneable
     @JsonIgnore
     private static SpecificationMapBuilder specificationMapBuilder = new SpecificationMapBuilder(MapUtils.getInstance());
 
+    @Transient
+    protected String key;
+
     @Id
     @NotNull
     @Column(name = "Id")
@@ -62,6 +65,14 @@ public abstract class BaseEntity implements Serializable, BasicEntity, Cloneable
     @Override
     public String getId() {
         return this.id;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public MetaInfo getMeta() {
