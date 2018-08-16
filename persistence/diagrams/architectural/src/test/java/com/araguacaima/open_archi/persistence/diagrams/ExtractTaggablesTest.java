@@ -3,9 +3,11 @@ package com.araguacaima.open_archi.persistence.diagrams;
 import com.araguacaima.commons.utils.JsonUtils;
 import com.araguacaima.open_archi.persistence.diagrams.architectural.Model;
 import com.araguacaima.open_archi.persistence.diagrams.core.specification.ExtractTaggables;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -81,6 +83,9 @@ public class ExtractTaggablesTest {
     public void testIsSatisfiedBy() {
         Map<String, Object> map = new HashMap<>();
         map.put("Initiator", model);
-        extractTaggables.isSatisfiedBy(model, map);
+        Assert.assertTrue(extractTaggables.isSatisfiedBy(model, map));
+        Collection taggables = (Collection) map.get("Taggables");
+        Assert.assertNotNull(taggables);
+        Assert.assertEquals(taggables.size(), 4);
     }
 }
