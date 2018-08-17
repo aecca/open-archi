@@ -7,10 +7,14 @@ import org.junit.Test;
 
 import java.io.IOException;
 
+import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+
 public class BaseEntityTest {
 
     private static final JsonUtils jsonUtils = new JsonUtils();
-    private Taggable model;
+    private Model model;
 
     public BaseEntityTest() {
         Class<Model> modelClass = Model.class;
@@ -75,7 +79,27 @@ public class BaseEntityTest {
     }
 
     @Test
-    public void testIsSatisfiedBy() {
+    public void testValidateCreation() {
+        model.getComponents().forEach(component -> {
+            component.getRelationships().forEach(relationship -> {
+                assertNull(relationship.getSource());
+                assertNull(relationship.getDestination());
+            });
+        });
+
         model.validateCreation();
+
+        model.getComponents().forEach(component -> {
+            String id = component.getId();
+            component.getRelationships().forEach(relationship -> {
+                Taggable source = relationship.getSource();
+                assertNotNull(source);
+                Taggable destination = relationship.getDestination();
+                assertNotNull(destination);
+                String sourceId = source.getId();
+                String destinationId = destination.getId();
+                assertTrue(sourceId.equals(id) || destinationId.equals(id));
+            });
+        });
     }
 }
