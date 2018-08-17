@@ -40,7 +40,7 @@ function fillShape(model, node) {
 function commonInnerDiagramElement(node) {
     let object = {};
     object.id = node.id;
-    object.key = node.key;
+    object.key = node.key.toString();
     object.meta = node.meta;
     object.status = node.status | "INITIAL";
     object.name = node.name;
@@ -107,10 +107,12 @@ function addLinksToArchitectureModel(element, links) {
             element.relationships = [];
         }
         links.forEach(link => {
-            if (link.from === element.key || link.to === element.key) {
+            if (link.from.toString() === element.key.toString() || link.to.toString() === element.key.toString()) {
                 let relationship = {};
-                relationship.sourceId = link.from;
-                relationship.destinationId = link.to;
+                relationship.source = {};
+                relationship.destination = {};
+                relationship.source.id = link.from.toString();
+                relationship.destination.id = link.to.toString();
                 element.relationships.push(relationship);
                 alreadyProcessedLinks.push(relationship);
             }
@@ -168,6 +170,7 @@ function processComponentToArchitectureModel(node, parent, links) {
 
 function processModelToDiagram(model, nodes, links) {
     let modelElement = commonInnerModelElement(model);
+    links.pushAll(extractLinks(model));
     //TODO Añadir campos propios del model
     let model_ = fulfill(modelElement, modelElement.isGroup);
     nodes.push(model_);
@@ -177,6 +180,7 @@ function processModelToDiagram(model, nodes, links) {
 
 function processLayerToDiagram(layer, nodes, links, parentId) {
     let layerElement = commonInnerModelElement(layer);
+    links.pushAll(extractLinks(layer));
     layerElement.isGroup = true;
     //TODO Añadir campos propios del layer
     //Los layer sólo se pueden agrupar en el modelo directamente, no en otros layers, systems, containers o components
@@ -206,6 +210,7 @@ function processLayerToDiagram(layer, nodes, links, parentId) {
 
 function processSystemToDiagram(system, nodes, links, parentId) {
     let systemElement = commonInnerModelElement(system);
+    links.pushAll(extractLinks(system));
     systemElement.isGroup = true;
     //TODO Añadir campos propios del system
     //Los systems sólo se pueden agrupar en layers u otros systems
@@ -238,6 +243,7 @@ function processSystemToDiagram(system, nodes, links, parentId) {
 
 function processContainerToDiagram(container, nodes, links, parentId) {
     let containerElement = commonInnerModelElement(container);
+    links.pushAll(extractLinks(container));
     containerElement.isGroup = true;
     //TODO Añadir campos propios del container
     //Los containers sólo se pueden agrupar en layers u otros containers
@@ -254,8 +260,22 @@ function processContainerToDiagram(container, nodes, links, parentId) {
     nodes.push(fulfill(containerElement, true, parentId));
 }
 
+function extractLinks(model) {
+    let links = [];
+    if (model.relationships !== undefined && model.relationships !== null) {
+        model.relationships.forEach(relationship => {
+            links.push({
+                to: relationship.destination.id,
+                from: relationship.source.id
+            });
+        });
+    }
+    return links;
+}
+
 function processComponentToDiagram(component, nodes, links, parentId) {
     let componentElement = commonInnerModelElement(component);
+    links.pushAll(extractLinks(component));
     componentElement.isGroup = false;
     //TODO Añadir campos propios del component
     //Los components sólo se pueden agrupar en layers u otros components
@@ -269,7 +289,7 @@ function findParent(parentId, model) {
     if (parentId !== undefined && model !== undefined) {
         let nodes = findValues(model, "key");
         return nodes.find(node => {
-            return node.key === parentId;
+            return node.key.toString() === parentId;
         })
     }
     return undefined;
@@ -336,6 +356,27 @@ function processElementToDiagram(model, diagram) {
     if (model.components) {
         model.components.forEach(component => processComponentToDiagram(component, diagram.nodeDataArray, diagram.linkDataArray, model.id));
     }
+    diagram.linkDataArray = eliminateDuplicates(diagram.linkDataArray.filter((link) => {
+        return link !== undefined;
+    }));
+    diagram.nodeDataArray = eliminateDuplicates(diagram.nodeDataArray.filter((node) => {
+        return node !== undefined;
+    }));
+}
+
+function eliminateDuplicates(arr) {
+    let i,
+        len = arr.length,
+        out = [],
+        obj = {};
+
+    for (i = 0; i < len; i++) {
+        obj[arr[i]] = 0;
+    }
+    for (i in obj) {
+        out.push(i);
+    }
+    return out;
 }
 
 function architectureModelToDiagram(model) {
@@ -350,16 +391,6 @@ function architectureModelToDiagram(model) {
     diagram.linkDataArray = [];
 
     processElementToDiagram(model, diagram);
-
-    const consumers = model.consumers;
-    if (consumers !== undefined && consumers !== null) {
-        let groupConsumers = {key: key, name: "Consumers", fill: "green", isGroup: true};
-        diagram.nodeDataArray.push(groupConsumers);
-        consumers.forEach(function (consumer) {
-            diagram.nodeDataArray.push(fulfill(consumer, false, key, rank));
-        });
-        diagram.linkDataArray.push({from: key, to: model.id, stroke: "black"});
-    }
 
     return diagram;
 }

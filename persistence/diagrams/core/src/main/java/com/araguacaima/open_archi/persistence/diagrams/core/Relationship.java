@@ -12,21 +12,13 @@ import javax.persistence.*;
 @PersistenceUnit(unitName = "open-archi")
 public class Relationship extends Taggable {
 
-    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true, targetEntity = Taggable.class)
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
-    @JsonIgnore
-    private Taggable source;
+    private CompositeElement source;
 
-    @Column
-    private String sourceId;
-
-    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true, targetEntity = Taggable.class)
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
-    @JsonIgnore
-    private Taggable destination;
-
-    @Column
-    private String destinationId;
+    private CompositeElement destination;
 
     @Column
     private String description;
@@ -44,36 +36,20 @@ public class Relationship extends Taggable {
     public Relationship() {
     }
 
-    public Taggable getSource() {
+    public CompositeElement getSource() {
         return source;
     }
 
-    public void setSource(Taggable source) {
+    public void setSource(CompositeElement source) {
         this.source = source;
     }
 
-    public String getSourceId() {
-        return sourceId;
-    }
-
-    public void setSourceId(String sourceId) {
-        this.sourceId = sourceId;
-    }
-
-    public Taggable getDestination() {
+    public CompositeElement getDestination() {
         return destination;
     }
 
-    public void setDestination(Taggable destination) {
+    public void setDestination(CompositeElement destination) {
         this.destination = destination;
-    }
-
-    public String getDestinationId() {
-        return destinationId;
-    }
-
-    public void setDestinationId(String destinationId) {
-        this.destinationId = destinationId;
     }
 
     public String getDescription() {
@@ -114,9 +90,7 @@ public class Relationship extends Taggable {
             this.setClonedFrom(clonedFrom);
         }
         this.source = source.getSource();
-        this.sourceId = source.getSourceId();
         this.destination = source.getDestination();
-        this.destinationId = source.getDestinationId();
         this.description = source.getDescription();
         this.sourcePort = source.getSourcePort();
         this.destinationPort = source.getDestinationPort();
@@ -128,14 +102,8 @@ public class Relationship extends Taggable {
         if (source.getSource() != null) {
             this.source = source.getSource();
         }
-        if (source.getSourceId() != null) {
-            this.sourceId = source.getSourceId();
-        }
         if (source.getDestination() != null) {
             this.destination = source.getDestination();
-        }
-        if (source.getDestinationId() != null) {
-            this.destinationId = source.getDestinationId();
         }
         if (source.getDescription() != null) {
             this.description = source.getDescription();

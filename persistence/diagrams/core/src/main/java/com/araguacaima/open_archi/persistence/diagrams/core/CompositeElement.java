@@ -1,29 +1,18 @@
 package com.araguacaima.open_archi.persistence.diagrams.core;
 
-import com.araguacaima.commons.utils.MapUtils;
-import com.araguacaima.open_archi.persistence.commons.Constants;
-import com.araguacaima.open_archi.persistence.commons.exceptions.EntityError;
-import com.araguacaima.open_archi.persistence.meta.Valuable;
+import com.araguacaima.open_archi.persistence.meta.MetaInfo;
 import com.araguacaima.open_archi.persistence.meta.Version;
-import com.araguacaima.specification.Specification;
-import com.araguacaima.specification.util.SpecificationMap;
-import com.araguacaima.specification.util.SpecificationMapBuilder;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.Type;
 
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.ResourceBundle;
 
 @Entity
 @PersistenceUnit(unitName = "open-archi")
 @Table(name = "CompositeElement", schema = "DIAGRAMS")
 @DynamicUpdate
-public class CompositeElement<T extends ElementKind>  {
+public class CompositeElement<T extends ElementKind> {
 
     @Id
     @NotNull
@@ -56,6 +45,9 @@ public class CompositeElement<T extends ElementKind>  {
         this.type = type;
     }
 
+    public CompositeElement() {
+    }
+
     public String getLink() {
         return link;
     }
@@ -72,4 +64,14 @@ public class CompositeElement<T extends ElementKind>  {
         this.version = version;
     }
 
+    public static CompositeElement<ElementKind> fromItem(Item item) {
+        CompositeElement<ElementKind> compositeElement = new CompositeElement<>();
+        MetaInfo meta = item.getMeta();
+        if (meta != null) {
+            compositeElement.setVersion(meta.getActiveVersion());
+        }
+        compositeElement.setType(item.getKind());
+        compositeElement.setId(item.getId());
+        return compositeElement;
+    }
 }

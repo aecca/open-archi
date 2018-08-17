@@ -2,6 +2,7 @@ package com.araguacaima.open_archi.persistence.diagrams;
 
 import com.araguacaima.commons.utils.JsonUtils;
 import com.araguacaima.open_archi.persistence.diagrams.architectural.Model;
+import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.Taggable;
 import org.junit.Test;
 
@@ -92,9 +93,9 @@ public class BaseEntityTest {
         model.getComponents().forEach(component -> {
             String id = component.getId();
             component.getRelationships().forEach(relationship -> {
-                Taggable source = relationship.getSource();
+                CompositeElement source = relationship.getSource();
                 assertNotNull(source);
-                Taggable destination = relationship.getDestination();
+                CompositeElement destination = relationship.getDestination();
                 assertNotNull(destination);
                 String sourceId = source.getId();
                 String destinationId = destination.getId();

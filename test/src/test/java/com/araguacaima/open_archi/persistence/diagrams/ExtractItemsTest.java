@@ -2,7 +2,7 @@ package com.araguacaima.open_archi.persistence.diagrams;
 
 import com.araguacaima.commons.utils.JsonUtils;
 import com.araguacaima.open_archi.persistence.diagrams.architectural.Model;
-import com.araguacaima.open_archi.persistence.diagrams.core.specification.ExtractTaggables;
+import com.araguacaima.open_archi.persistence.diagrams.core.specification.ExtractItems;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -11,13 +11,13 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ExtractTaggablesTest {
+public class ExtractItemsTest {
 
     private static final JsonUtils jsonUtils = new JsonUtils();
     private Object model;
-    private ExtractTaggables extractTaggables = new ExtractTaggables();
+    private ExtractItems extractItems = new ExtractItems();
 
-    public ExtractTaggablesTest() {
+    public ExtractItemsTest() {
         Class<Model> modelClass = Model.class;
         String body = "{\n" +
                 "   \"status\":\"INITIAL\",\n" +
@@ -83,8 +83,8 @@ public class ExtractTaggablesTest {
     public void testIsSatisfiedBy() {
         Map<String, Object> map = new HashMap<>();
         map.put("Initiator", model);
-        Assert.assertTrue(extractTaggables.isSatisfiedBy(model, map));
-        Collection taggables = (Collection) map.get("Taggables");
+        Assert.assertTrue(extractItems.isSatisfiedBy(model, map));
+        Collection taggables = (Collection) map.get("Items");
         Assert.assertNotNull(taggables);
         Assert.assertEquals(taggables.size(), 4);
     }

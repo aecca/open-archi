@@ -1,5 +1,6 @@
 package com.araguacaima.open_archi.persistence.diagrams.core.specification;
 
+import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.Item;
 import com.araguacaima.open_archi.persistence.diagrams.core.Taggable;
 import com.araguacaima.specification.AbstractSpecification;
@@ -24,27 +25,27 @@ public class FixRelationships extends AbstractSpecification {
         if (Item.class.isAssignableFrom(object.getClass())) {
             Item item = (Item) object;
             if (item.getRelationships() != null && !item.getRelationships().isEmpty()) {
-                Set<Taggable> taggables = (Set<Taggable>) map.get("Taggables");
+                Set<Item> items = (Set<Item>) map.get("Items");
                 item.getRelationships().forEach(relationship -> {
-                    String sourceId = relationship.getSourceId();
-                    String destinationId = relationship.getDestinationId();
-                    if (relationship.getSource() == null) {
+                    if (relationship.getSource() != null) {
+                        String sourceId = relationship.getSource().getId();
                         if (StringUtils.isNotBlank(sourceId)) {
-                            if (taggables != null) {
-                                taggables.forEach(taggable -> {
-                                    if (sourceId.equals(taggable.getId()) || sourceId.equals(taggable.getKey())) {
-                                        relationship.setSource(taggable);
+                            if (items != null) {
+                                items.forEach(item_ -> {
+                                    if (sourceId.equals(item_.getId()) || sourceId.equals(item_.getKey())) {
+                                        relationship.setSource(CompositeElement.fromItem(item_));
                                     }
                                 });
                             }
                         }
                     }
-                    if (relationship.getDestination() == null) {
+                    if (relationship.getDestination() != null) {
+                        String destinationId = relationship.getDestination().getId();
                         if (StringUtils.isNotBlank(destinationId)) {
-                            if (taggables != null) {
-                                taggables.forEach(taggable -> {
-                                    if (destinationId.equals(taggable.getId()) || destinationId.equals(taggable.getKey())) {
-                                        relationship.setDestination(taggable);
+                            if (items != null) {
+                                items.forEach(item_ -> {
+                                    if (destinationId.equals(item_.getId()) || destinationId.equals(item_.getKey())) {
+                                        relationship.setDestination(CompositeElement.fromItem(item_));
                                     }
                                 });
                             }

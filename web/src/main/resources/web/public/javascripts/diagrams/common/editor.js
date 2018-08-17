@@ -150,28 +150,34 @@ function expand(data) {
     }
     meta.id = model.id;
     const newDiagram = OpenArchiWrapper.toDiagram(model);
-    myDiagram.startTransaction("Deleting new element");
-    let id;
-    const clonedFrom = data.clonedFrom;
-    if (clonedFrom === undefined) {
-        id = data.id;
-    } else {
-        id = clonedFrom.id
+    const nodeDataArray = newDiagram.nodeDataArray;
+    if (nodeDataArray !== undefined && nodeDataArray !== null) {
+        myDiagram.startTransaction("Deleting new element");
+        let id;
+        const clonedFrom = data.clonedFrom;
+        if (clonedFrom === undefined) {
+            id = data.id;
+        } else {
+            id = clonedFrom.id
+        }
+        const nodedata = findById(myDiagram.model.nodeDataArray, id);
+        myDiagram.model.removeNodeData(myDiagram.model.findNodeDataForKey(nodedata.key));
+        myDiagram.requestUpdate();
+        myDiagram.commitTransaction("Deleting new element");
+        myDiagram.startTransaction("Expand element");
+        myDiagram.model.addNodeDataCollection(nodeDataArray);
+        const linkDataArray = newDiagram.linkDataArray;
+        if (linkDataArray !== undefined && linkDataArray !== null) {
+            myDiagram.model.addLinkDataCollection(linkDataArray);
+        }
+        const pos = myDiagram.model.modelData.position;
+        if (pos) {
+            myDiagram.initialPosition = go.Point.parse(pos);
+        }
+        myDiagram.requestUpdate();
+        myDiagram.commitTransaction("Expand element");
     }
-    const nodedata = findById(myDiagram.model.nodeDataArray, id);
-    myDiagram.model.removeNodeData(myDiagram.model.findNodeDataForKey(nodedata.key));
-    myDiagram.requestUpdate();
-    myDiagram.commitTransaction("Deleting new element");
-    myDiagram.startTransaction("Expand element");
-    myDiagram.model.addNodeDataCollection(newDiagram.nodeDataArray);
-    myDiagram.model.addLinkDataCollection(newDiagram.linkDataArray);
-    const pos = myDiagram.model.modelData.position;
-    if (pos) {
-        myDiagram.initialPosition = go.Point.parse(pos);
-    }
-    myDiagram.requestUpdate();
-    myDiagram.commitTransaction("Expand element");
-    //relayoutLanes();
+    relayoutLanes();
 }
 
 function expandGroups(g, i, level) {
