@@ -356,27 +356,28 @@ function processElementToDiagram(model, diagram) {
     if (model.components) {
         model.components.forEach(component => processComponentToDiagram(component, diagram.nodeDataArray, diagram.linkDataArray, model.id));
     }
-    diagram.linkDataArray = eliminateDuplicates(diagram.linkDataArray.filter((link) => {
+    diagram.linkDataArray = removeDuplicates(diagram.linkDataArray.filter((link) => {
         return link !== undefined;
     }));
-    diagram.nodeDataArray = eliminateDuplicates(diagram.nodeDataArray.filter((node) => {
+    diagram.nodeDataArray = removeDuplicates(diagram.nodeDataArray.filter((node) => {
         return node !== undefined;
     }));
 }
 
-function eliminateDuplicates(arr) {
-    let i,
-        len = arr.length,
-        out = [],
-        obj = {};
-
-    for (i = 0; i < len; i++) {
-        obj[arr[i]] = 0;
+function removeDuplicates(arr) {
+    let unique_array = [];
+    for (let i = 0; i < arr.length; i++) {
+        if (unique_array.length === 0) {
+            unique_array.push(arr[i])
+        } else {
+            for (let j = 0; j < unique_array.length; j++) {
+                if (!_.isEqual(unique_array[j], arr[i])) {
+                    unique_array.push(arr[i])
+                }
+            }
+        }
     }
-    for (i in obj) {
-        out.push(i);
-    }
-    return out;
+    return unique_array;
 }
 
 function architectureModelToDiagram(model) {
