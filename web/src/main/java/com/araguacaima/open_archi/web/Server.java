@@ -1413,6 +1413,7 @@ public class Server {
                         }
                         Item clonedModelItem = (Item) clonedModel;
                         clonedModelItem.setClonedFrom(clonedFrom);
+                        fixCompositeFromItem(clonedModelItem);
                         String name = clonedModelItem.getName();
                         Map<String, Object> map = new HashMap<>();
                         map.put("type", model.getClass());
@@ -1806,6 +1807,27 @@ public class Server {
                     response.status(HTTP_NOT_IMPLEMENTED);
                     return EMPTY_RESPONSE;
                 });
+            });
+        });
+    }
+
+    private static void fixCompositeFromItem(Item object) {
+        Set<Item> items = reflectionUtils.extractByType(object, Item.class);
+        Set<CompositeElement> composites = reflectionUtils.extractByType(object, CompositeElement.class);
+        items.forEach(item -> {
+            String id = item.getId();
+            String key = item.getKey();
+            composites.forEach(composite -> {
+                if (composite.getId().equals(key)) {
+                    composite.setId(id);
+                    String link = composite.getLink();
+                    if (StringUtils.isNotBlank(link)) {
+                        link = link.replaceAll(key, id);
+                    } else {
+                        link = "/models/" + id;
+                    }
+                    composite.setLink(link);
+                }
             });
         });
     }

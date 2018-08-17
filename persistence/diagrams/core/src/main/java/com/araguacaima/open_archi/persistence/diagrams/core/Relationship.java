@@ -89,8 +89,18 @@ public class Relationship extends Taggable {
         if (clonedFrom != null) {
             this.setClonedFrom(clonedFrom);
         }
-        this.source = source.getSource();
-        this.destination = source.getDestination();
+        CompositeElement source_ = source.getSource();
+        if (source_ != null) {
+            CompositeElement compositeElement = new CompositeElement();
+            compositeElement.override(source_, keepMeta, suffix);
+            this.source = compositeElement;
+        }
+        CompositeElement destination_ = source.getDestination();
+        if (destination_ != null) {
+            CompositeElement compositeElement = new CompositeElement();
+            compositeElement.override(destination_, keepMeta, suffix);
+            this.destination = compositeElement;
+        }
         this.description = source.getDescription();
         this.sourcePort = source.getSourcePort();
         this.destinationPort = source.getDestinationPort();
@@ -99,11 +109,17 @@ public class Relationship extends Taggable {
 
     public void copyNonEmpty(Relationship source, boolean keepMeta) {
         super.copyNonEmpty(source, keepMeta);
-        if (source.getSource() != null) {
-            this.source = source.getSource();
+        CompositeElement source_ = source.getSource();
+        if (source_ != null) {
+            CompositeElement compositeElement = new CompositeElement();
+            compositeElement.copyNonEmpty(source_, keepMeta);
+            this.source = compositeElement;
         }
-        if (source.getDestination() != null) {
-            this.destination = source.getDestination();
+        CompositeElement destination_ = source.getDestination();
+        if (destination_ != null) {
+            CompositeElement compositeElement = new CompositeElement();
+            compositeElement.copyNonEmpty(destination_, keepMeta);
+            this.destination = compositeElement;
         }
         if (source.getDescription() != null) {
             this.description = source.getDescription();

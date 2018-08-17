@@ -2,6 +2,7 @@ package com.araguacaima.open_archi.persistence.diagrams.core;
 
 import com.araguacaima.open_archi.persistence.meta.MetaInfo;
 import com.araguacaima.open_archi.persistence.meta.Version;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.Type;
 
@@ -73,5 +74,33 @@ public class CompositeElement<T extends ElementKind> {
         compositeElement.setType(item.getKind());
         compositeElement.setId(item.getId());
         return compositeElement;
+    }
+
+    public void override(CompositeElement compositeElement, boolean keepMeta, String suffix) {
+        this.id = compositeElement.getId();
+        this.type = (T) compositeElement.getType();
+        this.link = compositeElement.getLink();
+        Version version = compositeElement.getVersion();
+        if (version != null) {
+            Version version_ = new Version();
+            version_.override(version, keepMeta, suffix);
+            this.version = version_;
+        }
+    }
+
+    public void copyNonEmpty(CompositeElement compositeElement, boolean keepMeta) {
+        if (StringUtils.isNotBlank(compositeElement.getId())) {
+            this.id = compositeElement.getId();
+        }
+        this.type = (T) compositeElement.getType();
+        if (StringUtils.isNotBlank(compositeElement.getLink())) {
+            this.link = compositeElement.getLink();
+        }
+        Version version = compositeElement.getVersion();
+        if (version != null) {
+            Version version_ = new Version();
+            version_.copyNonEmpty(version, keepMeta);
+            this.version = version_;
+        }
     }
 }
