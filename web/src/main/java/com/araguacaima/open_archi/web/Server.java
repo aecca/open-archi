@@ -1394,8 +1394,6 @@ public class Server {
                         String id = request.params(":uuid");
                         String suffix = request.queryParams("suffix");
                         Taggable model = JPAEntityManagerUtils.find(Taggable.class, id);
-
-//TODO: Arreglar los source y destination de los composite elements ya que los ids de los nuevos elementos se cambian, pero los de los composite permanecen igual que los de la BD
                         if (model != null) {
                             model.validateRequest();
                         } else {

@@ -11,6 +11,7 @@ import com.araguacaima.specification.util.SpecificationMap;
 import com.araguacaima.specification.util.SpecificationMapBuilder;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
@@ -194,6 +195,9 @@ public abstract class BaseEntity implements Serializable, BasicEntity, Cloneable
             }
         } else {
             this.meta = null;
+        }
+        if (StringUtils.isNotBlank(source.getId())) {
+            this.key = source.getId();
         }
     }
 
