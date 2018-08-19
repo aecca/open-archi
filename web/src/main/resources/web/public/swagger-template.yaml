@@ -2751,7 +2751,7 @@ paths:
         '200':
           description: OK
           schema:
-            $ref: "#/definitions/ElementShape"
+            $ref: "#/definitions/Element_Shape"
         '400':
           description: Bad request
       security:
