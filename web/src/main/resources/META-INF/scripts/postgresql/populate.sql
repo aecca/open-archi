@@ -15,7 +15,7 @@ INSERT INTO diagrams.elementshape (id,
                                    input,
                                    output,
                                    figure,
-                                   "group")
+                                   isGroup)
 VALUES
   ('061d46ad-7c6f-477c-a16f-3900dcacce57',
    NULL,
@@ -45,7 +45,7 @@ INSERT INTO diagrams.elementshape (id,
                                    input,
                                    output,
                                    figure,
-                                   "group")
+                                   isGroup)
 VALUES
   ('713af8da-0dca-4419-9cfd-b842438392d8',
    NULL,
@@ -75,7 +75,7 @@ INSERT INTO diagrams.elementshape (id,
                                    input,
                                    output,
                                    figure,
-                                   "group")
+                                   isGroup)
 VALUES
   ('9019d959-8ffe-4615-a9bb-f46588d7406d',
    NULL,
@@ -105,7 +105,7 @@ INSERT INTO diagrams.elementshape (id,
                                    input,
                                    output,
                                    figure,
-                                   "group")
+                                   isGroup)
 VALUES
   ('6222894c-d307-49dd-97cf-bf95938bc9b8',
    NULL,
@@ -135,7 +135,7 @@ INSERT INTO diagrams.elementshape (id,
                                    input,
                                    output,
                                    figure,
-                                   "group")
+                                   isGroup)
 VALUES
   ('c92ce01e-9c32-4aa5-ada7-a8edc0c546fd',
    NULL,

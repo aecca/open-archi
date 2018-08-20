@@ -32,12 +32,12 @@ public class Flowchart extends Item {
     }
 
     @Override
-    public boolean isGroup() {
+    public boolean isIsGroup() {
         return false;
     }
 
     @Override
-    public void setGroup(boolean container) {
+    public void setIsGroup(boolean container) {
 
     }
 }

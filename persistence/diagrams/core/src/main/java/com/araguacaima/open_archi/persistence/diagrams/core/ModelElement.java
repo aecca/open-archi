@@ -15,12 +15,12 @@ import java.util.Set;
 public abstract class ModelElement extends Element {
 
     @Override
-    public boolean isGroup() {
+    public boolean isIsGroup() {
         return true;
     }
 
     @Override
-    public void setGroup(boolean container) {
+    public void setIsGroup(boolean container) {
 
     }
 }

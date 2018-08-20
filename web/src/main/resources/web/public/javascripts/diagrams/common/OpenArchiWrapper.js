@@ -97,7 +97,7 @@ function commonInnerModelElement(model) {
         raw = "data:image/svg+xml;base64," + window.btoa(raw);
         object.image = {raw: raw, type: image.type};
     }
-    object.isGroup = model.group;
+    object.isGroup = model.isGroup;
     return object;
 }
 
@@ -695,7 +695,7 @@ class OpenArchiWrapper {
                 return data.isGroup;
             }
         } else {
-            return data.group;
+            return data.isGroup;
         }
     }
 

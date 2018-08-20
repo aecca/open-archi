@@ -92,9 +92,9 @@ public abstract class Taggable extends BaseEntity {
         this.clonedBy = clonedBy;
     }
 
-    abstract public boolean isGroup();
+    abstract public boolean isIsGroup();
 
-    abstract public void setGroup(boolean container);
+    abstract public void setIsGroup(boolean container);
 
     public void override(Taggable source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
         super.override(source, keepMeta, suffix);

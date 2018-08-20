@@ -35,8 +35,8 @@ public class ElementShape extends BaseEntity {
     private boolean output = true;
     @Column
     private String figure;
-    @Column(name = "\"group\"")
-    private boolean group;
+    @Column
+    private boolean isGroup;
 
     public ElementShape(ElementKind type) {
         this.type = type;
@@ -101,12 +101,12 @@ public class ElementShape extends BaseEntity {
         this.figure = figure;
     }
 
-    public boolean isGroup() {
-        return group;
+    public boolean isIsGroup() {
+        return isGroup;
     }
 
-    public void setGroup(boolean group) {
-        this.group = group;
+    public void setIsGroup(boolean group) {
+        this.isGroup = group;
     }
 
     public void override(ElementShape source, boolean keepMeta, String suffix) {
@@ -120,7 +120,7 @@ public class ElementShape extends BaseEntity {
             this.setSize(size);
         }
         this.setFigure(source.getFigure());
-        this.setGroup(source.isGroup());
+        this.setIsGroup(source.isIsGroup());
     }
 
     public void copyNonEmpty(ElementShape source, boolean keepMeta) {
@@ -143,6 +143,6 @@ public class ElementShape extends BaseEntity {
         if (StringUtils.isNotBlank(source.getFigure())) {
             this.setFigure(source.getFigure());
         }
-        this.setGroup(source.isGroup());
+        this.setIsGroup(source.isIsGroup());
     }
 }

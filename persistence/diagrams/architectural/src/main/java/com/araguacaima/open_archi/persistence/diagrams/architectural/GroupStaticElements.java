@@ -15,12 +15,12 @@ import javax.persistence.*;
 public abstract class GroupStaticElements extends StaticElements {
 
     @Override
-    public boolean isGroup() {
+    public boolean isIsGroup() {
         return true;
     }
 
     @Override
-    public void setGroup(boolean container) {
+    public void setIsGroup(boolean container) {
 
     }
 

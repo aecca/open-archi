@@ -14,12 +14,12 @@ import javax.persistence.PersistenceUnit;
 public abstract class LeafStaticElement extends StaticElement {
 
     @Override
-    public boolean isGroup() {
+    public boolean isIsGroup() {
         return false;
     }
 
     @Override
-    public void setGroup(boolean container) {
+    public void setIsGroup(boolean container) {
 
     }
 

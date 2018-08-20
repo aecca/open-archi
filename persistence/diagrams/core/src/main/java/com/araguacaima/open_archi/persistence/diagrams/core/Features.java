@@ -91,12 +91,12 @@ public class Features extends Items {
     }
 
     @Override
-    public boolean isGroup() {
+    public boolean isIsGroup() {
         return false;
     }
 
     @Override
-    public void setGroup(boolean container) {
+    public void setIsGroup(boolean container) {
 
     }
 }

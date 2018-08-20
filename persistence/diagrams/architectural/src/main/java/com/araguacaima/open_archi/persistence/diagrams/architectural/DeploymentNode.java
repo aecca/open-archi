@@ -107,12 +107,12 @@ public class DeploymentNode extends Element {
     }
 
     @Override
-    public boolean isGroup() {
+    public boolean isIsGroup() {
         return true;
     }
 
     @Override
-    public void setGroup(boolean container) {
+    public void setIsGroup(boolean container) {
 
     }
 }
