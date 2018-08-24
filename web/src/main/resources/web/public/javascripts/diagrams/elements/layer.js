@@ -137,7 +137,7 @@ const layerTemplate = gojs(go.Group, "Horizontal",
                         imageStretch: go.GraphObject.Uniform,
                         alignment: go.Spot.TopRight
                     },
-                    new go.Binding("source", "", OpenArchiWrapper.toImage).makeTwoWay(OpenArchiWrapper.fromImage),
+                    new go.Binding("source", "", openArchiWrapper.toImage).makeTwoWay(openArchiWrapper.fromImage),
                     new go.Binding("minSize", "source", function (e) {
                         return e === undefined ? new go.Size(0, 0) : new go.Size(30, 30);
                     }).ofObject())),
@@ -148,8 +148,8 @@ const layerTemplate = gojs(go.Group, "Horizontal",
                     margin: new go.Margin(2, 0, 0, 0),
                     alignment: go.Spot.BottomCenter
                 },
-                new go.Binding("stroke", "", OpenArchiWrapper.toComplementColor),
-                new go.Binding("text", "", OpenArchiWrapper.toTitle).makeTwoWay(OpenArchiWrapper.fromTitle))
+                new go.Binding("stroke", "", openArchiWrapper.toComplementColor),
+                new go.Binding("text", "", openArchiWrapper.toTitle).makeTwoWay(openArchiWrapper.fromTitle))
         ),
         gojs("SubGraphExpanderButton", {margin: 5})  // but this remains always visible!
     ),  // end Horizontal Panel
@@ -160,7 +160,7 @@ const layerTemplate = gojs(go.Group, "Horizontal",
                 fill: "white",
                 strokeWidth: 2,
             },
-            new go.Binding("stroke", "", OpenArchiWrapper.toFill)
+            new go.Binding("stroke", "", openArchiWrapper.toFill)
         ),
         gojs(go.Placeholder,
             {
@@ -195,7 +195,7 @@ const layerTemplate = gojs(go.Group, "Horizontal",
                     imageStretch: go.GraphObject.Uniform,
                     alignment: go.Spot.TopLeft
                 },
-                new go.Binding("source", "", OpenArchiWrapper.toImage).makeTwoWay(OpenArchiWrapper.fromImage),
+                new go.Binding("source", "", openArchiWrapper.toImage).makeTwoWay(openArchiWrapper.fromImage),
                 new go.Binding("minSize", "source", function (e) {
                     return e === undefined ? new go.Size(0, 0) : new go.Size(30, 30);
                 }).ofObject()
@@ -211,8 +211,8 @@ const layerTemplate = gojs(go.Group, "Horizontal",
                     font: "bold 13pt sans-serif",
                     alignment: go.Spot.BottomRight
                 },
-                new go.Binding("stroke", "", OpenArchiWrapper.toComplementColor),
-                new go.Binding("text", "", OpenArchiWrapper.toTitle).makeTwoWay(OpenArchiWrapper.fromTitle))
+                new go.Binding("stroke", "", openArchiWrapper.toComplementColor),
+                new go.Binding("text", "", openArchiWrapper.toTitle).makeTwoWay(openArchiWrapper.fromTitle))
         )
     ),  // end Auto Panel
     { // this tooltip Adornment is shared by all nodes

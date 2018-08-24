@@ -60,7 +60,7 @@ const systemTemplate = gojs(go.Group, "Auto",
             strokeWidth: 2,
             fill: "white"
         },
-        new go.Binding("stroke", "", OpenArchiWrapper.toFill)
+        new go.Binding("stroke", "", openArchiWrapper.toFill)
     ),
     gojs(go.Panel, "Vertical",  // title above Placeholder
         gojs(go.Panel, "Horizontal",  // button next to TextBlock
@@ -68,7 +68,7 @@ const systemTemplate = gojs(go.Group, "Auto",
                 name: "HEADER",
                 stretch: go.GraphObject.Horizontal
             },
-            new go.Binding("background", "", OpenArchiWrapper.toFill),
+            new go.Binding("background", "", openArchiWrapper.toFill),
             gojs("SubGraphExpanderButton",
                 {alignment: go.Spot.Right, margin: 5}),
             gojs(go.Panel, "Table",
@@ -95,7 +95,7 @@ const systemTemplate = gojs(go.Group, "Auto",
                         imageStretch: go.GraphObject.Uniform,
                         alignment: go.Spot.TopLeft
                     },
-                    new go.Binding("source", "", OpenArchiWrapper.toImage).makeTwoWay(OpenArchiWrapper.fromImage)),
+                    new go.Binding("source", "", openArchiWrapper.toImage).makeTwoWay(openArchiWrapper.fromImage)),
                 gojs(go.TextBlock,  // this TextBlock is only seen when the swimlane is collapsed
                     {
                         name: "LABEL",
@@ -108,8 +108,8 @@ const systemTemplate = gojs(go.Group, "Auto",
                         alignment: go.Spot.BottomRight,
                         stroke: "white"
                     },
-                    new go.Binding("stroke", "", OpenArchiWrapper.toComplementColor),
-                    new go.Binding("text", "", OpenArchiWrapper.toTitle).makeTwoWay(OpenArchiWrapper.fromTitle))
+                    new go.Binding("stroke", "", openArchiWrapper.toComplementColor),
+                    new go.Binding("text", "", openArchiWrapper.toTitle).makeTwoWay(openArchiWrapper.fromTitle))
             )
         ),  // end Horizontal Panel
         gojs(go.Placeholder,

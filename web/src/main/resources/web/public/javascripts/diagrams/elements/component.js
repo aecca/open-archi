@@ -6,10 +6,10 @@ const componentTemplate = gojs(
             {
                 name: "SHAPE"
             },
-            new go.Binding("figure", "", OpenArchiWrapper.toFigure).makeTwoWay(OpenArchiWrapper.fromFigure),
-            new go.Binding("minSize", "", OpenArchiWrapper.toSize).makeTwoWay(OpenArchiWrapper.fromSize),
-            new go.Binding("fill", "", OpenArchiWrapper.toFill),
-            new go.Binding("stroke", "", OpenArchiWrapper.toFill)
+            new go.Binding("figure", "", openArchiWrapper.toFigure).makeTwoWay(openArchiWrapper.fromFigure),
+            new go.Binding("minSize", "", openArchiWrapper.toSize).makeTwoWay(openArchiWrapper.fromSize),
+            new go.Binding("fill", "", openArchiWrapper.toFill),
+            new go.Binding("stroke", "", openArchiWrapper.toFill)
         ),
         gojs(go.Panel, "Table",
             {
@@ -35,7 +35,7 @@ const componentTemplate = gojs(
                     imageStretch: go.GraphObject.Uniform,
                     alignment: go.Spot.TopLeft
                 },
-                new go.Binding("source", "", OpenArchiWrapper.toImage).makeTwoWay(OpenArchiWrapper.fromImage)),
+                new go.Binding("source", "", openArchiWrapper.toImage).makeTwoWay(openArchiWrapper.fromImage)),
             gojs(go.TextBlock,  // this TextBlock is only seen when the swimlane is collapsed
                 {
                     name: "LABEL",
@@ -48,8 +48,8 @@ const componentTemplate = gojs(
                     alignment: go.Spot.BottomRight,
                     stroke: "white"
                 },
-                new go.Binding("stroke", "", OpenArchiWrapper.toComplementColor),
-                new go.Binding("text", "", OpenArchiWrapper.toTitle).makeTwoWay(OpenArchiWrapper.fromTitle))
+                new go.Binding("stroke", "", openArchiWrapper.toComplementColor),
+                new go.Binding("text", "", openArchiWrapper.toTitle).makeTwoWay(openArchiWrapper.fromTitle))
         )
     ),
     // three named ports, one on each side except the top, all output only:

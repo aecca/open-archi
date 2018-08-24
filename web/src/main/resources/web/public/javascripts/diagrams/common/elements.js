@@ -253,7 +253,7 @@ const partContextMenuPalette =
                         }).done((data, textStatus, response) => {
                                 if (response.status === 200) {
                                     paletteModelArray = [];
-                                    paletteModelArray.pushAll(OpenArchiWrapper.fixCategory(data.elements));
+                                    paletteModelArray.pushAll(openArchiWrapper.fixCategory(data.elements));
                                     myPalette.model = new go.GraphLinksModel(paletteModelArray);
                                 }
                             }
@@ -370,8 +370,8 @@ function makePort(name, spot, input, output) {
             toLinkable: input,  // declare whether the user may draw links to/from here
             cursor: "pointer"  // show a different cursor to indicate potential link point
         },
-        new go.Binding("fromLinkable", "", OpenArchiWrapper.toFromLinkable).makeTwoWay(OpenArchiWrapper.fromFromLinkable),
-        new go.Binding("toLinkable", "", OpenArchiWrapper.toToLinkable).makeTwoWay(OpenArchiWrapper.fromToLinkable));
+        new go.Binding("fromLinkable", "", openArchiWrapper.toFromLinkable).makeTwoWay(openArchiWrapper.fromFromLinkable),
+        new go.Binding("toLinkable", "", openArchiWrapper.toToLinkable).makeTwoWay(openArchiWrapper.fromToLinkable));
 }
 
 // Make all ports on a node visible when the mouse is over the node
@@ -453,9 +453,9 @@ function nodeStyle() {
             dragComputation: stayInGroup
         },
         new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
-        new go.Binding("name", "", OpenArchiWrapper.toTitle).makeTwoWay(OpenArchiWrapper.fromTitle),
+        new go.Binding("name", "", openArchiWrapper.toTitle).makeTwoWay(openArchiWrapper.fromTitle),
         new go.Binding("clonedFrom", "clonedFrom"),
-        new go.Binding("isGroup", "", OpenArchiWrapper.toIsGroup)
+        new go.Binding("isGroup", "", openArchiWrapper.toIsGroup)
     ];
 }
 
@@ -471,11 +471,11 @@ function groupStyle() {  // common settings for both Lane and Pool Groups
             // isShadowed: true,
             // shadowColor: "#888"
         },
-        new go.Binding("background", "", OpenArchiWrapper.toFill).makeTwoWay(OpenArchiWrapper.fromFill),
+        new go.Binding("background", "", openArchiWrapper.toFill).makeTwoWay(openArchiWrapper.fromFill),
         new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
-        new go.Binding("name", "", OpenArchiWrapper.toTitle).makeTwoWay(OpenArchiWrapper.fromTitle),
+        new go.Binding("name", "", openArchiWrapper.toTitle).makeTwoWay(openArchiWrapper.fromTitle),
         new go.Binding("clonedFrom", "clonedFrom"),
-        new go.Binding("isGroup", "", OpenArchiWrapper.toIsGroup)
+        new go.Binding("isGroup", "", openArchiWrapper.toIsGroup)
     ];
 }
 
@@ -721,7 +721,7 @@ const basicElement = gojs(go.Node, "Spot",
                 toLinkableSelfNode: true,
                 toLinkableDuplicates: true
             },
-            new go.Binding("fill", "", OpenArchiWrapper.toFill).makeTwoWay(OpenArchiWrapper.fromFill)),
+            new go.Binding("fill", "", openArchiWrapper.toFill).makeTwoWay(openArchiWrapper.fromFill)),
         gojs(go.TextBlock, "text",
             {
                 font: "bold 11pt Helvetica, Arial, sans-serif",
@@ -730,8 +730,8 @@ const basicElement = gojs(go.Node, "Spot",
                 wrap: go.TextBlock.WrapFit,
                 editable: true  // allow in-place editing by user
             },
-            new go.Binding("stroke", "", OpenArchiWrapper.toComplementColor),
-            new go.Binding("text", "", OpenArchiWrapper.toTitle).makeTwoWay(OpenArchiWrapper.fromTitle)
+            new go.Binding("stroke", "", openArchiWrapper.toComplementColor),
+            new go.Binding("text", "", openArchiWrapper.toTitle).makeTwoWay(openArchiWrapper.fromTitle)
         ),  // the label shows the node data's text
         { // this tooltip Adornment is shared by all nodes
             toolTip:

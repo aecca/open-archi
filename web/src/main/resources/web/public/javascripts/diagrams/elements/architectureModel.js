@@ -49,10 +49,10 @@ const architectureModelTemplate = gojs(go.Group, "Auto",
         {
           strokeWidth: 3
         },
-        new go.Binding("fill", "", OpenArchiWrapper.toFill),
-        new go.Binding("figure", "", OpenArchiWrapper.toFigure).makeTwoWay(OpenArchiWrapper.fromFigure),
-        new go.Binding("minSize", "", OpenArchiWrapper.toSize).makeTwoWay(OpenArchiWrapper.fromSize),
-        new go.Binding("stroke", "", OpenArchiWrapper.toStroke),
+        new go.Binding("fill", "", openArchiWrapper.toFill),
+        new go.Binding("figure", "", openArchiWrapper.toFigure).makeTwoWay(openArchiWrapper.fromFigure),
+        new go.Binding("minSize", "", openArchiWrapper.toSize).makeTwoWay(openArchiWrapper.fromSize),
+        new go.Binding("stroke", "", openArchiWrapper.toStroke),
         new go.Binding("isSubGraphExpanded", "expanded").makeTwoWay()
     ),
     gojs(go.Panel, "Table",
@@ -81,7 +81,7 @@ const architectureModelTemplate = gojs(go.Group, "Auto",
                         imageStretch: go.GraphObject.Uniform,
                         alignment: go.Spot.TopRight
                     },
-                    new go.Binding("source", "", OpenArchiWrapper.toImage).makeTwoWay(OpenArchiWrapper.fromImage),
+                    new go.Binding("source", "", openArchiWrapper.toImage).makeTwoWay(openArchiWrapper.fromImage),
                     new go.Binding("minSize", "source", function (e) {
                         return e === undefined ? new go.Size(0, 0) : new go.Size(30, 30);
                     }).ofObject())),
@@ -92,9 +92,9 @@ const architectureModelTemplate = gojs(go.Group, "Auto",
                     wrap: go.TextBlock.WrapFit,
                     editable: true
                 },
-                new go.Binding("text", "", OpenArchiWrapper.toTitle),
-                new go.Binding("stroke", "", OpenArchiWrapper.toComplementColor),
-                new go.Binding("minSize", "", OpenArchiWrapper.toSize).makeTwoWay(OpenArchiWrapper.fromSize)
+                new go.Binding("text", "", openArchiWrapper.toTitle),
+                new go.Binding("stroke", "", openArchiWrapper.toComplementColor),
+                new go.Binding("minSize", "", openArchiWrapper.toSize).makeTwoWay(openArchiWrapper.fromSize)
             )
         ),
         gojs(go.Placeholder,
@@ -106,8 +106,8 @@ const architectureModelTemplate = gojs(go.Group, "Auto",
                 name: "SHAPE",
                 strokeWidth: 2,
             },
-            new go.Binding("fill", "", OpenArchiWrapper.toStroke),
-            new go.Binding("stroke", "", OpenArchiWrapper.toComplementColor)
+            new go.Binding("fill", "", openArchiWrapper.toStroke),
+            new go.Binding("stroke", "", openArchiWrapper.toComplementColor)
         ),
         gojs(go.Panel, "Table",
             {
@@ -137,7 +137,7 @@ const architectureModelTemplate = gojs(go.Group, "Auto",
                     imageStretch: go.GraphObject.Uniform,
                     alignment: go.Spot.TopLeft
                 },
-                new go.Binding("source", "", OpenArchiWrapper.toImage).makeTwoWay(OpenArchiWrapper.fromImage),
+                new go.Binding("source", "", openArchiWrapper.toImage).makeTwoWay(openArchiWrapper.fromImage),
                 new go.Binding("minSize", "source", function (e) {
                     return e === undefined ? new go.Size(0, 0) : new go.Size(30, 30);
                 }).ofObject()
@@ -154,8 +154,8 @@ const architectureModelTemplate = gojs(go.Group, "Auto",
                     font: "bold 13pt sans-serif",
                     alignment: go.Spot.BottomRight
                 },
-                new go.Binding("text", "", OpenArchiWrapper.toTitle).makeTwoWay(OpenArchiWrapper.fromTitle),
-                new go.Binding("stroke", "", OpenArchiWrapper.toComplementColor)
+                new go.Binding("text", "", openArchiWrapper.toTitle).makeTwoWay(openArchiWrapper.fromTitle),
+                new go.Binding("stroke", "", openArchiWrapper.toComplementColor)
             )
         )
     ),  // end Auto Panel

@@ -6,7 +6,7 @@ const newElementTemplate = gojs(
         selectionAdornmentTemplate: emptyAdornment
     },
     new go.Binding("clonedFrom", "clonedFrom"),
-    new go.Binding("name", "", OpenArchiWrapper.toTitle).makeTwoWay(OpenArchiWrapper.fromTitle),
+    new go.Binding("name", "", openArchiWrapper.toTitle).makeTwoWay(openArchiWrapper.fromTitle),
     new go.Binding("isGroup", "", function () {
         return false;
     }),
@@ -15,7 +15,7 @@ const newElementTemplate = gojs(
             {
                 stroke: "transparent"
             },
-            new go.Binding("fill", "", OpenArchiWrapper.toFill).makeTwoWay(OpenArchiWrapper.fromFill)
+            new go.Binding("fill", "", openArchiWrapper.toFill).makeTwoWay(openArchiWrapper.fromFill)
         ),
         gojs(go.TextBlock, "Text",
             {
@@ -25,9 +25,9 @@ const newElementTemplate = gojs(
                 wrap: go.TextBlock.WrapFit,
                 editable: false
             },
-            new go.Binding("stroke", "", OpenArchiWrapper.toComplementColor),
-            new go.Binding("text", "", OpenArchiWrapper.toTitle),
-            new go.Binding("minSize", "", OpenArchiWrapper.toSize).makeTwoWay(OpenArchiWrapper.fromSize)
+            new go.Binding("stroke", "", openArchiWrapper.toComplementColor),
+            new go.Binding("text", "", openArchiWrapper.toTitle),
+            new go.Binding("minSize", "", openArchiWrapper.toSize).makeTwoWay(openArchiWrapper.fromSize)
         ),
         { // this tooltip Adornment is shared by all nodes
             toolTip:
@@ -64,8 +64,8 @@ const personTemplate = gojs(
                 alignment: go.Spot.Center,
                 maxSize: new go.Size(40, 60)
             },
-            new go.Binding("stroke", "", OpenArchiWrapper.toStroke).makeTwoWay(OpenArchiWrapper.fromStroke),
-            new go.Binding("fill", "", OpenArchiWrapper.toFill).makeTwoWay(OpenArchiWrapper.fromFill)
+            new go.Binding("stroke", "", openArchiWrapper.toStroke).makeTwoWay(openArchiWrapper.fromStroke),
+            new go.Binding("fill", "", openArchiWrapper.toFill).makeTwoWay(openArchiWrapper.fromFill)
         ),
         { // this tooltip Adornment is shared by all nodes
             toolTip:
@@ -100,8 +100,8 @@ const consumerTemplate = gojs(
                 figure: "PrimitiveToCall",
                 maxSize: new go.Size(NaN, 40)
             },
-            new go.Binding("stroke", "", OpenArchiWrapper.toStroke).makeTwoWay(OpenArchiWrapper.fromStroke),
-            new go.Binding("fill", "", OpenArchiWrapper.toFill).makeTwoWay(OpenArchiWrapper.fromFill)
+            new go.Binding("stroke", "", openArchiWrapper.toStroke).makeTwoWay(openArchiWrapper.fromStroke),
+            new go.Binding("fill", "", openArchiWrapper.toFill).makeTwoWay(openArchiWrapper.fromFill)
         ),
         gojs(go.TextBlock, "Text",
             {
@@ -112,9 +112,9 @@ const consumerTemplate = gojs(
                 editable: false,
                 alignment: go.Spot.Center
             },
-            new go.Binding("stroke", "", OpenArchiWrapper.toComplementColor),
-            new go.Binding("text", "", OpenArchiWrapper.toTitle),
-            new go.Binding("minSize", "", OpenArchiWrapper.toSize).makeTwoWay(OpenArchiWrapper.fromSize)
+            new go.Binding("stroke", "", openArchiWrapper.toComplementColor),
+            new go.Binding("text", "", openArchiWrapper.toTitle),
+            new go.Binding("minSize", "", openArchiWrapper.toSize).makeTwoWay(openArchiWrapper.fromSize)
         ),
         { // this tooltip Adornment is shared by all nodes
             toolTip:
@@ -150,9 +150,9 @@ const defaultTemplate = gojs(
                 stroke: "transparent",
                 strokeWidth: 3
             },
-            new go.Binding("fill", "", OpenArchiWrapper.toFill).makeTwoWay(OpenArchiWrapper.fromFill),
-            new go.Binding("stroke", "", OpenArchiWrapper.toComplementColor),
-            new go.Binding("minSize", "", OpenArchiWrapper.toSize).makeTwoWay(OpenArchiWrapper.fromSize)
+            new go.Binding("fill", "", openArchiWrapper.toFill).makeTwoWay(openArchiWrapper.fromFill),
+            new go.Binding("stroke", "", openArchiWrapper.toComplementColor),
+            new go.Binding("minSize", "", openArchiWrapper.toSize).makeTwoWay(openArchiWrapper.fromSize)
         ),
         gojs(go.TextBlock, "Text",
             {
@@ -162,9 +162,9 @@ const defaultTemplate = gojs(
                 wrap: go.TextBlock.WrapFit,
                 editable: true
             },
-            new go.Binding("stroke", "", OpenArchiWrapper.toComplementColor),
-            new go.Binding("text", "", OpenArchiWrapper.toTitle),
-            new go.Binding("minSize", "", OpenArchiWrapper.toSize).makeTwoWay(OpenArchiWrapper.fromSize)),
+            new go.Binding("stroke", "", openArchiWrapper.toComplementColor),
+            new go.Binding("text", "", openArchiWrapper.toTitle),
+            new go.Binding("minSize", "", openArchiWrapper.toSize).makeTwoWay(openArchiWrapper.fromSize)),
         { // this tooltip Adornment is shared by all nodes
             toolTip:
                 gojs(go.Adornment, "Auto",
