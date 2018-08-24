@@ -142,7 +142,7 @@ function initBasic(nodeDataArray, linkDataArray, paletteModelArray) {
                         stroke: "#333333",
                         editable: true
                     },
-                    new go.Binding("text", "", openArchiWrapper.toName).makeTwoWay(openArchiWrapper.fromName))
+                    new go.Binding("text", "", OpenArchiWrapper.toName).makeTwoWay(OpenArchiWrapper.fromName))
             ),
             { // this tooltip Adornment is shared by all links
                 toolTip:
@@ -172,8 +172,8 @@ function initBasic(nodeDataArray, linkDataArray, paletteModelArray) {
                     isMultiline: false,  // don't allow newlines in text
                     editable: true  // allow in-place editing by user
                 },
-                new go.Binding("text", "", openArchiWrapper.toName).makeTwoWay(openArchiWrapper.fromName),
-                new go.Binding("stroke", "", openArchiWrapper.toComplementColor)),
+                new go.Binding("text", "", OpenArchiWrapper.toName).makeTwoWay(OpenArchiWrapper.fromName),
+                new go.Binding("stroke", "", OpenArchiWrapper.toComplementColor)),
             gojs(go.Panel, "Auto",
                 {name: "PANEL"},
                 gojs(go.Shape, "Rectangle",  // the rectangular shape around the members
@@ -191,8 +191,8 @@ function initBasic(nodeDataArray, linkDataArray, paletteModelArray) {
                         toLinkableSelfNode: true,
                         toLinkableDuplicates: true
                     },
-                    new go.Binding("fill", "", openArchiWrapper.toFill).makeTwoWay(openArchiWrapper.fromFill),
-                    new go.Binding("stroke", "", openArchiWrapper.toStroke).makeTwoWay(openArchiWrapper.fromStroke)),
+                    new go.Binding("fill", "", OpenArchiWrapper.toFill).makeTwoWay(OpenArchiWrapper.fromFill),
+                    new go.Binding("stroke", "", OpenArchiWrapper.toStroke).makeTwoWay(OpenArchiWrapper.fromStroke)),
                 gojs(go.Placeholder, {margin: 10, background: "transparent"})  // represents where the members are
             ),
             { // this tooltip Adornment is shared by all groups

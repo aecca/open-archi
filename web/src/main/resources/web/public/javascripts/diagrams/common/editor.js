@@ -22,7 +22,7 @@ function save(model) {
     fixMetaData();
     let value_;
     if (model === undefined) {
-        value_ = openArchiWrapper.fromDiagram(myDiagram.model);
+        value_ = OpenArchiFromDiagram.process(myDiagram.model);
     } else {
         let model_;
         if (typeof model === "string") {
@@ -30,7 +30,7 @@ function save(model) {
         } else {
             model_ = model;
         }
-        value_ = openArchiWrapper.fromDiagram(model_);
+        value_ = OpenArchiFromDiagram.process(model_);
     }
     let value = JSON.stringify(value_);
     let modelToSaveOrLoad = $("#modelToSaveOrLoad");
@@ -68,7 +68,7 @@ function save(model) {
                 }).done((data, textStatus, response) => {
                         if (response.status === 200) {
                             paletteModelArray = [];
-                            paletteModelArray.pushAll(openArchiWrapper.fixCategory(data.elements));
+                            paletteModelArray.pushAll(OpenArchiWrapper.fixCategory(data.elements));
                             myPalette.model = new go.GraphLinksModel(paletteModelArray);
                         }
                     }
@@ -88,12 +88,12 @@ function save(model) {
                 }).done((data, textStatus, response) => {
                         if (response.status === 200) {
                             paletteModelArray = [];
-                            paletteModelArray.pushAll(openArchiWrapper.fixCategory(data.elements));
+                            paletteModelArray.pushAll(OpenArchiWrapper.fixCategory(data.elements));
                             myPalette.model = new go.GraphLinksModel(paletteModelArray);
                         } else {
                             if (response.status === 201) {
                                 paletteModelArray = [];
-                                paletteModelArray.pushAll(openArchiWrapper.fixCategory(data.elements));
+                                paletteModelArray.pushAll(OpenArchiWrapper.fixCategory(data.elements));
                                 myPalette.model = new go.GraphLinksModel(paletteModelArray);
                             } else {
                                 alert("Not created!");
@@ -147,7 +147,7 @@ function checkAndSave() {
                     data.shape = shape;
                     data.fill = shape.fill;
                     data.category = elementType.type;
-                    data.isGroup = openArchiWrapper.toIsGroup(shape, null, elementType.group);
+                    data.isGroup = OpenArchiWrapper.toIsGroup(shape, null, elementType.group);
                     myDiagram.model.addNodeData(data);
                     myDiagram.requestUpdate();
                     myDiagram.commitTransaction("Adding new element");
@@ -170,7 +170,7 @@ function expand(data) {
         model = data;
     }
     meta.id = model.id;
-    const newDiagram = openArchiWrapper.toDiagram(model);
+    const newDiagram = OpenArchiToDiagram.process(model);
     const nodeDataArray = newDiagram.nodeDataArray;
     if (nodeDataArray !== undefined && nodeDataArray !== null) {
         myDiagram.startTransaction("Deleting new element");
@@ -337,7 +337,7 @@ function getJsonContent(url, callback) {
 }
 
 function openModel(model) {
-    let graphicalModel = openArchiWrapper.toDiagram(model);
+    let graphicalModel = OpenArchiToDiagram.process(model);
     const type = model.kind;
     switch (type) {
         case "FLOWCHART_MODEL":

@@ -241,7 +241,7 @@ class OpenArchiWrapper {
 
     static fixCategory(elements) {
         elements.forEach(function (element) {
-            element.category = openArchiWrapper.toCategory(element);
+            element.category = OpenArchiWrapper.toCategory(element);
         });
         return elements.sort(function (a, b) {
             return a.rank - b.rank;
