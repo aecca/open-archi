@@ -117,6 +117,9 @@ function addLinksToArchitectureModel(element, links) {
                 alreadyProcessedLinks.push(relationship);
             }
         });
+        if (element.relationships.length === 0) {
+            delete element.relationships;
+        }
     }
 }
 
@@ -128,7 +131,7 @@ function processLayerToArchitectureModel(node, parent, links) {
         parent.layers = [];
     }
     addLinksToArchitectureModel(layer, links);
-    parent.layers.push(layer, links);
+    parent.layers.push(layer);
     alreadyProcessedNodes.push(layer.key);
 }
 
