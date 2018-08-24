@@ -55,10 +55,8 @@ function save(model) {
         diagramInfo.modal('hide');
     }).done((data, textStatus, response) => {
             if (response.status === 201) {
-                paletteModelArray = [];
                 $.ajax({
                     url: "/open-archi/api/palette/architectures",
-                    data: JSON.stringify(value_),
                     type: 'GET',
                     crossDomain: true,
                     contentType: "application/json",
@@ -69,6 +67,7 @@ function save(model) {
                     }
                 }).done((data, textStatus, response) => {
                         if (response.status === 200) {
+                            paletteModelArray = [];
                             paletteModelArray.pushAll(OpenArchiWrapper.fixCategory(data.elements));
                             myPalette.model = new go.GraphLinksModel(paletteModelArray);
                         }
@@ -88,10 +87,14 @@ function save(model) {
                     }
                 }).done((data, textStatus, response) => {
                         if (response.status === 200) {
-                            alert(response.statusText);
+                            paletteModelArray = [];
+                            paletteModelArray.pushAll(OpenArchiWrapper.fixCategory(data.elements));
+                            myPalette.model = new go.GraphLinksModel(paletteModelArray);
                         } else {
                             if (response.status === 201) {
-                                alert(response.statusText);
+                                paletteModelArray = [];
+                                paletteModelArray.pushAll(OpenArchiWrapper.fixCategory(data.elements));
+                                myPalette.model = new go.GraphLinksModel(paletteModelArray);
                             } else {
                                 alert("Not created!");
                             }

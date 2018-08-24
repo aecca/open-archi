@@ -226,6 +226,45 @@ const partContextMenu =
             })
     );
 
+// a context menu is an Adornment with a bunch of buttons in them
+const partContextMenuPalette =
+    gojs(go.Adornment, "Vertical",
+        makeButton("Delete",
+            function (e, obj) {
+                const model = e.diagram.model;
+                const node = obj.part.data;
+                $.ajax({
+                    url: "/open-archi/api/models/" + node.id,
+                    type: 'DELETE',
+                    crossDomain: true,
+                    contentType: "application/json"
+                }).done((data, textStatus, response) => {
+                    if (response.status === 200) {
+                        $.ajax({
+                            url: "/open-archi/api/palette/architectures",
+                            type: 'GET',
+                            crossDomain: true,
+                            contentType: "application/json",
+                            converters: {
+                                "text json": function (response) {
+                                    return (response === "") ? null : JSON.parse(response);
+                                }
+                            }
+                        }).done((data, textStatus, response) => {
+                                if (response.status === 200) {
+                                    paletteModelArray = [];
+                                    paletteModelArray.pushAll(OpenArchiWrapper.fixCategory(data.elements));
+                                    myPalette.model = new go.GraphLinksModel(paletteModelArray);
+                                }
+                            }
+                        )
+                    }
+                });
+
+            }, function (o) {
+                return true;
+            })
+    );
 
 // Make link labels visible if coming out of a "conditional" node.
 // This listener is called by the "LinkDrawn" and "LinkRelinked" DiagramEvents.

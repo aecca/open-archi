@@ -35,9 +35,7 @@ const newElementTemplate = gojs(
                     gojs(go.Shape, {fill: "#FFFFCC"}),
                     gojs(go.TextBlock, {margin: 4},  // the tooltip shows the result of calling nodeInfo(data)
                         new go.Binding("text", "", nodeInfo))
-                ),
-            // this context menu Adornment is shared by all nodes
-            contextMenu: partContextMenu
+                )
         }
     ),
     // three named ports, one on each side except the top, all output only:
@@ -75,9 +73,7 @@ const personTemplate = gojs(
                     gojs(go.Shape, {fill: "#FFFFCC"}),
                     gojs(go.TextBlock, {margin: 4},  // the tooltip shows the result of calling nodeInfo(data)
                         new go.Binding("text", "", nodeInfo))
-                ),
-            // this context menu Adornment is shared by all nodes
-            contextMenu: partContextMenu
+                )
         }
     ),
     // three named ports, one on each side except the top, all output only:
@@ -126,9 +122,7 @@ const consumerTemplate = gojs(
                     gojs(go.Shape, {fill: "#FFFFCC"}),
                     gojs(go.TextBlock, {margin: 4},  // the tooltip shows the result of calling nodeInfo(data)
                         new go.Binding("text", "", nodeInfo))
-                ),
-            // this context menu Adornment is shared by all nodes
-            contextMenu: partContextMenu
+                )
         }
     ),
     // three named ports, one on each side except the top, all output only:
@@ -179,7 +173,7 @@ const defaultTemplate = gojs(
                         new go.Binding("text", "", nodeInfo))
                 ),
             // this context menu Adornment is shared by all nodes
-            contextMenu: partContextMenu
+            contextMenu: partContextMenuPalette
         }
     )
 );
