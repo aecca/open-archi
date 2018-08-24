@@ -292,7 +292,7 @@ function findParent(parentId, model) {
     if (parentId !== undefined && model !== undefined) {
         let nodes = findValues(model, "key");
         return nodes.find(node => {
-            return node.key.toString() === parentId;
+            return node.key.toString() === parentId.toString();
         })
     }
     return undefined;
