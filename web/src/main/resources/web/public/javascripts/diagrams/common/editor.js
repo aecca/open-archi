@@ -55,7 +55,25 @@ function save(model) {
         diagramInfo.modal('hide');
     }).done((data, textStatus, response) => {
             if (response.status === 201) {
-                alert(response.statusText);
+                paletteModelArray = [];
+                $.ajax({
+                    url: "/open-archi/api/palette/architectures",
+                    data: JSON.stringify(value_),
+                    type: 'GET',
+                    crossDomain: true,
+                    contentType: "application/json",
+                    converters: {
+                        "text json": function (response) {
+                            return (response === "") ? null : JSON.parse(response);
+                        }
+                    }
+                }).done((data, textStatus, response) => {
+                        if (response.status === 200) {
+                            paletteModelArray.pushAll(OpenArchiWrapper.fixCategory(data.elements));
+                            myPalette.model = new go.GraphLinksModel(paletteModelArray);
+                        }
+                    }
+                )
             } else {
                 $.ajax({
                     url: "/open-archi/api/models",
