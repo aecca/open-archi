@@ -1,6 +1,3 @@
-let alreadyProcessedNodes;
-let alreadyProcessedLinks;
-
 class OpenArchiFromDiagram {
 
     static process(diagram) {

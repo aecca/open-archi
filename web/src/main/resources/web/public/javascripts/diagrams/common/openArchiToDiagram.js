@@ -1,6 +1,3 @@
-let alreadyProcessedNodes;
-let alreadyProcessedLinks;
-
 class OpenArchiToDiagram {
 
     static process(model) {

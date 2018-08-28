@@ -1,3 +1,6 @@
+let alreadyProcessedNodes;
+let alreadyProcessedLinks;
+
 function fulfill(item, isGroup, group, rank) {
     item.key = item.id;
     item.isGroup = isGroup;
