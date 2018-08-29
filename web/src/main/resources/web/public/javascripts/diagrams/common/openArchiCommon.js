@@ -53,13 +53,19 @@ function extractLinks(model) {
 function removeDuplicates(arr) {
     let unique_array = [];
     for (let i = 0; i < arr.length; i++) {
+        const element = arr[i];
         if (unique_array.length === 0) {
-            unique_array.push(arr[i])
+            unique_array.push(element)
         } else {
+            let flag = false;
             for (let j = 0; j < unique_array.length; j++) {
-                if (!_.isEqual(unique_array[j], arr[i])) {
-                    unique_array.push(arr[i])
+                const uniqueArrayElement = unique_array[j];
+                if (_.isEqual(uniqueArrayElement, element)) {
+                    flag = true;
                 }
+            }
+            if (!flag) {
+                unique_array.push(element);
             }
         }
     }
