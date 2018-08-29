@@ -27,6 +27,9 @@
     <logger name="org.hibernate" level="INFO" additivity="false">
         <appender-ref ref="STDOUT"/>
     </logger>
+    <logger name="org.pac4j" level="DEBUG" additivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
 
     <!-- By default, the level of the root level is set to DEBUG -->
     <root level="INFO">

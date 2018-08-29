@@ -7,4 +7,12 @@ block body
         //+nav_item("/") Home
         //+nav_item("#") About
         //+nav_item("#") Contact
+    if authorized
+        section.two-column
+            section.cell(style="display: inline-flex;")
+                h4(style="color: white; margin: 0px; vertical-align: bottom; padding-top: 0px; padding-right: 5px; float: right")= name
+                | &nbsp;
+                img(src=avatar, width="30", height="30", style="padding-right: 5px; ")
+                | &nbsp;
+                a.btn.btn-danger(href='/open-archi/logout', style="margin-bottom: 5px; max-height: 35px;") Logout
     block content

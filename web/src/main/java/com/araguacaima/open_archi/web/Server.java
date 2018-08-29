@@ -7,8 +7,10 @@ import com.araguacaima.open_archi.persistence.commons.IdName;
 import com.araguacaima.open_archi.persistence.diagrams.architectural.*;
 import com.araguacaima.open_archi.persistence.diagrams.architectural.System;
 import com.araguacaima.open_archi.persistence.diagrams.core.*;
+import com.araguacaima.open_archi.persistence.meta.Account;
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
+import com.araguacaima.open_archi.web.wrapper.AccountWrapper;
 import com.araguacaima.open_archi.web.wrapper.RsqlJsonFilter;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,6 +21,19 @@ import org.apache.commons.collections4.IterableUtils;
 import org.apache.commons.collections4.Predicate;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.pac4j.core.client.Client;
+import org.pac4j.core.client.Clients;
+import org.pac4j.core.config.Config;
+import org.pac4j.core.exception.HttpAction;
+import org.pac4j.core.profile.CommonProfile;
+import org.pac4j.core.profile.ProfileManager;
+import org.pac4j.http.client.indirect.FormClient;
+import org.pac4j.jwt.config.signature.SecretSignatureConfiguration;
+import org.pac4j.jwt.profile.JwtGenerator;
+import org.pac4j.sparkjava.CallbackRoute;
+import org.pac4j.sparkjava.LogoutRoute;
+import org.pac4j.sparkjava.SecurityFilter;
+import org.pac4j.sparkjava.SparkWebContext;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,6 +61,7 @@ import static java.net.HttpURLConnection.*;
 import static spark.Spark.*;
 
 public class Server {
+    private static ProcessBuilder processBuilder = new ProcessBuilder();
     private static final String JSON_CONTENT_TYPE = "application/json";
     private static final String HTML_CONTENT_TYPE = "text/html";
     private static final String EMPTY_RESPONSE = "";
@@ -55,6 +71,10 @@ public class Server {
     private static final JsonUtils jsonUtils = new JsonUtils();
     private static EnumsUtils enumsUtils = new EnumsUtils();
     private static String DIAGRAMS_PACKAGES = "com.araguacaima.open_archi.persistence.diagrams";
+    private static String clients = "OidcClient,IndirectBasicAuthClient,DirectBasicAuthClient,ParameterClient,FormClient";
+    private final static String JWT_SALT = "12345678901234567890123456789012";
+
+    private static final String CLIENT = "OidcClient";
     private static final ExceptionHandler exceptionHandler = new ExceptionHandlerImpl(Exception.class) {
         @Override
         public void handle(Exception exception, Request request, Response response) {
@@ -101,7 +121,7 @@ public class Server {
     private static Collection<com.araguacaima.open_archi.persistence.diagrams.sequence.Model> deeplyFulfilledSequenceModelCollection = new ArrayList<>();
     private static Collection<com.araguacaima.open_archi.persistence.diagrams.classes.Model> deeplyFulfilledClassesModelCollection = new ArrayList<>();
     private static Collection<com.araguacaima.open_archi.persistence.diagrams.architectural.Relationship> deeplyFulfilledArchitectureRelationshipCollection = new ArrayList<>();
-    private static Collection<CompositeElement> deeplyFulfilledFeaturesCollection = new ArrayList<>();
+    private static Collection<CompositeElement<ElementKind>> deeplyFulfilledFeaturesCollection = new ArrayList<>();
 
     private static com.araguacaima.open_archi.persistence.diagrams.architectural.Model deeplyFulfilledArchitectureModel;
     private static com.araguacaima.open_archi.persistence.diagrams.bpm.Model deeplyFulfilledBpmModel;
@@ -132,9 +152,9 @@ public class Server {
     private static com.araguacaima.open_archi.persistence.diagrams.architectural.Relationship deeplyFulfilledArchitectureRelationship_1;
     private static com.araguacaima.open_archi.persistence.diagrams.architectural.Relationship deeplyFulfilledArchitectureRelationship_2;
 
-    private static CompositeElement deeplyFulfilledFeature;
-    private static CompositeElement deeplyFulfilledFeature_1;
-    private static CompositeElement deeplyFulfilledFeature_2;
+    private static CompositeElement<ElementKind> deeplyFulfilledFeature;
+    private static CompositeElement<ElementKind> deeplyFulfilledFeature_1;
+    private static CompositeElement<ElementKind> deeplyFulfilledFeature_2;
 
     private static Set<Class<? extends Taggable>> modelsClasses;
     private static Reflections diagramsReflections;
@@ -272,9 +292,65 @@ public class Server {
         JPAEntityManagerUtils.getEntityManager();
     }
 
+/*    private static ModelAndView index(final Request request, final Response response) {
+        final Map<String, Object> map = new HashMap<String, Object>();
+        map.put("profiles", getProfiles(request, response));
+        final SparkWebContext ctx = new SparkWebContext(request, response);
+        map.put("sessionId", ctx.getSessionIdentifier());
+        return new ModelAndView(map, "index.mustache");
+    }*/
+
+    private static ModelAndView jwt(final Request request, final Response response) {
+        final SparkWebContext context = new SparkWebContext(request, response);
+        final ProfileManager<CommonProfile> manager = new ProfileManager<>(context);
+        final Optional<CommonProfile> profile = manager.get(true);
+        String token = "";
+        if (profile.isPresent()) {
+            JwtGenerator<CommonProfile> generator = new JwtGenerator<>(new SecretSignatureConfiguration(JWT_SALT));
+            token = generator.generate(profile.get());
+        }
+        final Map<String, String> map = new HashMap<String, String>();
+        map.put("token", token);
+        return new ModelAndView(map, "jwt.mustache");
+    }
+
+    private static ModelAndView form(final Config config) {
+        final Map<String, String> map = new HashMap<String, String>();
+        final FormClient formClient = config.getClients().findClient(FormClient.class);
+        map.put("callbackUrl", formClient.getCallbackUrl());
+        return new ModelAndView(map, "loginForm.mustache");
+    }
+
+    private static ModelAndView protectedIndex(final Request request, final Response response) {
+        final Map<String, List<CommonProfile>> map = new HashMap<>();
+        map.put("profiles", getProfiles(request, response));
+        return new ModelAndView(map, "protectedIndex.mustache");
+    }
+
+    private static List<CommonProfile> getProfiles(final Request request, final Response response) {
+        final SparkWebContext context = new SparkWebContext(request, response);
+        final ProfileManager<CommonProfile> manager = new ProfileManager<>(context);
+        return manager.getAll(true);
+    }
+
+    private static ModelAndView forceLogin(final Config config, final Request request, final Response response) {
+        final SparkWebContext context = new SparkWebContext(request, response);
+        final String clientName = context.getRequestParameter(Clients.DEFAULT_CLIENT_NAME_PARAMETER);
+        final Client client = config.getClients().findClient(clientName);
+        HttpAction action;
+        try {
+            action = client.redirect(context);
+        } catch (final HttpAction e) {
+            action = e;
+        }
+        config.getHttpActionAdapter().adapt(action.getCode(), context);
+        return null;
+    }
+
     public static void main(String[] args) throws GeneralSecurityException {
 
         int assignedPort = getAssignedPort();
+        String serverName = getServerName();
         port(assignedPort);
         log.info("Server listen on port '" + assignedPort + "'");
 
@@ -327,6 +403,13 @@ public class Server {
             Map<String, Object> mapHome = new HashMap<>();
             mapHome.put("title", "Open Archi");
             get("/", (req, res) -> new ModelAndView(mapHome, "/open-archi/home"), engine);
+            final Config config = new ConfigFactory(JWT_SALT, engine).build(serverName, assignedPort, "/open-archi", clients);
+            final CallbackRoute callback = new CallbackRoute(config, null, true);
+            get("/callback", callback);
+            post("/callback", (req, res) -> {
+                store(req, res);
+                return callback.handle(req, res);
+            });
             path("/editor", () -> {
                 Map<String, Object> mapEditor = new HashMap<>();
                 exception(Exception.class, exceptionHandler);
@@ -340,6 +423,8 @@ public class Server {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+
+                before("/", new SecurityFilter(config, clients));
                 get("/", (req, res) -> {
                     mapEditor.put("palette", jsonUtils.toJSON(getArchitecturePalette()));
                     mapEditor.put("elementTypes", jsonUtils.toJSON(getElementTypes()));
@@ -347,6 +432,8 @@ public class Server {
                     mapEditor.put("examples", getExamples());
                     mapEditor.put("nodeDataArray", "[]");
                     mapEditor.put("linkDataArray", "[]");
+                    mapEditor.put("name", jsonUtils.toJSON(getArchitecturePalette()));
+                    mapEditor.put("avatar", jsonUtils.toJSON(getArchitecturePalette()));
                     String type = req.queryParams("type");
                     if (type != null) {
                         Map<String, Boolean> diagramTypesMap_ = new HashMap<>();
@@ -435,6 +522,22 @@ public class Server {
                         return new ModelAndView(mapEditor, "/error");
                     }
                 }, engine);
+                get("/jwt", Server::jwt, engine);
+                get("/oidc", Server::protectedIndex, engine);
+                get("/rest-jwt", Server::protectedIndex, engine);
+                get("/login", (rq, rs) -> form(config), engine);
+
+                final LogoutRoute localLogout = new LogoutRoute(config, "/open-archi");
+                localLogout.setDestroySession(true);
+                get("/logout", localLogout);
+                final LogoutRoute centralLogout = new LogoutRoute(config);
+                centralLogout.setDefaultUrl("http://" + serverName + ":" + assignedPort + "/open-archi");
+                centralLogout.setLogoutUrlPattern("http://" + serverName + ":" + assignedPort + "/.*");
+                centralLogout.setLocalLogout(false);
+                centralLogout.setCentralLogout(true);
+                centralLogout.setDestroySession(true);
+                get("/central-logout", centralLogout);
+                get("/force-login", (rq, rs) -> forceLogin(config, rq, rs));
             });
             path("/prototyper", () -> {
                 Map<String, Object> mapEditor = new HashMap<>();
@@ -506,7 +609,7 @@ public class Server {
                     return new ModelAndView(map, "editor");
                 });
             });
-            before("/api/*", (req, res) -> log.info("Received api call to " + req.requestMethod() + " " + req.pathInfo()));
+            before("/api/*", (req, res) -> new SecurityFilter(config, "HeaderClient"));
             path("/api", () -> {
                 Map<String, Object> mapApi = new HashMap<>();
                 exception(Exception.class, exceptionHandler);
@@ -1832,7 +1935,7 @@ public class Server {
         });
     }
 
-    private static Object getElementTypes() {
+    private static List<ElementShape> getElementTypes() {
         return JPAEntityManagerUtils.executeQuery(ElementShape.class, ElementShape.GET_ALL_ELEMENT_SHAPES);
     }
 
@@ -2035,7 +2138,7 @@ public class Server {
         }
     }
 
-    private static Object getElement(Request request, Response response, String query, Map<String, Object> params, Class type) throws IOException, URISyntaxException {
+    private static String getElement(Request request, Response response, String query, Map<String, Object> params, Class<MetaData> type) throws IOException, URISyntaxException {
         response.status(HTTP_OK);
 
         Object element = JPAEntityManagerUtils.executeQuery(type, query, params);
@@ -2059,8 +2162,16 @@ public class Server {
         return ex.getMessage();
     }
 
+    private static String getServerName() {
+        if (processBuilder.environment().get("SERVER_NAME") != null) {
+            return processBuilder.environment().get("SERVER_NAME");
+        } else {
+            //return "open-archi.herokuapp.com";
+            return "localhost";
+        }
+    }
+
     private static int getAssignedPort() {
-        ProcessBuilder processBuilder = new ProcessBuilder();
         if (processBuilder.environment().get("PORT") != null) {
             return Integer.parseInt(processBuilder.environment().get("PORT"));
         }
@@ -2118,5 +2229,41 @@ public class Server {
         }
         return null;
     }
+
+    private static void store(Request req, Response res) throws IOException {
+        List<CommonProfile> profiles = getProfiles(req, res);
+        CommonProfile profile = CollectionUtils.find(profiles, object -> CLIENT.equals(object.getClientName()));
+        Map<String, Object> map = new HashMap<>();
+        if (profile != null) {
+            Account account;
+            String email = (String) profile.getAttribute("email");
+            Map<String, Object> params = new HashMap<>();
+            params.put(Account.PARAM_EMAIL, email);
+            account = JPAEntityManagerUtils.findByQuery(Account.class, Account.FIND_BY_EMAIL, params);
+
+            if (account == null) {
+                account = AccountWrapper.toAccount(profile);
+                JPAEntityManagerUtils.persist(account);
+            }
+
+            String name = account.getLogin();
+            email = account.getEmail();
+            String avatar = account.getAvatar();
+
+            map.put("name", name);
+            map.put("avatar", avatar);
+            map.put("email", email);
+            map.put("authorized", true);
+
+/*            if (account.isSuperuser()) {
+                return processAdmin(req, res, profile);
+            }*/
+
+            Session session = req.session(true);
+            session.attribute("account", account);
+
+        }
+    }
+
 }
 
