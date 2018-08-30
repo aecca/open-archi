@@ -44,6 +44,12 @@ block scripts
                 plugins: [
                     SwaggerUIBundle.plugins.DownloadUrl
                 ],
-                layout: "StandaloneLayout"
-            })
+                layout: "StandaloneLayout",
+                requestInterceptor: function (req) {
+                    req.headers["Access-Control-Allow-Origin"] = "*";
+                    req.headers["Access-Control-Request-Method"] = "*";
+                    req.headers["Access-Control-Allow-Headers"] = "*";
+                    return req;
+                }
+            });
         }

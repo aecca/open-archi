@@ -72,7 +72,7 @@ public class Server {
     private static final JsonUtils jsonUtils = new JsonUtils();
     private static EnumsUtils enumsUtils = new EnumsUtils();
     private static String DIAGRAMS_PACKAGES = "com.araguacaima.open_archi.persistence.diagrams";
-    private static String clients = "OidcClient,HeaderClient,IndirectBasicAuthClient,DirectBasicAuthClient,ParameterClient,FormClient";
+    private static String clients = "Google2Client,OidcClient,HeaderClient,IndirectBasicAuthClient,DirectBasicAuthClient,ParameterClient,FormClient";
     private final static String JWT_SALT = "12345678901234567890123456789012";
 
     private static final String CLIENT = "OidcClient";
@@ -398,12 +398,22 @@ public class Server {
                 mapHome.put("title", "Detailed Specification");
                 get("/", (req, res) -> new ModelAndView(mapHome, "/open-archi/details"), engine);
             });
-            redirect.get("/api", "/open-archi/api/", Redirect.Status.PERMANENT_REDIRECT);
+            redirect.get("/api/", "/open-archi/api", Redirect.Status.PERMANENT_REDIRECT);
             redirect.get("/editor", "/open-archi/editor/", Redirect.Status.PERMANENT_REDIRECT);
             redirect.get("/prototyper", "/open-archi/prototyper/", Redirect.Status.TEMPORARY_REDIRECT);
             Map<String, Object> mapHome = new HashMap<>();
             mapHome.put("title", "Open Archi");
             get("/", (req, res) -> new ModelAndView(mapHome, "/open-archi/home"), engine);
+            post("/login", (req, res) -> {
+                Map<String, String[]> m = req.queryMap().toMap();
+                mapHome.putAll(m);
+                return new ModelAndView(mapHome, "/open-archi/login");
+            }, engine);
+            get("/login", (req, res) -> {
+                Map<String, String[]> m = req.queryMap().toMap();
+                mapHome.putAll(m);
+                return new ModelAndView(mapHome, "/open-archi/login");
+            }, engine);
             final Config config = new ConfigFactory(JWT_SALT, engine).build(serverName, assignedPort, "/open-archi", clients);
             final CallbackRoute callback = new CallbackRoute(config, null, true);
             get("/callback", callback);
@@ -411,12 +421,11 @@ public class Server {
                 store(req, res, mapHome);
                 return callback.handle(req, res);
             });
-            before("/editor", new SecurityFilter(config, clients, "admin,custom"));
-            before("/prototyper", new SecurityFilter(config, clients, "admin,custom"));
-            before("/api", new SecurityFilter(config, clients, "admin,custom"));
-            before("/editor/*", new SecurityFilter(config, clients, "admin,custom"));
-            before("/prototyper/*", new SecurityFilter(config, clients, "admin,custom"));
-            before("/api/*", new SecurityFilter(config, clients, "admin,custom"));
+            before("/editor", new SecurityFilter(config, clients, "admin,custom,cors"));
+            before("/prototyper", new SecurityFilter(config, clients, "admin,custom,cors"));
+            before("/editor/*", new SecurityFilter(config, clients, "admin,custom,cors"));
+            before("/prototyper/*", new SecurityFilter(config, clients, "admin,custom,cors"));
+            before("/api/*", new SecurityFilter(config, clients, "admin,custom,cors"));
             path("/editor", () -> {
                 Map<String, Object> mapEditor = new HashMap<>();
                 exception(Exception.class, exceptionHandler);
@@ -614,11 +623,11 @@ public class Server {
                     return new ModelAndView(map, "editor");
                 });
             });
+            Map<String, Object> mapApi = new HashMap<>();
+            mapApi.put("title", "Api");
+            get("/api", (req, res) -> new ModelAndView(mapApi, "/open-archi/apis"), engine);
             path("/api", () -> {
-                Map<String, Object> mapApi = new HashMap<>();
                 exception(Exception.class, exceptionHandler);
-                mapApi.put("title", "Api");
-                get("/", (req, res) -> new ModelAndView(mapApi, "/open-archi/apis"), engine);
                 options("/diagrams/architectures", (request, response) -> {
                     setCORS(request, response);
                     Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledArchitectureModelCollection, deeplyFulfilledArchitectureModel, HttpMethod.get, HttpMethod.post);

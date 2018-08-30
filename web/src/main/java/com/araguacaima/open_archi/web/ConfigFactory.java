@@ -2,6 +2,7 @@ package com.araguacaima.open_archi.web;
 
 import org.pac4j.cas.client.CasClient;
 import org.pac4j.cas.config.CasConfiguration;
+import org.pac4j.core.authorization.authorizer.CorsAuthorizer;
 import org.pac4j.core.authorization.authorizer.RequireAnyRoleAuthorizer;
 import org.pac4j.core.client.Client;
 import org.pac4j.core.client.Clients;
@@ -17,7 +18,10 @@ import org.pac4j.http.client.indirect.IndirectBasicAuthClient;
 import org.pac4j.http.credentials.authenticator.test.SimpleTestUsernamePasswordAuthenticator;
 import org.pac4j.jwt.config.signature.SecretSignatureConfiguration;
 import org.pac4j.jwt.credentials.authenticator.JwtAuthenticator;
+import org.pac4j.oauth.client.Google2Client;
+import org.pac4j.oauth.client.OAuth20Client;
 import org.pac4j.oauth.client.TwitterClient;
+import org.pac4j.oauth.config.OAuth20Configuration;
 import org.pac4j.oidc.client.OidcClient;
 import org.pac4j.oidc.config.OidcConfiguration;
 import org.pac4j.saml.client.SAML2Client;
@@ -83,6 +87,9 @@ public class ConfigFactory implements org.pac4j.core.config.ConfigFactory {
                 case "HeaderClient":
                     clientList.add(buildHeaderClient());
                     break;
+                case "Google2Client":
+                    clientList.add(buildGoogle2Client());
+                    break;
                 default:
                     break;
             }
@@ -93,6 +100,11 @@ public class ConfigFactory implements org.pac4j.core.config.ConfigFactory {
         final Config config = new Config(clients);
         config.addAuthorizer("admin", new RequireAnyRoleAuthorizer<>("ROLE_ADMIN"));
         config.addAuthorizer("custom", new Authorizer());
+        CorsAuthorizer corsAuthorizer = new CorsAuthorizer();
+        corsAuthorizer.setAllowHeaders("*");
+        corsAuthorizer.setAllowOrigin("*");
+        corsAuthorizer.setAllowCredentials(true);
+        config.addAuthorizer("cors", corsAuthorizer);
         config.setHttpActionAdapter(new HttpActionAdapter(templateEngine));
         return config;
     }
@@ -161,5 +173,9 @@ public class ConfigFactory implements org.pac4j.core.config.ConfigFactory {
             return profile;
         });
         return oidcClient;
+    }
+
+    private Google2Client buildGoogle2Client() {
+        return new Google2Client ("AIzaSyCiwK5cEv71C1v9xA3aIZQ8kO1Rb_N6VVs", "_2ipySSV6oN3j40XV3tBCOkK");
     }
 }
