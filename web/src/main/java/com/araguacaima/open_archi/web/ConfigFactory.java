@@ -176,6 +176,6 @@ public class ConfigFactory implements org.pac4j.core.config.ConfigFactory {
     }
 
     private Google2Client buildGoogle2Client() {
-        return new Google2Client ("AIzaSyCiwK5cEv71C1v9xA3aIZQ8kO1Rb_N6VVs", "_2ipySSV6oN3j40XV3tBCOkK");
+        return new Google2Client ("817439124528-1695bhdaiirv4o7rj0fuk20hhep6n4fn.apps.googleusercontent.com", "_2ipySSV6oN3j40XV3tBCOkK");
     }
 }

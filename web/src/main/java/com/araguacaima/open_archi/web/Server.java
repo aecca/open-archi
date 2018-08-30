@@ -404,18 +404,29 @@ public class Server {
             Map<String, Object> mapHome = new HashMap<>();
             mapHome.put("title", "Open Archi");
             get("/", (req, res) -> new ModelAndView(mapHome, "/open-archi/home"), engine);
-            post("/login", (req, res) -> {
-                Map<String, String[]> m = req.queryMap().toMap();
-                mapHome.putAll(m);
-                return new ModelAndView(mapHome, "/open-archi/login");
-            }, engine);
-            get("/login", (req, res) -> {
-                Map<String, String[]> m = req.queryMap().toMap();
-                mapHome.putAll(m);
-                return new ModelAndView(mapHome, "/open-archi/login");
-            }, engine);
             final Config config = new ConfigFactory(JWT_SALT, engine).build(serverName, assignedPort, "/open-archi", clients);
             final CallbackRoute callback = new CallbackRoute(config, null, true);
+            before("/login/google", new SecurityFilter(config, "Google2Client", "admin,custom,cors"));
+            post("/login/google", (req, res) -> {
+                store(req, res, mapHome);
+                return new ModelAndView(mapHome, req.session(true).attribute("originalRequest"));
+            }, engine);
+            get("/login", (req, res) -> {
+                String url;
+                QueryParamsMap queryParamsMap = req.queryMap();
+                if (queryParamsMap != null) {
+                    QueryParamsMap redirect_uri = queryParamsMap.get("redirect_uri");
+                    if (redirect_uri != null) {
+                        url = redirect_uri.value();
+                    } else {
+                        url = req.url();
+                    }
+                } else {
+                    url = req.url();
+                }
+                req.session(true).attribute("originalRequest", url);
+                return new ModelAndView(mapHome, "/open-archi/login");
+            }, engine);
             get("/callback", callback);
             post("/callback", (req, res) -> {
                 store(req, res, mapHome);
