@@ -83,9 +83,12 @@ public class Account implements Serializable, SimpleOverridable<Account> {
             joinColumns = {@JoinColumn(name = "Account_Id", referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Role_Id", referencedColumnName = "Id")})
     private Set<Role> roles;
+    @Column
     private String name;
+    @Column
     private String lastname;
-    private String avatar;
+    @OneToOne
+    private Avatar avatar;
 
     public Account() {
         this.id = UUID.randomUUID().toString();
@@ -247,11 +250,11 @@ public class Account implements Serializable, SimpleOverridable<Account> {
         return lastname;
     }
 
-    public void setAvatar(String avatar) {
+    public void setAvatar(Avatar avatar) {
         this.avatar = avatar;
     }
 
-    public String getAvatar() {
+    public Avatar getAvatar() {
         return avatar;
     }
 }

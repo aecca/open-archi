@@ -1,9 +1,9 @@
 package com.araguacaima.open_archi.persistence.diagrams.core.specification;
 
+import com.araguacaima.open_archi.persistence.meta.Account;
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 import com.araguacaima.open_archi.persistence.meta.History;
 import com.araguacaima.open_archi.persistence.meta.MetaInfo;
-import com.araguacaima.open_archi.persistence.meta.Version;
 import com.araguacaima.specification.AbstractSpecification;
 
 import java.util.*;
@@ -37,6 +37,21 @@ public class AppendMetaInfo extends AbstractSpecification {
                 meta = entity.getMeta();
                 meta.addNewHistory(thisTime);
                 map.put("meta", meta);
+            }
+            Account account = (Account) map.get("account");
+            if (account != null) {
+                Account createdBy = meta.getCreatedBy();
+                if (createdBy == null) {
+                    meta.setCreatedBy(account);
+                } else {
+                    History activeHistory = meta.getActiveHistory();
+                    Account modifiedBy = activeHistory.getModifiedBy();
+                    if (modifiedBy == null) {
+                        activeHistory.setModifiedBy(account);
+                    } else {
+                        meta.addNewHistory(Calendar.getInstance().getTime(), account);
+                    }
+                }
             }
         }
         return true;

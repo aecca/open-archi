@@ -8,6 +8,7 @@ import com.araguacaima.open_archi.persistence.diagrams.architectural.*;
 import com.araguacaima.open_archi.persistence.diagrams.architectural.System;
 import com.araguacaima.open_archi.persistence.diagrams.core.*;
 import com.araguacaima.open_archi.persistence.meta.Account;
+import com.araguacaima.open_archi.persistence.meta.Avatar;
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
 import com.araguacaima.open_archi.web.wrapper.AccountWrapper;
@@ -71,7 +72,7 @@ public class Server {
     private static final JsonUtils jsonUtils = new JsonUtils();
     private static EnumsUtils enumsUtils = new EnumsUtils();
     private static String DIAGRAMS_PACKAGES = "com.araguacaima.open_archi.persistence.diagrams";
-    private static String clients = "OidcClient,IndirectBasicAuthClient,DirectBasicAuthClient,ParameterClient,FormClient";
+    private static String clients = "OidcClient,HeaderClient,IndirectBasicAuthClient,DirectBasicAuthClient,ParameterClient,FormClient";
     private final static String JWT_SALT = "12345678901234567890123456789012";
 
     private static final String CLIENT = "OidcClient";
@@ -407,9 +408,15 @@ public class Server {
             final CallbackRoute callback = new CallbackRoute(config, null, true);
             get("/callback", callback);
             post("/callback", (req, res) -> {
-                store(req, res);
+                store(req, res, mapHome);
                 return callback.handle(req, res);
             });
+            before("/editor", new SecurityFilter(config, clients, "admin,custom"));
+            before("/prototyper", new SecurityFilter(config, clients, "admin,custom"));
+            before("/api", new SecurityFilter(config, clients, "admin,custom"));
+            before("/editor/*", new SecurityFilter(config, clients, "admin,custom"));
+            before("/prototyper/*", new SecurityFilter(config, clients, "admin,custom"));
+            before("/api/*", new SecurityFilter(config, clients, "admin,custom"));
             path("/editor", () -> {
                 Map<String, Object> mapEditor = new HashMap<>();
                 exception(Exception.class, exceptionHandler);
@@ -423,8 +430,6 @@ public class Server {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
-                before("/", new SecurityFilter(config, clients));
                 get("/", (req, res) -> {
                     mapEditor.put("palette", jsonUtils.toJSON(getArchitecturePalette()));
                     mapEditor.put("elementTypes", jsonUtils.toJSON(getElementTypes()));
@@ -609,7 +614,6 @@ public class Server {
                     return new ModelAndView(map, "editor");
                 });
             });
-            before("/api/*", (req, res) -> new SecurityFilter(config, "HeaderClient"));
             path("/api", () -> {
                 Map<String, Object> mapApi = new HashMap<>();
                 exception(Exception.class, exceptionHandler);
@@ -635,7 +639,11 @@ public class Server {
                         if (model.getKind() != ElementKind.ARCHITECTURE_MODEL) {
                             throw new Exception("Invalid kind of model '" + model.getKind() + "'. It should be '" + ElementKind.ARCHITECTURE_MODEL + "'");
                         }
-                        model.validateCreation();
+                        final SparkWebContext ctx = new SparkWebContext(request, response);
+                        Map<String, Object> map = new HashMap<>();
+                        Account account = (Account) ctx.getSessionAttribute("account");
+                        map.put("accoount", account);
+                        model.validateCreation(map);
                         DBUtil.populate(model);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
@@ -654,7 +662,11 @@ public class Server {
                         }
                         String id = request.params(":uuid");
                         model.setId(id);
-                        model.validateModification();
+                        final SparkWebContext ctx = new SparkWebContext(request, response);
+                        Map<String, Object> map = new HashMap<>();
+                        Account account = (Account) ctx.getSessionAttribute("account");
+                        map.put("accoount", account);
+                        model.validateModification(map);
                         DBUtil.update(model);
                         response.status(HTTP_OK);
                         return EMPTY_RESPONSE;
@@ -681,7 +693,11 @@ public class Server {
                         if (feature == null) {
                             throw new Exception("Invalid kind of relationship");
                         }
-                        feature.validateReplacement();
+                        final SparkWebContext ctx = new SparkWebContext(request, response);
+                        Map<String, Object> map = new HashMap<>();
+                        Account account = (Account) ctx.getSessionAttribute("account");
+                        map.put("accoount", account);
+                        feature.validateReplacement(map);
                         DBUtil.populate(feature);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
@@ -707,7 +723,11 @@ public class Server {
                         if (feature == null) {
                             throw new Exception("Invalid kind of relationship");
                         }
-                        feature.validateReplacement();
+                        final SparkWebContext ctx = new SparkWebContext(request, response);
+                        Map<String, Object> map = new HashMap<>();
+                        Account account = (Account) ctx.getSessionAttribute("account");
+                        map.put("accoount", account);
+                        feature.validateCreation(map);
                         DBUtil.populate(feature);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
@@ -734,7 +754,11 @@ public class Server {
                         }
                         String id = request.params(":cuuid");
                         model.setId(id);
-                        model.validateReplacement();
+                        final SparkWebContext ctx = new SparkWebContext(request, response);
+                        Map<String, Object> map = new HashMap<>();
+                        Account account = (Account) ctx.getSessionAttribute("account");
+                        map.put("accoount", account);
+                        model.validateReplacement(map);
                         DBUtil.replace(model);
                         response.status(HTTP_OK);
                         return EMPTY_RESPONSE;
@@ -753,7 +777,11 @@ public class Server {
                         }
                         String id = request.params(":cuuid");
                         consumer.setId(id);
-                        consumer.validateModification();
+                        final SparkWebContext ctx = new SparkWebContext(request, response);
+                        Map<String, Object> map = new HashMap<>();
+                        Account account = (Account) ctx.getSessionAttribute("account");
+                        map.put("accoount", account);
+                        consumer.validateModification(map);
                         DBUtil.update(consumer);
                         response.status(HTTP_OK);
                         return EMPTY_RESPONSE;
@@ -776,7 +804,11 @@ public class Server {
                         if (system == null) {
                             throw new Exception("Invalid kind of system");
                         }
-                        system.validateCreation();
+                        final SparkWebContext ctx = new SparkWebContext(request, response);
+                        Map<String, Object> map = new HashMap<>();
+                        Account account = (Account) ctx.getSessionAttribute("account");
+                        map.put("accoount", account);
+                        system.validateCreation(map);
                         DBUtil.populate(system);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
@@ -808,7 +840,11 @@ public class Server {
                         }
                         String id = request.params(":suuid");
                         system.setId(id);
-                        system.validateModification();
+                        final SparkWebContext ctx = new SparkWebContext(request, response);
+                        Map<String, Object> map = new HashMap<>();
+                        Account account = (Account) ctx.getSessionAttribute("account");
+                        map.put("accoount", account);
+                        system.validateModification(map);
                         DBUtil.update(system);
                         response.status(HTTP_OK);
                         return EMPTY_RESPONSE;
@@ -827,7 +863,11 @@ public class Server {
                         }
                         String id = request.params(":suuid");
                         system.setId(id);
-                        system.validateReplacement();
+                        final SparkWebContext ctx = new SparkWebContext(request, response);
+                        Map<String, Object> map = new HashMap<>();
+                        Account account = (Account) ctx.getSessionAttribute("account");
+                        map.put("accoount", account);
+                        system.validateReplacement(map);
                         DBUtil.replace(system);
                         response.status(HTTP_OK);
                         return EMPTY_RESPONSE;
@@ -851,7 +891,11 @@ public class Server {
                         }
                         String id = request.params(":suuid");
                         String systemId = system.getId();
-                        system.validateCreation();
+                        final SparkWebContext ctx = new SparkWebContext(request, response);
+                        Map<String, Object> map = new HashMap<>();
+                        Account account = (Account) ctx.getSessionAttribute("account");
+                        map.put("accoount", account);
+                        system.validateCreation(map);
                         System system_ = JPAEntityManagerUtils.find(System.class, id);
                         DBUtil.populate(system, systemId == null);
                         system_.getSystems().add(system);
@@ -877,7 +921,11 @@ public class Server {
                         }
                         String id = request.params(":suuid");
                         String containerId = container.getId();
-                        container.validateCreation();
+                        final SparkWebContext ctx = new SparkWebContext(request, response);
+                        Map<String, Object> map = new HashMap<>();
+                        Account account = (Account) ctx.getSessionAttribute("account");
+                        map.put("accoount", account);
+                        container.validateCreation(map);
                         System system = JPAEntityManagerUtils.find(System.class, id);
                         DBUtil.populate(container, containerId == null);
                         system.getContainers().add(container);
@@ -903,7 +951,11 @@ public class Server {
                         }
                         String id = request.params(":suuid");
                         String componentId = component.getId();
-                        component.validateCreation();
+                        final SparkWebContext ctx = new SparkWebContext(request, response);
+                        Map<String, Object> map = new HashMap<>();
+                        Account account = (Account) ctx.getSessionAttribute("account");
+                        map.put("accoount", account);
+                        component.validateCreation(map);
                         System system = JPAEntityManagerUtils.find(System.class, id);
                         DBUtil.populate(component, componentId == null);
                         system.getComponents().add(component);
@@ -923,7 +975,11 @@ public class Server {
                         if (container == null) {
                             throw new Exception("Invalid kind of container");
                         }
-                        container.validateCreation();
+                        final SparkWebContext ctx = new SparkWebContext(request, response);
+                        Map<String, Object> map = new HashMap<>();
+                        Account account = (Account) ctx.getSessionAttribute("account");
+                        map.put("accoount", account);
+                        container.validateCreation(map);
                         DBUtil.populate(container);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
@@ -955,7 +1011,11 @@ public class Server {
                         }
                         String id = request.params(":cuuid");
                         container.setId(id);
-                        container.validateModification();
+                        final SparkWebContext ctx = new SparkWebContext(request, response);
+                        Map<String, Object> map = new HashMap<>();
+                        Account account = (Account) ctx.getSessionAttribute("account");
+                        map.put("accoount", account);
+                        container.validateModification(map);
                         DBUtil.update(container);
                         response.status(HTTP_OK);
                         return EMPTY_RESPONSE;
@@ -974,7 +1034,11 @@ public class Server {
                         }
                         String id = request.params(":cuuid");
                         container.setId(id);
-                        container.validateReplacement();
+                        final SparkWebContext ctx = new SparkWebContext(request, response);
+                        Map<String, Object> map = new HashMap<>();
+                        Account account = (Account) ctx.getSessionAttribute("account");
+                        map.put("accoount", account);
+                        container.validateReplacement(map);
                         DBUtil.replace(container);
                         response.status(HTTP_OK);
                         return EMPTY_RESPONSE;
@@ -998,7 +1062,11 @@ public class Server {
                         }
                         String id = request.params(":cuuid");
 
-                        component.validateCreation();
+                        final SparkWebContext ctx = new SparkWebContext(request, response);
+                        Map<String, Object> map = new HashMap<>();
+                        Account account = (Account) ctx.getSessionAttribute("account");
+                        map.put("accoount", account);
+                        component.validateCreation(map);
                         Container container = JPAEntityManagerUtils.find(Container.class, id);
                         DBUtil.populate(component, true);
                         container.getComponents().add(component);
@@ -1018,7 +1086,11 @@ public class Server {
                         if (component == null) {
                             throw new Exception("Invalid kind of relationship");
                         }
-                        component.validateCreation();
+                        final SparkWebContext ctx = new SparkWebContext(request, response);
+                        Map<String, Object> map = new HashMap<>();
+                        Account account = (Account) ctx.getSessionAttribute("account");
+                        map.put("accoount", account);
+                        component.validateCreation(map);
                         DBUtil.populate(component);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
@@ -1050,7 +1122,11 @@ public class Server {
                         }
                         String id = request.params(":cuuid");
                         component.setId(id);
-                        component.validateModification();
+                        final SparkWebContext ctx = new SparkWebContext(request, response);
+                        Map<String, Object> map = new HashMap<>();
+                        Account account = (Account) ctx.getSessionAttribute("account");
+                        map.put("accoount", account);
+                        component.validateModification(map);
                         DBUtil.update(component);
                         response.status(HTTP_OK);
                         return EMPTY_RESPONSE;
@@ -1069,7 +1145,11 @@ public class Server {
                         }
                         String id = request.params(":cuuid");
                         component.setId(id);
-                        component.validateReplacement();
+                        final SparkWebContext ctx = new SparkWebContext(request, response);
+                        Map<String, Object> map = new HashMap<>();
+                        Account account = (Account) ctx.getSessionAttribute("account");
+                        map.put("accoount", account);
+                        component.validateReplacement(map);
                         DBUtil.replace(component);
                         response.status(HTTP_OK);
                         return EMPTY_RESPONSE;
@@ -1088,7 +1168,11 @@ public class Server {
                         }
                         String id = request.params(":uuid");
                         String systemId = system.getId();
-                        system.validateCreation();
+                        final SparkWebContext ctx = new SparkWebContext(request, response);
+                        Map<String, Object> map = new HashMap<>();
+                        Account account = (Account) ctx.getSessionAttribute("account");
+                        map.put("accoount", account);
+                        system.validateCreation(map);
                         Model model = JPAEntityManagerUtils.find(com.araguacaima.open_archi.persistence.diagrams.architectural.Model.class, id);
                         DBUtil.populate(system, systemId == null);
                         model.getSystems().add(system);
@@ -1118,7 +1202,11 @@ public class Server {
                         }
                         String id = request.params(":cuuid");
                         model.setId(id);
-                        model.validateReplacement();
+                        final SparkWebContext ctx = new SparkWebContext(request, response);
+                        Map<String, Object> map = new HashMap<>();
+                        Account account = (Account) ctx.getSessionAttribute("account");
+                        map.put("accoount", account);
+                        model.validateReplacement(map);
                         DBUtil.replace(model);
                         response.status(HTTP_OK);
                         return EMPTY_RESPONSE;
@@ -1137,7 +1225,11 @@ public class Server {
                         }
                         String id = request.params(":cuuid");
                         container.setId(id);
-                        container.validateModification();
+                        final SparkWebContext ctx = new SparkWebContext(request, response);
+                        Map<String, Object> map = new HashMap<>();
+                        Account account = (Account) ctx.getSessionAttribute("account");
+                        map.put("accoount", account);
+                        container.validateModification(map);
                         DBUtil.update(container);
                         response.status(HTTP_OK);
                         return EMPTY_RESPONSE;
@@ -1161,7 +1253,11 @@ public class Server {
                         }
                         String id = request.params(":suuid");
                         String containerId = container.getId();
-                        container.validateCreation();
+                        final SparkWebContext ctx = new SparkWebContext(request, response);
+                        Map<String, Object> map = new HashMap<>();
+                        Account account = (Account) ctx.getSessionAttribute("account");
+                        map.put("accoount", account);
+                        container.validateCreation(map);
                         System system = JPAEntityManagerUtils.find(System.class, id);
                         DBUtil.populate(container, containerId == null);
                         system.getContainers().add(container);
@@ -1191,7 +1287,11 @@ public class Server {
                         }
                         String id = request.params(":cuuid");
                         model.setId(id);
-                        model.validateReplacement();
+                        final SparkWebContext ctx = new SparkWebContext(request, response);
+                        Map<String, Object> map = new HashMap<>();
+                        Account account = (Account) ctx.getSessionAttribute("account");
+                        map.put("accoount", account);
+                        model.validateReplacement(map);
                         DBUtil.replace(model);
                         response.status(HTTP_OK);
                         return EMPTY_RESPONSE;
@@ -1210,7 +1310,11 @@ public class Server {
                         }
                         String id = request.params(":cuuid");
                         container.setId(id);
-                        container.validateModification();
+                        final SparkWebContext ctx = new SparkWebContext(request, response);
+                        Map<String, Object> map = new HashMap<>();
+                        Account account = (Account) ctx.getSessionAttribute("account");
+                        map.put("accoount", account);
+                        container.validateModification(map);
                         DBUtil.update(container);
                         response.status(HTTP_OK);
                         return EMPTY_RESPONSE;
@@ -1241,7 +1345,11 @@ public class Server {
                         if (model.getKind() != ElementKind.BPM_MODEL) {
                             throw new Exception("Invalid kind of model '" + model.getKind() + "'. It should be '" + ElementKind.BPM_MODEL + "'");
                         }
-                        model.validateCreation();
+                        final SparkWebContext ctx = new SparkWebContext(request, response);
+                        Map<String, Object> map = new HashMap<>();
+                        Account account = (Account) ctx.getSessionAttribute("account");
+                        map.put("accoount", account);
+                        model.validateCreation(map);
                         DBUtil.populate(model);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
@@ -1271,7 +1379,11 @@ public class Server {
                         if (model.getKind() != ElementKind.ENTITY_RELATIONSHIP_MODEL) {
                             throw new Exception("Invalid kind of model '" + model.getKind() + "'. It should be '" + ElementKind.ENTITY_RELATIONSHIP_MODEL + "'");
                         }
-                        model.validateCreation();
+                        final SparkWebContext ctx = new SparkWebContext(request, response);
+                        Map<String, Object> map = new HashMap<>();
+                        Account account = (Account) ctx.getSessionAttribute("account");
+                        map.put("accoount", account);
+                        model.validateCreation(map);
                         DBUtil.populate(model);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
@@ -1301,7 +1413,11 @@ public class Server {
                         if (model.getKind() != ElementKind.FLOWCHART_MODEL) {
                             throw new Exception("Invalid kind of model '" + model.getKind() + "'. It should be '" + ElementKind.FLOWCHART_MODEL + "'");
                         }
-                        model.validateCreation();
+                        final SparkWebContext ctx = new SparkWebContext(request, response);
+                        Map<String, Object> map = new HashMap<>();
+                        Account account = (Account) ctx.getSessionAttribute("account");
+                        map.put("accoount", account);
+                        model.validateCreation(map);
                         DBUtil.populate(model);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
@@ -1331,7 +1447,11 @@ public class Server {
                         if (model.getKind() != ElementKind.GANTT_MODEL) {
                             throw new Exception("Invalid kind of model '" + model.getKind() + "'. It should be '" + ElementKind.GANTT_MODEL + "'");
                         }
-                        model.validateCreation();
+                        final SparkWebContext ctx = new SparkWebContext(request, response);
+                        Map<String, Object> map = new HashMap<>();
+                        Account account = (Account) ctx.getSessionAttribute("account");
+                        map.put("accoount", account);
+                        model.validateCreation(map);
                         DBUtil.populate(model);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
@@ -1361,7 +1481,11 @@ public class Server {
                         if (model.getKind() != ElementKind.SEQUENCE_MODEL) {
                             throw new Exception("Invalid kind of model '" + model.getKind() + "'. It should be '" + ElementKind.SEQUENCE_MODEL + "'");
                         }
-                        model.validateCreation();
+                        final SparkWebContext ctx = new SparkWebContext(request, response);
+                        Map<String, Object> map = new HashMap<>();
+                        Account account = (Account) ctx.getSessionAttribute("account");
+                        map.put("accoount", account);
+                        model.validateCreation(map);
                         DBUtil.populate(model);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
@@ -1391,7 +1515,11 @@ public class Server {
                         if (model.getKind() != ElementKind.UML_CLASS_MODEL) {
                             throw new Exception("Invalid kind of model '" + model.getKind() + "'. It should be '" + ElementKind.UML_CLASS_MODEL + "'");
                         }
-                        model.validateCreation();
+                        final SparkWebContext ctx = new SparkWebContext(request, response);
+                        Map<String, Object> map = new HashMap<>();
+                        Account account = (Account) ctx.getSessionAttribute("account");
+                        map.put("accoount", account);
+                        model.validateCreation(map);
                         DBUtil.populate(model);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
@@ -1429,7 +1557,11 @@ public class Server {
                         if (model == null) {
                             throw new Exception("Invalid kind of model '" + kind + "'");
                         }
-                        model.validateCreation();
+                        final SparkWebContext ctx = new SparkWebContext(request, response);
+                        Map<String, Object> map = new HashMap<>();
+                        Account account = (Account) ctx.getSessionAttribute("account");
+                        map.put("accoount", account);
+                        model.validateCreation(map);
                         DBUtil.populate(model, id == null);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
@@ -1468,7 +1600,11 @@ public class Server {
                         }
                         String id = request.params(":uuid");
                         model.setId(id);
-                        model.validateReplacement();
+                        final SparkWebContext ctx = new SparkWebContext(request, response);
+                        Map<String, Object> map = new HashMap<>();
+                        Account account = (Account) ctx.getSessionAttribute("account");
+                        map.put("accoount", account);
+                        model.validateReplacement(map);
                         DBUtil.replace(model);
                         response.status(HTTP_OK);
                         return EMPTY_RESPONSE;
@@ -1541,7 +1677,11 @@ public class Server {
                         if (image == null) {
                             throw new Exception("Invalid kind of relationship");
                         }
-                        image.validateReplacement();
+                        final SparkWebContext ctx = new SparkWebContext(request, response);
+                        Map<String, Object> map = new HashMap<>();
+                        Account account = (Account) ctx.getSessionAttribute("account");
+                        map.put("accoount", account);
+                        image.validateReplacement(map);
                         DBUtil.populate(image);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
@@ -1561,7 +1701,11 @@ public class Server {
                         model.setId(id);
                         String sid = request.params(":sid");
                         model.setStatus((Status) enumsUtils.getEnum(Status.class, sid));
-                        model.validateReplacement();
+                        final SparkWebContext ctx = new SparkWebContext(request, response);
+                        Map<String, Object> map = new HashMap<>();
+                        Account account = (Account) ctx.getSessionAttribute("account");
+                        map.put("accoount", account);
+                        model.validateReplacement(map);
                         DBUtil.update(model);
                         response.status(HTTP_OK);
                         return EMPTY_RESPONSE;
@@ -1634,7 +1778,11 @@ public class Server {
                         if (metaData == null) {
                             throw new Exception("Invalid metadata");
                         }
-                        metaData.validateCreation();
+                        final SparkWebContext ctx = new SparkWebContext(request, response);
+                        Map<String, Object> map = new HashMap<>();
+                        Account account = (Account) ctx.getSessionAttribute("account");
+                        map.put("accoount", account);
+                        metaData.validateCreation(map);
                         DBUtil.populate(metaData);
                         response.status(HTTP_CREATED);
                         response.header("Location", request.pathInfo() + "/" + request.params(":uuid") + "/meta-data");
@@ -1778,7 +1926,11 @@ public class Server {
                         if (consumer == null) {
                             throw new Exception("Invalid kind for consumer");
                         }
-                        consumer.validateCreation();
+                        final SparkWebContext ctx = new SparkWebContext(request, response);
+                        Map<String, Object> map = new HashMap<>();
+                        Account account = (Account) ctx.getSessionAttribute("account");
+                        map.put("accoount", account);
+                        consumer.validateCreation(map);
                         DBUtil.populate(consumer);
                         response.status(HTTP_CREATED);
                         response.type(JSON_CONTENT_TYPE);
@@ -1810,7 +1962,11 @@ public class Server {
                         }
                         String id = request.params(":uuid");
                         consumer.setId(id);
-                        consumer.validateReplacement();
+                        final SparkWebContext ctx = new SparkWebContext(request, response);
+                        Map<String, Object> map = new HashMap<>();
+                        Account account = (Account) ctx.getSessionAttribute("account");
+                        map.put("accoount", account);
+                        consumer.validateReplacement(map);
                         DBUtil.replace(consumer);
                         response.status(HTTP_OK);
                         return EMPTY_RESPONSE;
@@ -1829,7 +1985,11 @@ public class Server {
                         }
                         String id = request.params(":uuid");
                         consumer.setId(id);
-                        consumer.validateModification();
+                        final SparkWebContext ctx = new SparkWebContext(request, response);
+                        Map<String, Object> map = new HashMap<>();
+                        Account account = (Account) ctx.getSessionAttribute("account");
+                        map.put("accoount", account);
+                        consumer.validateModification(map);
                         DBUtil.update(consumer);
                         response.status(HTTP_OK);
                         return EMPTY_RESPONSE;
@@ -2230,10 +2390,9 @@ public class Server {
         return null;
     }
 
-    private static void store(Request req, Response res) throws IOException {
+    private static void store(Request req, Response res, Map<String, Object> map) throws IOException {
         List<CommonProfile> profiles = getProfiles(req, res);
-        CommonProfile profile = CollectionUtils.find(profiles, object -> CLIENT.equals(object.getClientName()));
-        Map<String, Object> map = new HashMap<>();
+        CommonProfile profile = IterableUtils.find(profiles, object -> CLIENT.equals(object.getClientName()));
         if (profile != null) {
             Account account;
             String email = (String) profile.getAttribute("email");
@@ -2248,10 +2407,12 @@ public class Server {
 
             String name = account.getLogin();
             email = account.getEmail();
-            String avatar = account.getAvatar();
-
+            Avatar accountAvatar = account.getAvatar();
+            if (accountAvatar != null) {
+                String avatar = accountAvatar.getUrl();
+                map.put("avatar", avatar);
+            }
             map.put("name", name);
-            map.put("avatar", avatar);
             map.put("email", email);
             map.put("authorized", true);
 

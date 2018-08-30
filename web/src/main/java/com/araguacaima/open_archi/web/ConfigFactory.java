@@ -65,7 +65,6 @@ public class ConfigFactory implements org.pac4j.core.config.ConfigFactory {
                 case "TwitterClient":
                     clientList.add(buildTwitterClient());
                     break;
-
                 case "CasClient":
                     clientList.add(buildCasClient());
                     break;

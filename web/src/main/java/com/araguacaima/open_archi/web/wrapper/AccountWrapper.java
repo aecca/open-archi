@@ -1,6 +1,7 @@
 package com.araguacaima.open_archi.web.wrapper;
 
 import com.araguacaima.open_archi.persistence.meta.Account;
+import com.araguacaima.open_archi.persistence.meta.Avatar;
 import org.pac4j.core.profile.UserProfile;
 
 public class AccountWrapper {
@@ -12,7 +13,10 @@ public class AccountWrapper {
             account.setLastname((String) profile.getAttribute("family_name"));
             account.setLogin((String) profile.getAttribute("name"));
             account.setEmail((String) profile.getAttribute("email"));
-            account.setAvatar(profile.getAttribute("picture").toString());
+            String url = profile.getAttribute("picture").toString();
+            Avatar avatar = new Avatar();
+            avatar.setUrl(url);
+            account.setAvatar(avatar);
         }
         return account;
     }

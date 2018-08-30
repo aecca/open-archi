@@ -2,6 +2,7 @@ package com.araguacaima.open_archi.persistence.meta;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.IterableUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -99,15 +100,26 @@ public class MetaInfo implements Serializable, Comparable<MetaInfo>, SimpleOverr
         history.setVersion(new Version());
         this.history.add(history);
     }
+    public void addNewHistory(Date time, Account modifiedBy) {
+        History history = new History(time);
+        history.setVersion(new Version());
+        history.setModifiedBy(modifiedBy);
+        this.history.add(history);
+    }
 
     @JsonIgnore
     public Version getActiveVersion() {
-        History history = CollectionUtils.find(this.history, object -> VersionStatus.ACTIVE.equals(object.getStatus()));
+        return getActiveHistory().getVersion();
+    }
+
+    @JsonIgnore
+    public History getActiveHistory() {
+        History history = IterableUtils.find(this.history, object -> VersionStatus.ACTIVE.equals(object.getStatus()));
         if (history == null) {
             history = new History();
             history.setVersion(new Version());
         }
-        return history.getVersion();
+        return history;
     }
 
     @Override
