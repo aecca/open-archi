@@ -3,9 +3,10 @@ script.
     'use strict'
     function run() {
         const oauth2 = window.opener.swaggerUIRedirectOauth2;
+        console.log(JSON.stringify(oauth2));
         const sentState = oauth2.state;
         const redirectUrl = oauth2.redirectUrl;
-        let isValid, qp, arr;
+        let isValid, qp, arr, hasAllScopes;
 
         if (/code|token|error/.test(window.location.hash)) {
             qp = window.location.hash.substring(1);
@@ -25,6 +26,7 @@ script.
 
         //isValid = qp.state === sentState;
         isValid = true;
+        hasAllScopes = true
         if ((
                 oauth2.auth.schema.get("flow") === "accessCode" ||
                 oauth2.auth.schema.get("flow") === "authorizationCode"
@@ -37,7 +39,14 @@ script.
                     message: "Authorization may be unsafe, passed state was changed in server Passed state wasn't returned from auth server"
                 });
             }
-
+            if (!hasAllScopes) {
+                oauth2.errCb({
+                    authId: oauth2.auth.name,
+                    source: "auth",
+                    level: "warning",
+                    message: "Scopes approved: " + scopes
+                });
+            }
             if (qp.code) {
                 delete oauth2.state;
                 oauth2.auth.code = qp.code;

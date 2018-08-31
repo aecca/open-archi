@@ -10,8 +10,10 @@ import com.araguacaima.open_archi.persistence.diagrams.core.*;
 import com.araguacaima.open_archi.persistence.meta.Account;
 import com.araguacaima.open_archi.persistence.meta.Avatar;
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
+import com.araguacaima.open_archi.persistence.meta.Role;
 import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
 import com.araguacaima.open_archi.web.wrapper.AccountWrapper;
+import com.araguacaima.open_archi.web.wrapper.RolesWrapper;
 import com.araguacaima.open_archi.web.wrapper.RsqlJsonFilter;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -2414,10 +2416,10 @@ public class Server {
 
     private static void store(Request req, Response res, Map<String, Object> map) throws IOException {
         List<CommonProfile> profiles = getProfiles(req, res);
-        CommonProfile profile = IterableUtils.find(profiles, object ->  clients.contains(object.getClientName()));
+        CommonProfile profile = IterableUtils.find(profiles, object -> clients.contains(object.getClientName()));
         if (profile != null) {
             Account account;
-            String email = ((Google2Profile) profile).getEmail();
+            String email = profile.getEmail();
             Map<String, Object> params = new HashMap<>();
             params.put(Account.PARAM_EMAIL, email);
             account = JPAEntityManagerUtils.findByQuery(Account.class, Account.FIND_BY_EMAIL, params);
@@ -2427,6 +2429,40 @@ public class Server {
                 JPAEntityManagerUtils.persist(account.getAvatar());
                 JPAEntityManagerUtils.persist(account);
             }
+
+            Set<Role> roles = account.getRoles();
+            if (roles == null) {
+                roles = new HashSet<>();
+            }
+            Set<String> profileRoles = profile.getRoles();
+            if (CollectionUtils.isNotEmpty(profileRoles)) {
+                Collection<? extends Role> roles1 = RolesWrapper.toRoles(profileRoles);
+                roles1.forEach(JPAEntityManagerUtils::persist);
+                roles.addAll(roles1);
+            } else {
+                Role roleWriteModel = RolesWrapper.buildRole("write:model");
+                JPAEntityManagerUtils.persist(roleWriteModel);
+                roles.add(roleWriteModel);
+                Role roleReadModels = RolesWrapper.buildRole("read:models");
+                JPAEntityManagerUtils.persist(roleReadModels);
+                roles.add(roleReadModels);
+                Role roleWriteCatalog = RolesWrapper.buildRole("write:catalog");
+                JPAEntityManagerUtils.persist(roleWriteCatalog);
+                roles.add(roleWriteCatalog);
+                Role roleReadCatalogs = RolesWrapper.buildRole("read:catalogs");
+                JPAEntityManagerUtils.persist(roleReadCatalogs);
+                roles.add(roleReadCatalogs);
+                Role roleWrtiePalette = RolesWrapper.buildRole("write:palette");
+                JPAEntityManagerUtils.persist(roleWrtiePalette);
+                roles.add(roleWrtiePalette);
+                Role roleReadPalettes = RolesWrapper.buildRole("read:palettes");
+                JPAEntityManagerUtils.persist(roleReadPalettes);
+                roles.add(roleReadPalettes);
+            }
+
+            profile.addRoles(RolesWrapper.fromRoles(account.getRoles()));
+
+            JPAEntityManagerUtils.merge(account);
 
             String name = account.getLogin();
             email = account.getEmail();
