@@ -1,9 +1,6 @@
-<!doctype html>
-<html lang="en-US">
-<body onload="run()">
-</body>
-</html>
-<script>
+body(onload="run()")
+script.
+    'use strict'
     function run() {
         const oauth2 = window.opener.swaggerUIRedirectOauth2;
         const sentState = oauth2.state;
@@ -58,4 +55,3 @@
         }
         window.close();
     }
-</script>

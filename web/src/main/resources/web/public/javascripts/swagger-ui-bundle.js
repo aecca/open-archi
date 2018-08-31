@@ -53383,7 +53383,7 @@
             }).call(this)
         }).call(t, n(33))
     }, function(e, t) {
-        e.exports = '---\nurl: "swagger.yaml"\ndom_id: "#swagger-ui"\nvalidatorUrl: "https://online.swagger.io/validator"\noauth2RedirectUrl: "/oauth2-redirect.html"\n'
+        e.exports = '---\nurl: "swagger.yaml"\ndom_id: "#swagger-ui"\nvalidatorUrl: "https://online.swagger.io/validator"\noauth2RedirectUrl: "/oauth2-redirect"\n'
     }, function(e, t, n) {
         "use strict";
 
