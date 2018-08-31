@@ -16,8 +16,8 @@
     </parent>
 
     <properties>
-        <!--<baseUrl>open-archi.herokuapp.com</baseUrl>-->
-        <baseUrl>localhost:4567</baseUrl>
+        <baseUrl>open-archi.herokuapp.com</baseUrl>
+        <!--<baseUrl>localhost:4567</baseUrl>-->
     </properties>
 
     <dependencies>
