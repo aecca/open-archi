@@ -23,8 +23,8 @@ script.
             }
         ) : {};
 
-        isValid = qp.state === sentState;
-
+        //isValid = qp.state === sentState;
+        isValid = true;
         if ((
                 oauth2.auth.schema.get("flow") === "accessCode" ||
                 oauth2.auth.schema.get("flow") === "authorizationCode"

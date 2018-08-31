@@ -60,6 +60,9 @@ public class Loader extends ClasspathTemplateLoader {
         } else {
             name = name.replaceAll("\\\\", File.separator);
         }
+        if (name.endsWith(".html")) {
+            name = name.replace(".html", ".jade");
+        }
         String name1 = templateRoot + name;
         try {
             reader = super.getReader(name1);
