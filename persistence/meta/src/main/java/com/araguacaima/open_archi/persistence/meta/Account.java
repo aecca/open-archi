@@ -9,6 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -80,7 +81,7 @@ public class Account implements Serializable, SimpleOverridable<Account> {
             name = "Account_Roles",
             joinColumns = {@JoinColumn(name = "Account_Id", referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Role_Id", referencedColumnName = "Id")})
-    private Set<Role> roles;
+    private Set<Role> roles = new HashSet<>();
     @Column
     private String name;
     @Column

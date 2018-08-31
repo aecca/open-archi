@@ -17,9 +17,7 @@ public class Authorizer extends ProfileAuthorizer<CommonProfile> {
 
     @Override
     public boolean isProfileAuthorized(final WebContext context, final CommonProfile profile) {
-        if (profile == null) {
-            return false;
-        }
-        return StringUtils.startsWith(profile.getUsername(), "jle");
+        return profile != null;
+       // return StringUtils.startsWith(profile.getUsername(), "jle");
     }
 }
