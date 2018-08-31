@@ -2435,7 +2435,7 @@ public class Server {
             if (CollectionUtils.isNotEmpty(profileRoles)) {
                 profileRoles.forEach(role -> {
                     Map<String, Object> roleParams = new HashMap<>();
-                    roleParams.put(Account.PARAM_EMAIL, role);
+                    roleParams.put(Role.PARAM_NAME, role);
                     Role role_ = JPAEntityManagerUtils.findByQuery(Role.class, Role.FIND_BY_NAME, roleParams);
                     if (role_ == null) {
                         Role newRole = RolesWrapper.buildRole(role);
@@ -2448,47 +2448,47 @@ public class Server {
             } else {
                 Map<String, Object> roleParams = new HashMap<>();
                 Role roleWriteModel = RolesWrapper.buildRole("write:model");
-                roleParams.put(Account.PARAM_EMAIL, roleWriteModel.getName());
+                roleParams.put(Role.PARAM_NAME, roleWriteModel.getName());
                 Role role_ = JPAEntityManagerUtils.findByQuery(Role.class, Role.FIND_BY_NAME, roleParams);
                 if (role_ == null) {
                     JPAEntityManagerUtils.persist(roleWriteModel);
+                    roles.add(roleWriteModel);
                 }
-                roles.add(roleWriteModel);
                 Role roleReadModels = RolesWrapper.buildRole("read:models");
-                roleParams.put(Account.PARAM_EMAIL, roleReadModels.getName());
+                roleParams.put(Role.PARAM_NAME, roleReadModels.getName());
                 role_ = JPAEntityManagerUtils.findByQuery(Role.class, Role.FIND_BY_NAME, roleParams);
                 if (role_ == null) {
                     JPAEntityManagerUtils.persist(roleReadModels);
+                    roles.add(roleReadModels);
                 }
-                roles.add(roleReadModels);
                 Role roleWriteCatalog = RolesWrapper.buildRole("write:catalog");
-                roleParams.put(Account.PARAM_EMAIL, roleWriteCatalog.getName());
+                roleParams.put(Role.PARAM_NAME, roleWriteCatalog.getName());
                 role_ = JPAEntityManagerUtils.findByQuery(Role.class, Role.FIND_BY_NAME, roleParams);
                 if (role_ == null) {
                     JPAEntityManagerUtils.persist(roleWriteCatalog);
+                    roles.add(roleWriteCatalog);
                 }
-                roles.add(roleWriteCatalog);
                 Role roleReadCatalogs = RolesWrapper.buildRole("read:catalogs");
-                roleParams.put(Account.PARAM_EMAIL, roleReadCatalogs.getName());
+                roleParams.put(Role.PARAM_NAME, roleReadCatalogs.getName());
                 role_ = JPAEntityManagerUtils.findByQuery(Role.class, Role.FIND_BY_NAME, roleParams);
                 if (role_ == null) {
                     JPAEntityManagerUtils.persist(roleReadCatalogs);
+                    roles.add(roleReadCatalogs);
                 }
-                roles.add(roleReadCatalogs);
                 Role roleWrtiePalette = RolesWrapper.buildRole("write:palette");
-                roleParams.put(Account.PARAM_EMAIL, roleWrtiePalette.getName());
+                roleParams.put(Role.PARAM_NAME, roleWrtiePalette.getName());
                 role_ = JPAEntityManagerUtils.findByQuery(Role.class, Role.FIND_BY_NAME, roleParams);
                 if (role_ == null) {
                     JPAEntityManagerUtils.persist(roleWrtiePalette);
+                    roles.add(roleWrtiePalette);
                 }
-                roles.add(roleWrtiePalette);
                 Role roleReadPalettes = RolesWrapper.buildRole("read:palettes");
-                roleParams.put(Account.PARAM_EMAIL, roleReadPalettes.getName());
+                roleParams.put(Role.PARAM_NAME, roleReadPalettes.getName());
                 role_ = JPAEntityManagerUtils.findByQuery(Role.class, Role.FIND_BY_NAME, roleParams);
                 if (role_ == null) {
                     JPAEntityManagerUtils.persist(roleReadPalettes);
+                    roles.add(roleReadPalettes);
                 }
-                roles.add(roleReadPalettes);
             }
 
             profile.addRoles(RolesWrapper.fromRoles(account.getRoles()));

@@ -1,9 +1,16 @@
 body(onload="run()")
+script(src="/javascripts/jquery-3.3.1.min.js")
 script.
     'use strict'
+
+    function enableTryItOutButtons() {
+        let buttons = $(".btn.try-out__btn.disabled");
+        buttons.removeClass('disabled');
+    }
+
     function run() {
         const oauth2 = window.opener.swaggerUIRedirectOauth2;
-        console.log(JSON.stringify(oauth2));
+        alert(JSON.stringify(oauth2));
         const sentState = oauth2.state;
         const redirectUrl = oauth2.redirectUrl;
         let isValid, qp, arr, hasAllScopes;
@@ -13,7 +20,7 @@ script.
         } else {
             qp = location.search.substring(1);
         }
-
+        alert(qp);
         arr = qp.split("&");
         arr.forEach(function (v, i, _arr) {
             _arr[i] = '"' + v.replace('=', '":"') + '"';
@@ -51,6 +58,7 @@ script.
                 delete oauth2.state;
                 oauth2.auth.code = qp.code;
                 oauth2.callback({auth: oauth2.auth, redirectUrl: redirectUrl});
+                enableTryItOutButtons();
             } else {
                 oauth2.errCb({
                     authId: oauth2.auth.name,
@@ -62,5 +70,5 @@ script.
         } else {
             oauth2.callback({auth: oauth2.auth, token: qp, isValid: isValid, redirectUrl: redirectUrl});
         }
-        window.close();
+        //window.close();
     }
