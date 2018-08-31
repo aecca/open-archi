@@ -75,7 +75,7 @@ public class Server {
     private static String clients = "Google2Client,OidcClient,HeaderClient,IndirectBasicAuthClient,DirectBasicAuthClient,ParameterClient,FormClient";
     private final static String JWT_SALT = "12345678901234567890123456789012";
 
-    private static final String CLIENT = "OidcClient";
+
     private static final ExceptionHandler exceptionHandler = new ExceptionHandlerImpl(Exception.class) {
         @Override
         public void handle(Exception exception, Request request, Response response) {
@@ -406,8 +406,8 @@ public class Server {
             get("/", (req, res) -> new ModelAndView(mapHome, "/open-archi/home"), engine);
             final Config config = new ConfigFactory(JWT_SALT, engine).build(serverName, assignedPort, "/open-archi", clients);
             final CallbackRoute callback = new CallbackRoute(config, null, true);
-            before("/login/google", new SecurityFilter(config, "Google2Client", "admin,custom,cors"));
-            post("/login/google", (req, res) -> {
+            before("/login/google", new SecurityFilter(config, "Google2Client"));
+            get("/login/google", (req, res) -> {
                 store(req, res, mapHome);
                 return new ModelAndView(mapHome, req.session(true).attribute("originalRequest"));
             }, engine);
@@ -2412,7 +2412,7 @@ public class Server {
 
     private static void store(Request req, Response res, Map<String, Object> map) throws IOException {
         List<CommonProfile> profiles = getProfiles(req, res);
-        CommonProfile profile = IterableUtils.find(profiles, object -> CLIENT.equals(object.getClientName()));
+        CommonProfile profile = IterableUtils.find(profiles, object ->  clients.contains(object.getClientName()));
         if (profile != null) {
             Account account;
             String email = (String) profile.getAttribute("email");

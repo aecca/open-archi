@@ -13,7 +13,10 @@ public class AccountWrapper {
             account.setLastname((String) profile.getAttribute("family_name"));
             account.setLogin((String) profile.getAttribute("name"));
             account.setEmail((String) profile.getAttribute("email"));
-            String url = profile.getAttribute("picture").toString();
+            String url = (String) profile.getAttribute("picture");
+            if (url == null) {
+                url = (String) profile.getAttribute("image.url");
+            }
             Avatar avatar = new Avatar();
             avatar.setUrl(url);
             account.setAvatar(avatar);
