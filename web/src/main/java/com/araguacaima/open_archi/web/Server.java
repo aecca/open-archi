@@ -31,6 +31,7 @@ import org.pac4j.core.profile.ProfileManager;
 import org.pac4j.http.client.indirect.FormClient;
 import org.pac4j.jwt.config.signature.SecretSignatureConfiguration;
 import org.pac4j.jwt.profile.JwtGenerator;
+import org.pac4j.oauth.profile.google2.Google2Profile;
 import org.pac4j.sparkjava.CallbackRoute;
 import org.pac4j.sparkjava.LogoutRoute;
 import org.pac4j.sparkjava.SecurityFilter;
@@ -72,7 +73,7 @@ public class Server {
     private static final JsonUtils jsonUtils = new JsonUtils();
     private static EnumsUtils enumsUtils = new EnumsUtils();
     private static String DIAGRAMS_PACKAGES = "com.araguacaima.open_archi.persistence.diagrams";
-    private static String clients = "Google2Client,OidcClient,HeaderClient,IndirectBasicAuthClient,DirectBasicAuthClient,ParameterClient,FormClient";
+    private static String clients = "Google2Client";
     private final static String JWT_SALT = "12345678901234567890123456789012";
 
 
@@ -437,6 +438,19 @@ public class Server {
             before("/editor/*", new SecurityFilter(config, clients, "admin,custom,cors"));
             before("/prototyper/*", new SecurityFilter(config, clients, "admin,custom,cors"));
             before("/api/*", new SecurityFilter(config, clients, "admin,custom,cors"));
+            final LogoutRoute localLogout = new LogoutRoute(config, "/open-archi");
+            localLogout.setDestroySession(true);
+            localLogout.setLocalLogout(false);
+            localLogout.setCentralLogout(true);
+            get("/logout", localLogout);
+            final LogoutRoute centralLogout = new LogoutRoute(config);
+            centralLogout.setDefaultUrl("http://" + serverName + ":" + assignedPort + "/open-archi");
+            centralLogout.setLogoutUrlPattern("http://" + serverName + ":" + assignedPort + "/.*");
+            centralLogout.setLocalLogout(false);
+            centralLogout.setCentralLogout(true);
+            centralLogout.setDestroySession(true);
+            get("/central-logout", centralLogout);
+            get("/force-login", (rq, rs) -> forceLogin(config, rq, rs));
             path("/editor", () -> {
                 Map<String, Object> mapEditor = new HashMap<>();
                 exception(Exception.class, exceptionHandler);
@@ -457,8 +471,6 @@ public class Server {
                     mapEditor.put("examples", getExamples());
                     mapEditor.put("nodeDataArray", "[]");
                     mapEditor.put("linkDataArray", "[]");
-                    mapEditor.put("name", jsonUtils.toJSON(getArchitecturePalette()));
-                    mapEditor.put("avatar", jsonUtils.toJSON(getArchitecturePalette()));
                     String type = req.queryParams("type");
                     if (type != null) {
                         Map<String, Boolean> diagramTypesMap_ = new HashMap<>();
@@ -552,17 +564,6 @@ public class Server {
                 get("/rest-jwt", Server::protectedIndex, engine);
                 get("/login", (rq, rs) -> form(config), engine);
 
-                final LogoutRoute localLogout = new LogoutRoute(config, "/open-archi");
-                localLogout.setDestroySession(true);
-                get("/logout", localLogout);
-                final LogoutRoute centralLogout = new LogoutRoute(config);
-                centralLogout.setDefaultUrl("http://" + serverName + ":" + assignedPort + "/open-archi");
-                centralLogout.setLogoutUrlPattern("http://" + serverName + ":" + assignedPort + "/.*");
-                centralLogout.setLocalLogout(false);
-                centralLogout.setCentralLogout(true);
-                centralLogout.setDestroySession(true);
-                get("/central-logout", centralLogout);
-                get("/force-login", (rq, rs) -> forceLogin(config, rq, rs));
             });
             path("/prototyper", () -> {
                 Map<String, Object> mapEditor = new HashMap<>();
@@ -2415,13 +2416,14 @@ public class Server {
         CommonProfile profile = IterableUtils.find(profiles, object ->  clients.contains(object.getClientName()));
         if (profile != null) {
             Account account;
-            String email = (String) profile.getAttribute("email");
+            String email = ((Google2Profile) profile).getEmail();
             Map<String, Object> params = new HashMap<>();
             params.put(Account.PARAM_EMAIL, email);
             account = JPAEntityManagerUtils.findByQuery(Account.class, Account.FIND_BY_EMAIL, params);
 
             if (account == null) {
                 account = AccountWrapper.toAccount(profile);
+                JPAEntityManagerUtils.persist(account.getAvatar());
                 JPAEntityManagerUtils.persist(account);
             }
 
@@ -2436,13 +2438,8 @@ public class Server {
             map.put("email", email);
             map.put("authorized", true);
 
-/*            if (account.isSuperuser()) {
-                return processAdmin(req, res, profile);
-            }*/
-
             Session session = req.session(true);
             session.attribute("account", account);
-
         }
     }
 

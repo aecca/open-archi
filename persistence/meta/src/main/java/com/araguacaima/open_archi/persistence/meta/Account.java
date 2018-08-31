@@ -67,9 +67,7 @@ public class Account implements Serializable, SimpleOverridable<Account> {
     @Size(min = 1)
     private String login;
 
-    @Column(nullable = false)
-    @NotNull
-    @Size(min = 1)
+    @Column
     private String password;
 
     @Column(nullable = false)

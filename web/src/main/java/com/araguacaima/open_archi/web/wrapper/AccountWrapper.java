@@ -12,9 +12,10 @@ public class AccountWrapper {
         Account account = null;
         if (profile != null) {
             account = new Account();
-            account.setName(((Google2Profile) profile).getFamilyName());
+            account.setName(((Google2Profile) profile).getFirstName());
             account.setLastname(((Google2Profile) profile).getFamilyName());
-            account.setLogin(((Google2Profile) profile).getDisplayName());
+            String displayName = ((Google2Profile) profile).getDisplayName();
+            account.setLogin(displayName == null ? account.getName() : displayName);
             account.setEmail(((Google2Profile) profile).getEmail());
             String url = profile.getAttribute("image.url").toString();
             Avatar avatar = new Avatar();
