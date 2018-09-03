@@ -33610,8 +33610,8 @@
                             onClick: t
                         }, "Cancel") : m.default.createElement("button", {
                             className: "btn try-out__btn disabled",
-                            onClick: function() {
-                                if (this.classList.contains('disabled')) {
+                            onClick: function(e) {
+                                if (e.target.classList.contains('disabled')) {
                                     alert("Please authenticate");
                                 } else {
                                     n();
@@ -56171,7 +56171,7 @@ function (e, t, n) {
 ,
 
 function (e, t) {
-    e.exports = '---\nurl: "swagger.yaml"\ndom_id: "#swagger-ui"\nvalidatorUrl: "https://online.swagger.io/validator"\noauth2RedirectUrl: "/oauth2-redirect"\n'
+    e.exports = '---\nurl: "swagger.yaml"\ndom_id: "#swagger-ui"\nvalidatorUrl: "https://online.swagger.io/validator"\noauth2RedirectUrl: "/oauth2-redirect.jade"\n'
 }
 
 ,

@@ -412,22 +412,43 @@ public class Server {
             before("/login/google", new SecurityFilter(config, "Google2Client"));
             get("/login/google", (req, res) -> {
                 store(req, res, mapHome);
-                return new ModelAndView(mapHome, req.session(true).attribute("originalRequest"));
+                Session session = req.session(true);
+                String originalRequest = session.attribute("originalRequest");
+                String originalQueryParams = session.attribute("originalQueryParams");
+                String[] splittedOriginalQueryParams = originalQueryParams.split("&");
+                for (int i = 0; splittedOriginalQueryParams.length > i; i++) {
+                    String[] splittedQueryParam = splittedOriginalQueryParams[i].split("=");
+                    String value;
+                    try {
+                        value = splittedQueryParam[1];
+                    } catch (IndexOutOfBoundsException ignored) {
+                        value = StringUtils.EMPTY;
+                    }
+                    mapHome.put(splittedQueryParam[0], value);
+                }
+                return new ModelAndView(mapHome, originalRequest);
             }, engine);
             get("/login", (req, res) -> {
-                String url;
+                final StringBuilder url = new StringBuilder();
+                final StringBuilder queryParams = new StringBuilder();
                 QueryParamsMap queryParamsMap = req.queryMap();
                 if (queryParamsMap != null) {
                     QueryParamsMap redirect_uri = queryParamsMap.get("redirect_uri");
                     if (redirect_uri != null) {
-                        url = redirect_uri.value();
+                        url.append(redirect_uri.value());
                     } else {
-                        url = req.url();
+                        url.append(req.uri());
                     }
+                    queryParamsMap.toMap().forEach((key, value) -> {
+                        if (!key.equals("redirect_uri")) {
+                            queryParams.append(key).append("=").append(StringUtils.join(value)).append("&");
+                        }
+                    });
                 } else {
-                    url = req.url();
+                    url.append(req.uri());
                 }
-                req.session(true).attribute("originalRequest", url);
+                req.session(true).attribute("originalRequest", url.toString());
+                req.session(true).attribute("originalQueryParams", queryParams.toString());
                 return new ModelAndView(mapHome, "/open-archi/login");
             }, engine);
             get("/callback", callback);
@@ -2443,8 +2464,6 @@ public class Server {
                         roles.add(newRole);
                     }
                 });
-                Collection<? extends Role> roles1 = RolesWrapper.toRoles(profileRoles);
-                roles.addAll(roles1);
             } else {
                 Map<String, Object> roleParams = new HashMap<>();
                 Role roleWriteModel = RolesWrapper.buildRole("write:model");

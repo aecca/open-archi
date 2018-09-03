@@ -52,7 +52,7 @@ public class Loader extends ClasspathTemplateLoader {
     @Override
     public Reader getReader(String name) throws IOException {
         Reader reader = null;
-        if (!name.startsWith(File.separator)) {
+        if (!name.startsWith("/") && !name.startsWith("\\")) {
             name = File.separator + name;
         }
         if (SystemUtils.IS_OS_WINDOWS) {
@@ -60,10 +60,7 @@ public class Loader extends ClasspathTemplateLoader {
         } else {
             name = name.replaceAll("\\\\", File.separator);
         }
-        if (name.endsWith(".html")) {
-            name = name.replace(".html", ".jade");
-        }
-        String name1 = templateRoot + name;
+        String name1 = templateRoot + name.split("\\?")[0];
         try {
             reader = super.getReader(name1);
         } catch (Throwable t) {

@@ -10,8 +10,9 @@ script.
 
     function run() {
         const oauth2 = window.opener.swaggerUIRedirectOauth2;
-        alert(JSON.stringify(oauth2));
+        console.log(JSON.stringify(oauth2));
         const sentState = oauth2.state;
+        const sentScopes = oauth2.auth.scopes;
         const redirectUrl = oauth2.redirectUrl;
         let isValid, qp, arr, hasAllScopes;
 
@@ -20,7 +21,8 @@ script.
         } else {
             qp = location.search.substring(1);
         }
-        alert(qp);
+        console.log(qp);
+        console.log(sentScopes);
         arr = qp.split("&");
         arr.forEach(function (v, i, _arr) {
             _arr[i] = '"' + v.replace('=', '":"') + '"';
@@ -33,7 +35,7 @@ script.
 
         //isValid = qp.state === sentState;
         isValid = true;
-        hasAllScopes = true
+        hasAllScopes = sentScopes.containsAll(qp.scopes);
         if ((
                 oauth2.auth.schema.get("flow") === "accessCode" ||
                 oauth2.auth.schema.get("flow") === "authorizationCode"
