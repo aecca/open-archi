@@ -1,15 +1,3 @@
-function enableTryItOutButtons() {
-    let buttons = $(".btn.try-out__btn.disabled");
-    console.log(buttons.length);
-    buttons.removeClass('disabled');
-}
-
-function disableTryItOutButtons() {
-    let buttons = $(".btn.try-out__btn");
-    console.log(buttons.length);
-    buttons.addClass('disabled');
-}
-
 ! function(t, e) {
     "object" == typeof exports && "object" == typeof module ? module.exports = e() : "function" == typeof define && define.amd ? define([], e) : "object" == typeof exports ? exports.SwaggerUIStandalonePreset = e() : t.SwaggerUIStandalonePreset = e()
 }(this, function() {
