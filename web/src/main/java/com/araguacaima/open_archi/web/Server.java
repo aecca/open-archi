@@ -411,7 +411,7 @@ public class Server {
             final CallbackRoute callback = new CallbackRoute(config, null, true);
             before("/login/google", new SecurityFilter(config, "Google2Client"));
             get("/login/google", (req, res) -> {
-                store(req, res, mapHome);
+                store(req, res);
                 Session session = req.session(true);
                 String originalRequest = session.attribute("originalRequest");
                 String originalQueryParams = session.attribute("originalQueryParams");
@@ -454,14 +454,16 @@ public class Server {
             }, engine);
             get("/callback", callback);
             post("/callback", (req, res) -> {
-                store(req, res, mapHome);
+                store(req, res);
                 return callback.handle(req, res);
             });
             before("/editor", new SecurityFilter(config, clients, "admin,custom," + DefaultAuthorizers.ALLOW_AJAX_REQUESTS + "," + DefaultAuthorizers.IS_REMEMBERED + "," + DefaultAuthorizers.IS_AUTHENTICATED));
             before("/prototyper", new SecurityFilter(config, clients, "admin,custom," + DefaultAuthorizers.ALLOW_AJAX_REQUESTS + "," + DefaultAuthorizers.IS_REMEMBERED + "," + DefaultAuthorizers.IS_AUTHENTICATED));
             before("/editor/*", new SecurityFilter(config, clients, "admin,custom," + DefaultAuthorizers.ALLOW_AJAX_REQUESTS + "," + DefaultAuthorizers.IS_REMEMBERED + "," + DefaultAuthorizers.IS_AUTHENTICATED));
             before("/prototyper/*", new SecurityFilter(config, clients, "admin,custom," + DefaultAuthorizers.ALLOW_AJAX_REQUESTS + "," + DefaultAuthorizers.IS_REMEMBERED + "," + DefaultAuthorizers.IS_AUTHENTICATED));
-            before("/api/*", new SecurityFilter(config, clients, "admin,custom," + DefaultAuthorizers.ALLOW_AJAX_REQUESTS + "," + DefaultAuthorizers.IS_REMEMBERED + "," + DefaultAuthorizers.IS_AUTHENTICATED));
+            before("/api/diagrams/*", new APIFilter(config, clients, "checkHttpMethodAuthorizer,admin,custom," + DefaultAuthorizers.ALLOW_AJAX_REQUESTS + "," + DefaultAuthorizers.IS_REMEMBERED + "," + DefaultAuthorizers.IS_AUTHENTICATED));
+            before("/api/models/*", new APIFilter(config, clients, "checkHttpMethodAuthorizer,admin,custom," + DefaultAuthorizers.ALLOW_AJAX_REQUESTS + "," + DefaultAuthorizers.IS_REMEMBERED + "," + DefaultAuthorizers.IS_AUTHENTICATED));
+
             final LogoutRoute localLogout = new LogoutRoute(config, "/open-archi");
             localLogout.setDestroySession(true);
             localLogout.setLocalLogout(false);
@@ -509,6 +511,7 @@ public class Server {
                     } else {
                         mapEditor.remove("fullView");
                     }
+                    appendAccountInfoToMapContext(req, res, mapEditor);
                     return new ModelAndView(mapEditor, "/open-archi/editor");
                 }, engine);
                 get("/:uuid", (request, response) -> {
@@ -661,7 +664,10 @@ public class Server {
             });
             Map<String, Object> mapApi = new HashMap<>();
             mapApi.put("title", "Api");
-            get("/api", (req, res) -> new ModelAndView(mapApi, "/open-archi/apis"), engine);
+            get("/api", (req, res) -> {
+                appendAccountInfoToMapContext(req, res, mapApi);
+                return new ModelAndView(mapApi, "/open-archi/apis");
+            }, engine);
             path("/api", () -> {
                 exception(Exception.class, exceptionHandler);
                 options("/diagrams/architectures", (request, response) -> {
@@ -687,7 +693,7 @@ public class Server {
                         final SparkWebContext ctx = new SparkWebContext(request, response);
                         Map<String, Object> map = new HashMap<>();
                         Account account = (Account) ctx.getSessionAttribute("account");
-                        map.put("accoount", account);
+                        map.put("account", account);
                         model.validateCreation(map);
                         DBUtil.populate(model);
                         response.status(HTTP_CREATED);
@@ -2119,6 +2125,28 @@ public class Server {
         });
     }
 
+    private static void appendAccountInfoToMapContext(Request req, Response res, Map<String, Object> mapApi) {
+        final SparkWebContext ctx = new SparkWebContext(req, res);
+        Account account = (Account) ctx.getSessionAttribute("account");
+        if (account == null) {
+            mapApi.put("avatar", null);
+            mapApi.put("name", null);
+            mapApi.put("email", null);
+            mapApi.put("authorized", false);
+        } else {
+            String name = account.getLogin();
+            String email = account.getEmail();
+            Avatar accountAvatar = account.getAvatar();
+            if (accountAvatar != null) {
+                String avatar = accountAvatar.getUrl();
+                mapApi.put("avatar", avatar);
+            }
+            mapApi.put("name", name);
+            mapApi.put("email", email);
+            mapApi.put("authorized", true);
+        }
+    }
+
     private static void fixCompositeFromItem(Item object) {
         Set<Item> items = reflectionUtils.extractByType(object, Item.class);
         Set<CompositeElement> composites = reflectionUtils.extractByType(object, CompositeElement.class);
@@ -2435,7 +2463,7 @@ public class Server {
         return null;
     }
 
-    private static void store(Request req, Response res, Map<String, Object> map) throws IOException {
+    private static void store(Request req, Response res) throws IOException {
         List<CommonProfile> profiles = getProfiles(req, res);
         CommonProfile profile = IterableUtils.find(profiles, object -> clients.contains(object.getClientName()));
         if (profile != null) {
@@ -2451,7 +2479,8 @@ public class Server {
                 JPAEntityManagerUtils.persist(account);
             }
 
-            final Set<Role> roles = account.getRoles();
+            Set<Role> accountRoles = account.getRoles();
+            final Set<Role> roles = accountRoles;
 
             Set<String> profileRoles = profile.getRoles();
             if (CollectionUtils.isNotEmpty(profileRoles)) {
@@ -2466,69 +2495,42 @@ public class Server {
                     }
                 });
             } else {
-                Map<String, Object> roleParams = new HashMap<>();
-                Role roleWriteModel = RolesWrapper.buildRole("write:model");
-                roleParams.put(Role.PARAM_NAME, roleWriteModel.getName());
-                Role role_ = JPAEntityManagerUtils.findByQuery(Role.class, Role.FIND_BY_NAME, roleParams);
-                if (role_ == null) {
-                    JPAEntityManagerUtils.persist(roleWriteModel);
-                    roles.add(roleWriteModel);
-                }
-                Role roleReadModels = RolesWrapper.buildRole("read:models");
-                roleParams.put(Role.PARAM_NAME, roleReadModels.getName());
-                role_ = JPAEntityManagerUtils.findByQuery(Role.class, Role.FIND_BY_NAME, roleParams);
-                if (role_ == null) {
-                    JPAEntityManagerUtils.persist(roleReadModels);
-                    roles.add(roleReadModels);
-                }
-                Role roleWriteCatalog = RolesWrapper.buildRole("write:catalog");
-                roleParams.put(Role.PARAM_NAME, roleWriteCatalog.getName());
-                role_ = JPAEntityManagerUtils.findByQuery(Role.class, Role.FIND_BY_NAME, roleParams);
-                if (role_ == null) {
-                    JPAEntityManagerUtils.persist(roleWriteCatalog);
-                    roles.add(roleWriteCatalog);
-                }
-                Role roleReadCatalogs = RolesWrapper.buildRole("read:catalogs");
-                roleParams.put(Role.PARAM_NAME, roleReadCatalogs.getName());
-                role_ = JPAEntityManagerUtils.findByQuery(Role.class, Role.FIND_BY_NAME, roleParams);
-                if (role_ == null) {
-                    JPAEntityManagerUtils.persist(roleReadCatalogs);
-                    roles.add(roleReadCatalogs);
-                }
-                Role roleWrtiePalette = RolesWrapper.buildRole("write:palette");
-                roleParams.put(Role.PARAM_NAME, roleWrtiePalette.getName());
-                role_ = JPAEntityManagerUtils.findByQuery(Role.class, Role.FIND_BY_NAME, roleParams);
-                if (role_ == null) {
-                    JPAEntityManagerUtils.persist(roleWrtiePalette);
-                    roles.add(roleWrtiePalette);
-                }
-                Role roleReadPalettes = RolesWrapper.buildRole("read:palettes");
-                roleParams.put(Role.PARAM_NAME, roleReadPalettes.getName());
-                role_ = JPAEntityManagerUtils.findByQuery(Role.class, Role.FIND_BY_NAME, roleParams);
-                if (role_ == null) {
-                    JPAEntityManagerUtils.persist(roleReadPalettes);
-                    roles.add(roleReadPalettes);
-                }
+                fixRole(accountRoles, roles, "delete:model");
+                fixRole(accountRoles, roles, "write:model");
+                fixRole(accountRoles, roles, "read:models");
+                fixRole(accountRoles, roles, "delete:catalog");
+                fixRole(accountRoles, roles, "write:catalog");
+                fixRole(accountRoles, roles, "read:catalogs");
+                fixRole(accountRoles, roles, "delete:palette");
+                fixRole(accountRoles, roles, "read:palette");
+                fixRole(accountRoles, roles, "write:palettes");
             }
 
-            profile.addRoles(RolesWrapper.fromRoles(account.getRoles()));
+            profile.addRoles(RolesWrapper.fromRoles(accountRoles));
 
             JPAEntityManagerUtils.merge(account);
-
-            String name = account.getLogin();
-            email = account.getEmail();
-            Avatar accountAvatar = account.getAvatar();
-            if (accountAvatar != null) {
-                String avatar = accountAvatar.getUrl();
-                map.put("avatar", avatar);
-            }
-            map.put("name", name);
-            map.put("email", email);
-            map.put("authorized", true);
 
             Session session = req.session(true);
             session.attribute("account", account);
         }
+    }
+
+    private static void fixRole(Set<Role> accountRoles, Set<Role> roles, String roleName) {
+        Map<String, Object> roleParams = new HashMap<>();
+        Role roleWriteCatalog = RolesWrapper.buildRole(roleName);
+        roleParams.put(Role.PARAM_NAME, roleWriteCatalog.getName());
+        JPAEntityManagerUtils.begin();
+        Role role_ = JPAEntityManagerUtils.findByQuery(Role.class, Role.FIND_BY_NAME, roleParams);
+        if (role_ == null) {
+            JPAEntityManagerUtils.persist(roleWriteCatalog, false);
+            roles.add(roleWriteCatalog);
+        } else {
+            Role innerRole = IterableUtils.find(accountRoles, role -> role.getName().equals(roleWriteCatalog.getName()));
+            if (innerRole == null) {
+                roles.add(role_);
+            }
+        }
+        JPAEntityManagerUtils.commit();
     }
 
 }

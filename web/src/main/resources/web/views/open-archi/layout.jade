@@ -4,11 +4,10 @@ block body
     // Fixed navbar
     +navbar-fixed-logo("menu", null, "navbar", null, "/open-archi", "/images/open-archi.png", "#1E97C2")(width="90px", height="50px")
         block extra-menu-elements
-        //+nav_item("/") Home
-        //+nav_item("#") About
-        //+nav_item("#") Contact
         if authorized
             +nav_item("#")= name
-            +navbar-fixed-logo("avatar", null, "navbar", null, null, avatar, "#1E97C2")(width="35px", height="35px")
-            a.btn.btn-danger(href='/open-archi/logout', style="margin-bottom: 5px; max-height: 35px;") Logout
+            +nav_item("#")
+                +img-thumbnail(avatar, 'Profile avatar', 'padding: 0; margin: 0')(width="35px", height="35px")
+            +nav_item("#")
+                a.btn.btn-danger(href='/open-archi/logout') Logout
     block content

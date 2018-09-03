@@ -3199,10 +3199,13 @@ securityDefinitions:
     tokenUrl: http://localhost:4567/open-archi/oauth/token
     flow: implicit
     scopes:
+      delete:model: Delete a model
       write:model: Modify or add a model
       read:models: Read models
+      delete:catalog: Delete a catalog
       write:catalog: Modify or add a catalog
       read:catalogs: Read catalogs
+      delete:palette: Delete a palette
       write:palette: Modify or add an element to a palette
       read:palettes: Read palette elements
   api_key:
