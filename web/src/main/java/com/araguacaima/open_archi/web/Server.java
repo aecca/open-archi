@@ -416,15 +416,16 @@ public class Server {
                 String originalRequest = session.attribute("originalRequest");
                 String originalQueryParams = session.attribute("originalQueryParams");
                 String[] splittedOriginalQueryParams = originalQueryParams.split("&");
-                for (int i = 0; splittedOriginalQueryParams.length > i; i++) {
-                    String[] splittedQueryParam = splittedOriginalQueryParams[i].split("=");
+                for (String splittedOriginalQueryParam : splittedOriginalQueryParams) {
+                    String[] splittedQueryParam = splittedOriginalQueryParam.split("=");
+                    String key = splittedQueryParam[0];
                     String value;
                     try {
                         value = splittedQueryParam[1];
                     } catch (IndexOutOfBoundsException ignored) {
                         value = StringUtils.EMPTY;
                     }
-                    mapHome.put(splittedQueryParam[0], value);
+                    mapHome.put(key, value);
                 }
                 return new ModelAndView(mapHome, originalRequest);
             }, engine);
