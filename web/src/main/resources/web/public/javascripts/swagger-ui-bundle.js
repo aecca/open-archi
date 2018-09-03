@@ -29613,7 +29613,7 @@ let isAuthenticated = false;
                             }),
                             f = n.filter(function (e) {
                                 return "oauth2" === e.get("type")
-                            });
+                            }),
 							lc = this.logoutClick;
                         return g.default.createElement("div", {
                             className: "auth-container"
@@ -29945,7 +29945,7 @@ let isAuthenticated = false;
                             E = !k.filter(function (e) {
                                 return "validation" === e.get("source")
                             }).size,
-                            S = n.get("description");
+                            S = n.get("description"),
 							lc = this.logout;
                         return g.default.createElement("div", null, g.default.createElement("h4", null, a, " (OAuth2, ", n.get("flow"), ") ", g.default.createElement(h, {
                             path: ["securityDefinitions", a]
