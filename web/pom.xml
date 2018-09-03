@@ -343,9 +343,9 @@
                 </executions>
                 <configuration>
                     <includes>
-                        <include>${basedir}/src/main/resources/web/public/swagger-template.yaml</include>
+                        <include>${basedir}/src/main/resources/web/public/open-archi-apis-template.yaml</include>
                     </includes>
-                    <outputFile>${basedir}/src/main/resources/web/public/swagger.yaml</outputFile>
+                    <outputFile>${basedir}/src/main/resources/web/public/open-archi-apis.yaml</outputFile>
                     <replacements>
                         <replacement>
                             <token>@HOST@</token>
@@ -443,9 +443,9 @@
                         </executions>
                         <configuration>
                             <includes>
-                                <include>${basedir}/src/main/resources/web/public/swagger-template.yaml</include>
+                                <include>${basedir}/src/main/resources/web/public/open-archi-apis-template.yaml</include>
                             </includes>
-                            <outputFile>${basedir}/src/main/resources/web/public/swagger.yaml</outputFile>
+                            <outputFile>${basedir}/src/main/resources/web/public/open-archi-apis.yaml</outputFile>
                             <replacements>
                                 <replacement>
                                     <token>@HOST@</token>

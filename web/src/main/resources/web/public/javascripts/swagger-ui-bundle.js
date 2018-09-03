@@ -1,3 +1,15 @@
+function enableTryItOutButtons() {
+    let buttons = $(".btn.try-out__btn.disabled");
+    console.log(buttons.length);
+    buttons.removeClass('disabled');
+}
+
+function disableTryItOutButtons() {
+    let buttons = $(".btn.try-out__btn");
+    console.log(buttons.length);
+    buttons.addClass('disabled');
+}
+
 !function (e, t) {
     "object" == typeof exports && "object" == typeof module ? module.exports = t() : "function" == typeof define && define.amd ? define([], t) : "object" == typeof exports ? exports.SwaggerUIBundle = t() : e.SwaggerUIBundle = t()
 }(this, function () {
@@ -7792,6 +7804,11 @@
                     s = i.schema,
                     u = i.name,
                     l = s.get("flow");
+                if (a) {
+                    enableTryItOutButtons();
+                } else {
+                    disableTryItOutButtons();
+                }
                 if (delete d.default.swaggerUIRedirectOauth2, "accessCode" === l || a || r.newAuthErr({
                         authId: u,
                         source: "auth",
@@ -56171,7 +56188,7 @@ function (e, t, n) {
 ,
 
 function (e, t) {
-    e.exports = '---\nurl: "swagger.yaml"\ndom_id: "#swagger-ui"\nvalidatorUrl: "https://online.swagger.io/validator"\noauth2RedirectUrl: "/oauth2-redirect.jade"\n'
+    e.exports = '---\nurl: "open-archi-apis.yaml"\ndom_id: "#swagger-ui"\nvalidatorUrl: "https://online.swagger.io/validator"\noauth2RedirectUrl: "/oauth2-redirect.jade"\n'
 }
 
 ,
@@ -69150,4 +69167,3 @@ function (e, t, n) {
 ])
 })
 ;
-//# sourceMappingURL=swagger-ui-bundle.js.map

@@ -1,3 +1,15 @@
+function enableTryItOutButtons() {
+    let buttons = $(".btn.try-out__btn.disabled");
+    console.log(buttons.length);
+    buttons.removeClass('disabled');
+}
+
+function disableTryItOutButtons() {
+    let buttons = $(".btn.try-out__btn");
+    console.log(buttons.length);
+    buttons.addClass('disabled');
+}
+
 ! function(t, e) {
     "object" == typeof exports && "object" == typeof module ? module.exports = e() : "function" == typeof define && define.amd ? define([], e) : "object" == typeof exports ? exports.SwaggerUIStandalonePreset = e() : t.SwaggerUIStandalonePreset = e()
 }(this, function() {
@@ -11806,7 +11818,7 @@
     }, function(t, e, n) {
         t.exports = n(254)()
     }, function(t, e) {
-        t.exports = '---\nurl: "swagger.yaml"\ndom_id: "#swagger-ui"\nvalidatorUrl: "https://online.swagger.io/validator"\noauth2RedirectUrl: "/oauth2-redirect.jade"\n'
+        t.exports = '---\nurl: "open-archi-apis.yaml"\ndom_id: "#swagger-ui"\nvalidatorUrl: "https://online.swagger.io/validator"\noauth2RedirectUrl: "/oauth2-redirect.jade"\n'
     }, function(t, e, n) {
         "use strict";
 
@@ -12251,4 +12263,3 @@
         n(113), t.exports = n(114)
     }])
 });
-//# sourceMappingURL=swagger-ui-standalone-preset.js.map
