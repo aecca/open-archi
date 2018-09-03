@@ -32,8 +32,6 @@ script.
         } else {
             qp = location.search.substring(1);
         }
-        console.log(qp);
-        console.log(sentScopes);
         if (qp) {
             arr = qp.split("&");
             arr.forEach(function (v, i, _arr) {
@@ -49,9 +47,9 @@ script.
                 return qp.scopes.contains(scope);
             });
         } else {
-            isValid = requestedState === sentState;
+            isValid = requestedState === sentState || (requestedState + "==") === sentState;
             allScopes = sentScopes.filter(function (scope) {
-                return requestedScopes.contains(scope);
+                return requestedScopes.includes(scope);
             });
         }
         if ((
@@ -89,5 +87,5 @@ script.
         } else {
             oauth2.callback({auth: oauth2.auth, token: qp, isValid: isValid, redirectUrl: redirectUrl});
         }
-        //window.close();
+        window.close();
     }
