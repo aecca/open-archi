@@ -3,7 +3,8 @@ package com.araguacaima.open_archi.web.routes.open_archi;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 import com.araguacaima.open_archi.persistence.diagrams.core.Taggable;
 import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
-import spark.ModelAndView;
+import com.araguacaima.open_archi.web.common.Commons;
+import spark.Redirect;
 import spark.RouteGroup;
 
 import java.io.IOException;
@@ -16,8 +17,12 @@ import static spark.Spark.*;
 
 public class Prototyper implements RouteGroup {
 
+    public static final String PATH = "/prototyper";
+
     @Override
     public void addRoutes() {
+        redirect.get(Prototyper.PATH + Commons.SEPARATOR_PATH, Prototyper.PATH, Redirect.Status.PERMANENT_REDIRECT);
+
         before("/prototyper", OpenArchi.strongSecurityFilter);
         before("/prototyper/*", OpenArchi.strongSecurityFilter);
 
@@ -34,13 +39,13 @@ public class Prototyper implements RouteGroup {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            get("/", (req, res) -> {
+            get(Commons.DEFAULT_PATH, (req, res) -> {
                 mapEditor.put("palette", jsonUtils.toJSON(OpenArchi.getArchitecturePalette()));
                 mapEditor.put("elementTypes", jsonUtils.toJSON(OpenArchi.getElementTypes()));
                 mapEditor.put("source", "basic");
                 mapEditor.put("nodeDataArray", "[]");
                 mapEditor.put("linkDataArray", "[]");
-                return new ModelAndView(mapEditor, "/open-archi/editor");
+                return buildModelAndView(mapEditor, "/open-archi/editor");
             }, engine);
             get("/:uuid", (request, response) -> {
                 try {
@@ -52,12 +57,12 @@ public class Prototyper implements RouteGroup {
                     mapEditor.put("model", jsonUtils.toJSON(model));
                     mapEditor.put("palette", jsonUtils.toJSON(OpenArchi.getArchitecturePalette()));
                     mapEditor.put("source", "basic");
-                    return new ModelAndView(mapEditor, "/open-archi/prototyper");
+                    return buildModelAndView(mapEditor, "/open-archi/prototyper");
                 } catch (Exception ex) {
                     mapEditor.put("title", "Error");
                     mapEditor.put("message", ex.getMessage());
                     mapEditor.put("stack", ex.getStackTrace());
-                    return new ModelAndView(mapEditor, "/error");
+                    return buildModelAndView(mapEditor, "/error");
                 }
             }, engine);
         });

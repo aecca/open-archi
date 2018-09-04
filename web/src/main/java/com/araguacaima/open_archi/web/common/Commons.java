@@ -13,6 +13,7 @@ import com.araguacaima.open_archi.web.Server;
 import com.araguacaima.open_archi.web.wrapper.AccountWrapper;
 import com.araguacaima.open_archi.web.wrapper.RolesWrapper;
 import com.araguacaima.open_archi.web.wrapper.RsqlJsonFilter;
+import org.apache.commons.beanutils.BeanMap;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.IterableUtils;
 import org.apache.commons.collections4.Predicate;
@@ -50,14 +51,13 @@ public class Commons {
 
     public static final String clients = "Google2Client";
     public static final String JSON_CONTENT_TYPE = "application/json";
-    private static Logger log = LoggerFactory.getLogger(Commons.class);
-    public static ReflectionUtils reflectionUtils = new ReflectionUtils(null);
     public static final String EMPTY_RESPONSE = StringUtils.EMPTY;
     public static final JsonUtils jsonUtils = new JsonUtils();
     public static final String OPEN_ARCHI = "Open-Archi";
-
     public static final EnumsUtils enumsUtils = new EnumsUtils();
-
+    public static final String DEFAULT_PATH = "/";
+    public static final String SEPARATOR_PATH = "/";
+    public static ReflectionUtils reflectionUtils = new ReflectionUtils(null);
     public static Taggable deeplyFulfilledParentModel;
     public static Taggable deeplyFulfilledParentModel_1;
     public static Taggable deeplyFulfilledParentModel_2;
@@ -66,7 +66,6 @@ public class Commons {
     public static Map<String, String> deeplyFulfilledIdValue_1 = new HashMap<>();
     public static Map<String, String> deeplyFulfilledIdValue_2 = new HashMap<>();
     public static MetaData deeplyFulfilledMetaData;
-
     public static Collection<Map<String, String>> deeplyFulfilledIdValueCollection = new ArrayList<>();
     public static Collection<Taggable> deeplyFulfilledParentModelCollection = new ArrayList<>();
     public static Collection<String> deeplyFulfilledDiagramTypesCollection = new ArrayList<>();
@@ -79,7 +78,6 @@ public class Commons {
     public static Collection<com.araguacaima.open_archi.persistence.diagrams.classes.Model> deeplyFulfilledClassesModelCollection = new ArrayList<>();
     public static Collection<com.araguacaima.open_archi.persistence.diagrams.architectural.Relationship> deeplyFulfilledArchitectureRelationshipCollection = new ArrayList<>();
     public static Collection<CompositeElement<ElementKind>> deeplyFulfilledFeaturesCollection = new ArrayList<>();
-
     public static com.araguacaima.open_archi.persistence.diagrams.architectural.Model deeplyFulfilledArchitectureModel;
     public static com.araguacaima.open_archi.persistence.diagrams.bpm.Model deeplyFulfilledBpmModel;
     public static com.araguacaima.open_archi.persistence.diagrams.er.Model deeplyFulfilledERModel;
@@ -87,7 +85,6 @@ public class Commons {
     public static com.araguacaima.open_archi.persistence.diagrams.gantt.Model deeplyFulfilledGanttModel;
     public static com.araguacaima.open_archi.persistence.diagrams.sequence.Model deeplyFulfilledSequenceModel;
     public static com.araguacaima.open_archi.persistence.diagrams.classes.Model deeplyFulfilledClassesModel;
-
     public static com.araguacaima.open_archi.persistence.diagrams.architectural.Model deeplyFulfilledArchitectureModel_1;
     public static com.araguacaima.open_archi.persistence.diagrams.bpm.Model deeplyFulfilledBpmModel_1;
     public static com.araguacaima.open_archi.persistence.diagrams.er.Model deeplyFulfilledERModel_1;
@@ -95,8 +92,6 @@ public class Commons {
     public static com.araguacaima.open_archi.persistence.diagrams.gantt.Model deeplyFulfilledGanttModel_1;
     public static com.araguacaima.open_archi.persistence.diagrams.sequence.Model deeplyFulfilledSequenceModel_1;
     public static com.araguacaima.open_archi.persistence.diagrams.classes.Model deeplyFulfilledClassesModel_1;
-
-
     public static com.araguacaima.open_archi.persistence.diagrams.architectural.Model deeplyFulfilledArchitectureModel_2;
     public static com.araguacaima.open_archi.persistence.diagrams.bpm.Model deeplyFulfilledBpmModel_2;
     public static com.araguacaima.open_archi.persistence.diagrams.er.Model deeplyFulfilledERModel_2;
@@ -104,22 +99,39 @@ public class Commons {
     public static com.araguacaima.open_archi.persistence.diagrams.gantt.Model deeplyFulfilledGanttModel_2;
     public static com.araguacaima.open_archi.persistence.diagrams.sequence.Model deeplyFulfilledSequenceModel_2;
     public static com.araguacaima.open_archi.persistence.diagrams.classes.Model deeplyFulfilledClassesModel_2;
-
     public static com.araguacaima.open_archi.persistence.diagrams.architectural.Relationship deeplyFulfilledArchitectureRelationship;
     public static com.araguacaima.open_archi.persistence.diagrams.architectural.Relationship deeplyFulfilledArchitectureRelationship_1;
     public static com.araguacaima.open_archi.persistence.diagrams.architectural.Relationship deeplyFulfilledArchitectureRelationship_2;
-
     public static CompositeElement<ElementKind> deeplyFulfilledFeature;
     public static CompositeElement<ElementKind> deeplyFulfilledFeature_1;
     public static CompositeElement<ElementKind> deeplyFulfilledFeature_2;
-
     public static Set<Class<? extends Taggable>> modelsClasses;
     public static Reflections diagramsReflections;
-
-    public static enum InputOutput {
-        input,
-        output
-    }
+    private static Logger log = LoggerFactory.getLogger(Commons.class);
+    public static final ExceptionHandler exceptionHandler = new ExceptionHandlerImpl(Exception.class) {
+        @Override
+        public void handle(Exception exception, Request request, Response response) {
+            String message = exception.getMessage();
+            response.type("text/html");
+            StackTraceElement[] stackTrace = exception.getStackTrace();
+            if (message == null) {
+                try {
+                    message = exception.getCause().getMessage();
+                } catch (Throwable ignored) {
+                }
+                if (message == null) {
+                    List<StackTraceElement> ts = Arrays.asList(stackTrace);
+                    message = StringUtils.join(ts);
+                }
+            }
+            log.error("Error '" + message + "'");
+            Map<String, Object> errorMap = new HashMap<>();
+            errorMap.put("title", "Error");
+            errorMap.put("message", message);
+            errorMap.put("stack", stackTrace);
+            response.body(render(errorMap, "error"));
+        }
+    };
 
     static {
         deeplyFulfilledMetaData = reflectionUtils.deepInitialization(MetaData.class);
@@ -237,37 +249,9 @@ public class Commons {
         JPAEntityManagerUtils.getEntityManager();
     }
 
-
-    public static final ExceptionHandler exceptionHandler = new ExceptionHandlerImpl(Exception.class) {
-        @Override
-        public void handle(Exception exception, Request request, Response response) {
-            String message = exception.getMessage();
-            response.type("text/html");
-            StackTraceElement[] stackTrace = exception.getStackTrace();
-            if (message == null) {
-                try {
-                    message = exception.getCause().getMessage();
-                } catch (Throwable ignored) {
-                }
-                if (message == null) {
-                    List<StackTraceElement> ts = Arrays.asList(stackTrace);
-                    message = StringUtils.join(ts);
-                }
-            }
-            log.error("Error '" + message + "'");
-            Map<String, Object> errorMap = new HashMap<>();
-            errorMap.put("title", "Error");
-            errorMap.put("message", message);
-            errorMap.put("stack", stackTrace);
-            response.body(render(errorMap, "error"));
-        }
-    };
-
-
     public static String render(Map<String, Object> model, String templatePath) {
         return engine.render(buildModelAndView(model, templatePath));
     }
-
 
     public static void appendAccountInfoToContext(Request req, Response res, BeanBuilder bean) {
         final SparkWebContext ctx = new SparkWebContext(req, res);
@@ -287,7 +271,6 @@ public class Commons {
             bean.authorized(true);
         }
     }
-
 
     public static List<CommonProfile> getProfiles(final Request request, final Response response) {
         final SparkWebContext context = new SparkWebContext(request, response);
@@ -403,7 +386,6 @@ public class Commons {
         }
         return null;
     }
-
 
     public static List getListIdName(String diagramNames) throws IOException {
         List diagramNamesList = jsonUtils.fromJSON(diagramNames, List.class);
@@ -563,6 +545,17 @@ public class Commons {
     }
 
     public static ModelAndView buildModelAndView(Object bean, String path) {
-        return new ModelAndView(bean, path);
+        Map map;
+        if (Map.class.isAssignableFrom(bean.getClass())) {
+            map = (Map) bean;
+        } else {
+            map = new BeanMap(bean);
+        }
+        return new ModelAndView(map, path);
+    }
+
+    public enum InputOutput {
+        input,
+        output
     }
 }

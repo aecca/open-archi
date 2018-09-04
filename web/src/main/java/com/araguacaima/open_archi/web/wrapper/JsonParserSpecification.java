@@ -17,8 +17,8 @@ import static cz.jirutka.rsql.parser.ast.RSQLOperators.*;
 
 class JsonParserSpecification {
 
-    private static final Set<Class<?>> WRAPPER_TYPES = getWrapperTypes();
     public static final String MARKED_FOR_DELETION = "###MARKED_FOR_DELETION###";
+    private static final Set<Class<?>> WRAPPER_TYPES = getWrapperTypes();
     private static Logger log = LoggerFactory.getLogger(JsonParserSpecification.class);
 
     private static boolean isWrapperType(Class<?> clazz) {

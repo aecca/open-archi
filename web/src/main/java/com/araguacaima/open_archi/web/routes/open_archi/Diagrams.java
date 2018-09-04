@@ -23,22 +23,26 @@ import static java.net.HttpURLConnection.*;
 import static spark.Spark.*;
 
 public class Diagrams implements RouteGroup {
+
+    public static final String PATH ="/diagrams";
+
     private Map<String, Object> map = new HashMap<>();
 
     @Override
     public void addRoutes() {
-        options("/diagrams/architectures", (request, response) -> {
+        before("/*", OpenArchi.apiFilter);
+        options("/architectures", (request, response) -> {
             setCORS(request, response);
             Map<HttpMethod, Map<Commons.InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledArchitectureModelCollection, deeplyFulfilledArchitectureModel, HttpMethod.get, HttpMethod.post);
             return getOptions(request, response, output);
         });
-        get("/diagrams/architectures", (request, response) -> {
+        get("/architectures", (request, response) -> {
             Map<String, Object> params = new HashMap<>();
             params.put("modelType", Model.class);
             response.type(JSON_CONTENT_TYPE);
             return getList(request, response, Taggable.GET_MODELS_BY_TYPE, params, null);
         });
-        post("/diagrams/architectures", (request, response) -> {
+        post("/architectures", (request, response) -> {
             try {
                 Model model = jsonUtils.fromJSON(request.body(), Model.class);
                 if (model == null) {
@@ -55,14 +59,14 @@ public class Diagrams implements RouteGroup {
                 DBUtil.populate(model);
                 response.status(HTTP_CREATED);
                 response.type(JSON_CONTENT_TYPE);
-                response.header("Location", request.pathInfo() + "/" + model.getId());
+                response.header("Location", request.pathInfo() + Commons.SEPARATOR_PATH + model.getId());
                 return EMPTY_RESPONSE;
             } catch (Throwable ex) {
                 ex.printStackTrace();
                 return throwError(response, ex);
             }
         });
-        patch("/diagrams/architectures/:uuid", (request, response) -> {
+        patch("/architectures/:uuid", (request, response) -> {
             try {
                 Model model = jsonUtils.fromJSON(request.body(), Model.class);
                 if (model == null) {
@@ -85,17 +89,17 @@ public class Diagrams implements RouteGroup {
                 return throwError(response, ex);
             }
         });
-        options("/diagrams/architectures/:uuid/relationships", (request, response) -> {
+        options("/architectures/:uuid/relationships", (request, response) -> {
             setCORS(request, response);
             Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledArchitectureRelationshipCollection, deeplyFulfilledArchitectureRelationship, HttpMethod.get, HttpMethod.put);
             return getOptions(request, response, output);
         });
-        get("/diagrams/architectures/:uuid/relationships", (request, response) -> {
+        get("/architectures/:uuid/relationships", (request, response) -> {
             Map<String, Object> params = new HashMap<>();
             params.put("id", request.params(":uuid"));
             return getList(request, response, Model.GET_ALL_RELATIONSHIPS, params, Collection.class);
         });
-        put("/diagrams/architectures/:uuid/relationships", (request, response) -> {
+        put("/architectures/:uuid/relationships", (request, response) -> {
             try {
                 com.araguacaima.open_archi.persistence.diagrams.architectural.Relationship feature = jsonUtils.fromJSON(request.body(), com.araguacaima.open_archi.persistence.diagrams.architectural.Relationship.class);
                 if (feature == null) {
@@ -109,23 +113,23 @@ public class Diagrams implements RouteGroup {
                 DBUtil.populate(feature);
                 response.status(HTTP_CREATED);
                 response.type(JSON_CONTENT_TYPE);
-                response.header("Location", request.pathInfo() + "/" + feature.getId());
+                response.header("Location", request.pathInfo() + Commons.SEPARATOR_PATH + feature.getId());
                 return EMPTY_RESPONSE;
             } catch (Throwable ex) {
                 return throwError(response, ex);
             }
         });
-        options("/diagrams/architectures/:uuid/consumers", (request, response) -> {
+        options("/architectures/:uuid/consumers", (request, response) -> {
             setCORS(request, response);
             Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledParentModelCollection, deeplyFulfilledParentModel, HttpMethod.get, HttpMethod.put);
             return getOptions(request, response, output);
         });
-        get("/diagrams/architectures/:uuid/consumers", (request, response) -> {
+        get("/architectures/:uuid/consumers", (request, response) -> {
             Map<String, Object> params = new HashMap<>();
             params.put("id", request.params(":uuid"));
             return getList(request, response, Model.GET_ALL_CONSUMERS_FOR_MODEL, params, Collection.class);
         });
-        post("/diagrams/architectures/:uuid/consumers", (request, response) -> {
+        post("/architectures/:uuid/consumers", (request, response) -> {
             try {
                 Consumer feature = jsonUtils.fromJSON(request.body(), Consumer.class);
                 if (feature == null) {
@@ -139,13 +143,13 @@ public class Diagrams implements RouteGroup {
                 DBUtil.populate(feature);
                 response.status(HTTP_CREATED);
                 response.type(JSON_CONTENT_TYPE);
-                response.header("Location", request.pathInfo() + "/" + feature.getId());
+                response.header("Location", request.pathInfo() + Commons.SEPARATOR_PATH + feature.getId());
                 return EMPTY_RESPONSE;
             } catch (Throwable ex) {
                 return throwError(response, ex);
             }
         });
-        get("/diagrams/architectures/:uuid/consumers/:cuuid", (request, response) -> {
+        get("/architectures/:uuid/consumers/:cuuid", (request, response) -> {
             Map<String, Object> params = new HashMap<>();
             String id = request.params(":uuid");
             String cid = request.params(":cuuid");
@@ -154,7 +158,7 @@ public class Diagrams implements RouteGroup {
             response.type(JSON_CONTENT_TYPE);
             return getList(request, response, Model.GET_CONSUMER_FOR_MODEL, params, null);
         });
-        put("/diagrams/architectures/:uuid/consumers/:cuuid", (request, response) -> {
+        put("/architectures/:uuid/consumers/:cuuid", (request, response) -> {
             try {
                 Taggable model = jsonUtils.fromJSON(request.body(), Taggable.class);
                 if (model == null) {
@@ -177,7 +181,7 @@ public class Diagrams implements RouteGroup {
                 return throwError(response, ex);
             }
         });
-        patch("/diagrams/architectures/:uuid/consumers/:cuuid", (request, response) -> {
+        patch("/architectures/:uuid/consumers/:cuuid", (request, response) -> {
             try {
                 Consumer consumer = jsonUtils.fromJSON(request.body(), Consumer.class);
                 if (consumer == null) {
@@ -200,13 +204,13 @@ public class Diagrams implements RouteGroup {
                 return throwError(response, ex);
             }
         });
-        get("/diagrams/architectures/:uuid/systems", (request, response) -> {
+        get("/architectures/:uuid/systems", (request, response) -> {
             Map<String, Object> params = new HashMap<>();
             params.put("id", request.params(":uuid"));
             return getList(request, response, Model.GET_ALL_SYSTEMS_FROM_MODEL, params, Collection.class);
         });
-        get("/diagrams/architectures/systems", (request, response) -> getList(request, response, System.GET_ALL_SYSTEMS, null, null));
-        post("/diagrams/architectures/systems", (request, response) -> {
+        get("/architectures/systems", (request, response) -> getList(request, response, System.GET_ALL_SYSTEMS, null, null));
+        post("/architectures/systems", (request, response) -> {
             try {
                 System system = jsonUtils.fromJSON(request.body(), System.class);
                 if (system == null) {
@@ -220,13 +224,13 @@ public class Diagrams implements RouteGroup {
                 DBUtil.populate(system);
                 response.status(HTTP_CREATED);
                 response.type(JSON_CONTENT_TYPE);
-                response.header("Location", request.pathInfo() + "/" + system.getId());
+                response.header("Location", request.pathInfo() + Commons.SEPARATOR_PATH + system.getId());
                 return EMPTY_RESPONSE;
             } catch (Throwable ex) {
                 return throwError(response, ex);
             }
         });
-        get("/diagrams/architectures/systems/:suuid", (request, response) -> {
+        get("/architectures/systems/:suuid", (request, response) -> {
             try {
                 String id = request.params(":suuid");
                 System system = JPAEntityManagerUtils.find(System.class, id);
@@ -240,7 +244,7 @@ public class Diagrams implements RouteGroup {
                 return throwError(response, ex);
             }
         });
-        patch("/diagrams/architectures/systems/:suuid", (request, response) -> {
+        patch("/architectures/systems/:suuid", (request, response) -> {
             try {
                 System system = jsonUtils.fromJSON(request.body(), System.class);
                 if (system == null) {
@@ -263,7 +267,7 @@ public class Diagrams implements RouteGroup {
                 return throwError(response, ex);
             }
         });
-        put("/diagrams/architectures/systems/:suuid", (request, response) -> {
+        put("/architectures/systems/:suuid", (request, response) -> {
             try {
                 System system = jsonUtils.fromJSON(request.body(), System.class);
                 if (system == null) {
@@ -286,12 +290,12 @@ public class Diagrams implements RouteGroup {
                 return throwError(response, ex);
             }
         });
-        get("/diagrams/architectures/systems/:suuid/systems", (request, response) -> {
+        get("/architectures/systems/:suuid/systems", (request, response) -> {
             Map<String, Object> params = new HashMap<>();
             params.put("id", request.params(":suuid"));
             return getList(request, response, System.GET_ALL_SYSTEMS_FROM_SYSTEM, params, Collection.class);
         });
-        post("/diagrams/architectures/systems/:suuid/systems", (request, response) -> {
+        post("/architectures/systems/:suuid/systems", (request, response) -> {
             try {
                 System system = jsonUtils.fromJSON(request.body(), System.class);
                 if (system == null) {
@@ -310,18 +314,18 @@ public class Diagrams implements RouteGroup {
                 DBUtil.update(system);
                 response.status(HTTP_CREATED);
                 response.type(JSON_CONTENT_TYPE);
-                response.header("Location", request.pathInfo() + "/" + system.getId());
+                response.header("Location", request.pathInfo() + Commons.SEPARATOR_PATH + system.getId());
                 return EMPTY_RESPONSE;
             } catch (Throwable ex) {
                 return throwError(response, ex);
             }
         });
-        get("/diagrams/architectures/systems/:suuid/containers", (request, response) -> {
+        get("/architectures/systems/:suuid/containers", (request, response) -> {
             Map<String, Object> params = new HashMap<>();
             params.put("id", request.params(":suuid"));
             return getList(request, response, System.GET_ALL_CONTAINERS_FROM_SYSTEM, params, Collection.class);
         });
-        post("/diagrams/architectures/systems/:suuid/containers", (request, response) -> {
+        post("/architectures/systems/:suuid/containers", (request, response) -> {
             try {
                 Container container = jsonUtils.fromJSON(request.body(), Container.class);
                 if (container == null) {
@@ -340,18 +344,18 @@ public class Diagrams implements RouteGroup {
                 DBUtil.update(system);
                 response.status(HTTP_CREATED);
                 response.type(JSON_CONTENT_TYPE);
-                response.header("Location", request.pathInfo() + "/" + container.getId());
+                response.header("Location", request.pathInfo() + Commons.SEPARATOR_PATH + container.getId());
                 return EMPTY_RESPONSE;
             } catch (Throwable ex) {
                 return throwError(response, ex);
             }
         });
-        get("/diagrams/architectures/systems/:suuid/components", (request, response) -> {
+        get("/architectures/systems/:suuid/components", (request, response) -> {
             Map<String, Object> params = new HashMap<>();
             params.put("id", request.params(":suuid"));
             return getList(request, response, System.GET_ALL_COMPONENTS_FROM_SYSTEM, params, Collection.class);
         });
-        post("/diagrams/architectures/systems/:suuid/components", (request, response) -> {
+        post("/architectures/systems/:suuid/components", (request, response) -> {
             try {
                 Component component = jsonUtils.fromJSON(request.body(), Component.class);
                 if (component == null) {
@@ -370,14 +374,14 @@ public class Diagrams implements RouteGroup {
                 DBUtil.update(system);
                 response.status(HTTP_CREATED);
                 response.type(JSON_CONTENT_TYPE);
-                response.header("Location", request.pathInfo() + "/" + component.getId());
+                response.header("Location", request.pathInfo() + Commons.SEPARATOR_PATH + component.getId());
                 return EMPTY_RESPONSE;
             } catch (Throwable ex) {
                 return throwError(response, ex);
             }
         });
-        get("/diagrams/architectures/containers", (request, response) -> getList(request, response, Container.GET_ALL_CONTAINERS, null, null));
-        post("/diagrams/architectures/containers", (request, response) -> {
+        get("/architectures/containers", (request, response) -> getList(request, response, Container.GET_ALL_CONTAINERS, null, null));
+        post("/architectures/containers", (request, response) -> {
             try {
                 Container container = jsonUtils.fromJSON(request.body(), Container.class);
                 if (container == null) {
@@ -391,13 +395,13 @@ public class Diagrams implements RouteGroup {
                 DBUtil.populate(container);
                 response.status(HTTP_CREATED);
                 response.type(JSON_CONTENT_TYPE);
-                response.header("Location", request.pathInfo() + "/" + container.getId());
+                response.header("Location", request.pathInfo() + Commons.SEPARATOR_PATH + container.getId());
                 return EMPTY_RESPONSE;
             } catch (Throwable ex) {
                 return throwError(response, ex);
             }
         });
-        get("/diagrams/architectures/containers/:cuuid", (request, response) -> {
+        get("/architectures/containers/:cuuid", (request, response) -> {
             try {
                 String id = request.params(":cuuid");
                 Container container = JPAEntityManagerUtils.find(Container.class, id);
@@ -411,7 +415,7 @@ public class Diagrams implements RouteGroup {
                 return throwError(response, ex);
             }
         });
-        patch("/diagrams/architectures/containers/:cuuid", (request, response) -> {
+        patch("/architectures/containers/:cuuid", (request, response) -> {
             try {
                 Container container = jsonUtils.fromJSON(request.body(), Container.class);
                 if (container == null) {
@@ -434,7 +438,7 @@ public class Diagrams implements RouteGroup {
                 return throwError(response, ex);
             }
         });
-        put("/diagrams/architectures/containers/:cuuid", (request, response) -> {
+        put("/architectures/containers/:cuuid", (request, response) -> {
             try {
                 Container container = jsonUtils.fromJSON(request.body(), Container.class);
                 if (container == null) {
@@ -457,12 +461,12 @@ public class Diagrams implements RouteGroup {
                 return throwError(response, ex);
             }
         });
-        get("/diagrams/architectures/containers/:cuuid/components", (request, response) -> {
+        get("/architectures/containers/:cuuid/components", (request, response) -> {
             Map<String, Object> params = new HashMap<>();
             params.put("id", request.params(":cuuid"));
             return getList(request, response, Container.GET_ALL_COMPONENTS_FROM_CONTAINER, params, Collection.class);
         });
-        post("/diagrams/architectures/containers/:cuuid/components", (request, response) -> {
+        post("/architectures/containers/:cuuid/components", (request, response) -> {
             try {
                 Component component = jsonUtils.fromJSON(request.body(), Component.class);
                 if (component == null) {
@@ -481,14 +485,14 @@ public class Diagrams implements RouteGroup {
                 DBUtil.update(container);
                 response.status(HTTP_CREATED);
                 response.type(JSON_CONTENT_TYPE);
-                response.header("Location", request.pathInfo() + "/" + component.getId());
+                response.header("Location", request.pathInfo() + Commons.SEPARATOR_PATH + component.getId());
                 return EMPTY_RESPONSE;
             } catch (Throwable ex) {
                 return throwError(response, ex);
             }
         });
-        get("/diagrams/architectures/components", (request, response) -> getList(request, response, Component.GET_ALL_COMPONENTS, null, null));
-        post("/diagrams/architectures/components", (request, response) -> {
+        get("/architectures/components", (request, response) -> getList(request, response, Component.GET_ALL_COMPONENTS, null, null));
+        post("/architectures/components", (request, response) -> {
             try {
                 Component component = jsonUtils.fromJSON(request.body(), Component.class);
                 if (component == null) {
@@ -502,13 +506,13 @@ public class Diagrams implements RouteGroup {
                 DBUtil.populate(component);
                 response.status(HTTP_CREATED);
                 response.type(JSON_CONTENT_TYPE);
-                response.header("Location", request.pathInfo() + "/" + component.getId());
+                response.header("Location", request.pathInfo() + Commons.SEPARATOR_PATH + component.getId());
                 return EMPTY_RESPONSE;
             } catch (Throwable ex) {
                 return throwError(response, ex);
             }
         });
-        get("/diagrams/architectures/components/:cuuid", (request, response) -> {
+        get("/architectures/components/:cuuid", (request, response) -> {
             try {
                 String id = request.params(":cuuid");
                 Component component = JPAEntityManagerUtils.find(Component.class, id);
@@ -522,7 +526,7 @@ public class Diagrams implements RouteGroup {
                 return throwError(response, ex);
             }
         });
-        patch("/diagrams/architectures/components/:cuuid", (request, response) -> {
+        patch("/architectures/components/:cuuid", (request, response) -> {
             try {
                 Component component = jsonUtils.fromJSON(request.body(), Component.class);
                 if (component == null) {
@@ -545,7 +549,7 @@ public class Diagrams implements RouteGroup {
                 return throwError(response, ex);
             }
         });
-        put("/diagrams/architectures/components/:cuuid", (request, response) -> {
+        put("/architectures/components/:cuuid", (request, response) -> {
             try {
                 Component component = jsonUtils.fromJSON(request.body(), Component.class);
                 if (component == null) {
@@ -568,7 +572,7 @@ public class Diagrams implements RouteGroup {
                 return throwError(response, ex);
             }
         });
-        post("/diagrams/architectures/:uuid/systems", (request, response) -> {
+        post("/architectures/:uuid/systems", (request, response) -> {
             try {
                 System system = jsonUtils.fromJSON(request.body(), System.class);
                 if (system == null) {
@@ -587,13 +591,13 @@ public class Diagrams implements RouteGroup {
                 DBUtil.update(model);
                 response.status(HTTP_CREATED);
                 response.type(JSON_CONTENT_TYPE);
-                response.header("Location", request.pathInfo() + "/" + system.getId());
+                response.header("Location", request.pathInfo() + Commons.SEPARATOR_PATH + system.getId());
                 return EMPTY_RESPONSE;
             } catch (Throwable ex) {
                 return throwError(response, ex);
             }
         });
-        get("/diagrams/architectures/:uuid/systems/:suuid", (request, response) -> {
+        get("/architectures/:uuid/systems/:suuid", (request, response) -> {
             Map<String, Object> params = new HashMap<>();
             String id = request.params(":uuid");
             String sid = request.params(":suuid");
@@ -602,7 +606,7 @@ public class Diagrams implements RouteGroup {
             response.type(JSON_CONTENT_TYPE);
             return getList(request, response, Model.GET_SYSTEM, params, null);
         });
-        put("/diagrams/architectures/:uuid/systems/:suuid", (request, response) -> {
+        put("/architectures/:uuid/systems/:suuid", (request, response) -> {
             try {
                 Container model = jsonUtils.fromJSON(request.body(), Container.class);
                 if (model == null) {
@@ -625,7 +629,7 @@ public class Diagrams implements RouteGroup {
                 return throwError(response, ex);
             }
         });
-        patch("/diagrams/architectures/:uuid/systems/:suuid", (request, response) -> {
+        patch("/architectures/:uuid/systems/:suuid", (request, response) -> {
             try {
                 Container container = jsonUtils.fromJSON(request.body(), Container.class);
                 if (container == null) {
@@ -648,12 +652,12 @@ public class Diagrams implements RouteGroup {
                 return throwError(response, ex);
             }
         });
-        get("/diagrams/architectures/:uuid/systems/:suuid/containers", (request, response) -> {
+        get("/architectures/:uuid/systems/:suuid/containers", (request, response) -> {
             Map<String, Object> params = new HashMap<>();
             params.put("id", request.params(":suuid"));
             return getList(request, response, System.GET_ALL_CONTAINERS_FROM_SYSTEM, params, Collection.class);
         });
-        post("/diagrams/architectures/:uuid/systems/:suuid/containers", (request, response) -> {
+        post("/architectures/:uuid/systems/:suuid/containers", (request, response) -> {
             try {
                 Container container = jsonUtils.fromJSON(request.body(), Container.class);
                 if (container == null) {
@@ -672,13 +676,13 @@ public class Diagrams implements RouteGroup {
                 DBUtil.update(system);
                 response.status(HTTP_CREATED);
                 response.type(JSON_CONTENT_TYPE);
-                response.header("Location", request.pathInfo() + "/" + container.getId());
+                response.header("Location", request.pathInfo() + Commons.SEPARATOR_PATH + container.getId());
                 return EMPTY_RESPONSE;
             } catch (Throwable ex) {
                 return throwError(response, ex);
             }
         });
-        get("/diagrams/architectures/:uuid/systems/:suuid/containers/:cuuid", (request, response) -> {
+        get("/architectures/:uuid/systems/:suuid/containers/:cuuid", (request, response) -> {
             Map<String, Object> params = new HashMap<>();
             String id = request.params(":suuid");
             String cid = request.params(":cuuid");
@@ -687,7 +691,7 @@ public class Diagrams implements RouteGroup {
             response.type(JSON_CONTENT_TYPE);
             return getList(request, response, System.GET_CONTAINER, params, null);
         });
-        put("/diagrams/architectures/:uuid/systems/:suuid/containers/:cuuid", (request, response) -> {
+        put("/architectures/:uuid/systems/:suuid/containers/:cuuid", (request, response) -> {
             try {
                 Container model = jsonUtils.fromJSON(request.body(), Container.class);
                 if (model == null) {
@@ -710,7 +714,7 @@ public class Diagrams implements RouteGroup {
                 return throwError(response, ex);
             }
         });
-        patch("/diagrams/architectures/:uuid/systems/:suuid/containers/:cuuid", (request, response) -> {
+        patch("/architectures/:uuid/systems/:suuid/containers/:cuuid", (request, response) -> {
             try {
                 Container container = jsonUtils.fromJSON(request.body(), Container.class);
                 if (container == null) {
@@ -733,18 +737,18 @@ public class Diagrams implements RouteGroup {
                 return throwError(response, ex);
             }
         });
-        options("/diagrams/bpms", (request, response) -> {
+        options("/bpms", (request, response) -> {
             setCORS(request, response);
             Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledBpmModelCollection, deeplyFulfilledBpmModel, HttpMethod.get, HttpMethod.post);
             return getOptions(request, response, output);
         });
-        get("/diagrams/bpms", (request, response) -> {
+        get("/bpms", (request, response) -> {
             Map<String, Object> params = new HashMap<>();
             params.put("modelType", com.araguacaima.open_archi.persistence.diagrams.bpm.Model.class);
             response.type(JSON_CONTENT_TYPE);
             return getList(request, response, Taggable.GET_MODELS_BY_TYPE, params, null);
         });
-        post("/diagrams/bpms", (request, response) -> {
+        post("/bpms", (request, response) -> {
             try {
                 com.araguacaima.open_archi.persistence.diagrams.bpm.Model model = jsonUtils.fromJSON(request.body(), com.araguacaima.open_archi.persistence.diagrams.bpm.Model.class);
                 if (model == null) {
@@ -761,24 +765,24 @@ public class Diagrams implements RouteGroup {
                 DBUtil.populate(model);
                 response.status(HTTP_CREATED);
                 response.type(JSON_CONTENT_TYPE);
-                response.header("Location", request.pathInfo() + "/" + model.getId());
+                response.header("Location", request.pathInfo() + Commons.SEPARATOR_PATH + model.getId());
                 return EMPTY_RESPONSE;
             } catch (Throwable ex) {
                 return throwError(response, ex);
             }
         });
-        options("/diagrams/ers", (request, response) -> {
+        options("/ers", (request, response) -> {
             setCORS(request, response);
             Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledERModelCollection, deeplyFulfilledERModel, HttpMethod.get, HttpMethod.post);
             return getOptions(request, response, output);
         });
-        get("/diagrams/ers", (request, response) -> {
+        get("/ers", (request, response) -> {
             Map<String, Object> params = new HashMap<>();
             params.put("modelType", com.araguacaima.open_archi.persistence.diagrams.er.Model.class);
             response.type(JSON_CONTENT_TYPE);
             return getList(request, response, Taggable.GET_MODELS_BY_TYPE, params, null);
         });
-        post("/diagrams/ers", (request, response) -> {
+        post("/ers", (request, response) -> {
             try {
                 com.araguacaima.open_archi.persistence.diagrams.er.Model model = jsonUtils.fromJSON(request.body(), com.araguacaima.open_archi.persistence.diagrams.er.Model.class);
                 if (model == null) {
@@ -795,24 +799,24 @@ public class Diagrams implements RouteGroup {
                 DBUtil.populate(model);
                 response.status(HTTP_CREATED);
                 response.type(JSON_CONTENT_TYPE);
-                response.header("Location", request.pathInfo() + "/" + model.getId());
+                response.header("Location", request.pathInfo() + Commons.SEPARATOR_PATH + model.getId());
                 return EMPTY_RESPONSE;
             } catch (Throwable ex) {
                 return throwError(response, ex);
             }
         });
-        options("/diagrams/flowcharts", (request, response) -> {
+        options("/flowcharts", (request, response) -> {
             setCORS(request, response);
             Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledFlowchartModelCollection, deeplyFulfilledFlowchartModel, HttpMethod.get, HttpMethod.post);
             return getOptions(request, response, output);
         });
-        get("/diagrams/flowcharts", (request, response) -> {
+        get("/flowcharts", (request, response) -> {
             Map<String, Object> params = new HashMap<>();
             params.put("modelType", com.araguacaima.open_archi.persistence.diagrams.flowchart.Model.class);
             response.type(JSON_CONTENT_TYPE);
             return getList(request, response, Taggable.GET_MODELS_BY_TYPE, params, null);
         });
-        post("/diagrams/flowcharts", (request, response) -> {
+        post("/flowcharts", (request, response) -> {
             try {
                 com.araguacaima.open_archi.persistence.diagrams.flowchart.Model model = jsonUtils.fromJSON(request.body(), com.araguacaima.open_archi.persistence.diagrams.flowchart.Model.class);
                 if (model == null) {
@@ -829,24 +833,24 @@ public class Diagrams implements RouteGroup {
                 DBUtil.populate(model);
                 response.status(HTTP_CREATED);
                 response.type(JSON_CONTENT_TYPE);
-                response.header("Location", request.pathInfo() + "/" + model.getId());
+                response.header("Location", request.pathInfo() + Commons.SEPARATOR_PATH + model.getId());
                 return EMPTY_RESPONSE;
             } catch (Throwable ex) {
                 return throwError(response, ex);
             }
         });
-        options("/diagrams/gantts", (request, response) -> {
+        options("/gantts", (request, response) -> {
             setCORS(request, response);
             Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledGanttModelCollection, deeplyFulfilledGanttModel, HttpMethod.get, HttpMethod.post);
             return getOptions(request, response, output);
         });
-        get("/diagrams/gantts", (request, response) -> {
+        get("/gantts", (request, response) -> {
             Map<String, Object> params = new HashMap<>();
             params.put("modelType", com.araguacaima.open_archi.persistence.diagrams.gantt.Model.class);
             response.type(JSON_CONTENT_TYPE);
             return getList(request, response, Taggable.GET_MODELS_BY_TYPE, params, null);
         });
-        post("/diagrams/gantts", (request, response) -> {
+        post("/gantts", (request, response) -> {
             try {
                 com.araguacaima.open_archi.persistence.diagrams.gantt.Model model = jsonUtils.fromJSON(request.body(), com.araguacaima.open_archi.persistence.diagrams.gantt.Model.class);
                 if (model == null) {
@@ -863,24 +867,24 @@ public class Diagrams implements RouteGroup {
                 DBUtil.populate(model);
                 response.status(HTTP_CREATED);
                 response.type(JSON_CONTENT_TYPE);
-                response.header("Location", request.pathInfo() + "/" + model.getId());
+                response.header("Location", request.pathInfo() + Commons.SEPARATOR_PATH + model.getId());
                 return EMPTY_RESPONSE;
             } catch (Throwable ex) {
                 return throwError(response, ex);
             }
         });
-        options("/diagrams/sequences", (request, response) -> {
+        options("/sequences", (request, response) -> {
             setCORS(request, response);
             Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledSequenceModelCollection, deeplyFulfilledSequenceModel, HttpMethod.get, HttpMethod.post);
             return getOptions(request, response, output);
         });
-        get("/diagrams/sequences", (request, response) -> {
+        get("/sequences", (request, response) -> {
             Map<String, Object> params = new HashMap<>();
             params.put("modelType", com.araguacaima.open_archi.persistence.diagrams.sequence.Model.class);
             response.type(JSON_CONTENT_TYPE);
             return getList(request, response, Taggable.GET_MODELS_BY_TYPE, params, null);
         });
-        post("/diagrams/sequences", (request, response) -> {
+        post("/sequences", (request, response) -> {
             try {
                 com.araguacaima.open_archi.persistence.diagrams.sequence.Model model = jsonUtils.fromJSON(request.body(), com.araguacaima.open_archi.persistence.diagrams.sequence.Model.class);
                 if (model == null) {
@@ -897,24 +901,24 @@ public class Diagrams implements RouteGroup {
                 DBUtil.populate(model);
                 response.status(HTTP_CREATED);
                 response.type(JSON_CONTENT_TYPE);
-                response.header("Location", request.pathInfo() + "/" + model.getId());
+                response.header("Location", request.pathInfo() + Commons.SEPARATOR_PATH + model.getId());
                 return EMPTY_RESPONSE;
             } catch (Throwable ex) {
                 return throwError(response, ex);
             }
         });
-        options("/diagrams/classes", (request, response) -> {
+        options("/classes", (request, response) -> {
             setCORS(request, response);
             Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledClassesModelCollection, deeplyFulfilledClassesModel, HttpMethod.get, HttpMethod.post);
             return getOptions(request, response, output);
         });
-        get("/diagrams/classes", (request, response) -> {
+        get("/classes", (request, response) -> {
             Map<String, Object> params = new HashMap<>();
             params.put("modelType", com.araguacaima.open_archi.persistence.diagrams.classes.Model.class);
             response.type(JSON_CONTENT_TYPE);
             return getList(request, response, Taggable.GET_MODELS_BY_TYPE, params, null);
         });
-        post("/diagrams/classes", (request, response) -> {
+        post("/classes", (request, response) -> {
             try {
                 com.araguacaima.open_archi.persistence.diagrams.classes.Model model = jsonUtils.fromJSON(request.body(), com.araguacaima.open_archi.persistence.diagrams.classes.Model.class);
                 if (model == null) {
@@ -931,7 +935,7 @@ public class Diagrams implements RouteGroup {
                 DBUtil.populate(model);
                 response.status(HTTP_CREATED);
                 response.type(JSON_CONTENT_TYPE);
-                response.header("Location", request.pathInfo() + "/" + model.getId());
+                response.header("Location", request.pathInfo() + Commons.SEPARATOR_PATH + model.getId());
                 return EMPTY_RESPONSE;
             } catch (Throwable ex) {
                 return throwError(response, ex);

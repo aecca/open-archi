@@ -6,14 +6,16 @@ import spark.RouteGroup;
 import static com.araguacaima.open_archi.web.common.Commons.*;
 import static java.net.HttpURLConnection.HTTP_NOT_IMPLEMENTED;
 import static java.net.HttpURLConnection.HTTP_OK;
-import static spark.Spark.get;
-import static spark.Spark.post;
+import static spark.Spark.*;
 
 public class Palettes implements RouteGroup {
+
+    public static final String PATH = "/palette";
+
     @Override
     public void addRoutes() {
-
-        get("/palette/architectures", (request, response) -> {
+        before("/*", OpenArchi.apiFilter);
+        get("/architectures", (request, response) -> {
             try {
                 Palette palette = OpenArchi.getArchitecturePalette();
                 response.status(HTTP_OK);
@@ -23,11 +25,11 @@ public class Palettes implements RouteGroup {
                 return throwError(response, ex);
             }
         });
-        post("/palette/architectures", (request, response) -> {
+        post("/architectures", (request, response) -> {
             response.status(HTTP_NOT_IMPLEMENTED);
             return EMPTY_RESPONSE;
         });
-        get("/palette/bpms", (request, response) -> {
+        get("/bpms", (request, response) -> {
             try {
                 com.araguacaima.open_archi.persistence.diagrams.bpm.Palette palette = new com.araguacaima.open_archi.persistence.diagrams.bpm.Palette();
                 response.status(HTTP_OK);
@@ -37,11 +39,11 @@ public class Palettes implements RouteGroup {
                 return throwError(response, ex);
             }
         });
-        post("/palette/bpms", (request, response) -> {
+        post("/bpms", (request, response) -> {
             response.status(HTTP_NOT_IMPLEMENTED);
             return EMPTY_RESPONSE;
         });
-        get("/palette/flowcharts", (request, response) -> {
+        get("/flowcharts", (request, response) -> {
             try {
                 com.araguacaima.open_archi.persistence.diagrams.flowchart.Palette palette = new com.araguacaima.open_archi.persistence.diagrams.flowchart.Palette();
                 response.status(HTTP_OK);
@@ -51,11 +53,11 @@ public class Palettes implements RouteGroup {
                 return throwError(response, ex);
             }
         });
-        post("/palette/flowcharts", (request, response) -> {
+        post("/flowcharts", (request, response) -> {
             response.status(HTTP_NOT_IMPLEMENTED);
             return EMPTY_RESPONSE;
         });
-        get("/palette/gantts", (request, response) -> {
+        get("/gantts", (request, response) -> {
             try {
                 com.araguacaima.open_archi.persistence.diagrams.gantt.Palette palette = new com.araguacaima.open_archi.persistence.diagrams.gantt.Palette();
                 response.status(HTTP_OK);
@@ -65,11 +67,11 @@ public class Palettes implements RouteGroup {
                 return throwError(response, ex);
             }
         });
-        post("/palette/gantts", (request, response) -> {
+        post("/gantts", (request, response) -> {
             response.status(HTTP_NOT_IMPLEMENTED);
             return EMPTY_RESPONSE;
         });
-        get("/palette/sequences", (request, response) -> {
+        get("/sequences", (request, response) -> {
             try {
                 com.araguacaima.open_archi.persistence.diagrams.sequence.Palette palette = new com.araguacaima.open_archi.persistence.diagrams.sequence.Palette();
                 response.status(HTTP_OK);
@@ -79,7 +81,7 @@ public class Palettes implements RouteGroup {
                 return throwError(response, ex);
             }
         });
-        post("/palette/sequences", (request, response) -> {
+        post("/sequences", (request, response) -> {
             response.status(HTTP_NOT_IMPLEMENTED);
             return EMPTY_RESPONSE;
         });

@@ -16,9 +16,9 @@ import java.util.List;
 
 public class JsonPathRsqlVisitor implements RSQLVisitor<String, String> {
 
+    private static Logger log = LoggerFactory.getLogger(JsonPathRsqlVisitor.class);
     private String json;
     private ObjectMapper mapper = new ObjectMapper();
-    private static Logger log = LoggerFactory.getLogger(JsonPathRsqlVisitor.class);
 
     public JsonPathRsqlVisitor(String json) {
         this.json = json;

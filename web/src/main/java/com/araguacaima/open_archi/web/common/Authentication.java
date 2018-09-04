@@ -17,8 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static com.araguacaima.open_archi.web.common.Commons.clients;
-import static com.araguacaima.open_archi.web.common.Commons.store;
+import static com.araguacaima.open_archi.web.common.Commons.*;
 import static com.araguacaima.open_archi.web.common.Security.JWT_SALT;
 
 public class Authentication {
@@ -38,20 +37,20 @@ public class Authentication {
         }
         final Map<String, String> map = new HashMap<String, String>();
         map.put("token", token);
-        return new ModelAndView(map, "jwt.mustache");
+        return buildModelAndView(map, "jwt.mustache");
     }
 
     public static ModelAndView form(final Config config) {
         final Map<String, String> map = new HashMap<String, String>();
         final FormClient formClient = config.getClients().findClient(FormClient.class);
         map.put("callbackUrl", formClient.getCallbackUrl());
-        return new ModelAndView(map, "loginForm.mustache");
+        return buildModelAndView(map, "loginForm.mustache");
     }
 
     public static ModelAndView protectedIndex(final Request request, final Response response) {
         final Map<String, List<CommonProfile>> map = new HashMap<>();
         map.put("profiles", getProfiles(request, response));
-        return new ModelAndView(map, "protectedIndex.mustache");
+        return buildModelAndView(map, "protectedIndex.mustache");
     }
 
     public static List<CommonProfile> getProfiles(final Request request, final Response response) {
@@ -88,7 +87,7 @@ public class Authentication {
                 }
                 map.put(key, value);
             }
-            return new ModelAndView(map, originalRequest);
+            return buildModelAndView(map, originalRequest);
         }
     }
 
@@ -116,7 +115,7 @@ public class Authentication {
             }
             req.session(true).attribute("originalRequest", url.toString());
             req.session(true).attribute("originalQueryParams", queryParams.toString());
-            return new ModelAndView(map, "/open-archi/login");
+            return buildModelAndView(map, "/open-archi/login");
 
         }
     }

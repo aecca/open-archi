@@ -1,4 +1,3 @@
-
 package com.araguacaima.open_archi.web;
 
 import com.araguacaima.commons.utils.ReflectionUtils;
@@ -38,9 +37,6 @@ public class DBUtil {
     private static LocalDate dateLower = LocalDate.of(2000, 1, 1);
     private static LocalDate dateUpper = LocalDate.of(2040, 12, 31);
 
-    public DBUtil() {
-    }
-
     static {
         classes.add(com.araguacaima.open_archi.persistence.diagrams.architectural.Model.class);
         classes.add(com.araguacaima.open_archi.persistence.diagrams.bpm.Model.class);
@@ -60,6 +56,9 @@ public class DBUtil {
                 .scanClasspathForConcreteTypes(true)
                 .overrideDefaultInitialization(true);
         JPAEntityManagerUtils.begin();
+    }
+
+    public DBUtil() {
     }
 
     public static void dbPopulation() {

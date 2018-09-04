@@ -1,6 +1,8 @@
 package com.araguacaima.open_archi.web.routes.open_archi;
 
 import com.araguacaima.open_archi.web.BeanBuilder;
+import com.araguacaima.open_archi.web.common.Commons;
+import spark.Redirect;
 import spark.RouteGroup;
 
 import static com.araguacaima.open_archi.web.Server.engine;
@@ -10,6 +12,8 @@ import static spark.Spark.*;
 
 public class Api implements RouteGroup {
 
+    public static final String PATH = "/api";
+
     private Diagrams diagrams = new Diagrams();
     private Models models = new Models();
     private Catalogs catalogs = new Catalogs();
@@ -18,23 +22,23 @@ public class Api implements RouteGroup {
 
     @Override
     public void addRoutes() {
+        redirect.get(Api.PATH + Commons.SEPARATOR_PATH, Api.PATH, Redirect.Status.PERMANENT_REDIRECT);
 
-        before("/api/diagrams/*", OpenArchi.apiFilter);
-        before("/api/diagrams", OpenArchi.apiFilter);
-        before("/api/models/*", OpenArchi.apiFilter);
-        before("/api/models", OpenArchi.apiFilter);
         final BeanBuilder bean = new BeanBuilder().title("Api");
-        get("/api", (req, res) -> {
+        get(Commons.DEFAULT_PATH, (req, res) -> {
             appendAccountInfoToContext(req, res, bean);
-            return buildModelAndView(bean, "/open-archi/apis");
+            return buildModelAndView(bean, OpenArchi.PATH + "/apis");
         }, engine);
-        path("/api", () -> {
-            path("/diagrams", diagrams);
-            path("/models", models);
-            path("/catalogs", catalogs);
-            path("/consumers", consumers);
-            path("/palettes", palettes);
-        });
+        before(Diagrams.PATH, OpenArchi.apiFilter);
+        path("/diagrams", diagrams);
+        before(Models.PATH, OpenArchi.apiFilter);
+        path("/models", models);
+        before(Catalogs.PATH, OpenArchi.apiFilter);
+        path("/catalogs", catalogs);
+        before(Consumers.PATH, OpenArchi.apiFilter);
+        path("/consumers", consumers);
+        before(Palettes.PATH, OpenArchi.apiFilter);
+        path("/palettes", palettes);
     }
 
 }

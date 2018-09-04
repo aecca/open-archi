@@ -1,6 +1,5 @@
 package com.araguacaima.open_archi.web;
 
-import org.apache.commons.lang3.StringUtils;
 import org.pac4j.core.authorization.authorizer.ProfileAuthorizer;
 import org.pac4j.core.context.WebContext;
 import org.pac4j.core.exception.HttpAction;
@@ -18,6 +17,6 @@ public class Authorizer extends ProfileAuthorizer<CommonProfile> {
     @Override
     public boolean isProfileAuthorized(final WebContext context, final CommonProfile profile) {
         return profile != null;
-       // return StringUtils.startsWith(profile.getUsername(), "jle");
+        // return StringUtils.startsWith(profile.getUsername(), "jle");
     }
 }

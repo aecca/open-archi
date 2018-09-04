@@ -23,14 +23,18 @@ import static java.net.HttpURLConnection.*;
 import static spark.Spark.*;
 
 public class Models implements RouteGroup {
+
+    public static final String PATH = "/models";
+
     @Override
     public void addRoutes() {
-        options("/models", (request, response) -> {
+        before("/*", OpenArchi.apiFilter);
+        options(Commons.DEFAULT_PATH, (request, response) -> {
             setCORS(request, response);
             Map<HttpMethod, Map<Commons.InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledParentModelCollection, deeplyFulfilledParentModel, HttpMethod.get, HttpMethod.post);
             return getOptions(request, response, output);
         });
-        post("/models", (request, response) -> {
+        post(Commons.DEFAULT_PATH, (request, response) -> {
             try {
                 Taggable model = null;
                 String body = request.body();
@@ -61,20 +65,20 @@ public class Models implements RouteGroup {
                 DBUtil.populate(model, id == null);
                 response.status(HTTP_CREATED);
                 response.type(JSON_CONTENT_TYPE);
-                response.header("Location", request.pathInfo() + "/" + model.getId());
+                response.header("Location", request.pathInfo() + model.getId());
                 return EMPTY_RESPONSE;
             } catch (Throwable ex) {
                 ex.printStackTrace();
                 return throwError(response, ex);
             }
         });
-        get("/models", (request, response) -> getList(request, response, Taggable.GET_ALL_MODELS, null, null));
-        options("/models/:uuid", (request, response) -> {
+        get(Commons.DEFAULT_PATH, (request, response) -> getList(request, response, Taggable.GET_ALL_MODELS, null, null));
+        options("/:uuid", (request, response) -> {
             setCORS(request, response);
             Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledParentModel, null, HttpMethod.get, null);
             return getOptions(request, response, output);
         });
-        get("/models/:uuid", (request, response) -> {
+        get("/:uuid", (request, response) -> {
             try {
                 String id = request.params(":uuid");
                 Taggable model = JPAEntityManagerUtils.find(Taggable.class, id);
@@ -88,7 +92,7 @@ public class Models implements RouteGroup {
                 return throwError(response, ex);
             }
         });
-        put("/models/:uuid", (request, response) -> {
+        put("/:uuid", (request, response) -> {
             try {
                 Taggable model = jsonUtils.fromJSON(request.body(), Taggable.class);
                 if (model == null) {
@@ -111,7 +115,7 @@ public class Models implements RouteGroup {
                 return throwError(response, ex);
             }
         });
-        delete("/models/:uuid", (request, response) -> {
+        delete("/:uuid", (request, response) -> {
             try {
                 String id = request.params(":uuid");
                 DBUtil.delete(Taggable.class, id);
@@ -124,7 +128,7 @@ public class Models implements RouteGroup {
                 return throwError(response, ex);
             }
         });
-        get("/models/:uuid/clone", (request, response) -> {
+        get("/:uuid/clone", (request, response) -> {
             try {
                 String id = request.params(":uuid");
                 String suffix = request.queryParams("suffix");
@@ -167,7 +171,7 @@ public class Models implements RouteGroup {
                 return throwError(response, ex);
             }
         });
-        put("/models/:uuid/image", (request, response) -> {
+        put("/:uuid/image", (request, response) -> {
             try {
                 Image image = jsonUtils.fromJSON(request.body(), Image.class);
                 if (image == null) {
@@ -181,13 +185,13 @@ public class Models implements RouteGroup {
                 DBUtil.populate(image);
                 response.status(HTTP_CREATED);
                 response.type(JSON_CONTENT_TYPE);
-                response.header("Location", request.pathInfo() + "/" + image.getId());
+                response.header("Location", request.pathInfo() + image.getId());
                 return EMPTY_RESPONSE;
             } catch (Throwable ex) {
                 return throwError(response, ex);
             }
         });
-        patch("/models/:uuid/status/:sid", (request, response) -> {
+        patch("/:uuid/status/:sid", (request, response) -> {
             try {
                 Taggable model = jsonUtils.fromJSON(request.body(), Taggable.class);
                 if (model == null) {
@@ -212,37 +216,37 @@ public class Models implements RouteGroup {
                 return throwError(response, ex);
             }
         });
-        put("/models/:uuid/children", (request, response) -> {
+        put("/:uuid/children", (request, response) -> {
             response.status(HTTP_NOT_IMPLEMENTED);
             response.type(JSON_CONTENT_TYPE);
             return EMPTY_RESPONSE;
         });
-        options("/models/:uuid/children", (request, response) -> {
+        options("/:uuid/children", (request, response) -> {
             setCORS(request, response);
             Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledParentModelCollection, deeplyFulfilledParentModel, HttpMethod.get, HttpMethod.put);
             return getOptions(request, response, output);
         });
-        get("/models/:uuid/children", (request, response) -> {
+        get("/:uuid/children", (request, response) -> {
             Map<String, Object> params = new HashMap<>();
             params.put("id", request.params(":uuid"));
             return getList(request, response, Item.GET_ALL_CHILDREN, params, Collection.class);
         });
-        put("/models/:uuid/children", (request, response) -> {
+        put("/:uuid/children", (request, response) -> {
             response.status(HTTP_NOT_IMPLEMENTED);
             response.type(JSON_CONTENT_TYPE);
             return EMPTY_RESPONSE;
         });
-        options("/models/:uuid/parent", (request, response) -> {
+        options("/:uuid/parent", (request, response) -> {
             setCORS(request, response);
             Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledParentModel, deeplyFulfilledParentModel, HttpMethod.get, HttpMethod.post);
             return getOptions(request, response, output);
         });
-        get("/models/:uuid/parent", (request, response) -> {
+        get("/:uuid/parent", (request, response) -> {
             response.status(HTTP_NOT_IMPLEMENTED);
             response.type(JSON_CONTENT_TYPE);
             return EMPTY_RESPONSE;
         });
-        post("/models/:uuid/parent", (request, response) -> {
+        post("/:uuid/parent", (request, response) -> {
             try {
                 CompositeElement model;
                 try {
@@ -252,23 +256,23 @@ public class Models implements RouteGroup {
                 }
                 DBUtil.persist(model);
                 response.status(HTTP_CREATED);
-                response.header("Location", request.pathInfo() + "/" + model.getId());
+                response.header("Location", request.pathInfo() + model.getId());
                 return EMPTY_RESPONSE;
             } catch (Throwable ex) {
                 return throwError(response, ex);
             }
         });
-        options("/models/:uuid/meta-data", (request, response) -> {
+        options("/:uuid/meta-data", (request, response) -> {
             setCORS(request, response);
             Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(null, deeplyFulfilledMetaData, HttpMethod.get, HttpMethod.post);
             return getOptions(request, response, output);
         });
-        get("/models/:uuid/meta-data", (request, response) -> {
+        get("/:uuid/meta-data", (request, response) -> {
             Map<String, Object> params = new HashMap<>();
             params.put("id", request.params(":uuid"));
             return getElement(request, response, Item.GET_META_DATA, params, MetaData.class);
         });
-        post("/models/:uuid/meta-data", (request, response) -> {
+        post("/:uuid/meta-data", (request, response) -> {
             try {
                 MetaData metaData = jsonUtils.fromJSON(request.body(), MetaData.class);
                 if (metaData == null) {
@@ -281,23 +285,23 @@ public class Models implements RouteGroup {
                 metaData.validateCreation(map);
                 DBUtil.populate(metaData);
                 response.status(HTTP_CREATED);
-                response.header("Location", request.pathInfo() + "/" + request.params(":uuid") + "/meta-data");
+                response.header("Location", request.pathInfo() + request.params(":uuid") + "/meta-data");
                 return EMPTY_RESPONSE;
             } catch (Throwable ex) {
                 return throwError(response, ex);
             }
         });
-        options("/models/:uuid/features", (request, response) -> {
+        options("/:uuid/features", (request, response) -> {
             setCORS(request, response);
             Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledFeaturesCollection, deeplyFulfilledFeature, HttpMethod.get, HttpMethod.put);
             return getOptions(request, response, output);
         });
-        get("/models/:uuid/features", (request, response) -> {
+        get("/:uuid/features", (request, response) -> {
             Map<String, Object> params = new HashMap<>();
             params.put("id", request.params(":uuid"));
             return getList(request, response, Element.GET_ALL_FEATURES, params, Collection.class);
         });
-        put("/models/:uuid/features", (request, response) -> {
+        put("/:uuid/features", (request, response) -> {
             try {
 
                 CompositeElement feature = jsonUtils.fromJSON(request.body(), CompositeElement.class);
@@ -306,7 +310,7 @@ public class Models implements RouteGroup {
                 }
                 DBUtil.persist(feature);
                 response.status(HTTP_CREATED);
-                response.header("Location", request.pathInfo() + "/" + feature.getId());
+                response.header("Location", request.pathInfo() + feature.getId());
                 return EMPTY_RESPONSE;
             } catch (Throwable ex) {
                 return throwError(response, ex);

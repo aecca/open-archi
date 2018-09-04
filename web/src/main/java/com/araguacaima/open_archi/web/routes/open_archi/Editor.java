@@ -4,6 +4,8 @@ import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 import com.araguacaima.open_archi.persistence.diagrams.core.Taggable;
 import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
 import com.araguacaima.open_archi.web.BeanBuilder;
+import com.araguacaima.open_archi.web.common.Commons;
+import spark.Redirect;
 import spark.RouteGroup;
 
 import java.io.IOException;
@@ -19,8 +21,12 @@ import static spark.Spark.*;
 
 public class Editor implements RouteGroup {
 
+
+    public static final String PATH = "/editor";
     @Override
     public void addRoutes() {
+        redirect.get(Editor.PATH + Commons.SEPARATOR_PATH, Editor.PATH, Redirect.Status.PERMANENT_REDIRECT);
+
         BeanBuilder bean = new BeanBuilder();
         before("/editor", OpenArchi.strongSecurityFilter);
         before("/editor/*", OpenArchi.strongSecurityFilter);
@@ -34,7 +40,7 @@ public class Editor implements RouteGroup {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            get("/", (req, res) -> {
+            get(Commons.DEFAULT_PATH, (req, res) -> {
                 bean.title("Editor");
                 bean.palette(jsonUtils.toJSON(OpenArchi.getArchitecturePalette()));
                 bean.elementTypes(jsonUtils.toJSON(OpenArchi.getElementTypes()));

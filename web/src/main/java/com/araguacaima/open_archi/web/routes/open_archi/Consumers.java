@@ -5,6 +5,7 @@ import com.araguacaima.open_archi.persistence.diagrams.core.Item;
 import com.araguacaima.open_archi.persistence.meta.Account;
 import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
 import com.araguacaima.open_archi.web.DBUtil;
+import com.araguacaima.open_archi.web.common.Commons;
 import org.pac4j.sparkjava.SparkWebContext;
 import spark.RouteGroup;
 
@@ -17,12 +18,14 @@ import static java.net.HttpURLConnection.*;
 import static spark.Spark.*;
 
 public class Consumers implements RouteGroup {
+
+    public static final String PATH ="/consumers";
+
     @Override
     public void addRoutes() {
-
-
-        get("/consumers", (request, response) -> getList(request, response, Item.GET_ALL_CONSUMERS, null, null));
-        post("/consumers", (request, response) -> {
+        before("/*", OpenArchi.apiFilter);
+        get(Commons.DEFAULT_PATH, (request, response) -> getList(request, response, Item.GET_ALL_CONSUMERS, null, null));
+        post(Commons.DEFAULT_PATH, (request, response) -> {
             try {
                 Consumer consumer = jsonUtils.fromJSON(request.body(), Consumer.class);
                 if (consumer == null) {
@@ -36,7 +39,7 @@ public class Consumers implements RouteGroup {
                 DBUtil.populate(consumer);
                 response.status(HTTP_CREATED);
                 response.type(JSON_CONTENT_TYPE);
-                response.header("Location", request.pathInfo() + "/" + consumer.getId());
+                response.header("Location", request.pathInfo() + Commons.SEPARATOR_PATH + consumer.getId());
                 return EMPTY_RESPONSE;
             } catch (Throwable ex) {
                 return throwError(response, ex);

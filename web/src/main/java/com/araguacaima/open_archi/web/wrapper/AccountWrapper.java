@@ -5,8 +5,6 @@ import com.araguacaima.open_archi.persistence.meta.Avatar;
 import org.pac4j.core.profile.UserProfile;
 import org.pac4j.oauth.profile.google2.Google2Profile;
 
-import java.net.URL;
-
 public class AccountWrapper {
     public static Account toAccount(UserProfile profile) {
         Account account = null;

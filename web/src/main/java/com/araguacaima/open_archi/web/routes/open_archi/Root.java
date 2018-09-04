@@ -2,6 +2,7 @@ package com.araguacaima.open_archi.web.routes.open_archi;
 
 import com.araguacaima.open_archi.web.BeanBuilder;
 import com.araguacaima.open_archi.web.common.Authentication;
+import com.araguacaima.open_archi.web.common.Commons;
 import org.pac4j.sparkjava.LogoutRoute;
 import spark.Redirect;
 import spark.RouteGroup;
@@ -22,13 +23,8 @@ public class Root implements RouteGroup {
 
     @Override
     public void addRoutes() {
-        redirect.get("/details", OpenArchi.PATH + "/details/", Redirect.Status.TEMPORARY_REDIRECT);
-        get("/details/", buildRoute(new BeanBuilder().title("Detailed Specification"), OpenArchi.PATH + "/details"), engine);
-        redirect.get("/api/", OpenArchi.PATH + "/api", Redirect.Status.PERMANENT_REDIRECT);
-        redirect.get("/editor/", OpenArchi.PATH + "/editor", Redirect.Status.PERMANENT_REDIRECT);
-        redirect.get("/prototyper/", OpenArchi.PATH + "/prototyper", Redirect.Status.TEMPORARY_REDIRECT);
-
-        get("/", buildRoute(new BeanBuilder().title(OPEN_ARCHI), OpenArchi.PATH + "/home"), engine);
+        redirect.get(OpenArchi.PATH + Commons.SEPARATOR_PATH, OpenArchi.PATH, Redirect.Status.TEMPORARY_REDIRECT);
+        get(Commons.DEFAULT_PATH, buildRoute(new BeanBuilder().title(OPEN_ARCHI), OpenArchi.PATH + "/home"), engine);
         before("/login/google", OpenArchi.basicSecurityFilter);
         get("/login/google", Authentication.authGoogle, engine);
         get("/login", Authentication.login, engine);
@@ -38,10 +34,10 @@ public class Root implements RouteGroup {
             return OpenArchi.callback.handle(req, res);
         });
 
-        path("/samples", samples);
-        path("/api", api);
-        path("/editor", editor);
-        path("/prototyper", prototyper);
+        path(Samples.PATH, samples);
+        path(Api.PATH, api);
+        path(Editor.PATH, editor);
+        path(Prototyper.PATH, prototyper);
 
         final LogoutRoute localLogout = new LogoutRoute(config, "/open-archi");
         localLogout.setDestroySession(true);

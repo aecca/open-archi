@@ -3,7 +3,6 @@ package com.araguacaima.open_archi.web;
 import org.pac4j.cas.client.CasClient;
 import org.pac4j.cas.config.CasConfiguration;
 import org.pac4j.core.authorization.authorizer.CheckHttpMethodAuthorizer;
-import org.pac4j.core.authorization.authorizer.CorsAuthorizer;
 import org.pac4j.core.authorization.authorizer.RequireAnyRoleAuthorizer;
 import org.pac4j.core.client.Client;
 import org.pac4j.core.client.Clients;
@@ -99,7 +98,7 @@ public class ConfigFactory implements org.pac4j.core.config.ConfigFactory {
         final Config config = new Config(clients);
         config.addAuthorizer("admin", new RequireAnyRoleAuthorizer<>("write:model", "read:models", "write:catalog", "read:catalogs", "write:palette", "read:palettes"));
         config.addAuthorizer("custom", new Authorizer());
-        CheckHttpMethodAuthorizer  checkHttpMethodAuthorizer = new CheckHttpMethodAuthorizer ();
+        CheckHttpMethodAuthorizer checkHttpMethodAuthorizer = new CheckHttpMethodAuthorizer();
         config.addAuthorizer("checkHttpMethodAuthorizer", checkHttpMethodAuthorizer);
         config.setHttpActionAdapter(new HttpActionAdapter(templateEngine));
         return config;

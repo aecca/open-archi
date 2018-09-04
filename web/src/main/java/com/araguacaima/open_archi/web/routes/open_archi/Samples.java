@@ -2,18 +2,22 @@ package com.araguacaima.open_archi.web.routes.open_archi;
 
 import com.araguacaima.open_archi.web.BeanBuilder;
 import com.araguacaima.open_archi.web.ExampleData;
-import spark.ModelAndView;
+import com.araguacaima.open_archi.web.common.Commons;
+import spark.Redirect;
 import spark.RouteGroup;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static com.araguacaima.open_archi.web.common.Commons.jsonUtils;
+import static com.araguacaima.open_archi.web.Server.engine;
+import static com.araguacaima.open_archi.web.common.Commons.buildRoute;
 import static spark.Spark.get;
+import static spark.Spark.redirect;
 
 public class Samples implements RouteGroup {
+
+    public static final String PATH = "/samples";
 
     public static Collection<ExampleData> getExamples() {
         Collection<ExampleData> result = new ArrayList<>();
@@ -46,41 +50,35 @@ public class Samples implements RouteGroup {
 
     @Override
     public void addRoutes() {
+        redirect.get(Samples.PATH + Commons.SEPARATOR_PATH, Samples.PATH, Redirect.Status.PERMANENT_REDIRECT);
 
-        List nodeDataArray = null;
-        List linkDataArray = null;
-        try {
-            nodeDataArray = jsonUtils.fromJSON("[\n" +
-                    "                    {key: 1, text: \"Alpha\", color: \"lightblue\"},\n" +
-                    "                    {key: 2, text: \"Beta\", color: \"orange\"},\n" +
-                    "                    {key: 3, text: \"Gamma\", color: \"lightgreen\", group: 5},\n" +
-                    "                    {key: 4, text: \"Delta\", color: \"pink\", group: 5},\n" +
-                    "                    {key: 5, text: \"Epsilon\", color: \"green\", isGroup: true}\n" +
-                    "        ]", List.class);
-            linkDataArray = jsonUtils.fromJSON("[\n" +
-                    "                    {from: 1, to: 2, color: \"blue\"},\n" +
-                    "                    {from: 2, to: 2},\n" +
-                    "                    {from: 3, to: 4, color: \"green\"},\n" +
-                    "                    {from: 3, to: 1, color: \"purple\"}\n" +
-                    "        ]", List.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        final List nodeDataArray = new ArrayList<BeanBuilder>() {{
+            add(new BeanBuilder().key("1").text("Alpha").color("lightblue"));
+            add(new BeanBuilder().key("2").text("Beta").color("orange"));
+            add(new BeanBuilder().key("3").text("Gamma").color("lightgreen").group("5"));
+            add(new BeanBuilder().key("4").text("Delta").color("pink").group("5"));
+            add(new BeanBuilder().key("5").text("Epsilon").color("green").isGroup(true));
+        }};
+        final List linkDataArray = new ArrayList<BeanBuilder>() {{
+            add(new BeanBuilder().from("1").to("2").color("blue"));
+            add(new BeanBuilder().from("2").to("2"));
+            add(new BeanBuilder().from("3").to("4").color("green"));
+            add(new BeanBuilder().from("3").to("1").color("purple"));
+        }};
 
         List<String> steps = new ArrayList<>();
         steps.add("Con doble-click en cualquier área vacía del canvas se crea un nuevo componente (siempre será una cajita)");
         steps.add("Con doble-click en cualquier componente (cajita) se editará su nombre");
         steps.add("Al hacer click en el borde de un componente se puede crear conectores (flechas) hacia cualquier componente");
-        List finalNodeDataArray = nodeDataArray;
-        List finalLinkDataArray = linkDataArray;
-        get("/basic", (request, response) -> new ModelAndView(new BeanBuilder()
-                .nodeDataArray(finalNodeDataArray)
-                .linkDataArray(finalLinkDataArray)
+        BeanBuilder basic = new BeanBuilder()
+                .nodeDataArray(nodeDataArray)
+                .linkDataArray(linkDataArray)
                 .source("basic")
                 .mainTitle("Propuesta para diagrama básico de componentes - Primer nivel")
                 .caption("¡Leyendo ya desde Open Archi!")
                 .fullDescription("Sencillo, pero fácil de adaptar para construir modelos de solución a alto nivel. Intuitivo y fácil de usar.")
-                .steps(steps), "editor"));
+                .steps(steps);
+        get("/basic", buildRoute(basic, "editor"), engine);
     }
 
 }

@@ -7,6 +7,7 @@ import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
 import com.araguacaima.open_archi.web.APIFilter;
 import com.araguacaima.open_archi.web.ConfigFactory;
 import com.araguacaima.open_archi.web.common.Authentication;
+import com.araguacaima.open_archi.web.common.Commons;
 import org.apache.commons.lang3.StringUtils;
 import org.pac4j.core.config.Config;
 import org.pac4j.core.context.DefaultAuthorizers;
@@ -27,7 +28,7 @@ import static com.araguacaima.open_archi.web.common.Security.JWT_SALT;
 public class OpenArchi {
 
     public static final String PATH = "/open-archi";
-    final static Config config = new ConfigFactory(JWT_SALT, engine).build(serverName, assignedPort, "/open-archi", clients);
+    final static Config config = new ConfigFactory(JWT_SALT, engine).build(serverName, assignedPort, PATH, clients);
     final static CallbackRoute callback = new CallbackRoute(config, null, true);
     public static Root root = new Root();
     static Filter basicSecurityFilter = Authentication.buildBasicSecurityFilter(config);
@@ -47,7 +48,7 @@ public class OpenArchi {
                     if (StringUtils.isNotBlank(link)) {
                         link = link.replaceAll(key, id);
                     } else {
-                        link = "/models/" + id;
+                        link = Models.PATH + Commons.SEPARATOR_PATH + id;
                     }
                     composite.setLink(link);
                 }

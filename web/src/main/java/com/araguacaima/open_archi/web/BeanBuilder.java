@@ -17,13 +17,13 @@ public class BeanBuilder {
     private String caption;
     private String fullDescription;
     private List steps;
-    
+
     //Account
     private String name;
     private String email;
     private String avatar;
     private boolean authorized = false;
-    
+
     //Editor
     private String diagramTypes;
     private String elementTypes;
@@ -34,6 +34,15 @@ public class BeanBuilder {
     //Error
     private String message;
     private StackTraceElement[] stackTrace;
+
+    //Diagrams
+    private String key;
+    private String color;
+    private String group;
+    private String text;
+    private boolean isGroup = false;
+    private String from;
+    private String to;
 
     public String getTitle() {
         return title;
@@ -116,6 +125,34 @@ public class BeanBuilder {
         return this;
     }
 
+    public String getKey() {
+        return key;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public String getGroup() {
+        return group;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public boolean isGroup() {
+        return isGroup;
+    }
+
+    public String getFrom() {
+        return from;
+    }
+
+    public String getTo() {
+        return to;
+    }
+
     public BeanBuilder nodeDataArray(final List nodeDataArray) {
         this.nodeDataArray = nodeDataArray;
         return this;
@@ -175,19 +212,22 @@ public class BeanBuilder {
         this.diagramTypes = diagramTypes;
         return this;
     }
-    
+
     public BeanBuilder elementTypes(String elementTypes) {
         this.elementTypes = elementTypes;
         return this;
     }
+
     public BeanBuilder palette(String palette) {
         this.palette = palette;
         return this;
     }
+
     public BeanBuilder examples(Collection<ExampleData> examples) {
         this.examples = examples;
         return this;
     }
+
     public BeanBuilder fullView(Boolean fullView) {
         this.fullView = fullView;
         return this;
@@ -200,6 +240,41 @@ public class BeanBuilder {
 
     public BeanBuilder stack(StackTraceElement[] stackTrace) {
         this.stackTrace = stackTrace;
+        return this;
+    }
+
+    public BeanBuilder key(String key) {
+        this.key = key;
+        return this;
+    }
+
+    public BeanBuilder color(String color) {
+        this.color = color;
+        return this;
+    }
+
+    public BeanBuilder group(String group) {
+        this.group = group;
+        return this;
+    }
+
+    public BeanBuilder text(String text) {
+        this.text = text;
+        return this;
+    }
+
+    public BeanBuilder isGroup(boolean isGroup) {
+        this.isGroup = isGroup;
+        return this;
+    }
+
+    public BeanBuilder from(String from) {
+        this.from = from;
+        return this;
+    }
+
+    public BeanBuilder to(String to) {
+        this.to = to;
         return this;
     }
 }
