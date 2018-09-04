@@ -48,6 +48,17 @@ import static org.pac4j.core.context.HttpConstants.HTML_CONTENT_TYPE;
 
 public class Commons {
 
+    public static final String DELETE_MODEL_ROLE = "delete:model";
+    public static final String WRITE_MODEL_ROLE = "write:model";
+    public static final String READ_MODELS_ROLE = "read:models";
+    public static final String DELETE_CATALOG_ROLE = "delete:catalog";
+    public static final String WRITE_CATALOG_ROLE = "write:catalog";
+    public static final String READ_CATALOGS_ROLE = "read:catalogs";
+    public static final String DELETE_PALETTE_ROLE = "delete:palette";
+    public static final String WRITE_PALETTE_ROLE = "write:palette";
+    public static final String READ_PALETTES_ROLE = "read:palettes";
+    public static final String ADMIN_ROLE = "open-archi:admin";
+    public static final List<String> ALL_ROLES = Arrays.asList(DELETE_MODEL_ROLE, WRITE_MODEL_ROLE, READ_MODELS_ROLE, DELETE_CATALOG_ROLE, WRITE_CATALOG_ROLE, READ_CATALOGS_ROLE, DELETE_PALETTE_ROLE, WRITE_PALETTE_ROLE, READ_PALETTES_ROLE, ADMIN_ROLE);
     public static final String clients = "Google2Client";
     public static final String JSON_CONTENT_TYPE = "application/json";
     public static final String EMPTY_RESPONSE = StringUtils.EMPTY;
@@ -292,15 +303,7 @@ public class Commons {
                     }
                 });
             } else {
-                fixRole(accountRoles, roles, "delete:model");
-                fixRole(accountRoles, roles, "write:model");
-                fixRole(accountRoles, roles, "read:models");
-                fixRole(accountRoles, roles, "delete:catalog");
-                fixRole(accountRoles, roles, "write:catalog");
-                fixRole(accountRoles, roles, "read:catalogs");
-                fixRole(accountRoles, roles, "delete:palette");
-                fixRole(accountRoles, roles, "read:palette");
-                fixRole(accountRoles, roles, "write:palettes");
+                Commons.ALL_ROLES.forEach(role -> fixRole(accountRoles, roles, role));
             }
 
             profile.addRoles(RolesWrapper.fromRoles(accountRoles));

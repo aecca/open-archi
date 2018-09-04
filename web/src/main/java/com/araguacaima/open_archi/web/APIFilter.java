@@ -1,6 +1,8 @@
 package com.araguacaima.open_archi.web;
 
+import com.araguacaima.open_archi.web.common.Commons;
 import org.pac4j.core.authorization.authorizer.CheckHttpMethodAuthorizer;
+import org.pac4j.core.authorization.authorizer.RequireAnyRoleAuthorizer;
 import org.pac4j.core.config.Config;
 import org.pac4j.core.context.HttpConstants;
 import org.pac4j.core.engine.DefaultSecurityLogic;
@@ -72,37 +74,39 @@ public class APIFilter implements Filter {
         final SparkWebContext context = new SparkWebContext(request, response, config.getSessionStore());
         Object result;
         HttpMethod requestedHttpMethod = HttpMethod.get(request.requestMethod().toLowerCase());
+        CheckHttpMethodAuthorizer checkHttpMethodAuthorizer = (CheckHttpMethodAuthorizer) config.getAuthorizers().get("checkHttpMethodAuthorizer");
+        RequireAnyRoleAuthorizer<?> requireAnyRoleAuthorizer = (RequireAnyRoleAuthorizer) config.getAuthorizers().get("requireAnyRoleAuthorizer");
         if (requestedHttpMethod.equals(HttpMethod.get)) {
-            CheckHttpMethodAuthorizer checkHttpMethodAuthorizer = (CheckHttpMethodAuthorizer) config.getAuthorizers().get("checkHttpMethodAuthorizer");
             checkHttpMethodAuthorizer.setElements(HttpConstants.HTTP_METHOD.GET);
+            requireAnyRoleAuthorizer.setElements(Commons.ADMIN_ROLE, Commons.READ_MODELS_ROLE, Commons.READ_CATALOGS_ROLE, Commons.READ_PALETTES_ROLE);
             result = securityLogic.perform(context, this.config,
                     (ctx, parameters) -> SECURITY_GRANTED_ACCESS, config.getHttpActionAdapter(),
                     this.clients, this.authorizers, this.matchers, this.multiProfile);
             checkHttpMethodAuthorizer.getElements().remove(HttpConstants.HTTP_METHOD.GET);
         } else if (requestedHttpMethod.equals(HttpMethod.post)) {
-            CheckHttpMethodAuthorizer checkHttpMethodAuthorizer = (CheckHttpMethodAuthorizer) config.getAuthorizers().get("checkHttpMethodAuthorizer");
             checkHttpMethodAuthorizer.setElements(HttpConstants.HTTP_METHOD.POST);
+            requireAnyRoleAuthorizer.setElements(Commons.ADMIN_ROLE, Commons.WRITE_MODEL_ROLE, Commons.WRITE_CATALOG_ROLE, Commons.WRITE_PALETTE_ROLE);
             result = securityLogic.perform(context, this.config,
                     (ctx, parameters) -> SECURITY_GRANTED_ACCESS, config.getHttpActionAdapter(),
                     this.clients, this.authorizers, this.matchers, this.multiProfile);
             checkHttpMethodAuthorizer.getElements().remove(HttpConstants.HTTP_METHOD.POST);
         } else if (requestedHttpMethod.equals(HttpMethod.patch)) {
-            CheckHttpMethodAuthorizer checkHttpMethodAuthorizer = (CheckHttpMethodAuthorizer) config.getAuthorizers().get("checkHttpMethodAuthorizer");
             checkHttpMethodAuthorizer.setElements(HttpConstants.HTTP_METHOD.PATCH);
+            requireAnyRoleAuthorizer.setElements(Commons.ADMIN_ROLE, Commons.WRITE_MODEL_ROLE, Commons.WRITE_CATALOG_ROLE, Commons.WRITE_PALETTE_ROLE);
             result = securityLogic.perform(context, this.config,
                     (ctx, parameters) -> SECURITY_GRANTED_ACCESS, config.getHttpActionAdapter(),
                     this.clients, this.authorizers, this.matchers, this.multiProfile);
             checkHttpMethodAuthorizer.getElements().remove(HttpConstants.HTTP_METHOD.PATCH);
         } else if (requestedHttpMethod.equals(HttpMethod.put)) {
-            CheckHttpMethodAuthorizer checkHttpMethodAuthorizer = (CheckHttpMethodAuthorizer) config.getAuthorizers().get("checkHttpMethodAuthorizer");
             checkHttpMethodAuthorizer.setElements(HttpConstants.HTTP_METHOD.PUT);
+            requireAnyRoleAuthorizer.setElements(Commons.ADMIN_ROLE, Commons.WRITE_MODEL_ROLE, Commons.WRITE_CATALOG_ROLE, Commons.WRITE_PALETTE_ROLE);
             result = securityLogic.perform(context, this.config,
                     (ctx, parameters) -> SECURITY_GRANTED_ACCESS, config.getHttpActionAdapter(),
                     this.clients, this.authorizers, this.matchers, this.multiProfile);
             checkHttpMethodAuthorizer.getElements().remove(HttpConstants.HTTP_METHOD.PUT);
         } else if (requestedHttpMethod.equals(HttpMethod.delete)) {
-            CheckHttpMethodAuthorizer checkHttpMethodAuthorizer = (CheckHttpMethodAuthorizer) config.getAuthorizers().get("checkHttpMethodAuthorizer");
             checkHttpMethodAuthorizer.setElements(HttpConstants.HTTP_METHOD.DELETE);
+            requireAnyRoleAuthorizer.setElements(Commons.ADMIN_ROLE, Commons.DELETE_MODEL_ROLE, Commons.DELETE_CATALOG_ROLE, Commons.DELETE_PALETTE_ROLE);
             result = securityLogic.perform(context, this.config,
                     (ctx, parameters) -> SECURITY_GRANTED_ACCESS, config.getHttpActionAdapter(),
                     this.clients, this.authorizers, this.matchers, this.multiProfile);

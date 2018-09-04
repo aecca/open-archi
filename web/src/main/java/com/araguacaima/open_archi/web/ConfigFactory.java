@@ -1,5 +1,6 @@
 package com.araguacaima.open_archi.web;
 
+import com.araguacaima.open_archi.web.common.Commons;
 import org.pac4j.cas.client.CasClient;
 import org.pac4j.cas.config.CasConfiguration;
 import org.pac4j.core.authorization.authorizer.CheckHttpMethodAuthorizer;
@@ -96,7 +97,7 @@ public class ConfigFactory implements org.pac4j.core.config.ConfigFactory {
         final Clients clients = new Clients("http://" + serverName + ":" + serverPort + relativeEndpoint + "/callback", clientList);
 
         final Config config = new Config(clients);
-        config.addAuthorizer("admin", new RequireAnyRoleAuthorizer<>("write:model", "read:models", "write:catalog", "read:catalogs", "write:palette", "read:palettes"));
+        config.addAuthorizer("requireAnyRoleAuthorizer", new RequireAnyRoleAuthorizer<>(Commons.ALL_ROLES));
         config.addAuthorizer("custom", new Authorizer());
         CheckHttpMethodAuthorizer checkHttpMethodAuthorizer = new CheckHttpMethodAuthorizer();
         config.addAuthorizer("checkHttpMethodAuthorizer", checkHttpMethodAuthorizer);
@@ -164,12 +165,7 @@ public class ConfigFactory implements org.pac4j.core.config.ConfigFactory {
         oidcConfiguration.addCustomParam("prompt", "consent");
         final OidcClient oidcClient = new OidcClient(oidcConfiguration);
         oidcClient.setAuthorizationGenerator((ctx, profile) -> {
-            profile.addRole("write:model");
-            profile.addRole("read:models");
-            profile.addRole("write:catalog");
-            profile.addRole("read:catalogs");
-            profile.addRole("write:palette");
-            profile.addRole("read:palettes");
+            Commons.ALL_ROLES.forEach(role -> profile.addRole(role));
             return profile;
         });
         return oidcClient;
