@@ -71,35 +71,36 @@ public class APIFilter implements Filter {
         assertNotNull("config", config);
         final SparkWebContext context = new SparkWebContext(request, response, config.getSessionStore());
         Object result;
-        if (HttpMethod.get(request.requestMethod()).equals(HttpMethod.get)) {
+        HttpMethod requestedHttpMethod = HttpMethod.get(request.requestMethod().toLowerCase());
+        if (requestedHttpMethod.equals(HttpMethod.get)) {
             CheckHttpMethodAuthorizer checkHttpMethodAuthorizer = (CheckHttpMethodAuthorizer) config.getAuthorizers().get("checkHttpMethodAuthorizer");
             checkHttpMethodAuthorizer.setElements(HttpConstants.HTTP_METHOD.GET);
             result = securityLogic.perform(context, this.config,
                     (ctx, parameters) -> SECURITY_GRANTED_ACCESS, config.getHttpActionAdapter(),
                     this.clients, this.authorizers, this.matchers, this.multiProfile);
             checkHttpMethodAuthorizer.getElements().remove(HttpConstants.HTTP_METHOD.GET);
-        } else if (HttpMethod.get(request.requestMethod()).equals(HttpMethod.post)) {
+        } else if (requestedHttpMethod.equals(HttpMethod.post)) {
             CheckHttpMethodAuthorizer checkHttpMethodAuthorizer = (CheckHttpMethodAuthorizer) config.getAuthorizers().get("checkHttpMethodAuthorizer");
             checkHttpMethodAuthorizer.setElements(HttpConstants.HTTP_METHOD.POST);
             result = securityLogic.perform(context, this.config,
                     (ctx, parameters) -> SECURITY_GRANTED_ACCESS, config.getHttpActionAdapter(),
                     this.clients, this.authorizers, this.matchers, this.multiProfile);
             checkHttpMethodAuthorizer.getElements().remove(HttpConstants.HTTP_METHOD.POST);
-        } else if (HttpMethod.get(request.requestMethod()).equals(HttpMethod.patch)) {
+        } else if (requestedHttpMethod.equals(HttpMethod.patch)) {
             CheckHttpMethodAuthorizer checkHttpMethodAuthorizer = (CheckHttpMethodAuthorizer) config.getAuthorizers().get("checkHttpMethodAuthorizer");
             checkHttpMethodAuthorizer.setElements(HttpConstants.HTTP_METHOD.PATCH);
             result = securityLogic.perform(context, this.config,
                     (ctx, parameters) -> SECURITY_GRANTED_ACCESS, config.getHttpActionAdapter(),
                     this.clients, this.authorizers, this.matchers, this.multiProfile);
             checkHttpMethodAuthorizer.getElements().remove(HttpConstants.HTTP_METHOD.PATCH);
-        } else if (HttpMethod.get(request.requestMethod()).equals(HttpMethod.put)) {
+        } else if (requestedHttpMethod.equals(HttpMethod.put)) {
             CheckHttpMethodAuthorizer checkHttpMethodAuthorizer = (CheckHttpMethodAuthorizer) config.getAuthorizers().get("checkHttpMethodAuthorizer");
             checkHttpMethodAuthorizer.setElements(HttpConstants.HTTP_METHOD.PUT);
             result = securityLogic.perform(context, this.config,
                     (ctx, parameters) -> SECURITY_GRANTED_ACCESS, config.getHttpActionAdapter(),
                     this.clients, this.authorizers, this.matchers, this.multiProfile);
             checkHttpMethodAuthorizer.getElements().remove(HttpConstants.HTTP_METHOD.PUT);
-        } else if (HttpMethod.get(request.requestMethod()).equals(HttpMethod.delete)) {
+        } else if (requestedHttpMethod.equals(HttpMethod.delete)) {
             CheckHttpMethodAuthorizer checkHttpMethodAuthorizer = (CheckHttpMethodAuthorizer) config.getAuthorizers().get("checkHttpMethodAuthorizer");
             checkHttpMethodAuthorizer.setElements(HttpConstants.HTTP_METHOD.DELETE);
             result = securityLogic.perform(context, this.config,
