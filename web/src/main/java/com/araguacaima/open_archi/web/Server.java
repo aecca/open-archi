@@ -22,7 +22,7 @@ import static spark.Spark.*;
 public class Server {
     public static JadeConfiguration config = new JadeConfiguration();
     public static JadeTemplateEngine engine = new JadeTemplateEngine(config);
-    public static TemplateLoader templateLoader = new Loader("web/views");
+    private static TemplateLoader templateLoader = new Loader("web/views");
     private static ProcessBuilder processBuilder = new ProcessBuilder();
     public static String serverName = getServerName();
     public static int assignedPort = getAssignedPort();
@@ -46,14 +46,6 @@ public class Server {
         }
     }
 
-/*    private static ModelAndView index(final Request request, final Response response) {
-        final Map<String, Object> map = new HashMap<String, Object>();
-        map.put("profiles", getProfiles(request, response));
-        final SparkWebContext ctx = new SparkWebContext(request, response);
-        map.put("sessionId", ctx.getSessionIdentifier());
-        return new ModelAndView(map, "index.mustache");
-    }*/
-
     private static int getAssignedPort() {
         if (processBuilder.environment().get("PORT") != null) {
             return Integer.parseInt(processBuilder.environment().get("PORT"));
@@ -62,11 +54,9 @@ public class Server {
     }
 
     public static void main(String[] args) throws GeneralSecurityException {
-
         exception(Exception.class, exceptionHandler);
         port(assignedPort);
         //secure("deploy/keystore.jks", "password", null, null);
-
         log.info("Server listen on port '" + assignedPort + "'");
         staticFiles.location("/web/public");
         before((request, response) -> {
@@ -75,16 +65,15 @@ public class Server {
             response.header("Access-Control-Allow-Headers", "*");
         });
         path(Commons.DEFAULT_PATH, Index.root);
-        redirect.get("/about", "/about/", Redirect.Status.TEMPORARY_REDIRECT);
-        path("/about", Index.about);
-        redirect.get("/contact", "/contact/", Redirect.Status.TEMPORARY_REDIRECT);
-        path("/contact", Index.contact);
-        redirect.get("/braas", "/braas/", Redirect.Status.TEMPORARY_REDIRECT);
-        path("/braas", Index.braas);
-        redirect.get("/composite-specification", "/composite-specification/", Redirect.Status.TEMPORARY_REDIRECT);
-        path("/composite-specification", Index.compositeSpecification);
+        redirect.get(Index.About.PATH, Index.About.PATH + Commons.SEPARATOR_PATH, Redirect.Status.TEMPORARY_REDIRECT);
+        path(Index.About.PATH, Index.about);
+        redirect.get(Index.Contact.PATH, Index.Contact.PATH + Commons.SEPARATOR_PATH, Redirect.Status.TEMPORARY_REDIRECT);
+        path(Index.Contact.PATH, Index.contact);
+        redirect.get(Index.Braas.PATH, Index.Braas.PATH + Commons.SEPARATOR_PATH, Redirect.Status.TEMPORARY_REDIRECT);
+        path(Index.Braas.PATH, Index.braas);
+        redirect.get(Index.CompositeSpecification.PATH, Index.CompositeSpecification.PATH + Commons.SEPARATOR_PATH, Redirect.Status.TEMPORARY_REDIRECT);
+        path(Index.CompositeSpecification.PATH, Index.compositeSpecification);
         path(OpenArchi.PATH, OpenArchi.root);
     }
-
 }
 

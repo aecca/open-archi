@@ -22,7 +22,7 @@ public class Api implements RouteGroup {
 
     @Override
     public void addRoutes() {
-        redirect.get(Api.PATH + Commons.SEPARATOR_PATH, Api.PATH, Redirect.Status.PERMANENT_REDIRECT);
+        redirect.get(Api.PATH, Api.PATH + Commons.SEPARATOR_PATH, Redirect.Status.PERMANENT_REDIRECT);
 
         final BeanBuilder bean = new BeanBuilder().title("Api");
         get(Commons.DEFAULT_PATH, (req, res) -> {

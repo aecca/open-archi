@@ -21,7 +21,7 @@ public class Prototyper implements RouteGroup {
 
     @Override
     public void addRoutes() {
-        redirect.get(Prototyper.PATH + Commons.SEPARATOR_PATH, Prototyper.PATH, Redirect.Status.PERMANENT_REDIRECT);
+        redirect.get(Prototyper.PATH, Prototyper.PATH + Commons.SEPARATOR_PATH, Redirect.Status.PERMANENT_REDIRECT);
 
         before("/prototyper", OpenArchi.strongSecurityFilter);
         before("/prototyper/*", OpenArchi.strongSecurityFilter);

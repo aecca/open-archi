@@ -25,7 +25,7 @@ public class Editor implements RouteGroup {
     public static final String PATH = "/editor";
     @Override
     public void addRoutes() {
-        redirect.get(Editor.PATH + Commons.SEPARATOR_PATH, Editor.PATH, Redirect.Status.PERMANENT_REDIRECT);
+        redirect.get(Editor.PATH, Editor.PATH + Commons.SEPARATOR_PATH, Redirect.Status.PERMANENT_REDIRECT);
 
         BeanBuilder bean = new BeanBuilder();
         before("/editor", OpenArchi.strongSecurityFilter);

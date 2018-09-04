@@ -50,7 +50,7 @@ public class Samples implements RouteGroup {
 
     @Override
     public void addRoutes() {
-        redirect.get(Samples.PATH + Commons.SEPARATOR_PATH, Samples.PATH, Redirect.Status.PERMANENT_REDIRECT);
+        redirect.get(Samples.PATH, Samples.PATH + Commons.SEPARATOR_PATH, Redirect.Status.PERMANENT_REDIRECT);
 
         final List nodeDataArray = new ArrayList<BeanBuilder>() {{
             add(new BeanBuilder().key("1").text("Alpha").color("lightblue"));

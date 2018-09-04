@@ -23,7 +23,7 @@ public class Root implements RouteGroup {
 
     @Override
     public void addRoutes() {
-        redirect.get(OpenArchi.PATH + Commons.SEPARATOR_PATH, OpenArchi.PATH, Redirect.Status.TEMPORARY_REDIRECT);
+        redirect.get(OpenArchi.PATH, OpenArchi.PATH + Commons.SEPARATOR_PATH, Redirect.Status.TEMPORARY_REDIRECT);
         get(Commons.DEFAULT_PATH, buildRoute(new BeanBuilder().title(OPEN_ARCHI), OpenArchi.PATH + "/home"), engine);
         before("/login/google", OpenArchi.basicSecurityFilter);
         get("/login/google", Authentication.authGoogle, engine);
