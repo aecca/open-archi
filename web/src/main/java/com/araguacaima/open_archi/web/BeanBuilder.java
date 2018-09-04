@@ -1,5 +1,11 @@
 package com.araguacaima.open_archi.web;
 
+import com.araguacaima.open_archi.persistence.meta.Account;
+import com.araguacaima.open_archi.persistence.meta.Avatar;
+import org.pac4j.sparkjava.SparkWebContext;
+import spark.Request;
+import spark.Response;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -118,6 +124,13 @@ public class BeanBuilder {
 
     public StackTraceElement[] getStackTrace() {
         return stackTrace;
+    }
+
+    public void fixAccountInfo(Request request, Response response) {
+        if (request != null && response != null) {
+            final SparkWebContext context = new SparkWebContext(request, response);
+            appendAccountInfo((Account) context.getSessionAttribute("account"));
+        }
     }
 
     public BeanBuilder title(final String title) {
@@ -276,5 +289,23 @@ public class BeanBuilder {
     public BeanBuilder to(String to) {
         this.to = to;
         return this;
+    }
+
+
+    private void appendAccountInfo(Account account) {
+        if (account == null) {
+            this.avatar(null).name(null).email(null).authorized(false);
+        } else {
+            String name = account.getLogin();
+            String email = account.getEmail();
+            Avatar accountAvatar = account.getAvatar();
+            if (accountAvatar != null) {
+                String avatar = accountAvatar.getUrl();
+                this.avatar(avatar);
+            }
+            this.name(name);
+            this.email(email);
+            this.authorized(true);
+        }
     }
 }

@@ -10,7 +10,6 @@ import de.neuland.jade4j.JadeConfiguration;
 import de.neuland.jade4j.template.TemplateLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import spark.Redirect;
 import spark.template.jade.JadeTemplateEngine;
 
 import java.security.GeneralSecurityException;
@@ -65,15 +64,16 @@ public class Server {
             response.header("Access-Control-Allow-Headers", "*");
         });
         path(Commons.DEFAULT_PATH, Index.root);
-        redirect.get(Index.About.PATH, Index.About.PATH + Commons.SEPARATOR_PATH, Redirect.Status.TEMPORARY_REDIRECT);
         path(Index.About.PATH, Index.about);
-        redirect.get(Index.Contact.PATH, Index.Contact.PATH + Commons.SEPARATOR_PATH, Redirect.Status.TEMPORARY_REDIRECT);
+        path(Index.About.PATH + Commons.SEPARATOR_PATH, Index.about);
         path(Index.Contact.PATH, Index.contact);
-        redirect.get(Index.Braas.PATH, Index.Braas.PATH + Commons.SEPARATOR_PATH, Redirect.Status.TEMPORARY_REDIRECT);
+        path(Index.Contact.PATH + Commons.SEPARATOR_PATH, Index.contact);
         path(Index.Braas.PATH, Index.braas);
-        redirect.get(Index.CompositeSpecification.PATH, Index.CompositeSpecification.PATH + Commons.SEPARATOR_PATH, Redirect.Status.TEMPORARY_REDIRECT);
+        path(Index.Braas.PATH + Commons.SEPARATOR_PATH, Index.braas);
         path(Index.CompositeSpecification.PATH, Index.compositeSpecification);
+        path(Index.CompositeSpecification.PATH + Commons.SEPARATOR_PATH, Index.compositeSpecification);
         path(OpenArchi.PATH, OpenArchi.root);
+        path(OpenArchi.PATH + Commons.SEPARATOR_PATH, OpenArchi.root);
     }
 }
 

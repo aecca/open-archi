@@ -2,12 +2,10 @@ package com.araguacaima.open_archi.web.routes.open_archi;
 
 import com.araguacaima.open_archi.web.BeanBuilder;
 import com.araguacaima.open_archi.web.common.Commons;
-import spark.Redirect;
 import spark.RouteGroup;
 
 import static com.araguacaima.open_archi.web.Server.engine;
-import static com.araguacaima.open_archi.web.common.Commons.appendAccountInfoToContext;
-import static com.araguacaima.open_archi.web.common.Commons.buildModelAndView;
+import static com.araguacaima.open_archi.web.common.Commons.buildRoute;
 import static spark.Spark.*;
 
 public class Api implements RouteGroup {
@@ -22,23 +20,23 @@ public class Api implements RouteGroup {
 
     @Override
     public void addRoutes() {
-        redirect.get(Api.PATH, Api.PATH + Commons.SEPARATOR_PATH, Redirect.Status.PERMANENT_REDIRECT);
 
-        final BeanBuilder bean = new BeanBuilder().title("Api");
-        get(Commons.DEFAULT_PATH, (req, res) -> {
-            appendAccountInfoToContext(req, res, bean);
-            return buildModelAndView(bean, OpenArchi.PATH + "/apis");
-        }, engine);
+        get(Commons.EMPTY_PATH, buildRoute(new BeanBuilder().title("Api"), OpenArchi.PATH + "/apis"), engine);
         before(Diagrams.PATH, OpenArchi.apiFilter);
-        path("/diagrams", diagrams);
+        path(Diagrams.PATH, diagrams);
+        path(Diagrams.PATH + Commons.SEPARATOR_PATH, diagrams);
         before(Models.PATH, OpenArchi.apiFilter);
-        path("/models", models);
+        path(Models.PATH, models);
+        path(Models.PATH + Commons.SEPARATOR_PATH, models);
         before(Catalogs.PATH, OpenArchi.apiFilter);
-        path("/catalogs", catalogs);
+        path(Catalogs.PATH, catalogs);
+        path(Catalogs.PATH + Commons.SEPARATOR_PATH, catalogs);
         before(Consumers.PATH, OpenArchi.apiFilter);
-        path("/consumers", consumers);
+        path(Consumers.PATH, consumers);
+        path(Consumers.PATH + Commons.SEPARATOR_PATH, consumers);
         before(Palettes.PATH, OpenArchi.apiFilter);
-        path("/palettes", palettes);
+        path(Palettes.PATH, palettes);
+        path(Palettes.PATH + Commons.SEPARATOR_PATH, palettes);
     }
 
 }

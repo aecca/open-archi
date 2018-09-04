@@ -50,8 +50,6 @@ public class Samples implements RouteGroup {
 
     @Override
     public void addRoutes() {
-        redirect.get(Samples.PATH, Samples.PATH + Commons.SEPARATOR_PATH, Redirect.Status.PERMANENT_REDIRECT);
-
         final List nodeDataArray = new ArrayList<BeanBuilder>() {{
             add(new BeanBuilder().key("1").text("Alpha").color("lightblue"));
             add(new BeanBuilder().key("2").text("Beta").color("orange"));
@@ -70,7 +68,7 @@ public class Samples implements RouteGroup {
         steps.add("Con doble-click en cualquier área vacía del canvas se crea un nuevo componente (siempre será una cajita)");
         steps.add("Con doble-click en cualquier componente (cajita) se editará su nombre");
         steps.add("Al hacer click en el borde de un componente se puede crear conectores (flechas) hacia cualquier componente");
-        BeanBuilder basic = new BeanBuilder()
+        BeanBuilder bean = new BeanBuilder()
                 .nodeDataArray(nodeDataArray)
                 .linkDataArray(linkDataArray)
                 .source("basic")
@@ -78,7 +76,7 @@ public class Samples implements RouteGroup {
                 .caption("¡Leyendo ya desde Open Archi!")
                 .fullDescription("Sencillo, pero fácil de adaptar para construir modelos de solución a alto nivel. Intuitivo y fácil de usar.")
                 .steps(steps);
-        get("/basic", buildRoute(basic, "editor"), engine);
+        get("/basic", buildRoute(bean, "editor"), engine);
     }
 
 }

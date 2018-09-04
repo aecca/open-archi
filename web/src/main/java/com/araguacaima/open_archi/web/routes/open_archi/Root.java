@@ -3,6 +3,7 @@ package com.araguacaima.open_archi.web.routes.open_archi;
 import com.araguacaima.open_archi.web.BeanBuilder;
 import com.araguacaima.open_archi.web.common.Authentication;
 import com.araguacaima.open_archi.web.common.Commons;
+import org.apache.commons.lang3.StringUtils;
 import org.pac4j.sparkjava.LogoutRoute;
 import spark.Redirect;
 import spark.RouteGroup;
@@ -23,8 +24,7 @@ public class Root implements RouteGroup {
 
     @Override
     public void addRoutes() {
-        redirect.get(OpenArchi.PATH, OpenArchi.PATH + Commons.SEPARATOR_PATH, Redirect.Status.TEMPORARY_REDIRECT);
-        get(Commons.DEFAULT_PATH, buildRoute(new BeanBuilder().title(OPEN_ARCHI), OpenArchi.PATH + "/home"), engine);
+        get(StringUtils.EMPTY, buildRoute(new BeanBuilder().title(OPEN_ARCHI), OpenArchi.PATH + "/home"), engine);
         before("/login/google", OpenArchi.basicSecurityFilter);
         get("/login/google", Authentication.authGoogle, engine);
         get("/login", Authentication.login, engine);

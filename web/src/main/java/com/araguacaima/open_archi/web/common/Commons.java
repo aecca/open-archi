@@ -5,7 +5,6 @@ import com.araguacaima.commons.utils.JsonUtils;
 import com.araguacaima.commons.utils.ReflectionUtils;
 import com.araguacaima.open_archi.persistence.diagrams.core.*;
 import com.araguacaima.open_archi.persistence.meta.Account;
-import com.araguacaima.open_archi.persistence.meta.Avatar;
 import com.araguacaima.open_archi.persistence.meta.Role;
 import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
 import com.araguacaima.open_archi.web.BeanBuilder;
@@ -56,6 +55,7 @@ public class Commons {
     public static final String OPEN_ARCHI = "Open-Archi";
     public static final EnumsUtils enumsUtils = new EnumsUtils();
     public static final String DEFAULT_PATH = "/";
+    public static final String EMPTY_PATH = "";
     public static final String SEPARATOR_PATH = "/";
     public static ReflectionUtils reflectionUtils = new ReflectionUtils(null);
     public static Taggable deeplyFulfilledParentModel;
@@ -253,24 +253,6 @@ public class Commons {
         return engine.render(buildModelAndView(model, templatePath));
     }
 
-    public static void appendAccountInfoToContext(Request req, Response res, BeanBuilder bean) {
-        final SparkWebContext ctx = new SparkWebContext(req, res);
-        Account account = (Account) ctx.getSessionAttribute("account");
-        if (account == null) {
-            bean.avatar(null).name(null).email(null).authorized(false);
-        } else {
-            String name = account.getLogin();
-            String email = account.getEmail();
-            Avatar accountAvatar = account.getAvatar();
-            if (accountAvatar != null) {
-                String avatar = accountAvatar.getUrl();
-                bean.avatar(avatar);
-            }
-            bean.name(name);
-            bean.email(email);
-            bean.authorized(true);
-        }
-    }
 
     public static List<CommonProfile> getProfiles(final Request request, final Response response) {
         final SparkWebContext context = new SparkWebContext(request, response);
@@ -325,8 +307,8 @@ public class Commons {
 
             JPAEntityManagerUtils.merge(account);
 
-            Session session = req.session(true);
-            session.attribute("account", account);
+            final SparkWebContext context = new SparkWebContext(req, res);
+            context.setSessionAttribute("account", account);
         }
     }
 
@@ -541,7 +523,12 @@ public class Commons {
     }
 
     public static TemplateViewRoute buildRoute(Object bean, String path) {
-        return (request, response) -> buildModelAndView(bean, path);
+        return (request, response) -> {
+            if (BeanBuilder.class.isAssignableFrom(bean.getClass())) {
+                ((BeanBuilder) bean).fixAccountInfo(request, response);
+            }
+            return buildModelAndView(bean, path);
+        };
     }
 
     public static ModelAndView buildModelAndView(Object bean, String path) {
@@ -549,6 +536,7 @@ public class Commons {
         if (Map.class.isAssignableFrom(bean.getClass())) {
             map = (Map) bean;
         } else {
+
             map = new BeanMap(bean);
         }
         return new ModelAndView(map, path);
@@ -558,4 +546,26 @@ public class Commons {
         input,
         output
     }
+
+
+    public static List getDefaultNodeDataArray() {
+        return new ArrayList<BeanBuilder>() {{
+            add(new BeanBuilder().key("1").text("Alpha").color("lightblue"));
+            add(new BeanBuilder().key("2").text("Beta").color("orange"));
+            add(new BeanBuilder().key("3").text("Gamma").color("lightgreen").group("5"));
+            add(new BeanBuilder().key("4").text("Delta").color("pink").group("5"));
+            add(new BeanBuilder().key("5").text("Epsilon").color("green").isGroup(true));
+        }};
+    }
+
+
+    public static List getDefaultLinkDataArray() {
+        return new ArrayList<BeanBuilder>() {{
+            add(new BeanBuilder().from("1").to("2").color("blue"));
+            add(new BeanBuilder().from("2").to("2"));
+            add(new BeanBuilder().from("3").to("4").color("green"));
+            add(new BeanBuilder().from("3").to("1").color("purple"));
+        }};
+    }
+
 }

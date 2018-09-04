@@ -5,6 +5,7 @@ import com.araguacaima.open_archi.web.common.Commons;
 import spark.RouteGroup;
 
 import static com.araguacaima.open_archi.web.Server.engine;
+import static com.araguacaima.open_archi.web.common.Commons.buildModelAndView;
 import static com.araguacaima.open_archi.web.common.Commons.buildRoute;
 import static spark.Spark.get;
 
@@ -32,7 +33,7 @@ public class Index {
 
         @Override
         public void addRoutes() {
-            get(Commons.DEFAULT_PATH, buildRoute(new BeanBuilder().title("About araguacaima"), "/about"), engine);
+            get(Commons.EMPTY_PATH, buildRoute(new BeanBuilder().title("About araguacaima"), "/about"), engine);
         }
     }
 
@@ -42,7 +43,7 @@ public class Index {
 
         @Override
         public void addRoutes() {
-            get(Commons.DEFAULT_PATH, buildRoute(new BeanBuilder().title("Contact araguacaima"), "/contact"), engine);
+            get(Commons.EMPTY_PATH, buildRoute(new BeanBuilder().title("Contact araguacaima"), "/contact"), engine);
         }
     }
 
@@ -52,7 +53,7 @@ public class Index {
 
         @Override
         public void addRoutes() {
-            get(Commons.DEFAULT_PATH, buildRoute(new BeanBuilder().title("Rules as a Service"), "/braas/home"), engine);
+            get(Commons.EMPTY_PATH, buildRoute(new BeanBuilder().title("Rules as a Service"), "/braas/home"), engine);
         }
     }
 
@@ -62,7 +63,7 @@ public class Index {
 
         @Override
         public void addRoutes() {
-            get(Commons.DEFAULT_PATH, buildRoute(new BeanBuilder().title("Composite Specification"), "/composite-specification/home"), engine);
+            get(Commons.EMPTY_PATH, buildRoute(new BeanBuilder().title("Composite Specification"), "/composite-specification/home"), engine);
         }
     }
 }

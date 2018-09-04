@@ -3,17 +3,21 @@ package com.araguacaima.open_archi.web.routes.open_archi;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 import com.araguacaima.open_archi.persistence.diagrams.core.Taggable;
 import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
+import com.araguacaima.open_archi.web.BeanBuilder;
 import com.araguacaima.open_archi.web.common.Commons;
-import spark.Redirect;
 import spark.RouteGroup;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.araguacaima.open_archi.web.Server.engine;
 import static com.araguacaima.open_archi.web.common.Commons.*;
-import static spark.Spark.*;
+import static com.araguacaima.open_archi.web.routes.open_archi.Samples.getExamples;
+import static spark.Spark.before;
+import static spark.Spark.get;
 
 public class Prototyper implements RouteGroup {
 
@@ -21,51 +25,62 @@ public class Prototyper implements RouteGroup {
 
     @Override
     public void addRoutes() {
-        redirect.get(Prototyper.PATH, Prototyper.PATH + Commons.SEPARATOR_PATH, Redirect.Status.PERMANENT_REDIRECT);
-
-        before("/prototyper", OpenArchi.strongSecurityFilter);
-        before("/prototyper/*", OpenArchi.strongSecurityFilter);
-
-        path("/prototyper", () -> {
-            Map<String, Object> mapEditor = new HashMap<>();
-            exception(Exception.class, exceptionHandler);
-            mapEditor.put("title", "Prototyper");
-            Map<String, Boolean> diagramTypesMap = new HashMap<>();
-            for (String diagramType : deeplyFulfilledDiagramTypesCollection) {
-                diagramTypesMap.put(diagramType, diagramType.equals(ElementKind.ARCHITECTURE_MODEL.name()));
-            }
-            try {
-                mapEditor.put("diagramTypes", jsonUtils.toJSON(diagramTypesMap));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            get(Commons.DEFAULT_PATH, (req, res) -> {
-                mapEditor.put("palette", jsonUtils.toJSON(OpenArchi.getArchitecturePalette()));
-                mapEditor.put("elementTypes", jsonUtils.toJSON(OpenArchi.getElementTypes()));
-                mapEditor.put("source", "basic");
-                mapEditor.put("nodeDataArray", "[]");
-                mapEditor.put("linkDataArray", "[]");
-                return buildModelAndView(mapEditor, "/open-archi/editor");
-            }, engine);
-            get("/:uuid", (request, response) -> {
-                try {
-                    String id = request.params(":uuid");
-                    Taggable model = JPAEntityManagerUtils.find(Taggable.class, id);
-                    if (model != null) {
-                        model.validateRequest();
-                    }
-                    mapEditor.put("model", jsonUtils.toJSON(model));
-                    mapEditor.put("palette", jsonUtils.toJSON(OpenArchi.getArchitecturePalette()));
-                    mapEditor.put("source", "basic");
-                    return buildModelAndView(mapEditor, "/open-archi/prototyper");
-                } catch (Exception ex) {
-                    mapEditor.put("title", "Error");
-                    mapEditor.put("message", ex.getMessage());
-                    mapEditor.put("stack", ex.getStackTrace());
-                    return buildModelAndView(mapEditor, "/error");
+        BeanBuilder bean = new BeanBuilder();
+        before("/*", OpenArchi.strongSecurityFilter);
+        Map<String, Object> diagramTypesMap = new HashMap<>();
+        for (String diagramType : deeplyFulfilledDiagramTypesCollection) {
+            diagramTypesMap.put(diagramType, diagramType.equals(ElementKind.ARCHITECTURE_MODEL.name()));
+        }
+        try {
+            bean.diagramTypes(jsonUtils.toJSON(diagramTypesMap));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        get(Commons.EMPTY_PATH, (req, res) -> {
+            bean.title("Prototypes");
+            bean.palette(jsonUtils.toJSON(OpenArchi.getArchitecturePalette()));
+            bean.elementTypes(jsonUtils.toJSON(OpenArchi.getElementTypes()));
+            bean.source("basic");
+            bean.examples(getExamples());
+            bean.nodeDataArray(new ArrayList());
+            bean.linkDataArray(new ArrayList());
+            String type = req.queryParams("type");
+            if (type != null) {
+                for (String diagramType : deeplyFulfilledDiagramTypesCollection) {
+                    diagramTypesMap.put(diagramType, diagramType.equals(type));
                 }
-            }, engine);
-        });
+                bean.diagramTypes(jsonUtils.toJSON(diagramTypesMap));
+            }
+            if (req.queryParams("fullView") != null) {
+                bean.fullView(true);
+            } else {
+                bean.fullView(null);
+            }
+            return buildModelAndView(bean, OpenArchi.PATH + "/prototyper");
+        }, engine);
+        get("/:uuid", (request, response) -> {
+            try {
+                String id = request.params(":uuid");
+                Taggable model = JPAEntityManagerUtils.find(Taggable.class, id);
+                if (model != null) {
+                    model.validateRequest();
+                } else {
+                    final List nodeDataArray = getDefaultNodeDataArray();
+                    final List linkDataArray = getDefaultLinkDataArray();
+                    bean.nodeDataArray(nodeDataArray);
+                    bean.linkDataArray(linkDataArray);
+                }
+                bean.palette(jsonUtils.toJSON(OpenArchi.getArchitecturePalette()));
+                bean.source("basic");
+                return buildModelAndView(bean, OpenArchi.PATH + "/prototyper");
+            } catch (Exception ex) {
+                bean.title("Error");
+                bean.message(ex.getMessage());
+                bean.stack(ex.getStackTrace());
+                return buildModelAndView(bean, "/error");
+            }
+        }, engine);
     }
+
 
 }
