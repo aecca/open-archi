@@ -88,6 +88,7 @@ public class Account implements Serializable, SimpleOverridable<Account> {
     private String lastname;
     @OneToOne
     private Avatar avatar;
+    @Column
     private boolean superuser;
 
     public Account() {
@@ -155,6 +156,38 @@ public class Account implements Serializable, SimpleOverridable<Account> {
         this.firstAccess = firstAccess;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setAvatar(Avatar avatar) {
+        this.avatar = avatar;
+    }
+
+    public Avatar getAvatar() {
+        return avatar;
+    }
+
+    public boolean isSuperuser() {
+        return superuser;
+    }
+
+    public void setSuperuser(boolean superuser) {
+        this.superuser = superuser;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -204,7 +237,10 @@ public class Account implements Serializable, SimpleOverridable<Account> {
         } else {
             this.roles = null;
         }
-
+        this.name = source.getName();
+        this.lastname = source.getLastname();
+        this.avatar = source.getAvatar();
+        this.superuser = source.isSuperuser();
     }
 
     @Override
@@ -232,37 +268,15 @@ public class Account implements Serializable, SimpleOverridable<Account> {
                 this.roles.add(role_);
             });
         }
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
-
-    public String getLastname() {
-        return lastname;
-    }
-
-    public void setAvatar(Avatar avatar) {
-        this.avatar = avatar;
-    }
-
-    public Avatar getAvatar() {
-        return avatar;
-    }
-
-    public boolean isSuperuser() {
-        return superuser;
-    }
-
-    public void setSuperuser(boolean superuser) {
-        this.superuser = superuser;
+        if (StringUtils.isNotBlank(source.getName())) {
+            this.name = source.getName();
+        }
+        if (StringUtils.isNotBlank(source.getLastname())) {
+            this.lastname = source.getLastname();
+        }
+        if (source.getAvatar() != null) {
+            this.avatar = source.getAvatar();
+        }
+        this.superuser = source.isSuperuser();
     }
 }
