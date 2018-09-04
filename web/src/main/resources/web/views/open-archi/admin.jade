@@ -1,0 +1,49 @@
+extends layout-admin
+
+append scripts
+    script.
+        $(function () {
+            function approve(email, approved) {
+                $.ajax({
+                    url: "/open-archi/api/admin",
+                    data: JSON.stringify({
+                        email: email,
+                        approved: approved
+                    }),
+                    type: 'PATCH',
+                    dataType: "json",
+                    crossDomain: true,
+                    contentType: "application/json",
+                    xhr: function () {
+                        return window.XMLHttpRequest === null || new window.XMLHttpRequest().addEventListener === null
+                            ? new window.ActiveXObject("Microsoft.XMLHTTP")
+                            : $.ajaxSettings.xhr();
+                    }
+                })
+            }
+
+            $('.account_checkboxes').change(function (e) {
+                const account = $(e.currentTarget);
+                approve(account.val(), account[0].checked);
+            });
+        });
+
+block content
+    #body
+        h1.text-center#message
+        if accounts
+            section(style="color: white").css-table
+                //- var calculateStats = function(account){var r,e={remaining:"?",total:"?"};account.progress&&(account.progress.history.forEach(function(n){n.active&&(r=n.progress)}),r&&(e.remaining=r.remaining.length,e.total=r.elapsed.length+remaining));return e}
+                each account in accounts
+                    - var isChecked = false;
+                    - if (account.paymentInfo) isChecked = account.paymentInfo.alreadyPayed;
+                    //- var stats = calculateStats(account);
+                    section.three-column(style="text-align: left;")
+                        section.cell
+                            input.account_checkboxes(type="checkbox", name="account_checkboxes", value=account.email, style="padding-left: 5px;", checked=isChecked)
+                            span(style="padding-left: 5px; color: #004283; font-weight: bold")= account.email
+                        section.cell
+                            h3#total.btn.btn-default(style='text-align: center; margin-top: 0;')
+                                !{stats.remaining}
+                                | &nbsp;/&nbsp;
+                                !{stats.total}

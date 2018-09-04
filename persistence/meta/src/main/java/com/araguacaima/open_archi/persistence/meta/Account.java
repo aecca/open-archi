@@ -88,6 +88,7 @@ public class Account implements Serializable, SimpleOverridable<Account> {
     private String lastname;
     @OneToOne
     private Avatar avatar;
+    private boolean superuser;
 
     public Account() {
         this.id = UUID.randomUUID().toString();
@@ -255,5 +256,13 @@ public class Account implements Serializable, SimpleOverridable<Account> {
 
     public Avatar getAvatar() {
         return avatar;
+    }
+
+    public boolean isSuperuser() {
+        return superuser;
+    }
+
+    public void setSuperuser(boolean superuser) {
+        this.superuser = superuser;
     }
 }

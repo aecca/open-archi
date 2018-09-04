@@ -2,10 +2,8 @@ package com.araguacaima.open_archi.web.routes.open_archi;
 
 import com.araguacaima.open_archi.web.BeanBuilder;
 import com.araguacaima.open_archi.web.common.Authentication;
-import com.araguacaima.open_archi.web.common.Commons;
 import org.apache.commons.lang3.StringUtils;
 import org.pac4j.sparkjava.LogoutRoute;
-import spark.Redirect;
 import spark.RouteGroup;
 
 import static com.araguacaima.open_archi.web.Server.*;
@@ -21,6 +19,7 @@ public class Root implements RouteGroup {
     public static Api api = new Api();
     public static Editor editor = new Editor();
     public static Prototyper prototyper = new Prototyper();
+    public static AdminGroup adminGroup = new AdminGroup();
 
     @Override
     public void addRoutes() {
@@ -38,6 +37,7 @@ public class Root implements RouteGroup {
         path(Api.PATH, api);
         path(Editor.PATH, editor);
         path(Prototyper.PATH, prototyper);
+        path(AdminGroup.PATH, adminGroup);
 
         final LogoutRoute localLogout = new LogoutRoute(config, "/open-archi");
         localLogout.setDestroySession(true);

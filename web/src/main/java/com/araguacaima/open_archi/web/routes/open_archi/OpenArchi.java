@@ -5,6 +5,7 @@ import com.araguacaima.open_archi.persistence.diagrams.architectural.Palette;
 import com.araguacaima.open_archi.persistence.diagrams.core.*;
 import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
 import com.araguacaima.open_archi.web.APIFilter;
+import com.araguacaima.open_archi.web.AdminAPIFilter;
 import com.araguacaima.open_archi.web.ConfigFactory;
 import com.araguacaima.open_archi.web.common.Authentication;
 import com.araguacaima.open_archi.web.common.Commons;
@@ -33,7 +34,9 @@ public class OpenArchi {
     public static Root root = new Root();
     static Filter basicSecurityFilter = Authentication.buildBasicSecurityFilter(config);
     static Filter strongSecurityFilter = Authentication.buildStrongSecurityFilter(config);
-    static APIFilter apiFilter = new APIFilter(config, clients, "checkHttpMethodAuthorizer,admin,custom," + DefaultAuthorizers.ALLOW_AJAX_REQUESTS + "," + DefaultAuthorizers.IS_REMEMBERED + "," + DefaultAuthorizers.IS_AUTHENTICATED);
+    static Filter adminSecurityFilter = Authentication.buildAdminSecurityFilter(config);
+    static Filter adminApiFilter = new AdminAPIFilter(config, clients, "checkHttpMethodAuthorizer,adminGroup,custom," + DefaultAuthorizers.ALLOW_AJAX_REQUESTS + "," + DefaultAuthorizers.IS_REMEMBERED + "," + DefaultAuthorizers.IS_AUTHENTICATED);
+    static Filter apiFilter = new APIFilter(config, clients, "checkHttpMethodAuthorizer,adminGroup,custom," + DefaultAuthorizers.ALLOW_AJAX_REQUESTS + "," + DefaultAuthorizers.IS_REMEMBERED + "," + DefaultAuthorizers.IS_AUTHENTICATED);
 
     public static void fixCompositeFromItem(Item object) {
         Set<Item> items = reflectionUtils.extractByType(object, Item.class);

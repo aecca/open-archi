@@ -53,18 +53,16 @@ public class Authentication {
         return buildModelAndView(map, "protectedIndex.mustache");
     }
 
-    public static List<CommonProfile> getProfiles(final Request request, final Response response) {
-        final SparkWebContext context = new SparkWebContext(request, response);
-        final ProfileManager<CommonProfile> manager = new ProfileManager<>(context);
-        return manager.getAll(true);
-    }
-
     public static Filter buildBasicSecurityFilter(Config config) {
         return new SecurityFilter(config, clients);
     }
 
     public static Filter buildStrongSecurityFilter(Config config) {
         return new SecurityFilter(config, clients, "requireAnyRoleAuthorizer,custom," + DefaultAuthorizers.ALLOW_AJAX_REQUESTS + "," + DefaultAuthorizers.IS_REMEMBERED + "," + DefaultAuthorizers.IS_AUTHENTICATED);
+    }
+
+    public static Filter buildAdminSecurityFilter(Config config) {
+        return new SecurityFilter(config, clients, "adminAuthorizer,custom," + DefaultAuthorizers.ALLOW_AJAX_REQUESTS + "," + DefaultAuthorizers.IS_REMEMBERED + "," + DefaultAuthorizers.IS_AUTHENTICATED);
     }
 
     private static class AuthGoogle implements TemplateViewRoute {

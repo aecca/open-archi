@@ -18,16 +18,6 @@ import spark.route.HttpMethod;
 import static org.pac4j.core.util.CommonHelper.assertNotNull;
 import static spark.Spark.halt;
 
-/**
- * <p>This filter protects an url, based on the {@link #securityLogic}.</p>
- * <p>
- * <p>The configuration can be provided via the following parameters: <code>config</code> (security configuration),
- * <code>clients</code> (list of clients for authentication), <code>authorizers</code> (list of authorizers),
- * <code>matchers</code> (list of matchers) and <code>multiProfile</code> (whether multiple profiles should be kept).</p>
- *
- * @author Jerome Leleu
- * @since 1.0.0
- */
 public class APIFilter implements Filter {
 
     private static final String SECURITY_GRANTED_ACCESS = "SECURITY_GRANTED_ACCESS";

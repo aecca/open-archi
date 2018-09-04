@@ -99,8 +99,8 @@ public class ConfigFactory implements org.pac4j.core.config.ConfigFactory {
         final Config config = new Config(clients);
         config.addAuthorizer("requireAnyRoleAuthorizer", new RequireAnyRoleAuthorizer<>(Commons.ALL_ROLES));
         config.addAuthorizer("custom", new Authorizer());
-        CheckHttpMethodAuthorizer checkHttpMethodAuthorizer = new CheckHttpMethodAuthorizer();
-        config.addAuthorizer("checkHttpMethodAuthorizer", checkHttpMethodAuthorizer);
+        config.addAuthorizer("checkHttpMethodAuthorizer", new CheckHttpMethodAuthorizer());
+        config.addAuthorizer("adminAuthorizer", new RequireAnyRoleAuthorizer<>(Commons.ADMIN_ROLE));
         config.setHttpActionAdapter(new HttpActionAdapter(templateEngine));
         return config;
     }
