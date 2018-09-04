@@ -1,0 +1,106 @@
+package com.araguacaima.open_archi.web.routes.open_archi;
+
+import com.araguacaima.open_archi.persistence.diagrams.architectural.Consumer;
+import com.araguacaima.open_archi.persistence.diagrams.core.Item;
+import com.araguacaima.open_archi.persistence.meta.Account;
+import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
+import com.araguacaima.open_archi.web.DBUtil;
+import org.pac4j.sparkjava.SparkWebContext;
+import spark.RouteGroup;
+
+import javax.persistence.EntityNotFoundException;
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.araguacaima.open_archi.web.common.Commons.*;
+import static java.net.HttpURLConnection.*;
+import static spark.Spark.*;
+
+public class Consumers implements RouteGroup {
+    @Override
+    public void addRoutes() {
+
+
+        get("/consumers", (request, response) -> getList(request, response, Item.GET_ALL_CONSUMERS, null, null));
+        post("/consumers", (request, response) -> {
+            try {
+                Consumer consumer = jsonUtils.fromJSON(request.body(), Consumer.class);
+                if (consumer == null) {
+                    throw new Exception("Invalid kind for consumer");
+                }
+                final SparkWebContext ctx = new SparkWebContext(request, response);
+                Map<String, Object> map = new HashMap<>();
+                Account account = (Account) ctx.getSessionAttribute("account");
+                map.put("account", account);
+                consumer.validateCreation(map);
+                DBUtil.populate(consumer);
+                response.status(HTTP_CREATED);
+                response.type(JSON_CONTENT_TYPE);
+                response.header("Location", request.pathInfo() + "/" + consumer.getId());
+                return EMPTY_RESPONSE;
+            } catch (Throwable ex) {
+                return throwError(response, ex);
+            }
+        });
+        get("/consumers/:uuid", (request, response) -> {
+            try {
+                String id = request.params(":uuid");
+                Consumer consumer = JPAEntityManagerUtils.find(Consumer.class, id);
+                if (consumer != null) {
+                    consumer.validateRequest();
+                }
+                response.status(HTTP_OK);
+                response.type(JSON_CONTENT_TYPE);
+                return jsonUtils.toJSON(consumer);
+            } catch (Exception ex) {
+                return throwError(response, ex);
+            }
+        });
+        put("/consumers/:uuid", (request, response) -> {
+            try {
+                Consumer consumer = jsonUtils.fromJSON(request.body(), Consumer.class);
+                if (consumer == null) {
+                    throw new Exception("Invalid kind of consumer");
+                }
+                String id = request.params(":uuid");
+                consumer.setId(id);
+                final SparkWebContext ctx = new SparkWebContext(request, response);
+                Map<String, Object> map = new HashMap<>();
+                Account account = (Account) ctx.getSessionAttribute("account");
+                map.put("account", account);
+                consumer.validateReplacement(map);
+                DBUtil.replace(consumer);
+                response.status(HTTP_OK);
+                return EMPTY_RESPONSE;
+            } catch (EntityNotFoundException ex) {
+                response.status(HTTP_NOT_FOUND);
+                return EMPTY_RESPONSE;
+            } catch (Throwable ex) {
+                return throwError(response, ex);
+            }
+        });
+        patch("/consumers/:uuid", (request, response) -> {
+            try {
+                Consumer consumer = jsonUtils.fromJSON(request.body(), Consumer.class);
+                if (consumer == null) {
+                    throw new Exception("Invalid kind of consumer");
+                }
+                String id = request.params(":uuid");
+                consumer.setId(id);
+                final SparkWebContext ctx = new SparkWebContext(request, response);
+                Map<String, Object> map = new HashMap<>();
+                Account account = (Account) ctx.getSessionAttribute("account");
+                map.put("account", account);
+                consumer.validateModification(map);
+                DBUtil.update(consumer);
+                response.status(HTTP_OK);
+                return EMPTY_RESPONSE;
+            } catch (EntityNotFoundException ex) {
+                response.status(HTTP_NOT_FOUND);
+                return EMPTY_RESPONSE;
+            } catch (Throwable ex) {
+                return throwError(response, ex);
+            }
+        });
+    }
+}

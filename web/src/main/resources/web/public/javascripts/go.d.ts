@@ -1629,7 +1629,7 @@ declare namespace go {
     */
     export class Group extends Node {
         /**
-        * Constructs an empty Group with no visual elements and no member parts; normally a Group will have some visual elements surrounding a Placeholder.
+        * Constructs an empty Group with no visual elements and no member parts; normally a OpenArchi will have some visual elements surrounding a Placeholder.
         * @param {EnumValue=} type if not supplied, the default Panel type is Panel.Position.
         */
         constructor(type?: EnumValue);
@@ -1640,7 +1640,7 @@ declare namespace go {
         /**Gets or sets whether the bounds of a Group's Placeholder includes the bounds of member Links. The default value is true.*/
         computesBoundsIncludingLinks: boolean;
 
-        /**Gets or sets whether the bounds of a Group's Placeholder includes the previous Group.location. The default value is false.*/
+        /**Gets or sets whether the bounds of a Group's Placeholder includes the previous OpenArchi.location. The default value is false.*/
         computesBoundsIncludingLocation: boolean;
 
         /**Gets or sets whether drag-and-drop events may be bubbled up to this Group if not handled by member Parts.*/
@@ -3159,7 +3159,7 @@ declare namespace go {
         /**This flag may be combined with other "Layout" flags as the value of the Part.layoutConditions property to indicate that when a Part is added to a Diagram or Group, it invalidates the Layout responsible for the Part.*/
         static LayoutAdded: number;
 
-        /**This flag may be combined with other "Layout" flags as the value of the Part.layoutConditions property to indicate that when a Group has been laid out, it invalidates the Layout responsible for that Group; this flag is ignored for Parts that are not Groups.*/
+        /**This flag may be combined with other "Layout" flags as the value of the Part.layoutConditions property to indicate that when a Group has been laid out, it invalidates the Layout responsible for that OpenArchi; this flag is ignored for Parts that are not Groups.*/
         static LayoutGroupLayout: number;
 
         /**This flag may be combined with other "Layout" flags as the value of the Part.layoutConditions property to indicate that when a Part's GraphObject.visible becomes false, it invalidates the Layout responsible for the Part.*/
@@ -3180,7 +3180,7 @@ declare namespace go {
         /**This flag may be combined with other "Layout" flags as the value of the Part.layoutConditions property to indicate that when a Part's GraphObject.visible becomes true, it invalidates the Layout responsible for the Part.*/
         static LayoutShown: number;
 
-        /**This is the default value for the Part.layoutConditions property: the Layout responsible for the Part is invalidated when the Part is added or removed from the Diagram or Group or when it changes visibility or size or when a Group's layout has been performed.*/
+        /**This is the default value for the Part.layoutConditions property: the Layout responsible for the Part is invalidated when the Part is added or removed from the Diagram or Group or when it changes visibility or size or when a OpenArchi's layout has been performed.*/
         static LayoutStandard: number;
     }
 
@@ -3228,7 +3228,7 @@ declare namespace go {
     }
 
     /**
-    * If a Placeholder is in the visual tree of a Group, it represents the area of all of the member Parts of that Group.
+    * If a Placeholder is in the visual tree of a Group, it represents the area of all of the member Parts of that OpenArchi.
     * If a Placeholder is in the visual tree of an Adornment, it represents the area of the Adornment.adornedObject.
     * It can only be used in the visual tree of a Group node or an Adornment.
     * There can be at most one Placeholder in a Group or an Adornment.
@@ -6796,7 +6796,7 @@ declare namespace go {
         /**This read-only property returns the Diagram that owns this layout, if it is the value of Diagram.layout.*/
         diagram: Diagram;
 
-        /**This read-only property returns the Group that uses this layout, if it is the value of a group's Group.layout.*/
+        /**This read-only property returns the Group that uses this layout, if it is the value of a group's OpenArchi.layout.*/
         group: Group;
 
         /**Gets or sets whether this layout is performed on an initial layout.*/
@@ -6829,7 +6829,7 @@ declare namespace go {
         /**
          * A convenient way of converting the Diagram|Group|Iterable argument to doLayout to an actual collection of eligible Parts.
          * The resulting Set will not include any Nodes or Links for which Part.canLayout is false.
-         * If the argument includes a Group for which Group.layout is null, the resulting Set
+         * If the argument includes a Group for which OpenArchi.layout is null, the resulting Set
          * will include the member parts of that group rather than that group itself.
          */
         collectParts(coll: Iterable<Part>): Set<Part>;
