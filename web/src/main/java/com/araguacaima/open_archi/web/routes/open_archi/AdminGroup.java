@@ -31,7 +31,7 @@ public class AdminGroup implements RouteGroup {
     @Override
     public void addRoutes() {
         before("/*", OpenArchi.adminSecurityFilter);
-        get(Commons.EMPTY_PATH, buildRoute(new BeanBuilder().title("Open-Archi Admin"), OpenArchi.PATH + "/admin"), engine);
+        get(Commons.EMPTY_PATH, buildRoute(new BeanBuilder().title("Open-Archi Admin").accounts(JPAEntityManagerUtils.executeQuery(Account.class, Account.GET_ALL_ACCOUNTS)), OpenArchi.PATH + "/admin"), engine);
         before(Admin.PATH, OpenArchi.adminSecurityFilter);
         path(Admin.PATH, admin);
         path(Admin.PATH + Commons.SEPARATOR_PATH, admin);

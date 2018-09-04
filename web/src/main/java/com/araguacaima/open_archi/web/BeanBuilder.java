@@ -49,6 +49,7 @@ public class BeanBuilder {
     private boolean isGroup = false;
     private String from;
     private String to;
+    private List<Account> accounts = new ArrayList<>();
 
     public String getTitle() {
         return title;
@@ -164,6 +165,10 @@ public class BeanBuilder {
 
     public String getTo() {
         return to;
+    }
+
+    public List<Account> getAccounts() {
+        return accounts;
     }
 
     public BeanBuilder nodeDataArray(final List nodeDataArray) {
@@ -291,6 +296,10 @@ public class BeanBuilder {
         return this;
     }
 
+    public BeanBuilder accounts(List<Account> accounts) {
+        this.accounts = accounts;
+        return this;
+    }
 
     private void appendAccountInfo(Account account) {
         if (account == null) {

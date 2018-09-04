@@ -35,8 +35,8 @@ public class OpenArchi {
     static Filter basicSecurityFilter = Authentication.buildBasicSecurityFilter(config);
     static Filter strongSecurityFilter = Authentication.buildStrongSecurityFilter(config);
     static Filter adminSecurityFilter = Authentication.buildAdminSecurityFilter(config);
-    static Filter adminApiFilter = new AdminAPIFilter(config, clients, "checkHttpMethodAuthorizer,adminGroup,custom," + DefaultAuthorizers.ALLOW_AJAX_REQUESTS + "," + DefaultAuthorizers.IS_REMEMBERED + "," + DefaultAuthorizers.IS_AUTHENTICATED);
-    static Filter apiFilter = new APIFilter(config, clients, "checkHttpMethodAuthorizer,adminGroup,custom," + DefaultAuthorizers.ALLOW_AJAX_REQUESTS + "," + DefaultAuthorizers.IS_REMEMBERED + "," + DefaultAuthorizers.IS_AUTHENTICATED);
+    static Filter adminApiFilter = new AdminAPIFilter(config, clients, "adminAuthorizer,custom," + DefaultAuthorizers.ALLOW_AJAX_REQUESTS + "," + DefaultAuthorizers.IS_REMEMBERED + "," + DefaultAuthorizers.IS_AUTHENTICATED);
+    static Filter apiFilter = new APIFilter(config, clients, "checkHttpMethodAuthorizer,requireAnyRoleAuthorizer,custom," + DefaultAuthorizers.ALLOW_AJAX_REQUESTS + "," + DefaultAuthorizers.IS_REMEMBERED + "," + DefaultAuthorizers.IS_AUTHENTICATED);
 
     public static void fixCompositeFromItem(Item object) {
         Set<Item> items = reflectionUtils.extractByType(object, Item.class);
