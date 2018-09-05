@@ -1,6 +1,12 @@
 extends layout-admin
 
-append scripts
+block meta
+    meta(name="description", content="OpenArchi Apis")
+
+append styles
+    link(rel='stylesheet', type='text/css', href='/stylesheets/swagger-ui.css')
+
+block scripts
     script.
         $(function () {
             function approve(email, approved, role) {
@@ -35,24 +41,30 @@ append scripts
         });
 
 block content
-    #body
-        h1.text-center#message
-        if accounts
-            section(style="color: white").css-table
+    .container
+        h1= title
+    .container
+        #body
+            h1.text-center#message
+            if accounts
                 table.table(class="table-condensed")
                     thead
                         tr
                             each head, i in header
-                                th #{head}
+                                th
+                                    h4(style="color: black") #{head}
                     tbody
                         each account,j in accounts
                             tr
                                 td
                                     input.account_checkboxes(type="checkbox", name="account_checkboxes", value=account.email, style="padding-left: 5px;", checked=account.enabled)
-                                td #{account.login}
-                                td #{account.email}
+                                td(style="color: black;font-style: italic") #{account.login}
+                                td(style="color: black;font-weight: bold;") #{account.email}
                                 - var accountRoles = account.roles
                                 each role, k in roles
-                                    - var roleChecked = accountRoles.includes(role)
+                                    - var roleChecked = false;
+                                    each accountRole, k in accountRoles
+                                        if accountRole.name = role
+                                            - roleChecked = true;
                                     td
                                         input.role_checkboxes(type="checkbox", name="role_checkboxes", value=role, style="padding-left: 5px;", checked=roleChecked)
