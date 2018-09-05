@@ -264,6 +264,10 @@ public class Commons {
         return engine.render(buildModelAndView(model, templatePath));
     }
 
+    public static List<CommonProfile> getProfiles(SparkWebContext context) {
+        final ProfileManager<CommonProfile> manager = new ProfileManager<>(context);
+        return manager.getAll(true);
+    }
 
     public static List<CommonProfile> getProfiles(final Request request, final Response response) {
         final SparkWebContext context = new SparkWebContext(request, response);
@@ -271,9 +275,38 @@ public class Commons {
         return manager.getAll(true);
     }
 
+    public static CommonProfile findAndFulfillProfile(SparkWebContext context) {
+        CommonProfile profile = IterableUtils.find(getProfiles(context), object -> clients.contains(object.getClientName()));
+        if (profile != null) {
+            Account account = (Account) context.getSessionAttribute("account");
+            if (account != null) {
+                account.getRoles().forEach(role -> profile.addRole(role.getName()));
+            } else {
+                String email = profile.getEmail();
+                Map<String, Object> params = new HashMap<>();
+                params.put(Account.PARAM_EMAIL, email);
+                account = JPAEntityManagerUtils.findByQuery(Account.class, Account.FIND_BY_EMAIL_AND_ENABLED, params);
+                if (account != null) {
+                    Set<Role> accountRoles = account.getRoles();
+                    profile.addRoles(RolesWrapper.fromRoles(accountRoles));
+                }
+            }
+        }
+        return profile;
+    }
+
+    public static CommonProfile findAndFulfillProfile(List<CommonProfile> profiles, SparkWebContext context) {
+        CommonProfile profile = IterableUtils.find(profiles, object -> clients.contains(object.getClientName()));
+        Account account = (Account) context.getSessionAttribute("account");
+        if (account != null) {
+            account.getRoles().forEach(role -> profile.addRole(role.getName()));
+        }
+        return profile;
+    }
+
     public static void store(Request req, Response res) throws IOException {
         List<CommonProfile> profiles = getProfiles(req, res);
-        CommonProfile profile = IterableUtils.find(profiles, object -> clients.contains(object.getClientName()));
+        CommonProfile profile = findAndFulfillProfile(profiles, new SparkWebContext(req, res));
         if (profile != null) {
             Account account;
             String email = profile.getEmail();
@@ -581,7 +614,7 @@ public class Commons {
                 e.printStackTrace();
             }
         });
-        while (newMap.values().remove(null));
+        while (newMap.values().remove(null)) ;
         return new ModelAndView(newMap, path);
     }
 

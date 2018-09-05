@@ -1,8 +1,9 @@
 package com.araguacaima.open_archi.web;
 
 import com.araguacaima.open_archi.persistence.meta.Account;
+import com.araguacaima.open_archi.persistence.meta.Role;
 import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
-import org.apache.commons.collections4.IterableUtils;
+import com.araguacaima.open_archi.web.wrapper.RolesWrapper;
 import org.pac4j.core.config.Config;
 import org.pac4j.core.engine.DefaultSecurityLogic;
 import org.pac4j.core.engine.SecurityLogic;
@@ -15,10 +16,10 @@ import spark.Request;
 import spark.Response;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
-import static com.araguacaima.open_archi.web.common.Commons.getProfiles;
+import static com.araguacaima.open_archi.web.common.Commons.findAndFulfillProfile;
 import static org.pac4j.core.util.CommonHelper.assertNotNull;
 import static spark.Spark.halt;
 
@@ -67,8 +68,7 @@ public class AdminAPIFilter implements Filter {
         assertNotNull("config", config);
         final SparkWebContext context = new SparkWebContext(request, response, config.getSessionStore());
         Object result;
-        List<CommonProfile> profiles = getProfiles(request, response);
-        CommonProfile profile = IterableUtils.find(profiles, object -> clients.contains(object.getClientName()));
+        CommonProfile profile = findAndFulfillProfile(context);
         if (profile != null) {
             Account account;
             String email = profile.getEmail();

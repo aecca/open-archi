@@ -3,17 +3,18 @@ package com.araguacaima.open_archi.web.routes.open_archi;
 import com.araguacaima.open_archi.persistence.meta.Account;
 import com.araguacaima.open_archi.persistence.meta.Role;
 import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
+import com.araguacaima.open_archi.web.BeanBuilder;
+import com.araguacaima.open_archi.web.common.Commons;
 import spark.RouteGroup;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
+import static com.araguacaima.open_archi.web.Server.engine;
 import static com.araguacaima.open_archi.web.common.Commons.*;
+import static com.araguacaima.open_archi.web.common.Commons.EMPTY_RESPONSE;
 import static java.net.HttpURLConnection.HTTP_BAD_REQUEST;
 import static java.net.HttpURLConnection.HTTP_OK;
-import static spark.Spark.before;
-import static spark.Spark.patch;
+import static spark.Spark.*;
 
 public class Admin implements RouteGroup {
 
@@ -21,8 +22,16 @@ public class Admin implements RouteGroup {
 
     @Override
     public void addRoutes() {
-        before("/*", OpenArchi.adminApiFilter);
-        patch("/admin", (request, response) -> {
+        before(Commons.EMPTY_PATH, OpenArchi.adminApiFilter,  OpenArchi.adminSecurityFilter);
+        before("/*", OpenArchi.adminApiFilter, OpenArchi.adminSecurityFilter);
+        ArrayList<String> header = new ArrayList<>(Arrays.asList("Enabled", "Login", "Email"));
+        header.addAll(Commons.ALL_ROLES);
+        get(Commons.EMPTY_PATH, buildRoute(new BeanBuilder()
+                .title("Open-Archi Admin")
+                .accounts(JPAEntityManagerUtils.executeQuery(Account.class, Account.GET_ALL_ACCOUNTS))
+                .roles(Commons.ALL_ROLES)
+                .header(header), OpenArchi.PATH + Admin.PATH), engine);
+        patch(Commons.EMPTY_PATH, (request, response) -> {
             try {
                 Map requestInput = jsonUtils.fromJSON(request.body(), Map.class);
                 String email = (String) requestInput.get("email");
@@ -47,6 +56,7 @@ public class Admin implements RouteGroup {
                 return EMPTY_RESPONSE;
             }
         });
+
     }
 
 }

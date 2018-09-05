@@ -28,7 +28,7 @@ block content
                                 td(style="color: black;font-weight: bold;") #{account.email}
                                 each role in roles
                                     td
-                                        input.role_checkboxes(type="checkbox", name="role_checkboxes", value=account.email + "_" + role, style="padding-left: 5px;", checked=false)
+                                        input.role_checkboxes(type="checkbox", name="role_checkboxes", value=account.email + "_" + role, checked=false)
 
 append scripts
     script.
@@ -55,7 +55,7 @@ append scripts
 
             function approve(email, approved, role) {
                 $.ajax({
-                    url: "/open-archi/api/admin",
+                    url: "/open-archi/admin",
                     data: JSON.stringify({
                         email: email,
                         approved: approved,

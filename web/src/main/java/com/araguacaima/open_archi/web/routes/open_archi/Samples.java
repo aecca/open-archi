@@ -50,19 +50,8 @@ public class Samples implements RouteGroup {
 
     @Override
     public void addRoutes() {
-        final List nodeDataArray = new ArrayList<BeanBuilder>() {{
-            add(new BeanBuilder().key("1").text("Alpha").color("lightblue"));
-            add(new BeanBuilder().key("2").text("Beta").color("orange"));
-            add(new BeanBuilder().key("3").text("Gamma").color("lightgreen").group("5"));
-            add(new BeanBuilder().key("4").text("Delta").color("pink").group("5"));
-            add(new BeanBuilder().key("5").text("Epsilon").color("green").isGroup(true));
-        }};
-        final List linkDataArray = new ArrayList<BeanBuilder>() {{
-            add(new BeanBuilder().from("1").to("2").color("blue"));
-            add(new BeanBuilder().from("2").to("2"));
-            add(new BeanBuilder().from("3").to("4").color("green"));
-            add(new BeanBuilder().from("3").to("1").color("purple"));
-        }};
+        final List nodeDataArray = Commons.getDefaultNodeDataArray();
+        final List linkDataArray = Commons.getDefaultLinkDataArray();
 
         List<String> steps = new ArrayList<>();
         steps.add("Con doble-click en cualquier área vacía del canvas se crea un nuevo componente (siempre será una cajita)");

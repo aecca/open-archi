@@ -15,6 +15,7 @@ import spark.Request;
 import spark.Response;
 import spark.route.HttpMethod;
 
+import static com.araguacaima.open_archi.web.common.Commons.findAndFulfillProfile;
 import static org.pac4j.core.util.CommonHelper.assertNotNull;
 import static spark.Spark.halt;
 
@@ -62,6 +63,7 @@ public class APIFilter implements Filter {
         assertNotNull("securityLogic", securityLogic);
         assertNotNull("config", config);
         final SparkWebContext context = new SparkWebContext(request, response, config.getSessionStore());
+        findAndFulfillProfile(context);
         Object result;
         HttpMethod requestedHttpMethod = HttpMethod.get(request.requestMethod().toLowerCase());
         CheckHttpMethodAuthorizer checkHttpMethodAuthorizer = (CheckHttpMethodAuthorizer) config.getAuthorizers().get("checkHttpMethodAuthorizer");

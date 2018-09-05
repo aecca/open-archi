@@ -19,7 +19,7 @@ public class Root implements RouteGroup {
     public static Api api = new Api();
     public static Editor editor = new Editor();
     public static Prototyper prototyper = new Prototyper();
-    public static AdminGroup adminGroup = new AdminGroup();
+    public static Admin admin = new Admin();
 
     @Override
     public void addRoutes() {
@@ -37,7 +37,7 @@ public class Root implements RouteGroup {
         path(Api.PATH, api);
         path(Editor.PATH, editor);
         path(Prototyper.PATH, prototyper);
-        path(AdminGroup.PATH, adminGroup);
+        path(Admin.PATH, admin);
 
         final LogoutRoute localLogout = new LogoutRoute(config, "/open-archi");
         localLogout.setDestroySession(true);

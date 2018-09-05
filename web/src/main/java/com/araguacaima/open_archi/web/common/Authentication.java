@@ -58,11 +58,11 @@ public class Authentication {
     }
 
     public static Filter buildStrongSecurityFilter(Config config) {
-        return new SecurityFilter(config, clients, "requireAnyRoleAuthorizer,custom," + DefaultAuthorizers.ALLOW_AJAX_REQUESTS + "," + DefaultAuthorizers.IS_REMEMBERED + "," + DefaultAuthorizers.IS_AUTHENTICATED);
+        return new SecurityFilter(config, clients, "requireAnyRoleAuthorizer,custom," + DefaultAuthorizers.ALLOW_AJAX_REQUESTS + "," + DefaultAuthorizers.IS_AUTHENTICATED);
     }
 
     public static Filter buildAdminSecurityFilter(Config config) {
-        return new SecurityFilter(config, clients, "adminAuthorizer,custom," + DefaultAuthorizers.ALLOW_AJAX_REQUESTS + "," + DefaultAuthorizers.IS_REMEMBERED + "," + DefaultAuthorizers.IS_AUTHENTICATED);
+        return new SecurityFilter(config, clients, "adminAuthorizer,custom," + DefaultAuthorizers.ALLOW_AJAX_REQUESTS + "," + DefaultAuthorizers.IS_AUTHENTICATED);
     }
 
     private static class AuthGoogle implements TemplateViewRoute {
