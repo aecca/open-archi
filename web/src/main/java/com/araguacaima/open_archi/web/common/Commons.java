@@ -57,7 +57,7 @@ public class Commons {
     public static final String DELETE_PALETTE_ROLE = "delete:palette";
     public static final String WRITE_PALETTE_ROLE = "write:palette";
     public static final String READ_PALETTES_ROLE = "read:palettes";
-    public static final String ADMIN_ROLE = "open-archi:admin";
+    public static final String ADMIN_ROLE = "admin";
     public static final List<String> ALL_ROLES = Arrays.asList(DELETE_MODEL_ROLE, WRITE_MODEL_ROLE, READ_MODELS_ROLE, DELETE_CATALOG_ROLE, WRITE_CATALOG_ROLE, READ_CATALOGS_ROLE, DELETE_PALETTE_ROLE, WRITE_PALETTE_ROLE, READ_PALETTES_ROLE, ADMIN_ROLE);
     public static final String clients = "Google2Client";
     public static final String JSON_CONTENT_TYPE = "application/json";
@@ -464,14 +464,7 @@ public class Commons {
         String json = request.pathInfo().replaceFirst("/api/models", "");
         contentType = StringUtils.defaultString(contentType, getContentType(request));
         response.header("Content-Type", contentType);
-        if (contentType.equals(HTML_CONTENT_TYPE)) {
-            Map<String, Object> jsonMap = new HashMap<>();
-            jsonMap.put("title", StringUtils.capitalize(json));
-            jsonMap.put("json", jsonUtils.toJSON(filter_));
-            return render(jsonMap, "json");
-        } else {
-            return filter_.getClass().equals(String.class) ? filter_ : jsonUtils.toJSON(filter_);
-        }
+        return buildFind(contentType, filter_, json);
     }
 
     public static Object getList(Request request, Response response, Collection models) throws IOException, URISyntaxException {
@@ -485,6 +478,10 @@ public class Commons {
         String json = request.pathInfo().replaceFirst("/api/models", "");
         contentType = StringUtils.defaultString(contentType, getContentType(request));
         response.header("Content-Type", contentType);
+        return buildFind(contentType, filter_, json);
+    }
+
+    private static Object buildFind(String contentType, Object filter_, String json) throws IOException {
         if (contentType.equals(HTML_CONTENT_TYPE)) {
             Map<String, Object> jsonMap = new HashMap<>();
             jsonMap.put("title", StringUtils.capitalize(json));
@@ -498,7 +495,7 @@ public class Commons {
     public static String getElement(Request request, Response response, String query, Map<String, Object> params, Class<MetaData> type) throws IOException, URISyntaxException {
         response.status(HTTP_OK);
 
-        Object element = JPAEntityManagerUtils.executeQuery(type, query, params);
+        List<MetaData> element = JPAEntityManagerUtils.executeQuery(type, query, params);
         String jsonElement = jsonUtils.toJSON(element);
         String json = request.pathInfo().replaceFirst("/api/models", "");
         String contentType = getContentType(request);
@@ -538,14 +535,54 @@ public class Commons {
     }
 
     public static ModelAndView buildModelAndView(Object bean, String path) {
-        Map map;
+        Map<Object, Object> map = new HashMap<>();
         if (Map.class.isAssignableFrom(bean.getClass())) {
-            map = (Map) bean;
+            map.putAll((Map<Object, Object>) bean);
         } else {
-
-            map = new BeanMap(bean);
+            map.putAll(new BeanMap(bean));
+            map.remove("class");
         }
-        return new ModelAndView(map, path);
+        final Map<String, Object> newMap = new HashMap<>();
+        map.forEach((o, o2) -> {
+            String key = o.toString();
+            Object value = o2;
+            try {
+                if (value != null) {
+                    Class<?> clazz = value.getClass();
+                    if (reflectionUtils.isCollectionImplementation(clazz)) {
+                        if (Collection.class.isAssignableFrom(clazz)) {
+                            if (((Collection) value).isEmpty()) {
+                                newMap.put(key, null);
+                            } else {
+                                newMap.put(key, value);
+                                newMap.put(key + "_", jsonUtils.toJSON(value));
+                            }
+                        } else if (Object[].class.isAssignableFrom(clazz)
+                                || clazz.isArray()) {
+                            if (((Object[]) value).length <= 0) {
+                                newMap.put(key, null);
+                            } else {
+                                newMap.put(key, value);
+                                newMap.put(key + "_", jsonUtils.toJSON(value));
+                            }
+                        }
+                    } else {
+                        if (reflectionUtils.getFullyQualifiedJavaTypeOrNull(clazz) == null) {
+                            newMap.put(key, value);
+                            newMap.put(key + "_", jsonUtils.toJSON(value));
+                        } else {
+                            newMap.put(key, value);
+                        }
+                    }
+                } else {
+                    newMap.put(key, null);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+        while (newMap.values().remove(null));
+        return new ModelAndView(newMap, path);
     }
 
     public enum InputOutput {
@@ -554,7 +591,7 @@ public class Commons {
     }
 
 
-    public static List getDefaultNodeDataArray() {
+    public static List<BeanBuilder> getDefaultNodeDataArray() {
         return new ArrayList<BeanBuilder>() {{
             add(new BeanBuilder().key("1").text("Alpha").color("lightblue"));
             add(new BeanBuilder().key("2").text("Beta").color("orange"));
@@ -565,7 +602,7 @@ public class Commons {
     }
 
 
-    public static List getDefaultLinkDataArray() {
+    public static List<BeanBuilder> getDefaultLinkDataArray() {
         return new ArrayList<BeanBuilder>() {{
             add(new BeanBuilder().from("1").to("2").color("blue"));
             add(new BeanBuilder().from("2").to("2"));

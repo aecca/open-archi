@@ -3208,7 +3208,7 @@ securityDefinitions:
       delete:palette: Delete a palette
       write:palette: Modify or add an element to a palette
       read:palettes: Read palette elements
-      open-archi:admin: Full administrative rights
+      admin: Full administrative rights
   api_key:
     type: apiKey
     name: apiKey
