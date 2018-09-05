@@ -42,7 +42,7 @@ block content
                 table.table(class="table-condensed")
                     thead
                         tr
-                            each head, i in ['Enabled', 'Login', 'Email'].pushAll(roles)
+                            each head, i in header
                                 th #{head}
                     tbody
                         each account,j in accounts

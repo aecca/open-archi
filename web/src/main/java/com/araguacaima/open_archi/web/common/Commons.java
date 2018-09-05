@@ -281,7 +281,7 @@ public class Commons {
             params.put(Account.PARAM_EMAIL, email);
             account = JPAEntityManagerUtils.findByQuery(Account.class, Account.FIND_BY_EMAIL, params);
 
-            if (account == null && !account.isEnabled()) {
+            if (account == null) {
                 account = AccountWrapper.toAccount(profile);
                 JPAEntityManagerUtils.persist(account.getAvatar());
                 JPAEntityManagerUtils.persist(account);

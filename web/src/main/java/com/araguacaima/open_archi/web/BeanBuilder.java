@@ -51,6 +51,7 @@ public class BeanBuilder {
     private String to;
     private List<Account> accounts = new ArrayList<>();
     private List<String> roles = new ArrayList<>();
+    private List<String> header = new ArrayList<>();
 
     public String getTitle() {
         return title;
@@ -174,6 +175,10 @@ public class BeanBuilder {
 
     public List<String> getRoles() {
         return roles;
+    }
+
+    public List<String> getHeader() {
+        return header;
     }
 
     public BeanBuilder nodeDataArray(final List nodeDataArray) {
@@ -326,5 +331,10 @@ public class BeanBuilder {
             this.email(email);
             this.authorized(true);
         }
+    }
+
+    public BeanBuilder header(List<String> header) {
+        this.header = header;
+        return this;
     }
 }

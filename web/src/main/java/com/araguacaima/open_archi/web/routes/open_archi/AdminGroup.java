@@ -6,9 +6,14 @@ import com.araguacaima.open_archi.web.BeanBuilder;
 import com.araguacaima.open_archi.web.common.Commons;
 import spark.RouteGroup;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static com.araguacaima.open_archi.web.Server.engine;
 import static com.araguacaima.open_archi.web.common.Commons.buildRoute;
-import static spark.Spark.*;
+import static spark.Spark.before;
+import static spark.Spark.get;
+import static spark.Spark.path;
 
 public class AdminGroup implements RouteGroup {
 
@@ -19,7 +24,13 @@ public class AdminGroup implements RouteGroup {
     @Override
     public void addRoutes() {
         before("/*", OpenArchi.adminSecurityFilter);
-        get(Commons.EMPTY_PATH, buildRoute(new BeanBuilder().title("Open-Archi Admin").accounts(JPAEntityManagerUtils.executeQuery(Account.class, Account.GET_ALL_ACCOUNTS)).roles(Commons.ALL_ROLES), OpenArchi.PATH + "/admin"), engine);
+        List<String> header = Arrays.asList("Enabled", "Login", "Email");
+        header.addAll(Commons.ALL_ROLES);
+        get(Commons.EMPTY_PATH, buildRoute(new BeanBuilder()
+                .title("Open-Archi Admin")
+                .accounts(JPAEntityManagerUtils.executeQuery(Account.class, Account.GET_ALL_ACCOUNTS))
+                .roles(Commons.ALL_ROLES)
+                .header(header), OpenArchi.PATH + "/admin"), engine);
         before(Admin.PATH, OpenArchi.adminSecurityFilter);
         path(Admin.PATH, admin);
         path(Admin.PATH + Commons.SEPARATOR_PATH, admin);
