@@ -82,6 +82,9 @@ append scripts
             rolesCheckboxes.change(function (e) {
                 const role = $(e.currentTarget);
                 const roleValue = role.val();
-                approve(roleValue, role[0].checked);
+                const split = roleValue.split("_");
+                const account = split[0];
+                const roleName = split[1];
+                approve(account, role[0].checked, roleName);
             });
         });

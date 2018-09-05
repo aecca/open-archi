@@ -2,6 +2,7 @@ package com.araguacaima.open_archi.web.routes.open_archi;
 
 import com.araguacaima.open_archi.web.BeanBuilder;
 import com.araguacaima.open_archi.web.common.Commons;
+import spark.Filter;
 import spark.RouteGroup;
 
 import static com.araguacaima.open_archi.web.Server.engine;
@@ -20,7 +21,7 @@ public class Api implements RouteGroup {
 
     @Override
     public void addRoutes() {
-
+        before(Commons.EMPTY_PATH, Commons.genericFilter);
         get(Commons.EMPTY_PATH, buildRoute(new BeanBuilder().title("Api"), OpenArchi.PATH + "/apis"), engine);
         before(Diagrams.PATH, OpenArchi.apiFilter);
         path(Diagrams.PATH, diagrams);

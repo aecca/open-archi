@@ -9,6 +9,7 @@ import com.araguacaima.open_archi.persistence.meta.Role;
 import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
 import com.araguacaima.open_archi.web.BeanBuilder;
 import com.araguacaima.open_archi.web.Server;
+import com.araguacaima.open_archi.web.routes.open_archi.SessionFilter;
 import com.araguacaima.open_archi.web.wrapper.AccountWrapper;
 import com.araguacaima.open_archi.web.wrapper.RolesWrapper;
 import com.araguacaima.open_archi.web.wrapper.RsqlJsonFilter;
@@ -119,6 +120,7 @@ public class Commons {
     public static Set<Class<? extends Taggable>> modelsClasses;
     public static Reflections diagramsReflections;
     private static Logger log = LoggerFactory.getLogger(Commons.class);
+    public static Filter genericFilter = new SessionFilter();
     public static final ExceptionHandler exceptionHandler = new ExceptionHandlerImpl(Exception.class) {
         @Override
         public void handle(Exception exception, Request request, Response response) {
@@ -295,18 +297,20 @@ public class Commons {
         return profile;
     }
 
-    public static CommonProfile findAndFulfillProfile(List<CommonProfile> profiles, SparkWebContext context) {
-        CommonProfile profile = IterableUtils.find(profiles, object -> clients.contains(object.getClientName()));
-        Account account = (Account) context.getSessionAttribute("account");
-        if (account != null) {
-            account.getRoles().forEach(role -> profile.addRole(role.getName()));
-        }
-        return profile;
+    public static CommonProfile findProfile(SparkWebContext context) {
+        return findProfile(getProfiles(context));
+    }
+
+    public static CommonProfile findProfile(Request req, Response res) {
+        return findProfile(new SparkWebContext(req, res));
+    }
+
+    public static CommonProfile findProfile(List<CommonProfile> profiles) {
+        return IterableUtils.find(profiles, object -> clients.contains(object.getClientName()));
     }
 
     public static void store(Request req, Response res) throws IOException {
-        List<CommonProfile> profiles = getProfiles(req, res);
-        CommonProfile profile = findAndFulfillProfile(profiles, new SparkWebContext(req, res));
+        CommonProfile profile = findAndFulfillProfile(new SparkWebContext(req, res));
         if (profile != null) {
             Account account;
             String email = profile.getEmail();
