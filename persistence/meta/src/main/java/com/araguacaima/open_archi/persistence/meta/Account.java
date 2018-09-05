@@ -21,7 +21,9 @@ import java.util.UUID;
 @DynamicUpdate
 @NamedQueries(value = {@NamedQuery(name = Account.FIND_BY_EMAIL,
         query = "select a from Account a where a.email = :"
-                + Account.PARAM_EMAIL), @NamedQuery(name = Account.FIND_BY_LOGIN,
+                + Account.PARAM_EMAIL),@NamedQuery(name = Account.FIND_BY_EMAIL_AND_ENABLED,
+        query = "select a from Account a where a.email = :"
+                + Account.PARAM_EMAIL + " and a.enabled = true"), @NamedQuery(name = Account.FIND_BY_LOGIN,
         query = "select a from Account a where a.login = :"
                 + Account.PARAM_LOGIN), @NamedQuery(
         name = Account.FIND_BY_EMAIL_OR_LOGIN,
@@ -44,6 +46,7 @@ import java.util.UUID;
 public class Account implements Serializable, SimpleOverridable<Account> {
 
     public static final String FIND_BY_EMAIL = "Account.findByEmail";
+    public static final String FIND_BY_EMAIL_AND_ENABLED = "Account.findByEmail.and.enabled";
     public static final String FIND_BY_LOGIN = "Account.findByLogin";
     public static final String FIND_BY_EMAIL_OR_LOGIN = "Account.findByEmailOrLogin";
     public static final String GET_ACCOUNT_COUNT = "Account.getAccountCount";
@@ -89,7 +92,9 @@ public class Account implements Serializable, SimpleOverridable<Account> {
     @OneToOne
     private Avatar avatar;
     @Column
-    private boolean superuser;
+    private boolean superuser = false;
+    @Column
+    private boolean enabled = false;
 
     public Account() {
         this.id = UUID.randomUUID().toString();
@@ -188,6 +193,14 @@ public class Account implements Serializable, SimpleOverridable<Account> {
         this.superuser = superuser;
     }
 
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -241,6 +254,7 @@ public class Account implements Serializable, SimpleOverridable<Account> {
         this.lastname = source.getLastname();
         this.avatar = source.getAvatar();
         this.superuser = source.isSuperuser();
+        this.enabled = source.isEnabled();
     }
 
     @Override
@@ -278,5 +292,6 @@ public class Account implements Serializable, SimpleOverridable<Account> {
             this.avatar = source.getAvatar();
         }
         this.superuser = source.isSuperuser();
+        this.enabled = source.isEnabled();
     }
 }

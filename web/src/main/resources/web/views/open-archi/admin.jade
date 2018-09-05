@@ -3,12 +3,13 @@ extends layout-admin
 append scripts
     script.
         $(function () {
-            function approve(email, approved) {
+            function approve(email, approved, role) {
                 $.ajax({
                     url: "/open-archi/api/admin",
                     data: JSON.stringify({
                         email: email,
-                        approved: approved
+                        approved: approved,
+                        role: role
                     }),
                     type: 'PATCH',
                     dataType: "json",
@@ -26,6 +27,11 @@ append scripts
                 const account = $(e.currentTarget);
                 approve(account.val(), account[0].checked);
             });
+
+            $('.role_checkboxes').change(function (e) {
+                const account = $(e.currentTarget);
+                approve(account.val(), account[0].checked);
+            });
         });
 
 block content
@@ -33,17 +39,20 @@ block content
         h1.text-center#message
         if accounts
             section(style="color: white").css-table
-                //- var calculateStats = function(account){var r,e={remaining:"?",total:"?"};account.progress&&(account.progress.history.forEach(function(n){n.active&&(r=n.progress)}),r&&(e.remaining=r.remaining.length,e.total=r.elapsed.length+remaining));return e}
-                each account in accounts
-                    - var isChecked = false;
-                    - if (account.paymentInfo) isChecked = account.paymentInfo.alreadyPayed;
-                    //- var stats = calculateStats(account);
-                    section.three-column(style="text-align: left;")
-                        section.cell
-                            input.account_checkboxes(type="checkbox", name="account_checkboxes", value=account.email, style="padding-left: 5px;", checked=isChecked)
-                            span(style="padding-left: 5px; color: #004283; font-weight: bold")= account.email
-                        section.cell
-                            h3#total.btn.btn-default(style='text-align: center; margin-top: 0;')
-                                !{stats.remaining}
-                                | &nbsp;/&nbsp;
-                                !{stats.total}
+                table.table(class="table-condensed")
+                    thead
+                        tr
+                            each head, i in ['Enabled', 'Login', 'Email'].pushAll(roles)
+                                th #{head}
+                    tbody
+                        each account,j in accounts
+                            tr
+                                td
+                                    input.account_checkboxes(type="checkbox", name="account_checkboxes", value=account.email, style="padding-left: 5px;", checked=account.enabled)
+                                td #{account.login}
+                                td #{account.email}
+                                - var accountRoles = account.roles
+                                each role, k in roles
+                                    - var roleChecked = accountRoles.includes(role)
+                                    td
+                                        input.role_checkboxes(type="checkbox", name="role_checkboxes", value=role, style="padding-left: 5px;", checked=roleChecked)

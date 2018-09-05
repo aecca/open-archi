@@ -281,37 +281,40 @@ public class Commons {
             params.put(Account.PARAM_EMAIL, email);
             account = JPAEntityManagerUtils.findByQuery(Account.class, Account.FIND_BY_EMAIL, params);
 
-            if (account == null) {
+            if (account == null && !account.isEnabled()) {
                 account = AccountWrapper.toAccount(profile);
                 JPAEntityManagerUtils.persist(account.getAvatar());
                 JPAEntityManagerUtils.persist(account);
             }
 
-            Set<Role> accountRoles = account.getRoles();
-            final Set<Role> roles = accountRoles;
+            if (account.isEnabled()) {
 
-            Set<String> profileRoles = profile.getRoles();
-            if (CollectionUtils.isNotEmpty(profileRoles)) {
-                profileRoles.forEach(role -> {
-                    Map<String, Object> roleParams = new HashMap<>();
-                    roleParams.put(Role.PARAM_NAME, role);
-                    Role role_ = JPAEntityManagerUtils.findByQuery(Role.class, Role.FIND_BY_NAME, roleParams);
-                    if (role_ == null) {
-                        Role newRole = RolesWrapper.buildRole(role);
-                        JPAEntityManagerUtils.persist(newRole);
-                        roles.add(newRole);
-                    }
-                });
-            } else {
-                Commons.ALL_ROLES.forEach(role -> fixRole(accountRoles, roles, role));
+                Set<Role> accountRoles = account.getRoles();
+                final Set<Role> roles = accountRoles;
+
+                Set<String> profileRoles = profile.getRoles();
+                if (CollectionUtils.isNotEmpty(profileRoles)) {
+                    profileRoles.forEach(role -> {
+                        Map<String, Object> roleParams = new HashMap<>();
+                        roleParams.put(Role.PARAM_NAME, role);
+                        Role role_ = JPAEntityManagerUtils.findByQuery(Role.class, Role.FIND_BY_NAME, roleParams);
+                        if (role_ == null) {
+                            Role newRole = RolesWrapper.buildRole(role);
+                            JPAEntityManagerUtils.persist(newRole);
+                            roles.add(newRole);
+                        }
+                    });
+                } else {
+                    Commons.ALL_ROLES.forEach(role -> fixRole(accountRoles, roles, role));
+                }
+
+                profile.addRoles(RolesWrapper.fromRoles(accountRoles));
+
+                JPAEntityManagerUtils.merge(account);
+
+                final SparkWebContext context = new SparkWebContext(req, res);
+                context.setSessionAttribute("account", account);
             }
-
-            profile.addRoles(RolesWrapper.fromRoles(accountRoles));
-
-            JPAEntityManagerUtils.merge(account);
-
-            final SparkWebContext context = new SparkWebContext(req, res);
-            context.setSessionAttribute("account", account);
         }
     }
 

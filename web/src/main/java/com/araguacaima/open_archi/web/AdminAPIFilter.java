@@ -74,7 +74,7 @@ public class AdminAPIFilter implements Filter {
             String email = profile.getEmail();
             Map<String, Object> params = new HashMap<>();
             params.put(Account.PARAM_EMAIL, email);
-            account = JPAEntityManagerUtils.findByQuery(Account.class, Account.FIND_BY_EMAIL, params);
+            account = JPAEntityManagerUtils.findByQuery(Account.class, Account.FIND_BY_EMAIL_AND_ENABLED, params);
             if (account != null && account.isSuperuser()) {
                 result = securityLogic.perform(context, this.config,
                         (ctx, parameters) -> SECURITY_GRANTED_ACCESS, config.getHttpActionAdapter(),

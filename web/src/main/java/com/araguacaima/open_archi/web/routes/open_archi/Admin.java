@@ -29,7 +29,7 @@ public class Admin implements RouteGroup {
                 boolean approved = (Boolean) requestInput.get("approved");
                 Map<String, Object> params = new HashMap<>();
                 params.put(Account.PARAM_EMAIL, email);
-                Account account = JPAEntityManagerUtils.findByQuery(Account.class, Account.FIND_BY_EMAIL, params);
+                Account account = JPAEntityManagerUtils.findByQuery(Account.class, Account.FIND_BY_EMAIL_AND_ENABLED, params);
                 if (account != null) {
                     Set<Role> roles = account.getRoles();
                     //TODO AMM: Finish

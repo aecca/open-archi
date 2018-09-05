@@ -50,6 +50,7 @@ public class BeanBuilder {
     private String from;
     private String to;
     private List<Account> accounts = new ArrayList<>();
+    private List<String> roles = new ArrayList<>();
 
     public String getTitle() {
         return title;
@@ -169,6 +170,10 @@ public class BeanBuilder {
 
     public List<Account> getAccounts() {
         return accounts;
+    }
+
+    public List<String> getRoles() {
+        return roles;
     }
 
     public BeanBuilder nodeDataArray(final List nodeDataArray) {
@@ -298,6 +303,11 @@ public class BeanBuilder {
 
     public BeanBuilder accounts(List<Account> accounts) {
         this.accounts = accounts;
+        return this;
+    }
+
+    public BeanBuilder roles(List<String> roles) {
+        this.roles = roles;
         return this;
     }
 
