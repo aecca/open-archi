@@ -69,6 +69,7 @@ public class Commons {
     public static final String DEFAULT_PATH = "/";
     public static final String EMPTY_PATH = "";
     public static final String SEPARATOR_PATH = "/";
+    public static final String REJECTED_SCOPES = "rejected-scopes";
     public static ReflectionUtils reflectionUtils = new ReflectionUtils(null);
     public static Taggable deeplyFulfilledParentModel;
     public static Taggable deeplyFulfilledParentModel_1;

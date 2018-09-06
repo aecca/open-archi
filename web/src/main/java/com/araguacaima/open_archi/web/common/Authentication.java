@@ -1,5 +1,6 @@
 package com.araguacaima.open_archi.web.common;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.pac4j.core.config.Config;
 import org.pac4j.core.context.DefaultAuthorizers;
@@ -12,10 +13,7 @@ import org.pac4j.sparkjava.SecurityFilter;
 import org.pac4j.sparkjava.SparkWebContext;
 import spark.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static com.araguacaima.open_archi.web.common.Commons.*;
 import static com.araguacaima.open_archi.web.common.Security.JWT_SALT;
@@ -47,14 +45,12 @@ public class Authentication {
         return buildModelAndView(map, "loginForm.mustache");
     }
 
-    public static ModelAndView protectedIndex(final Request request, final Response response) {
-        final Map<String, List<CommonProfile>> map = new HashMap<>();
-        map.put("profiles", getProfiles(request, response));
-        return buildModelAndView(map, "protectedIndex.mustache");
-    }
-
     public static Filter buildBasicSecurityFilter(Config config) {
         return new SecurityFilter(config, clients);
+    }
+
+    public static Filter buildExtendedSecurityFilter(Config config) {
+        return new SecurityFilter(config, clients, "requireAllRoleAuthorizer");
     }
 
     public static Filter buildStrongSecurityFilter(Config config) {
@@ -84,6 +80,14 @@ public class Authentication {
                     value = StringUtils.EMPTY;
                 }
                 map.put(key, value);
+            }
+            CommonProfile profile = Commons.findProfile(req, res);
+            Set<String> rejectedScopes = (Set<String>) profile.getAuthenticationAttributes().get(Commons.REJECTED_SCOPES);
+            if (rejectedScopes == null || rejectedScopes.isEmpty()) {
+                String requestedScope = (String) map.get("scope");
+                Collection<String> scopes = CollectionUtils.intersection(Arrays.asList(requestedScope.split(" ")), rejectedScopes);
+                String approvedScopes = StringUtils.join(scopes, " ");
+                map.put("scope", approvedScopes);
             }
             return buildModelAndView(map, originalRequest);
         }

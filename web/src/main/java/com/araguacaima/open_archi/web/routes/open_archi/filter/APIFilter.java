@@ -1,4 +1,4 @@
-package com.araguacaima.open_archi.web;
+package com.araguacaima.open_archi.web.routes.open_archi.filter;
 
 import com.araguacaima.open_archi.web.common.Commons;
 import org.pac4j.core.authorization.authorizer.CheckHttpMethodAuthorizer;

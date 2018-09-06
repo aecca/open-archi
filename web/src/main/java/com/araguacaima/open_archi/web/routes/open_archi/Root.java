@@ -24,7 +24,7 @@ public class Root implements RouteGroup {
     @Override
     public void addRoutes() {
         get(StringUtils.EMPTY, buildRoute(new BeanBuilder().title(OPEN_ARCHI), OpenArchi.PATH + "/home"), engine);
-        before("/login/google", OpenArchi.basicSecurityFilter);
+        before("/login/google", OpenArchi.extendedSecurityFilter, OpenArchi.scopesFilter);
         get("/login/google", Authentication.authGoogle, engine);
         get("/login", Authentication.login, engine);
         get("/callback", OpenArchi.callback);
@@ -54,8 +54,6 @@ public class Root implements RouteGroup {
         get("/force-login", (rq, rs) -> forceLogin(config, rq, rs));
 
         get("/jwt", Authentication::jwt, engine);
-        get("/oidc", Authentication::protectedIndex, engine);
-        get("/rest-jwt", Authentication::protectedIndex, engine);
         get("/login", (rq, rs) -> form(OpenArchi.config), engine);
 
 

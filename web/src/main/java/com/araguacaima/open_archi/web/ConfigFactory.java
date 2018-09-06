@@ -1,6 +1,7 @@
 package com.araguacaima.open_archi.web;
 
 import com.araguacaima.open_archi.web.common.Commons;
+import com.araguacaima.open_archi.web.common.FilterAllRolesAuthorizer;
 import org.pac4j.cas.client.CasClient;
 import org.pac4j.cas.config.CasConfiguration;
 import org.pac4j.core.authorization.authorizer.CheckHttpMethodAuthorizer;
@@ -8,7 +9,6 @@ import org.pac4j.core.authorization.authorizer.RequireAnyRoleAuthorizer;
 import org.pac4j.core.client.Client;
 import org.pac4j.core.client.Clients;
 import org.pac4j.core.config.Config;
-import org.pac4j.core.context.session.SessionStore;
 import org.pac4j.core.credentials.TokenCredentials;
 import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.core.util.CommonHelper;
@@ -102,6 +102,7 @@ public class ConfigFactory implements org.pac4j.core.config.ConfigFactory {
         config.addAuthorizer("custom", new Authorizer());
         config.addAuthorizer("checkHttpMethodAuthorizer", new CheckHttpMethodAuthorizer());
         config.addAuthorizer("adminAuthorizer", new RequireAnyRoleAuthorizer<>(Commons.ADMIN_ROLE));
+        config.addAuthorizer("filterAllRolesAuthorizer", new FilterAllRolesAuthorizer());
         config.setHttpActionAdapter(new HttpActionAdapter(templateEngine));
         return config;
     }
