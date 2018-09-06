@@ -25,7 +25,7 @@ public class BeanBuilder {
     private List steps;
 
     //Account
-    private String name;
+    private String login;
     private String email;
     private String avatar;
     private boolean authorized = false;
@@ -85,8 +85,8 @@ public class BeanBuilder {
         return steps;
     }
 
-    public String getName() {
-        return name;
+    public String getLogin() {
+        return login;
     }
 
     public String getEmail() {
@@ -222,7 +222,7 @@ public class BeanBuilder {
     }
 
     public BeanBuilder name(String name) {
-        this.name = name;
+        this.login = name;
         return this;
     }
 
@@ -329,7 +329,7 @@ public class BeanBuilder {
             }
             this.name(name);
             this.email(email);
-            this.authorized(true);
+            this.authorized(account.isEnabled());
         }
     }
 

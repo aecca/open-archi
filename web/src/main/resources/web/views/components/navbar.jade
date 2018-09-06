@@ -83,8 +83,9 @@ mixin navbar-static-logo(name, text, id, style, href, image, textColor)
 				ul.nav.navbar-nav
 					block
 
-mixin nav_item(href, active)
-	li(class=active): a&attributes(attributes)( href=href )
+mixin nav_item(href, active, style)
+	- if (!style) var style = "";
+	li(class=active, style=style): a&attributes(attributes)( href=href )
 		block
 
 mixin nav_image_item(href, image, name, active, style)

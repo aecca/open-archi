@@ -2,6 +2,9 @@ package com.araguacaima.open_archi.web.routes.open_archi;
 
 
 import com.araguacaima.open_archi.persistence.meta.Account;
+import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
+import com.araguacaima.open_archi.web.common.Commons;
+import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.sparkjava.SparkWebContext;
 import spark.Filter;
 import spark.Request;
@@ -24,19 +27,28 @@ public class SessionFilter implements Filter {
 
     public void handle(Request request, Response response) throws IOException {
         SparkWebContext context = new SparkWebContext(request, response);
-        Account account = (Account) context.getSessionAttribute("account");
-        if (account != null) {
-            String email = account.getEmail();
-            SessionMap sessionMap = map.get(email);
-            if (sessionMap != null) {
-                if (!sessionMap.isActive()) {
-                    sessionMap.getSession().invalidate();
-                    redirect.get("", OpenArchi.PATH);
-                    map.remove(email);
+        CommonProfile profile = Commons.findAndFulfillProfile(context);
+        if (profile != null) {
+            Account account = (Account) context.getSessionAttribute("account");
+            if (account == null) {
+                Map<String, Object> param = new HashMap<>();
+                param.put(Account.PARAM_EMAIL, profile.getEmail());
+                account = JPAEntityManagerUtils.findByQuery(Account.class, Account.FIND_BY_EMAIL_AND_ENABLED, param);
+            }
+            if (account != null) {
+                String email = account.getEmail();
+                SessionMap sessionMap = map.get(email);
+                if (sessionMap != null) {
+                    if (!sessionMap.isActive()) {
+                        sessionMap.getSession().invalidate();
+                        redirect.get("", OpenArchi.PATH);
+                        map.remove(email);
+                    }
+                } else {
+                    sessionMap = new SessionMap(request.session(), true);
+                    SessionFilter.map.put(email, sessionMap);
                 }
-            } else {
-                sessionMap = new SessionMap(request.session(), true);
-                SessionFilter.map.put(email, sessionMap);
+                context.setSessionAttribute("account", account);
             }
         }
     }

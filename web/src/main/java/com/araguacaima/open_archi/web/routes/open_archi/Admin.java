@@ -52,19 +52,18 @@ public class Admin implements RouteGroup {
                     } else {
                         Role innerRole = IterableUtils.find(roles, role1 -> role1.getName().equals(role));
                         SparkWebContext context = new SparkWebContext(request, response);
-                        CommonProfile profile = Commons.findProfile(context);
+                        CommonProfile profile = Commons.findAndFulfillProfile(context);
                         SessionFilter.SessionMap map = SessionFilter.map.get(email);
-                        if (map == null) {
-                            map = new SessionFilter.SessionMap(context.getSparkRequest().session(), false);
-                        }
-                        if (innerRole == null) {
-                            roles.add(role_);
-                            SessionFilter.map.put(email, map);
-                        } else {
-                            if (!approved) {
-                                roles.remove(innerRole);
-                                profile.getRoles().remove(role);
+                        if (map != null) {
+                            if (innerRole == null) {
+
+                            } else {    roles.add(role_);
                                 SessionFilter.map.put(email, map);
+                                profile.addRole(role);
+                                if (!approved) {
+                                    roles.remove(innerRole);
+                                    SessionFilter.map.put(email, map);
+                                }
                             }
                         }
                     }

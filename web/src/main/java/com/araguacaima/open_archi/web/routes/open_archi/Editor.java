@@ -58,7 +58,7 @@ public class Editor implements RouteGroup {
             } else {
                 bean.fullView(null);
             }
-            return buildModelAndView(bean, OpenArchi.PATH + "/editor");
+            return buildModelAndView(req, res, bean, OpenArchi.PATH + "/editor");
         }, engine);
         get("/:uuid", (request, response) -> {
             try {
@@ -74,7 +74,7 @@ public class Editor implements RouteGroup {
                 }
                 bean.palette(jsonUtils.toJSON(OpenArchi.getArchitecturePalette()));
                 bean.source("basic");
-                return buildModelAndView(bean, OpenArchi.PATH + "/editor");
+                return buildModelAndView(request, response, bean, OpenArchi.PATH + "/editor");
             } catch (Exception ex) {
                 bean.title("Error");
                 bean.message(ex.getMessage());

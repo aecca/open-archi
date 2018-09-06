@@ -49,17 +49,17 @@ append scripts
         let myDiagram;
         let myPalette;
         let nodeDataArray = [];
-        if (!{nodeDataArray}) {
-            nodeDataArray = !{nodeDataArray};
+        if (!{nodeDataArray_}) {
+            nodeDataArray = !{nodeDataArray_};
         }
         let paletteModelArray = [];
-        let palette = !{palette};
+        let palette = !{palette_};
         if (palette) {
             paletteModelArray.pushAll(OpenArchiWrapper.fixCategory(palette.elements));
         }
         let linkDataArray = [];
-        if (!{linkDataArray}) {
-            linkDataArray = !{linkDataArray};
+        if (!{linkDataArray_}) {
+            linkDataArray = !{linkDataArray_};
         }
         let MINLENGTH = '!{MINLENGTH}';  // this controls the minimum length of any swimlane
         let MINBREADTH = '!{MINBREADTH}';  // this controls the minimum breadth of any non-collapsed swimlane
@@ -75,8 +75,8 @@ append scripts
         let source = '!{source}';
         let lightText = 'whitesmoke';
         let viewMode;
-        var diagramTypes = !{diagramTypes};
-        var elementTypes = !{elementTypes};
+        var diagramTypes = !{diagramTypes_};
+        var elementTypes = !{elementTypes_};
         var fullView = '!{fullView}';
         $(function () {
             if (fullView) {

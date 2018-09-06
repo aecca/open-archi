@@ -310,7 +310,8 @@ public class Commons {
     }
 
     public static void store(Request req, Response res) throws IOException {
-        CommonProfile profile = findAndFulfillProfile(new SparkWebContext(req, res));
+        SparkWebContext context = new SparkWebContext(req, res);
+        CommonProfile profile = findAndFulfillProfile(context);
         if (profile != null) {
             Account account;
             String email = profile.getEmail();
@@ -323,7 +324,11 @@ public class Commons {
                 JPAEntityManagerUtils.persist(account.getAvatar());
                 JPAEntityManagerUtils.persist(account);
             }
-
+            SessionFilter.SessionMap map = SessionFilter.map.get(email);
+            if (map == null) {
+                map = new SessionFilter.SessionMap(req.session(), true);
+                SessionFilter.map.put(email, map);
+            }
             if (account.isEnabled()) {
 
                 Set<Role> accountRoles = account.getRoles();
@@ -349,7 +354,6 @@ public class Commons {
 
                 JPAEntityManagerUtils.merge(account);
 
-                final SparkWebContext context = new SparkWebContext(req, res);
                 context.setSessionAttribute("account", account);
             }
         }
@@ -564,18 +568,23 @@ public class Commons {
 
     public static TemplateViewRoute buildRoute(Object bean, String path) {
         return (request, response) -> {
-            if (BeanBuilder.class.isAssignableFrom(bean.getClass())) {
-                ((BeanBuilder) bean).fixAccountInfo(request, response);
-            }
-            return buildModelAndView(bean, path);
+
+            return buildModelAndView(request, response, bean, path);
         };
     }
 
     public static ModelAndView buildModelAndView(Object bean, String path) {
+        return buildModelAndView(null, null, bean, path);
+    }
+
+    public static ModelAndView buildModelAndView(Request request, Response response, Object bean, String path) {
         Map<Object, Object> map = new HashMap<>();
         if (Map.class.isAssignableFrom(bean.getClass())) {
             map.putAll((Map<Object, Object>) bean);
         } else {
+            if (BeanBuilder.class.isAssignableFrom(bean.getClass())) {
+                ((BeanBuilder) bean).fixAccountInfo(request, response);
+            }
             map.putAll(new BeanMap(bean));
             map.remove("class");
         }

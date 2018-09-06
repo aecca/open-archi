@@ -57,7 +57,7 @@ public class Prototyper implements RouteGroup {
             } else {
                 bean.fullView(null);
             }
-            return buildModelAndView(bean, OpenArchi.PATH + "/prototyper");
+            return buildModelAndView(req, res, bean, OpenArchi.PATH + "/prototyper");
         }, engine);
         get("/:uuid", (request, response) -> {
             try {
@@ -73,7 +73,7 @@ public class Prototyper implements RouteGroup {
                 }
                 bean.palette(jsonUtils.toJSON(OpenArchi.getArchitecturePalette()));
                 bean.source("basic");
-                return buildModelAndView(bean, OpenArchi.PATH + "/prototyper");
+                return buildModelAndView(request, response, bean, OpenArchi.PATH + "/prototyper");
             } catch (Exception ex) {
                 bean.title("Error");
                 bean.message(ex.getMessage());

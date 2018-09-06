@@ -164,12 +164,11 @@ public class ConfigFactory implements org.pac4j.core.config.ConfigFactory {
         oidcConfiguration.setUseNonce(true);
         //oidcClient.setPreferredJwsAlgorithm(JWSAlgorithm.RS256);
         oidcConfiguration.addCustomParam("prompt", "consent");
-        final OidcClient oidcClient = new OidcClient(oidcConfiguration);
-        oidcClient.setAuthorizationGenerator((ctx, profile) -> {
+        /* oidcClient.setAuthorizationGenerator((ctx, profile) -> {
             Commons.ALL_ROLES.forEach(role -> profile.addRole(role));
             return profile;
-        });
-        return oidcClient;
+        });*/
+        return new OidcClient(oidcConfiguration);
     }
 
     private Google2Client buildGoogle2Client() {

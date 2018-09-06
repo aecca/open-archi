@@ -5,7 +5,6 @@ import com.araguacaima.open_archi.web.common.Commons;
 import spark.RouteGroup;
 
 import static com.araguacaima.open_archi.web.Server.engine;
-import static com.araguacaima.open_archi.web.common.Commons.buildModelAndView;
 import static com.araguacaima.open_archi.web.common.Commons.buildRoute;
 import static spark.Spark.get;
 
