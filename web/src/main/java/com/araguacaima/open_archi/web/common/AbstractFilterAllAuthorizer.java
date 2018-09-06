@@ -19,7 +19,7 @@ public abstract class AbstractFilterAllAuthorizer<E, U extends CommonProfile>
         for (final E element : elements) {
             boolean check = check(context, profile, element);
             if (!check) {
-                Set<E> rejectedScopes = (Set<E>) profile.getAuthenticationAttribute("rejected-scopes");
+                Set<E> rejectedScopes = (Set<E>) profile.getAuthenticationAttribute(Commons.REJECTED_SCOPES);
                 if (rejectedScopes == null) {
                     rejectedScopes = new HashSet<>();
                 }

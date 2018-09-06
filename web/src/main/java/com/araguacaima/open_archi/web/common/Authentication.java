@@ -76,10 +76,11 @@ public class Authentication {
             CommonProfile profile = Commons.findProfile(req, res);
             Set<String> rejectedScopes = (Set<String>) profile.getAuthenticationAttributes().get(Commons.REJECTED_SCOPES);
             if (rejectedScopes != null && !rejectedScopes.isEmpty()) {
-                String requestedScope = (String) profile.getAuthenticationAttribute("scope");
-                Collection<String> scopes = CollectionUtils.intersection(Arrays.asList(requestedScope.split(" ")), rejectedScopes);
-                String approvedScopes = StringUtils.join(scopes, " ");
+                String requestedScope = (String) map.get("scope");
+                Collection<String> approvedScopes = CollectionUtils.subtract(Arrays.asList(requestedScope.split(" ")), rejectedScopes);
                 map.put("scope", approvedScopes);
+                map.put(Commons.REJECTED_SCOPES, new ArrayList<>(rejectedScopes));
+                rejectedScopes.clear();
             }
             return buildModelAndView(map, originalRequest);
         }
