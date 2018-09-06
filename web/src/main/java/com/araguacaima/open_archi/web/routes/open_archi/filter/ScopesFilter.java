@@ -2,7 +2,6 @@ package com.araguacaima.open_archi.web.routes.open_archi.filter;
 
 import com.araguacaima.open_archi.web.common.Commons;
 import com.araguacaima.open_archi.web.common.FilterAllRolesAuthorizer;
-import org.apache.commons.lang3.StringUtils;
 import org.pac4j.core.config.Config;
 import org.pac4j.core.engine.DefaultSecurityLogic;
 import org.pac4j.core.engine.SecurityLogic;
@@ -14,10 +13,7 @@ import spark.Filter;
 import spark.Request;
 import spark.Response;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static com.araguacaima.open_archi.web.common.Commons.findAndFulfillProfile;
 import static org.pac4j.core.util.CommonHelper.assertNotNull;
@@ -69,11 +65,15 @@ public class ScopesFilter implements Filter {
         final SparkWebContext context = new SparkWebContext(request, response, config.getSessionStore());
         CommonProfile profile = findAndFulfillProfile(context);
         Object result;
-        String scope = (String) context.getSessionAttribute("scope");
+        String[] scope = (String[]) context.getSessionAttribute("scope");
         Set<String> scopes = null;
-        if (StringUtils.isNotBlank(scope)) {
+        if (scope != null) {
             FilterAllRolesAuthorizer<?> filterAllRolesAuthorizer = (FilterAllRolesAuthorizer) config.getAuthorizers().get("filterAllRolesAuthorizer");
-            List<String> scopesList = Arrays.asList(scope.split(" "));
+            List<String> scopesList = new ArrayList<>();
+            for (int i = 0; scope.length > i; i++) {
+                String scope_ = scope[i];
+                scopesList.addAll(Arrays.asList(scope_.split(" ")));
+            }
             scopes = new HashSet<>(scopesList);
             filterAllRolesAuthorizer.setElements(scopes);
         }
@@ -86,7 +86,7 @@ public class ScopesFilter implements Filter {
             Set<String> rejectedScopes = (Set<String>) profile.getAuthenticationAttributes().get(Commons.REJECTED_SCOPES);
             if (rejectedScopes != null && !rejectedScopes.isEmpty()) {
                 if (scopes != null && !scopes.isEmpty())
-                logger.warn("Not all scopes are accepted. Requested scopes: " + scopes + ". Rejected scopes: " + rejectedScopes);
+                    logger.warn("Not all scopes are accepted. Requested scopes: " + scopes + ". Rejected scopes: " + rejectedScopes);
             }
         } else {
             logger.debug("Halt the request processing");

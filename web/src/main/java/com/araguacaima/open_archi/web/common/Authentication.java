@@ -22,7 +22,6 @@ public class Authentication {
 
     public static AuthGoogle authGoogle = new AuthGoogle();
     public static Login login = new Login();
-    private static Map<String, Object> map = new HashMap<>();
 
     public static ModelAndView jwt(final Request request, final Response response) {
         final SparkWebContext context = new SparkWebContext(request, response);
@@ -58,6 +57,7 @@ public class Authentication {
         @Override
         public ModelAndView handle(Request req, Response res) throws Exception {
             store(req, res);
+            Map<String, Object> map = new HashMap<>();
             Session session = req.session(true);
             String originalRequest = session.attribute("originalRequest");
             String originalQueryParams = session.attribute("originalQueryParams");
@@ -76,7 +76,7 @@ public class Authentication {
             CommonProfile profile = Commons.findProfile(req, res);
             Set<String> rejectedScopes = (Set<String>) profile.getAuthenticationAttributes().get(Commons.REJECTED_SCOPES);
             if (rejectedScopes != null && !rejectedScopes.isEmpty()) {
-                String requestedScope = (String) map.get("scope");
+                String requestedScope = (String) profile.getAuthenticationAttribute("scope");
                 Collection<String> scopes = CollectionUtils.intersection(Arrays.asList(requestedScope.split(" ")), rejectedScopes);
                 String approvedScopes = StringUtils.join(scopes, " ");
                 map.put("scope", approvedScopes);
@@ -88,7 +88,7 @@ public class Authentication {
     private static class Login implements TemplateViewRoute {
         @Override
         public ModelAndView handle(Request req, Response res) throws Exception {
-
+            Map<String, Object> map = new HashMap<>();
             final StringBuilder url = new StringBuilder();
             final StringBuilder queryParams = new StringBuilder();
             SparkWebContext context = new SparkWebContext(req, res);
@@ -103,10 +103,9 @@ public class Authentication {
                 queryParamsMap.toMap().forEach((key, value) -> {
                     if (key.equals("scope")) {
                         context.setSessionAttribute("scope", value);
-                    } else {
-                        if (!key.equals("redirect_uri")) {
-                            queryParams.append(key).append("=").append(StringUtils.join(value)).append("&");
-                        }
+                    }
+                    if (!key.equals("redirect_uri")) {
+                        queryParams.append(key).append("=").append(StringUtils.join(value)).append("&");
                     }
                 });
             } else {
