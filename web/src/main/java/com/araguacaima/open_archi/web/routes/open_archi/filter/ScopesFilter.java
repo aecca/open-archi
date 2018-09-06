@@ -1,7 +1,8 @@
 package com.araguacaima.open_archi.web.routes.open_archi.filter;
 
 import com.araguacaima.open_archi.web.common.Commons;
-import org.pac4j.core.authorization.authorizer.RequireAllRolesAuthorizer;
+import com.araguacaima.open_archi.web.common.FilterAllRolesAuthorizer;
+import org.apache.commons.lang3.StringUtils;
 import org.pac4j.core.config.Config;
 import org.pac4j.core.engine.DefaultSecurityLogic;
 import org.pac4j.core.engine.SecurityLogic;
@@ -13,7 +14,9 @@ import spark.Filter;
 import spark.Request;
 import spark.Response;
 
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static com.araguacaima.open_archi.web.common.Commons.findAndFulfillProfile;
@@ -64,17 +67,27 @@ public class ScopesFilter implements Filter {
         assertNotNull("securityLogic", securityLogic);
         assertNotNull("config", config);
         final SparkWebContext context = new SparkWebContext(request, response, config.getSessionStore());
-        findAndFulfillProfile(context);
+        CommonProfile profile = findAndFulfillProfile(context);
         Object result;
-        RequireAllRolesAuthorizer<?> requireAllRolesAuthorizer = (RequireAllRolesAuthorizer) config.getAuthorizers().get("requireAllRolesAuthorizer");
-        Set<String> scopes = new HashSet<>();
-        requireAllRolesAuthorizer.setElements(scopes);
+        String scope = (String) context.getSessionAttribute("scope");
+        Set<String> scopes = null;
+        if (StringUtils.isNotBlank(scope)) {
+            FilterAllRolesAuthorizer<?> filterAllRolesAuthorizer = (FilterAllRolesAuthorizer) config.getAuthorizers().get("filterAllRolesAuthorizer");
+            List<String> scopesList = Arrays.asList(scope.split(" "));
+            scopes = new HashSet<>(scopesList);
+            filterAllRolesAuthorizer.setElements(scopes);
+        }
         result = securityLogic.perform(context, this.config,
                 (ctx, parameters) -> SECURITY_GRANTED_ACCESS, config.getHttpActionAdapter(),
                 this.clients, this.authorizers, this.matchers, this.multiProfile);
         if (result == SECURITY_GRANTED_ACCESS) {
             // It means that the access is granted: continue
             logger.debug("Received SECURITY_GRANTED_ACCESS -> continue");
+            Set<String> rejectedScopes = (Set<String>) profile.getAuthenticationAttributes().get(Commons.REJECTED_SCOPES);
+            if (rejectedScopes != null && !rejectedScopes.isEmpty()) {
+                if (scopes != null && !scopes.isEmpty())
+                logger.warn("Not all scopes are accepted. Requested scopes: " + scopes + ". Rejected scopes: " + rejectedScopes);
+            }
         } else {
             logger.debug("Halt the request processing");
             // stop the processing if no SECURITY_GRANTED_ACCESS has been received

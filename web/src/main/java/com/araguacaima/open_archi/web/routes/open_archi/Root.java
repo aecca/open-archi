@@ -24,7 +24,7 @@ public class Root implements RouteGroup {
     @Override
     public void addRoutes() {
         get(StringUtils.EMPTY, buildRoute(new BeanBuilder().title(OPEN_ARCHI), OpenArchi.PATH + "/home"), engine);
-        before("/login/google", OpenArchi.extendedSecurityFilter, OpenArchi.scopesFilter);
+        before("/login/google", OpenArchi.scopesFilter);
         get("/login/google", Authentication.authGoogle, engine);
         get("/login", Authentication.login, engine);
         get("/callback", OpenArchi.callback);

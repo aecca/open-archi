@@ -59,7 +59,10 @@ public class Commons {
     public static final String WRITE_PALETTE_ROLE = "write:palette";
     public static final String READ_PALETTES_ROLE = "read:palettes";
     public static final String ADMIN_ROLE = "admin";
-    public static final List<String> ALL_ROLES = Arrays.asList(DELETE_MODEL_ROLE, WRITE_MODEL_ROLE, READ_MODELS_ROLE, DELETE_CATALOG_ROLE, WRITE_CATALOG_ROLE, READ_CATALOGS_ROLE, DELETE_PALETTE_ROLE, WRITE_PALETTE_ROLE, READ_PALETTES_ROLE, ADMIN_ROLE);
+    public static final List<String> ALL_ROLES = Arrays.asList(
+            DELETE_MODEL_ROLE, WRITE_MODEL_ROLE, READ_MODELS_ROLE,
+            DELETE_CATALOG_ROLE, WRITE_CATALOG_ROLE, READ_CATALOGS_ROLE,
+            DELETE_PALETTE_ROLE, WRITE_PALETTE_ROLE, READ_PALETTES_ROLE, ADMIN_ROLE);
     public static final String clients = "Google2Client";
     public static final String JSON_CONTENT_TYPE = "application/json";
     public static final String EMPTY_RESPONSE = StringUtils.EMPTY;

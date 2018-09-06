@@ -31,7 +31,7 @@ block body
     +navbar-open-archi("menu", null, "navbar", null, "/open-archi", "/images/open-archi.png", "#1E97C2")(width="90px", height="50px")
         if authorized
             +nav_item("#")= login
-            +nav_item("#")(style='padding-top: 8px, padding-bottom: 0')
+            +nav_item("#")(style='padding-top: 8px; padding-bottom: 0')
                 +img-thumbnail(avatar, 'Profile avatar', 'padding: 0; margin: 0')(width="35px", height="35px")
             li
                 a.btn.btn-danger(href='/open-archi/logout', style='padding: 5px; color: white; margin-top: 4px;') Logout

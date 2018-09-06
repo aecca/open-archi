@@ -45,14 +45,6 @@ public class Authentication {
         return buildModelAndView(map, "loginForm.mustache");
     }
 
-    public static Filter buildBasicSecurityFilter(Config config) {
-        return new SecurityFilter(config, clients);
-    }
-
-    public static Filter buildExtendedSecurityFilter(Config config) {
-        return new SecurityFilter(config, clients, "requireAllRoleAuthorizer");
-    }
-
     public static Filter buildStrongSecurityFilter(Config config) {
         return new SecurityFilter(config, clients, "requireAnyRoleAuthorizer,custom," + DefaultAuthorizers.ALLOW_AJAX_REQUESTS + "," + DefaultAuthorizers.IS_AUTHENTICATED);
     }
@@ -83,7 +75,7 @@ public class Authentication {
             }
             CommonProfile profile = Commons.findProfile(req, res);
             Set<String> rejectedScopes = (Set<String>) profile.getAuthenticationAttributes().get(Commons.REJECTED_SCOPES);
-            if (rejectedScopes == null || rejectedScopes.isEmpty()) {
+            if (rejectedScopes != null && !rejectedScopes.isEmpty()) {
                 String requestedScope = (String) map.get("scope");
                 Collection<String> scopes = CollectionUtils.intersection(Arrays.asList(requestedScope.split(" ")), rejectedScopes);
                 String approvedScopes = StringUtils.join(scopes, " ");
@@ -99,6 +91,7 @@ public class Authentication {
 
             final StringBuilder url = new StringBuilder();
             final StringBuilder queryParams = new StringBuilder();
+            SparkWebContext context = new SparkWebContext(req, res);
             QueryParamsMap queryParamsMap = req.queryMap();
             if (queryParamsMap != null) {
                 QueryParamsMap redirect_uri = queryParamsMap.get("redirect_uri");
@@ -108,15 +101,19 @@ public class Authentication {
                     url.append(req.uri());
                 }
                 queryParamsMap.toMap().forEach((key, value) -> {
-                    if (!key.equals("redirect_uri")) {
-                        queryParams.append(key).append("=").append(StringUtils.join(value)).append("&");
+                    if (key.equals("scope")) {
+                        context.setSessionAttribute("scope", value);
+                    } else {
+                        if (!key.equals("redirect_uri")) {
+                            queryParams.append(key).append("=").append(StringUtils.join(value)).append("&");
+                        }
                     }
                 });
             } else {
                 url.append(req.uri());
             }
-            req.session(true).attribute("originalRequest", url.toString());
-            req.session(true).attribute("originalQueryParams", queryParams.toString());
+            context.setSessionAttribute("originalRequest", url.toString());
+            context.setSessionAttribute("originalQueryParams", queryParams.toString());
             return buildModelAndView(map, "/open-archi/login");
 
         }
