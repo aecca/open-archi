@@ -14,7 +14,6 @@ public class Palettes implements RouteGroup {
 
     @Override
     public void addRoutes() {
-        before("/*", OpenArchi.apiFilter);
         get("/architectures", (request, response) -> {
             try {
                 Palette palette = OpenArchi.getArchitecturePalette();

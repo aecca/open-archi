@@ -30,7 +30,6 @@ public class Diagrams implements RouteGroup {
 
     @Override
     public void addRoutes() {
-        before("/*", OpenArchi.apiFilter);
         options("/architectures", (request, response) -> {
             setCORS(request, response);
             Map<HttpMethod, Map<Commons.InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledArchitectureModelCollection, deeplyFulfilledArchitectureModel, HttpMethod.get, HttpMethod.post);

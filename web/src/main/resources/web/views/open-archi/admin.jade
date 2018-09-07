@@ -32,28 +32,52 @@ block content
 
 append scripts
     script.
+        let accounts = !{accounts_};
         $(function () {
-            let accounts = !{accounts_};
-
             const rolesCheckboxes = $('.role_checkboxes');
             const accountCheckboxes = $('.account_checkboxes');
 
             accounts.forEach(function (account) {
                 var accountRoles = account.roles;
                 var accountEmail = account.email;
-                accountRoles.forEach(function (accountRole) {
-                    rolesCheckboxes.each(function () {
-                        const role = $(this);
-                        const roleValue = role.val();
+                if (accountRoles) {
+                    accountRoles.forEach(function (accountRole) {
                         const roleCheckbox = accountEmail + "_" + accountRole.name;
-                        if (roleValue === roleCheckbox) {
-                            role.prop('checked', true);
-                        }
-                    })
-                });
+                        rolesCheckboxes.each(function () {
+                            const role = $(this);
+                            const roleValue = role.val();
+                            if (roleValue === roleCheckbox) {
+                                role.prop('checked', true);
+                            }
+                        })
+                    });
+                }
             });
 
-            function approve(email, approved, role) {
+            function toggleEnable(email, approved) {
+                $.ajax({
+                    url: "/open-archi/admin",
+                    data: JSON.stringify({
+                        email: email,
+                        approved: approved
+                    }),
+                    type: 'PATCH',
+                    dataType: "json",
+                    crossDomain: true,
+                    contentType: "application/json",
+                    xhr: function () {
+                        return window.XMLHttpRequest === null || new window.XMLHttpRequest().addEventListener === null
+                            ? new window.ActiveXObject("Microsoft.XMLHTTP")
+                            : $.ajaxSettings.xhr();
+                    }
+                }).done(function (data, textStatus, response) {
+                    if (response.status !== 200) {
+                        $("[value='" + email + "']").prop('checked', !approved);
+                    }
+                });
+            }
+
+            function toggleRole(email, approved, role) {
                 $.ajax({
                     url: "/open-archi/admin",
                     data: JSON.stringify({
@@ -70,13 +94,18 @@ append scripts
                             ? new window.ActiveXObject("Microsoft.XMLHTTP")
                             : $.ajaxSettings.xhr();
                     }
-                })
+                }).done(function (data, textStatus, response) {
+                    if (response.status !== 200) {
+                        var roleValue = email + "_" + role;
+                        $("[value='" + roleValue + "']").prop('checked', !approved);
+                    }
+                });
             }
 
             accountCheckboxes.change(function (e) {
                 const account = $(e.currentTarget);
                 const accountValue = account.val();
-                approve(accountValue, account[0].checked);
+                toggleEnable(accountValue, account[0].checked);
             });
 
             rolesCheckboxes.change(function (e) {
@@ -85,6 +114,6 @@ append scripts
                 const split = roleValue.split("_");
                 const account = split[0];
                 const roleName = split[1];
-                approve(account, role[0].checked, roleName);
+                toggleRole(account, role[0].checked, roleName);
             });
         });

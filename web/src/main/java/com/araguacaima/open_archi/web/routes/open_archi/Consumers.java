@@ -23,7 +23,6 @@ public class Consumers implements RouteGroup {
 
     @Override
     public void addRoutes() {
-        before("/*", OpenArchi.apiFilter);
         get(Commons.EMPTY_PATH, (request, response) -> getList(request, response, Item.GET_ALL_CONSUMERS, null, null));
         post(Commons.EMPTY_PATH, (request, response) -> {
             try {

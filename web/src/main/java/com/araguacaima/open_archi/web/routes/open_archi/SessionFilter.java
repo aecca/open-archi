@@ -42,7 +42,7 @@ public class SessionFilter implements Filter {
                     if (!sessionMap.isActive()) {
                         sessionMap.getSession().invalidate();
                         redirect.get("", OpenArchi.PATH);
-                        map.remove(email);
+                        map.remove(email); account = null;
                     }
                 } else {
                     sessionMap = new SessionMap(request.session(), true);

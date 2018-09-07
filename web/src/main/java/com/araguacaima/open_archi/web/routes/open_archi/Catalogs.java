@@ -26,7 +26,6 @@ public class Catalogs implements RouteGroup {
 
     @Override
     public void addRoutes() {
-        before("/*", OpenArchi.apiFilter);
         get("/element-types/:elementTypeId/shape", (request, response) -> {
             Map<String, Object> params = new HashMap<>();
             ElementKind type = (ElementKind) enumsUtils.getEnum(ElementKind.class, request.params(":elementTypeId"));

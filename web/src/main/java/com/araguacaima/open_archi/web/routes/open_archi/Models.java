@@ -28,7 +28,6 @@ public class Models implements RouteGroup {
 
     @Override
     public void addRoutes() {
-        before("/*", OpenArchi.apiFilter);
         options(Commons.DEFAULT_PATH, (request, response) -> {
             setCORS(request, response);
             Map<HttpMethod, Map<Commons.InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledParentModelCollection, deeplyFulfilledParentModel, HttpMethod.get, HttpMethod.post);

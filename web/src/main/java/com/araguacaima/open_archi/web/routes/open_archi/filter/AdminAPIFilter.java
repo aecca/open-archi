@@ -1,9 +1,7 @@
 package com.araguacaima.open_archi.web.routes.open_archi.filter;
 
 import com.araguacaima.open_archi.persistence.meta.Account;
-import com.araguacaima.open_archi.persistence.meta.Role;
 import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
-import com.araguacaima.open_archi.web.wrapper.RolesWrapper;
 import org.pac4j.core.config.Config;
 import org.pac4j.core.engine.DefaultSecurityLogic;
 import org.pac4j.core.engine.SecurityLogic;
@@ -17,7 +15,6 @@ import spark.Response;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import static com.araguacaima.open_archi.web.common.Commons.findAndFulfillProfile;
 import static org.pac4j.core.util.CommonHelper.assertNotNull;
@@ -75,23 +72,22 @@ public class AdminAPIFilter implements Filter {
             Map<String, Object> params = new HashMap<>();
             params.put(Account.PARAM_EMAIL, email);
             account = JPAEntityManagerUtils.findByQuery(Account.class, Account.FIND_BY_EMAIL_AND_ENABLED, params);
-            if (account != null && account.isSuperuser()) {
-                result = securityLogic.perform(context, this.config,
-                        (ctx, parameters) -> SECURITY_GRANTED_ACCESS, config.getHttpActionAdapter(),
-                        this.clients, this.authorizers, this.matchers, this.multiProfile);
-                if (result == SECURITY_GRANTED_ACCESS) {
-                    // It means that the access is granted: continue
-                    logger.debug("Received SECURITY_GRANTED_ACCESS -> continue");
-                } else {
-                    logger.debug("Halt the request processing");
-                    // stop the processing if no SECURITY_GRANTED_ACCESS has been received
-                    throw halt();
-                }
-            } else {
+            if (account == null || !account.isSuperuser()) {
                 logger.debug("Halt the request processing. User is no superuser");
                 // stop the processing if no SECURITY_GRANTED_ACCESS has been received
                 throw halt();
             }
+        }
+        result = securityLogic.perform(context, this.config,
+                (ctx, parameters) -> SECURITY_GRANTED_ACCESS, config.getHttpActionAdapter(),
+                this.clients, this.authorizers, this.matchers, this.multiProfile);
+        if (result == SECURITY_GRANTED_ACCESS) {
+            // It means that the access is granted: continue
+            logger.debug("Received SECURITY_GRANTED_ACCESS -> continue");
+        } else {
+            logger.debug("Halt the request processing");
+            // stop the processing if no SECURITY_GRANTED_ACCESS has been received
+            throw halt();
         }
     }
 

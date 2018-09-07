@@ -24,8 +24,8 @@ public class Admin implements RouteGroup {
 
     @Override
     public void addRoutes() {
-        before(Commons.EMPTY_PATH, Commons.genericFilter, OpenArchi.adminApiFilter, OpenArchi.adminSecurityFilter);
-        before("/*", OpenArchi.adminApiFilter, OpenArchi.adminSecurityFilter);
+        before(Commons.EMPTY_PATH, Commons.genericFilter, OpenArchi.adminApiFilter);
+        before("/*", OpenArchi.adminApiFilter);
         ArrayList<String> header = new ArrayList<>(Arrays.asList("Enabled", "Login", "Email"));
         header.addAll(Commons.ALL_ROLES);
         get(Commons.EMPTY_PATH, buildRoute(new BeanBuilder()
@@ -55,15 +55,16 @@ public class Admin implements RouteGroup {
                         CommonProfile profile = Commons.findAndFulfillProfile(context);
                         SessionFilter.SessionMap map = SessionFilter.map.get(email);
                         if (map != null) {
+                            map.setActive(false);
+                        }
+                        if (approved) {
                             if (innerRole == null) {
-
-                            } else {    roles.add(role_);
-                                SessionFilter.map.put(email, map);
+                                roles.add(role_);
                                 profile.addRole(role);
-                                if (!approved) {
-                                    roles.remove(innerRole);
-                                    SessionFilter.map.put(email, map);
-                                }
+                            }
+                        } else {
+                            if (innerRole != null) {
+                                roles.remove(innerRole);
                             }
                         }
                     }

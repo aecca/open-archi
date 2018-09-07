@@ -62,6 +62,7 @@ public class Server {
             response.header("Access-Control-Allow-Origin", "*");
             response.header("Access-Control-Request-Method", "*");
             response.header("Access-Control-Allow-Headers", "*");
+            log.debug("Request for (relative): " + request.uri());
         });
         path(Commons.DEFAULT_PATH, Index.root);
         path(Index.About.PATH, Index.about);
