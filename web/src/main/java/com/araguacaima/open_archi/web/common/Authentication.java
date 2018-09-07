@@ -77,7 +77,10 @@ public class Authentication {
             Set<String> rejectedScopes = (Set<String>) profile.getAuthenticationAttributes().get(Commons.REJECTED_SCOPES);
             if (rejectedScopes != null && !rejectedScopes.isEmpty()) {
                 String requestedScope = (String) map.get("scope");
-                Collection<String> approvedScopes = CollectionUtils.subtract(Arrays.asList(requestedScope.split(" ")), rejectedScopes);
+                Collection<String> approvedScopes = new ArrayList<>();
+                if (requestedScope != null) {
+                    approvedScopes.addAll(CollectionUtils.subtract(Arrays.asList(requestedScope.split(" ")), rejectedScopes));
+                }
                 map.put("scope", approvedScopes);
                 map.put(Commons.REJECTED_SCOPES, new ArrayList<>(rejectedScopes));
                 rejectedScopes.clear();

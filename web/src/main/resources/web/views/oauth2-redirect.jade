@@ -56,7 +56,7 @@ script.
             errorMessages = "Authorization may be unsafe, passed state was changed in server Passed state wasn't returned from auth server";
         }
         if (rejectedScopes.length !== 0) {
-            errorMessages = (errorMessages === "" ? "" : errorMessages + "\n\n") + "Not all scopes are accepted. Scopes approved: " + requestedScopes + ". Scopes rejected: " + rejectedScopes;
+            errorMessages = (errorMessages <= "" ? "" : errorMessages + "\n\n") + "Not all scopes are accepted. Scopes approved: " + (requestedScopes.length > 0 ? requestedScopes : "none" ) + ". Scopes rejected: " + rejectedScopes;
         }
         if (errorMessages) {
             oauth2.errCb({
@@ -102,5 +102,5 @@ script.
                 redirectUrl: redirectUrl
             });
         }
-        //window.close();
+        window.close();
     }

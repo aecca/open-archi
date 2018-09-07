@@ -24,8 +24,8 @@ public class Consumers implements RouteGroup {
     @Override
     public void addRoutes() {
         before("/*", OpenArchi.apiFilter);
-        get(Commons.DEFAULT_PATH, (request, response) -> getList(request, response, Item.GET_ALL_CONSUMERS, null, null));
-        post(Commons.DEFAULT_PATH, (request, response) -> {
+        get(Commons.EMPTY_PATH, (request, response) -> getList(request, response, Item.GET_ALL_CONSUMERS, null, null));
+        post(Commons.EMPTY_PATH, (request, response) -> {
             try {
                 Consumer consumer = jsonUtils.fromJSON(request.body(), Consumer.class);
                 if (consumer == null) {
@@ -45,7 +45,7 @@ public class Consumers implements RouteGroup {
                 return throwError(response, ex);
             }
         });
-        get("/consumers/:uuid", (request, response) -> {
+        get("/:uuid", (request, response) -> {
             try {
                 String id = request.params(":uuid");
                 Consumer consumer = JPAEntityManagerUtils.find(Consumer.class, id);
@@ -59,7 +59,7 @@ public class Consumers implements RouteGroup {
                 return throwError(response, ex);
             }
         });
-        put("/consumers/:uuid", (request, response) -> {
+        put("/:uuid", (request, response) -> {
             try {
                 Consumer consumer = jsonUtils.fromJSON(request.body(), Consumer.class);
                 if (consumer == null) {
@@ -82,7 +82,7 @@ public class Consumers implements RouteGroup {
                 return throwError(response, ex);
             }
         });
-        patch("/consumers/:uuid", (request, response) -> {
+        patch("/:uuid", (request, response) -> {
             try {
                 Consumer consumer = jsonUtils.fromJSON(request.body(), Consumer.class);
                 if (consumer == null) {

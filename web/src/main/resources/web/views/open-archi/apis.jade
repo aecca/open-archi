@@ -50,6 +50,10 @@ block scripts
                     req.headers["Access-Control-Request-Method"] = "*";
                     req.headers["Access-Control-Allow-Headers"] = "*";
                     return req;
+                },
+                responseInterceptor: function (res) {
+                    //alert(JSON.stringify(res));
+                    return res;
                 }
             });
         }

@@ -34,7 +34,7 @@ public class Models implements RouteGroup {
             Map<HttpMethod, Map<Commons.InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledParentModelCollection, deeplyFulfilledParentModel, HttpMethod.get, HttpMethod.post);
             return getOptions(request, response, output);
         });
-        post(Commons.DEFAULT_PATH, (request, response) -> {
+        post(Commons.EMPTY_PATH, (request, response) -> {
             try {
                 Taggable model = null;
                 String body = request.body();
@@ -72,7 +72,7 @@ public class Models implements RouteGroup {
                 return throwError(response, ex);
             }
         });
-        get(Commons.DEFAULT_PATH, (request, response) -> getList(request, response, Taggable.GET_ALL_MODELS, null, null));
+        get(Commons.EMPTY_PATH, (request, response) -> getList(request, response, Taggable.GET_ALL_MODELS, null, null));
         options("/:uuid", (request, response) -> {
             setCORS(request, response);
             Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledParentModel, null, HttpMethod.get, null);
