@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.neuland.jade4j.JadeConfiguration;
 import de.neuland.jade4j.template.TemplateLoader;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.template.jade.JadeTemplateEngine;
@@ -37,8 +38,14 @@ public class Server {
     }
 
     private static String getServerName() {
-        if (processBuilder.environment().get("SERVER_NAME") != null) {
-            return processBuilder.environment().get("SERVER_NAME");
+        String server_name = processBuilder.environment().get("BASE_URL");
+        if (server_name != null) {
+            if (server_name.startsWith("http://")) {
+                server_name = server_name.replaceFirst("http://", StringUtils.EMPTY);
+            } else if (server_name.startsWith("https://")) {
+                server_name = server_name.replaceFirst("https://", StringUtils.EMPTY);
+            }
+            return server_name;
         } else {
             //return "open-archi.herokuapp.com";
             return "localhost";
