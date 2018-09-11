@@ -43,6 +43,7 @@ public class Server {
         String jdbcDbUrl = System.getenv("JDBC_DATABASE_URL");
         String jdbcDbUsername;
         String jdbcDbPassword;
+        String logLevel = null;
         if (null != jdbcDbUrl) {
             log.debug("Properties found on system environment...");
             log.debug("JDBC_DATABASE_URL=" + jdbcDbUrl);
@@ -50,6 +51,7 @@ public class Server {
             log.debug("JDBC_DATABASE_USERNAME=" + jdbcDbUsername);
             jdbcDbPassword = System.getenv("JDBC_DATABASE_PASSWORD");
             log.debug("JDBC_DATABASE_PASSWORD=" + jdbcDbPassword);
+            logLevel = System.getenv("LOG_LEVEL");
         } else {
             URL url = Server.class.getResource("/config/config.properties");
             Properties properties = new Properties();
@@ -65,10 +67,26 @@ public class Server {
             log.debug("JDBC_DATABASE_USERNAME=" + jdbcDbUsername);
             jdbcDbPassword = properties.getProperty("JDBC_DATABASE_PASSWORD");
             log.debug("JDBC_DATABASE_PASSWORD=" + jdbcDbPassword);
+            logLevel = properties.getProperty("LOG_LEVEL");
         }
         jdbcUrlSettings.put("hibernate.connection.url", jdbcDbUrl);
         jdbcUrlSettings.put("hibernate.connection.username", jdbcDbUsername);
         jdbcUrlSettings.put("hibernate.connection.password", jdbcDbPassword);
+        jdbcUrlSettings.put("hibernate.archive.autodetection", "class");
+        jdbcUrlSettings.put("hibernate.default_schema", "Diagrams");
+        jdbcUrlSettings.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQL95Dialect");
+        jdbcUrlSettings.put("hibernate.connection.driver_class", "org.postgresql.Driver");
+        jdbcUrlSettings.put("hibernate.show_sql", ((log.isDebugEnabled() || log.isInfoEnabled()) ? "true" : "false"));
+        jdbcUrlSettings.put("hibernate.flushMode", "FLUSH_AUTO");
+        jdbcUrlSettings.put("hibernate.hbm2ddl.auto", "update");
+        jdbcUrlSettings.put("packagesToScan", "com.araguacaima.open_archi.persistence");
+        jdbcUrlSettings.put("hibernate.connection.provider_class", "org.hibernate.c3p0.internal.C3P0ConnectionProvider");
+        jdbcUrlSettings.put("hibernate.c3p0.min_size", "8");
+        jdbcUrlSettings.put("hibernate.c3p0.max_size", "30");
+        jdbcUrlSettings.put("hibernate.c3p0.timeout", "300");
+        jdbcUrlSettings.put("hibernate.c3p0.max_statements", "50");
+        jdbcUrlSettings.put("hibernate.c3p0.idle_test_period", "3000");
+
         JPAEntityManagerUtils.init(jdbcUrlSettings);
     }
 
