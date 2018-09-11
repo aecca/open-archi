@@ -285,6 +285,9 @@
             <resource>
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
+                <excludes>
+                    <exclude>src/main/resources/config**</exclude>
+                </excludes>
             </resource>
         </resources>
         <plugins>
@@ -325,7 +328,7 @@
             </activation>
             <build>
                 <filters>
-                    <filter>src/main/resources/config.properties</filter>
+                    <filter>src/main/resources/config/prod/config.properties</filter>
                 </filters>
             </build>
         </profile>
@@ -335,6 +338,9 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <build>
+                <filters>
+                    <filter>src/main/resources/config/prod/config.properties</filter>
+                </filters>
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
