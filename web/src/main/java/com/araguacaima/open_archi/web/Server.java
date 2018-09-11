@@ -13,7 +13,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.template.jade.JadeTemplateEngine;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 import java.security.GeneralSecurityException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
 
 import static com.araguacaima.open_archi.web.common.Commons.exceptionHandler;
 import static com.araguacaima.open_archi.web.common.Commons.jsonUtils;
@@ -33,8 +39,37 @@ public class Server {
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
         config.setTemplateLoader(templateLoader);
-        //noinspection ResultOfMethodCallIgnored
-        JPAEntityManagerUtils.getEntityManager();
+        Map<String, String> jdbcUrlSettings = new HashMap<>();
+        String jdbcDbUrl = System.getenv("JDBC_DATABASE_URL");
+        String jdbcDbUsername;
+        String jdbcDbPassword;
+        if (null != jdbcDbUrl) {
+            log.debug("Properties found on system environment...");
+            log.debug("JDBC_DATABASE_URL=" + jdbcDbUrl);
+            jdbcDbUsername = System.getenv("JDBC_DATABASE_USERNAME");
+            log.debug("JDBC_DATABASE_USERNAME=" + jdbcDbUsername);
+            jdbcDbPassword = System.getenv("JDBC_DATABASE_PASSWORD");
+            log.debug("JDBC_DATABASE_PASSWORD=" + jdbcDbPassword);
+        } else {
+            URL url = Server.class.getResource("/config/config.properties");
+            Properties properties = new Properties();
+            try {
+                properties.load(url.openStream());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            log.debug("Properties found on config file '" + url.getFile().replace("file:" + File.separator, "") + "'");
+            jdbcDbUrl = properties.getProperty("JDBC_DATABASE_URL");
+            log.debug("JDBC_DATABASE_URL=" + jdbcDbUrl);
+            jdbcDbUsername = properties.getProperty("JDBC_DATABASE_USERNAME");
+            log.debug("JDBC_DATABASE_USERNAME=" + jdbcDbUsername);
+            jdbcDbPassword = properties.getProperty("JDBC_DATABASE_PASSWORD");
+            log.debug("JDBC_DATABASE_PASSWORD=" + jdbcDbPassword);
+        }
+        jdbcUrlSettings.put("hibernate.connection.url", jdbcDbUrl);
+        jdbcUrlSettings.put("hibernate.connection.username", jdbcDbUsername);
+        jdbcUrlSettings.put("hibernate.connection.password", jdbcDbPassword);
+        JPAEntityManagerUtils.init(jdbcUrlSettings);
     }
 
     private static String getServerName() {

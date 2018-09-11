@@ -288,15 +288,6 @@
 
     <build>
         <defaultGoal>clean package</defaultGoal>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-                <excludes>
-                    <exclude>src/main/resources/config**</exclude>
-                </excludes>
-            </resource>
-        </resources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -334,9 +325,6 @@
                 <activeByDefault>false</activeByDefault>
             </activation>
             <build>
-                <filters>
-                    <filter>src/main/resources/config/dev/config.properties</filter>
-                </filters>
                 <plugins>
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
@@ -345,6 +333,30 @@
                         <configuration>
                             <mainClass>com.araguacaima.open_archi.web.Server</mainClass>
                         </configuration>
+                    </plugin>
+                    <plugin>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <version>3.1.0</version>
+                        <executions>
+                            <execution>
+                                <id>copy-resources</id>
+                                <phase>initialize</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>target/classes/config</outputDirectory>
+                                    <resources>
+                                        <resource>
+                                            <directory>config/dev</directory>
+                                        </resource>
+                                    </resources>
+                                    <filters>
+                                        <filter>config/dev/config.properties</filter>
+                                    </filters>
+                                </configuration>
+                            </execution>
+                        </executions>
                     </plugin>
                 </plugins>
             </build>
@@ -355,9 +367,6 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <build>
-                <filters>
-                    <filter>src/main/resources/config/prod/config.properties</filter>
-                </filters>
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
@@ -396,6 +405,30 @@
                                 <web>java -jar ./target/open-archi-with-dependencies.jar</web>
                             </processTypes>
                         </configuration>
+                    </plugin>
+                    <plugin>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <version>3.1.0</version>
+                        <executions>
+                            <execution>
+                                <id>copy-resources</id>
+                                <phase>initialize</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>target/classes/config</outputDirectory>
+                                    <resources>
+                                        <resource>
+                                            <directory>config/prod</directory>
+                                        </resource>
+                                    </resources>
+                                    <filters>
+                                        <filter>config/prod/config.properties</filter>
+                                    </filters>
+                                </configuration>
+                            </execution>
+                        </executions>
                     </plugin>
                 </plugins>
             </build>

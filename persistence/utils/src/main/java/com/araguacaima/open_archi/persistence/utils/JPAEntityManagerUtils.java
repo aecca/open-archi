@@ -13,8 +13,8 @@ import java.util.List;
 import java.util.Map;
 
 public class JPAEntityManagerUtils {
-    private static EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("open-archi");
-    private static EntityManager entityManager = entityManagerFactory.createEntityManager();
+    private static EntityManagerFactory entityManagerFactory;
+    private static EntityManager entityManager;
     private static boolean autocommit = true;
 
     @Transient
@@ -39,6 +39,12 @@ public class JPAEntityManagerUtils {
         if (emf != null) {
             emf.close();
         }
+    }
+
+    public static void init(Map map) {
+        entityManagerFactory = Persistence.createEntityManagerFactory("open-archi", map);
+        entityManager = entityManagerFactory.createEntityManager();
+        initializeDatabase();
     }
 
     public static void initializeDatabase() {
