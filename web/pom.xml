@@ -337,6 +337,16 @@
                 <filters>
                     <filter>src/main/resources/config/dev/config.properties</filter>
                 </filters>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>1.6.0</version>
+                        <configuration>
+                            <mainClass>com.araguacaima.open_archi.web.Server</mainClass>
+                        </configuration>
+                    </plugin>
+                </plugins>
             </build>
         </profile>
         <profile>
