@@ -1,5 +1,6 @@
 package com.araguacaima.open_archi.web;
 
+import com.araguacaima.commons.utils.MapUtils;
 import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
 import com.araguacaima.open_archi.web.common.Commons;
 import com.araguacaima.open_archi.web.routes.Index;
@@ -8,7 +9,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.neuland.jade4j.JadeConfiguration;
 import de.neuland.jade4j.template.TemplateLoader;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.template.jade.JadeTemplateEngine;
@@ -30,33 +30,34 @@ public class Server {
     public static JadeTemplateEngine engine = new JadeTemplateEngine(config);
     private static TemplateLoader templateLoader = new Loader("web/views");
     private static ProcessBuilder processBuilder = new ProcessBuilder();
-    public static String serverName = getServerName();
-    public static int assignedPort = getAssignedPort();
+    public static String serverName;
+    public static int assignedPort;
     private static Logger log = LoggerFactory.getLogger(Server.class);
+    private static Map<String, String> environment;
 
     static {
+        environment = processBuilder.environment();
         ObjectMapper mapper = jsonUtils.getMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
         config.setTemplateLoader(templateLoader);
         Map<String, String> jdbcUrlSettings = new HashMap<>();
-        String jdbcDbUrl = System.getenv("JDBC_DATABASE_URL");
+        String jdbcDbUrl = environment.get("JDBC_DATABASE_URL");
         String jdbcDbUsername;
         String jdbcDbPassword;
-        String logLevel = null;
         if (null != jdbcDbUrl) {
             log.debug("Properties found on system environment...");
             log.debug("JDBC_DATABASE_URL=" + jdbcDbUrl);
-            jdbcDbUsername = System.getenv("JDBC_DATABASE_USERNAME");
+            jdbcDbUsername = environment.get("JDBC_DATABASE_USERNAME");
             log.debug("JDBC_DATABASE_USERNAME=" + jdbcDbUsername);
-            jdbcDbPassword = System.getenv("JDBC_DATABASE_PASSWORD");
+            jdbcDbPassword = environment.get("JDBC_DATABASE_PASSWORD");
             log.debug("JDBC_DATABASE_PASSWORD=" + jdbcDbPassword);
-            logLevel = System.getenv("LOG_LEVEL");
         } else {
             URL url = Server.class.getResource("/config/config.properties");
             Properties properties = new Properties();
             try {
                 properties.load(url.openStream());
+                environment.putAll(MapUtils.fromProperties(properties));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -67,7 +68,6 @@ public class Server {
             log.debug("JDBC_DATABASE_USERNAME=" + jdbcDbUsername);
             jdbcDbPassword = properties.getProperty("JDBC_DATABASE_PASSWORD");
             log.debug("JDBC_DATABASE_PASSWORD=" + jdbcDbPassword);
-            logLevel = properties.getProperty("LOG_LEVEL");
         }
         jdbcUrlSettings.put("hibernate.connection.url", jdbcDbUrl);
         jdbcUrlSettings.put("hibernate.connection.username", jdbcDbUsername);
@@ -86,28 +86,14 @@ public class Server {
         jdbcUrlSettings.put("hibernate.c3p0.timeout", "300");
         jdbcUrlSettings.put("hibernate.c3p0.max_statements", "50");
         jdbcUrlSettings.put("hibernate.c3p0.idle_test_period", "3000");
-
+        serverName = environment.get("DEPLOYED_SERVER");
+        assignedPort = getAssignedPort();
         JPAEntityManagerUtils.init(jdbcUrlSettings);
     }
 
-    private static String getServerName() {
-        String server_name = processBuilder.environment().get("BASE_URL");
-        if (server_name != null) {
-            if (server_name.startsWith("http://")) {
-                server_name = server_name.replaceFirst("http://", StringUtils.EMPTY);
-            } else if (server_name.startsWith("https://")) {
-                server_name = server_name.replaceFirst("https://", StringUtils.EMPTY);
-            }
-            return server_name;
-        } else {
-            //return "open-archi.herokuapp.com";
-            return "localhost";
-        }
-    }
-
     private static int getAssignedPort() {
-        if (processBuilder.environment().get("PORT") != null) {
-            return Integer.parseInt(processBuilder.environment().get("PORT"));
+        if (environment.get("PORT") != null) {
+            return Integer.parseInt(environment.get("PORT"));
         }
         return 4567;
     }
