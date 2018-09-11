@@ -46,7 +46,8 @@
         <com.fasterxml.jackson.core-jackson-annotations>2.9.2</com.fasterxml.jackson.core-jackson-annotations>
         <com.fasterxml.jackson.core-jackson-core>2.7.1</com.fasterxml.jackson.core-jackson-core>
         <com.fasterxml.jackson.core-jackson-databind>2.7.1-1</com.fasterxml.jackson.core-jackson-databind>
-        <com.fasterxml.jackson.module-jackson-module-jsonSchema>2.7.1</com.fasterxml.jackson.module-jackson-module-jsonSchema>
+        <com.fasterxml.jackson.module-jackson-module-jsonSchema>2.7.1
+        </com.fasterxml.jackson.module-jackson-module-jsonSchema>
         <com.github.rjeschke-txtmark>0.13</com.github.rjeschke-txtmark>
         <com.google.api-client>1.22.0</com.google.api-client>
         <com.google.apis-google-api-services-calendar>v3-rev254-1.22.0</com.google.apis-google-api-services-calendar>
@@ -103,7 +104,8 @@
         <org.apache.maven.plugin-maven-jar-plugin>2.4</org.apache.maven.plugin-maven-jar-plugin>
         <org.apache.maven.plugin-maven-source-plugin>2.4</org.apache.maven.plugin-maven-source-plugin>
         <org.apache.maven.plugin-maven-surefire-plugin>2.12.4</org.apache.maven.plugin-maven-surefire-plugin>
-        <org.apache.maven.plugin-tools-maven-plugin-annotations>3.4</org.apache.maven.plugin-tools-maven-plugin-annotations>
+        <org.apache.maven.plugin-tools-maven-plugin-annotations>3.4
+        </org.apache.maven.plugin-tools-maven-plugin-annotations>
         <org.apache.maven.plugins-maven-assembly-plugin>3.1.0</org.apache.maven.plugins-maven-assembly-plugin>
         <org.apache.maven.plugins-maven-compiler-plugin>2.3.2</org.apache.maven.plugins-maven-compiler-plugin>
         <org.apache.maven.plugins-maven-dependency-plugin>3.1.1</org.apache.maven.plugins-maven-dependency-plugin>
@@ -116,7 +118,8 @@
         <org.fusesource.jansi-jansi>1.16</org.fusesource.jansi-jansi>
         <org.hibernate-hibernate-c3p0>5.3.5.Final</org.hibernate-hibernate-c3p0>
         <org.hibernate-hibernate-core>5.3.5.Final</org.hibernate-hibernate-core>
-        <org.hibernate.javax.persistence-hibernate-jpa-2.1-api>1.0.2.Final</org.hibernate.javax.persistence-hibernate-jpa-2.1-api>
+        <org.hibernate.javax.persistence-hibernate-jpa-2.1-api>1.0.2.Final
+        </org.hibernate.javax.persistence-hibernate-jpa-2.1-api>
         <org.jsoup-jsoup>1.8.1</org.jsoup-jsoup>
         <org.mockito-mockito-core>1.9.5</org.mockito-mockito-core>
         <org.postgresql-postgresql>42.2.4</org.postgresql-postgresql>
@@ -543,8 +546,6 @@
         </dependencies>
 
 
-
-
     </dependencyManagement>
 
     <modules>
@@ -566,7 +567,7 @@
     </modules>
 
     <build>
-        <defaultGoal>clean package</defaultGoal>
+        <defaultGoal>clean install</defaultGoal>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -587,22 +588,6 @@
                     <skipTests>${maven.skipTests}</skipTests>
                 </configuration>
             </plugin>
-            <!--            <plugin>
-                            <groupId>org.apache.maven.plugins</groupId>
-                            <artifactId>maven-dependency-plugin</artifactId>
-                            <version>${org.apache.maven.plugins-maven-dependency-plugin}</version>
-                            <configuration>
-                                <outputFile>dependency-tree.txt</outputFile>
-                            </configuration>
-                            <executions>
-                                <execution>
-                                    <id>dependency-tree</id>
-                                    <goals>
-                                        <goal>build-classpath</goal>
-                                    </goals>
-                                </execution>
-                            </executions>
-                        </plugin>-->
         </plugins>
     </build>
 </project>

@@ -287,7 +287,7 @@
     </dependencies>
 
     <build>
-        <defaultGoal>clean package</defaultGoal>
+        <defaultGoal>clean install</defaultGoal>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -295,6 +295,11 @@
                 <version>${org.apache.maven.plugins-maven-jar-plugin}</version>
                 <configuration>
                     <finalName>open-archi</finalName>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                        </manifest>
+                    </archive>
                 </configuration>
             </plugin>
             <plugin>
@@ -342,13 +347,54 @@
                                 <id>copy-resources</id>
                                 <phase>initialize</phase>
                                 <goals>
-                                    <goal>copy-resources</goal>
+                                    <goal>resources</goal>
                                 </goals>
                                 <configuration>
                                     <outputDirectory>target/classes/config</outputDirectory>
                                     <resources>
                                         <resource>
                                             <directory>config/dev</directory>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>copy-swagger</id>
+                                <phase>initialize</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>target/classes/web/public</outputDirectory>
+                                    <resources>
+                                        <resource>
+                                            <directory>config</directory>
+                                            <includes>
+                                                <include>open-archi-apis.yaml</include>
+                                            </includes>
+                                            <filtering>true</filtering>
+                                        </resource>
+                                    </resources>
+                                    <filters>
+                                        <filter>config/dev/config.properties</filter>
+                                    </filters>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>copy-logback</id>
+                                <phase>initialize</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>target/classes</outputDirectory>
+                                    <resources>
+                                        <resource>
+                                            <directory>config</directory>
+                                            <includes>
+                                                <include>logback.xml</include>
+                                            </includes>
+                                            <filtering>true</filtering>
                                         </resource>
                                     </resources>
                                     <filters>
@@ -414,7 +460,7 @@
                                 <id>copy-resources</id>
                                 <phase>initialize</phase>
                                 <goals>
-                                    <goal>copy-resources</goal>
+                                    <goal>resources</goal>
                                 </goals>
                                 <configuration>
                                     <outputDirectory>target/classes/config</outputDirectory>
@@ -423,8 +469,49 @@
                                             <directory>config/prod</directory>
                                         </resource>
                                     </resources>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>copy-swagger</id>
+                                <phase>initialize</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>target/classes/web/public</outputDirectory>
+                                    <resources>
+                                        <resource>
+                                            <directory>config</directory>
+                                            <includes>
+                                                <include>open-archi-apis.yaml</include>
+                                            </includes>
+                                            <filtering>true</filtering>
+                                        </resource>
+                                    </resources>
                                     <filters>
-                                        <filter>config/prod/config.properties</filter>
+                                        <filter>config/config.properties</filter>
+                                    </filters>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>copy-logback</id>
+                                <phase>initialize</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>target/classes</outputDirectory>
+                                    <resources>
+                                        <resource>
+                                            <directory>config</directory>
+                                            <includes>
+                                                <include>logback.xml</include>
+                                            </includes>
+                                            <filtering>true</filtering>
+                                        </resource>
+                                    </resources>
+                                    <filters>
+                                        <filter>config/config.properties</filter>
                                     </filters>
                                 </configuration>
                             </execution>

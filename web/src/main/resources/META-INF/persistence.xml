@@ -13,9 +13,6 @@
             <property name="hibernate.default_schema" value="Diagrams"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL95Dialect"/>
             <property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
-            <property name="hibernate.connection.url" value="${JDBC_DATABASE_URL}"/>
-            <property name="hibernate.connection.username" value="${JDBC_DATABASE_USERNAME}"/>
-            <property name="hibernate.connection.password" value="${JDBC_DATABASE_PASSWORD}"/>
             <property name="hibernate.show_sql" value="false"/>
             <property name="hibernate.flushMode" value="FLUSH_AUTO"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
