@@ -15,11 +15,6 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <properties>
-        <baseUrl>open-archi.herokuapp.com</baseUrl>
-<!--        <baseUrl>localhost:4567</baseUrl>-->
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>cz.jirutka.rsql</groupId>
@@ -283,26 +278,16 @@
         </dependency>
 
     </dependencies>
+
     <build>
+        <defaultGoal>clean package</defaultGoal>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <version>${org.apache.maven.plugins-maven-dependency-plugin}</version>
-                <executions>
-                    <execution>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>unpack-dependencies</goal>
-                        </goals>
-                        <configuration>
-                            <includeGroupIds>com.araguacaima.open_archi,com.araguacaima.open_archi.persistence
-                            </includeGroupIds>
-                            <outputDirectory>${project.build.directory}/classes</outputDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
@@ -329,68 +314,28 @@
                     <skipTests>${maven.skipTests}</skipTests>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>com.google.code.maven-replacer-plugin</groupId>
-                <artifactId>replacer</artifactId>
-                <version>1.5.3</version>
-                <executions>
-                    <execution>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>replace</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <includes>
-                        <include>${basedir}/src/main/resources/web/public/open-archi-apis-template.yaml</include>
-                    </includes>
-                    <outputFile>${basedir}/src/main/resources/web/public/open-archi-apis.yaml</outputFile>
-                    <replacements>
-                        <replacement>
-                            <token>@HOST@</token>
-                            <value>${baseUrl}</value>
-                        </replacement>
-                    </replacements>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
+
     <profiles>
+        <profile>
+            <id>local</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <build>
+                <filters>
+                    <filter>src/main/resources/config.properties</filter>
+                </filters>
+            </build>
+        </profile>
         <profile>
             <id>heroku</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
             <build>
-                <defaultGoal>clean package</defaultGoal>
                 <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-jar-plugin</artifactId>
-                        <version>${org.apache.maven.plugins-maven-jar-plugin}</version>
-                        <configuration>
-                            <finalName>open-archi</finalName>
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-compiler-plugin</artifactId>
-                        <version>${org.apache.maven.plugins-maven-compiler-plugin}</version>
-                        <configuration>
-                            <source>${maven.compiler.source}</source>
-                            <target>${maven.compiler.target}</target>
-                            <encoding>${project.build.sourceEncoding}</encoding>
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <version>${org.apache.maven.plugin-maven-surefire-plugin}</version>
-                        <configuration>
-                            <skipTests>${maven.skipTests}</skipTests>
-                        </configuration>
-                    </plugin>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-assembly-plugin</artifactId>
@@ -427,31 +372,6 @@
                             <processTypes>
                                 <web>java -jar ./target/open-archi-with-dependencies.jar</web>
                             </processTypes>
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <groupId>com.google.code.maven-replacer-plugin</groupId>
-                        <artifactId>replacer</artifactId>
-                        <version>1.5.3</version>
-                        <executions>
-                            <execution>
-                                <phase>generate-sources</phase>
-                                <goals>
-                                    <goal>replace</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                        <configuration>
-                            <includes>
-                                <include>${basedir}/src/main/resources/web/public/open-archi-apis-template.yaml</include>
-                            </includes>
-                            <outputFile>${basedir}/src/main/resources/web/public/open-archi-apis.yaml</outputFile>
-                            <replacements>
-                                <replacement>
-                                    <token>@HOST@</token>
-                                    <value>${baseUrl}</value>
-                                </replacement>
-                            </replacements>
                         </configuration>
                     </plugin>
                 </plugins>

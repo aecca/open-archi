@@ -23,4 +23,3 @@ build/
 hs_err_pid*
 lib-src/
 target/
-web/src/main/resources/web/public/open-archi-apis.yaml

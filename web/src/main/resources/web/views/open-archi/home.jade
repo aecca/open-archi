@@ -134,11 +134,20 @@ block content
                         strong
                             | TOGAF framework
                 .col-lg-6
+            .row
+                .col-lg-6
+
+                .col-sm-5
+                    +img-responsive-rounded("/images/mermaidjs.png", null, style="display: inherit;")
+                    | The capability of generating diagrams from text as a simple markdown-like script as it is done by&nbsp;
+                    a(href="https://mermaidjs.github.io")
+                        strong
+                            | Mermaidjs
         p
             | The integration of these initiatives results in the conception of this social network that seeks to
             | satisfy the need for all functional and technical areas and all business units to make available to the
-            | entire organization the information they handle in their area of competence so that the teams that design
-            | business solutions can find unified everything necessary for effective decision-making regarding business
+            | entire organization the information they handle in their area of competence, so the teams that design
+            | business solutions can find unified everything necessary for effective decision-making, regarding business
             | architecture
 
     .container#spec
@@ -215,7 +224,7 @@ block content
                         td
                             | Implementation of C4-Model DB
                             br
-                            +progress-bar-success(90)(style="margin-bottom: 5px;")
+                            +progress-bar-success(100)(style="margin-bottom: 5px;")
                     tr
                         td
                             | Sandbox per organization
@@ -231,6 +240,11 @@ block content
                             | API layer
                             br
                             +progress-bar-success(85)(style="margin-bottom: 5px;")
+                    tr
+                        td
+                            | Security on API layer
+                            br
+                            +progress-bar-success(60)(style="margin-bottom: 5px;")
                     tr
                         td
                             | Architecture diagrams editor
@@ -264,6 +278,13 @@ block content
                     tr
                         td
                             | Social Network
+                            br
+                            +progress-bar-danger(2)(style="margin-bottom: 5px;")
+                    tr
+                        td
+                            | Open-Archi meta language (in the style of
+                            a(href="https://mermaidjs.github.io") mermaidjs
+                            | )
                             br
                             +progress-bar-danger(2)(style="margin-bottom: 5px;")
     .container#detailed
