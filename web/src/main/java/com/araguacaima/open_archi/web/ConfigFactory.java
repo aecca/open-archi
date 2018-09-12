@@ -26,6 +26,8 @@ import org.pac4j.oidc.client.OidcClient;
 import org.pac4j.oidc.config.OidcConfiguration;
 import org.pac4j.saml.client.SAML2Client;
 import org.pac4j.saml.client.SAML2ClientConfiguration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import spark.TemplateEngine;
 
 import java.util.LinkedList;
@@ -34,7 +36,7 @@ import java.util.List;
 public class ConfigFactory implements org.pac4j.core.config.ConfigFactory {
 
     private final String salt;
-
+    private static Logger log = LoggerFactory.getLogger(ConfigFactory.class);
     private final TemplateEngine templateEngine;
 
     @SuppressWarnings("WeakerAccess")
@@ -51,10 +53,15 @@ public class ConfigFactory implements org.pac4j.core.config.ConfigFactory {
      */
     @Override
     public Config build(final Object... parameters) {
+        log.debug("Starting configuring security client...");
         String serverName = (String) parameters[0];
+        log.debug("\tserver name = " + serverName);
         String serverPort = parameters[1].toString();
+        log.debug("\tserver port = " + serverPort);
         String relativeEndpoint = (String) parameters[2];
+        log.debug("\trelative endpoint = " + relativeEndpoint);
         String clientNames = (String) parameters[3];
+        log.debug("\tclient names = " + clientNames);
 
         String[] splittedClientNames = clientNames.split(",");
         List<Client> clientList = new LinkedList<>();
