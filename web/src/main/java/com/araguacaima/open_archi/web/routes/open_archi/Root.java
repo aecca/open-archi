@@ -45,8 +45,8 @@ public class Root implements RouteGroup {
         localLogout.setCentralLogout(true);
         get("/logout", localLogout);
         final LogoutRoute centralLogout = new LogoutRoute(config);
-        centralLogout.setDefaultUrl("http://" + serverName + ":" + assignedPort + "/open-archi");
-        centralLogout.setLogoutUrlPattern("http://" + serverName + ":" + assignedPort + "/.*");
+        centralLogout.setDefaultUrl("http://" + deployedServer + "/open-archi");
+        centralLogout.setLogoutUrlPattern("http://" + deployedServer + "/.*");
         centralLogout.setLocalLogout(false);
         centralLogout.setCentralLogout(true);
         centralLogout.setDestroySession(true);

@@ -30,11 +30,10 @@ import static com.araguacaima.open_archi.web.common.Security.JWT_SALT;
 public class OpenArchi {
 
     public static final String PATH = "/open-archi";
-    final static Config config = new ConfigFactory(JWT_SALT, engine).build(serverName, assignedPort, PATH, clients);
+    final static Config config = new ConfigFactory(JWT_SALT, engine).build(deployedServer, PATH, clients);
     final static CallbackRoute callback = new CallbackRoute(config, null, true);
     public static Root root = new Root();
     static Filter strongSecurityFilter = Authentication.buildStrongSecurityFilter(config);
-    static Filter adminSecurityFilter = Authentication.buildAdminSecurityFilter(config);
     static Filter adminApiFilter = new AdminAPIFilter(config, clients, "adminAuthorizer,custom," + DefaultAuthorizers.ALLOW_AJAX_REQUESTS + "," + DefaultAuthorizers.IS_AUTHENTICATED);
     static Filter apiFilter = new APIFilter(config, clients, "checkHttpMethodAuthorizer,requireAnyRoleAuthorizer,custom," + DefaultAuthorizers.ALLOW_AJAX_REQUESTS + "," + DefaultAuthorizers.IS_AUTHENTICATED);
     static Filter scopesFilter = new ScopesFilter(config, clients, "filterAllRolesAuthorizer");

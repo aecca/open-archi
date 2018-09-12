@@ -48,19 +48,17 @@ public class ConfigFactory implements org.pac4j.core.config.ConfigFactory {
     /**
      * Build a configuration.
      *
-     * @param parameters the parameters to build the configuration. The first one means the server name, The second one, the server port, ther third one, the relative port, and the fourth one a comma separated client names
+     * @param parameters the parameters to build the configuration. The first one means the deployed server including port, if apply, the second one, the relative endpoint, and the fourth one a comma separated client names
      * @return the built configuration
      */
     @Override
     public Config build(final Object... parameters) {
         log.warn("Starting configuring security client...");
-        String serverName = (String) parameters[0];
-        log.warn("\tserver name = " + serverName);
-        String serverPort = parameters[1].toString();
-        log.warn("\tserver port = " + serverPort);
-        String relativeEndpoint = (String) parameters[2];
+        String deployedServer = (String) parameters[0];
+        log.warn("\tdeployed server = " + deployedServer);
+        String relativeEndpoint = (String) parameters[1];
         log.warn("\trelative endpoint = " + relativeEndpoint);
-        String clientNames = (String) parameters[3];
+        String clientNames = (String) parameters[2];
         log.warn("\tclient names = " + clientNames);
 
         String[] splittedClientNames = clientNames.split(",");
@@ -71,7 +69,7 @@ public class ConfigFactory implements org.pac4j.core.config.ConfigFactory {
                     clientList.add(buildOidcClient());
                     break;
                 case "SAML2Client":
-                    clientList.add(buildSAML2Client(serverName, serverPort, relativeEndpoint));
+                    clientList.add(buildSAML2Client(deployedServer, relativeEndpoint));
                     break;
                 case "TwitterClient":
                     clientList.add(buildTwitterClient());
@@ -80,7 +78,7 @@ public class ConfigFactory implements org.pac4j.core.config.ConfigFactory {
                     clientList.add(buildCasClient());
                     break;
                 case "FormClient":
-                    clientList.add(buildFormClient(serverName, serverPort, relativeEndpoint));
+                    clientList.add(buildFormClient(deployedServer, relativeEndpoint));
                     break;
                 case "ParameterClient":
                     clientList.add(buildParameterClient());
@@ -102,7 +100,7 @@ public class ConfigFactory implements org.pac4j.core.config.ConfigFactory {
             }
         }
 
-        final Clients clients = new Clients("http://" + serverName + ":" + serverPort + relativeEndpoint + "/callback", clientList);
+        final Clients clients = new Clients("http://" + deployedServer + relativeEndpoint + "/callback", clientList);
 
         final Config config = new Config(clients);
         config.addAuthorizer("requireAnyRoleAuthorizer", new RequireAnyRoleAuthorizer<>(Commons.ALL_ROLES));
@@ -145,20 +143,20 @@ public class ConfigFactory implements org.pac4j.core.config.ConfigFactory {
         return new IndirectBasicAuthClient(new SimpleTestUsernamePasswordAuthenticator());
     }
 
-    private FormClient buildFormClient(String serverName, String serverPort, String relativeEndpoint) {
-        return new FormClient("http://" + serverName + ":" + serverPort + relativeEndpoint + "/loginForm", new SimpleTestUsernamePasswordAuthenticator());
+    private FormClient buildFormClient(String serverName, String relativeEndpoint) {
+        return new FormClient("http://" + serverName + relativeEndpoint + "/loginForm", new SimpleTestUsernamePasswordAuthenticator());
     }
 
     private TwitterClient buildTwitterClient() {
         return new TwitterClient("CoxUiYwQOSFDReZYdjigBA", "2kAzunH5Btc4gRSaMr7D7MkyoJ5u1VzbOOzE8rBofs");
     }
 
-    private SAML2Client buildSAML2Client(String serverName, String serverPort, String relativeEndpoint) {
+    private SAML2Client buildSAML2Client(String serverName, String relativeEndpoint) {
         final SAML2ClientConfiguration cfg = new SAML2ClientConfiguration("resource:samlKeystore.jks", "pac4j-demo-passwd",
                 "pac4j-demo-passwd", "resource:metadata-okta.xml");
         cfg.setMaximumAuthenticationLifetime(3600);
 
-        cfg.setServiceProviderEntityId("http://" + serverName + ":" + serverPort + relativeEndpoint + "/callback?client_name=SAML2Client");
+        cfg.setServiceProviderEntityId("http://" + serverName + relativeEndpoint + "/callback?client_name=SAML2Client");
         cfg.setServiceProviderMetadataPath("sp-metadata.xml");
         return new SAML2Client(cfg);
     }

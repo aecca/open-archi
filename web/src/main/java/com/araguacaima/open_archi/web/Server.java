@@ -30,10 +30,10 @@ public class Server {
     public static JadeTemplateEngine engine = new JadeTemplateEngine(config);
     private static TemplateLoader templateLoader = new Loader("web/views");
     private static ProcessBuilder processBuilder = new ProcessBuilder();
-    public static String serverName;
     public static int assignedPort;
     private static Logger log = LoggerFactory.getLogger(Server.class);
     private static Map<String, String> environment;
+    public static String deployedServer;
 
     static {
         environment = processBuilder.environment();
@@ -86,8 +86,8 @@ public class Server {
         jdbcUrlSettings.put("hibernate.c3p0.timeout", "300");
         jdbcUrlSettings.put("hibernate.c3p0.max_statements", "50");
         jdbcUrlSettings.put("hibernate.c3p0.idle_test_period", "3000");
-        serverName = environment.get("DEPLOYED_SERVER");
         assignedPort = getAssignedPort();
+        deployedServer = environment.get("DEPLOYED_SERVER");
         JPAEntityManagerUtils.init(jdbcUrlSettings);
     }
 
