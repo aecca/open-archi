@@ -379,7 +379,7 @@
                                 <id>copy-swagger</id>
                                 <phase>initialize</phase>
                                 <goals>
-                                    <goal>copy-resources</goal>
+                                    <goal>resources</goal>
                                 </goals>
                                 <configuration>
                                     <outputDirectory>target/classes/web/public</outputDirectory>
@@ -401,7 +401,7 @@
                                 <id>copy-logback</id>
                                 <phase>initialize</phase>
                                 <goals>
-                                    <goal>copy-resources</goal>
+                                    <goal>resources</goal>
                                 </goals>
                                 <configuration>
                                     <outputDirectory>target/classes</outputDirectory>
@@ -492,7 +492,7 @@
                                 <id>copy-swagger</id>
                                 <phase>initialize</phase>
                                 <goals>
-                                    <goal>copy-resources</goal>
+                                    <goal>resources</goal>
                                 </goals>
                                 <configuration>
                                     <outputDirectory>target/classes/web/public</outputDirectory>
@@ -514,7 +514,7 @@
                                 <id>copy-logback</id>
                                 <phase>initialize</phase>
                                 <goals>
-                                    <goal>copy-resources</goal>
+                                    <goal>resources</goal>
                                 </goals>
                                 <configuration>
                                     <outputDirectory>target/classes</outputDirectory>
