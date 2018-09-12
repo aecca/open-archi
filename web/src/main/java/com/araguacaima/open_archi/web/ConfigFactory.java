@@ -53,15 +53,15 @@ public class ConfigFactory implements org.pac4j.core.config.ConfigFactory {
      */
     @Override
     public Config build(final Object... parameters) {
-        log.debug("Starting configuring security client...");
+        log.warn("Starting configuring security client...");
         String serverName = (String) parameters[0];
-        log.debug("\tserver name = " + serverName);
+        log.warn("\tserver name = " + serverName);
         String serverPort = parameters[1].toString();
-        log.debug("\tserver port = " + serverPort);
+        log.warn("\tserver port = " + serverPort);
         String relativeEndpoint = (String) parameters[2];
-        log.debug("\trelative endpoint = " + relativeEndpoint);
+        log.warn("\trelative endpoint = " + relativeEndpoint);
         String clientNames = (String) parameters[3];
-        log.debug("\tclient names = " + clientNames);
+        log.warn("\tclient names = " + clientNames);
 
         String[] splittedClientNames = clientNames.split(",");
         List<Client> clientList = new LinkedList<>();
