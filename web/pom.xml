@@ -506,7 +506,7 @@
                                         </resource>
                                     </resources>
                                     <filters>
-                                        <filter>config/config.properties</filter>
+                                        <filter>config/prod/config.properties</filter>
                                     </filters>
                                 </configuration>
                             </execution>
@@ -528,7 +528,7 @@
                                         </resource>
                                     </resources>
                                     <filters>
-                                        <filter>config/config.properties</filter>
+                                        <filter>config/prod/config.properties</filter>
                                     </filters>
                                 </configuration>
                             </execution>
