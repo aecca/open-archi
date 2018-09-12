@@ -45,6 +45,14 @@ public class Server {
         String jdbcDbUrl = environment.get("JDBC_DATABASE_URL");
         String jdbcDbUsername;
         String jdbcDbPassword;
+        URL url = Server.class.getResource("/config/config.properties");
+        Properties properties = new Properties();
+        try {
+            properties.load(url.openStream());
+            environment.putAll(MapUtils.fromProperties(properties));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         if (null != jdbcDbUrl) {
             log.debug("Properties found on system environment...");
             log.debug("JDBC_DATABASE_URL=" + jdbcDbUrl);
@@ -53,14 +61,6 @@ public class Server {
             jdbcDbPassword = environment.get("JDBC_DATABASE_PASSWORD");
             log.debug("JDBC_DATABASE_PASSWORD=" + jdbcDbPassword);
         } else {
-            URL url = Server.class.getResource("/config/config.properties");
-            Properties properties = new Properties();
-            try {
-                properties.load(url.openStream());
-                environment.putAll(MapUtils.fromProperties(properties));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
             log.debug("Properties found on config file '" + url.getFile().replace("file:" + File.separator, "") + "'");
             jdbcDbUrl = properties.getProperty("JDBC_DATABASE_URL");
             log.debug("JDBC_DATABASE_URL=" + jdbcDbUrl);
