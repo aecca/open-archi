@@ -26,9 +26,9 @@ public class Editor implements RouteGroup {
 
     @Override
     public void addRoutes() {
-        before(Commons.EMPTY_PATH, Commons.genericFilter);
+        //before(Commons.EMPTY_PATH, Commons.genericFilter);
+        //before("/*", OpenArchi.strongSecurityFilter);
         BeanBuilder bean = new BeanBuilder();
-        before("/*", OpenArchi.strongSecurityFilter);
         Map<String, Object> diagramTypesMap = new HashMap<>();
         for (String diagramType : deeplyFulfilledDiagramTypesCollection) {
             diagramTypesMap.put(diagramType, diagramType.equals(ElementKind.ARCHITECTURE_MODEL.name()));

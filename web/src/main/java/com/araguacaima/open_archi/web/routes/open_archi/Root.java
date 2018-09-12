@@ -24,14 +24,14 @@ public class Root implements RouteGroup {
     @Override
     public void addRoutes() {
         get(StringUtils.EMPTY, buildRoute(new BeanBuilder().title(OPEN_ARCHI), OpenArchi.PATH + "/home"), engine);
-        before("/login/google", OpenArchi.scopesFilter);
+/*        before("/login/google", OpenArchi.scopesFilter);
         get("/login/google", Authentication.authGoogle, engine);
         get("/login", Authentication.login, engine);
         get("/callback", OpenArchi.callback);
         post("/callback", (req, res) -> {
             store(req, res);
             return OpenArchi.callback.handle(req, res);
-        });
+        });*/
 
         path(Samples.PATH, samples);
         path(Api.PATH, api);

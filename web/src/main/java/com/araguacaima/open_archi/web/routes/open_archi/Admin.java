@@ -24,8 +24,8 @@ public class Admin implements RouteGroup {
 
     @Override
     public void addRoutes() {
-        before(Commons.EMPTY_PATH, Commons.genericFilter, OpenArchi.adminApiFilter);
-        before("/*", OpenArchi.adminApiFilter);
+        //before(Commons.EMPTY_PATH, Commons.genericFilter, OpenArchi.adminApiFilter);
+        //before("/*", OpenArchi.adminApiFilter);
         ArrayList<String> header = new ArrayList<>(Arrays.asList("Enabled", "Login", "Email"));
         header.addAll(Commons.ALL_ROLES);
         get(Commons.EMPTY_PATH, buildRoute(new BeanBuilder()

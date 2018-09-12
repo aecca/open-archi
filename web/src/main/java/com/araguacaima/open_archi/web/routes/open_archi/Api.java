@@ -21,21 +21,21 @@ public class Api implements RouteGroup {
 
     @Override
     public void addRoutes() {
-        before(Commons.EMPTY_PATH, Commons.genericFilter);
+        //before(Commons.EMPTY_PATH, Commons.genericFilter);
         get(Commons.EMPTY_PATH, buildRoute(new BeanBuilder().title("Api"), OpenArchi.PATH + "/apis"), engine);
-        before(Diagrams.PATH, OpenArchi.apiFilter);
+        //before(Diagrams.PATH, OpenArchi.apiFilter);
         path(Diagrams.PATH, diagrams);
         path(Diagrams.PATH + Commons.SEPARATOR_PATH, diagrams);
-        before(Models.PATH, OpenArchi.apiFilter);
+        //before(Models.PATH, OpenArchi.apiFilter);
         path(Models.PATH, models);
         path(Models.PATH + Commons.SEPARATOR_PATH, models);
-        before(Catalogs.PATH, OpenArchi.apiFilter);
+        //before(Catalogs.PATH, OpenArchi.apiFilter);
         path(Catalogs.PATH, catalogs);
         path(Catalogs.PATH + Commons.SEPARATOR_PATH, catalogs);
-        before(Consumers.PATH, OpenArchi.apiFilter);
+        //before(Consumers.PATH, OpenArchi.apiFilter);
         path(Consumers.PATH, consumers);
         path(Consumers.PATH + Commons.SEPARATOR_PATH, consumers);
-        before(Palettes.PATH, OpenArchi.apiFilter);
+        //before(Palettes.PATH, OpenArchi.apiFilter);
         path(Palettes.PATH, palettes);
         path(Palettes.PATH + Commons.SEPARATOR_PATH, palettes);
     }
