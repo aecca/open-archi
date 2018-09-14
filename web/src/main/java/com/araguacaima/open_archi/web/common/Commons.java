@@ -496,19 +496,16 @@ public class Commons {
         response.status(HTTP_OK);
 
         List models;
-        String jsonObjects;
         try {
             models = JPAEntityManagerUtils.executeQuery(type == null ? Taggable.class : type, query, params);
-            jsonObjects = jsonUtils.toJSON(models);
         } catch (IllegalArgumentException ignored) {
             models = JPAEntityManagerUtils.executeQuery(Object[].class, query, params);
-            jsonObjects = jsonUtils.toJSON(models);
         }
 
         contentType = StringUtils.defaultString(contentType, getContentType(request));
         response.header("Content-Type", contentType);
 
-        Object filter_ = getList(request, response, jsonObjects, contentType);
+        Object filter_ = getList(request, response, models, contentType);
         String json = request.pathInfo().replaceFirst("/api/models", "");
         return buildFind(contentType, filter_, json);
     }
