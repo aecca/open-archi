@@ -1,10 +1,7 @@
 package com.araguacaima.open_archi.web.wrapper;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.core.JsonGenerator;
+import com.araguacaima.commons.utils.JsonUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import cz.jirutka.rsql.parser.ast.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,18 +14,25 @@ import java.util.List;
 public class JsonPathRsqlVisitor implements RSQLVisitor<String, String> {
 
     private static Logger log = LoggerFactory.getLogger(JsonPathRsqlVisitor.class);
-    private String json;
+    private Object json;
     private ObjectMapper mapper = new ObjectMapper();
+    private JsonUtils jsonUtils = new JsonUtils();
+    private String filter;
+    public static final String GET_ALL_RESULTS = "id==*";
 
-    public JsonPathRsqlVisitor(String json) {
+    public JsonPathRsqlVisitor(Object json) {
+        this(json, null);
+    }
+
+    public JsonPathRsqlVisitor(Object json, String filter) {
         this.json = json;
-        mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
-        mapper.setVisibility(PropertyAccessor.GETTER, JsonAutoDetect.Visibility.ANY);
-        mapper.setVisibility(PropertyAccessor.SETTER, JsonAutoDetect.Visibility.ANY);
-        mapper.configure(JsonGenerator.Feature.ESCAPE_NON_ASCII, false);
-        mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-        mapper.configure(SerializationFeature.WRITE_ENUMS_USING_TO_STRING, true);
-        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+        this.filter = filter;
+        mapper = jsonUtils.buildObjectMapper(filter);
+    }
+
+    public JsonPathRsqlVisitor(ObjectMapper mapper, Object json) {
+        this.mapper = mapper;
+        this.json = json;
     }
 
     @Override
@@ -48,17 +52,19 @@ public class JsonPathRsqlVisitor implements RSQLVisitor<String, String> {
 
         String selector = node.getSelector();
         Object result = null;
-        List<String> arguments = node.getArguments();
-
-        try {
-            result = JsonParserSpecification.parse(root == null ? json : root,
-                    selector,
-                    arguments.size() == 1 ? arguments.get(0) : arguments,
-                    op);
-        } catch (IOException | InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
-            log.error(e.getMessage());
+        if (GET_ALL_RESULTS.equals(filter)) {
+            result = json;
+        } else {
+            try {
+                List<String> arguments = node.getArguments();
+                result = JsonParserSpecification.parse(root == null ? json : root,
+                        selector,
+                        arguments.size() == 1 ? arguments.get(0) : arguments,
+                        op);
+            } catch (IOException | InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
+                log.error(e.getMessage());
+            }
         }
-
         StringWriter sw = new StringWriter();
         try {
             mapper.writeValue(sw, result);

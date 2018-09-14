@@ -11,6 +11,7 @@ import com.araguacaima.open_archi.web.BeanBuilder;
 import com.araguacaima.open_archi.web.Server;
 import com.araguacaima.open_archi.web.SessionFilter;
 import com.araguacaima.open_archi.web.wrapper.AccountWrapper;
+import com.araguacaima.open_archi.web.wrapper.JsonPathRsqlVisitor;
 import com.araguacaima.open_archi.web.wrapper.RolesWrapper;
 import com.araguacaima.open_archi.web.wrapper.RsqlJsonFilter;
 import org.apache.commons.beanutils.BeanMap;
@@ -501,13 +502,8 @@ public class Commons {
         } catch (IllegalArgumentException ignored) {
             models = JPAEntityManagerUtils.executeQuery(Object[].class, query, params);
         }
+        return getList(request, response, models, contentType);
 
-        contentType = StringUtils.defaultString(contentType, getContentType(request));
-        response.header("Content-Type", contentType);
-
-        Object filter_ = getList(request, response, models, contentType);
-        String json = request.pathInfo().replaceFirst("/api/models", "");
-        return buildFind(contentType, filter_, json);
     }
 
     public static Object getList(Request request, Response response, Collection models) throws IOException, URISyntaxException {
@@ -516,34 +512,27 @@ public class Commons {
 
     public static Object getList(Request request, Response response, Collection objects, String contentType) throws IOException, URISyntaxException {
         response.status(HTTP_OK);
-        String jsonObjects = jsonUtils.toJSON(objects);
-        return getList(request, response, jsonObjects, contentType);
-    }
-
-    public static Object getList(Request request, Response response, String jsonObjects, String contentType) throws IOException, URISyntaxException {
-        response.status(HTTP_OK);
-        Object filter_ = filter(request.queryParams("$filter"), jsonObjects);
-        String fields = request.queryParams("$fields");
-        String json = request.pathInfo().replaceFirst("/api/models", "");
         contentType = StringUtils.defaultString(contentType, getContentType(request));
         response.header("Content-Type", contentType);
-        return buildFind(contentType, filter_, json, fields);
+        String fields = request.queryParams("$fields");
+        String filter = request.queryParams("$filter");
+        Object filteredResult = filter(filter, objects, fields);
+        return filteredResult;
     }
 
-    private static Object buildFind(String contentType, Object object, String json) throws IOException {
-        return buildFind(contentType, object, json, null);
-    }
-
-    private static Object buildFind(String contentType, Object object, String json, String filter) throws IOException {
+/*    private static Object buildFind(Request request, String contentType, Object object) throws IOException {
         if (contentType.equals(HTML_CONTENT_TYPE)) {
             Map<String, Object> jsonMap = new HashMap<>();
+            String json = request.pathInfo().replaceFirst("/api/models", "");
             jsonMap.put("title", StringUtils.capitalize(json));
-            jsonMap.put("json", jsonUtils.toJSON(object, filter));
+            jsonMap.put("json", jsonUtils.toJSON(object));
             return render(jsonMap, "json");
         } else {
-            return object.getClass().equals(String.class) ? object : jsonUtils.toJSON(object);
+            return object.getClass().equals(String.class)
+                    ? object
+                    : jsonUtils.toJSON(object);
         }
-    }
+    }*/
 
     public static String getElement(Request request, Response response, String query, Map<String, Object> params, Class<MetaData> type) throws IOException, URISyntaxException {
         response.status(HTTP_OK);
@@ -563,12 +552,11 @@ public class Commons {
         }
     }
 
-    public static Object filter(String query, String json) throws IOException, URISyntaxException {
-
+    public static Object filter(String query, Object json, String filter) throws IOException, URISyntaxException {
         if (query == null) {
-            return json;
+            return RsqlJsonFilter.rsql(JsonPathRsqlVisitor.GET_ALL_RESULTS, json, filter);
         } else {
-            return RsqlJsonFilter.rsql(query, json);
+            return RsqlJsonFilter.rsql(query, json, filter);
         }
     }
 
@@ -579,10 +567,7 @@ public class Commons {
     }
 
     public static TemplateViewRoute buildRoute(Object bean, String path) {
-        return (request, response) -> {
-
-            return buildModelAndView(request, response, bean, path);
-        };
+        return (request, response) -> buildModelAndView(request, response, bean, path);
     }
 
     public static ModelAndView buildModelAndView(Object bean, String path) {

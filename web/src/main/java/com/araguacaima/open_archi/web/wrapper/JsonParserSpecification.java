@@ -49,17 +49,14 @@ class JsonParserSpecification {
             throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         if (obj instanceof Collection) {
             Collection<Object> list = (Collection<Object>) obj;
-            CollectionUtils.filter(list, new Predicate<Object>() {
-                @Override
-                public boolean evaluate(Object it) {
-                    Object object = null;
-                    try {
-                        object = iter(it, field, value, operator, selectorList);
-                    } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-                        log.error(e.getMessage());
-                    }
-                    return object != null && !object.toString().contains(MARKED_FOR_DELETION);
+            CollectionUtils.filter(list, it -> {
+                Object object = null;
+                try {
+                    object = iter(it, field, value, operator, selectorList);
+                } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+                    log.error(e.getMessage());
                 }
+                return object != null && !object.toString().contains(MARKED_FOR_DELETION);
             });
 
             if (list.size() == 0) {
@@ -88,10 +85,8 @@ class JsonParserSpecification {
         return obj;
     }
 
-    static Object parse(String jsonText, String selector, Object value, ComparisonOperator operator)
+    static Object parse(Object json, String selector, Object value, ComparisonOperator operator)
             throws IOException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-        ObjectMapper mapper = new ObjectMapper();
-        Object json = mapper.readValue(jsonText, Object.class);
         return iter(json, null, value, operator, Arrays.asList(selector.split("\\.")));
     }
 
