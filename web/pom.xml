@@ -80,6 +80,7 @@
             <groupId>com.araguacaima</groupId>
             <artifactId>commons-utils</artifactId>
         </dependency>
+<!--
 
         <dependency>
             <groupId>org.springframework.data</groupId>
@@ -107,7 +108,7 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-aspects</artifactId>
         </dependency>
-        <!-- used for EhCacheCacheManager -->
+        &lt;!&ndash; used for EhCacheCacheManager &ndash;&gt;
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context-support</artifactId>
@@ -136,7 +137,7 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-jms</artifactId>
         </dependency>
-        <!-- Security -->
+        &lt;!&ndash; Security &ndash;&gt;
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-config</artifactId>
@@ -166,6 +167,7 @@
                 </exclusion>
             </exclusions>
         </dependency>
+-->
 
         <!-- Logging with SLF4J & LogBack -->
         <dependency>
@@ -282,6 +284,11 @@
         <dependency>
             <groupId>org.pac4j</groupId>
             <artifactId>pac4j-couch</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.bohnman</groupId>
+            <artifactId>squiggly-filter-jackson</artifactId>
         </dependency>
 
     </dependencies>

@@ -44,7 +44,7 @@ paths:
       tags:
       - Models
       summary: Finds models
-      description: This service supports query by using RSQL expressions
+      description: This service supports query by using RSQL expressions. Also, supports filtering by nested fields
       operationId: get-models
       produces:
       - application/json
@@ -52,6 +52,11 @@ paths:
       - name: "$filter"
         in: query
         description: Filter models according to an RSQL expression
+        required: false
+        type: string
+      - name: "$fields"
+        in: query
+        description: Truncates models output according by keeping only provided fields
         required: false
         type: string
       responses:

@@ -505,10 +505,11 @@ public class Commons {
             jsonObjects = jsonUtils.toJSON(models);
         }
 
-        Object filter_ = filter(request.queryParams("$filter"), jsonObjects);
-        String json = request.pathInfo().replaceFirst("/api/models", "");
         contentType = StringUtils.defaultString(contentType, getContentType(request));
         response.header("Content-Type", contentType);
+
+        Object filter_ = getList(request, response, jsonObjects, contentType);
+        String json = request.pathInfo().replaceFirst("/api/models", "");
         return buildFind(contentType, filter_, json);
     }
 
@@ -516,24 +517,34 @@ public class Commons {
         return getList(request, response, models, null);
     }
 
-    public static Object getList(Request request, Response response, Collection models, String contentType) throws IOException, URISyntaxException {
+    public static Object getList(Request request, Response response, Collection objects, String contentType) throws IOException, URISyntaxException {
         response.status(HTTP_OK);
-        String jsonObjects = jsonUtils.toJSON(models);
+        String jsonObjects = jsonUtils.toJSON(objects);
+        return getList(request, response, jsonObjects, contentType);
+    }
+
+    public static Object getList(Request request, Response response, String jsonObjects, String contentType) throws IOException, URISyntaxException {
+        response.status(HTTP_OK);
         Object filter_ = filter(request.queryParams("$filter"), jsonObjects);
+        String fields = request.queryParams("$fields");
         String json = request.pathInfo().replaceFirst("/api/models", "");
         contentType = StringUtils.defaultString(contentType, getContentType(request));
         response.header("Content-Type", contentType);
-        return buildFind(contentType, filter_, json);
+        return buildFind(contentType, filter_, json, fields);
     }
 
-    private static Object buildFind(String contentType, Object filter_, String json) throws IOException {
+    private static Object buildFind(String contentType, Object object, String json) throws IOException {
+        return buildFind(contentType, object, json, null);
+    }
+
+    private static Object buildFind(String contentType, Object object, String json, String filter) throws IOException {
         if (contentType.equals(HTML_CONTENT_TYPE)) {
             Map<String, Object> jsonMap = new HashMap<>();
             jsonMap.put("title", StringUtils.capitalize(json));
-            jsonMap.put("json", jsonUtils.toJSON(filter_));
+            jsonMap.put("json", jsonUtils.toJSON(object, filter));
             return render(jsonMap, "json");
         } else {
-            return filter_.getClass().equals(String.class) ? filter_ : jsonUtils.toJSON(filter_);
+            return object.getClass().equals(String.class) ? object : jsonUtils.toJSON(object);
         }
     }
 
