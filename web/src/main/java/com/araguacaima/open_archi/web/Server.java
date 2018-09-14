@@ -52,20 +52,20 @@ public class Server {
             e.printStackTrace();
         }
         if (null != jdbcDbUrl) {
-            log.debug("Properties found on system environment...");
-            log.debug("JDBC_DATABASE_URL=" + jdbcDbUrl);
+            log.info("Properties found on system environment...");
+            log.info("JDBC_DATABASE_URL=" + jdbcDbUrl);
             jdbcDbUsername = environment.get("JDBC_DATABASE_USERNAME");
-            log.debug("JDBC_DATABASE_USERNAME=" + jdbcDbUsername);
+            log.info("JDBC_DATABASE_USERNAME=" + jdbcDbUsername);
             jdbcDbPassword = environment.get("JDBC_DATABASE_PASSWORD");
-            log.debug("JDBC_DATABASE_PASSWORD=" + jdbcDbPassword);
+            log.info("JDBC_DATABASE_PASSWORD=" + jdbcDbPassword);
         } else {
-            log.debug("Properties found on config file '" + url.getFile().replace("file:" + File.separator, "") + "'");
+            log.info("Properties found on config file '" + url.getFile().replace("file:" + File.separator, "") + "'");
             jdbcDbUrl = properties.getProperty("JDBC_DATABASE_URL");
-            log.debug("JDBC_DATABASE_URL=" + jdbcDbUrl);
+            log.info("JDBC_DATABASE_URL=" + jdbcDbUrl);
             jdbcDbUsername = properties.getProperty("JDBC_DATABASE_USERNAME");
-            log.debug("JDBC_DATABASE_USERNAME=" + jdbcDbUsername);
+            log.info("JDBC_DATABASE_USERNAME=" + jdbcDbUsername);
             jdbcDbPassword = properties.getProperty("JDBC_DATABASE_PASSWORD");
-            log.debug("JDBC_DATABASE_PASSWORD=" + jdbcDbPassword);
+            log.info("JDBC_DATABASE_PASSWORD=" + jdbcDbPassword);
         }
         jdbcUrlSettings.put("hibernate.connection.url", jdbcDbUrl);
         jdbcUrlSettings.put("hibernate.connection.username", jdbcDbUsername);
@@ -106,7 +106,7 @@ public class Server {
             response.header("Access-Control-Allow-Origin", "*");
             response.header("Access-Control-Request-Method", "*");
             response.header("Access-Control-Allow-Headers", "*");
-            //log.debug("Request for (relative): " + request.uri());
+            //log.info("Request for (relative): " + request.uri());
         });
         path(OpenArchi.PATH, OpenArchi.root);
     }

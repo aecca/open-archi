@@ -18,13 +18,13 @@
     <logger name="com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils" level="${LOG_LEVEL}" additivity="false">
         <appender-ref ref="STDOUT"/>
     </logger>
-    <logger name="com.mchange.v2" level="${LOG_LEVEL}" additivity="false">
+    <logger name="com.mchange.v2" level="ERROR" additivity="false">
         <appender-ref ref="STDOUT"/>
     </logger>
     <logger name="org.apache.catalina" level="${LOG_LEVEL}" additivity="false">
         <appender-ref ref="STDOUT"/>
     </logger>
-    <logger name="org.hibernate" level="${LOG_LEVEL}" additivity="false">
+    <logger name="org.hibernate" level="WARN" additivity="false">
         <appender-ref ref="STDOUT"/>
     </logger>
     <logger name="javax.persistence" level="${LOG_LEVEL}" additivity="false">
