@@ -117,7 +117,7 @@ public class Authentication {
             }
             context.setSessionAttribute("originalRequest", url.toString());
             context.setSessionAttribute("originalQueryParams", queryParams.toString());
-            return buildModelAndView(map, "/open-archi/login");
+            return buildModelAndView(map, "/login");
 
         }
     }

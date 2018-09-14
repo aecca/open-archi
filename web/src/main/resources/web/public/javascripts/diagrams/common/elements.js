@@ -55,7 +55,7 @@ const partContextMenu =
             function (e, obj) {
                 const model = e.diagram.model;
                 const node = obj.part.data;
-                $.get("/open-archi/api/catalogs/element-roles")
+                $.get("/api/catalogs/element-roles")
                     .done(function (data) {
                         let modal = $('#element-role-data');
                         let elementRoleItems = [];
@@ -87,7 +87,7 @@ const partContextMenu =
             function (e, obj) {
                 const model = e.diagram.model;
                 const node = obj.part.data;
-                $.get("/open-archi/api/catalogs/element-roles")
+                $.get("/api/catalogs/element-roles")
                     .done(function (data) {
                         let modal = $('#element-role-data');
                         let elementRoleItems = [];
@@ -234,14 +234,14 @@ const partContextMenuPalette =
                 const model = e.diagram.model;
                 const node = obj.part.data;
                 $.ajax({
-                    url: "/open-archi/api/models/" + node.id,
+                    url: "/api/models/" + node.id,
                     type: 'DELETE',
                     crossDomain: true,
                     contentType: "application/json"
                 }).done((data, textStatus, response) => {
                     if (response.status === 200) {
                         $.ajax({
-                            url: "/open-archi/api/palette/architectures",
+                            url: "/api/palette/architectures",
                             type: 'GET',
                             crossDomain: true,
                             contentType: "application/json",

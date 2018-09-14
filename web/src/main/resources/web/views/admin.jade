@@ -56,7 +56,7 @@ append scripts
 
             function toggleEnable(email, approved) {
                 $.ajax({
-                    url: "/open-archi/admin",
+                    url: "/admin",
                     data: JSON.stringify({
                         email: email,
                         approved: approved
@@ -79,7 +79,7 @@ append scripts
 
             function toggleRole(email, approved, role) {
                 $.ajax({
-                    url: "/open-archi/admin",
+                    url: "/admin",
                     data: JSON.stringify({
                         email: email,
                         approved: approved,

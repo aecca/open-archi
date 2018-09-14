@@ -1,15 +1,14 @@
-package com.araguacaima.open_archi.web.routes.open_archi;
+package com.araguacaima.open_archi.web;
 
 import com.araguacaima.open_archi.persistence.commons.IdName;
 import com.araguacaima.open_archi.persistence.diagrams.architectural.Palette;
 import com.araguacaima.open_archi.persistence.diagrams.core.*;
 import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
-import com.araguacaima.open_archi.web.routes.open_archi.filter.APIFilter;
-import com.araguacaima.open_archi.web.routes.open_archi.filter.AdminAPIFilter;
-import com.araguacaima.open_archi.web.ConfigFactory;
+import com.araguacaima.open_archi.web.filter.APIFilter;
+import com.araguacaima.open_archi.web.filter.AdminAPIFilter;
 import com.araguacaima.open_archi.web.common.Authentication;
 import com.araguacaima.open_archi.web.common.Commons;
-import com.araguacaima.open_archi.web.routes.open_archi.filter.ScopesFilter;
+import com.araguacaima.open_archi.web.filter.ScopesFilter;
 import org.apache.commons.lang3.StringUtils;
 import org.pac4j.core.config.Config;
 import org.pac4j.core.context.DefaultAuthorizers;
@@ -29,14 +28,14 @@ import static com.araguacaima.open_archi.web.common.Security.JWT_SALT;
 
 public class OpenArchi {
 
-    public static final String PATH = "/open-archi";
+    public static final String PATH = "/";
     final static Config config = new ConfigFactory(JWT_SALT, engine).build(deployedServer, PATH, clients);
-    final static CallbackRoute callback = new CallbackRoute(config, null, true);
+    //final static CallbackRoute callback = new CallbackRoute(config, null, true);
     public static Root root = new Root();
-    static Filter strongSecurityFilter = Authentication.buildStrongSecurityFilter(config);
-    static Filter adminApiFilter = new AdminAPIFilter(config, clients, "adminAuthorizer,custom," + DefaultAuthorizers.ALLOW_AJAX_REQUESTS + "," + DefaultAuthorizers.IS_AUTHENTICATED);
-    static Filter apiFilter = new APIFilter(config, clients, "checkHttpMethodAuthorizer,requireAnyRoleAuthorizer,custom," + DefaultAuthorizers.ALLOW_AJAX_REQUESTS + "," + DefaultAuthorizers.IS_AUTHENTICATED);
-    static Filter scopesFilter = new ScopesFilter(config, clients, "filterAllRolesAuthorizer");
+    //static Filter strongSecurityFilter = Authentication.buildStrongSecurityFilter(config);
+    //static Filter adminApiFilter = new AdminAPIFilter(config, clients, "adminAuthorizer,custom," + DefaultAuthorizers.ALLOW_AJAX_REQUESTS + "," + DefaultAuthorizers.IS_AUTHENTICATED);
+    //static Filter apiFilter = new APIFilter(config, clients, "checkHttpMethodAuthorizer,requireAnyRoleAuthorizer,custom," + DefaultAuthorizers.ALLOW_AJAX_REQUESTS + "," + DefaultAuthorizers.IS_AUTHENTICATED);
+    //static Filter scopesFilter = new ScopesFilter(config, clients, "filterAllRolesAuthorizer");
 
     public static void fixCompositeFromItem(Item object) {
         Set<Item> items = reflectionUtils.extractByType(object, Item.class);

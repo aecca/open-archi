@@ -1,5 +1,7 @@
 package com.araguacaima.open_archi.web;
 
+import com.araguacaima.open_archi.persistence.diagrams.core.ElementShape;
+import com.araguacaima.open_archi.persistence.diagrams.core.Palettable;
 import com.araguacaima.open_archi.persistence.meta.Account;
 import com.araguacaima.open_archi.persistence.meta.Avatar;
 import org.pac4j.sparkjava.SparkWebContext;
@@ -9,6 +11,7 @@ import spark.Response;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 public class BeanBuilder {
 
@@ -31,10 +34,10 @@ public class BeanBuilder {
     private boolean authorized = false;
 
     //Editor
-    private String diagramTypes;
-    private String elementTypes;
+    private Map<String, Object> diagramTypes;
+    private List<ElementShape> elementTypes;
     private Collection<ExampleData> examples = new ArrayList<>();
-    private String palette;
+    private Palettable palette;
     private Boolean fullView = null;
 
     //Error
@@ -101,11 +104,11 @@ public class BeanBuilder {
         return authorized;
     }
 
-    public String getDiagramTypes() {
+    public Map<String, Object> getDiagramTypes() {
         return diagramTypes;
     }
 
-    public String getElementTypes() {
+    public List<ElementShape> getElementTypes() {
         return elementTypes;
     }
 
@@ -113,7 +116,7 @@ public class BeanBuilder {
         return examples;
     }
 
-    public String getPalette() {
+    public Palettable getPalette() {
         return palette;
     }
 
@@ -236,17 +239,17 @@ public class BeanBuilder {
         return this;
     }
 
-    public BeanBuilder diagramTypes(String diagramTypes) {
+    public BeanBuilder diagramTypes(Map<String, Object> diagramTypes) {
         this.diagramTypes = diagramTypes;
         return this;
     }
 
-    public BeanBuilder elementTypes(String elementTypes) {
+    public BeanBuilder elementTypes(List<ElementShape> elementTypes) {
         this.elementTypes = elementTypes;
         return this;
     }
 
-    public BeanBuilder palette(String palette) {
+    public BeanBuilder palette(Palettable palette) {
         this.palette = palette;
         return this;
     }

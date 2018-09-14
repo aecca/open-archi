@@ -1,4 +1,4 @@
-package com.araguacaima.open_archi.web.routes.open_archi;
+package com.araguacaima.open_archi.web;
 
 import com.araguacaima.open_archi.persistence.diagrams.architectural.Palette;
 import spark.RouteGroup;

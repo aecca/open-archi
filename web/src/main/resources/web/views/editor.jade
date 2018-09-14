@@ -49,16 +49,16 @@ append scripts
         let myDiagram;
         let myPalette;
         let nodeDataArray = [];
-        if (!{nodeDataArray_}) {
+        if (!{nodeDataArray_} !== undefined) {
             nodeDataArray = !{nodeDataArray_};
         }
         let paletteModelArray = [];
         let palette = !{palette_};
-        if (palette) {
+        if (palette !== undefined) {
             paletteModelArray.pushAll(OpenArchiWrapper.fixCategory(palette.elements));
         }
         let linkDataArray = [];
-        if (!{linkDataArray_}) {
+        if (!{linkDataArray_} !== undefined) {
             linkDataArray = !{linkDataArray_};
         }
         let MINLENGTH = '!{MINLENGTH}';  // this controls the minimum length of any swimlane
@@ -95,10 +95,10 @@ append scripts
             for (var type in diagramTypes) {
                 var active = diagramTypes[type];
                 if (active) {
-                    items.push('<li role="presentation"><a role="menuitem" tabindex="' + i + '" href="/open-archi/editor?type=' + type + '" class="active">' + type + '</a></li>');
+                    items.push('<li role="presentation"><a role="menuitem" tabindex="' + i + '" href="/editor?type=' + type + '" class="active">' + type + '</a></li>');
                     activeText = type;
                 } else {
-                    items.push('<li role="presentation"><a role="menuitem" tabindex="' + i + '" href="/open-archi/editor?type=' + type + '">' + type + '</a></li>');
+                    items.push('<li role="presentation"><a role="menuitem" tabindex="' + i + '" href="/editor?type=' + type + '">' + type + '</a></li>');
                 }
                 i++;
             }
@@ -149,7 +149,7 @@ append scripts
 block extra-menu-elements
     +nav_item_dropdown("#", null, "diagramTypesDropdown")(label="Diagram Type")
     +nav_item_dropdown("#")(label="Menu")
-        +nav_item("/open-archi/editor") New
+        +nav_item("/editor") New
         +nav_item("#")(onclick="validateModel()", id="ValidateModel") Validate
         +nav_item("#")(onclick="confirmAndSave()", id="SaveButton") Save
         +nav_item("#")(onclick="load()", id="LoadButton") Load

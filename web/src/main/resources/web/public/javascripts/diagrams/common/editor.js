@@ -40,7 +40,7 @@ function save(model) {
     myDiagram.isModified = false;
     myDiagram.model.modelData.position = go.Point.stringify(myDiagram.position);
     $.ajax({
-        url: "/open-archi/api/models",
+        url: "/api/models",
         data: JSON.stringify(value_),
         type: 'POST',
         crossDomain: true,
@@ -56,7 +56,7 @@ function save(model) {
     }).done((data, textStatus, response) => {
             if (response.status === 201) {
                 $.ajax({
-                    url: "/open-archi/api/palette/architectures",
+                    url: "/api/palette/architectures",
                     type: 'GET',
                     crossDomain: true,
                     contentType: "application/json",
@@ -75,7 +75,7 @@ function save(model) {
                 )
             } else {
                 $.ajax({
-                    url: "/open-archi/api/models",
+                    url: "/api/models",
                     data: JSON.stringify(value_),
                     type: 'PUT',
                     crossDomain: true,
@@ -122,7 +122,7 @@ function checkAndSave() {
         const elementType = getElementType();
         //const prototype = $("#element-prototype").prop("checked");
         $.ajax({
-            url: "/open-archi/api/catalogs/element-types/" + elementType.type + "/shape",
+            url: "/api/catalogs/element-types/" + elementType.type + "/shape",
             type: 'GET',
             crossDomain: true,
             contentType: "application/json",
@@ -567,7 +567,7 @@ function init() {
     $("#diagramId").autocomplete({
         minLength: 3,
         source: function (request, response) {
-            $.get("/open-archi/api/models", {$filter: "name=='*" + request.term + "*'"})
+            $.get("/api/models", {$filter: "name=='*" + request.term + "*'"})
                 .done(function (data) {
                     const models = [{id: "-1", value: "Select one..."}];
                     dataArray = data;

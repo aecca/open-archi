@@ -1,9 +1,8 @@
-package com.araguacaima.open_archi.web.routes.open_archi;
+package com.araguacaima.open_archi.web;
 
 import com.araguacaima.open_archi.persistence.meta.Account;
 import com.araguacaima.open_archi.persistence.meta.Role;
 import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
-import com.araguacaima.open_archi.web.BeanBuilder;
 import com.araguacaima.open_archi.web.common.Commons;
 import org.apache.commons.collections4.IterableUtils;
 import org.pac4j.core.profile.CommonProfile;
@@ -32,7 +31,7 @@ public class Admin implements RouteGroup {
                 .title("Open-Archi Admin")
                 .accounts(JPAEntityManagerUtils.executeQuery(Account.class, Account.GET_ALL_ACCOUNTS))
                 .roles(Commons.ALL_ROLES)
-                .header(header), OpenArchi.PATH + Admin.PATH), engine);
+                .header(header), Admin.PATH), engine);
         patch(Commons.EMPTY_PATH, (request, response) -> {
             try {
                 Map requestInput = jsonUtils.fromJSON(request.body(), Map.class);

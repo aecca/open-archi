@@ -33639,7 +33639,7 @@ let isAuthenticated = false;
                             className: "btn try-out__btn cancel",
                             onClick: t
                         }, "Cancel") : m.default.createElement("button", {
-                            className: "btn try-out__btn " + (isAuthenticated ? "" : "disabled"),
+                            className: "btn try-out__btn " /*+ (isAuthenticated ? "" : "disabled")*/,
                             onClick: function (e) {
                                 if (e.target.classList.contains('disabled')) {
                                     alert("Please authenticate");

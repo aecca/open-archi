@@ -9,7 +9,7 @@ import com.araguacaima.open_archi.persistence.meta.Role;
 import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
 import com.araguacaima.open_archi.web.BeanBuilder;
 import com.araguacaima.open_archi.web.Server;
-import com.araguacaima.open_archi.web.routes.open_archi.SessionFilter;
+import com.araguacaima.open_archi.web.SessionFilter;
 import com.araguacaima.open_archi.web.wrapper.AccountWrapper;
 import com.araguacaima.open_archi.web.wrapper.RolesWrapper;
 import com.araguacaima.open_archi.web.wrapper.RsqlJsonFilter;
@@ -601,20 +601,13 @@ public class Commons {
                     Class<?> clazz = value.getClass();
                     if (reflectionUtils.isCollectionImplementation(clazz)) {
                         if (Collection.class.isAssignableFrom(clazz)) {
-                            if (((Collection) value).isEmpty()) {
-                                newMap.put(key, null);
-                            } else {
-                                newMap.put(key, value);
-                                newMap.put(key + "_", jsonUtils.toJSON(value));
-                            }
+                            newMap.put(key, value);
+                            newMap.put(key + "_", jsonUtils.toJSON(value));
+
                         } else if (Object[].class.isAssignableFrom(clazz)
                                 || clazz.isArray()) {
-                            if (((Object[]) value).length <= 0) {
-                                newMap.put(key, null);
-                            } else {
-                                newMap.put(key, value);
-                                newMap.put(key + "_", jsonUtils.toJSON(value));
-                            }
+                            newMap.put(key, value);
+                            newMap.put(key + "_", jsonUtils.toJSON(value));
                         }
                     } else {
                         if (reflectionUtils.getFullyQualifiedJavaTypeOrNull(clazz) == null) {

@@ -1,13 +1,11 @@
-package com.araguacaima.open_archi.web.routes.open_archi;
+package com.araguacaima.open_archi.web;
 
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 import com.araguacaima.open_archi.persistence.diagrams.core.Taggable;
 import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
-import com.araguacaima.open_archi.web.BeanBuilder;
 import com.araguacaima.open_archi.web.common.Commons;
 import spark.RouteGroup;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,8 +13,7 @@ import java.util.Map;
 
 import static com.araguacaima.open_archi.web.Server.engine;
 import static com.araguacaima.open_archi.web.common.Commons.*;
-import static com.araguacaima.open_archi.web.routes.open_archi.Samples.getExamples;
-import static spark.Spark.before;
+import static com.araguacaima.open_archi.web.Samples.getExamples;
 import static spark.Spark.get;
 
 public class Editor implements RouteGroup {
@@ -33,15 +30,11 @@ public class Editor implements RouteGroup {
         for (String diagramType : deeplyFulfilledDiagramTypesCollection) {
             diagramTypesMap.put(diagramType, diagramType.equals(ElementKind.ARCHITECTURE_MODEL.name()));
         }
-        try {
-            bean.diagramTypes(jsonUtils.toJSON(diagramTypesMap));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        bean.diagramTypes(diagramTypesMap);
         get(Commons.EMPTY_PATH, (req, res) -> {
             bean.title("Editor");
-            bean.palette(jsonUtils.toJSON(OpenArchi.getArchitecturePalette()));
-            bean.elementTypes(jsonUtils.toJSON(OpenArchi.getElementTypes()));
+            bean.palette(OpenArchi.getArchitecturePalette());
+            bean.elementTypes(OpenArchi.getElementTypes());
             bean.source("basic");
             bean.examples(getExamples());
             bean.nodeDataArray(new ArrayList());
@@ -51,14 +44,14 @@ public class Editor implements RouteGroup {
                 for (String diagramType : deeplyFulfilledDiagramTypesCollection) {
                     diagramTypesMap.put(diagramType, diagramType.equals(type));
                 }
-                bean.diagramTypes(jsonUtils.toJSON(diagramTypesMap));
+                bean.diagramTypes(diagramTypesMap);
             }
             if (req.queryParams("fullView") != null) {
                 bean.fullView(true);
             } else {
                 bean.fullView(null);
             }
-            return buildModelAndView(req, res, bean, OpenArchi.PATH + "/editor");
+            return buildModelAndView(req, res, bean, "/editor");
         }, engine);
         get("/:uuid", (request, response) -> {
             try {
@@ -72,9 +65,9 @@ public class Editor implements RouteGroup {
                     bean.nodeDataArray(nodeDataArray);
                     bean.linkDataArray(linkDataArray);
                 }
-                bean.palette(jsonUtils.toJSON(OpenArchi.getArchitecturePalette()));
+                bean.palette(OpenArchi.getArchitecturePalette());
                 bean.source("basic");
-                return buildModelAndView(request, response, bean, OpenArchi.PATH + "/editor");
+                return buildModelAndView(request, response, bean, "/editor");
             } catch (Exception ex) {
                 bean.title("Error");
                 bean.message(ex.getMessage());

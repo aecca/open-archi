@@ -1,11 +1,10 @@
-package com.araguacaima.open_archi.web.routes.open_archi;
+package com.araguacaima.open_archi.web;
 
 import com.araguacaima.open_archi.persistence.commons.IdName;
 import com.araguacaima.open_archi.persistence.diagrams.core.*;
 import com.araguacaima.open_archi.persistence.meta.Account;
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
-import com.araguacaima.open_archi.web.DBUtil;
 import com.araguacaima.open_archi.web.common.Commons;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.IterableUtils;

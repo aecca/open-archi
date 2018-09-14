@@ -3,8 +3,6 @@ package com.araguacaima.open_archi.web;
 import com.araguacaima.commons.utils.MapUtils;
 import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
 import com.araguacaima.open_archi.web.common.Commons;
-import com.araguacaima.open_archi.web.routes.Index;
-import com.araguacaima.open_archi.web.routes.open_archi.OpenArchi;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.neuland.jade4j.JadeConfiguration;
@@ -76,7 +74,7 @@ public class Server {
         jdbcUrlSettings.put("hibernate.default_schema", "Diagrams");
         jdbcUrlSettings.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQL95Dialect");
         jdbcUrlSettings.put("hibernate.connection.driver_class", "org.postgresql.Driver");
-        jdbcUrlSettings.put("hibernate.show_sql", ((log.isDebugEnabled() || log.isInfoEnabled()) ? "true" : "false"));
+        jdbcUrlSettings.put("hibernate.show_sql", log.isDebugEnabled() ? "true" : "false");
         jdbcUrlSettings.put("hibernate.flushMode", "FLUSH_AUTO");
         jdbcUrlSettings.put("hibernate.hbm2ddl.auto", "update");
         jdbcUrlSettings.put("packagesToScan", "com.araguacaima.open_archi.persistence");
@@ -110,17 +108,7 @@ public class Server {
             response.header("Access-Control-Allow-Headers", "*");
             //log.debug("Request for (relative): " + request.uri());
         });
-        path(Commons.DEFAULT_PATH, Index.root);
-        path(Index.About.PATH, Index.about);
-        path(Index.About.PATH + Commons.SEPARATOR_PATH, Index.about);
-        path(Index.Contact.PATH, Index.contact);
-        path(Index.Contact.PATH + Commons.SEPARATOR_PATH, Index.contact);
-        path(Index.Braas.PATH, Index.braas);
-        path(Index.Braas.PATH + Commons.SEPARATOR_PATH, Index.braas);
-        path(Index.CompositeSpecification.PATH, Index.compositeSpecification);
-        path(Index.CompositeSpecification.PATH + Commons.SEPARATOR_PATH, Index.compositeSpecification);
         path(OpenArchi.PATH, OpenArchi.root);
-        path(OpenArchi.PATH + Commons.SEPARATOR_PATH, OpenArchi.root);
     }
 }
 

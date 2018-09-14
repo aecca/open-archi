@@ -1,4 +1,4 @@
-extends main
+extends components/main
 
 append styles
     // Custom styles for this template
@@ -14,7 +14,7 @@ append scripts
     script(src='/javascripts/jquery.json-view.min.js')
     script(src='/javascripts/w3color.js')
 
-mixin navbar-home(name, text, id, style, href, image, textColor)
+mixin navbar-open-archi(name, text, id, style, href, image, textColor)
     - if (!style) var style = "default";
     - if (!href) var href = "#";
     nav( role="navigation", class=["navbar", "navbar-fixed-top", "navbar-" + style], id=name)
@@ -36,21 +36,21 @@ mixin navbar-home(name, text, id, style, href, image, textColor)
                                 h2= text
             .collapse.navbar-collapse( id=id )
                 ul.nav.navbar-nav
-                    +nav_item_dropdown("#","active")(label="Open Source")
-                        +nav_item("/open-archi", "active") Open-Archi
-                        +nav_divider
-                        +nav_item("/composite-specification") Composite Specification
-                        +nav_item("/raas") Rules as a Service
+                    block extra-menu-elements
                 ul.nav.navbar-nav.navbar-right
                     block
 
 block body
     // Fixed navbar
-    +navbar-home("Araguacaima site", null, "navbar", null, "/", "/images/amma-logo-full.png", "#1E97C2")(width="220px", height="50px")
-        +nav_item("/about") About
-        +nav_item("/contact") Contact
+    +navbar-open-archi("menu", null, "navbar", null, "/", "/images/open-archi.png", "#1E97C2")(width="90px", height="50px")
+        if authorized
+            +nav_item("#")= login
+            +nav_item("#")(style='padding-top: 8px; padding-bottom: 0')
+                +img-thumbnail(avatar, 'Profile avatar', 'padding: 0; margin: 0')(width="35px", height="35px")
+            li
+                a.btn.btn-danger(href='/logout', style='padding: 5px; color: white; margin-top: 8px; font-weight: bold;') Logout
     block content
 
 block footer
     footer.footer
-        p © araguacaima 2018
+        p © open-archi 2018

@@ -1,7 +1,7 @@
-package com.araguacaima.open_archi.web.routes.open_archi.filter;
+package com.araguacaima.open_archi.web.filter;
 
-import com.araguacaima.open_archi.persistence.meta.Account;
-import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
+import com.araguacaima.open_archi.web.common.Commons;
+import com.araguacaima.open_archi.web.common.FilterAllRolesAuthorizer;
 import org.pac4j.core.config.Config;
 import org.pac4j.core.engine.DefaultSecurityLogic;
 import org.pac4j.core.engine.SecurityLogic;
@@ -13,14 +13,13 @@ import spark.Filter;
 import spark.Request;
 import spark.Response;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static com.araguacaima.open_archi.web.common.Commons.findAndFulfillProfile;
 import static org.pac4j.core.util.CommonHelper.assertNotNull;
 import static spark.Spark.halt;
 
-public class AdminAPIFilter implements Filter {
+public class ScopesFilter implements Filter {
 
     private static final String SECURITY_GRANTED_ACCESS = "SECURITY_GRANTED_ACCESS";
 
@@ -38,19 +37,19 @@ public class AdminAPIFilter implements Filter {
 
     private Boolean multiProfile;
 
-    public AdminAPIFilter(final Config config, final String clients) {
+    public ScopesFilter(final Config config, final String clients) {
         this(config, clients, null, null);
     }
 
-    public AdminAPIFilter(final Config config, final String clients, final String authorizers) {
+    public ScopesFilter(final Config config, final String clients, final String authorizers) {
         this(config, clients, authorizers, null);
     }
 
-    public AdminAPIFilter(final Config config, final String clients, final String authorizers, final String matchers) {
+    public ScopesFilter(final Config config, final String clients, final String authorizers, final String matchers) {
         this(config, clients, authorizers, matchers, null);
     }
 
-    public AdminAPIFilter(final Config config, final String clients, final String authorizers, final String matchers, final Boolean multiProfile) {
+    public ScopesFilter(final Config config, final String clients, final String authorizers, final String matchers, final Boolean multiProfile) {
         this.config = config;
         this.clients = clients;
         this.authorizers = authorizers;
@@ -64,19 +63,19 @@ public class AdminAPIFilter implements Filter {
         assertNotNull("securityLogic", securityLogic);
         assertNotNull("config", config);
         final SparkWebContext context = new SparkWebContext(request, response, config.getSessionStore());
-        Object result;
         CommonProfile profile = findAndFulfillProfile(context);
-        if (profile != null) {
-            Account account;
-            String email = profile.getEmail();
-            Map<String, Object> params = new HashMap<>();
-            params.put(Account.PARAM_EMAIL, email);
-            account = JPAEntityManagerUtils.findByQuery(Account.class, Account.FIND_BY_EMAIL_AND_ENABLED, params);
-            if (account == null || !account.isSuperuser()) {
-                logger.debug("Halt the request processing. User is no superuser");
-                // stop the processing if no SECURITY_GRANTED_ACCESS has been received
-                throw halt();
+        Object result;
+        String[] scope = (String[]) context.getSessionAttribute("scope");
+        Set<String> scopes = null;
+        if (scope != null) {
+            FilterAllRolesAuthorizer<?> filterAllRolesAuthorizer = (FilterAllRolesAuthorizer) config.getAuthorizers().get("filterAllRolesAuthorizer");
+            List<String> scopesList = new ArrayList<>();
+            for (int i = 0; scope.length > i; i++) {
+                String scope_ = scope[i];
+                scopesList.addAll(Arrays.asList(scope_.split(" ")));
             }
+            scopes = new HashSet<>(scopesList);
+            filterAllRolesAuthorizer.setElements(scopes);
         }
         result = securityLogic.perform(context, this.config,
                 (ctx, parameters) -> SECURITY_GRANTED_ACCESS, config.getHttpActionAdapter(),
@@ -84,6 +83,11 @@ public class AdminAPIFilter implements Filter {
         if (result == SECURITY_GRANTED_ACCESS) {
             // It means that the access is granted: continue
             logger.debug("Received SECURITY_GRANTED_ACCESS -> continue");
+            Set<String> rejectedScopes = (Set<String>) profile.getAuthenticationAttributes().get(Commons.REJECTED_SCOPES);
+            if (rejectedScopes != null && !rejectedScopes.isEmpty()) {
+                if (scopes != null && !scopes.isEmpty())
+                    logger.warn("Not all scopes are accepted. Requested scopes: " + scopes + ". Rejected scopes: " + rejectedScopes);
+            }
         } else {
             logger.debug("Halt the request processing");
             // stop the processing if no SECURITY_GRANTED_ACCESS has been received

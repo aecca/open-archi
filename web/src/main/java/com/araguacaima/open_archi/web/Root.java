@@ -1,6 +1,5 @@
-package com.araguacaima.open_archi.web.routes.open_archi;
+package com.araguacaima.open_archi.web;
 
-import com.araguacaima.open_archi.web.BeanBuilder;
 import com.araguacaima.open_archi.web.common.Authentication;
 import org.apache.commons.lang3.StringUtils;
 import org.pac4j.sparkjava.LogoutRoute;
@@ -10,7 +9,7 @@ import static com.araguacaima.open_archi.web.Server.*;
 import static com.araguacaima.open_archi.web.common.Authentication.form;
 import static com.araguacaima.open_archi.web.common.Commons.*;
 import static com.araguacaima.open_archi.web.common.Security.forceLogin;
-import static com.araguacaima.open_archi.web.routes.open_archi.OpenArchi.config;
+import static com.araguacaima.open_archi.web.OpenArchi.config;
 import static spark.Spark.*;
 
 public class Root implements RouteGroup {
@@ -23,7 +22,7 @@ public class Root implements RouteGroup {
 
     @Override
     public void addRoutes() {
-        get(StringUtils.EMPTY, buildRoute(new BeanBuilder().title(OPEN_ARCHI), OpenArchi.PATH + "/home"), engine);
+        get(StringUtils.EMPTY, buildRoute(new BeanBuilder().title(OPEN_ARCHI), "/home"), engine);
 /*        before("/login/google", OpenArchi.scopesFilter);
         get("/login/google", Authentication.authGoogle, engine);
         get("/login", Authentication.login, engine);
@@ -39,13 +38,13 @@ public class Root implements RouteGroup {
         path(Prototyper.PATH, prototyper);
         path(Admin.PATH, admin);
 
-        final LogoutRoute localLogout = new LogoutRoute(config, "/open-archi");
+        /*final LogoutRoute localLogout = new LogoutRoute(config, "/");
         localLogout.setDestroySession(true);
         localLogout.setLocalLogout(false);
         localLogout.setCentralLogout(true);
         get("/logout", localLogout);
         final LogoutRoute centralLogout = new LogoutRoute(config);
-        centralLogout.setDefaultUrl("http://" + deployedServer + "/open-archi");
+        centralLogout.setDefaultUrl("http://" + deployedServer + "");
         centralLogout.setLogoutUrlPattern("http://" + deployedServer + "/.*");
         centralLogout.setLocalLogout(false);
         centralLogout.setCentralLogout(true);
@@ -54,7 +53,7 @@ public class Root implements RouteGroup {
         get("/force-login", (rq, rs) -> forceLogin(config, rq, rs));
 
         get("/jwt", Authentication::jwt, engine);
-        get("/login", (rq, rs) -> form(OpenArchi.config), engine);
+        get("/login", (rq, rs) -> form(OpenArchi.config), engine);*/
 
 
     }

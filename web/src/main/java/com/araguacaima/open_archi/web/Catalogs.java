@@ -1,4 +1,4 @@
-package com.araguacaima.open_archi.web.routes.open_archi;
+package com.araguacaima.open_archi.web;
 
 import com.araguacaima.open_archi.persistence.commons.IdName;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
@@ -6,7 +6,6 @@ import com.araguacaima.open_archi.persistence.diagrams.core.ElementRole;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementShape;
 import com.araguacaima.open_archi.persistence.diagrams.core.Item;
 import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
-import com.araguacaima.open_archi.web.DBUtil;
 import com.araguacaima.open_archi.web.common.Commons;
 import spark.RouteGroup;
 import spark.route.HttpMethod;

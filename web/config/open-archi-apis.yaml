@@ -8,8 +8,8 @@ info:
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-host: "@HOST@"
-basePath: "/open-archi/api"
+host: ${DEPLOYED_SERVER}
+basePath: /api
 tags:
 - name: Models
   description: Set of functionalities related to model agnostically to its type
@@ -3195,8 +3195,8 @@ paths:
 securityDefinitions:
   openarchi_auth:
     type: oauth2
-    authorizationUrl: http://${DEPLOYED_SERVER}/open-archi/login
-    tokenUrl: http://${DEPLOYED_SERVER}/open-archi/oauth/token
+    authorizationUrl: http://${DEPLOYED_SERVER}/login
+    tokenUrl: http://${DEPLOYED_SERVER}/oauth/token
     flow: implicit
     scopes:
       delete:model: Delete a model
