@@ -18,17 +18,21 @@ import java.util.Set;
 @DiscriminatorValue(value = "ArchitectureModel")
 @NamedQueries({
         @NamedQuery(name = Model.GET_ALL_MODEL_PROTOTYPES,
-                query = "select a from com.araguacaima.open_archi.persistence.diagrams.architectural.Model a where a.prototype=true"),
+                query = "select m from com.araguacaima.open_archi.persistence.diagrams.architectural.Model m where m.prototype=true"),
         @NamedQuery(name = Model.GET_ALL_RELATIONSHIPS,
-                query = "select a.relationships from com.araguacaima.open_archi.persistence.diagrams.architectural.Model a where a.id=:id"),
+                query = "select m.relationships from com.araguacaima.open_archi.persistence.diagrams.architectural.Model m where m.id=:id"),
         @NamedQuery(name = Model.GET_ALL_CONSUMERS_FOR_MODEL,
-                query = "select a.consumers from com.araguacaima.open_archi.persistence.diagrams.architectural.Model a where a.id=:id"),
+                query = "select m.consumers from com.araguacaima.open_archi.persistence.diagrams.architectural.Model m where m.id=:id"),
         @NamedQuery(name = Model.GET_CONSUMER_FOR_MODEL,
-                query = "select c from com.araguacaima.open_archi.persistence.diagrams.architectural.Model a JOIN a.consumers c where a.id=:id and c.id=:cid"),
+                query = "select c from com.araguacaima.open_archi.persistence.diagrams.architectural.Model m JOIN m.consumers c where m.id=:id and c.id=:cid"),
         @NamedQuery(name = Model.GET_ALL_SYSTEMS_FROM_MODEL,
-                query = "select a.systems from com.araguacaima.open_archi.persistence.diagrams.architectural.Model a where a.id=:id"),
+                query = "select m.systems from com.araguacaima.open_archi.persistence.diagrams.architectural.Model m where m.id=:id"),
         @NamedQuery(name = Model.GET_SYSTEM,
-                query = "select s from com.araguacaima.open_archi.persistence.diagrams.architectural.Model a JOIN a.systems s where a.id=:id and s.id=:sid")})
+                query = "select s from com.araguacaima.open_archi.persistence.diagrams.architectural.Model m JOIN m.systems s where m.id=:id and s.id=:sid"),
+        @NamedQuery(name = Model.GET_MODELS_USAGE_BY_ID,
+                query = "SELECT m from com.araguacaima.open_archi.persistence.diagrams.architectural.Model m"),
+        @NamedQuery(name = Model.GET_MODELS_BY_NAME,
+                query = "select a from com.araguacaima.open_archi.persistence.diagrams.architectural.Model a where a.name=:name")})
 public class Model extends ModelElement implements DiagramableElement<Model> {
 
     public static final String GET_ALL_MODEL_PROTOTYPES = "get.all.model.prototypes";
@@ -37,6 +41,8 @@ public class Model extends ModelElement implements DiagramableElement<Model> {
     public static final String GET_CONSUMER_FOR_MODEL = "get.consumer.for.model";
     public static final String GET_ALL_SYSTEMS_FROM_MODEL = "get.all.systems.from.model";
     public static final String GET_SYSTEM = "get.system";
+    public static final String GET_MODELS_USAGE_BY_ID = "get.models.usage.by.id";
+    public static final String GET_MODELS_BY_NAME = "get.models.by.name";
 
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",

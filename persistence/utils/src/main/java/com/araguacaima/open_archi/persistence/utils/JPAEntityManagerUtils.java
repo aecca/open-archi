@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import javax.persistence.*;
 import java.lang.reflect.Field;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -41,20 +42,40 @@ public class JPAEntityManagerUtils {
         }
     }
 
-    public static void init(Map map) {
+    public static void init(Map<String, String> map) {
+        String jdbcDbUrl = map.get("JDBC_DATABASE_URL");
+        String jdbcDbUsername;
+        String jdbcDbPassword;
+        log.info("JDBC_DATABASE_URL=" + jdbcDbUrl);
+        jdbcDbUsername = map.get("JDBC_DATABASE_USERNAME");
+        log.info("JDBC_DATABASE_USERNAME=" + jdbcDbUsername);
+        jdbcDbPassword = map.get("JDBC_DATABASE_PASSWORD");
+        log.info("JDBC_DATABASE_PASSWORD=" + jdbcDbPassword);
+        map.put("hibernate.connection.url", jdbcDbUrl);
+        map.put("hibernate.connection.username", jdbcDbUsername);
+        map.put("hibernate.connection.password", jdbcDbPassword);
+        map.put("hibernate.archive.autodetection", "class");
+        map.put("hibernate.default_schema", "Diagrams");
+        map.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQL95Dialect");
+        map.put("hibernate.connection.driver_class", "org.postgresql.Driver");
+        map.put("hibernate.show_sql", log.isDebugEnabled() ? "true" : "false");
+        map.put("hibernate.flushMode", "FLUSH_AUTO");
+        map.put("hibernate.hbm2ddl.auto", "update");
+        map.put("packagesToScan", "com.araguacaima.open_archi.persistence");
+        map.put("hibernate.connection.provider_class", "org.hibernate.c3p0.internal.C3P0ConnectionProvider");
+        map.put("hibernate.c3p0.min_size", "8");
+        map.put("hibernate.c3p0.max_size", "30");
+        map.put("hibernate.c3p0.timeout", "300");
+        map.put("hibernate.c3p0.max_statements", "50");
+        map.put("hibernate.c3p0.idle_test_period", "3000");
         entityManagerFactory = Persistence.createEntityManagerFactory("open-archi", map);
         entityManager = entityManagerFactory.createEntityManager();
-        initializeDatabase();
-    }
-
-    public static void initializeDatabase() {
         entityManager.unwrap(Session.class);
     }
 
     public static EntityManager getEntityManager() {
         return entityManager;
     }
-
 
     public static <T> T find(Class<T> clazz, Object key) {
         return entityManager.find(clazz, key);

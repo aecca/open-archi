@@ -21,11 +21,15 @@ import java.util.Set;
 @PersistenceUnit(unitName = "open-archi")
 @NamedQueries({
         @NamedQuery(name = Container.GET_ALL_CONTAINERS,
-                query = "select a from Container a")})
+                query = "select a from Container a"),
+        @NamedQuery(name = Container.GET_CONTAINERS_USAGE_BY_ID,
+        query = "select c from Container c where c.components in (:" + Container.COMPONENT_IDS_PARAM + ")")})
 public class Container extends GroupStaticElement {
 
     public static final String GET_ALL_CONTAINERS = "get.all.containers";
     public static final String GET_ALL_COMPONENTS_FROM_CONTAINER = "get.all.components.from.container";
+    public static final String GET_CONTAINERS_USAGE_BY_ID = "get.container.usage.by.id";
+    public static final String COMPONENT_IDS_PARAM = "componentIds";
     @Column
     private String technology;
 
