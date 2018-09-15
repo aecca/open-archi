@@ -1,6 +1,9 @@
 package com.araguacaima.open_archi.persistence.diagrams.architectural;
 
-import com.araguacaima.open_archi.persistence.diagrams.core.*;
+import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
+import com.araguacaima.open_archi.persistence.diagrams.core.DiagramableElement;
+import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
+import com.araguacaima.open_archi.persistence.diagrams.core.ModelElement;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
@@ -17,7 +20,7 @@ import java.util.Set;
         @NamedQuery(name = Model.GET_ALL_MODEL_PROTOTYPES,
                 query = "select a from com.araguacaima.open_archi.persistence.diagrams.architectural.Model a where a.prototype=true"),
         @NamedQuery(name = Model.GET_ALL_RELATIONSHIPS,
-        query = "select a.relationships from com.araguacaima.open_archi.persistence.diagrams.architectural.Model a where a.id=:id"),
+                query = "select a.relationships from com.araguacaima.open_archi.persistence.diagrams.architectural.Model a where a.id=:id"),
         @NamedQuery(name = Model.GET_ALL_CONSUMERS_FOR_MODEL,
                 query = "select a.consumers from com.araguacaima.open_archi.persistence.diagrams.architectural.Model a where a.id=:id"),
         @NamedQuery(name = Model.GET_CONSUMER_FOR_MODEL,
@@ -34,16 +37,6 @@ public class Model extends ModelElement implements DiagramableElement<Model> {
     public static final String GET_CONSUMER_FOR_MODEL = "get.consumer.for.model";
     public static final String GET_ALL_SYSTEMS_FROM_MODEL = "get.all.systems.from.model";
     public static final String GET_SYSTEM = "get.system";
-
-    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
-    @JoinTable(schema = "DIAGRAMS",
-            name = "Architecture_Model_Relationships",
-            joinColumns = {@JoinColumn(name = "Architecture_Model_Id",
-                    referencedColumnName = "Id")},
-            inverseJoinColumns = {@JoinColumn(name = "Relationship_Id",
-                    referencedColumnName = "Id")})
-    @Cascade(org.hibernate.annotations.CascadeType.REMOVE)
-    private Set<Relationship> relationships = new LinkedHashSet<>();
 
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
@@ -111,6 +104,46 @@ public class Model extends ModelElement implements DiagramableElement<Model> {
 
     public void setLayers(Set<Layer> layers) {
         this.layers = layers;
+    }
+
+    public Set<Consumer> getConsumers() {
+        return consumers;
+    }
+
+    public void setConsumers(Set<Consumer> people) {
+        this.consumers = people;
+    }
+
+    public Set<System> getSystems() {
+        return systems;
+    }
+
+    public void setSystems(Set<System> systems) {
+        this.systems = systems;
+    }
+
+    public Set<DeploymentNode> getDeploymentNodes() {
+        return deploymentNodes;
+    }
+
+    public void setDeploymentNodes(Set<DeploymentNode> deploymentNodes) {
+        this.deploymentNodes = deploymentNodes;
+    }
+
+    public Set<Container> getContainers() {
+        return containers;
+    }
+
+    public void setContainers(Set<Container> containers) {
+        this.containers = containers;
+    }
+
+    public Set<Component> getComponents() {
+        return components;
+    }
+
+    public void setComponents(Set<Component> components) {
+        this.components = components;
     }
 
     @Override
@@ -194,45 +227,5 @@ public class Model extends ModelElement implements DiagramableElement<Model> {
                 this.deploymentNodes.add(newDeploymentNode);
             }
         }
-    }
-
-    public Set<Consumer> getConsumers() {
-        return consumers;
-    }
-
-    public void setConsumers(Set<Consumer> people) {
-        this.consumers = people;
-    }
-
-    public Set<System> getSystems() {
-        return systems;
-    }
-
-    public void setSystems(Set<System> systems) {
-        this.systems = systems;
-    }
-
-    public Set<DeploymentNode> getDeploymentNodes() {
-        return deploymentNodes;
-    }
-
-    public void setDeploymentNodes(Set<DeploymentNode> deploymentNodes) {
-        this.deploymentNodes = deploymentNodes;
-    }
-
-    public Set<Container> getContainers() {
-        return containers;
-    }
-
-    public void setContainers(Set<Container> containers) {
-        this.containers = containers;
-    }
-
-    public Set<Component> getComponents() {
-        return components;
-    }
-
-    public void setComponents(Set<Component> components) {
-        this.components = components;
     }
 }

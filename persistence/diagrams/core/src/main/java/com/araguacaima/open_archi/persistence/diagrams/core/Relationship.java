@@ -1,6 +1,5 @@
 package com.araguacaima.open_archi.persistence.diagrams.core;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
