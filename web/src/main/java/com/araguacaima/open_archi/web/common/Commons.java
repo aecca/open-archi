@@ -14,9 +14,6 @@ import com.araguacaima.open_archi.web.wrapper.AccountWrapper;
 import com.araguacaima.open_archi.web.wrapper.JsonPathRsqlVisitor;
 import com.araguacaima.open_archi.web.wrapper.RolesWrapper;
 import com.araguacaima.open_archi.web.wrapper.RsqlJsonFilter;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.bohnman.squiggly.Squiggly;
-import com.github.bohnman.squiggly.util.SquigglyUtils;
 import org.apache.commons.beanutils.BeanMap;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.IterableUtils;
@@ -517,10 +514,29 @@ public class Commons {
         response.status(HTTP_OK);
         contentType = StringUtils.defaultString(contentType, getContentType(request));
         response.header("Content-Type", contentType);
-        String fields = request.queryParams("$fields");
-        String filter = request.queryParams("$filter");
+        String fieldsToInclude = request.queryParams("fieldsToInclude");
+        String fieldsToExclude = request.queryParams("fieldsToExclude");
+        StringBuilder fields = new StringBuilder();
+        if (StringUtils.isNotBlank(fieldsToInclude)) {
+            fields.append(fieldsToInclude);
+        }
+        if (StringUtils.isNotBlank(fieldsToExclude)) {
+            if (StringUtils.isNotBlank(fieldsToInclude)) {
+                fields.append(",");
+            }
+            String[] splittedFieldsToExclude = fieldsToExclude.split(",");
+            List<String> fieldsArray = new ArrayList<>();
+            for (int i = 0; splittedFieldsToExclude.length > i; i++) {
+                String fieldToExclude = splittedFieldsToExclude[i].trim();
+                if (!fieldToExclude.startsWith("-")) {
+                    fieldsArray.add("-" + fieldToExclude);
+                }
+            }
+            fields.append(StringUtils.join(fieldsArray, ","));
+        }
+        String filter = request.queryParams("query");
 
-        return filter(filter, objects, fields);
+        return filter(filter, objects, fields.toString());
     }
 
     public static String getElement(Request request, Response response, String query, Map<String, Object> params, Class<MetaData> type) throws IOException, URISyntaxException {

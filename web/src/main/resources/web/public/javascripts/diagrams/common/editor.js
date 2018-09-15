@@ -567,7 +567,7 @@ function init() {
     $("#diagramId").autocomplete({
         minLength: 3,
         source: function (request, response) {
-            $.get("/api/models", {$filter: "name=='*" + request.term + "*'"})
+            $.get("/api/models", {query: "name=='*" + request.term + "*'"})
                 .done(function (data) {
                     const models = [{id: "-1", value: "Select one..."}];
                     dataArray = data;

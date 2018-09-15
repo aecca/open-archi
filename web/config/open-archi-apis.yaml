@@ -49,14 +49,19 @@ paths:
       produces:
       - application/json
       parameters:
-      - name: "$filter"
+      - name: "query"
         in: query
         description: Filter models according to an RSQL expression
         required: false
         type: string
-      - name: "$fields"
+      - name: "fieldsToInclude"
         in: query
-        description: Truncates models output according by keeping only provided fields
+        description: Truncates models output by keeping only provided comma separated fields. Nested fields are permitted
+        required: false
+        type: string
+      - name: "fieldsToExclude"
+        in: query
+        description: Truncates models output by excluding provided comma separated fields. Nested fields are permitted
         required: false
         type: string
       responses:
@@ -395,7 +400,7 @@ paths:
         description: ID of the model to return
         required: true
         type: string
-      - name: "$filter"
+      - name: "query"
         in: query
         description: Filter children of a model according to an RSQL expression
         required: false
@@ -775,7 +780,7 @@ paths:
       produces:
       - application/json
       parameters:
-      - name: "$filter"
+      - name: "query"
         in: query
         description: Filter models according to an RSQL expression
         required: false
@@ -959,7 +964,7 @@ paths:
         description: ID of the model to return
         required: true
         type: string
-      - name: "$filter"
+      - name: "query"
         in: query
         description: Filter consumers of a model according to an RSQL expression
         required: false
@@ -1129,7 +1134,7 @@ paths:
       produces:
       - application/json
       parameters:
-      - name: "$filter"
+      - name: "query"
         in: query
         description: Filter systems according to an RSQL expression
         required: false
@@ -1285,7 +1290,7 @@ paths:
         description: ID of the system
         required: true
         type: string
-      - name: "$filter"
+      - name: "query"
         in: query
         description: Filter systems of a system according to an RSQL expression
         required: false
@@ -1352,7 +1357,7 @@ paths:
         description: ID of the system
         required: true
         type: string
-      - name: "$filter"
+      - name: "query"
         in: query
         description: Filter containers of a system according to an RSQL expression
         required: false
@@ -1419,7 +1424,7 @@ paths:
         description: ID of the system
         required: true
         type: string
-      - name: "$filter"
+      - name: "query"
         in: query
         description: Filter components of a system according to an RSQL expression
         required: false
@@ -1481,7 +1486,7 @@ paths:
       produces:
       - application/json
       parameters:
-      - name: "$filter"
+      - name: "query"
         in: query
         description: Filter containers according to an RSQL expression
         required: false
@@ -1636,7 +1641,7 @@ paths:
         description: ID of the container
         required: true
         type: string
-      - name: "$filter"
+      - name: "query"
         in: query
         description: Filter components of a container according to an RSQL expression
         required: false
@@ -1698,7 +1703,7 @@ paths:
       produces:
       - application/json
       parameters:
-      - name: "$filter"
+      - name: "query"
         in: query
         description: Filter components according to an RSQL expression
         required: false
@@ -1854,7 +1859,7 @@ paths:
         description: ID of the model to return
         required: true
         type: string
-      - name: "$filter"
+      - name: "query"
         in: query
         description: Filter containers of a system within a model according to an RSQL expression
         required: false
@@ -2034,7 +2039,7 @@ paths:
         description: ID of the system
         required: true
         type: string
-      - name: "$filter"
+      - name: "query"
         in: query
         description: Filter containers of a system within a model according to an RSQL expression
         required: false
@@ -2238,7 +2243,7 @@ paths:
       produces:
       - application/json
       parameters:
-      - name: "$filter"
+      - name: "query"
         in: query
         description: Filter models according to an RSQL expression
         required: false
@@ -2307,7 +2312,7 @@ paths:
       produces:
       - application/json
       parameters:
-      - name: "$filter"
+      - name: "query"
         in: query
         description: Filter models according to an RSQL expression
         required: false
@@ -2376,7 +2381,7 @@ paths:
       produces:
       - application/json
       parameters:
-      - name: "$filter"
+      - name: "query"
         in: query
         description: Filter models according to an RSQL expression
         required: false
@@ -2445,7 +2450,7 @@ paths:
       produces:
       - application/json
       parameters:
-      - name: "$filter"
+      - name: "query"
         in: query
         description: Filter models according to an RSQL expression
         required: false
@@ -2514,7 +2519,7 @@ paths:
       produces:
       - application/json
       parameters:
-      - name: "$filter"
+      - name: "query"
         in: query
         description: Filter consumers according to an RSQL expression
         required: false
