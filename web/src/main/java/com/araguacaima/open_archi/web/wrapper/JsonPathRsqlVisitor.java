@@ -15,9 +15,8 @@ public class JsonPathRsqlVisitor implements RSQLVisitor<String, String> {
 
     private static Logger log = LoggerFactory.getLogger(JsonPathRsqlVisitor.class);
     private Object json;
-    private ObjectMapper mapper = new ObjectMapper();
+   private String filter;
     private JsonUtils jsonUtils = new JsonUtils();
-    private String filter;
     public static final String GET_ALL_RESULTS = "id==*";
 
     public JsonPathRsqlVisitor(Object json) {
@@ -27,12 +26,6 @@ public class JsonPathRsqlVisitor implements RSQLVisitor<String, String> {
     public JsonPathRsqlVisitor(Object json, String filter) {
         this.json = json;
         this.filter = filter;
-        mapper = jsonUtils.buildObjectMapper(filter);
-    }
-
-    public JsonPathRsqlVisitor(ObjectMapper mapper, Object json) {
-        this.mapper = mapper;
-        this.json = json;
     }
 
     @Override
@@ -52,7 +45,7 @@ public class JsonPathRsqlVisitor implements RSQLVisitor<String, String> {
 
         String selector = node.getSelector();
         Object result = null;
-        if (GET_ALL_RESULTS.equals(filter)) {
+        if (GET_ALL_RESULTS.equals(node.toString().replaceAll("'", ""))) {
             result = json;
         } else {
             try {
@@ -65,14 +58,7 @@ public class JsonPathRsqlVisitor implements RSQLVisitor<String, String> {
                 log.error(e.getMessage());
             }
         }
-        StringWriter sw = new StringWriter();
-        try {
-            mapper.writeValue(sw, result);
-            return sw.toString();
-        } catch (IOException e) {
-            log.error(e.getMessage());
-            return null;
-        }
+        return process(result);
     }
 
     private String processNodes(List<Node> nodes, String root) {
@@ -80,10 +66,12 @@ public class JsonPathRsqlVisitor implements RSQLVisitor<String, String> {
         for (Node node : nodes) {
             result = node.accept(this, result);
         }
-        StringWriter sw = new StringWriter();
+        return process(result);
+    }
+
+    private String process(Object result) {
         try {
-            mapper.writeValue(sw, result);
-            return sw.toString();
+            return jsonUtils.toJSON(result, filter);
         } catch (IOException e) {
             log.error(e.getMessage());
             return null;

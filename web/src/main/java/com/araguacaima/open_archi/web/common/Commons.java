@@ -14,6 +14,9 @@ import com.araguacaima.open_archi.web.wrapper.AccountWrapper;
 import com.araguacaima.open_archi.web.wrapper.JsonPathRsqlVisitor;
 import com.araguacaima.open_archi.web.wrapper.RolesWrapper;
 import com.araguacaima.open_archi.web.wrapper.RsqlJsonFilter;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.bohnman.squiggly.Squiggly;
+import com.github.bohnman.squiggly.util.SquigglyUtils;
 import org.apache.commons.beanutils.BeanMap;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.IterableUtils;
@@ -516,23 +519,9 @@ public class Commons {
         response.header("Content-Type", contentType);
         String fields = request.queryParams("$fields");
         String filter = request.queryParams("$filter");
-        Object filteredResult = filter(filter, objects, fields);
-        return filteredResult;
-    }
 
-/*    private static Object buildFind(Request request, String contentType, Object object) throws IOException {
-        if (contentType.equals(HTML_CONTENT_TYPE)) {
-            Map<String, Object> jsonMap = new HashMap<>();
-            String json = request.pathInfo().replaceFirst("/api/models", "");
-            jsonMap.put("title", StringUtils.capitalize(json));
-            jsonMap.put("json", jsonUtils.toJSON(object));
-            return render(jsonMap, "json");
-        } else {
-            return object.getClass().equals(String.class)
-                    ? object
-                    : jsonUtils.toJSON(object);
-        }
-    }*/
+        return filter(filter, objects, fields);
+    }
 
     public static String getElement(Request request, Response response, String query, Map<String, Object> params, Class<MetaData> type) throws IOException, URISyntaxException {
         response.status(HTTP_OK);
