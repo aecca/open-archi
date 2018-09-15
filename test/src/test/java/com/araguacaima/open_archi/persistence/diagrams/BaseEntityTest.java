@@ -3,9 +3,10 @@ package com.araguacaima.open_archi.persistence.diagrams;
 import com.araguacaima.commons.utils.JsonUtils;
 import com.araguacaima.open_archi.persistence.diagrams.architectural.Model;
 import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
-import com.araguacaima.open_archi.persistence.diagrams.core.Taggable;
+import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 
+import java.io.File;
 import java.io.IOException;
 
 import static junit.framework.TestCase.assertTrue;
@@ -102,5 +103,15 @@ public class BaseEntityTest {
                 assertTrue(sourceId.equals(id) || destinationId.equals(id));
             });
         });
+    }
+
+    @Test
+    public void testModelJsonPath() {
+        try {
+            File file = new File("./model-json-path.txt");
+            FileUtils.writeLines(file, jsonUtils.buildJsonPath(Model.class, null, true));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

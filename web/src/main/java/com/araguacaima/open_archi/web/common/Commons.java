@@ -530,7 +530,7 @@ public class Commons {
                 String fieldToExclude = splittedFieldsToExclude[i].trim();
                 if (!fieldToExclude.startsWith("-")) {
                     fieldsArray.add("-" + fieldToExclude);
-                }
+                } else {fieldsArray.add(fieldToExclude);}
             }
             fields.append(StringUtils.join(fieldsArray, ","));
         }
