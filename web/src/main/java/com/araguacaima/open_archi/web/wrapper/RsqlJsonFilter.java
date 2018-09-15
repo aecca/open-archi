@@ -11,6 +11,6 @@ public abstract class RsqlJsonFilter {
             throws IOException {
         Node rootNode = new RSQLParser().parse(query);
         String accept = rootNode.accept(new JsonPathRsqlVisitor(json, filter));
-        return accept.equals(JsonParserSpecification.MARKED_FOR_DELETION) ? "{}" : accept;
+        return accept.equals("\"" + JsonParserSpecification.MARKED_FOR_DELETION + "\"" ) ? "{}" : accept;
     }
 }

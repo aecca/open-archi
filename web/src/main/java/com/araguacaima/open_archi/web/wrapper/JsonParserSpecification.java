@@ -1,18 +1,18 @@
 package com.araguacaima.open_archi.web.wrapper;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import cz.jirutka.rsql.parser.ast.ComparisonOperator;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.collections4.Predicate;
 import org.apache.commons.lang3.reflect.MethodUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.*;
 
+import static com.araguacaima.open_archi.web.common.Commons.reflectionUtils;
 import static cz.jirutka.rsql.parser.ast.RSQLOperators.*;
 
 class JsonParserSpecification {
@@ -42,17 +42,23 @@ class JsonParserSpecification {
     }
 
     private static Object iter(Object obj,
-                               final String field,
+                               String field,
                                final Object value,
                                final ComparisonOperator operator,
                                final List<String> selectorList)
             throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+
+        if (field == null) {
+            field = selectorList.get(0);
+        }
+
         if (obj instanceof Collection) {
             Collection<Object> list = (Collection<Object>) obj;
+            String finalField = field;
             CollectionUtils.filter(list, it -> {
                 Object object = null;
                 try {
-                    object = iter(it, field, value, operator, selectorList);
+                    object = iter(it, finalField, value, operator, selectorList);
                 } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
                     log.error(e.getMessage());
                 }
@@ -110,7 +116,10 @@ class JsonParserSpecification {
                 return compareValue(((Map) element).values(), field, value, op);
             }
         } else if (!isWrapperType(element.getClass())) {
-            return compareValue(element, field, value, op);
+            Field field_ = reflectionUtils.getField(element.getClass(), field);
+            field_.setAccessible(true);
+            Object newObject = field_.get(element);
+            return compareValue(newObject, field, value, op);
         }
 
         if (newElement == null) {

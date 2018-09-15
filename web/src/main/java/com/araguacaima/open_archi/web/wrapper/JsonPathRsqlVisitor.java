@@ -1,6 +1,7 @@
 package com.araguacaima.open_archi.web.wrapper;
 
 import com.araguacaima.commons.utils.JsonUtils;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import cz.jirutka.rsql.parser.ast.*;
 import org.slf4j.Logger;
@@ -26,6 +27,9 @@ public class JsonPathRsqlVisitor implements RSQLVisitor<String, String> {
     public JsonPathRsqlVisitor(Object json, String filter) {
         this.json = json;
         this.filter = filter;
+        ObjectMapper mapper = jsonUtils.getMapper();
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
     }
 
     @Override
