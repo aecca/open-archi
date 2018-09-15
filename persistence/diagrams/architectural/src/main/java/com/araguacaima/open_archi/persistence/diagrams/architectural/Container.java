@@ -23,7 +23,7 @@ import java.util.Set;
         @NamedQuery(name = Container.GET_ALL_CONTAINERS,
                 query = "select a from Container a"),
         @NamedQuery(name = Container.GET_CONTAINERS_USAGE_BY_ID,
-        query = "select c from Container c where c.components in (:" + Container.COMPONENT_IDS_PARAM + ")")})
+        query = "select c from Container c where c.components in :" + Container.COMPONENT_IDS_PARAM)})
 public class Container extends GroupStaticElement {
 
     public static final String GET_ALL_CONTAINERS = "get.all.containers";

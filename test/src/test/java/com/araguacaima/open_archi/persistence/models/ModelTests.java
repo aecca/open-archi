@@ -3,7 +3,7 @@ package com.araguacaima.open_archi.persistence.models;
 import com.araguacaima.commons.utils.JsonUtils;
 import com.araguacaima.commons.utils.MapUtils;
 import com.araguacaima.open_archi.persistence.diagrams.architectural.Container;
-import com.araguacaima.open_archi.persistence.diagrams.architectural.Model;
+import com.araguacaima.open_archi.persistence.diagrams.core.Item;
 import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,10 +15,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 import static org.junit.Assert.fail;
 
@@ -59,19 +56,21 @@ public class ModelTests {
             Map<String, Object> params = new HashMap<>();
             String modelName = "Firefox";
             params.put("name", modelName);
-            List<Model> models = JPAEntityManagerUtils.executeQuery(Model.class, Model.GET_MODELS_BY_NAME, params);
-            if (models != null) {
+            List<Item> items = JPAEntityManagerUtils.executeQuery(Item.class, Item.GET_ITEMS_BY_NAME, params);
+            if (items != null) {
                 params.clear();
-                models.forEach(model -> {
-                    params.put(Container.COMPONENT_IDS_PARAM, model.getId());
-                    List<Container> containers = JPAEntityManagerUtils.executeQuery(Container.class, Container.GET_CONTAINERS_USAGE_BY_ID, params);
-                    try {
-                        log.debug(jsonUtils.toJSON(containers));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                List<String> modelsList = new ArrayList<>();
+                items.forEach(model -> {
+                    modelsList.add(model.getId());
                 });
-                log.debug(jsonUtils.toJSON(models));
+                params.put(Container.COMPONENT_IDS_PARAM, modelsList);
+                List<Container> containers = JPAEntityManagerUtils.executeQuery(Container.class, Container.GET_CONTAINERS_USAGE_BY_ID, params);
+                try {
+                    log.debug(jsonUtils.toJSON(containers));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                log.debug(jsonUtils.toJSON(items));
             } else {
                 log.debug("Test done successfully due there is no model with name '" + modelName + "'");
             }
