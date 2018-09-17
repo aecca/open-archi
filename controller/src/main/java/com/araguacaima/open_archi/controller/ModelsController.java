@@ -21,11 +21,12 @@ public class ModelsController {
 
 
     private static Collection<? extends Item> findElementsRecursivelly(Collection<String> elementsList) {
-        Collection<? extends Item> temp = findElements(elementsList);
+        Collection temp = findElements(elementsList);
         if (CollectionUtils.isNotEmpty(temp)) {
             Collection<String> filteredElementsList = extractIds(temp);
             Collection<String> subtractedIds = CollectionUtils.subtract(filteredElementsList, elementsList);
-            findElementsRecursivelly(subtractedIds);
+            Collection<? extends Item> elementsRecursivelly = findElementsRecursivelly(subtractedIds);
+            temp.addAll(elementsRecursivelly);
         }
         return temp;
     }
