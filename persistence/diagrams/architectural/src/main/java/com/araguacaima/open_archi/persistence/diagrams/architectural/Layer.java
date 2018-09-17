@@ -2,6 +2,7 @@ package com.araguacaima.open_archi.persistence.diagrams.architectural;
 
 import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
+import com.araguacaima.open_archi.persistence.diagrams.core.Item;
 
 import javax.persistence.*;
 import java.util.LinkedHashSet;
@@ -13,11 +14,21 @@ import java.util.Set;
         @NamedQuery(name = Layer.GET_ALL_LAYERS,
                 query = "select l from Layer l"),
         @NamedQuery(name = Layer.GET_LAYER,
-                query = "select l from Layer l where l.id=:lid")})
+                query = "select l from Layer l where l.id=:lid"),
+        @NamedQuery(name = Layer.GET_LAYERS_USAGE_BY_ELEMENT_ID_LIST,
+                query = "select l " +
+                        "from Layer l " +
+                        "   left join l.systems sys " +
+                        "   left join l.containers con " +
+                        "   left join l.components com " +
+                        "where sys.id in :" + Item.ELEMENTS_USAGE_PARAM +
+                        "   or con.id in :" + Item.ELEMENTS_USAGE_PARAM +
+                        "   or com.id in :" + Item.ELEMENTS_USAGE_PARAM)})
 public class Layer extends GroupStaticElement {
 
     public static final String GET_ALL_LAYERS = "get.all.layers";
     public static final String GET_LAYER = "get.layer";
+    public static final String GET_LAYERS_USAGE_BY_ELEMENT_ID_LIST = "get.layers.usage.by.element.id.list";
 
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",

@@ -64,6 +64,11 @@ paths:
         description: Truncates models output by excluding provided comma separated fields. Nested fields are permitted
         required: false
         type: string
+      - name: "usagesByName"
+        in: query
+        description: Find all usages of any kind of element named as provided.
+        required: false
+        type: string
       responses:
         '200':
           description: OK

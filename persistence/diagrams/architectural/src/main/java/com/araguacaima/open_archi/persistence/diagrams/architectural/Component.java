@@ -2,6 +2,7 @@ package com.araguacaima.open_archi.persistence.diagrams.architectural;
 
 import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
+import com.araguacaima.open_archi.persistence.diagrams.core.Item;
 
 import javax.persistence.*;
 
@@ -18,11 +19,14 @@ import javax.persistence.*;
 @PersistenceUnit(unitName = "open-archi")
 @NamedQueries({
         @NamedQuery(name = Component.GET_ALL_COMPONENTS,
-                query = "select a from Component a")})
+                query = "select a from Component a")        ,
+        @NamedQuery(name = Component.GET_COMPONENTS_USAGE_BY_ELEMENT_ID_LIST,
+                query = "select c from Component c where c.id in :" + Item.ELEMENTS_USAGE_PARAM)})
 public class Component extends LeafStaticElement {
 
 
     public static final String GET_ALL_COMPONENTS = "get.all.components";
+    public static final String GET_COMPONENTS_USAGE_BY_ELEMENT_ID_LIST = "get.components.usage.by.element.id.list";
     @Column
     private String technology;
 

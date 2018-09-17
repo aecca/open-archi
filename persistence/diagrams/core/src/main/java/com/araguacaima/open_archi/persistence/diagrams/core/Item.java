@@ -75,6 +75,7 @@ public abstract class Item extends Taggable {
     public static final String GET_ALL_NON_CLONED_PROTOTYPE_NAMES_BY_TYPE = "get.all.non.cloned.prototype.names.by.type";
     public static final String GET_ITEMS_BY_NAME_AND_KIND = "get.items.by.name.and.kind";
     public static final String GET_ITEMS_BY_NAME = "get.items.by.name";
+    public static final String ELEMENTS_USAGE_PARAM = "elementIds";
 
     @Column
     protected String name;

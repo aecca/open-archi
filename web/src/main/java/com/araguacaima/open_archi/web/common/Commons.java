@@ -3,6 +3,7 @@ package com.araguacaima.open_archi.web.common;
 import com.araguacaima.commons.utils.EnumsUtils;
 import com.araguacaima.commons.utils.JsonUtils;
 import com.araguacaima.commons.utils.ReflectionUtils;
+import com.araguacaima.open_archi.controller.ModelsController;
 import com.araguacaima.open_archi.persistence.diagrams.core.*;
 import com.araguacaima.open_archi.persistence.meta.Account;
 import com.araguacaima.open_archi.persistence.meta.Role;
@@ -516,6 +517,10 @@ public class Commons {
         response.header("Content-Type", contentType);
         String fieldsToInclude = request.queryParams("fieldsToInclude");
         String fieldsToExclude = request.queryParams("fieldsToExclude");
+        String name = request.queryParams("usagesByName");
+        if (StringUtils.isNotBlank(name)) {
+            objects = ModelsController.findUsagesOf(name);
+        }
         StringBuilder fields = new StringBuilder();
         if (StringUtils.isNotBlank(fieldsToInclude)) {
             fields.append(fieldsToInclude);
@@ -526,17 +531,19 @@ public class Commons {
             }
             String[] splittedFieldsToExclude = fieldsToExclude.split(",");
             List<String> fieldsArray = new ArrayList<>();
-            for (int i = 0; splittedFieldsToExclude.length > i; i++) {
-                String fieldToExclude = splittedFieldsToExclude[i].trim();
+            for (String aSplittedFieldsToExclude : splittedFieldsToExclude) {
+                String fieldToExclude = aSplittedFieldsToExclude.trim();
                 if (!fieldToExclude.startsWith("-")) {
                     fieldsArray.add("-" + fieldToExclude);
-                } else {fieldsArray.add(fieldToExclude);}
+                } else {
+                    fieldsArray.add(fieldToExclude);
+                }
             }
             fields.append(StringUtils.join(fieldsArray, ","));
         }
         String filter = request.queryParams("query");
-
         return filter(filter, objects, fields.toString());
+
     }
 
     public static String getElement(Request request, Response response, String query, Map<String, Object> params, Class<MetaData> type) throws IOException, URISyntaxException {

@@ -2,6 +2,7 @@ package com.araguacaima.open_archi.persistence.diagrams.architectural;
 
 import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
+import com.araguacaima.open_archi.persistence.diagrams.core.Item;
 
 import javax.persistence.*;
 import java.util.LinkedHashSet;
@@ -28,7 +29,16 @@ import java.util.Set;
         @NamedQuery(name = System.GET_ALL_CONTAINERS_FROM_SYSTEM,
                 query = "select a.containers from System a where a.id=:id"),
         @NamedQuery(name = System.GET_CONTAINER,
-                query = "select c from System a JOIN a.containers c where a.id=:id and c.id=:cid")})
+                query = "select c from System a JOIN a.containers c where a.id=:id and c.id=:cid"),
+        @NamedQuery(name = System.GET_SYSTEMS_USAGE_BY_ELEMENT_ID_LIST,
+                query = "select s " +
+                        "from System s " +
+                        "   left join s.systems sys " +
+                        "   left join s.containers con " +
+                        "   left join s.components com " +
+                        "where sys.id in :" + Item.ELEMENTS_USAGE_PARAM +
+                        "   or con.id in :" + Item.ELEMENTS_USAGE_PARAM +
+                        "   or com.id in :" + Item.ELEMENTS_USAGE_PARAM)})
 public class System extends GroupStaticElement {
 
     public static final String GET_ALL_SYSTEMS_FROM_SYSTEM = "get.all.systems.from.system";
@@ -36,6 +46,7 @@ public class System extends GroupStaticElement {
     public static final String GET_ALL_SYSTEMS = "get.all.systems";
     public static final String GET_ALL_CONTAINERS_FROM_SYSTEM = "get.all.containers.from.system";
     public static final String GET_CONTAINER = "get.container";
+    public static final String GET_SYSTEMS_USAGE_BY_ELEMENT_ID_LIST = "get.systems.usage.by.element.id.list";
 
     @Column
     @Enumerated(EnumType.STRING)

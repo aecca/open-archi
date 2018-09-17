@@ -2,6 +2,7 @@ package com.araguacaima.open_archi.persistence.diagrams.architectural;
 
 import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
+import com.araguacaima.open_archi.persistence.diagrams.core.Item;
 
 import javax.persistence.*;
 import java.util.LinkedHashSet;
@@ -22,14 +23,14 @@ import java.util.Set;
 @NamedQueries({
         @NamedQuery(name = Container.GET_ALL_CONTAINERS,
                 query = "select a from Container a"),
-        @NamedQuery(name = Container.GET_CONTAINERS_USAGE_BY_ID,
-        query = "select c from Container c join c.components co where co.id in :" + Container.COMPONENT_IDS_PARAM)})
+        @NamedQuery(name = Container.GET_CONTAINERS_USAGE_BY_ELEMENT_ID_LIST,
+        query = "select c from Container c left join c.components co where co.id in :" + Item.ELEMENTS_USAGE_PARAM)})
 public class Container extends GroupStaticElement {
 
     public static final String GET_ALL_CONTAINERS = "get.all.containers";
     public static final String GET_ALL_COMPONENTS_FROM_CONTAINER = "get.all.components.from.container";
-    public static final String GET_CONTAINERS_USAGE_BY_ID = "get.container.usage.by.id";
-    public static final String COMPONENT_IDS_PARAM = "componentIds";
+    public static final String GET_CONTAINERS_USAGE_BY_ELEMENT_ID_LIST = "get.containers.usage.by.element.id.list";
+
     @Column
     private String technology;
 

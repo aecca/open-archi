@@ -1,10 +1,6 @@
 package com.araguacaima.open_archi.persistence.diagrams.architectural;
 
-import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
-import com.araguacaima.open_archi.persistence.diagrams.core.DiagramableElement;
-import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
-import com.araguacaima.open_archi.persistence.diagrams.core.ModelElement;
-import org.hibernate.annotations.Cascade;
+import com.araguacaima.open_archi.persistence.diagrams.core.*;
 
 import javax.persistence.*;
 import java.util.LinkedHashSet;
@@ -29,8 +25,17 @@ import java.util.Set;
                 query = "select m.systems from com.araguacaima.open_archi.persistence.diagrams.architectural.Model m where m.id=:id"),
         @NamedQuery(name = Model.GET_SYSTEM,
                 query = "select s from com.araguacaima.open_archi.persistence.diagrams.architectural.Model m JOIN m.systems s where m.id=:id and s.id=:sid"),
-        @NamedQuery(name = Model.GET_MODELS_USAGE_BY_ID,
-                query = "SELECT m from com.araguacaima.open_archi.persistence.diagrams.architectural.Model m")})
+        @NamedQuery(name = Model.GET_MODELS_USAGE_BY_ELEMENT_ID_LIST,
+                query = "select m " +
+                        "from com.araguacaima.open_archi.persistence.diagrams.architectural.Model m " +
+                        "   left join m.layers lay " +
+                        "   left join m.systems sys " +
+                        "   left join m.containers con " +
+                        "   left join m.components com " +
+                        "where lay.id in :" + Item.ELEMENTS_USAGE_PARAM +
+                        "   or sys.id in :" + Item.ELEMENTS_USAGE_PARAM +
+                        "   or con.id in :" + Item.ELEMENTS_USAGE_PARAM +
+                        "   or com.id in :" + Item.ELEMENTS_USAGE_PARAM)})
 public class Model extends ModelElement implements DiagramableElement<Model> {
 
     public static final String GET_ALL_MODEL_PROTOTYPES = "get.all.model.prototypes";
@@ -39,7 +44,7 @@ public class Model extends ModelElement implements DiagramableElement<Model> {
     public static final String GET_CONSUMER_FOR_MODEL = "get.consumer.for.model";
     public static final String GET_ALL_SYSTEMS_FROM_MODEL = "get.all.systems.from.model";
     public static final String GET_SYSTEM = "get.system";
-    public static final String GET_MODELS_USAGE_BY_ID = "get.models.usage.by.id";
+    public static final String GET_MODELS_USAGE_BY_ELEMENT_ID_LIST = "get.models.usage.by.element.id.list";
 
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",

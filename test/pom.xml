@@ -48,12 +48,16 @@
         <dependency>
             <groupId>com.araguacaima.open_archi</groupId>
             <artifactId>persistence-sequence</artifactId>
-
         </dependency>
+        
         <dependency>
             <groupId>com.araguacaima.open_archi</groupId>
             <artifactId>persistence-gantt</artifactId>
+        </dependency>
 
+        <dependency>
+            <groupId>com.araguacaima.open_archi</groupId>
+            <artifactId>controller</artifactId>
         </dependency>
 
         <!-- araguacaima libraries -->

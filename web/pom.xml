@@ -76,6 +76,11 @@
             <groupId>com.araguacaima.open_archi</groupId>
             <artifactId>persistence-persons</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>com.araguacaima.open_archi</groupId>
+            <artifactId>controller</artifactId>
+        </dependency>
         <dependency>
             <groupId>com.araguacaima</groupId>
             <artifactId>commons-utils</artifactId>
