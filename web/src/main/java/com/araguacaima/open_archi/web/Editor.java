@@ -18,7 +18,6 @@ import static spark.Spark.get;
 
 public class Editor implements RouteGroup {
 
-
     public static final String PATH = "/editor";
 
     @Override

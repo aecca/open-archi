@@ -310,7 +310,14 @@ function initBasic(nodeDataArray, linkDataArray, paletteModelArray) {
             let currentViewMode = getCurrentViewMode();
             if (currentViewMode === "Full") {
                 if (data.id) {
-                    $.get("/api/models/" + data.id + "/clone", {suffix: "cloned"})
+                    let param = {};
+                    let uri = "/api/models/" + data.id;
+
+                    if (!meta.isPrototyper) {
+                        param = {suffix: "cloned"};
+                        uri = uri + "/clone";
+                    }
+                    $.get(uri, param)
                         .done(function (completeModel) {
                             expand(completeModel);
                             myDiagram.model.removeNodeData(data);

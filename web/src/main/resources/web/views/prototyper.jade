@@ -48,18 +48,19 @@ append scripts
     script.
         let myDiagram;
         let myPalette;
+        meta.isPrototyper = true;
         let nodeDataArray = [];
-        if (!{nodeDataArray}) {
-            nodeDataArray = !{nodeDataArray};
+        if (!{nodeDataArray_} !== undefined) {
+            nodeDataArray = !{nodeDataArray_};
         }
         let paletteModelArray = [];
-        let palette = !{palette};
-        if (palette) {
+        let palette = !{palette_};
+        if (palette !== undefined) {
             paletteModelArray.pushAll(OpenArchiWrapper.fixCategory(palette.elements));
         }
         let linkDataArray = [];
-        if (!{linkDataArray}) {
-            linkDataArray = !{linkDataArray};
+        if (!{linkDataArray_} !== undefined) {
+            linkDataArray = !{linkDataArray_};
         }
         let MINLENGTH = '!{MINLENGTH}';  // this controls the minimum length of any swimlane
         let MINBREADTH = '!{MINBREADTH}';  // this controls the minimum breadth of any non-collapsed swimlane
@@ -75,8 +76,8 @@ append scripts
         let source = '!{source}';
         let lightText = 'whitesmoke';
         let viewMode;
-        var diagramTypes = !{diagramTypes};
-        var elementTypes = !{elementTypes};
+        var diagramTypes = !{diagramTypes_};
+        var elementTypes = !{elementTypes_};
         var fullView = '!{fullView}';
         $(function () {
             if (fullView) {
@@ -143,7 +144,6 @@ append scripts
             $element1.on("change", handleImageSelect);
             var $element2 = $("#element-image-2");
             $element2.on("change", handleImageSelect);
-
         });
 
 
