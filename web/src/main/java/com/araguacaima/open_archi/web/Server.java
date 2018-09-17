@@ -34,7 +34,7 @@ public class Server {
     private static ProcessBuilder processBuilder = new ProcessBuilder();
 
     static {
-        environment = processBuilder.environment();
+        environment = new HashMap<>(processBuilder.environment());
         URL url = JPAEntityManagerUtils.class.getResource("/config/config.properties");
         Properties properties = new Properties();
         try {
