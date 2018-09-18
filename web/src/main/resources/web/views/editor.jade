@@ -199,6 +199,16 @@ block content
                         | &nbsp;
                         span.caret
                     ul.dropdown-menu#elementRolesDropdown(role="menu", aria-labelledby="elementRolesDropdown")
+    +modal("Element types", "element-types-data")
+        form#element-types-form
+            .form-group
+                label.col-form-label Element type:
+                .dropdown
+                    button.btn.btn-default.dropdown-toggle#element-type_(type="button", data-toggle="dropdown")
+                        | Element Roles
+                        | &nbsp;
+                        span.caret
+                    ul.dropdown-menu#elementTypesDropdown_(role="menu", aria-labelledby="elementTypesDropdown")
     +modal("Model Validation", "model-validation")
         h4 The entire JSON Model will be passed the to the Rules as a Service that use a Drools' Desition Table based model's validation implementation
         p [Later it could be a Cucumber based Test set]

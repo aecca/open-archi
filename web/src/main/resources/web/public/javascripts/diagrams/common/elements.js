@@ -51,7 +51,7 @@ go.Shape.defineFigureGenerator("RoundedBottomRectangle", function (shape, w, h) 
 const partContextMenu =
     gojs(go.Adornment, "Vertical",
 
-        makeButton("Diagrams",
+      /*  makeButton("Diagrams",
             function (e, obj) {
                 const model = e.diagram.model;
                 const node = obj.part.data;
@@ -116,7 +116,7 @@ const partContextMenu =
 
             }, function (o) {
                 return true;
-            }),
+            }),*/
         makeButton("Add image",
             function (e, obj) {
                 const model = e.diagram.model;
@@ -141,7 +141,7 @@ const partContextMenu =
                 else if (part instanceof go.Group) alert(groupInfo(contextmenu));
                 else alert(nodeInfo(part.data));
             }),
-        makeButton("Cut",
+      /*  makeButton("Cut",
             function (e, obj) {
                 e.diagram.commandHandler.cutSelection();
             },
@@ -203,7 +203,7 @@ const partContextMenu =
             },
             function (o) {
                 return o.diagram.commandHandler.canGroupSelection();
-            }),
+            }),*/
         makeButton("Copy Basic Info",
             function (e, obj) {
 
@@ -222,6 +222,48 @@ const partContextMenu =
                 copyTextToClipboard(JSON.stringify(obj.part.data));
             },
             function (o) {
+                return true;
+            }),
+        makeButton("Copy Data",
+            function (e, obj) {
+                copyTextToClipboard(JSON.stringify(obj.part.data));
+            },
+            function (o) {
+                return true;
+            }),
+        makeButton("Convert to...",
+            function (e, obj) {
+                const model = e.diagram.model;
+                const node = obj.part.data;
+                $.get("/api/catalogs/element-types")
+                    .done(function (data) {
+                        let modal = $('#element-types-data');
+                        let elementTypeItems = [];
+                        i = 0;
+                        data.forEach(function (elementType, i) {
+                            elementTypeItems.push('<li type="presentation"><a type="menuitem" tabindex="' + i + '" href="#">' + elementType.type + '</a></li>');
+                        });
+                        let elementTypesDropdown = $("#elementTypesDropdown_");
+                        elementTypesDropdown.empty();
+                        elementTypesDropdown.append(elementTypeItems.join(''));
+                        elementTypesDropdown.on('click', 'a', function () {
+                            const text = $(this).html();
+                            const htmlText = text + ' <span class="caret"></span>';
+                            $(this).closest('.dropdown').find('.dropdown-toggle').html(htmlText);
+                        });
+                        modal.modal({
+                            backdrop: 'static',
+                            keyboard: false,
+                            show: true
+                        });
+                        modal.on('hidden.bs.modal', function () {
+                            const type = $("#element-type_")[0].innerText.trim();
+                            const elementType = findByField(data, "type", type);
+                            //TODO: AMM Guarantee node is empty. If not, check if all inner nodes are convertible according to the recently modified element
+                            placeNewNode(elementType, node, node.name);
+                        })
+                    });
+            }, function (o) {
                 return true;
             })
     );

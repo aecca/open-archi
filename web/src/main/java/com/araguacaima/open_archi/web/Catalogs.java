@@ -1,10 +1,7 @@
 package com.araguacaima.open_archi.web;
 
 import com.araguacaima.open_archi.persistence.commons.IdName;
-import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
-import com.araguacaima.open_archi.persistence.diagrams.core.ElementRole;
-import com.araguacaima.open_archi.persistence.diagrams.core.ElementShape;
-import com.araguacaima.open_archi.persistence.diagrams.core.Item;
+import com.araguacaima.open_archi.persistence.diagrams.core.*;
 import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
 import com.araguacaima.open_archi.web.common.Commons;
 import spark.RouteGroup;
@@ -25,6 +22,7 @@ public class Catalogs implements RouteGroup {
 
     @Override
     public void addRoutes() {
+        get("/element-types", (request, response) -> getList(request, response, ElementShape.GET_ALL_ELEMENT_SHAPES, null, null));
         get("/element-types/:elementTypeId/shape", (request, response) -> {
             Map<String, Object> params = new HashMap<>();
             ElementKind type = (ElementKind) enumsUtils.getEnum(ElementKind.class, request.params(":elementTypeId"));

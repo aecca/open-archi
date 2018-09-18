@@ -112,6 +112,46 @@ function load() {
     expand(jsonString);
 }
 
+function placeNewNode(elementType, data, name) {
+    $.ajax({
+        url: "/api/catalogs/element-types/" + elementType.type + "/shape",
+        type: 'GET',
+        crossDomain: true,
+        contentType: "application/json",
+        converters: {
+            "text json": function (response) {
+                return (response === "") ? null : JSON.parse(response);
+            }
+        }
+    }).done((shapeText, textStatus, response) => {
+            if (response.status === 200) {
+                let shape = JSON.parse(shapeText);
+                myDiagram.startTransaction("Deleting new element");
+                myDiagram.model.removeNodeData(data);
+                myDiagram.requestUpdate();
+                myDiagram.commitTransaction("Deleting new element");
+                myDiagram.startTransaction("Adding new element");
+                delete data["text"];
+                delete data["__gohashid"];
+                data.kind = elementType.type;
+                data.name = name;
+                data.image = meta.image;
+                data.shape = shape;
+                data.fill = shape.fill;
+                data.category = elementType.type;
+                data.isGroup = OpenArchiWrapper.toIsGroup(shape, null, elementType.group);
+                myDiagram.model.addNodeData(data);
+                myDiagram.requestUpdate();
+                myDiagram.commitTransaction("Adding new element");
+                delete meta.image;
+                relayoutLanes();
+            } else {
+
+            }
+        }
+    ).fail((jqXHR, textStatus, errorThrown) => alert(errorThrown));
+}
+
 function checkAndSave() {
     let basicElementData = $('#basic-element-data');
     const key = basicElementData.attr("data-key");
@@ -121,43 +161,7 @@ function checkAndSave() {
         const name = $("#element-name").val();
         const elementType = getElementType();
         //const prototype = $("#element-prototype").prop("checked");
-        $.ajax({
-            url: "/api/catalogs/element-types/" + elementType.type + "/shape",
-            type: 'GET',
-            crossDomain: true,
-            contentType: "application/json",
-            converters: {
-                "text json": function (response) {
-                    return (response === "") ? null : JSON.parse(response);
-                }
-            }
-        }).done((shapeText, textStatus, response) => {
-                if (response.status === 200) {
-                    let shape = JSON.parse(shapeText);
-                    myDiagram.startTransaction("Deleting new element");
-                    myDiagram.model.removeNodeData(data);
-                    myDiagram.requestUpdate();
-                    myDiagram.commitTransaction("Deleting new element");
-                    myDiagram.startTransaction("Adding new element");
-                    delete data["text"];
-                    delete data["__gohashid"];
-                    data.kind = elementType.type;
-                    data.name = name;
-                    data.image = meta.image;
-                    data.shape = shape;
-                    data.fill = shape.fill;
-                    data.category = elementType.type;
-                    data.isGroup = OpenArchiWrapper.toIsGroup(shape, null, elementType.group);
-                    myDiagram.model.addNodeData(data);
-                    myDiagram.requestUpdate();
-                    myDiagram.commitTransaction("Adding new element");
-                    delete meta.image;
-                    relayoutLanes();
-                } else {
-
-                }
-            }
-        ).fail((jqXHR, textStatus, errorThrown) => alert(errorThrown));
+        placeNewNode(elementType, data, name);
 
     }
 }
@@ -181,7 +185,7 @@ function expand(data) {
         } else {
             id = clonedFrom.id
         }
-        const nodedata = findById(myDiagram.model.nodeDataArray, id);
+        const nodedata = findByField(myDiagram.model.nodeDataArray, "id", id);
         myDiagram.model.removeNodeData(myDiagram.model.findNodeDataForKey(nodedata.key));
         myDiagram.requestUpdate();
         myDiagram.commitTransaction("Deleting new element");

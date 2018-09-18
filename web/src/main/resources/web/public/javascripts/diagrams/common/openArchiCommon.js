@@ -82,11 +82,11 @@ function findParent(parentId, model) {
     return undefined;
 }
 
-function findById(model, id) {
-    if (id !== undefined && model !== undefined) {
-        let nodes = findValues(model, "id");
+function findByField(model, field, value) {
+    if (value !== undefined && model !== undefined) {
+        let nodes = findValues(model, field);
         return nodes.find(node => {
-            return node.id === id;
+            return node[field] === value;
         })
     }
     return undefined;
