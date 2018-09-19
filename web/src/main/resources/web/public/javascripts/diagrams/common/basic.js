@@ -1,4 +1,4 @@
-function initBasic(nodeDataArray, linkDataArray, paletteModelArray) {
+function initBasic(nodeDataArray, linkDataArray, paletteModel) {
 
     //Basic elements palette
     if (myPaletteBasic !== undefined) {
@@ -30,7 +30,7 @@ function initBasic(nodeDataArray, linkDataArray, paletteModelArray) {
         myPaletteBasic.requestUpdate();
     });
 
-    myPaletteBasic.model = new go.GraphLinksModel(paletteModelArray);
+    myPaletteBasic.model = new go.GraphLinksModel(paletteModel.basic);
 
     //Basic elements palette
     if (myPaletteGeneral !== undefined) {
@@ -62,7 +62,7 @@ function initBasic(nodeDataArray, linkDataArray, paletteModelArray) {
         myPaletteGeneral.requestUpdate();
     });
 
-    myPaletteGeneral.model = new go.GraphLinksModel(paletteModelArray);
+    myPaletteGeneral.model = new go.GraphLinksModel(paletteModel.general);
 
     if (myDiagram !== undefined) {
         myDiagram.clear();
@@ -403,11 +403,14 @@ const nodeHoverAdornment =
 
 
 function fillPalettes(data) {
-    paletteModelArray = [];
+    paletteModel = {
+        basic: [],
+        general: []
+    };
     const basicElements = OpenArchiWrapper.fixCategory(data.basicElements);
     const generalElements = OpenArchiWrapper.fixCategory(data.generalElements);
-    paletteModelArray.pushAll(basicElements);
-    paletteModelArray.pushAll(generalElements);
+    paletteModel.basic.pushAll(basicElements);
+    paletteModel.general.pushAll(generalElements);
     myPaletteBasic.model = new go.GraphLinksModel(basicElements);
     myPaletteGeneral.model = new go.GraphLinksModel(generalElements);
 }

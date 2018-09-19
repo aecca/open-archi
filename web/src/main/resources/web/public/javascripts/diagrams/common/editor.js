@@ -521,7 +521,7 @@ function init() {
 
     switch (source) {
         case "basic":
-            initBasic(nodeDataArray, linkDataArray, paletteModelArray);
+            initBasic(nodeDataArray, linkDataArray, paletteModel);
             myPaletteBasic.requestUpdate();
             myPaletteGeneral.requestUpdate();
             myDiagram.requestUpdate();

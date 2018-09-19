@@ -211,11 +211,14 @@ append scripts
         if (!{nodeDataArray_} !== undefined) {
             nodeDataArray = !{nodeDataArray_};
         }
-        let paletteModelArray = [];
+        let paletteModel = {
+            basic: [],
+            general: []
+        };
         let palette = !{palette_};
         if (palette !== undefined) {
-            paletteModelArray.pushAll(OpenArchiWrapper.fixCategory(palette.basicElements));
-            paletteModelArray.pushAll(OpenArchiWrapper.fixCategory(palette.generalElements));
+            paletteModel.basic.pushAll(OpenArchiWrapper.fixCategory(palette.basicElements));
+            paletteModel.general.pushAll(OpenArchiWrapper.fixCategory(palette.generalElements));
         }
         let linkDataArray = [];
         if (!{linkDataArray_} !== undefined) {
