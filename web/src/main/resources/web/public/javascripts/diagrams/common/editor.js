@@ -537,20 +537,6 @@ function init() {
                 }
             });
 
-            $("#paletteDivBasic").draggable({handle: "#paletteContainerBasic"}).resizable({
-                // After resizing, perform another layout to fit everything in the palette's viewport
-                stop: function () {
-                    myPaletteBasic.layoutDiagram(true);
-                }
-            });
-
-            $("#paletteDivGeneral").draggable({handle: "#paletteContainerGeneral"}).resizable({
-                // After resizing, perform another layout to fit everything in the palette's viewport
-                stop: function () {
-                    myPaletteGeneral.layoutDiagram(true);
-                }
-            });
-            
             $("#infoDraggable").draggable({handle: "#infoDraggableHandle"});
             $("#controlsDraggable").draggable({handle: "#controlsDraggableHandle"});
 

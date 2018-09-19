@@ -22,13 +22,9 @@ function initBasic(nodeDataArray, linkDataArray, paletteModel) {
     myPaletteBasic.nodeTemplateMap.add("PERSON", personTemplate);
     myPaletteBasic.nodeTemplateMap.add("CONSUMER", consumerTemplate);
     myPaletteBasic.nodeTemplateMap.add("", defaultTemplate);
-    myPaletteBasic.addDiagramListener("InitialLayoutCompleted", function (diagramEvent) {
-        const pdrag = document.getElementById("paletteContainerBasic");
-        const palette = diagramEvent.diagram;
-        pdrag.style.width = palette.documentBounds.width + 28 + "px"; // account for padding/borders
-        pdrag.style.height = palette.documentBounds.height + 38 + "px";
-        myPaletteBasic.requestUpdate();
-    });
+/*    myPaletteBasic.addDiagramListener("InitialLayoutCompleted", function (diagramEvent) {
+        resizePalete("paletteContainerBasic", diagramEvent.diagram);
+    });*/
 
     myPaletteBasic.model = new go.GraphLinksModel(paletteModel.basic);
 
@@ -54,13 +50,9 @@ function initBasic(nodeDataArray, linkDataArray, paletteModel) {
     myPaletteGeneral.nodeTemplateMap.add("PERSON", personTemplate);
     myPaletteGeneral.nodeTemplateMap.add("CONSUMER", consumerTemplate);
     myPaletteGeneral.nodeTemplateMap.add("", defaultTemplate);
-    myPaletteGeneral.addDiagramListener("InitialLayoutCompleted", function (diagramEvent) {
-        const pdrag = document.getElementById("paletteContainerGeneral");
-        const palette = diagramEvent.diagram;
-        pdrag.style.width = palette.documentBounds.width + 28 + "px"; // account for padding/borders
-        pdrag.style.height = palette.documentBounds.height + 38 + "px";
-        myPaletteGeneral.requestUpdate();
-    });
+/*    myPaletteGeneral.addDiagramListener("InitialLayoutCompleted", function (diagramEvent) {
+        resizePalete("paletteContainerGeneral", diagramEvent.diagram);
+    });*/
 
     myPaletteGeneral.model = new go.GraphLinksModel(paletteModel.general);
 
@@ -413,4 +405,15 @@ function fillPalettes(data) {
     paletteModel.general.pushAll(generalElements);
     myPaletteBasic.model = new go.GraphLinksModel(basicElements);
     myPaletteGeneral.model = new go.GraphLinksModel(generalElements);
+}
+
+function resizePalete(containerElement, palette) {
+/*    const pdrag = document.getElementById(containerElement);
+    const pdragDiv = palette.div;
+    pdragDiv.style.width = pdrag.style.width;
+    palette.documentBounds.width = pdrag.style.width;
+    pdragDiv.style.height = pdrag.style.height;
+    palette.documentBounds.height = pdrag.style.height;
+    palette.layoutDiagram(true);
+    palette.requestUpdate();*/
 }
