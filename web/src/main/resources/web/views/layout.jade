@@ -3,11 +3,10 @@ extends components/main
 append styles
     // Custom styles for this template
     link(rel='stylesheet', type='text/css', href='/stylesheets/jquery.json-view.min.css')
-    link(rel='stylesheet', type='text/css', href='https://fonts.googleapis.com/css?family=Open+Sans:400,700|Source+Code+Pro:300,600|Titillium+Web:400,600,700')
+    link(rel='stylesheet', type='text/css', href='https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700')
     link(rel='stylesheet', type='text/css', href='/stylesheets/navbar-fixed-top.css')
     link(rel='stylesheet', type='text/css', href='/stylesheets/justified-nav.css')
     link(rel='stylesheet', type='text/css', href='/stylesheets/tiny.css')
-    link(rel='stylesheet', type='text/css', href='https://use.fontawesome.com/releases/v5.3.1/css/all.css')
 
 append scripts
     script(src='/javascripts/commons.js')
@@ -17,14 +16,17 @@ append scripts
 mixin navbar-open-archi(name, text, id, style, href, image, textColor)
     - if (!style) var style = "default";
     - if (!href) var href = "#";
-    nav( role="navigation", class=["navbar", "navbar-fixed-top", "navbar-" + style], id=name)
+    nav( role="navigation", class=["navbar", "navbar-fixed-top", "navbar-" + style], id=name, style="margin-bottom: 0; border-bottom-width: 0;")
         .container
             .navbar-header
-                button.navbar-toggle.collapsed( type="button", data-toggle="collapse", data-target="#" + id, aria-expanded="false", aria-controls="navbar")
+                button.navbar-toggle.collapsed( type="button", data-toggle="collapse", data-target="#" + id, aria-expanded="false", aria-controls="navbar", style="margin-bottom: 10px; margin-top: 10px;")
                     span.sr-only Toggle navigation
                     span.icon-bar
                     span.icon-bar
                     span.icon-bar
+                ul.nav.navbar-nav
+                    button#sidebarCollapse.btn.navbar-btn(type="button", style="margin-right: 10px;")
+                        i.glyphicon.glyphicon-menu-hamburger
                 div(style="display: flex;")
                     a(href=href)
                         img(alt=name, src=image)&attributes(attributes)

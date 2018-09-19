@@ -6,7 +6,11 @@ public interface Palettable {
 
     PaletteKind getType();
 
-    Set<PaletteItem> getElements();
+    Set<PaletteItem> getBasicElements();
 
-    void addElement(PaletteItem element);
+    void addBasicElement(PaletteItem element);
+
+    Set<PaletteItem> getGeneralElements();
+
+    void addGeneralElement(PaletteItem element);
 }

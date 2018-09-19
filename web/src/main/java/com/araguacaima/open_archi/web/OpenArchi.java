@@ -4,16 +4,9 @@ import com.araguacaima.open_archi.persistence.commons.IdName;
 import com.araguacaima.open_archi.persistence.diagrams.architectural.Palette;
 import com.araguacaima.open_archi.persistence.diagrams.core.*;
 import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
-import com.araguacaima.open_archi.web.filter.APIFilter;
-import com.araguacaima.open_archi.web.filter.AdminAPIFilter;
-import com.araguacaima.open_archi.web.common.Authentication;
 import com.araguacaima.open_archi.web.common.Commons;
-import com.araguacaima.open_archi.web.filter.ScopesFilter;
 import org.apache.commons.lang3.StringUtils;
 import org.pac4j.core.config.Config;
-import org.pac4j.core.context.DefaultAuthorizers;
-import org.pac4j.sparkjava.CallbackRoute;
-import spark.Filter;
 import spark.Request;
 import spark.Response;
 
@@ -58,14 +51,14 @@ public class OpenArchi {
         });
     }
 
-    static Palette getArchitecturePalette() {
+    static Palette getArchitecturePalette(String query) {
         Palette palette = new Palette();
         List<Item> models;
-        models = JPAEntityManagerUtils.executeQuery(Item.class, Item.GET_ALL_PROTOTYPES);
+        models = JPAEntityManagerUtils.executeQuery(Item.class, query);
         int rank = 3;
         if (models != null) {
             for (Item model : models) {
-                palette.addElement(buildPalette(rank, model));
+                palette.addGeneralElement(buildPalette(rank, model));
                 rank++;
             }
         }

@@ -45,10 +45,10 @@ One simple way of making a div fill its space,
 with allowances for the title (top) and the resize handle (bottom)
 */
 #paletteContainer {
-    position: absolute;
-    bottom: 14px;
-    left: 0px;
-    right: 0px;
-    top: 14px;
+    /*position: absolute;*/
+    /*bottom: 14px;*/
+    /*left: 0px;*/
+    /*right: 0px;*/
+    /*top: 14px;*/
 }
 

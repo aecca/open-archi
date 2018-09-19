@@ -5,9 +5,9 @@ import com.araguacaima.open_archi.persistence.diagrams.core.*;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-public class Palette implements Palettable {
+public class Palette extends AbstractPalette {
 
-    private Set<PaletteItem> elements = new LinkedHashSet<>();
+
     private static PaletteKind kind = PaletteKind.BPM;
 
     public Palette() {
@@ -16,37 +16,37 @@ public class Palette implements Palettable {
         box.setRank(0);
         box.setName("Activity");
         box.setKind(ElementKind.BPM);
-        elements.add(box);
+        addBasicElement(box);
         PaletteItem start = new PaletteItem();
         start.setShape(new Shape(ElementKind.INITIATOR));
         start.setRank(1);
         start.setName("Start");
         start.setKind(ElementKind.BPM);
-        elements.add(start);
+        addBasicElement(start);
         PaletteItem end = new PaletteItem();
         end.setShape(new Shape(ElementKind.FINISHER));
         end.setRank(2);
         end.setName("End");
         end.setKind(ElementKind.BPM);
-        elements.add(end);
+        addBasicElement(end);
         PaletteItem diamond = new PaletteItem();
         diamond.setShape(new Shape(ElementKind.CONDITION));
         diamond.setRank(3);
         diamond.setName("?");
         diamond.setKind(ElementKind.BPM);
-        elements.add(diamond);
+        addBasicElement(diamond);
         PaletteItem lane = new PaletteItem();
         lane.setShape(new Shape(ElementKind.LANE));
         lane.setRank(4);
         lane.setName("Lane");
         lane.setKind(ElementKind.BPM);
-        elements.add(lane);
+        addBasicElement(lane);
         PaletteItem pool = new PaletteItem();
         pool.setShape(new Shape(ElementKind.POOL));
         pool.setRank(5);
         pool.setName("Pool");
         pool.setKind(ElementKind.BPM);
-        elements.add(pool);
+        addBasicElement(pool);
     }
 
     @Override
@@ -54,16 +54,4 @@ public class Palette implements Palettable {
         return this.kind;
     }
 
-    @Override
-    public Set<PaletteItem> getElements() {
-        return elements;
-    }
-
-    public void setElements(Set<PaletteItem> elements) {
-        this.elements = elements;
-    }
-
-    public void addElement(PaletteItem element) {
-        this.elements.add(element);
-    }
 }

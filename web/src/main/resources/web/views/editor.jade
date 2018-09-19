@@ -48,6 +48,7 @@ append scripts
     script.
         let myDiagram;
         let myPalette;
+        meta.isPrototyper = !{prototyper};
         let nodeDataArray = [];
         if (!{nodeDataArray_} !== undefined) {
             nodeDataArray = !{nodeDataArray_};
@@ -167,11 +168,6 @@ block content
             .form-group
                 label.col-form-label(for="element-name") Name:
                 input.form-control#diagram-name(type="text")
-            .form-group
-                label.col-form-label(for="diagram-prototype")
-                    | Prototype?
-                    | &nbsp;
-                input#diagram-prototype(type="checkbox")
     +modal-force("Basic element data", "basic-element-data")(save="checkAndSave", more="openMore")
         form#basic-element-form
             .form-group
@@ -219,11 +215,8 @@ block content
                 Validation issue #2
     #diagramDiv
     #diagramsCanvas.container(style="justify-content: space-between")
-    div.draggable#paletteDraggable(style="height: 300px; position: relative")
-        div.handle#paletteDraggableHandle
-            | Palette
-        div#paletteContainer
-            div#paletteDiv
+    div#paletteContainer(style="height: 400px;")
+        div#paletteDiv
     div.#myExamples
     div.draggable#infoDraggable(style="display: none; vertical-align: top; top: 20px; left: 380px; position: relative")
         div.handle#infoDraggableHandle

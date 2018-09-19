@@ -294,9 +294,7 @@ const partContextMenuPalette =
                             }
                         }).done((data, textStatus, response) => {
                                 if (response.status === 200) {
-                                    paletteModelArray = [];
-                                    paletteModelArray.pushAll(OpenArchiWrapper.fixCategory(data.elements));
-                                    myPalette.model = new go.GraphLinksModel(paletteModelArray);
+                                    fillPalettes(data);
                                 }
                             }
                         )

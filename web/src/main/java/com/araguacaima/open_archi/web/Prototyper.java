@@ -1,6 +1,7 @@
 package com.araguacaima.open_archi.web;
 
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
+import com.araguacaima.open_archi.persistence.diagrams.core.Item;
 import com.araguacaima.open_archi.persistence.diagrams.core.Taggable;
 import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
 import com.araguacaima.open_archi.web.common.Commons;
@@ -32,8 +33,8 @@ public class Prototyper implements RouteGroup {
         bean.diagramTypes(diagramTypesMap);
 
         get(Commons.EMPTY_PATH, (req, res) -> {
-            bean.title("Prototypes");
-            bean.palette(OpenArchi.getArchitecturePalette());
+            bean.title("Prototyper");
+            bean.palette(OpenArchi.getArchitecturePalette(Item.GET_ALL_PROTOTYPES));
             bean.elementTypes(OpenArchi.getElementTypes());
             bean.source("basic");
             bean.examples(getExamples());
@@ -51,7 +52,8 @@ public class Prototyper implements RouteGroup {
             } else {
                 bean.fullView(null);
             }
-            return buildModelAndView(req, res, bean, "/prototyper");
+            bean.prototyper(true);
+            return buildModelAndView(req, res, bean, PATH);
         }, engine);
         get("/:uuid", (request, response) -> {
             try {
@@ -65,9 +67,9 @@ public class Prototyper implements RouteGroup {
                     bean.nodeDataArray(nodeDataArray);
                     bean.linkDataArray(linkDataArray);
                 }
-                bean.palette(OpenArchi.getArchitecturePalette());
+                bean.palette(OpenArchi.getArchitecturePalette(Item.GET_ALL_PROTOTYPES));
                 bean.source("basic");
-                return buildModelAndView(request, response, bean, "/prototyper");
+                return buildModelAndView(request, response, bean, PATH);
             } catch (Exception ex) {
                 bean.title("Error");
                 bean.message(ex.getMessage());

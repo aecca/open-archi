@@ -1,13 +1,14 @@
 function initBasic(nodeDataArray, linkDataArray, paletteModelArray) {
 
-    if (myPalette !== undefined) {
-        myPalette.clear();
-        myPalette.div = null;
+    //Basic elements palette
+    if (myPaletteBasic !== undefined) {
+        myPaletteBasic.clear();
+        myPaletteBasic.div = null;
     }
     // initialize the Palette that is on the left side of the page
     // noinspection JSUndeclaredVariable
-    myPalette =
-        gojs(go.Palette, "paletteDiv",  // must name or refer to the DIV HTML element
+    myPaletteBasic =
+        gojs(go.Palette, "paletteDivBasic",  // must name or refer to the DIV HTML element
             {
                 scrollsPageOnFocus: false,
                 layout: gojs(PoolLayout, {
@@ -17,18 +18,51 @@ function initBasic(nodeDataArray, linkDataArray, paletteModelArray) {
                 nodeSelectionAdornmentTemplate: emptyAdornment,
                 groupSelectionAdornmentTemplate: emptyAdornment
             });
-    myPalette.nodeTemplateMap.add("DEFAULT", newElementTemplate);
-    myPalette.nodeTemplateMap.add("PERSON", personTemplate);
-    myPalette.nodeTemplateMap.add("CONSUMER", consumerTemplate);
-    myPalette.nodeTemplateMap.add("", defaultTemplate);
-    myPalette.addDiagramListener("InitialLayoutCompleted", function (diagramEvent) {
-        const pdrag = document.getElementById("paletteDraggable");
+    myPaletteBasic.nodeTemplateMap.add("DEFAULT", newElementTemplate);
+    myPaletteBasic.nodeTemplateMap.add("PERSON", personTemplate);
+    myPaletteBasic.nodeTemplateMap.add("CONSUMER", consumerTemplate);
+    myPaletteBasic.nodeTemplateMap.add("", defaultTemplate);
+    myPaletteBasic.addDiagramListener("InitialLayoutCompleted", function (diagramEvent) {
+        const pdrag = document.getElementById("paletteContainerBasic");
         const palette = diagramEvent.diagram;
         pdrag.style.width = palette.documentBounds.width + 28 + "px"; // account for padding/borders
         pdrag.style.height = palette.documentBounds.height + 38 + "px";
+        myPaletteBasic.requestUpdate();
     });
 
-    myPalette.model = new go.GraphLinksModel(paletteModelArray);
+    myPaletteBasic.model = new go.GraphLinksModel(paletteModelArray);
+
+    //Basic elements palette
+    if (myPaletteGeneral !== undefined) {
+        myPaletteGeneral.clear();
+        myPaletteGeneral.div = null;
+    }
+    // initialize the Palette that is on the left side of the page
+    // noinspection JSUndeclaredVariable
+    myPaletteGeneral =
+        gojs(go.Palette, "paletteDivGeneral",  // must name or refer to the DIV HTML element
+            {
+                scrollsPageOnFocus: false,
+                layout: gojs(PoolLayout, {
+                    sorting: go.GridLayout.Forward
+                }),
+                hoverDelay: 100,
+                nodeSelectionAdornmentTemplate: emptyAdornment,
+                groupSelectionAdornmentTemplate: emptyAdornment
+            });
+    myPaletteGeneral.nodeTemplateMap.add("DEFAULT", newElementTemplate);
+    myPaletteGeneral.nodeTemplateMap.add("PERSON", personTemplate);
+    myPaletteGeneral.nodeTemplateMap.add("CONSUMER", consumerTemplate);
+    myPaletteGeneral.nodeTemplateMap.add("", defaultTemplate);
+    myPaletteGeneral.addDiagramListener("InitialLayoutCompleted", function (diagramEvent) {
+        const pdrag = document.getElementById("paletteContainerGeneral");
+        const palette = diagramEvent.diagram;
+        pdrag.style.width = palette.documentBounds.width + 28 + "px"; // account for padding/borders
+        pdrag.style.height = palette.documentBounds.height + 38 + "px";
+        myPaletteGeneral.requestUpdate();
+    });
+
+    myPaletteGeneral.model = new go.GraphLinksModel(paletteModelArray);
 
     if (myDiagram !== undefined) {
         myDiagram.clear();
@@ -366,3 +400,14 @@ const nodeHoverAdornment =
                 }
             })
     );
+
+
+function fillPalettes(data) {
+    paletteModelArray = [];
+    const basicElements = OpenArchiWrapper.fixCategory(data.basicElements);
+    const generalElements = OpenArchiWrapper.fixCategory(data.generalElements);
+    paletteModelArray.pushAll(basicElements);
+    paletteModelArray.pushAll(generalElements);
+    myPaletteBasic.model = new go.GraphLinksModel(basicElements);
+    myPaletteGeneral.model = new go.GraphLinksModel(generalElements);
+}

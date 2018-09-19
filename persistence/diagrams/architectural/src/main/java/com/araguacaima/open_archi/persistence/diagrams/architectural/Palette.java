@@ -2,12 +2,7 @@ package com.araguacaima.open_archi.persistence.diagrams.architectural;
 
 import com.araguacaima.open_archi.persistence.diagrams.core.*;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
-
-public class Palette implements Palettable {
-
-    private Set<PaletteItem> elements = new LinkedHashSet<>();
+public class Palette extends AbstractPalette {
 
     private static PaletteKind kind = PaletteKind.ARCHITECTURE;
 
@@ -22,7 +17,7 @@ public class Palette implements Palettable {
         element.setShape(shape);
         element.setRank(0);
         element.setPrototype(false);
-        elements.add(element);
+        addBasicElement(element);
         PaletteItem person = new PaletteItem();
         person.setName("Person");
         Shape shapePerson = new Shape();
@@ -34,7 +29,7 @@ public class Palette implements Palettable {
         person.setKind(ElementKind.CONSUMER);
         person.setRank(1);
         person.setPrototype(false);
-        elements.add(person);
+        addBasicElement(person);
         PaletteItem consumer = new PaletteItem();
         Shape shapeConsumer = new Shape();
         shapeConsumer.setFill("#F0AD4B");
@@ -46,26 +41,12 @@ public class Palette implements Palettable {
         consumer.setKind(ElementKind.CONSUMER);
         consumer.setRank(2);
         consumer.setPrototype(false);
-        elements.add(consumer);
+        addBasicElement(consumer);
     }
 
     @Override
     public PaletteKind getType() {
         return kind;
     }
-
-    @Override
-    public Set<PaletteItem> getElements() {
-        return elements;
-    }
-
-    public void setElements(Set<PaletteItem> elements) {
-        this.elements = elements;
-    }
-
-    public void addElement(PaletteItem element) {
-        this.elements.add(element);
-    }
-
 
 }

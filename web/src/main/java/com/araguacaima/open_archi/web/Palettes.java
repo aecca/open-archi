@@ -1,6 +1,7 @@
 package com.araguacaima.open_archi.web;
 
 import com.araguacaima.open_archi.persistence.diagrams.architectural.Palette;
+import com.araguacaima.open_archi.persistence.diagrams.core.Item;
 import spark.RouteGroup;
 
 import static com.araguacaima.open_archi.web.common.Commons.*;
@@ -16,7 +17,7 @@ public class Palettes implements RouteGroup {
     public void addRoutes() {
         get("/architectures", (request, response) -> {
             try {
-                Palette palette = OpenArchi.getArchitecturePalette();
+                Palette palette = OpenArchi.getArchitecturePalette(Item.GET_ALL_PROTOTYPES);
                 response.status(HTTP_OK);
                 response.type(JSON_CONTENT_TYPE);
                 return jsonUtils.toJSON(palette);

@@ -55,6 +55,7 @@ public class BeanBuilder {
     private List<Account> accounts = new ArrayList<>();
     private List<String> roles = new ArrayList<>();
     private List<String> header = new ArrayList<>();
+    private boolean prototyper = false;
 
     public String getTitle() {
         return title;
@@ -132,18 +133,6 @@ public class BeanBuilder {
         return stackTrace;
     }
 
-    public void fixAccountInfo(Request request, Response response) {
-        if (request != null && response != null) {
-            final SparkWebContext context = new SparkWebContext(request, response);
-            appendAccountInfo((Account) context.getSessionAttribute("account"));
-        }
-    }
-
-    public BeanBuilder title(final String title) {
-        this.title = title;
-        return this;
-    }
-
     public String getKey() {
         return key;
     }
@@ -182,6 +171,22 @@ public class BeanBuilder {
 
     public List<String> getHeader() {
         return header;
+    }
+
+    public boolean isPrototyper() {
+        return prototyper;
+    }
+
+    public void fixAccountInfo(Request request, Response response) {
+        if (request != null && response != null) {
+            final SparkWebContext context = new SparkWebContext(request, response);
+            appendAccountInfo((Account) context.getSessionAttribute("account"));
+        }
+    }
+
+    public BeanBuilder title(final String title) {
+        this.title = title;
+        return this;
     }
 
     public BeanBuilder nodeDataArray(final List nodeDataArray) {
@@ -338,6 +343,11 @@ public class BeanBuilder {
 
     public BeanBuilder header(List<String> header) {
         this.header = header;
+        return this;
+    }
+
+    public BeanBuilder prototyper(boolean b) {
+        this.prototyper = b;
         return this;
     }
 }

@@ -67,9 +67,7 @@ function save(model) {
                     }
                 }).done((data, textStatus, response) => {
                         if (response.status === 200) {
-                            paletteModelArray = [];
-                            paletteModelArray.pushAll(OpenArchiWrapper.fixCategory(data.elements));
-                            myPalette.model = new go.GraphLinksModel(paletteModelArray);
+                            fillPalettes(data);
                         }
                     }
                 )
@@ -87,14 +85,10 @@ function save(model) {
                     }
                 }).done((data, textStatus, response) => {
                         if (response.status === 200) {
-                            paletteModelArray = [];
-                            paletteModelArray.pushAll(OpenArchiWrapper.fixCategory(data.elements));
-                            myPalette.model = new go.GraphLinksModel(paletteModelArray);
+                            fillPalettes(data);
                         } else {
                             if (response.status === 201) {
-                                paletteModelArray = [];
-                                paletteModelArray.pushAll(OpenArchiWrapper.fixCategory(data.elements));
-                                myPalette.model = new go.GraphLinksModel(paletteModelArray);
+                                fillPalettes(data);
                             } else {
                                 alert("Not created!");
                             }
@@ -528,7 +522,8 @@ function init() {
     switch (source) {
         case "basic":
             initBasic(nodeDataArray, linkDataArray, paletteModelArray);
-            myPalette.requestUpdate();
+            myPaletteBasic.requestUpdate();
+            myPaletteGeneral.requestUpdate();
             myDiagram.requestUpdate();
             // when the document is modified, add a "*" to the title and enable the "Save" button
             myDiagram.addDiagramListener("Modified", function (e) {
@@ -545,7 +540,8 @@ function init() {
             $("#paletteDraggable").draggable({handle: "#paletteDraggableHandle"}).resizable({
                 // After resizing, perform another layout to fit everything in the palette's viewport
                 stop: function () {
-                    myPalette.layoutDiagram(true);
+                    myPaletteBasic.layoutDiagram(true);
+                    myPaletteGeneral.layoutDiagram(true);
                 }
             });
 
