@@ -408,12 +408,14 @@ function fillPalettes(data) {
 }
 
 function resizePalete(containerElement, palette) {
-/*    const pdrag = document.getElementById(containerElement);
+    const pdrag = $("#" + containerElement);
     const pdragDiv = palette.div;
-    pdragDiv.style.width = pdrag.style.width;
-    palette.documentBounds.width = pdrag.style.width;
-    pdragDiv.style.height = pdrag.style.height;
-    palette.documentBounds.height = pdrag.style.height;
+    const width = pdrag.width();
+    const height = pdrag.height();
+    pdragDiv.style.width = width;
+    palette.documentBounds.width = width;
+    pdragDiv.style.height = height;
+    palette.documentBounds.height = height;
     palette.layoutDiagram(true);
-    palette.requestUpdate();*/
+    palette.requestUpdate();
 }

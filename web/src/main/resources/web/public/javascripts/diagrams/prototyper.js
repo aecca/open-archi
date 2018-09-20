@@ -1,7 +1,7 @@
 let myDiagram;
 let myPaletteBasic;
 let myPaletteGeneral;
-$(function () {
+$().ready(function () {
     if (fullView) {
         $("#infoDraggable").show();
         $("#controlsDraggable").show();
@@ -11,12 +11,11 @@ $(function () {
         $("#controlsDraggable").hide();
         $("#dataModelDraggable").hide();
     }
-    init();
-    var items = [];
-    var i = 0;
-    var activeText;
-    for (var type in diagramTypes) {
-        var active = diagramTypes[type];
+    const items = [];
+    let i = 0;
+    let activeText;
+    for (const type in diagramTypes) {
+        const active = diagramTypes[type];
         if (active) {
             items.push('<li role="presentation"><a role="menuitem" tabindex="' + i + '" href="/editor?type=' + type + '" class="active">' + type + '</a></li>');
             activeText = type;
@@ -25,25 +24,23 @@ $(function () {
         }
         i++;
     }
-    var $diagramTypesDropdown = $("#diagramTypesDropdown");
+    const $diagramTypesDropdown = $("#diagramTypesDropdown");
     $diagramTypesDropdown.append(items.join(''));
     $diagramTypesDropdown.on('click', 'a', function () {
-        var text = $(this).html();
-        var htmlText = text;
-        $(this).closest('.dropdown').find('.dropdown-toggle').html(htmlText);
+        const text = $(this).html();
+        $(this).closest('.dropdown').find('.dropdown-toggle').html(text);
     });
 
-    var elementTypeItems = [];
+    const elementTypeItems = [];
     i = 0;
     elementTypes.forEach(function (elementType, i) {
         elementTypeItems.push('<li role="presentation" data-isGroup="' + elementType.group + '"><a role="menuitem" tabindex="' + i + '" href="#">' + elementType.type + '</a></li>');
     });
-    var elementTypesDropdown = $("#elementTypesDropdown");
+    const elementTypesDropdown = $("#elementTypesDropdown");
     elementTypesDropdown.append(elementTypeItems.join(''));
     elementTypesDropdown.on('click', 'a', function () {
-        var text = $(this).html();
-        var htmlText = text;
-        $(this).closest('.dropdown').find('.dropdown-toggle').html(htmlText);
+        const text = $(this).html();
+        $(this).closest('.dropdown').find('.dropdown-toggle').html(text);
     });
     if ($("#viewMode").length > 0) {
         viewMode = new Slider("#viewMode", {
@@ -58,27 +55,31 @@ $(function () {
         });
         viewMode.on('slideStop', reexpand);
     }
-    var $element1 = $("#element-image");
+    const $element1 = $("#element-image");
     $element1.on("change", handleImageSelect);
-    var $element2 = $("#element-image-2");
+    const $element2 = $("#element-image-2");
     $element2.on("change", handleImageSelect);
 
+    const $sidebar = $('#sidebar');
     $('#sidebarCollapse').on('click', function () {
-        const $sidebar = $('#sidebar');
         if (!$sidebar.hasClass('active')) {
             $sidebar.addClass('active');
-            $('.collapse.in').toggleClass('in');
+            //$('.collapse.in').toggleClass('in');
             $('a[aria-expanded=true]').attr('aria-expanded', 'false');
         } else {
             $sidebar.removeClass('active');
         }
     });
+    init();
+    /*    $sidebar.addClass('active');
+    const $paletteContainerBasic = $("#paletteContainerBasic");
+    const $paletteContainerGeneral = $("#paletteContainerGeneral");
 
-    $("#paletteContainerBasic").ready(function () {
+    $paletteContainerBasic.ready(function () {
         resizePalete("paletteContainerBasic", myPaletteBasic);
     });
-
-    $("#paletteContainerGeneral").ready(function () {
+    $paletteContainerGeneral.ready(function () {
         resizePalete("paletteContainerGeneral", myPaletteGeneral);
     });
+    $sidebar.removeClass('active');*/
 });

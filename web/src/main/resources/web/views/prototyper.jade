@@ -57,7 +57,7 @@ append styles
             background: white;
             color: #fff;
             transition: all 0.3s;
-            overflow-y: scroll;
+            /*overflow-y: scroll;*/
         }
 
         #sidebar.active {
@@ -310,24 +310,24 @@ block content
 
     // Sidebar Holder
     .wrapper
-        nav#sidebar
+        nav#sidebar.active
             .sidebar-header
                 h4 Palette
             ul.list-unstyled.components
                 li.active
-                    a(href="#basicPaletteSubMenu", data-toggle="collapse", aria-expanded="false") Basic
-                    ul#basicPaletteSubMenu.collapse.list-unstyled
-                        div#paletteContainerBasic(style="height: 150px")
-                            div#paletteDivBasic
-                li
-                    a(href="#generalPaletteSubMenu", data-toggle="collapse", aria-expanded="false") Extended
-                    ul#generalPaletteSubMenu.collapse.list-unstyled
-                        div#paletteContainerGeneral
-                            div#paletteDivGeneral(style="height: 350px")
+                    a(href="#basicPaletteSubMenu", data-toggle="collapse", aria-expanded="true") Basic
+                    ul#basicPaletteSubMenu.collapse.in.list-unstyled
+                        #paletteContainerBasic(style="height: 160px")
+                            #paletteDivBasic
+                li.active
+                    a(href="#generalPaletteSubMenu", data-toggle="collapse", aria-expanded="true") Extended
+                    ul#generalPaletteSubMenu.collapse.in.list-unstyled
+                        #paletteContainerGeneral(style="height: 280px; overflow-y: scroll;")
+                            #paletteDivGeneral
         #content
             // Page Content Holder
             #diagramDiv
-                #diagramsCanvas.container(style="justify-content: space-between")
+                #diagramsCanvas.container(style="justify-content: space-between; z-order: -1001")
                 #myExamples
             #infoDraggable.draggable(style="display: none; vertical-align: top; top: 20px; left: 380px; position: relative")
                 #infoDraggableHandle.handle
