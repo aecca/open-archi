@@ -15,17 +15,8 @@ import java.util.Set;
 @Table(name = "Models", schema = "DIAGRAMS", uniqueConstraints = @UniqueConstraint(columnNames = {"name", "kind"}))
 @DynamicUpdate
 @DiscriminatorColumn(name = "modelType", discriminatorType = DiscriminatorType.STRING)
-@NamedQueries({@NamedQuery(name = Taggable.GET_ALL_MODELS,
-        query = "select a from Taggable a "), @NamedQuery(name = Taggable.GET_MODELS_BY_TYPE,
-        query = "select a from Taggable a where TYPE(a)=:modelType"),
-        @NamedQuery(name = Taggable.GET_MODELS_BY_STATUS,
-                query = "select a from Taggable a where a.status=:status")})
 @Component
 public abstract class Taggable extends BaseEntity {
-
-    public static final String GET_ALL_MODELS = "get.all.models";
-    public static final String GET_MODELS_BY_TYPE = "get.models.by.type";
-    public static final String GET_MODELS_BY_STATUS = "get.models.by.status";
 
     @ElementCollection
     @CollectionTable(name = "Tags", schema = "DIAGRAMS")

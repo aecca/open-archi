@@ -53,7 +53,7 @@ public class Prototyper implements RouteGroup {
                 bean.fullView(null);
             }
             bean.prototyper(true);
-            return buildModelAndView(req, res, bean, PATH);
+            return buildModelAndView(req, res, bean, Editor.PATH);
         }, engine);
         get("/:uuid", (request, response) -> {
             try {
@@ -69,7 +69,7 @@ public class Prototyper implements RouteGroup {
                 }
                 bean.palette(OpenArchi.getArchitecturePalette(Item.GET_ALL_PROTOTYPES));
                 bean.source("basic");
-                return buildModelAndView(request, response, bean, PATH);
+                return buildModelAndView(request, response, bean, Editor.PATH);
             } catch (Exception ex) {
                 bean.title("Error");
                 bean.message(ex.getMessage());

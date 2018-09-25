@@ -33,7 +33,7 @@ public class Editor implements RouteGroup {
         bean.diagramTypes(diagramTypesMap);
         get(Commons.EMPTY_PATH, (req, res) -> {
             bean.title("Editor");
-            bean.palette(OpenArchi.getArchitecturePalette(Item.GET_ALL_PROTOTYPES));
+            bean.palette(OpenArchi.getArchitecturePalette(Item.GET_ALL_MODELS));
             bean.elementTypes(OpenArchi.getElementTypes());
             bean.source("basic");
             bean.examples(getExamples());

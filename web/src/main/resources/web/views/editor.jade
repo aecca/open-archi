@@ -10,6 +10,7 @@ append styles
     link(rel='stylesheet', type='text/css', href='/stylesheets/dataInspector.css')
     link(rel='stylesheet', type='text/css', href='/stylesheets/palette.css')
     link(rel='stylesheet', type='text/css', href='/stylesheets/bootstrap-slider.css')
+    link(rel='stylesheet', type='text/css', href='/stylesheets/jquery.mCustomScrollbar.min.css')
     style.
 
         /*
@@ -22,6 +23,171 @@ append styles
             left: 0px;
             right: 0px;
             top: 14px;
+        }
+
+        /*
+            DEMO STYLE
+        */
+        @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+
+        .navbar-btn {
+            box-shadow: none;
+            outline: none !important;
+            border: none;
+        }
+
+        .line {
+            width: 100%;
+            height: 1px;
+            border-bottom: 1px dashed #ddd;
+            margin: 40px 0;
+        }
+
+        /* ---------------------------------------------------
+            SIDEBAR STYLE
+        ----------------------------------------------------- */
+        #sidebar {
+            width: 164px;
+            position: fixed;
+            top: 56px;
+            left: -164px;
+            height: 100vh;
+            z-index: 999;
+            /*background: #7386D5;*/
+            background: white;
+            color: #fff;
+            transition: all 0.3s;
+            /*overflow-y: scroll;*/
+        }
+
+        #sidebar.active {
+            left: 0;
+        }
+
+        #dismiss {
+            width: 35px;
+            height: 35px;
+            line-height: 35px;
+            text-align: center;
+            background: #7386D5;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            -webkit-transition: all 0.3s;
+            -o-transition: all 0.3s;
+            transition: all 0.3s;
+        }
+
+        #dismiss:hover {
+            background: #fff;
+            color: #7386D5;
+        }
+
+        .overlay {
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 998;
+            display: none;
+        }
+
+        #sidebar .sidebar-header {
+            padding: 3px;
+            background: buttonface;
+            color: black;
+            text-align: center;
+        }
+
+        #sidebar ul.components {
+            padding: 0;
+            /*border-bottom: 1px solid grey;*/
+        }
+
+        #sidebar ul p {
+            color: #fff;
+            padding: 10px;
+        }
+
+        #sidebar ul li a {
+            padding: 10px;
+            font-size: 1.1em;
+            display: block;
+        }
+
+        #sidebar ul li a:hover {
+            color: black;
+            background: #eeeeee;
+        }
+
+        #sidebar ul li.active > a, a[aria-expanded="true"] {
+            color: black;
+            background: #eeeeee;
+        }
+
+        a[data-toggle="collapse"] {
+            position: relative;
+        }
+
+        a[aria-expanded="false"]::before, a[aria-expanded="true"]::before {
+            content: '\e259';
+            display: contents;
+            font-family: 'Glyphicons Halflings';
+        }
+
+        a[aria-expanded="true"]::before {
+            content: '\e260';
+        }
+
+        ul ul a {
+            font-size: 0.9em !important;
+            padding-left: 30px !important;
+        }
+
+        ul.CTAs {
+            padding: 20px;
+        }
+
+        ul.CTAs a {
+            text-align: center;
+            font-size: 0.9em !important;
+            display: block;
+            border-radius: 5px;
+            margin-bottom: 5px;
+        }
+
+        a.download {
+            background: #fff;
+            color: #7386D5;
+        }
+
+        a.article, a.article:hover {
+            background: #6d7fcc !important;
+            color: #fff !important;
+        }
+
+        /* ---------------------------------------------------
+            CONTENT STYLE
+        ----------------------------------------------------- */
+        #content {
+            width: 100%;
+            padding: 20px;
+            min-height: 100vh;
+            transition: all 0.3s;
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+
+        #sidebarCollapse {
+            border-radius: 20%;
+            position: fixed;
+            top: 0.7em;
+            left: 0.6em;
+            z-index: 10000;
+            color: white;
+            background-color: lightgray;
         }
 
 append scripts
@@ -44,19 +210,21 @@ append scripts
     script(type='text/javascript', src='/javascripts/diagrams/elements/system.js')
     script(type='text/javascript', src='/javascripts/diagrams/common/basic.js')
     script(type='text/javascript', src='/javascripts/diagrams/common/palette.js')
-    script#code(type="text/javascript")
+    script(type='text/javascript', src='/javascripts/jquery.mCustomScrollbar.concat.min.js')
     script.
-        let myDiagram;
-        let myPalette;
         meta.isPrototyper = !{prototyper};
         let nodeDataArray = [];
         if (!{nodeDataArray_} !== undefined) {
             nodeDataArray = !{nodeDataArray_};
         }
-        let paletteModelArray = [];
+        let paletteModel = {
+            basic: [],
+            general: []
+        };
         let palette = !{palette_};
         if (palette !== undefined) {
-            paletteModelArray.pushAll(OpenArchiWrapper.fixCategory(palette.elements));
+            paletteModel.basic.pushAll(OpenArchiWrapper.fixCategory(palette.basicElements));
+            paletteModel.general.pushAll(OpenArchiWrapper.fixCategory(palette.generalElements));
         }
         let linkDataArray = [];
         if (!{linkDataArray_} !== undefined) {
@@ -79,74 +247,7 @@ append scripts
         var diagramTypes = !{diagramTypes_};
         var elementTypes = !{elementTypes_};
         var fullView = '!{fullView}';
-        $(function () {
-            if (fullView) {
-                $("#infoDraggable").show();
-                $("#controlsDraggable").show();
-                $("#dataModelDraggable").show();
-            } else {
-                $("#infoDraggable").hide();
-                $("#controlsDraggable").hide();
-                $("#dataModelDraggable").hide();
-            }
-            init();
-            var items = [];
-            var i = 0;
-            var activeText;
-            for (var type in diagramTypes) {
-                var active = diagramTypes[type];
-                if (active) {
-                    items.push('<li role="presentation"><a role="menuitem" tabindex="' + i + '" href="/editor?type=' + type + '" class="active">' + type + '</a></li>');
-                    activeText = type;
-                } else {
-                    items.push('<li role="presentation"><a role="menuitem" tabindex="' + i + '" href="/editor?type=' + type + '">' + type + '</a></li>');
-                }
-                i++;
-            }
-            var $diagramTypesDropdown = $("#diagramTypesDropdown");
-            $diagramTypesDropdown.append(items.join(''));
-            if (activeText) {
-                var find = $("#dropdown-anchor-diagramTypesDropdown");
-                find.html(activeText + "<span class=\"caret\"></span>");
-            }
-            $diagramTypesDropdown.on('click', 'a', function () {
-                var text = $(this).html();
-                var htmlText = text + ' <span class="caret"></span>';
-                $(this).closest('.dropdown').find('.dropdown-toggle').html(htmlText);
-            });
-
-            var elementTypeItems = [];
-            i = 0;
-            elementTypes.forEach(function (elementType, i) {
-                elementTypeItems.push('<li role="presentation" data-isGroup="' + elementType.group + '"><a role="menuitem" tabindex="' + i + '" href="#">' + elementType.type + '</a></li>');
-            });
-            var elementTypesDropdown = $("#elementTypesDropdown");
-            elementTypesDropdown.append(elementTypeItems.join(''));
-            elementTypesDropdown.on('click', 'a', function () {
-                var text = $(this).html();
-                var htmlText = text + ' <span class="caret"></span>';
-                $(this).closest('.dropdown').find('.dropdown-toggle').html(htmlText);
-            });
-            if ($("#viewMode").length > 0) {
-                viewMode = new Slider("#viewMode", {
-                    id: "viewMode",
-                    ticks: [1, 2, 3],
-                    ticks_labels: ['Compact', 'Moderated', 'Full'],
-                    tooltip: "hide",
-                    min: 1,
-                    max: 3,
-                    step: 1,
-                    value: 3
-                });
-                viewMode.on('slideStop', reexpand);
-            }
-            var $element1 = $("#element-image");
-            $element1.on("change", handleImageSelect);
-            var $element2 = $("#element-image-2");
-            $element2.on("change", handleImageSelect);
-
-        });
-
+    script(type='text/javascript', src='/javascripts/diagrams/editor.js')
 block extra-menu-elements
     +nav_item_dropdown("#", null, "diagramTypesDropdown")(label="Diagram Type")
     +nav_item_dropdown("#")(label="Menu")
@@ -163,7 +264,7 @@ block extra-menu-elements
         input#diagramId(name='diagramId', placeholder='Template name...')
 
 block content
-    +modal-force("Diagram info", "diagram-info")(save="save")
+    +modal-force("Prorotype info", "diagram-info")(save="save")
         form#diagram-info-form
             .form-group
                 label.col-form-label(for="element-name") Name:
@@ -179,7 +280,6 @@ block content
                     button.btn.btn-default.dropdown-toggle#element-type(type="button", data-toggle="dropdown")
                         | Element Types
                         | &nbsp;
-                        span.caret
                     ul.dropdown-menu#elementTypesDropdown(role="menu", aria-labelledby="elementTypesDropdown")
             .form-group
                 label.col-form-label Image (Only svg is permitted):
@@ -193,7 +293,6 @@ block content
                     button.btn.btn-default.dropdown-toggle#element-role(type="button", data-toggle="dropdown")
                         | Element Roles
                         | &nbsp;
-                        span.caret
                     ul.dropdown-menu#elementRolesDropdown(role="menu", aria-labelledby="elementRolesDropdown")
     +modal("Element types", "element-types-data")
         form#element-types-form
@@ -203,7 +302,6 @@ block content
                     button.btn.btn-default.dropdown-toggle#element-type_(type="button", data-toggle="dropdown")
                         | Element Roles
                         | &nbsp;
-                        span.caret
                     ul.dropdown-menu#elementTypesDropdown_(role="menu", aria-labelledby="elementTypesDropdown")
     +modal("Model Validation", "model-validation")
         h4 The entire JSON Model will be passed the to the Rules as a Service that use a Drools' Desition Table based model's validation implementation
@@ -213,34 +311,49 @@ block content
                 Validation issue #1
             +list-group-item("#")
                 Validation issue #2
-    #diagramDiv
-    #diagramsCanvas.container(style="justify-content: space-between")
-    div#paletteContainer(style="height: 400px;")
-        div#paletteDiv
-    div.#myExamples
-    div.draggable#infoDraggable(style="display: none; vertical-align: top; top: 20px; left: 380px; position: relative")
-        div.handle#infoDraggableHandle
-            | Info
-        div
-            div#myInfo
-    div.draggable#controlsDraggable(style="display: none; vertical-align: top; top: 20px; left: 380px; position: relative; width: 380px; padding-bottom: 10px;")
-        div.handle#controlsDraggableHandle
-            | Controls
-        div
-            div#myControls(style= "margin-top: 10px;")
-                .col-sm-4
-                    b View Mode:
-                .col-sm-4.text-right
-                    input#viewMode(type="text")
-    br
-    div.container-fluid.draggable#dataModelDraggable(style="height: 100px; width: 400px; display: none")
-        div.handle#dataModelDraggableHandle
-            | Model
-        div#dataModelContainer
-            span#modelToSaveOrLoad(style="display: block")
     +modal("Element image", "element-image-data")
         form#element-image-form
             .form-group
                 label.col-form-label Image (Only svg is permitted):
                 .dropdown
                     input#element-image(type="file", name="image", accept="image/svg+xml")
+
+    // Sidebar Holder
+    .wrapper
+        nav#sidebar
+            ul.list-unstyled.components
+                li.active
+                    a(href="#basicPaletteSubMenu", data-toggle="collapse", aria-expanded="true", style="font-weight: bold;") Basic
+                    ul#basicPaletteSubMenu.collapse.in.list-unstyled
+                        #paletteDivBasic(style="height: 160px")
+                li.active
+                    a(href="#generalPaletteSubMenu", data-toggle="collapse", aria-expanded="true", style="font-weight: bold;") Extended
+                    ul#generalPaletteSubMenu.collapse.in.list-unstyled
+                        #paletteDivGeneral(style="height: 280px")
+        #content
+            // Page Content Holder
+            #diagramDiv
+                #diagramsCanvas.container(style="justify-content: space-between; z-order: -1001")
+            #myExamples
+            #infoDraggable.draggable(style="display: none; vertical-align: top; top: 20px; left: 380px; position: relative")
+                #infoDraggableHandle.handle
+                    | Info
+                div
+                    #myInfo
+            #controlsDraggable.draggable(style="display: none; vertical-align: top; top: 20px; left: 380px; position: relative; width: 380px; padding-bottom: 10px;")
+                #controlsDraggableHandle.handle
+                    | Controls
+                div
+                    #myControls(style= "margin-top: 10px;")
+                        .col-sm-4
+                            b View Mode:
+                        .col-sm-4.text-right
+                            input#viewMode(type="text")
+            br
+            #dataModelDraggable.container-fluid.draggable(style="height: 100px; width: 400px; display: none")
+                #dataModelDraggableHandle.handle
+                    | Model
+                #dataModelContainer
+                    span#modelToSaveOrLoad(style="display: block")
+        a#sidebarCollapse.btn(href="#")
+            i.glyphicon.glyphicon-menu-right

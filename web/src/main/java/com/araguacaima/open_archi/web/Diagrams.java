@@ -3,10 +3,10 @@ package com.araguacaima.open_archi.web;
 import com.araguacaima.open_archi.persistence.diagrams.architectural.*;
 import com.araguacaima.open_archi.persistence.diagrams.architectural.System;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
+import com.araguacaima.open_archi.persistence.diagrams.core.Item;
 import com.araguacaima.open_archi.persistence.diagrams.core.Taggable;
 import com.araguacaima.open_archi.persistence.meta.Account;
 import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
-import com.araguacaima.open_archi.web.DBUtil;
 import com.araguacaima.open_archi.web.common.Commons;
 import org.pac4j.sparkjava.SparkWebContext;
 import spark.RouteGroup;
@@ -39,7 +39,7 @@ public class Diagrams implements RouteGroup {
             Map<String, Object> params = new HashMap<>();
             params.put("modelType", Model.class);
             response.type(JSON_CONTENT_TYPE);
-            return getList(request, response, Taggable.GET_MODELS_BY_TYPE, params, null);
+            return getList(request, response, Item.GET_MODELS_BY_TYPE, params, null);
         });
         post("/architectures", (request, response) -> {
             try {
@@ -745,7 +745,7 @@ public class Diagrams implements RouteGroup {
             Map<String, Object> params = new HashMap<>();
             params.put("modelType", com.araguacaima.open_archi.persistence.diagrams.bpm.Model.class);
             response.type(JSON_CONTENT_TYPE);
-            return getList(request, response, Taggable.GET_MODELS_BY_TYPE, params, null);
+            return getList(request, response, Item.GET_MODELS_BY_TYPE, params, null);
         });
         post("/bpms", (request, response) -> {
             try {
@@ -779,7 +779,7 @@ public class Diagrams implements RouteGroup {
             Map<String, Object> params = new HashMap<>();
             params.put("modelType", com.araguacaima.open_archi.persistence.diagrams.er.Model.class);
             response.type(JSON_CONTENT_TYPE);
-            return getList(request, response, Taggable.GET_MODELS_BY_TYPE, params, null);
+            return getList(request, response, Item.GET_MODELS_BY_TYPE, params, null);
         });
         post("/ers", (request, response) -> {
             try {
@@ -813,7 +813,7 @@ public class Diagrams implements RouteGroup {
             Map<String, Object> params = new HashMap<>();
             params.put("modelType", com.araguacaima.open_archi.persistence.diagrams.flowchart.Model.class);
             response.type(JSON_CONTENT_TYPE);
-            return getList(request, response, Taggable.GET_MODELS_BY_TYPE, params, null);
+            return getList(request, response, Item.GET_MODELS_BY_TYPE, params, null);
         });
         post("/flowcharts", (request, response) -> {
             try {
@@ -847,7 +847,7 @@ public class Diagrams implements RouteGroup {
             Map<String, Object> params = new HashMap<>();
             params.put("modelType", com.araguacaima.open_archi.persistence.diagrams.gantt.Model.class);
             response.type(JSON_CONTENT_TYPE);
-            return getList(request, response, Taggable.GET_MODELS_BY_TYPE, params, null);
+            return getList(request, response, Item.GET_MODELS_BY_TYPE, params, null);
         });
         post("/gantts", (request, response) -> {
             try {
@@ -881,7 +881,7 @@ public class Diagrams implements RouteGroup {
             Map<String, Object> params = new HashMap<>();
             params.put("modelType", com.araguacaima.open_archi.persistence.diagrams.sequence.Model.class);
             response.type(JSON_CONTENT_TYPE);
-            return getList(request, response, Taggable.GET_MODELS_BY_TYPE, params, null);
+            return getList(request, response, Item.GET_MODELS_BY_TYPE, params, null);
         });
         post("/sequences", (request, response) -> {
             try {
@@ -915,7 +915,7 @@ public class Diagrams implements RouteGroup {
             Map<String, Object> params = new HashMap<>();
             params.put("modelType", com.araguacaima.open_archi.persistence.diagrams.classes.Model.class);
             response.type(JSON_CONTENT_TYPE);
-            return getList(request, response, Taggable.GET_MODELS_BY_TYPE, params, null);
+            return getList(request, response, Item.GET_MODELS_BY_TYPE, params, null);
         });
         post("/classes", (request, response) -> {
             try {

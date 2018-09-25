@@ -70,7 +70,7 @@ public class Models implements RouteGroup {
                 return throwError(response, ex);
             }
         });
-        get(Commons.EMPTY_PATH, (request, response) -> getList(request, response, Taggable.GET_ALL_MODELS, null, null));
+        get(Commons.EMPTY_PATH, (request, response) -> getList(request, response, Item.GET_ALL_MODELS, null, null));
         options("/:uuid", (request, response) -> {
             setCORS(request, response);
             Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledParentModel, null, HttpMethod.get, null);

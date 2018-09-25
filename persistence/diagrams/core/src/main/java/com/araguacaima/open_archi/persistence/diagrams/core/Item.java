@@ -51,16 +51,23 @@ import java.util.Set;
                 query = "select new com.araguacaima.open_archi.persistence.commons.IdName(a.id, a.name, TYPE(a), a.kind) " +
                         "from com.araguacaima.open_archi.persistence.diagrams.core.Item a where a.name like concat(:name,'%') and TYPE(a)=:type "),
         @NamedQuery(name = Item.GET_ALL_CONSUMERS,
-                query = "select a " +
-                        "from com.araguacaima.open_archi.persistence.diagrams.core.Item a where a.kind='CONSUMER'"),
+                query = "select a from com.araguacaima.open_archi.persistence.diagrams.core.Item a where a.kind='CONSUMER'"),
         @NamedQuery(name = Item.GET_ITEMS_BY_NAME_AND_KIND,
-                query = "select a " +
-                        "from com.araguacaima.open_archi.persistence.diagrams.core.Item a where a.kind=:kind and a.name=:name"),
+                query = "select a from com.araguacaima.open_archi.persistence.diagrams.core.Item a where a.kind=:kind and a.name=:name"),
         @NamedQuery(name = Item.GET_ITEMS_BY_NAME,
-                query = "select a " +
-                        "from com.araguacaima.open_archi.persistence.diagrams.core.Item a where a.name=:name")})
+                query = "select a from com.araguacaima.open_archi.persistence.diagrams.core.Item a where a.name=:name"),
+        @NamedQuery(name = Item.GET_ALL_MODELS,
+                query = "select a from com.araguacaima.open_archi.persistence.diagrams.core.Item a "),
+        @NamedQuery(name = Item.GET_MODELS_BY_TYPE,
+                query = "select a from com.araguacaima.open_archi.persistence.diagrams.core.Item a where TYPE(a)=:modelType"),
+        @NamedQuery(name = Item.GET_MODELS_BY_STATUS,
+                query = "select a from com.araguacaima.open_archi.persistence.diagrams.core.Item a where a.status=:status")
+})
 public abstract class Item extends Taggable {
 
+    public static final String GET_ALL_MODELS = "get.all.models";
+    public static final String GET_MODELS_BY_TYPE = "get.models.by.type";
+    public static final String GET_MODELS_BY_STATUS = "get.models.by.status";
     public static final String GET_ALL_CHILDREN = "get.all.children";
     public static final String GET_META_DATA = "get.meta.data";
     public static final String GET_ALL_PROTOTYPES = "get.all.prototypes";
