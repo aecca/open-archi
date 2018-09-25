@@ -181,23 +181,13 @@ append styles
         }
 
         #sidebarCollapse {
+            border-radius: 20%;
             position: fixed;
             top: 0.7em;
             left: 0.6em;
             z-index: 10000;
-            border: 2px solid grey;
-            color: grey;
-        }
-
-        .sidebarCollapse:hover, .sidebarCollapse:focus, .sidebarCollapse:active, .sidebarCollapse.active, .open > .dropdown-toggle.sidebarCollapse {
-            color: #33a6cc;
-            border-color: #33a6cc;
-        }
-
-        .sidebarCollapse:active, .sidebarCollapse.active {
-            border-color: #007299;
-            color: #007299;
-            box-shadow: none;
+            color: white;
+            background-color: lightgray;
         }
 
 append scripts
@@ -330,7 +320,7 @@ block content
 
     // Sidebar Holder
     .wrapper
-        nav#sidebar.active
+        nav#sidebar
             ul.list-unstyled.components
                 li.active
                     a(href="#basicPaletteSubMenu", data-toggle="collapse", aria-expanded="true", style="font-weight: bold;") Basic
@@ -344,7 +334,7 @@ block content
             // Page Content Holder
             #diagramDiv
                 #diagramsCanvas.container(style="justify-content: space-between; z-order: -1001")
-                #myExamples
+            #myExamples
             #infoDraggable.draggable(style="display: none; vertical-align: top; top: 20px; left: 380px; position: relative")
                 #infoDraggableHandle.handle
                     | Info

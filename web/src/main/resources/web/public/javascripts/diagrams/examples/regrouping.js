@@ -152,19 +152,19 @@ function initReGrouping(nodeDataArray, linkDataArray) {
                 new go.Binding("text", "text").makeTwoWay())
         );
 
-    if (myPalette !== undefined) {
-        myPalette.clear();
-        myPalette.div = null;
+    if (myPaletteBasic !== undefined) {
+        myPaletteBasic.clear();
+        myPaletteBasic.div = null;
     }
     // initialize the Palette and its contents
-    myPalette =
-        gojs(go.Palette, "paletteDiv",
+    myPaletteBasic =
+        gojs(go.Palette, "paletteDivBasic",
             {
                 nodeTemplateMap: myDiagram.nodeTemplateMap,
                 groupTemplateMap: myDiagram.groupTemplateMap,
                 layout: gojs(go.GridLayout, { wrappingColumn: 1, alignment: go.GridLayout.Position })
             });
-    myPalette.model = new go.GraphLinksModel([
+    myPaletteBasic.model = new go.GraphLinksModel([
         { text: "lightgreen", color: "#ACE600" },
         { text: "yellow", color: "#FFDD33" },
         { text: "lightblue", color: "#33D3E5" }

@@ -204,15 +204,15 @@ function initFlowchart(nodeDataArray, linkDataArray) {
 
     myDiagram.model = new go.GraphLinksModel(nodeDataArray, linkDataArray);
 
-    if (myPalette !== undefined) {
-        myPalette.clear();
-        myPalette.div = null;
+    if (myPaletteBasic !== undefined) {
+        myPaletteBasic.clear();
+        myPaletteBasic.div = null;
     }
 
     // initialize the Palette that is on the left side of the page
     // noinspection JSUndeclaredVariable
-    myPalette =
-        gojs(go.Palette, "paletteDiv",  // must name or refer to the DIV HTML element
+    myPaletteBasic =
+        gojs(go.Palette, "paletteDivBasic",  // must name or refer to the DIV HTML element
             {
                 scrollsPageOnFocus: false,
                 nodeTemplateMap: myDiagram.nodeTemplateMap,  // share the templates used by myDiagram
