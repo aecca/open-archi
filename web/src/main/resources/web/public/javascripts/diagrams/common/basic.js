@@ -15,6 +15,8 @@ function initBasic(nodeDataArray, linkDataArray, paletteModel) {
                     sorting: go.GridLayout.Forward
                 }),
                 hoverDelay: 100,
+                "draggingTool.dragsTree": false,
+                "draggingTool.isGridSnapEnabled": true,
                 nodeSelectionAdornmentTemplate: emptyAdornment,
                 groupSelectionAdornmentTemplate: emptyAdornment
             });
@@ -43,6 +45,8 @@ function initBasic(nodeDataArray, linkDataArray, paletteModel) {
                     sorting: go.GridLayout.Forward
                 }),
                 hoverDelay: 100,
+                "draggingTool.dragsTree": false,
+                "draggingTool.isGridSnapEnabled": true,
                 nodeSelectionAdornmentTemplate: emptyAdornment,
                 groupSelectionAdornmentTemplate: emptyAdornment
             });

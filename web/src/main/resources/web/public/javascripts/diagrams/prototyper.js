@@ -64,22 +64,12 @@ $().ready(function () {
     $('#sidebarCollapse').on('click', function () {
         if (!$sidebar.hasClass('active')) {
             $sidebar.addClass('active');
-            //$('.collapse.in').toggleClass('in');
             $('a[aria-expanded=true]').attr('aria-expanded', 'false');
         } else {
             $sidebar.removeClass('active');
         }
+        $(this).find('i').toggleClass('glyphicon-menu-left').toggleClass('glyphicon-menu-right');
     });
-    init();
-    /*    $sidebar.addClass('active');
-    const $paletteContainerBasic = $("#paletteContainerBasic");
-    const $paletteContainerGeneral = $("#paletteContainerGeneral");
 
-    $paletteContainerBasic.ready(function () {
-        resizePalete("paletteContainerBasic", myPaletteBasic);
-    });
-    $paletteContainerGeneral.ready(function () {
-        resizePalete("paletteContainerGeneral", myPaletteGeneral);
-    });
-    $sidebar.removeClass('active');*/
+    init();
 });

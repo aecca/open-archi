@@ -102,7 +102,7 @@ append styles
 
         #sidebar ul.components {
             padding: 0;
-            border-bottom: 1px solid grey;
+            /*border-bottom: 1px solid grey;*/
         }
 
         #sidebar ul p {
@@ -117,13 +117,13 @@ append styles
         }
 
         #sidebar ul li a:hover {
-            color: white;
-            background: grey;
+            color: black;
+            background: #eeeeee;
         }
 
         #sidebar ul li.active > a, a[aria-expanded="true"] {
-            color: white;
-            background: grey;
+            color: black;
+            background: #eeeeee;
         }
 
         a[data-toggle="collapse"] {
@@ -178,6 +178,26 @@ append styles
             position: absolute;
             top: 0;
             right: 0;
+        }
+
+        #sidebarCollapse {
+            position: fixed;
+            top: 0.7em;
+            left: 0.6em;
+            z-index: 10000;
+            border: 2px solid grey;
+            color: grey;
+        }
+
+        .sidebarCollapse:hover, .sidebarCollapse:focus, .sidebarCollapse:active, .sidebarCollapse.active, .open > .dropdown-toggle.sidebarCollapse {
+            color: #33a6cc;
+            border-color: #33a6cc;
+        }
+
+        .sidebarCollapse:active, .sidebarCollapse.active {
+            border-color: #007299;
+            color: #007299;
+            box-shadow: none;
         }
 
 append scripts
@@ -311,19 +331,15 @@ block content
     // Sidebar Holder
     .wrapper
         nav#sidebar.active
-            .sidebar-header
-                h4 Palette
             ul.list-unstyled.components
                 li.active
-                    a(href="#basicPaletteSubMenu", data-toggle="collapse", aria-expanded="true") Basic
+                    a(href="#basicPaletteSubMenu", data-toggle="collapse", aria-expanded="true", style="font-weight: bold;") Basic
                     ul#basicPaletteSubMenu.collapse.in.list-unstyled
-                        #paletteContainerBasic(style="height: 160px")
-                            #paletteDivBasic
+                        #paletteDivBasic(style="height: 160px")
                 li.active
-                    a(href="#generalPaletteSubMenu", data-toggle="collapse", aria-expanded="true") Extended
+                    a(href="#generalPaletteSubMenu", data-toggle="collapse", aria-expanded="true", style="font-weight: bold;") Extended
                     ul#generalPaletteSubMenu.collapse.in.list-unstyled
-                        #paletteContainerGeneral(style="height: 280px; overflow-y: scroll;")
-                            #paletteDivGeneral
+                        #paletteDivGeneral(style="height: 280px")
         #content
             // Page Content Holder
             #diagramDiv
@@ -349,3 +365,5 @@ block content
                     | Model
                 #dataModelContainer
                     span#modelToSaveOrLoad(style="display: block")
+        a#sidebarCollapse.btn(href="#")
+            i.glyphicon.glyphicon-menu-right
