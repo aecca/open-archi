@@ -58,8 +58,7 @@ public class Samples implements RouteGroup {
         steps.add("Con doble-click en cualquier componente (cajita) se editará su nombre");
         steps.add("Al hacer click en el borde de un componente se puede crear conectores (flechas) hacia cualquier componente");
         BeanBuilder bean = new BeanBuilder()
-                .nodeDataArray(nodeDataArray)
-                .linkDataArray(linkDataArray)
+                .model(new Object())
                 .source("basic")
                 .mainTitle("Propuesta para diagrama básico de componentes - Primer nivel")
                 .caption("¡Leyendo ya desde Open Archi!")

@@ -11,184 +11,7 @@ append styles
     link(rel='stylesheet', type='text/css', href='/stylesheets/palette.css')
     link(rel='stylesheet', type='text/css', href='/stylesheets/bootstrap-slider.css')
     link(rel='stylesheet', type='text/css', href='/stylesheets/jquery.mCustomScrollbar.min.css')
-    style.
-
-        /*
-        One simple way of making a div fill its space,
-        with allowances for the title (top) and the resize handle (bottom)
-        */
-        #dataModelContainer {
-            position: absolute;
-            bottom: 14px;
-            left: 0px;
-            right: 0px;
-            top: 14px;
-        }
-
-        /*
-            DEMO STYLE
-        */
-        @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
-
-        .navbar-btn {
-            box-shadow: none;
-            outline: none !important;
-            border: none;
-        }
-
-        .line {
-            width: 100%;
-            height: 1px;
-            border-bottom: 1px dashed #ddd;
-            margin: 40px 0;
-        }
-
-        /* ---------------------------------------------------
-            SIDEBAR STYLE
-        ----------------------------------------------------- */
-        #sidebar {
-            width: 164px;
-            position: fixed;
-            top: 56px;
-            left: -164px;
-            height: 100vh;
-            z-index: 999;
-            /*background: #7386D5;*/
-            background: white;
-            color: #fff;
-            transition: all 0.3s;
-            /*overflow-y: scroll;*/
-        }
-
-        #sidebar.active {
-            left: 0;
-        }
-
-        #dismiss {
-            width: 35px;
-            height: 35px;
-            line-height: 35px;
-            text-align: center;
-            background: #7386D5;
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            cursor: pointer;
-            -webkit-transition: all 0.3s;
-            -o-transition: all 0.3s;
-            transition: all 0.3s;
-        }
-
-        #dismiss:hover {
-            background: #fff;
-            color: #7386D5;
-        }
-
-        .overlay {
-            position: fixed;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 998;
-            display: none;
-        }
-
-        #sidebar .sidebar-header {
-            padding: 3px;
-            background: buttonface;
-            color: black;
-            text-align: center;
-        }
-
-        #sidebar ul.components {
-            padding: 0;
-            /*border-bottom: 1px solid grey;*/
-        }
-
-        #sidebar ul p {
-            color: #fff;
-            padding: 10px;
-        }
-
-        #sidebar ul li a {
-            padding: 10px;
-            font-size: 1.1em;
-            display: block;
-        }
-
-        #sidebar ul li a:hover {
-            color: black;
-            background: #eeeeee;
-        }
-
-        #sidebar ul li.active > a, a[aria-expanded="true"] {
-            color: black;
-            background: #eeeeee;
-        }
-
-        a[data-toggle="collapse"] {
-            position: relative;
-        }
-
-        a[aria-expanded="false"]::before, a[aria-expanded="true"]::before {
-            content: '\e259';
-            display: contents;
-            font-family: 'Glyphicons Halflings';
-        }
-
-        a[aria-expanded="true"]::before {
-            content: '\e260';
-        }
-
-        ul ul a {
-            font-size: 0.9em !important;
-            padding-left: 30px !important;
-        }
-
-        ul.CTAs {
-            padding: 20px;
-        }
-
-        ul.CTAs a {
-            text-align: center;
-            font-size: 0.9em !important;
-            display: block;
-            border-radius: 5px;
-            margin-bottom: 5px;
-        }
-
-        a.download {
-            background: #fff;
-            color: #7386D5;
-        }
-
-        a.article, a.article:hover {
-            background: #6d7fcc !important;
-            color: #fff !important;
-        }
-
-        /* ---------------------------------------------------
-            CONTENT STYLE
-        ----------------------------------------------------- */
-        #content {
-            width: 100%;
-            padding: 20px;
-            min-height: 100vh;
-            transition: all 0.3s;
-            position: absolute;
-            top: 0;
-            right: 0;
-        }
-
-        #sidebarCollapse {
-            border-radius: 20%;
-            position: fixed;
-            top: 0.7em;
-            left: 0.6em;
-            z-index: 10000;
-            color: white;
-            background-color: lightgray;
-        }
+    link(rel='stylesheet', type='text/css', href='/stylesheets/presenter.css')
 
 append scripts
     script(type='text/javascript', src='/javascripts/jquery-ui.js')
@@ -213,10 +36,15 @@ append scripts
     script(type='text/javascript', src='/javascripts/jquery.mCustomScrollbar.concat.min.js')
     script.
         meta.isPrototyper = !{prototyper};
+
         let nodeDataArray = [];
-        if (!{nodeDataArray_} !== undefined) {
-            nodeDataArray = !{nodeDataArray_};
+        let linkDataArray = [];
+        let model = OpenArchiToDiagram.process(!{model_});
+        if (model !== {}) {
+            nodeDataArray = model.nodeDataArray;
+            linkDataArray = model.linkDataArray;
         }
+
         let paletteModel = {
             basic: [],
             general: []
@@ -226,10 +54,7 @@ append scripts
             paletteModel.basic.pushAll(OpenArchiWrapper.fixCategory(palette.basicElements));
             paletteModel.general.pushAll(OpenArchiWrapper.fixCategory(palette.generalElements));
         }
-        let linkDataArray = [];
-        if (!{linkDataArray_} !== undefined) {
-            linkDataArray = !{linkDataArray_};
-        }
+
         let MINLENGTH = '!{MINLENGTH}';  // this controls the minimum length of any swimlane
         let MINBREADTH = '!{MINBREADTH}';  // this controls the minimum breadth of any non-collapsed swimlane
         let HORIZONTAL = '!{HORIZONTAL}';  // this constant parameter can only be set here, not dynamically
@@ -247,7 +72,7 @@ append scripts
         var diagramTypes = !{diagramTypes_};
         var elementTypes = !{elementTypes_};
         var fullView = '!{fullView}';
-    script(type='text/javascript', src='/javascripts/diagrams/editor.js')
+    script(type='text/javascript', src='/javascripts/diagrams/presenter.js')
 block extra-menu-elements
     +nav_item_dropdown("#", null, "diagramTypesDropdown")(label="Diagram Type")
     +nav_item_dropdown("#")(label="Menu")

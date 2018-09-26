@@ -19,8 +19,7 @@ public class BeanBuilder {
     private String title;
 
     //Examples
-    private List nodeDataArray;
-    private List linkDataArray;
+    private Object model;
     private String source;
     private String mainTitle;
     private String caption;
@@ -61,12 +60,8 @@ public class BeanBuilder {
         return title;
     }
 
-    public List getNodeDataArray() {
-        return nodeDataArray;
-    }
-
-    public List getLinkDataArray() {
-        return linkDataArray;
+    public Object getModel() {
+        return model;
     }
 
     public String getSource() {
@@ -189,13 +184,8 @@ public class BeanBuilder {
         return this;
     }
 
-    public BeanBuilder nodeDataArray(final List nodeDataArray) {
-        this.nodeDataArray = nodeDataArray;
-        return this;
-    }
-
-    public BeanBuilder linkDataArray(final List linkDataArray) {
-        this.linkDataArray = linkDataArray;
+    public BeanBuilder model(final Object model) {
+        this.model = model;
         return this;
     }
 

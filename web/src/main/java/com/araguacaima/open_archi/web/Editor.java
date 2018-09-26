@@ -37,8 +37,7 @@ public class Editor implements RouteGroup {
             bean.elementTypes(OpenArchi.getElementTypes());
             bean.source("basic");
             bean.examples(getExamples());
-            bean.nodeDataArray(new ArrayList());
-            bean.linkDataArray(new ArrayList());
+            bean.model(new Object());
             String type = req.queryParams("type");
             if (type != null) {
                 for (String diagramType : deeplyFulfilledDiagramTypesCollection) {
@@ -54,21 +53,33 @@ public class Editor implements RouteGroup {
             bean.prototyper(false);
             return buildModelAndView(req, res, bean, PATH);
         }, engine);
-        get("/:uuid", (request, response) -> {
+        get("/:uuid", (req, res) -> {
             try {
-                String id = request.params(":uuid");
+                String id = req.params(":uuid");
                 Taggable model = JPAEntityManagerUtils.find(Taggable.class, id);
                 if (model != null) {
                     model.validateRequest();
-                } else {
-                    final List nodeDataArray = getDefaultNodeDataArray();
-                    final List linkDataArray = getDefaultLinkDataArray();
-                    bean.nodeDataArray(nodeDataArray);
-                    bean.linkDataArray(linkDataArray);
+                    bean.model(model);
                 }
+                bean.title("Editor");
                 bean.palette(OpenArchi.getArchitecturePalette(Item.GET_ALL_MODELS));
+                bean.elementTypes(OpenArchi.getElementTypes());
                 bean.source("basic");
-                return buildModelAndView(request, response, bean, PATH);
+                bean.examples(getExamples());
+                String type = req.queryParams("type");
+                if (type != null) {
+                    for (String diagramType : deeplyFulfilledDiagramTypesCollection) {
+                        diagramTypesMap.put(diagramType, diagramType.equals(type));
+                    }
+                    bean.diagramTypes(diagramTypesMap);
+                }
+                if (req.queryParams("fullView") != null) {
+                    bean.fullView(true);
+                } else {
+                    bean.fullView(null);
+                }
+                bean.prototyper(false);
+                return buildModelAndView(req, res, bean, PATH);
             } catch (Exception ex) {
                 bean.title("Error");
                 bean.message(ex.getMessage());
