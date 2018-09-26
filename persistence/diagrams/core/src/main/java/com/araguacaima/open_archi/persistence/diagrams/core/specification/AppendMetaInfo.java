@@ -1,14 +1,17 @@
 package com.araguacaima.open_archi.persistence.diagrams.core.specification;
 
-import com.araguacaima.open_archi.persistence.meta.Account;
-import com.araguacaima.open_archi.persistence.meta.BaseEntity;
-import com.araguacaima.open_archi.persistence.meta.History;
-import com.araguacaima.open_archi.persistence.meta.MetaInfo;
+import com.araguacaima.open_archi.persistence.meta.*;
+import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
 import com.araguacaima.specification.AbstractSpecification;
 
 import java.util.*;
 
+@SuppressWarnings("unchecked")
 public class AppendMetaInfo extends AbstractSpecification {
+
+    private static final Map<String, Object> versionParam = new HashMap<String, Object>() {{
+        put("version", new Version());
+    }};
 
     public AppendMetaInfo() {
         this(false);
@@ -25,9 +28,15 @@ public class AppendMetaInfo extends AbstractSpecification {
             Date thisTime = Calendar.getInstance().getTime();
             if (entity.getMeta() == null) {
                 if (map.get("meta") == null) {
-                    meta = new MetaInfo();
-                    meta.addNewHistory(thisTime);
-                    meta.setCreated(thisTime);
+                    MetaInfo storedMetaInfo = JPAEntityManagerUtils.findByQuery(MetaInfo.class, MetaInfo.GET_META_INFO_BY_VERSION, versionParam);
+                    if (storedMetaInfo == null) {
+                        meta = new MetaInfo();
+                        meta.addNewHistory(thisTime);
+                        meta.setCreated(thisTime);
+                        map.put("meta", meta);
+                    } else {
+                        meta = storedMetaInfo;
+                    }
                     map.put("meta", meta);
                 } else {
                     meta = (MetaInfo) map.get("meta");

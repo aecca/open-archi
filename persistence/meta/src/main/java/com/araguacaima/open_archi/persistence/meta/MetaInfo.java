@@ -1,7 +1,6 @@
 package com.araguacaima.open_archi.persistence.meta;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.IterableUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -27,11 +26,18 @@ import java.util.UUID;
 @NamedQueries(value = {@NamedQuery(name = MetaInfo.COUNT_ALL_META_INFO,
         query = "select count(a) from MetaInfo a"), @NamedQuery(
         name = MetaInfo.GET_ALL_META_INFO,
-        query = "select a from MetaInfo a order by a.created")})
+        query = "select a from MetaInfo a order by a.created"),
+        @NamedQuery(name = MetaInfo.GET_META_INFO_BY_VERSION,
+                query = "select m " +
+                        "from MetaInfo m " +
+                        "   inner join m.history h " +
+                        "   inner join h.version v " +
+                        "where v = :version")})
 public class MetaInfo implements Serializable, Comparable<MetaInfo>, SimpleOverridable<MetaInfo> {
 
     public static final String GET_ALL_META_INFO = "MetaInfo.getAllMetaInfo";
     public static final String COUNT_ALL_META_INFO = "MetaInfo.countAllMetaInfo";
+    public static final String GET_META_INFO_BY_VERSION = "get.metainfo.by.version";
 
     @Id
     private String id;
@@ -100,6 +106,7 @@ public class MetaInfo implements Serializable, Comparable<MetaInfo>, SimpleOverr
         history.setVersion(new Version());
         this.history.add(history);
     }
+
     public void addNewHistory(Date time, Account modifiedBy) {
         History history = new History(time);
         history.setVersion(new Version());
