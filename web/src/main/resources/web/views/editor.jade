@@ -39,8 +39,9 @@ append scripts
 
         let nodeDataArray = [];
         let linkDataArray = [];
-        let model = OpenArchiToDiagram.process(!{model_});
-        if (model !== {}) {
+        let model = !{model_};
+        if (_.isEmpty(model)) {
+            OpenArchiToDiagram.process(model);
             nodeDataArray = model.nodeDataArray;
             linkDataArray = model.linkDataArray;
         }
