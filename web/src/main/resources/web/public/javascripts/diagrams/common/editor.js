@@ -100,10 +100,14 @@ function save(model) {
     ).fail((jqXHR, textStatus, errorThrown) => alert(errorThrown));
 }
 
-function load() {
+function load(model) {
     let modelToSaveOrLoad = $("#modelToSaveOrLoad");
     let jsonString = modelToSaveOrLoad.children()[0].innerText;
-    expand(jsonString);
+    if (model === undefined) {
+        expand(jsonString);
+    } else {
+        expand(model);
+    }
 }
 
 function placeNewNode(elementType, data, name) {
@@ -171,7 +175,6 @@ function expand(data) {
     const newDiagram = OpenArchiToDiagram.process(model);
     const nodeDataArray = newDiagram.nodeDataArray;
     if (nodeDataArray !== undefined && nodeDataArray !== null) {
-        myDiagram.startTransaction("Deleting new element");
         let id;
         const clonedFrom = data.clonedFrom;
         if (clonedFrom === undefined) {
@@ -180,9 +183,12 @@ function expand(data) {
             id = clonedFrom.id
         }
         const nodedata = findByField(myDiagram.model.nodeDataArray, "id", id);
-        myDiagram.model.removeNodeData(myDiagram.model.findNodeDataForKey(nodedata.key));
-        myDiagram.requestUpdate();
-        myDiagram.commitTransaction("Deleting new element");
+        if (nodedata !== undefined) {
+            myDiagram.startTransaction("Deleting new element");
+            myDiagram.model.removeNodeData(myDiagram.model.findNodeDataForKey(nodedata.key));
+            myDiagram.requestUpdate();
+            myDiagram.commitTransaction("Deleting new element");
+        }
         myDiagram.startTransaction("Expand element");
         myDiagram.model.addNodeDataCollection(nodeDataArray);
         const linkDataArray = newDiagram.linkDataArray;
@@ -582,7 +588,7 @@ function init() {
             modelToSaveOrLoad.empty();
             modelToSaveOrLoad.jsonView(model);
             resizeDataModelDiv();
-            load();
+            load(model);
         },
         // optional (if other layers overlap autocomplete list)
         open: function (event, ui) {
@@ -668,6 +674,9 @@ function copyTextToClipboard(text) {
     document.body.removeChild(textArea);
 }
 
+function elementTreeExpander() {
+
+}
 
 /*
 

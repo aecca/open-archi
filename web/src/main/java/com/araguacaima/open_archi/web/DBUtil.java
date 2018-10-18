@@ -134,6 +134,7 @@ public class DBUtil {
             if (!persistedObjects.contains(entity)) {
                 JPAEntityManagerUtils.persist(entity);
                 persistedObjects.add(entity);
+                JPAEntityManagerUtils.flush();
             } else {
                 logProcessing(entity);
             }
@@ -141,6 +142,7 @@ public class DBUtil {
             if (!EntityExistsException.class.isAssignableFrom(t.getClass())) {
                 t.printStackTrace();
             }
+            throw t;
         }
         return entity;
     }
@@ -165,6 +167,7 @@ public class DBUtil {
             }
         } catch (Throwable t) {
             t.printStackTrace();
+            throw t;
         }
         return entity;
     }

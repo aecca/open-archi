@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 @PersistenceUnit(unitName = "open-archi")
 @Table(name = "CompositeElement", schema = "DIAGRAMS")
 @DynamicUpdate
-public class CompositeElement<T extends ElementKind> {
+public class CompositeElement<T extends ElementKind> implements Comparable<CompositeElement<T>> {
 
     @Id
     @NotNull
@@ -36,6 +36,11 @@ public class CompositeElement<T extends ElementKind> {
 
     public void setId(String id) {
         this.id = id;
+        if (StringUtils.isNotBlank(this.id)) {
+            setLink("/models/" + this.id);
+        } else {
+            setLink(null);
+        }
     }
 
     public T getType() {
@@ -102,5 +107,40 @@ public class CompositeElement<T extends ElementKind> {
             version_.copyNonEmpty(version, keepMeta);
             this.version = version_;
         }
+    }
+
+    @Override
+    public int compareTo(CompositeElement<T> o) {
+        if (o == null) {
+            return 0;
+        } else {
+            if (o.getType().equals(this.type)) {
+                if (o.getId().equals(this.id)) {
+                    return o.getVersion().compareTo(this.version);
+                } else {
+                    return -1;
+                }
+            } else {
+                return -1;
+            }
+        }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        CompositeElement<?> that = (CompositeElement<?>) o;
+
+        if (getId() != null ? !getId().equals(that.getId()) : that.getId() != null) return false;
+        return getType() != null ? getType().equals(that.getType()) : that.getType() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getId() != null ? getId().hashCode() : 0;
+        result = 31 * result + (getType() != null ? getType().hashCode() : 0);
+        return result;
     }
 }

@@ -111,6 +111,120 @@ block content
                 label.col-form-label Image (Only svg is permitted):
                 .dropdown
                     input#element-image-2(type="file", name="image", accept="image/svg+xml")
+    +modal-force("Element Tree", "element-tree-data")(save="elementTreeExpander")
+        .container(style='margin-top:30px;')
+            .row
+                .col-md-4
+                    ul#tree1
+                        p.well(style='height:135px;')
+                            strong Initialization no parameters
+                            br
+                            code $('#tree1').treed();
+                        li
+                            a(href='#') TECH
+                            ul
+                                li Company Maintenance
+                                li
+                                    | Employees
+                                    ul
+                                        li
+                                            | Reports
+                                            ul
+                                                li Report1
+                                                li Report2
+                                                li Report3
+                                        li Employee Maint.
+                                li Human Resources
+                        li
+                            | XRP
+                            ul
+                                li Company Maintenance
+                                li
+                                    | Employees
+                                    ul
+                                        li
+                                            | Reports
+                                            ul
+                                                li Report1
+                                                li Report2
+                                                li Report3
+                                        li Employee Maint.
+                                li Human Resources
+                .col-md-4
+                    p.well(style='height:135px;')
+                        strong Initialization optional parameters
+                        br
+                        code
+                            | $('#tree2').treed({openedClass : 'glyphicon-folder-open', closedClass : 'glyphicon-folder-close'});
+                    ul#tree2
+                        li
+                            a(href='#') TECH
+                            ul
+                                li Company Maintenance
+                                li
+                                    | Employees
+                                    ul
+                                        li
+                                            | Reports
+                                            ul
+                                                li Report1
+                                                li Report2
+                                                li Report3
+                                        li Employee Maint.
+                                li Human Resources
+                        li
+                            | XRP
+                            ul
+                                li Company Maintenance
+                                li
+                                    | Employees
+                                    ul
+                                        li
+                                            | Reports
+                                            ul
+                                                li Report1
+                                                li Report2
+                                                li Report3
+                                        li Employee Maint.
+                                li Human Resources
+                .col-md-4
+                    p.well(style='height:135px;')
+                        strong Initialization optional parameters
+                        br
+                        code
+                            | $('#tree3').treed({openedClass:'glyphicon-chevron-right', closedClass:'glyphicon-chevron-down'});
+                    ul#tree3
+                        li
+                            a(href='#') TECH
+                            ul
+                                li Company Maintenance
+                                li
+                                    | Employees
+                                    ul
+                                        li
+                                            | Reports
+                                            ul
+                                                li Report1
+                                                li Report2
+                                                li Report3
+                                        li Employee Maint.
+                                li Human Resources
+                        li
+                            | XRP
+                            ul
+                                li Company Maintenance
+                                li
+                                    | Employees
+                                    ul
+                                        li
+                                            | Reports
+                                            ul
+                                                li Report1
+                                                li Report2
+                                                li Report3
+                                        li Employee Maint.
+                                li Human Resources
+
     +modal("Element role", "element-role-data")
         form#element-role-form
             .form-group
