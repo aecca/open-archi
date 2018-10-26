@@ -43,6 +43,9 @@ public abstract class Taggable extends BaseEntity {
                     referencedColumnName = "Id")})
     private Set<CompositeElement> clonedBy;
 
+    @Column
+    private Integer rank = -1000;
+
     public Set<String> getTags() {
         return tags;
     }
@@ -87,6 +90,14 @@ public abstract class Taggable extends BaseEntity {
 
     abstract public void setIsGroup(boolean container);
 
+    public Integer getRank() {
+        return rank;
+    }
+
+    public void setRank(Integer rank) {
+        this.rank = rank;
+    }
+
     public void override(Taggable source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
         super.override(source, keepMeta, suffix);
         if (clonedFrom != null) {
@@ -94,6 +105,7 @@ public abstract class Taggable extends BaseEntity {
         }
         this.tags = source.getTags();
         this.role = source.getRole();
+        this.rank = source.getRank();
     }
 
     public void copyNonEmpty(Taggable source, boolean keepMeta) {
@@ -103,6 +115,9 @@ public abstract class Taggable extends BaseEntity {
         }
         if (source.getRole() != null) {
             this.role = source.getRole();
+        }
+        if (source.getRank() != null) {
+            this.rank = source.getRank();
         }
     }
 

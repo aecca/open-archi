@@ -69,21 +69,25 @@ public class PaletteItem extends PaletteInfo implements Comparable<PaletteItem> 
         if (o == null) {
             return 0;
         }
-        if (o.getKind().equals(ElementKind.DEFAULT)) {
+        if (o.getKind() == null || o.getShape() == null) {
+            return -1001;
+        }
+        ElementKind shapeType = o.getShape().getType();
+        if (shapeType.equals(ElementKind.DEFAULT)) {
             return -1000;
-        } else if (o.getKind().equals(ElementKind.CONSUMER)) {
+        } else if (shapeType.equals(ElementKind.CONSUMER)) {
             return -999;
-        } else if (o.getKind().equals(ElementKind.ARCHITECTURE_MODEL)) {
+        } else if (shapeType.equals(ElementKind.ARCHITECTURE_MODEL)) {
             return -998;
-        } else if (o.getKind().equals(ElementKind.LAYER)) {
+        } else if (shapeType.equals(ElementKind.LAYER)) {
             return -997;
-        } else if (o.getKind().equals(ElementKind.SYSTEM)) {
+        } else if (shapeType.equals(ElementKind.SYSTEM)) {
             return -996;
-        } else if (o.getKind().equals(ElementKind.CONTAINER)) {
+        } else if (shapeType.equals(ElementKind.CONTAINER)) {
             return -995;
-        } else if (o.getKind().equals(ElementKind.COMPONENT)) {
+        } else if (shapeType.equals(ElementKind.COMPONENT)) {
             return -994;
-        } else if (o.getKind().equals(this.getKind())) {
+        } else if (shapeType.equals(this.getKind())) {
             return o.getRank() - this.getRank();
         }
         return 1;
