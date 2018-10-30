@@ -309,7 +309,7 @@ public class Models implements RouteGroup {
 
     private Taggable extractTaggable(String body, Object kind) throws Exception {
         Taggable model = null;
-        for (Class<? extends Taggable> modelClass : modelsClasses) {
+        for (Class<? extends Taggable> modelClass : CollectionUtils.union(modelsClasses, innerElementClasses)) {
             Field field = reflectionUtils.getField(modelClass, "kind");
             if (field != null) {
                 field.setAccessible(true);

@@ -12,7 +12,9 @@ function fixMetaData() {
     const name = $("#diagram-name").val();
     const type = $("#diagramTypesDropdown").find("a.active").html();
     meta.name = name;
-    meta.kind = type;
+    if (meta.kind === undefined) {
+        meta.kind = type;
+    }
 }
 
 // Show the diagram's model in JSON format that the user may edit
@@ -231,6 +233,21 @@ function expand(data) {
         myDiagram.commitTransaction("Expand element");
     }
     relayoutLanes();
+
+    const rootNodes = myDiagram.findTreeRoots();
+
+    if (rootNodes !== undefined) {
+        let alreadyWritten = false;
+        rootNodes.each(function (node) {
+            if (meta.name === undefined && !alreadyWritten) {
+                const data = node.data;
+                meta.name = data.name;
+                $("#diagram-name").val(data.name);
+                meta.kind = data.kind;
+                alreadyWritten = true;
+            }
+        });
+    }
 }
 
 function expandGroups(g, i, level) {
