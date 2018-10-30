@@ -63,7 +63,8 @@ public class Models implements RouteGroup {
                 try {
                     model.validateCreation(map);
                 } catch (EntityError e) {
-
+                    response.status(HTTP_CONFLICT);
+                    return EMPTY_RESPONSE;
                 }
                 DBUtil.populate(model, id == null);
                 response.status(HTTP_CREATED);
