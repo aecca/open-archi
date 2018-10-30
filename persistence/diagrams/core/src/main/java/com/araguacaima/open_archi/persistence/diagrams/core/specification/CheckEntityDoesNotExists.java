@@ -11,8 +11,6 @@ import java.util.Map;
 
 public class CheckEntityDoesNotExists extends AbstractSpecification {
 
-    private static final String GENERAL_ERROR = "ModelAlreadyExistsError";
-
     public CheckEntityDoesNotExists() {
         this(false);
     }
@@ -28,7 +26,7 @@ public class CheckEntityDoesNotExists extends AbstractSpecification {
             BaseEntity entity = (BaseEntity) object;
             Object key = entity.getId();
             if (JPAEntityManagerUtils.find(clazz, key) != null) {
-                map.put(Constants.SPECIFICATION_ERROR, "Key '" + key + "' already exists");
+                map.put(Constants.SPECIFICATION_ERROR_ALREADY_EXISTS, "Key '" + key + "' already exists");
                 return false;
             }
 

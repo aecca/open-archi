@@ -1,6 +1,7 @@
 package com.araguacaima.open_archi.persistence.meta;
 
 import com.araguacaima.open_archi.persistence.commons.Constants;
+import com.araguacaima.open_archi.persistence.commons.OperationType;
 import com.araguacaima.open_archi.persistence.commons.exceptions.*;
 
 import java.util.Map;
@@ -10,7 +11,15 @@ public class EntityErrorFactory {
         if (map == null) {
             return new EntityError(null);
         }
-        Object error = map.get(Constants.SPECIFICATION_ERROR_CREATION);
+        OperationType operationType = (OperationType) map.get("OperationType");
+
+        Object error = null;
+        if (operationType.equals(OperationType.CREATION)) {
+            error = map.get(Constants.SPECIFICATION_ERROR_ALREADY_EXISTS);
+        }
+        if (error == null) {
+            error = map.get(Constants.SPECIFICATION_ERROR_CREATION);
+        }
         if (error != null) {
             return new EntityCreationError(error.toString());
         } else {

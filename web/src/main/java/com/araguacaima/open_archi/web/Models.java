@@ -64,7 +64,8 @@ public class Models implements RouteGroup {
                     model.validateCreation(map);
                 } catch (EntityError e) {
                     response.status(HTTP_CONFLICT);
-                    return EMPTY_RESPONSE;
+                    response.type(JSON_CONTENT_TYPE);
+                    return jsonUtils.toJSON(MessagesWrapper.fromSpecificationMapToMessages(map));
                 }
                 DBUtil.populate(model, id == null);
                 response.status(HTTP_CREATED);

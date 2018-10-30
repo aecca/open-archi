@@ -8,5 +8,5 @@ public class Constants {
     public static final String SPECIFICATION_ERROR_MODIFICATION = "SpecificationErrorModification";
     public static final String SPECIFICATION_ERROR_DELETION = "SpecificationErrorDeletion";
     public static final String SPECIFICATION_ERROR_REPLACEMENT = "SpecificationErrorReplacement";
-
+    public static final String SPECIFICATION_ERROR_ALREADY_EXISTS = "SpecificationErrorCreationAlreadyExists";
 }
