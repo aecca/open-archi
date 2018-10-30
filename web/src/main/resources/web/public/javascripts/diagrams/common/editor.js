@@ -95,7 +95,37 @@ function save(model) {
                 ).fail((jqXHR, textStatus, errorThrown) => alert(errorThrown))
             }
         }
-    ).fail((jqXHR, textStatus, errorThrown) => alert(errorThrown));
+    ).fail((response, textStatus, errorThrown) => {
+        if (response.status === 409) {
+            const id = value_.id;
+            delete value_.id;
+            $.ajax({
+                url: "/api/models/" + id,
+                data: JSON.stringify(value_),
+                type: 'PUT',
+                crossDomain: true,
+                contentType: "application/json",
+                converters: {
+                    "text json": function (response) {
+                        return (response === "") ? null : JSON.parse(response);
+                    }
+                }
+            }).done((data, textStatus, response) => {
+                    if (response.status === 200) {
+                        fillPalettes(data);
+                    } else {
+                        if (response.status === 201) {
+                            fillPalettes(data);
+                        } else {
+                            alert("Not created!");
+                        }
+                    }
+                }
+            ).fail((response, textStatus, errorThrown) => alert(errorThrown))
+        } else {
+            alert(errorThrown);
+        }
+    });
 }
 
 function load(model) {

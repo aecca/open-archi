@@ -2,6 +2,7 @@ package com.araguacaima.open_archi.web;
 
 import com.araguacaima.open_archi.persistence.commons.Constants;
 import com.araguacaima.open_archi.web.common.Message;
+import com.araguacaima.open_archi.web.common.MessageSummary;
 import com.araguacaima.open_archi.web.common.Messages;
 
 import java.util.Map;
@@ -35,6 +36,9 @@ public class MessagesWrapper {
         code = Constants.SPECIFICATION_ERROR_ALREADY_EXISTS;
         value = specificationMap.get(code);
         fillMessage(messages, code, value);
+        MessageSummary summary = new MessageSummary();
+        summary.setTotalMessages(messages.getMessages().size());
+        messages.setSummary(summary);
         return messages;
     }
 

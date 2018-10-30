@@ -1,12 +1,12 @@
 package com.araguacaima.open_archi.web.common;
 
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class Messages {
 
     private MessageSummary summary;
-    private Set<Message> messages = new TreeSet<>();
+    private Collection<Message> messages = new ArrayList<>();
 
     public MessageSummary getSummary() {
         return summary;
@@ -16,11 +16,11 @@ public class Messages {
         this.summary = summary;
     }
 
-    public Set<Message> getMessages() {
+    public Collection<Message> getMessages() {
         return messages;
     }
 
-    public void setMessages(Set<Message> messages) {
+    public void setMessages(Collection<Message> messages) {
         this.messages = messages;
     }
 
