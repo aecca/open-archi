@@ -8,8 +8,10 @@
             value: function () {
                 for (let i = 0; i < arguments.length; i++) {
                     const to_add = arguments[i];
-                    for (let n = 0; n < to_add.length; n += 300) {
-                        push_apply(this, slice_call(to_add, n, n + 300));
+                    if (to_add !== undefined) {
+                        for (let n = 0; n < to_add.length; n += 300) {
+                            push_apply(this, slice_call(to_add, n, n + 300));
+                        }
                     }
                 }
             }

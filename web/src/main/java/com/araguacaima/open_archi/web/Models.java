@@ -1,6 +1,7 @@
 package com.araguacaima.open_archi.web;
 
 import com.araguacaima.open_archi.persistence.commons.IdName;
+import com.araguacaima.open_archi.persistence.commons.exceptions.EntityError;
 import com.araguacaima.open_archi.persistence.diagrams.core.*;
 import com.araguacaima.open_archi.persistence.meta.Account;
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
@@ -59,7 +60,11 @@ public class Models implements RouteGroup {
                 Map<String, Object> map = new HashMap<>();
                 Account account = (Account) ctx.getSessionAttribute("account");
                 map.put("account", account);
-                model.validateCreation(map);
+                try {
+                    model.validateCreation(map);
+                } catch (EntityError e) {
+
+                }
                 DBUtil.populate(model, id == null);
                 response.status(HTTP_CREATED);
                 response.type(JSON_CONTENT_TYPE);

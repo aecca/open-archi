@@ -12,7 +12,7 @@ class OpenArchiFromDiagram {
         model.name = meta.name;
         model.kind = meta.kind;
         model.description = meta.description;
-        model.prototype = meta.prototype;
+        model.prototype = meta.isPrototyper;
         model.shape = {type: model.kind};
         alreadyProcessedNodes = [];
         alreadyProcessedLinks = [];

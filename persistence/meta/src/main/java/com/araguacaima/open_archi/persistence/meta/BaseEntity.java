@@ -200,7 +200,7 @@ public abstract class BaseEntity implements Serializable, BasicEntity, Cloneable
                     }
                 }
                 if (!specificationResult) {
-                    throw new EntityError(map.get(Constants.SPECIFICATION_ERROR).toString());
+                    throw EntityErrorFactory.build(map);
                 }
             }
         } catch (Exception e) {

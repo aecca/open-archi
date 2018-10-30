@@ -11,10 +11,8 @@ function capitalize(text) {
 function fixMetaData() {
     const name = $("#diagram-name").val();
     const type = $("#diagramTypesDropdown").find("a.active").html();
-    const prototype = $("#diagram-prototype").prop("checked");
     meta.name = name;
     meta.kind = type;
-    meta.prototype = prototype;
 }
 
 // Show the diagram's model in JSON format that the user may edit
@@ -401,17 +399,6 @@ function addNodeToTemplateByType(data, type) {
 
 function openMore() {
 
-}
-
-function confirm() {
-    let diagramInfo = $('#diagram-info');
-    const name = $("#diagram-name").val();
-    const type = $("#diagramTypesDropdown").find("a.active").html();
-    const prototype = $("#diagram-prototype").prop("checked");
-    meta.name = name;
-    meta.kind = type;
-    meta.prototype = prototype;
-    diagramInfo.modal('hide');
 }
 
 function validateModel() {
