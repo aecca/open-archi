@@ -218,7 +218,13 @@ public abstract class BaseEntity implements Serializable, BasicEntity, Cloneable
                 this.meta = buildDefaultMeta();
             }
         } else {
-            this.meta = null;
+            if (keepMeta) {
+                if (this.meta == null) {
+                    this.meta = source.getMeta();
+                }
+            } else {
+                this.meta = null;
+            }
         }
         if (StringUtils.isNotBlank(source.getId())) {
             this.key = source.getId();

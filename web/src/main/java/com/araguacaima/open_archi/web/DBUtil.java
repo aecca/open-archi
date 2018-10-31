@@ -417,7 +417,7 @@ public class DBUtil {
             }
             JPAEntityManagerUtils.detach(persistedEntity);
             JPAEntityManagerUtils.detach(entity);
-            persistedEntity = entity;
+            ((BaseEntity) persistedEntity).override(entity, true, null);
             JPAEntityManagerUtils.update(persistedEntity);
         } catch (Throwable t) {
             JPAEntityManagerUtils.rollback();
