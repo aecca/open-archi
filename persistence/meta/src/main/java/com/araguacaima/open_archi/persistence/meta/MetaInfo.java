@@ -103,7 +103,8 @@ public class MetaInfo implements Serializable, Comparable<MetaInfo>, SimpleOverr
 
     public void addNewHistory(Date time) {
         History history = new History(time);
-        history.setVersion(new Version());
+        Version version = getActiveVersion().nextBuild();
+        history.setVersion(version);
         this.history.add(history);
     }
 

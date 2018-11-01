@@ -37,6 +37,7 @@ public class CheckInitiatorAlreadyExists extends AbstractSpecification {
                     List<Item> list = JPAEntityManagerUtils.executeQuery(Item.class, Item.GET_ITEMS_BY_NAME_AND_KIND, params);
                     if (CollectionUtils.isNotEmpty(list)) {
                         Item next = list.iterator().next();
+                        JPAEntityManagerUtils.detach(next);
                         map.put(Constants.EXISTENT_ENTITY, next);
                         map.put("meta", next.getMeta());
                         return true;

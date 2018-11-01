@@ -657,7 +657,7 @@ public class DBUtil {
                     valuesToAdd.add(value);
                 }
                 ((Collection) object_).removeAll(valuesToRemove);
-                JPAEntityManagerUtils.flush();
+                //JPAEntityManagerUtils.flush();
                 ((Collection) object_).addAll(valuesToAdd);
                 return object_;
             } else if (ReflectionUtils.isMapImplementation(type)) {
