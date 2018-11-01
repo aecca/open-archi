@@ -30,10 +30,6 @@ public class Activity extends BaseEntity implements MeasurableRange {
     public static Measurable DEFAULT_SMALL = new Measurable(new Range(Requests.REQUESTS_PER_SECOND.name(),
             120001,
             600000));
-    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
-    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
-    private Measurable value;
-
     private static Set<Measurable> RANGES = new HashSet<Measurable>() {{
         add(DEFAULT_BIG);
         add(DEFAULT_HUGE);
@@ -41,6 +37,9 @@ public class Activity extends BaseEntity implements MeasurableRange {
         add(DEFAULT_MINIMAL);
         add(DEFAULT_SMALL);
     }};
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
+    private Measurable value;
 
     public Activity() {
     }

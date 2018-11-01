@@ -1,8 +1,13 @@
 package com.araguacaima.open_archi.persistence.diagrams.sequence;
 
-import com.araguacaima.open_archi.persistence.diagrams.core.*;
+import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
+import com.araguacaima.open_archi.persistence.diagrams.core.DiagramableElement;
+import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
+import com.araguacaima.open_archi.persistence.diagrams.core.ModelElement;
+import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -57,20 +62,24 @@ public class Model extends ModelElement implements DiagramableElement<Model> {
     }
 
     @Override
-    public void override(Model source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
-        super.override(source, keepMeta, suffix, clonedFrom);
+    public Collection<BaseEntity> override(Model source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
+        overriden.addAll(super.override(source, keepMeta, suffix, clonedFrom));
         this.setSequences(source.getSequences());
         this.setRelationships(source.getRelationships());
+        return overriden;
     }
 
     @Override
-    public void copyNonEmpty(Model source, boolean keepMeta) {
-        super.copyNonEmpty(source, keepMeta);
+    public Collection<BaseEntity> copyNonEmpty(Model source, boolean keepMeta) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
+        overriden.addAll(super.copyNonEmpty(source, keepMeta));
         if (source.getSequences() != null && !source.getSequences().isEmpty()) {
             this.setSequences(source.getSequences());
         }
         if (source.getRelationships() != null && !source.getRelationships().isEmpty()) {
             this.setRelationships(source.getRelationships());
         }
+        return overriden;
     }
 }

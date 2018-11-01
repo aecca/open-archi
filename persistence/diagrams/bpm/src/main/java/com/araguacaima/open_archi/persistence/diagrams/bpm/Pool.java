@@ -3,8 +3,10 @@ package com.araguacaima.open_archi.persistence.diagrams.bpm;
 import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 import com.araguacaima.open_archi.persistence.diagrams.core.Item;
+import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
 
 @Entity
@@ -32,24 +34,30 @@ public class Pool extends Item {
         this.lanes = lanes;
     }
 
-    public void override(Pool source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
-        super.override(source, keepMeta, suffix, clonedFrom);
+    public Collection<BaseEntity> override(Pool source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
+        overriden.addAll(super.override(source, keepMeta, suffix, clonedFrom));
         for (Lane consumer : source.getLanes()) {
             Lane newLane = new Lane();
-            newLane.override(consumer, keepMeta, suffix, clonedFrom);
+            overriden.addAll(newLane.override(consumer, keepMeta, suffix, clonedFrom));
             this.lanes.add(newLane);
+            overriden.add(newLane);
         }
+        return overriden;
     }
 
-    public void copyNonEmpty(Pool source, boolean keepMeta) {
-        super.copyNonEmpty(source, keepMeta);
+    public Collection<BaseEntity> copyNonEmpty(Pool source, boolean keepMeta) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
+        overriden.addAll(super.copyNonEmpty(source, keepMeta));
         if (source.getLanes() != null && !source.getLanes().isEmpty()) {
             for (Lane consumer : source.getLanes()) {
                 Lane newLane = new Lane();
-                newLane.copyNonEmpty(consumer, keepMeta);
+                overriden.addAll(newLane.copyNonEmpty(consumer, keepMeta));
                 this.lanes.add(newLane);
+                overriden.add(newLane);
             }
         }
+        return overriden;
     }
 
     @Override

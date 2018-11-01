@@ -13,6 +13,11 @@ import java.util.Set;
 @Table(name = "Database", schema = "DIAGRAMS")
 @DynamicUpdate
 public class Database extends BaseEntity implements MeasurableRange {
+    public static Measurable DEFAULT_BIG = new Measurable(new Range(StorageUnit.Giga_Bytes.name(), 251, 500));
+    public static Measurable DEFAULT_HUGE = new Measurable(new Range(StorageUnit.Giga_Bytes.name(), 501, null));
+    public static Measurable DEFAULT_MEDIUM = new Measurable(new Range(StorageUnit.Giga_Bytes.name(), 101, 250));
+    public static Measurable DEFAULT_MINIMAL = new Measurable(new Range(StorageUnit.Giga_Bytes.name(), 0, 50));
+    public static Measurable DEFAULT_SMALL = new Measurable(new Range(StorageUnit.Giga_Bytes.name(), 51, 100));
     private static final Set<Measurable> RANGE = new HashSet<Measurable>() {{
         add(DEFAULT_BIG);
         add(DEFAULT_HUGE);
@@ -20,11 +25,6 @@ public class Database extends BaseEntity implements MeasurableRange {
         add(DEFAULT_MINIMAL);
         add(DEFAULT_SMALL);
     }};
-    public static Measurable DEFAULT_BIG = new Measurable(new Range(StorageUnit.Giga_Bytes.name(), 251, 500));
-    public static Measurable DEFAULT_HUGE = new Measurable(new Range(StorageUnit.Giga_Bytes.name(), 501, null));
-    public static Measurable DEFAULT_MEDIUM = new Measurable(new Range(StorageUnit.Giga_Bytes.name(), 101, 250));
-    public static Measurable DEFAULT_MINIMAL = new Measurable(new Range(StorageUnit.Giga_Bytes.name(), 0, 50));
-    public static Measurable DEFAULT_SMALL = new Measurable(new Range(StorageUnit.Giga_Bytes.name(), 51, 100));
     @Column
     @Enumerated(EnumType.STRING)
     private DataBaseType type;

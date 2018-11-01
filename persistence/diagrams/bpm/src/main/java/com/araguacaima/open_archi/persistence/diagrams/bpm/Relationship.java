@@ -3,8 +3,11 @@ package com.araguacaima.open_archi.persistence.diagrams.bpm;
 import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.RelationshipKind;
 import com.araguacaima.open_archi.persistence.diagrams.core.RelationshipType;
+import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * A relationship between two classes.
@@ -41,15 +44,19 @@ public class Relationship extends com.araguacaima.open_archi.persistence.diagram
         this.kind = kind;
     }
 
-    public void override(Relationship source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
-        super.override(source, keepMeta, suffix, clonedFrom);
+    public Collection<BaseEntity> override(Relationship source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
+        overriden.addAll(super.override(source, keepMeta, suffix, clonedFrom));
         this.type = source.getType();
+        return  overriden;
     }
 
-    public void copyNonEmpty(Relationship source, boolean keepMeta) {
-        super.copyNonEmpty(source, keepMeta);
+    public Collection<BaseEntity> copyNonEmpty(Relationship source, boolean keepMeta) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
+        overriden.addAll(super.copyNonEmpty(source, keepMeta));
         if (source.getType() != null) {
             this.type = source.getType();
         }
+        return overriden;
     }
 }

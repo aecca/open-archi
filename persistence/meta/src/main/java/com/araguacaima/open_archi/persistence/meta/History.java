@@ -60,16 +60,16 @@ public class History implements Serializable, Comparable<History>, SimpleOverrid
         return version;
     }
 
+    public void setVersion(Version version) {
+        this.version = version;
+    }
+
     public String getId() {
         return id;
     }
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public void setVersion(Version version) {
-        this.version = version;
     }
 
     public Date getModified() {

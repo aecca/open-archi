@@ -1,10 +1,14 @@
 package com.araguacaima.open_archi.persistence.diagrams.architectural;
 
 import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
+import com.araguacaima.open_archi.persistence.diagrams.core.DiagramableElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 import com.araguacaima.open_archi.persistence.diagrams.core.Item;
+import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -24,8 +28,8 @@ import java.util.Set;
         @NamedQuery(name = Container.GET_ALL_CONTAINERS,
                 query = "select a from Container a"),
         @NamedQuery(name = Container.GET_CONTAINERS_USAGE_BY_ELEMENT_ID_LIST,
-        query = "select c from Container c left join c.components co where co.id in :" + Item.ELEMENTS_USAGE_PARAM)})
-public class Container extends GroupStaticElement {
+                query = "select c from Container c left join c.components co where co.id in :" + Item.ELEMENTS_USAGE_PARAM)})
+public class Container extends GroupStaticElement implements DiagramableElement<Container> {
 
     public static final String GET_ALL_CONTAINERS = "get.all.containers";
     public static final String GET_ALL_COMPONENTS_FROM_CONTAINER = "get.all.components.from.container";
@@ -63,28 +67,36 @@ public class Container extends GroupStaticElement {
         this.components = components;
     }
 
-    public void override(Container source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
-        super.override(source, keepMeta, suffix, clonedFrom);
+    @Override
+    public Collection<BaseEntity> override(Container source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
+        overriden.addAll(super.override(source, keepMeta, suffix, clonedFrom));
         this.setTechnology(source.getTechnology());
         for (Component component : source.getComponents()) {
             Component newComponent = new Component();
-            newComponent.override(component, keepMeta, suffix, clonedFrom);
+            overriden.addAll(newComponent.override(component, keepMeta, suffix, clonedFrom));
             this.components.add(newComponent);
+            overriden.add(newComponent);
         }
+        return overriden;
     }
 
-    public void copyNonEmpty(Container source, boolean keepMeta) {
-        super.copyNonEmpty(source, keepMeta);
+    @Override
+    public Collection<BaseEntity> copyNonEmpty(Container source, boolean keepMeta) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
+        overriden.addAll(super.copyNonEmpty(source, keepMeta));
         if (source.getTechnology() != null) {
             this.setTechnology(source.getTechnology());
         }
         if (source.getComponents() != null && !source.getComponents().isEmpty()) {
             for (Component component : source.getComponents()) {
                 Component newComponent = new Component();
-                newComponent.copyNonEmpty(component, keepMeta);
+                overriden.addAll(newComponent.copyNonEmpty(component, keepMeta));
                 this.components.add(newComponent);
+                overriden.add(newComponent);
             }
         }
+        return overriden;
     }
 
 }

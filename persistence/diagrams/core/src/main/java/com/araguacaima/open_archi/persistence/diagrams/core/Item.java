@@ -1,13 +1,12 @@
 package com.araguacaima.open_archi.persistence.diagrams.core;
 
 
+import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * This is the superclass for all model elements.
@@ -260,7 +259,8 @@ public abstract class Item extends Taggable {
         this.relationships = relationships;
     }
 
-    public void override(Item source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+    public Collection<BaseEntity> override(Item source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
         super.override(source, keepMeta, suffix);
         if (clonedFrom != null) {
             this.setClonedFrom(clonedFrom);
@@ -287,14 +287,16 @@ public abstract class Item extends Taggable {
         if (relationships != null) {
             for (Relationship relationship : source.getRelationships()) {
                 Relationship newRelationship = new Relationship();
-                newRelationship.override(relationship, keepMeta, suffix, clonedFrom);
+                overriden.addAll(newRelationship.override(relationship, keepMeta, suffix, clonedFrom));
                 this.relationships.add(newRelationship);
             }
         }
         this.prototype = source.isPrototype();
+        return overriden;
     }
 
-    public void copyNonEmpty(Item source, boolean keepMeta) {
+    public Collection<BaseEntity> copyNonEmpty(Item source, boolean keepMeta) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
         super.copyNonEmpty(source, keepMeta);
         if (source.getName() != null) {
             this.name = source.getName();
@@ -341,10 +343,12 @@ public abstract class Item extends Taggable {
         if (relationships != null && !relationships.isEmpty()) {
             for (Relationship relationship : relationships) {
                 Relationship newRelationship = new Relationship();
-                newRelationship.copyNonEmpty(relationship, keepMeta);
+                overriden.addAll(newRelationship.copyNonEmpty(relationship, keepMeta));
                 this.relationships.add(newRelationship);
+                overriden.add(newRelationship);
             }
         }
+        return overriden;
     }
 
     public CompositeElement buildCompositeElement() {

@@ -3,11 +3,14 @@ package com.araguacaima.open_archi.persistence.diagrams.sequence;
 import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 import com.araguacaima.open_archi.persistence.diagrams.core.Item;
+import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.PersistenceUnit;
+import java.util.ArrayList;
+import java.util.Collection;
 
 @Entity
 @PersistenceUnit(unitName = "open-archi")
@@ -48,20 +51,24 @@ public class Sequence extends Item {
         this.kind = kind;
     }
 
-    public void override(Sequence source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
-        super.override(source, keepMeta, suffix, clonedFrom);
+    public Collection<BaseEntity> override(Sequence source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
+        overriden.addAll(super.override(source, keepMeta, suffix, clonedFrom));
         this.setStart(source.getStart());
         this.setDuration(source.getDuration());
+        return overriden;
     }
 
-    public void copyNonEmpty(Sequence source, boolean keepMeta) {
-        super.copyNonEmpty(source, keepMeta);
+    public Collection<BaseEntity> copyNonEmpty(Sequence source, boolean keepMeta) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
+        overriden.addAll(super.copyNonEmpty(source, keepMeta));
         if (source.getStart() != 0) {
             this.setStart(source.getStart());
         }
         if (source.getDuration() != 0) {
             this.setDuration(source.getDuration());
         }
+        return overriden;
     }
 
     @Override

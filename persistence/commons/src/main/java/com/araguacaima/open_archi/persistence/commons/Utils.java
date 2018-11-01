@@ -10,6 +10,8 @@ import java.util.Random;
 
 public class Utils {
 
+    private static ReflectionUtils reflectionUtils = new ReflectionUtils(null);
+
     public static String randomHexColor() {
 
         // create random object - reuse this as often as possible
@@ -22,8 +24,6 @@ public class Utils {
 
         return (String.format("#%06x", nextInt));
     }
-
-    private static ReflectionUtils reflectionUtils = new ReflectionUtils(null);
 
     public static boolean filterMethod(Field field) {
         if (field.getAnnotation(JsonIgnore.class) != null

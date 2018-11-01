@@ -2,10 +2,12 @@ package com.araguacaima.open_archi.web;
 
 import com.araguacaima.commons.utils.ReflectionUtils;
 import com.araguacaima.open_archi.persistence.commons.Utils;
+import com.araguacaima.open_archi.persistence.diagrams.core.DiagramableElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 import com.araguacaima.open_archi.persistence.diagrams.core.Item;
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 import com.araguacaima.open_archi.persistence.meta.BasicEntity;
+import com.araguacaima.open_archi.persistence.meta.Overridable;
 import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
 import io.github.benas.randombeans.EnhancedRandomBuilder;
 import io.github.benas.randombeans.api.EnhancedRandom;
@@ -415,9 +417,13 @@ public class DBUtil {
             if (persistedEntity == null) {
                 throw new EntityNotFoundException("Can not replace due object with id '" + entity.getId() + "' does not exists");
             }
-            JPAEntityManagerUtils.detach(persistedEntity);
+            //JPAEntityManagerUtils.detach(persistedEntity);
             JPAEntityManagerUtils.detach(entity);
-            ((BaseEntity) persistedEntity).override(entity, true, null);
+            if (DiagramableElement.class.isAssignableFrom(persistedEntity.getClass())) {
+                ((DiagramableElement) persistedEntity).override(entity, true, null, null);
+            } else if (Overridable.class.isAssignableFrom(persistedEntity.getClass())) {
+                ((Overridable) persistedEntity).override(entity, true, null);
+            }
             JPAEntityManagerUtils.update(persistedEntity);
         } catch (Throwable t) {
             JPAEntityManagerUtils.rollback();

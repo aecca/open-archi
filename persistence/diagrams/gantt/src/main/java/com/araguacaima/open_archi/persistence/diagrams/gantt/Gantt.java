@@ -3,8 +3,11 @@ package com.araguacaima.open_archi.persistence.diagrams.gantt;
 import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 import com.araguacaima.open_archi.persistence.diagrams.core.Item;
+import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
 
 @Entity
 @PersistenceUnit(unitName = "open-archi")
@@ -44,20 +47,24 @@ public class Gantt extends Item {
         this.kind = kind;
     }
 
-    public void override(Gantt source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
-        super.override(source, keepMeta, suffix, clonedFrom);
+    public Collection<BaseEntity> override(Gantt source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
+        overriden.addAll(super.override(source, keepMeta, suffix, clonedFrom));
         this.setDiagramStart(source.getDiagramStart());
         this.setDiagramEnd(source.getDiagramEnd());
+        return overriden;
     }
 
-    public void copyNonEmpty(Gantt source, boolean keepMeta) {
-        super.copyNonEmpty(source, keepMeta);
+    public Collection<BaseEntity> copyNonEmpty(Gantt source, boolean keepMeta) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
+        overriden.addAll(super.copyNonEmpty(source, keepMeta));
         if (source.getDiagramStart() != 0) {
             this.setDiagramStart(source.getDiagramStart());
         }
         if (source.getDiagramEnd() != 0) {
             this.setDiagramEnd(source.getDiagramEnd());
         }
+        return overriden;
     }
 
     @Override

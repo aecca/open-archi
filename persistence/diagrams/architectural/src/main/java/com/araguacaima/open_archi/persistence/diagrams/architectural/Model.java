@@ -1,8 +1,11 @@
 package com.araguacaima.open_archi.persistence.diagrams.architectural;
 
 import com.araguacaima.open_archi.persistence.diagrams.core.*;
+import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -155,85 +158,100 @@ public class Model extends ModelElement implements DiagramableElement<Model> {
     }
 
     @Override
-    public void override(Model source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
-        super.override(source, keepMeta, suffix, clonedFrom);
+    public Collection<BaseEntity> override(Model source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
+        overriden.addAll(super.override(source, keepMeta, suffix, clonedFrom));
         for (Consumer consumer : source.getConsumers()) {
             Consumer newConsumer = new Consumer();
-            newConsumer.override(consumer, keepMeta, suffix, clonedFrom);
+            overriden.addAll(newConsumer.override(consumer, keepMeta, suffix, clonedFrom));
             this.consumers.add(newConsumer);
+            overriden.add(newConsumer);
         }
         for (Layer layer : source.getLayers()) {
             Layer newLayer = new Layer();
-            newLayer.override(layer, keepMeta, suffix, clonedFrom);
+            overriden.addAll(newLayer.override(layer, keepMeta, suffix, clonedFrom));
             this.layers.add(newLayer);
+            overriden.add(newLayer);
         }
         for (System system : source.getSystems()) {
             System newSystem = new System();
-            newSystem.override(system, keepMeta, suffix, clonedFrom);
+            overriden.addAll(newSystem.override(system, keepMeta, suffix, clonedFrom));
             this.systems.add(newSystem);
+            overriden.add(newSystem);
         }
         for (Container container : source.getContainers()) {
             Container newContainer = new Container();
-            newContainer.override(container, keepMeta, suffix, clonedFrom);
+            overriden.addAll(newContainer.override(container, keepMeta, suffix, clonedFrom));
             this.containers.add(newContainer);
+            overriden.add(newContainer);
         }
         for (Component component : source.getComponents()) {
             Component newComponent = new Component();
-            newComponent.override(component, keepMeta, suffix, clonedFrom);
+            overriden.addAll(newComponent.override(component, keepMeta, suffix, clonedFrom));
             this.components.add(newComponent);
+            overriden.add(newComponent);
         }
         for (DeploymentNode deploymentNode : source.getDeploymentNodes()) {
             DeploymentNode newDeploymentNode = new DeploymentNode();
-            newDeploymentNode.override(deploymentNode, keepMeta, suffix, clonedFrom);
+            overriden.addAll(newDeploymentNode.override(deploymentNode, keepMeta, suffix, clonedFrom));
             this.deploymentNodes.add(newDeploymentNode);
+            overriden.add(newDeploymentNode);
         }
+        return overriden;
     }
 
     @Override
-    public void copyNonEmpty(Model source, boolean keepMeta) {
-        super.copyNonEmpty(source, keepMeta);
+    public Collection<BaseEntity> copyNonEmpty(Model source, boolean keepMeta) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
+        overriden.addAll(super.copyNonEmpty(source, keepMeta));
         if (source.getConsumers() != null && !source.getConsumers().isEmpty()) {
             for (Consumer consumer : source.getConsumers()) {
                 Consumer newConsumer = new Consumer();
-                newConsumer.copyNonEmpty(consumer, keepMeta);
+                overriden.addAll(newConsumer.copyNonEmpty(consumer, keepMeta));
                 this.consumers.add(newConsumer);
+                overriden.add(newConsumer);
             }
         }
-
         if (source.getLayers() != null && !source.getLayers().isEmpty()) {
             for (Layer system : source.getLayers()) {
                 Layer newLayer = new Layer();
-                newLayer.copyNonEmpty(system, keepMeta);
+                overriden.addAll(newLayer.copyNonEmpty(system, keepMeta));
                 this.layers.add(newLayer);
+                overriden.add(newLayer);
             }
         }
         if (source.getSystems() != null && !source.getSystems().isEmpty()) {
             for (System system : source.getSystems()) {
                 System newSystem = new System();
-                newSystem.copyNonEmpty(system, keepMeta);
+                overriden.addAll(newSystem.copyNonEmpty(system, keepMeta));
                 this.systems.add(newSystem);
+                overriden.add(newSystem);
             }
         }
         if (source.getContainers() != null && !source.getContainers().isEmpty()) {
             for (Container system : source.getContainers()) {
                 Container newContainer = new Container();
-                newContainer.copyNonEmpty(system, keepMeta);
+                overriden.addAll(newContainer.copyNonEmpty(system, keepMeta));
                 this.containers.add(newContainer);
+                overriden.add(newContainer);
             }
         }
         if (source.getComponents() != null && !source.getComponents().isEmpty()) {
             for (Component system : source.getComponents()) {
                 Component newComponent = new Component();
-                newComponent.copyNonEmpty(system, keepMeta);
+                overriden.addAll(newComponent.copyNonEmpty(system, keepMeta));
                 this.components.add(newComponent);
+                overriden.add(newComponent);
             }
         }
         if (source.getDeploymentNodes() != null && !source.getDeploymentNodes().isEmpty()) {
             for (DeploymentNode deploymentNode : source.getDeploymentNodes()) {
                 DeploymentNode newDeploymentNode = new DeploymentNode();
-                newDeploymentNode.copyNonEmpty(deploymentNode, keepMeta);
+                overriden.addAll(newDeploymentNode.copyNonEmpty(deploymentNode, keepMeta));
                 this.deploymentNodes.add(newDeploymentNode);
+                overriden.add(newDeploymentNode);
             }
         }
+        return overriden;
     }
 }

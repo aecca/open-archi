@@ -17,7 +17,7 @@ public class ReliabilitySolution extends BaseEntity {
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private Markdown description;
 
-    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true,targetEntity = AbstractReliability.class)
+    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true, targetEntity = AbstractReliability.class)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private Set<IReliability> elements;
 

@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -98,7 +100,8 @@ public abstract class Taggable extends BaseEntity {
         this.rank = rank;
     }
 
-    public void override(Taggable source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+    public Collection<BaseEntity> override(Taggable source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
         super.override(source, keepMeta, suffix);
         if (clonedFrom != null) {
             this.setClonedFrom(clonedFrom);
@@ -106,9 +109,11 @@ public abstract class Taggable extends BaseEntity {
         this.tags = source.getTags();
         this.role = source.getRole();
         this.rank = source.getRank();
+        return overriden;
     }
 
-    public void copyNonEmpty(Taggable source, boolean keepMeta) {
+    public Collection<BaseEntity> copyNonEmpty(Taggable source, boolean keepMeta) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
         super.copyNonEmpty(source, keepMeta);
         if (source.getTags() != null && !source.getTags().isEmpty()) {
             this.tags = source.getTags();
@@ -119,6 +124,7 @@ public abstract class Taggable extends BaseEntity {
         if (source.getRank() != null) {
             this.rank = source.getRank();
         }
+        return overriden;
     }
 
 

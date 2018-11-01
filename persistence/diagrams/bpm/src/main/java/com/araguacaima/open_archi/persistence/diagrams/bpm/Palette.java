@@ -2,9 +2,6 @@ package com.araguacaima.open_archi.persistence.diagrams.bpm;
 
 import com.araguacaima.open_archi.persistence.diagrams.core.*;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 public class Palette extends AbstractPalette {
 
 

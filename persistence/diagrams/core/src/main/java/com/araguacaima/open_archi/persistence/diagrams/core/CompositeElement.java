@@ -51,9 +51,6 @@ public class CompositeElement<T extends ElementKind> implements Comparable<Compo
         this.type = type;
     }
 
-    public CompositeElement() {
-    }
-
     public String getLink() {
         return link;
     }

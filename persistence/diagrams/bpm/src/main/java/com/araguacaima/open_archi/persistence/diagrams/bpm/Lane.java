@@ -2,9 +2,11 @@ package com.araguacaima.open_archi.persistence.diagrams.bpm;
 
 import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.Item;
+import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
 
@@ -30,19 +32,20 @@ public class Lane extends Item {
         this.activities = activities;
     }
 
-    public void override(Lane source, boolean keepMeta, String suffix, Set<CompositeElement> clonedBy) {
-        super.override(source, keepMeta, suffix);
-        if (clonedBy != null) {
-            this.setClonedBy(clonedBy);
-        }
+    public Collection<BaseEntity> override(Lane source, boolean keepMeta, String suffix, CompositeElement clonedBy) {
+        Collection<BaseEntity> overriten = new ArrayList<>();
+        overriten.addAll(super.override(source, keepMeta, suffix, clonedBy));
         this.activities = source.getActivities();
+        return overriten;
     }
 
-    public void copyNonEmpty(Lane source, boolean keepMeta) {
-        super.copyNonEmpty(source, keepMeta);
+    public Collection<BaseEntity> copyNonEmpty(Lane source, boolean keepMeta) {
+        Collection<BaseEntity> overriten = new ArrayList<>();
+        overriten.addAll(super.copyNonEmpty(source, keepMeta));
         if (source.getActivities() != null && !source.getActivities().isEmpty()) {
             this.activities = source.getActivities();
         }
+        return overriten;
     }
 
     @Override

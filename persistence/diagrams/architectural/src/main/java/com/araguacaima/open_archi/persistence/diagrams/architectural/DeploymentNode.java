@@ -1,10 +1,14 @@
 package com.araguacaima.open_archi.persistence.diagrams.architectural;
 
 import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
+import com.araguacaima.open_archi.persistence.diagrams.core.DiagramableElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.Element;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
+import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,7 +29,7 @@ import java.util.Set;
  */
 @Entity
 @PersistenceUnit(unitName = "open-archi")
-public class DeploymentNode extends Element {
+public class DeploymentNode extends Element implements DiagramableElement<DeploymentNode> {
 
     @Column
     private String technology;
@@ -78,19 +82,25 @@ public class DeploymentNode extends Element {
         this.containerInstances = containerInstances;
     }
 
-    public void override(DeploymentNode source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
-        super.override(source, keepMeta, suffix, clonedFrom);
+    @Override
+    public Collection<BaseEntity> override(DeploymentNode source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
+        overriden.addAll(super.override(source, keepMeta, suffix, clonedFrom));
         this.setInstances(source.getInstances());
         this.setTechnology(source.getTechnology());
-        for (ContainerInstance container: source.getContainerInstances()) {
+        for (ContainerInstance container : source.getContainerInstances()) {
             ContainerInstance newContainerInstance = new ContainerInstance();
-            newContainerInstance.override(container, keepMeta, suffix, clonedFrom);
+            overriden.addAll(newContainerInstance.override(container, keepMeta, suffix, clonedFrom));
             this.containerInstances.add(newContainerInstance);
+            overriden.add(newContainerInstance);
         }
+        return overriden;
     }
 
-    public void copyNonEmpty(DeploymentNode source, boolean keepMeta) {
-        super.copyNonEmpty(source, keepMeta);
+    @Override
+    public Collection<BaseEntity> copyNonEmpty(DeploymentNode source, boolean keepMeta) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
+        overriden.addAll(super.copyNonEmpty(source, keepMeta));
         if (source.getInstances() != 0) {
             this.setInstances(source.getInstances());
         }
@@ -98,12 +108,14 @@ public class DeploymentNode extends Element {
             this.setTechnology(source.getTechnology());
         }
         if (source.getContainerInstances() != null && !source.getContainerInstances().isEmpty()) {
-            for (ContainerInstance container: source.getContainerInstances()) {
+            for (ContainerInstance container : source.getContainerInstances()) {
                 ContainerInstance newContainerInstance = new ContainerInstance();
-                newContainerInstance.copyNonEmpty(container, keepMeta);
+                overriden.addAll(newContainerInstance.copyNonEmpty(container, keepMeta));
                 this.containerInstances.add(newContainerInstance);
+                overriden.add(newContainerInstance);
             }
         }
+        return overriden;
     }
 
     @Override

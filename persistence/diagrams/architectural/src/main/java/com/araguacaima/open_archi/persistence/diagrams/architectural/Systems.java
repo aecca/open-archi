@@ -1,8 +1,11 @@
 package com.araguacaima.open_archi.persistence.diagrams.architectural;
 
 import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
+import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -69,40 +72,48 @@ public class Systems extends GroupStaticElements {
         this.components = components;
     }
 
-    public void override(Systems source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
-        super.override(source, keepMeta, suffix, clonedFrom);
+    public Collection<BaseEntity> override(Systems source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
+        overriden.addAll(super.override(source, keepMeta, suffix, clonedFrom));
         this.setScope(source.getScope());
         for (Containers container : source.getContainers()) {
             Containers newContainer = new Containers();
-            newContainer.override(container, keepMeta, suffix, clonedFrom);
+            overriden.addAll(newContainer.override(container, keepMeta, suffix, clonedFrom));
             this.containers.add(newContainer);
+            overriden.add(newContainer);
         }
 
         for (Components component : source.getComponents()) {
             Components newComponent = new Components();
-            newComponent.override(component, keepMeta, suffix, clonedFrom);
+            overriden.addAll(newComponent.override(component, keepMeta, suffix, clonedFrom));
             this.components.add(newComponent);
+            overriden.add(newComponent);
         }
+        return overriden;
     }
 
-    public void copyNonEmpty(Systems source, boolean keepMeta) {
-        super.copyNonEmpty(source, keepMeta);
+    public Collection<BaseEntity> copyNonEmpty(Systems source, boolean keepMeta) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
+        overriden.addAll(super.copyNonEmpty(source, keepMeta));
         if (source.getScope() != null) {
             this.setScope(source.getScope());
         }
         if (source.getContainers() != null && !source.getContainers().isEmpty()) {
             for (Containers container : source.getContainers()) {
                 Containers newContainer = new Containers();
-                newContainer.copyNonEmpty(container, keepMeta);
+                overriden.addAll(newContainer.copyNonEmpty(container, keepMeta));
                 this.containers.add(newContainer);
+                overriden.add(newContainer);
             }
         }
         if (source.getComponents() != null && !source.getComponents().isEmpty()) {
             for (Components component : source.getComponents()) {
                 Components newComponent = new Components();
-                newComponent.copyNonEmpty(component, keepMeta);
+                overriden.addAll(newComponent.copyNonEmpty(component, keepMeta));
                 this.components.add(newComponent);
+                overriden.add(newComponent);
             }
         }
+        return overriden;
     }
 }

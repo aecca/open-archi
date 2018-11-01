@@ -1,10 +1,7 @@
 package com.araguacaima.open_archi.persistence.diagrams.core;
 
-import javax.persistence.*;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
+import javax.persistence.Entity;
+import javax.persistence.PersistenceUnit;
 
 /**
  * This is the superclass for all model elements.

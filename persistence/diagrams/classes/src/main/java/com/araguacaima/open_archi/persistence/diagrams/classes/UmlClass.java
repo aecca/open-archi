@@ -1,8 +1,11 @@
 package com.araguacaima.open_archi.persistence.diagrams.classes;
 
 import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
+import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,20 +46,24 @@ public class UmlClass extends UmlItem {
         this.methods = methods;
     }
 
-    public void override(UmlClass source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
-        super.override(source, keepMeta, suffix, clonedFrom);
+    public Collection<BaseEntity> override(UmlClass source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
+        overriden.addAll(super.override(source, keepMeta, suffix, clonedFrom));
         this.fields = source.getFields();
         this.methods = source.getMethods();
+        return overriden;
     }
 
-    public void copyNonEmpty(UmlClass source, boolean keepMeta) {
-        super.copyNonEmpty(source, keepMeta);
+    public Collection<BaseEntity> copyNonEmpty(UmlClass source, boolean keepMeta) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
+        overriden.addAll(super.copyNonEmpty(source, keepMeta));
         if (source.getFields() != null && !source.getFields().isEmpty()) {
             this.fields = source.getFields();
         }
         if (source.getMethods() != null && !source.getMethods().isEmpty()) {
             this.methods = source.getMethods();
         }
+        return overriden;
     }
 
 }

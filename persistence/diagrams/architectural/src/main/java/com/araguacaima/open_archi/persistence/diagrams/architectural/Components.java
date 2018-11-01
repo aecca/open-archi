@@ -1,10 +1,13 @@
 package com.araguacaima.open_archi.persistence.diagrams.architectural;
 
 import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
+import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.PersistenceUnit;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * The word "component" is a hugely overloaded term in the system development
@@ -44,19 +47,23 @@ public class Components extends LeafStaticElements {
         this.size = size;
     }
 
-    public void override(Components source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
-        super.override(source, keepMeta, suffix, clonedFrom);
+    public Collection<BaseEntity> override(Components source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
+        overriden.addAll(super.override(source, keepMeta, suffix, clonedFrom));
         this.setTechnology(source.getTechnology());
         this.setSize(source.getSize());
+        return overriden;
     }
 
-    public void copyNonEmpty(Components source, boolean keepMeta) {
-        super.copyNonEmpty(source, keepMeta);
+    public Collection<BaseEntity> copyNonEmpty(Components source, boolean keepMeta) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
+        overriden.addAll(super.copyNonEmpty(source, keepMeta));
         if (source.getTechnology() != null) {
             this.setTechnology(source.getTechnology());
         }
         if (source.getSize() != 0) {
             this.setSize(source.getSize());
         }
+        return overriden;
     }
 }

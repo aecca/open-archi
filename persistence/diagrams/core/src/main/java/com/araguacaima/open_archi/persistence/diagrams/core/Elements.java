@@ -1,6 +1,10 @@
 package com.araguacaima.open_archi.persistence.diagrams.core;
 
+import com.araguacaima.open_archi.persistence.meta.BaseEntity;
+
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -52,7 +56,8 @@ public abstract class Elements extends Items {
         this.features = features;
     }
 
-    public void override(Elements source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+    public Collection<BaseEntity> override(Elements source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
         super.override(source, keepMeta, suffix);
         if (clonedFrom != null) {
             this.setClonedFrom(clonedFrom);
@@ -60,22 +65,27 @@ public abstract class Elements extends Items {
         this.url = source.getUrl();
         for (Features feature : source.getFeatures()) {
             Features newFeatures = new Features();
-            newFeatures.override(feature, keepMeta, suffix, clonedFrom);
+            overriden.addAll(newFeatures.override(feature, keepMeta, suffix, clonedFrom));
             this.features.add(newFeatures);
+            overriden.add(newFeatures);
         }
+        return overriden;
     }
 
-    public void copyNonEmpty(Elements source, boolean keepMeta) {
-        super.copyNonEmpty(source, keepMeta);
+    public Collection<BaseEntity> copyNonEmpty(Elements source, boolean keepMeta) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
+        overriden.addAll(super.copyNonEmpty(source, keepMeta));
         if (source.getUrl() != null) {
             this.url = source.getUrl();
         }
         if (source.getFeatures() != null && !source.getFeatures().isEmpty()) {
             for (Features feature : source.getFeatures()) {
                 Features newFeatures = new Features();
-                newFeatures.copyNonEmpty(feature, keepMeta);
+                overriden.addAll(newFeatures.copyNonEmpty(feature, keepMeta));
                 this.features.add(newFeatures);
+                overriden.add(newFeatures);
             }
         }
+        return overriden;
     }
 }

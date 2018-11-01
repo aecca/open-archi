@@ -3,8 +3,11 @@ package com.araguacaima.open_archi.persistence.diagrams.architectural;
 import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 import com.araguacaima.open_archi.persistence.diagrams.core.Elements;
+import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * <p>
@@ -59,20 +62,24 @@ public class DeploymentNodes extends Elements {
         this.kind = kind;
     }
 
-    public void override(DeploymentNodes source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
-        super.override(source, keepMeta, suffix, clonedFrom);
+    public Collection<BaseEntity> override(DeploymentNodes source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
+        overriden.addAll(super.override(source, keepMeta, suffix, clonedFrom));
         this.setInstances(source.getInstances());
         this.setTechnology(source.getTechnology());
+        return overriden;
     }
 
-    public void copyNonEmpty(DeploymentNodes source, boolean keepMeta) {
-        super.copyNonEmpty(source, keepMeta);
+    public Collection<BaseEntity> copyNonEmpty(DeploymentNodes source, boolean keepMeta) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
+        overriden.addAll(super.copyNonEmpty(source, keepMeta));
         if (source.getInstances() != 0) {
             this.setInstances(source.getInstances());
         }
         if (source.getTechnology() != null) {
             this.setTechnology(source.getTechnology());
         }
+        return overriden;
     }
 
     @Override

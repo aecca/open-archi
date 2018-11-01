@@ -2,10 +2,12 @@ package com.araguacaima.open_archi.persistence.diagrams.core.specification;
 
 import com.araguacaima.commons.utils.ReflectionUtils;
 import com.araguacaima.open_archi.persistence.diagrams.core.Item;
-import com.araguacaima.open_archi.persistence.diagrams.core.Taggable;
 import com.araguacaima.specification.AbstractSpecification;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
 
 public class ExtractItems extends AbstractSpecification {
 

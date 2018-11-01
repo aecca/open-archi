@@ -1,6 +1,5 @@
 package com.araguacaima.open_archi.persistence.diagrams.core;
 
-import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.TreeSet;
 

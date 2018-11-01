@@ -28,13 +28,10 @@ public abstract class BaseEntity implements Serializable, BasicEntity, Cloneable
     @Transient
     @JsonIgnore
     protected static final ResourceBundle resourceBundle = ResourceBundle.getBundle(Constants.BUNDLE_NAME);
-
+    private static final long serialVersionUID = 5449758397914117108L;
     @Transient
     @JsonIgnore
     private static ReflectionUtils reflectionUtils = new ReflectionUtils(null);
-
-    private static final long serialVersionUID = 5449758397914117108L;
-
     @Transient
     @JsonIgnore
     private static SpecificationMapBuilder specificationMapBuilder = new SpecificationMapBuilder(MapUtils.getInstance());
@@ -59,13 +56,13 @@ public abstract class BaseEntity implements Serializable, BasicEntity, Cloneable
         return UUID.randomUUID().toString();
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
     @Override
     public String getId() {
         return this.id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getKey() {
@@ -233,6 +230,7 @@ public abstract class BaseEntity implements Serializable, BasicEntity, Cloneable
 
     @JsonIgnore
     public void copyNonEmpty(BaseEntity source, boolean keepMeta) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
         if (source.getMeta() != null) {
             if (keepMeta) {
                 this.meta = source.getMeta();
