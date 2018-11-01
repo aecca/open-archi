@@ -36,7 +36,9 @@ public class CheckInitiatorAlreadyExists extends AbstractSpecification {
                     params.put("name", name);
                     List<Item> list = JPAEntityManagerUtils.executeQuery(Item.class, Item.GET_ITEMS_BY_NAME_AND_KIND, params);
                     if (CollectionUtils.isNotEmpty(list)) {
-                        map.put(Constants.EXISTENT_ENTITY, list.iterator().next());
+                        Item next = list.iterator().next();
+                        map.put(Constants.EXISTENT_ENTITY, next);
+                        map.put("meta", next.getMeta());
                         return true;
                     } else {
                         map.put(Constants.SPECIFICATION_ERROR, "Name '" + name + "' and Kind '" + kind + "' pair does not exists");

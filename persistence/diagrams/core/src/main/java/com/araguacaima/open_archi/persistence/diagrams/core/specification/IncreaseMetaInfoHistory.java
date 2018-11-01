@@ -1,7 +1,9 @@
 package com.araguacaima.open_archi.persistence.diagrams.core.specification;
 
-import com.araguacaima.open_archi.persistence.meta.*;
-import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
+import com.araguacaima.open_archi.persistence.commons.Constants;
+import com.araguacaima.open_archi.persistence.meta.BaseEntity;
+import com.araguacaima.open_archi.persistence.meta.MetaInfo;
+import com.araguacaima.open_archi.persistence.meta.Version;
 import com.araguacaima.specification.AbstractSpecification;
 
 import java.util.*;
@@ -24,43 +26,17 @@ public class IncreaseMetaInfoHistory extends AbstractSpecification {
     public boolean isSatisfiedBy(Object object, Map map) {
         if (BaseEntity.class.isAssignableFrom(object.getClass())) {
             BaseEntity entity = (BaseEntity) object;
-            MetaInfo meta;
+            MetaInfo meta = (MetaInfo) map.get("meta");
             Date thisTime = Calendar.getInstance().getTime();
-            if (entity.getMeta() == null) {
-                if (map.get("meta") == null) {
-                    MetaInfo storedMetaInfo = JPAEntityManagerUtils.findByQuery(MetaInfo.class, MetaInfo.GET_META_INFO_BY_VERSION, versionParam);
-                    if (storedMetaInfo == null) {
-                        meta = new MetaInfo();
-                        meta.addNewHistory(thisTime);
-                        meta.setCreated(thisTime);
-                        map.put("meta", meta);
-                    } else {
-                        meta = storedMetaInfo;
-                    }
-                    map.put("meta", meta);
-                } else {
-                    meta = (MetaInfo) map.get("meta");
+            if (meta == null) {
+                BaseEntity existentEntity = (BaseEntity) map.get(Constants.EXISTENT_ENTITY);
+                if (existentEntity != null) {
+                    meta = existentEntity.getMeta();
                 }
-                entity.setMeta(meta);
-            } else {
-                meta = entity.getMeta();
-                meta.addNewHistory(thisTime);
-                map.put("meta", meta);
             }
-            Account account = (Account) map.get("account");
-            if (account != null) {
-                Account createdBy = meta.getCreatedBy();
-                if (createdBy == null) {
-                    meta.setCreatedBy(account);
-                } else {
-                    History activeHistory = meta.getActiveHistory();
-                    Account modifiedBy = activeHistory.getModifiedBy();
-                    if (modifiedBy == null) {
-                        activeHistory.setModifiedBy(account);
-                    } else {
-                        meta.addNewHistory(Calendar.getInstance().getTime(), account);
-                    }
-                }
+            if (meta != null) {
+                meta.addNewHistory(thisTime);
+                entity.setMeta(meta);
             }
         }
         return true;
