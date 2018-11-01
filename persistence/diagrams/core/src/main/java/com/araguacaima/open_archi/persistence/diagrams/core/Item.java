@@ -267,7 +267,14 @@ public abstract class Item extends Taggable {
         }
         this.name = StringUtils.isNotBlank(suffix) ? source.getName() + " " + suffix : source.getName();
         this.description = source.getDescription();
-        this.location = source.getLocation();
+        if (source.getLocation() != null) {
+            Point location = new Point();
+            location.override(source.getLocation(), keepMeta, suffix);
+            this.location = location;
+            overriden.add(location);
+        } else {
+            this.location = null;
+        }
         this.parent = source.getParent();
         this.children = source.getChildren();
         if (source.getShape() != null) {
@@ -317,7 +324,10 @@ public abstract class Item extends Taggable {
             this.description = source.getDescription();
         }
         if (source.getLocation() != null) {
-            this.location = source.getLocation();
+            Point location = new Point();
+            location.copyNonEmpty(source.getLocation(), keepMeta);
+            this.location = location;
+            overriden.add(location);
         }
         if (source.getParent() != null) {
             this.parent = source.getParent();

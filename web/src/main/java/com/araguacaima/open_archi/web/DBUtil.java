@@ -424,7 +424,7 @@ public class DBUtil {
                 elementsToCreate.forEach(element -> {
                     try {
                         if (JPAEntityManagerUtils.find(clazz, element.getId()) == null) {
-                            JPAEntityManagerUtils.persist(element);
+                            populate(element);
                         }
                     } catch (Throwable t) {
                         log.debug(t.getMessage());
