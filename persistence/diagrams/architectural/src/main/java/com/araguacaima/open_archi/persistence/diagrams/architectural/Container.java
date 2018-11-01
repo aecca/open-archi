@@ -47,6 +47,15 @@ public class Container extends GroupStaticElement implements DiagramableElement<
                     referencedColumnName = "Id")})
     private Set<Component> components = new LinkedHashSet<>();
 
+    @ManyToMany(cascade = CascadeType.REMOVE)
+    @JoinTable(schema = "DIAGRAMS",
+            name = "Container_Containers",
+            joinColumns = {@JoinColumn(name = "Container_Parent_Id",
+                    referencedColumnName = "Id")},
+            inverseJoinColumns = {@JoinColumn(name = "Container_Id",
+                    referencedColumnName = "Id")})
+    private Set<Container> containers = new LinkedHashSet<>();
+
     public Container() {
         setKind(ElementKind.CONTAINER);
     }
@@ -67,6 +76,14 @@ public class Container extends GroupStaticElement implements DiagramableElement<
         this.components = components;
     }
 
+    public Set<Container> getContainers() {
+        return containers;
+    }
+
+    public void setContainers(Set<Container> containers) {
+        this.containers = containers;
+    }
+
     @Override
     public Collection<BaseEntity> override(Container source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
         Collection<BaseEntity> overriden = new ArrayList<>();
@@ -77,6 +94,12 @@ public class Container extends GroupStaticElement implements DiagramableElement<
             overriden.addAll(newComponent.override(component, keepMeta, suffix, clonedFrom));
             this.components.add(newComponent);
             overriden.add(newComponent);
+        }
+        for (Container container : source.getContainers()) {
+            Container newContainer = new Container();
+            overriden.addAll(newContainer.override(container, keepMeta, suffix, clonedFrom));
+            this.containers.add(newContainer);
+            overriden.add(newContainer);
         }
         return overriden;
     }
@@ -94,6 +117,14 @@ public class Container extends GroupStaticElement implements DiagramableElement<
                 overriden.addAll(newComponent.copyNonEmpty(component, keepMeta));
                 this.components.add(newComponent);
                 overriden.add(newComponent);
+            }
+        }
+        if (source.getContainers() != null && !source.getContainers().isEmpty()) {
+            for (Container container : source.getContainers()) {
+                Container newContainer = new Container();
+                overriden.addAll(newContainer.copyNonEmpty(container, keepMeta));
+                this.containers.add(newContainer);
+                overriden.add(newContainer);
             }
         }
         return overriden;

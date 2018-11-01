@@ -230,6 +230,15 @@ class OpenArchiToDiagram {
         containerElement.isGroup = true;
         //TODO Añadir campos propios del container
         //Los containers sólo se pueden agrupar en layers u otros containers
+
+        let containers = container.containers;
+        let hasContainers = containers !== undefined && !commons.prototype.isEmpty(containers);
+        if (hasContainers) {
+            containers.forEach(function (container) {
+                OpenArchiToDiagram.processContainer(container, nodes, links, container.id)
+            });
+        }
+
         let components = container.components;
         let hasComponents = components !== undefined && !commons.prototype.isEmpty(components);
         if (hasComponents) {

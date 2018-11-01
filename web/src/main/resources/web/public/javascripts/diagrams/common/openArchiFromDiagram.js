@@ -39,16 +39,13 @@ class OpenArchiFromDiagram {
                             model = OpenArchiFromDiagram.bpmModel(model, node, links);
                             break;
                         case "ARCHITECTURE_MODEL":
-                            model = OpenArchiFromDiagram.architectureModel(model, node, links);
+                            model = OpenArchiFromDiagram.architectureModel(model, node, links, nodes);
                             break;
                         case "LAYER":
-                            model = OpenArchiFromDiagram.innerArchitectureElementModel(model, node, links);
-                            break;
                         case "SYSTEM":
-                            model = OpenArchiFromDiagram.innerArchitectureElementModel(model, node, links);
-                            break;
                         case "CONTAINER":
-                            model = OpenArchiFromDiagram.innerArchitectureElementModel(model, node, links);
+                        case "COMPONENT":
+                            model = OpenArchiFromDiagram.architectureModel(undefined, node, links, nodes);
                             break;
                         default:
                             console.log("Still not implemented");
@@ -165,30 +162,18 @@ class OpenArchiFromDiagram {
         alreadyProcessedNodes.push(component.key);
     }
 
-    static innerArchitectureElementModel(model, node, links) {
-        if (node) {
-            let parent = findParent(node.group, model);
+    static architectureModel(model, node, links, nodes) {
+        let parent;
+        if (node !== undefined) {
+            parent = findParent(node.group, nodes);
             if (parent === undefined) {
-               return OpenArchiFromDiagram.processBasic(node, links);
-            }
-            if (node.kind === "LAYER") {
-                OpenArchiFromDiagram.processLayer(node, parent, links);
-            } else if (node.kind === "SYSTEM") {
-                OpenArchiFromDiagram.processSystem(node, parent, links);
-            } else if (node.kind === "CONTAINER") {
-                OpenArchiFromDiagram.processContainer(node, parent, links);
-            } else if (node.kind === "COMPONENT") {
-                OpenArchiFromDiagram.processComponent(node, parent, links);
-            }
-        }
-        return model;
-    }
-
-    static architectureModel(model, node, links) {
-        if (node) {
-            let parent = findParent(node.group, model);
-            if (parent === undefined) {
-                parent = model;
+                if (model !== undefined) {
+                    parent = model;
+                } else {
+                    model = OpenArchiFromDiagram.processBasic(node, links);
+                }
+            } else {
+                parent = OpenArchiFromDiagram.common(parent);
             }
             if (node.kind === "LAYER") {
                 OpenArchiFromDiagram.processLayer(node, parent, links);
