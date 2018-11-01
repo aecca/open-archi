@@ -130,8 +130,8 @@ public abstract class BaseEntity implements Serializable, BasicEntity, Cloneable
     @JsonIgnore
     public void validateCreation(Map<String, Object> map) throws EntityError {
         if (map == null) map = new HashMap<>();
-        map.put("OperationType", OperationType.CREATION);
-        map.put("Initiator", this);
+        map.put(Constants.OPERATION_TYPE, OperationType.CREATION);
+        map.put(Constants.INITIATOR, this);
         traverse(this, "validateCreation", map);
     }
 
@@ -139,8 +139,8 @@ public abstract class BaseEntity implements Serializable, BasicEntity, Cloneable
     @JsonIgnore
     public void validateModification(Map<String, Object> map) throws EntityError {
         if (map == null) map = new HashMap<>();
-        map.put("OperationType", OperationType.MODIFICATION);
-        map.put("Initiator", this);
+        map.put(Constants.OPERATION_TYPE, OperationType.MODIFICATION);
+        map.put(Constants.INITIATOR, this);
         traverse(this, "validateModification", map);
     }
 
@@ -148,8 +148,8 @@ public abstract class BaseEntity implements Serializable, BasicEntity, Cloneable
     @JsonIgnore
     public void validateReplacement(Map<String, Object> map) throws EntityError {
         if (map == null) map = new HashMap<>();
-        map.put("OperationType", OperationType.REPLACEMENT);
-        map.put("Initiator", this);
+        map.put(Constants.OPERATION_TYPE, OperationType.REPLACEMENT);
+        map.put(Constants.INITIATOR, this);
         traverse(this, "validateReplacement", map);
     }
 
