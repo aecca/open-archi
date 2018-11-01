@@ -420,7 +420,16 @@ public class DBUtil {
             //JPAEntityManagerUtils.detach(persistedEntity);
             JPAEntityManagerUtils.detach(entity);
             if (DiagramableElement.class.isAssignableFrom(persistedEntity.getClass())) {
-                ((DiagramableElement) persistedEntity).override(entity, true, null, null);
+                Collection<BaseEntity> elementsToCreate = ((DiagramableElement) persistedEntity).override(entity, true, null, null);
+                elementsToCreate.forEach(element -> {
+                    try {
+                        if (JPAEntityManagerUtils.find(clazz, element.getId()) == null) {
+                            JPAEntityManagerUtils.persist(element);
+                        }
+                    } catch (Throwable t) {
+                        log.debug(t.getMessage());
+                    }
+                });
             } else if (Overridable.class.isAssignableFrom(persistedEntity.getClass())) {
                 ((Overridable) persistedEntity).override(entity, true, null);
             }

@@ -274,14 +274,25 @@ public abstract class Item extends Taggable {
             Shape shape = new Shape();
             shape.override(source.getShape(), keepMeta, suffix);
             this.shape = shape;
+            overriden.add(shape);
+        } else {
+            this.shape = null;
         }
-        this.image = source.getImage();
+        if (source.getImage() != null) {
+            Image image = new Image();
+            image.override(source.getImage(), keepMeta, suffix);
+            this.image = image;
+            overriden.add(image);
+        } else {
+            this.image = null;
+        }
         this.canBeConnectedFrom = source.getCanBeConnectedFrom();
         this.canBeConnectedTo = source.getCanBeConnectedTo();
         if (source.getMetaData() != null) {
             MetaData metaData = new MetaData();
             metaData.override(source.getMetaData(), keepMeta, suffix);
             this.metaData = source.getMetaData();
+            overriden.add(metaData);
         }
         Set<Relationship> relationships = source.getRelationships();
         if (relationships != null) {
@@ -289,6 +300,7 @@ public abstract class Item extends Taggable {
                 Relationship newRelationship = new Relationship();
                 overriden.addAll(newRelationship.override(relationship, keepMeta, suffix, clonedFrom));
                 this.relationships.add(newRelationship);
+                overriden.add(newRelationship);
             }
         }
         this.prototype = source.isPrototype();
@@ -320,9 +332,13 @@ public abstract class Item extends Taggable {
             }
             shape.copyNonEmpty(source.getShape(), keepMeta);
             this.setShape(shape);
+            overriden.add(shape);
         }
         if (source.getImage() != null) {
-            this.image = source.getImage();
+            Image image = new Image();
+            image.copyNonEmpty(source.getImage(), keepMeta);
+            this.image = image;
+            overriden.add(image);
         }
         if (source.getCanBeConnectedFrom() != null && !source.getCanBeConnectedFrom().isEmpty()) {
             this.canBeConnectedFrom = source.getCanBeConnectedFrom();
@@ -337,6 +353,7 @@ public abstract class Item extends Taggable {
             }
             metaData.copyNonEmpty(source.getMetaData(), keepMeta);
             this.setMetaData(metaData);
+            overriden.add(metaData);
         }
         this.prototype = source.isPrototype();
         Set<Relationship> relationships = source.getRelationships();
