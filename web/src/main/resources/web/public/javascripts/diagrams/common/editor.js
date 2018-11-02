@@ -231,7 +231,7 @@ function expand(data) {
         myDiagram.requestUpdate();
         myDiagram.commitTransaction("Expand element");
     }
-    relayoutLanes();
+    //relayoutLanes();
 }
 
 function fixMeta() {

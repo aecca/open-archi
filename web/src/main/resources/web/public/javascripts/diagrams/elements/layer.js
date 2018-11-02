@@ -99,14 +99,22 @@ const layerTemplate = gojs(go.Group, "Horizontal",
         },
         mouseEnter: function (e, obj) {
             const object = obj.findObject("SHAPE");
-            object.fill = go.Brush.lighten(obj.part.background.color);
+            let background = obj.part.background;
+            if (!commons.prototype.isString(background) && commons.prototype.isObject(background)) {
+                background = background.color;
+            }
+            object.fill = go.Brush.lighten(background);
             object.stroke = "red";
             e.handled = true;
         },
         mouseLeave: function (e, obj) {
             const object = obj.findObject("SHAPE");
             object.fill = "white";
-            object.stroke = obj.part.background.color;
+            let background = obj.part.background;
+            if (!commons.prototype.isString(background) && commons.prototype.isObject(background)) {
+                background = background.color;
+            }
+            object.stroke = background;
             e.handled = true;
         },
         contextMenu: partContextMenu

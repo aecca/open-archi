@@ -34,7 +34,11 @@ const architectureModelTemplate = gojs(go.Group, "Auto",
         // handle mouse enter/leave events to show/hide the ports
         mouseEnter: function (e, obj) {
             const object = obj.findObject("SHAPE");
-            object.fill = go.Brush.lighten(obj.part.background.color);
+            let background = obj.part.background;
+            if (!commons.prototype.isString(background) && commons.prototype.isObject(background)) {
+                background = background.color;
+            }
+            object.fill = go.Brush.lighten(background);
             showPorts(obj.part, true);
         },
         mouseLeave: function (e, obj) {

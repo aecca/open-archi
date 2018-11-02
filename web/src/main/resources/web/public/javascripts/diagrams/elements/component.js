@@ -14,6 +14,14 @@ const componentTemplate = gojs(
         {
             mouseDrop: function (e, grp) {
                 fixMeta();
+            },
+            mouseEnter: function (e, obj) {
+                showPorts(obj.part, true);
+                e.handled = true;
+            },
+            mouseLeave: function (e, obj) {
+                showPorts(obj.part, false);
+                e.handled = true;
             }
         },
         gojs(go.Panel, "Table",

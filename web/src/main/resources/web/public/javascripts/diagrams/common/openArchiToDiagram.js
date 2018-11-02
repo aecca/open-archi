@@ -207,15 +207,15 @@ class OpenArchiToDiagram {
         let containers = system.containers;
         let hasContainers = containers !== undefined && !commons.prototype.isEmpty(containers);
         if (hasContainers) {
-            containers.forEach(function (container) {
-                OpenArchiToDiagram.processContainer(container, nodes, links, system.id)
+            containers.forEach(function (container_) {
+                OpenArchiToDiagram.processContainer(container_, nodes, links, system.id)
             });
         }
         let components = system.components;
         let hasComponents = components !== undefined && !commons.prototype.isEmpty(components);
         if (hasComponents) {
-            components.forEach(function (component) {
-                OpenArchiToDiagram.processComponent(component, nodes, links, system.id)
+            components.forEach(function (component_) {
+                OpenArchiToDiagram.processComponent(component_, nodes, links, system.id)
             });
         }
         if (parentId !== undefined) {
@@ -242,8 +242,8 @@ class OpenArchiToDiagram {
         let components = container.components;
         let hasComponents = components !== undefined && !commons.prototype.isEmpty(components);
         if (hasComponents) {
-            components.forEach(function (component) {
-                OpenArchiToDiagram.processComponent(component, nodes, links, container.id)
+            components.forEach(function (component_) {
+                OpenArchiToDiagram.processComponent(component_, nodes, links, container.id)
             });
         }
         if (parentId !== undefined) {
