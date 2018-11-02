@@ -394,13 +394,14 @@ public class Diagrams implements RouteGroup {
                 for (Container container_ : containers) {
                     if (container_.getId().equals(cuuid)) {
                         container = container_;
+                        break;
                     }
                 }
                 if (container == null) {
                     throw new EntityNotFoundException("Container with id of '" + cuuid + "' is not found on Layer[" + luuid + "]");
                 }
                 containers.remove(container);
-                DBUtil.update(layer);
+                JPAEntityManagerUtils.merge(layer);
                 response.status(HTTP_OK);
                 return EMPTY_RESPONSE;
             } catch (EntityNotFoundException ex) {
