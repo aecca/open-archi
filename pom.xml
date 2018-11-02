@@ -43,7 +43,7 @@
         <backport-util-concurrent-backport-util-concurrent>3.1</backport-util-concurrent-backport-util-concurrent>
         <com.araguacaima-commons-utils>1.0.1-SNAPSHOT</com.araguacaima-commons-utils>
         <com.araguacaima-composite-specification>1.0.1-SNAPSHOT</com.araguacaima-composite-specification>
-        <org.eclipse.jetty-jetty-util>9.3.6.v20151106</org.eclipse.jetty-jetty-util>
+        <org.eclipse.jetty-jetty-util>9.4.12.v20180830</org.eclipse.jetty-jetty-util>
         <com.fasterxml.jackson.core-jackson-annotations>2.9.2</com.fasterxml.jackson.core-jackson-annotations>
         <com.fasterxml.jackson.core-jackson-core>2.7.1</com.fasterxml.jackson.core-jackson-core>
         <com.fasterxml.jackson.core-jackson-databind>2.7.1-1</com.fasterxml.jackson.core-jackson-databind>
