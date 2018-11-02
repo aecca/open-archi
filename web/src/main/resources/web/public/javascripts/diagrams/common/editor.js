@@ -719,10 +719,6 @@ function copyTextToClipboard(text) {
     document.body.removeChild(textArea);
 }
 
-function elementTreeExpander() {
-
-}
-
 /*
 
 function toogleCollapseGroup(element, obj) {

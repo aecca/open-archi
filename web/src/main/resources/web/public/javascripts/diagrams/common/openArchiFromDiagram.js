@@ -138,6 +138,9 @@ class OpenArchiFromDiagram {
                 if (parent !== undefined) {
                     parent = OpenArchiFromDiagram.processBasic(parent, links);
                 } else {
+                    if (model.id === node.id){
+                        return  OpenArchiFromDiagram.processBasic(node, links);
+                    }
                     return OpenArchiFromDiagram.common(model);
                 }
             } else {

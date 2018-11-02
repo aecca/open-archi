@@ -95,6 +95,7 @@ block content
             .form-group
                 label.col-form-label(for="element-name") Name:
                 input.form-control#diagram-name(type="text")
+
     +modal-force("Basic element data", "basic-element-data")(save="checkAndSave", more="openMore")
         form#basic-element-form
             .form-group
@@ -111,119 +112,6 @@ block content
                 label.col-form-label Image (Only svg is permitted):
                 .dropdown
                     input#element-image-2(type="file", name="image", accept="image/svg+xml")
-    +modal-force("Element Tree", "element-tree-data")(save="elementTreeExpander")
-        .container(style='margin-top:30px;')
-            .row
-                .col-md-4
-                    ul#tree1
-                        p.well(style='height:135px;')
-                            strong Initialization no parameters
-                            br
-                            code $('#tree1').treed();
-                        li
-                            a(href='#') TECH
-                            ul
-                                li Company Maintenance
-                                li
-                                    | Employees
-                                    ul
-                                        li
-                                            | Reports
-                                            ul
-                                                li Report1
-                                                li Report2
-                                                li Report3
-                                        li Employee Maint.
-                                li Human Resources
-                        li
-                            | XRP
-                            ul
-                                li Company Maintenance
-                                li
-                                    | Employees
-                                    ul
-                                        li
-                                            | Reports
-                                            ul
-                                                li Report1
-                                                li Report2
-                                                li Report3
-                                        li Employee Maint.
-                                li Human Resources
-                .col-md-4
-                    p.well(style='height:135px;')
-                        strong Initialization optional parameters
-                        br
-                        code
-                            | $('#tree2').treed({openedClass : 'glyphicon-folder-open', closedClass : 'glyphicon-folder-close'});
-                    ul#tree2
-                        li
-                            a(href='#') TECH
-                            ul
-                                li Company Maintenance
-                                li
-                                    | Employees
-                                    ul
-                                        li
-                                            | Reports
-                                            ul
-                                                li Report1
-                                                li Report2
-                                                li Report3
-                                        li Employee Maint.
-                                li Human Resources
-                        li
-                            | XRP
-                            ul
-                                li Company Maintenance
-                                li
-                                    | Employees
-                                    ul
-                                        li
-                                            | Reports
-                                            ul
-                                                li Report1
-                                                li Report2
-                                                li Report3
-                                        li Employee Maint.
-                                li Human Resources
-                .col-md-4
-                    p.well(style='height:135px;')
-                        strong Initialization optional parameters
-                        br
-                        code
-                            | $('#tree3').treed({openedClass:'glyphicon-chevron-right', closedClass:'glyphicon-chevron-down'});
-                    ul#tree3
-                        li
-                            a(href='#') TECH
-                            ul
-                                li Company Maintenance
-                                li
-                                    | Employees
-                                    ul
-                                        li
-                                            | Reports
-                                            ul
-                                                li Report1
-                                                li Report2
-                                                li Report3
-                                        li Employee Maint.
-                                li Human Resources
-                        li
-                            | XRP
-                            ul
-                                li Company Maintenance
-                                li
-                                    | Employees
-                                    ul
-                                        li
-                                            | Reports
-                                            ul
-                                                li Report1
-                                                li Report2
-                                                li Report3
-                                        li Employee Maint.
-                                li Human Resources
 
     +modal("Element role", "element-role-data")
         form#element-role-form
@@ -234,6 +122,7 @@ block content
                         | Element Roles
                         | &nbsp;
                     ul.dropdown-menu#elementRolesDropdown(role="menu", aria-labelledby="elementRolesDropdown")
+
     +modal("Element types", "element-types-data")
         form#element-types-form
             .form-group
@@ -243,6 +132,7 @@ block content
                         | Element Roles
                         | &nbsp;
                     ul.dropdown-menu#elementTypesDropdown_(role="menu", aria-labelledby="elementTypesDropdown")
+
     +modal("Model Validation", "model-validation")
         h4 The entire JSON Model will be passed the to the Rules as a Service that use a Drools' Desition Table based model's validation implementation
         p [Later it could be a Cucumber based Test set]
@@ -251,6 +141,7 @@ block content
                 Validation issue #1
             +list-group-item("#")
                 Validation issue #2
+
     +modal("Element image", "element-image-data")
         form#element-image-form
             .form-group
@@ -260,7 +151,7 @@ block content
 
     // Sidebar Holder
     .wrapper
-        nav#sidebar
+        nav#sidebar.active
             ul.list-unstyled.components
                 li.active
                     a(href="#basicPaletteSubMenu", data-toggle="collapse", aria-expanded="true", style="font-weight: bold;") Basic

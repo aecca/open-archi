@@ -2,11 +2,11 @@ package com.araguacaima.open_archi.web;
 
 import com.araguacaima.commons.utils.ReflectionUtils;
 import com.araguacaima.open_archi.persistence.commons.Utils;
-import com.araguacaima.open_archi.persistence.diagrams.core.*;
+import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
+import com.araguacaima.open_archi.persistence.diagrams.core.Item;
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 import com.araguacaima.open_archi.persistence.meta.BasicEntity;
 import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
-import io.github.benas.randombeans.EnhancedRandomBuilder;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,25 +15,16 @@ import javax.persistence.Entity;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import java.lang.reflect.Field;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.*;
 
-import static java.nio.charset.Charset.forName;
 
-
-@SuppressWarnings("WeakerAccess")
+@SuppressWarnings({"WeakerAccess", "MismatchedQueryAndUpdateOfCollection"})
 public class DBUtil {
 
     private static final Logger log = LoggerFactory.getLogger(DBUtil.class);
     private static Set<Class<? extends BaseEntity>> classes = new HashSet<>();
     private static Set<Object> persistedObjects = new HashSet<>();
     private static ReflectionUtils reflectionUtils = new ReflectionUtils(null);
-    private static EnhancedRandomBuilder randomBuilder;
-    private static LocalTime timeLower = LocalTime.of(0, 0);
-    private static LocalTime timeUpper = LocalTime.of(0, 0);
-    private static LocalDate dateLower = LocalDate.of(2000, 1, 1);
-    private static LocalDate dateUpper = LocalDate.of(2040, 12, 31);
 
     static {
         classes.add(com.araguacaima.open_archi.persistence.diagrams.architectural.Model.class);
@@ -43,16 +34,6 @@ public class DBUtil {
         classes.add(com.araguacaima.open_archi.persistence.diagrams.gantt.Model.class);
         classes.add(com.araguacaima.open_archi.persistence.diagrams.sequence.Model.class);
         classes.add(com.araguacaima.open_archi.persistence.diagrams.classes.Model.class);
-        randomBuilder = EnhancedRandomBuilder.aNewEnhancedRandomBuilder()
-                .seed(123L)
-                .objectPoolSize(100)
-                .charset(forName("UTF-8"))
-                .timeRange(timeLower, timeUpper)
-                .dateRange(dateLower, dateUpper)
-                .stringLengthRange(5, 20)
-                .collectionSizeRange(1, 5)
-                .scanClasspathForConcreteTypes(true)
-                .overrideDefaultInitialization(true);
         JPAEntityManagerUtils.begin();
     }
 
@@ -113,43 +94,6 @@ public class DBUtil {
         Populate.populate(entity, flattern);
     }
 
-    /*
-    public static void replace(BaseEntity entity) throws Throwable {
-        boolean autocommit = JPAEntityManagerUtils.getAutocommit();
-        JPAEntityManagerUtils.setAutocommit(false);
-        JPAEntityManagerUtils.begin();
-        Class<?> clazz = entity.getClass();
-        Object persistedEntity = JPAEntityManagerUtils.find(clazz, entity.getId());
-        try {
-            if (persistedEntity == null) {
-                throw new EntityNotFoundException("Can not replace due object with id '" + entity.getId() + "' does not exists");
-            }
-            //JPAEntityManagerUtils.detach(persistedEntity);
-            JPAEntityManagerUtils.detach(entity);
-            if (DiagramableElement.class.isAssignableFrom(persistedEntity.getClass())) {
-                Collection<BaseEntity> elementsToCreate = ((DiagramableElement) persistedEntity).override(entity, true, null, null);
-                elementsToCreate.forEach(element -> {
-                    try {
-                        if (JPAEntityManagerUtils.find(clazz, element.getId()) == null) {
-                            populate(element, false);
-                        }
-                    } catch (Throwable t) {
-                        log.debug(t.getMessage());
-                    }
-                });
-            } else if (Overridable.class.isAssignableFrom(persistedEntity.getClass())) {
-                ((Overridable) persistedEntity).override(entity, true, null);
-            }
-            JPAEntityManagerUtils.update(persistedEntity);
-        } catch (Throwable t) {
-            JPAEntityManagerUtils.rollback();
-            throw t;
-        } finally {
-            JPAEntityManagerUtils.commit();
-            JPAEntityManagerUtils.setAutocommit(autocommit);
-        }
-    }
-*/
     public static void update(BaseEntity entity) throws Throwable {
         boolean autocommit = JPAEntityManagerUtils.getAutocommit();
         JPAEntityManagerUtils.setAutocommit(false);
@@ -412,6 +356,7 @@ public class DBUtil {
             }
         }
 
+        @SuppressWarnings("unchecked")
         private static void processFieldFlatten(Object entity, Field field, Object object_) throws IllegalAccessException {
             if (object_ != null) {
                 Object result = flattenForPopulation(field.getType(), object_);
@@ -473,37 +418,19 @@ public class DBUtil {
             return entity;
         }
 
-        private static void processFieldWhenCreationIfNotExists(Object entity, Field field) throws IllegalAccessException {
-            field.setAccessible(true);
-            Object object_ = field.get(entity);
-            if (object_ != null) {
-                processCreateIfNotExists(field.getType(), object_);
-            }
-        }
-
-        private static void createIfNotExists(Object entity) {
-            ReflectionUtils.doWithFields(entity.getClass(), field -> processFieldWhenCreationIfNotExists(entity, field), Utils::filterMethod);
-        }
-
-
     }
 
     private static class Replace {
-        public static void replace(BaseEntity entity, boolean persists) throws Throwable {
-            replace(entity, true, persists);
-        }
 
         public static void replace(BaseEntity entity) throws Throwable {
-            replace(entity, true, true);
+            replace(entity, true);
         }
 
-        public static void replace(BaseEntity entity, boolean flatten, boolean persists) throws Throwable {
+        public static void replace(BaseEntity entity, boolean persists) throws Throwable {
             boolean autocommit = JPAEntityManagerUtils.getAutocommit();
             JPAEntityManagerUtils.setAutocommit(false);
             JPAEntityManagerUtils.begin();
-            if (flatten) {
-                flattenForReplacement(entity);
-            }
+
             try {
                 Class clazz = entity.getClass();
                 replace(entity, clazz);
@@ -549,7 +476,6 @@ public class DBUtil {
                 if (!persistedObjects.contains(entity)) {
                     JPAEntityManagerUtils.merge(entity);
                     persistedObjects.add(entity);
-                    JPAEntityManagerUtils.flush();
                 } else {
                     logProcessing(entity);
                 }
@@ -620,21 +546,6 @@ public class DBUtil {
             }
 
             return object_;
-        }
-
-        public static void flattenForReplacement(Object entity) throws Throwable {
-            Class clazz = entity.getClass();
-            flattenForReplacement(entity, clazz);
-        }
-
-        private static void flattenForReplacement(Object entity, Class clazz) {
-            ReflectionUtils.doWithFields(clazz, field -> {
-                field.setAccessible(true);
-                Object object_ = field.get(entity);
-                if (object_ != null) {
-                    processFieldFlatten(entity, field, object_);
-                }
-            }, Utils::filterMethod);
         }
 
         @SuppressWarnings("unchecked")
@@ -709,6 +620,7 @@ public class DBUtil {
             }
         }
 
+        @SuppressWarnings("unchecked")
         private static void processFieldFlatten(Object entity, Field field, Object object_) throws IllegalAccessException {
             if (object_ != null) {
                 Object result = flattenForReplacement(field.getType(), object_);
@@ -769,19 +681,6 @@ public class DBUtil {
             }
             return entity;
         }
-
-        private static void processFieldWhenCreationIfNotExists(Object entity, Field field) throws IllegalAccessException {
-            field.setAccessible(true);
-            Object object_ = field.get(entity);
-            if (object_ != null) {
-                processCreateIfNotExists(field.getType(), object_);
-            }
-        }
-
-        private static void createIfNotExists(Object entity) {
-            ReflectionUtils.doWithFields(entity.getClass(), field -> processFieldWhenCreationIfNotExists(entity, field), Utils::filterMethod);
-        }
-
 
     }
 
