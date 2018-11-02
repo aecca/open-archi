@@ -381,10 +381,10 @@ public class Diagrams implements RouteGroup {
                 return throwError(response, ex);
             }
         });
-        delete("/architectures/layers/:luuid/containers/:suuid", (request, response) -> {
+        delete("/architectures/layers/:luuid/containers/:cuuid", (request, response) -> {
             try {
                 String luuid = request.params(":luuid");
-                String suuid = request.params(":suuid");
+                String cuuid = request.params(":cuuid");
                 Layer layer = JPAEntityManagerUtils.find(Layer.class, luuid);
                 if (layer == null) {
                     throw new EntityNotFoundException("Layer with id of '" + luuid + "' does nos exists");
@@ -392,12 +392,12 @@ public class Diagrams implements RouteGroup {
                 Set<Container> containers = layer.getContainers();
                 Container container = null;
                 for (Container container_ : containers) {
-                    if (container_.getId().equals(suuid)) {
+                    if (container_.getId().equals(cuuid)) {
                         container = container_;
                     }
                 }
                 if (container == null) {
-                    throw new EntityNotFoundException("Container with id of '" + suuid + "' is not found on Layer[" + luuid + "]");
+                    throw new EntityNotFoundException("Container with id of '" + cuuid + "' is not found on Layer[" + luuid + "]");
                 }
                 containers.remove(container);
                 DBUtil.update(layer);

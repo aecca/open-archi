@@ -216,6 +216,9 @@ paths:
           description: Invalid ID supplied
         '404':
           description: Model not found
+      security:
+      - openarchi_auth:
+        - delete:model
     put:
       tags:
       - Models
@@ -1513,7 +1516,7 @@ paths:
   "/diagrams/architectures/layers/{layer-id}/systems/{system-id}":
     delete:
       tags:
-      - Models
+      - Diagrams
       summary: Remove a system from its layer by id
       description: Remove a system from its layer by its identifier. This opertation can not be undone. Refered system reamins as an independent element, but only it won't be associated as a part of the systems of the layer
       operationId: delete-system-of-layer-by-id
@@ -1537,6 +1540,9 @@ paths:
           description: Invalid ID supplied
         '404':
           description: Layer or system not found
+      security:
+      - openarchi_auth:
+        - delete:model
   "/diagrams/architectures/layers/{layer-id}/containers":
     get:
       tags:
@@ -1607,7 +1613,7 @@ paths:
   "/diagrams/architectures/layers/{layer-id}/containers/{container-id}":
     delete:
       tags:
-      - Models
+      - Diagrams
       summary: Remove a container from its layer by id
       description: Remove a container from its layer by its identifier. This opertation can not be undone. Refered container reamins as an independent element, but only it won't be associated as a part of the containers of the layer
       operationId: delete-container-of-layer-by-id
@@ -1631,6 +1637,9 @@ paths:
           description: Invalid ID supplied
         '404':
           description: Layer or container not found
+      security:
+      - openarchi_auth:
+        - delete:model
   "/diagrams/architectures/layers/{layer-id}/components":
     get:
       tags:
@@ -1701,7 +1710,7 @@ paths:
   "/diagrams/architectures/layers/{layer-id}/components/{component-id}":
     delete:
       tags:
-      - Models
+      - Diagrams
       summary: Remove a component from its layer by id
       description: Remove a component from its layer by its identifier. This opertation can not be undone. Refered component reamins as an independent element, but only it won't be associated as a part of the components of the layer
       operationId: delete-component-of-layer-by-id
@@ -1724,7 +1733,10 @@ paths:
         '400':
           description: Invalid ID supplied
         '404':
-          description: Layer or component not found          
+          description: Layer or component not found
+      security:
+      - openarchi_auth:
+        - delete:model
   "/diagrams/architectures/systems/{system-id}/containers":
     get:
       tags:
@@ -5627,6 +5639,63 @@ definitions:
           description: Activities in the lane
           items:
             $ref: "#/definitions/Activity"
+  Layer:
+    description: Layer
+    type: object
+    allOf:
+    - $ref: "#/definitions/Static_Element"
+    - type: object
+      properties:
+        scope:
+          description: Scope on which this layer is relevant
+          type: string
+          enum:
+          - Internal
+          - External
+          - Unspecified
+        containers:
+          description: Containers embeded in this layer
+          type: array
+          items:
+            $ref: "#/definitions/Container"
+  Layer_Create:
+    description: Layer
+    type: object
+    allOf:
+    - $ref: "#/definitions/Static_Element_Create"
+    - type: object
+      properties:
+        scope:
+          description: Scope on which this layer is relevant
+          type: string
+          enum:
+          - Internal
+          - External
+          - Unspecified
+        containers:
+          description: Containers embeded in this layer
+          type: array
+          items:
+            $ref: "#/definitions/Container_Create"
+  Layers:
+    description: Layer
+    type: object
+    allOf:
+    - $ref: "#/definitions/Static_Elements"
+    - type: object
+      properties:
+        scope:
+          description: Scope on which this layer is relevant
+          type: string
+          enum:
+          - Internal
+          - External
+          - Unspecified
+        containers:
+          description: Containers embeded in this layer
+          type: array
+          items:
+            $ref: "#/definitions/Containers"
   Meta_Data:
     type: object
     description: Meta Data
