@@ -63,8 +63,8 @@
         <com.heroku.sdk-heroku-maven-plugin>0.4.4</com.heroku.sdk-heroku-maven-plugin>
         <com.mchange-c3p0>0.9.5.2</com.mchange-c3p0>
         <com.querydsl-querydsl-core>4.0.1</com.querydsl-querydsl-core>
-        <com.sparkjava-spark-core>2.5.5</com.sparkjava-spark-core>
-        <com.sparkjava-spark-template-jade>2.5.5</com.sparkjava-spark-template-jade>
+        <com.sparkjava-spark-core>2.8.0</com.sparkjava-spark-core>
+        <com.sparkjava-spark-template-jade>2.7.1</com.sparkjava-spark-template-jade>
         <com.thoughtworks.paranamer-paranamer>2.7</com.thoughtworks.paranamer-paranamer>
         <commons-io-commons-io>2.6</commons-io-commons-io>
         <cz.jirutka.rsql-rsql-parser>2.1.0</cz.jirutka.rsql-rsql-parser>
