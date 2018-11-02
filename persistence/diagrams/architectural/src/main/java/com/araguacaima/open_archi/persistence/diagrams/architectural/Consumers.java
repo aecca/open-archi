@@ -2,8 +2,11 @@ package com.araguacaima.open_archi.persistence.diagrams.architectural;
 
 import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
+import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * However you think about your users (as actors, roles, persons, etc),
@@ -46,16 +49,20 @@ public class Consumers extends StaticElements {
     }
 
 
-    public void override(Consumers source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
-        super.override(source, keepMeta, suffix, clonedFrom);
+    public Collection<BaseEntity> override(Consumers source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
+        overriden.addAll(super.override(source, keepMeta, suffix, clonedFrom));
         this.setScope(source.getScope());
+        return overriden;
     }
 
-    public void copyNonEmpty(Consumers source, boolean keepMeta) {
-        super.copyNonEmpty(source, keepMeta);
+    public Collection<BaseEntity> copyNonEmpty(Consumers source, boolean keepMeta) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
+        overriden.addAll(super.copyNonEmpty(source, keepMeta));
         if (source.getScope() != null) {
             this.setScope(source.getScope());
         }
+        return overriden;
     }
 
     @Override

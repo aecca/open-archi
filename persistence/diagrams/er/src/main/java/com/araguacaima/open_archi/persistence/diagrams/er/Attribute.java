@@ -1,5 +1,6 @@
 package com.araguacaima.open_archi.persistence.diagrams.er;
 
+import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -7,6 +8,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.PersistenceUnit;
 import javax.persistence.Table;
+import java.util.ArrayList;
+import java.util.Collection;
 
 @Entity
 @PersistenceUnit(unitName = "open-archi")
@@ -45,14 +48,17 @@ public class Attribute extends BaseEntity {
     }
 
 
-    public void override(Attribute source, boolean keepMeta, String suffix) {
+    public Collection<BaseEntity> override(Attribute source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
         super.override(source, keepMeta, suffix);
         this.setName(source.getName());
         this.setType(source.getType());
         this.setKey(source.isKey());
+        return overriden;
     }
 
-    public void copyNonEmpty(Attribute source, boolean keepMeta) {
+    public Collection<BaseEntity> copyNonEmpty(Attribute source, boolean keepMeta) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
         super.copyNonEmpty(source, keepMeta);
         if (source.getName() != null) {
             this.setName(source.getName());
@@ -61,5 +67,6 @@ public class Attribute extends BaseEntity {
             this.setType(source.getType());
         }
         this.setKey(source.isKey());
+        return overriden;
     }
 }

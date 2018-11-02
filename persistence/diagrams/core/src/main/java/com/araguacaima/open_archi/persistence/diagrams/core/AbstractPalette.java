@@ -1,13 +1,12 @@
 package com.araguacaima.open_archi.persistence.diagrams.core;
 
-import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
 public abstract class AbstractPalette implements Palettable {
 
-    private Set<PaletteItem> basicElements = new TreeSet<>();
-    private Set<PaletteItem> generalElements = new TreeSet<>();
+    private TreeSet<PaletteItem> basicElements = new TreeSet<>();
+    private TreeSet<PaletteItem> generalElements = new TreeSet<>();
 
     @Override
     abstract public PaletteKind getType();
@@ -17,7 +16,7 @@ public abstract class AbstractPalette implements Palettable {
         return basicElements;
     }
 
-    public void setBasicElements(Set<PaletteItem> basicElements) {
+    public void setBasicElements(TreeSet<PaletteItem> basicElements) {
         this.basicElements = basicElements;
     }
 
@@ -31,7 +30,7 @@ public abstract class AbstractPalette implements Palettable {
         return generalElements;
     }
 
-    public void setGeneralElements(Set<PaletteItem> generalElements) {
+    public void setGeneralElements(TreeSet<PaletteItem> generalElements) {
         this.generalElements = generalElements;
     }
 

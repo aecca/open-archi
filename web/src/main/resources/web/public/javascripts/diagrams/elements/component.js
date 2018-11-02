@@ -11,6 +11,19 @@ const componentTemplate = gojs(
             new go.Binding("fill", "", OpenArchiWrapper.toFill),
             new go.Binding("stroke", "", OpenArchiWrapper.toFill)
         ),
+        {
+            mouseDrop: function (e, grp) {
+                fixMeta();
+            },
+            mouseEnter: function (e, obj) {
+                showPorts(obj.part, true);
+                e.handled = true;
+            },
+            mouseLeave: function (e, obj) {
+                showPorts(obj.part, false);
+                e.handled = true;
+            }
+        },
         gojs(go.Panel, "Table",
             {
                 margin: 6,

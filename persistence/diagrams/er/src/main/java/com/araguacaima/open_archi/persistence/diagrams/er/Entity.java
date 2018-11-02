@@ -3,8 +3,10 @@ package com.araguacaima.open_archi.persistence.diagrams.er;
 import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.Element;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
+import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
 
 @javax.persistence.Entity
@@ -38,16 +40,30 @@ public class Entity extends Element {
         this.attributes = attributes;
     }
 
-    public void override(Entity source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
-        super.override(source, keepMeta, suffix, clonedFrom);
-        this.setAttributes(source.getAttributes());
+    public Collection<BaseEntity> override(Entity source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
+        overriden.addAll(super.override(source, keepMeta, suffix, clonedFrom));
+        for (Attribute att : source.getAttributes()) {
+            Attribute newAttribute = new Attribute();
+            overriden.addAll(newAttribute.override(att, keepMeta, suffix, clonedFrom));
+            this.attributes.add(newAttribute);
+            overriden.add(newAttribute);
+        }
+        return overriden;
     }
 
-    public void copyNonEmpty(Entity source, boolean keepMeta) {
-        super.copyNonEmpty(source, keepMeta);
+    public Collection<BaseEntity> copyNonEmpty(Entity source, boolean keepMeta) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
+        overriden.addAll(super.copyNonEmpty(source, keepMeta));
         if (source.getAttributes() != null && !source.getAttributes().isEmpty()) {
-            this.setAttributes(source.getAttributes());
+            for (Attribute att : source.getAttributes()) {
+                Attribute newAttribute = new Attribute();
+                overriden.addAll(newAttribute.copyNonEmpty(att, keepMeta));
+                this.attributes.add(newAttribute);
+                overriden.add(newAttribute);
+            }
         }
+        return overriden;
     }
 
     @Override

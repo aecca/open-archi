@@ -1,10 +1,14 @@
 package com.araguacaima.open_archi.persistence.diagrams.architectural;
 
 import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
+import com.araguacaima.open_archi.persistence.diagrams.core.DiagramableElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 import com.araguacaima.open_archi.persistence.diagrams.core.Item;
+import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -15,6 +19,12 @@ import java.util.Set;
                 query = "select l from Layer l"),
         @NamedQuery(name = Layer.GET_LAYER,
                 query = "select l from Layer l where l.id=:lid"),
+        @NamedQuery(name = Layer.GET_ALL_SYSTEMS_FROM_LAYER,
+                query = "select a.systems from Layer a where a.id=:id"),
+        @NamedQuery(name = Layer.GET_ALL_CONTAINERS_FROM_LAYER,
+                query = "select a.containers from Layer a where a.id=:id"),
+        @NamedQuery(name = Layer.GET_ALL_COMPONENTS_FROM_LAYER,
+                query = "select a.components from Layer a where a.id=:id"),
         @NamedQuery(name = Layer.GET_LAYERS_USAGE_BY_ELEMENT_ID_LIST,
                 query = "select l " +
                         "from Layer l " +
@@ -24,11 +34,14 @@ import java.util.Set;
                         "where sys.id in :" + Item.ELEMENTS_USAGE_PARAM +
                         "   or con.id in :" + Item.ELEMENTS_USAGE_PARAM +
                         "   or com.id in :" + Item.ELEMENTS_USAGE_PARAM)})
-public class Layer extends GroupStaticElement {
+public class Layer extends GroupStaticElement implements DiagramableElement<Layer> {
 
     public static final String GET_ALL_LAYERS = "get.all.layers";
     public static final String GET_LAYER = "get.layer";
     public static final String GET_LAYERS_USAGE_BY_ELEMENT_ID_LIST = "get.layers.usage.by.element.id.list";
+    public static final String GET_ALL_SYSTEMS_FROM_LAYER = "get.all.systems.from.layer";
+    public static final String GET_ALL_CONTAINERS_FROM_LAYER = "get.all.containers.from.layer";
+    public static final String GET_ALL_COMPONENTS_FROM_LAYER = "get.all.components.from.layer";
 
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
@@ -85,47 +98,59 @@ public class Layer extends GroupStaticElement {
         this.components = components;
     }
 
-    public void override(Layer source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
-        super.override(source, keepMeta, suffix, clonedFrom);
+    @Override
+    public Collection<BaseEntity> override(Layer source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
+        overriden.addAll(super.override(source, keepMeta, suffix, clonedFrom));
         for (System system : source.getSystems()) {
             System newSystem = new System();
-            newSystem.override(system, keepMeta, suffix, clonedFrom);
+            overriden.addAll(newSystem.override(system, keepMeta, suffix, clonedFrom));
             this.systems.add(newSystem);
+            overriden.add(newSystem);
         }
         for (Container container : source.getContainers()) {
             Container newContainer = new Container();
-            newContainer.override(container, keepMeta, suffix, clonedFrom);
+            overriden.addAll(newContainer.override(container, keepMeta, suffix, clonedFrom));
             this.containers.add(newContainer);
+            overriden.add(newContainer);
         }
         for (Component component : source.getComponents()) {
             Component newComponent = new Component();
-            newComponent.override(component, keepMeta, suffix, clonedFrom);
+            overriden.addAll(newComponent.override(component, keepMeta, suffix, clonedFrom));
             this.components.add(newComponent);
+            overriden.add(newComponent);
         }
+        return overriden;
     }
 
-    public void copyNonEmpty(Layer source, boolean keepMeta) {
-        super.copyNonEmpty(source, keepMeta);
+    @Override
+    public Collection<BaseEntity> copyNonEmpty(Layer source, boolean keepMeta) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
+        overriden.addAll(super.copyNonEmpty(source, keepMeta));
         if (source.getSystems() != null && !source.getSystems().isEmpty()) {
             for (System system : source.getSystems()) {
                 System newSystem = new System();
-                newSystem.copyNonEmpty(system, keepMeta);
+                overriden.addAll(newSystem.copyNonEmpty(system, keepMeta));
                 this.systems.add(newSystem);
+                overriden.add(newSystem);
             }
         }
         if (source.getContainers() != null && !source.getContainers().isEmpty()) {
             for (Container container : source.getContainers()) {
                 Container newContainer = new Container();
-                newContainer.copyNonEmpty(container, keepMeta);
+                overriden.addAll(newContainer.copyNonEmpty(container, keepMeta));
                 this.containers.add(newContainer);
+                overriden.add(newContainer);
             }
         }
         if (source.getComponents() != null && !source.getComponents().isEmpty()) {
             for (Component component : source.getComponents()) {
                 Component newComponent = new Component();
-                newComponent.copyNonEmpty(component, keepMeta);
+                overriden.addAll(newComponent.copyNonEmpty(component, keepMeta));
                 this.components.add(newComponent);
+                overriden.add(newComponent);
             }
         }
+        return overriden;
     }
 }

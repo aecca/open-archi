@@ -1,9 +1,13 @@
 package com.araguacaima.open_archi.persistence.diagrams.core;
 
 
+import com.araguacaima.open_archi.persistence.meta.BaseEntity;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -97,18 +101,41 @@ public abstract class Items extends Taggable {
         this.children = children;
     }
 
-    public void override(Item source, boolean keepMeta, String suffix) {
+    public Collection<BaseEntity> override(Item source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
         super.override(source, keepMeta, suffix);
-        this.name = source.getName();
+        if (clonedFrom != null) {
+            this.setClonedFrom(clonedFrom);
+        }
+        this.name = StringUtils.isNotBlank(suffix) ? source.getName() + " " + suffix : source.getName();
         this.description = source.getDescription();
         this.location = source.getLocation();
         this.parent = source.getParent();
         this.children = source.getChildren();
-        this.shape = source.getShape();
+        if (source.getShape() != null) {
+            Shape shape = new Shape();
+            shape.override(source.getShape(), keepMeta, suffix);
+            this.shape = shape;
+        }
+
+        if (source.getMetaData() != null) {
+            MetaData metaData = new MetaData();
+            metaData.override(source.getMetaData(), keepMeta, suffix);
+        }
+        Set<Relationship> relationships = source.getRelationships();
+        if (relationships != null) {
+            for (Relationship relationship : source.getRelationships()) {
+                Relationship newRelationship = new Relationship();
+                overriden.addAll(newRelationship.override(relationship, keepMeta, suffix, clonedFrom));
+                overriden.add(newRelationship);
+            }
+        }
+        return overriden;
     }
 
-    public void copyNonEmpty(Item source, boolean keepMeta) {
-        super.copyNonEmpty(source, keepMeta);
+    public Collection<BaseEntity> copyNonEmpty(Item source, boolean keepMeta) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
+        overriden.addAll(super.copyNonEmpty(source, keepMeta));
         if (source.getName() != null) {
             this.name = source.getName();
         }
@@ -127,6 +154,7 @@ public abstract class Items extends Taggable {
         if (source.getShape() != null) {
             this.shape = source.getShape();
         }
+        return overriden;
     }
 
 }

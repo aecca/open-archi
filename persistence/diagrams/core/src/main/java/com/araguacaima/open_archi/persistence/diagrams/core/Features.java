@@ -1,6 +1,10 @@
 package com.araguacaima.open_archi.persistence.diagrams.core;
 
+import com.araguacaima.open_archi.persistence.meta.BaseEntity;
+
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Represents a feature, such as a Java class or interface,
@@ -69,15 +73,18 @@ public class Features extends Items {
         this.kind = kind;
     }
 
-    public void override(Features source, boolean keepMeta, String suffix) {
-        super.override(source, keepMeta, suffix);
+    public Collection<BaseEntity> override(Features source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
+        overriden.addAll(super.override(source, keepMeta, suffix, clonedFrom));
         this.setRole(source.getRole());
         this.setUrl(source.getUrl());
         this.setVisibility(source.getVisibility());
+        return overriden;
     }
 
-    public void copyNonEmpty(Features source, boolean keepMeta) {
-        super.copyNonEmpty(source, keepMeta);
+    public Collection<BaseEntity> copyNonEmpty(Features source, boolean keepMeta) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
+        overriden.addAll(super.copyNonEmpty(source, keepMeta));
         if (source.getRole() != null) {
             this.setRole(source.getRole());
         }
@@ -88,6 +95,7 @@ public class Features extends Items {
         if (source.getVisibility() != null) {
             this.setVisibility(source.getVisibility());
         }
+        return overriden;
     }
 
     @Override

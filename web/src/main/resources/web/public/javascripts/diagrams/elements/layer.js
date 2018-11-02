@@ -43,7 +43,7 @@ const layerTemplate = gojs(go.Group, "Horizontal",
             }),
         zOrder: 1000,
         computesBoundsAfterDrag: true,  // needed to prevent recomputing Group.placeholder bounds too soon
-        computesBoundsIncludingLinks: false,  // to reduce occurrences of links going briefly outside the lane
+        computesBoundsIncludingLinks: true,  // to reduce occurrences of links going briefly outside the lane
         computesBoundsIncludingLocation: true,  // to support empty space at top-left corner of lane
         handlesDragDropForMembers: true,  // don't need to define handlers on member Nodes and Links
         mouseDrop: function (e, grp) {  // dropping a copy of some Nodes and Links onto this Group adds them to this Group
@@ -62,6 +62,7 @@ const layerTemplate = gojs(go.Group, "Horizontal",
             } else {
                 grp.diagram.currentTool.doCancel();
             }
+            fixMeta();
         },
         mouseDragEnter: function (e, group, prev) {
             //TODO AMM: This highlaighing doesn't works
@@ -98,14 +99,22 @@ const layerTemplate = gojs(go.Group, "Horizontal",
         },
         mouseEnter: function (e, obj) {
             const object = obj.findObject("SHAPE");
-            object.fill = go.Brush.lighten(obj.part.background.color);
+            let background = obj.part.background;
+            if (!commons.prototype.isString(background) && commons.prototype.isObject(background)) {
+                background = background.color;
+            }
+            object.fill = go.Brush.lighten(background);
             object.stroke = "red";
             e.handled = true;
         },
         mouseLeave: function (e, obj) {
             const object = obj.findObject("SHAPE");
             object.fill = "white";
-            object.stroke = obj.part.background.color;
+            let background = obj.part.background;
+            if (!commons.prototype.isString(background) && commons.prototype.isObject(background)) {
+                background = background.color;
+            }
+            object.stroke = background;
             e.handled = true;
         },
         contextMenu: partContextMenu

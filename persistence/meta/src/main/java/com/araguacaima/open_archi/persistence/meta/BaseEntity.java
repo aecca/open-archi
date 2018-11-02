@@ -28,13 +28,10 @@ public abstract class BaseEntity implements Serializable, BasicEntity, Cloneable
     @Transient
     @JsonIgnore
     protected static final ResourceBundle resourceBundle = ResourceBundle.getBundle(Constants.BUNDLE_NAME);
-
+    private static final long serialVersionUID = 5449758397914117108L;
     @Transient
     @JsonIgnore
     private static ReflectionUtils reflectionUtils = new ReflectionUtils(null);
-
-    private static final long serialVersionUID = 5449758397914117108L;
-
     @Transient
     @JsonIgnore
     private static SpecificationMapBuilder specificationMapBuilder = new SpecificationMapBuilder(MapUtils.getInstance());
@@ -59,13 +56,13 @@ public abstract class BaseEntity implements Serializable, BasicEntity, Cloneable
         return UUID.randomUUID().toString();
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
     @Override
     public String getId() {
         return this.id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getKey() {
@@ -133,8 +130,8 @@ public abstract class BaseEntity implements Serializable, BasicEntity, Cloneable
     @JsonIgnore
     public void validateCreation(Map<String, Object> map) throws EntityError {
         if (map == null) map = new HashMap<>();
-        map.put("OperationType", OperationType.CREATION);
-        map.put("Initiator", this);
+        map.put(Constants.OPERATION_TYPE, OperationType.CREATION);
+        map.put(Constants.INITIATOR, this);
         traverse(this, "validateCreation", map);
     }
 
@@ -142,8 +139,8 @@ public abstract class BaseEntity implements Serializable, BasicEntity, Cloneable
     @JsonIgnore
     public void validateModification(Map<String, Object> map) throws EntityError {
         if (map == null) map = new HashMap<>();
-        map.put("OperationType", OperationType.MODIFICATION);
-        map.put("Initiator", this);
+        map.put(Constants.OPERATION_TYPE, OperationType.MODIFICATION);
+        map.put(Constants.INITIATOR, this);
         traverse(this, "validateModification", map);
     }
 
@@ -151,8 +148,8 @@ public abstract class BaseEntity implements Serializable, BasicEntity, Cloneable
     @JsonIgnore
     public void validateReplacement(Map<String, Object> map) throws EntityError {
         if (map == null) map = new HashMap<>();
-        map.put("OperationType", OperationType.REPLACEMENT);
-        map.put("Initiator", this);
+        map.put(Constants.OPERATION_TYPE, OperationType.REPLACEMENT);
+        map.put(Constants.INITIATOR, this);
         traverse(this, "validateReplacement", map);
     }
 
@@ -200,7 +197,7 @@ public abstract class BaseEntity implements Serializable, BasicEntity, Cloneable
                     }
                 }
                 if (!specificationResult) {
-                    throw new EntityError(map.get(Constants.SPECIFICATION_ERROR).toString());
+                    throw EntityErrorFactory.build(map);
                 }
             }
         } catch (Exception e) {
@@ -218,7 +215,13 @@ public abstract class BaseEntity implements Serializable, BasicEntity, Cloneable
                 this.meta = buildDefaultMeta();
             }
         } else {
-            this.meta = null;
+            if (keepMeta) {
+                if (this.meta == null) {
+                    this.meta = source.getMeta();
+                }
+            } else {
+                this.meta = null;
+            }
         }
         if (StringUtils.isNotBlank(source.getId())) {
             this.key = source.getId();
@@ -227,6 +230,7 @@ public abstract class BaseEntity implements Serializable, BasicEntity, Cloneable
 
     @JsonIgnore
     public void copyNonEmpty(BaseEntity source, boolean keepMeta) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
         if (source.getMeta() != null) {
             if (keepMeta) {
                 this.meta = source.getMeta();

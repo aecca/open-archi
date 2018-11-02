@@ -39,6 +39,7 @@ const systemTemplate = gojs(go.Group, "Auto",
                     e.diagram.currentTool.doCancel();
                 }
             }
+            fixMeta();
         },
         handlesDragDropForMembers: true,  // don't need to define handlers on member Nodes and Links
         // Groups containing Groups lay out their members horizontally

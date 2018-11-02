@@ -11,10 +11,10 @@ function capitalize(text) {
 function fixMetaData() {
     const name = $("#diagram-name").val();
     const type = $("#diagramTypesDropdown").find("a.active").html();
-    const prototype = $("#diagram-prototype").prop("checked");
     meta.name = name;
-    meta.kind = type;
-    meta.prototype = prototype;
+    if (meta.kind === undefined) {
+        meta.kind = type;
+    }
 }
 
 // Show the diagram's model in JSON format that the user may edit
@@ -97,7 +97,37 @@ function save(model) {
                 ).fail((jqXHR, textStatus, errorThrown) => alert(errorThrown))
             }
         }
-    ).fail((jqXHR, textStatus, errorThrown) => alert(errorThrown));
+    ).fail((response, textStatus, errorThrown) => {
+        if (response.status === 409) {
+            const id = value_.id;
+            delete value_.id;
+            $.ajax({
+                url: "/api/models/" + id,
+                data: JSON.stringify(value_),
+                type: 'PUT',
+                crossDomain: true,
+                contentType: "application/json",
+                converters: {
+                    "text json": function (response) {
+                        return (response === "") ? null : JSON.parse(response);
+                    }
+                }
+            }).done((data, textStatus, response) => {
+                    if (response.status === 200) {
+                        fillPalettes(data);
+                    } else {
+                        if (response.status === 201) {
+                            fillPalettes(data);
+                        } else {
+                            alert("Not created!");
+                        }
+                    }
+                }
+            ).fail((response, textStatus, errorThrown) => alert(errorThrown))
+        } else {
+            alert(errorThrown);
+        }
+    });
 }
 
 function load(model) {
@@ -171,7 +201,6 @@ function expand(data) {
     } else {
         model = data;
     }
-    meta.id = model.id;
     const newDiagram = OpenArchiToDiagram.process(model);
     const nodeDataArray = newDiagram.nodeDataArray;
     if (nodeDataArray !== undefined && nodeDataArray !== null) {
@@ -202,7 +231,34 @@ function expand(data) {
         myDiagram.requestUpdate();
         myDiagram.commitTransaction("Expand element");
     }
-    relayoutLanes();
+    //relayoutLanes();
+}
+
+function fixMeta() {
+
+    const rootNodes = myDiagram.findTreeRoots();
+
+    if (rootNodes !== undefined) {
+        let count = 0;
+        let rootNodeData = {};
+        rootNodes.each(function (node) {
+            count++;
+            rootNodeData = node;
+        });
+        if (count === 1) {
+            const data = rootNodeData.data;
+            if (data !== undefined && meta.name === undefined) {
+                meta.name = data.name;
+                $("#diagram-name").val(data.name);
+            }
+            meta.kind = data.kind;
+            meta.id = data.id;
+        } else {
+            meta.id = undefined;
+            meta.name = undefined;
+            $("#diagram-name").val("");
+        }
+    }
 }
 
 function expandGroups(g, i, level) {
@@ -401,17 +457,6 @@ function addNodeToTemplateByType(data, type) {
 
 function openMore() {
 
-}
-
-function confirm() {
-    let diagramInfo = $('#diagram-info');
-    const name = $("#diagram-name").val();
-    const type = $("#diagramTypesDropdown").find("a.active").html();
-    const prototype = $("#diagram-prototype").prop("checked");
-    meta.name = name;
-    meta.kind = type;
-    meta.prototype = prototype;
-    diagramInfo.modal('hide');
 }
 
 function validateModel() {
@@ -672,10 +717,6 @@ function copyTextToClipboard(text) {
         console.log('Oops, unable to copy');
     }
     document.body.removeChild(textArea);
-}
-
-function elementTreeExpander() {
-
 }
 
 /*

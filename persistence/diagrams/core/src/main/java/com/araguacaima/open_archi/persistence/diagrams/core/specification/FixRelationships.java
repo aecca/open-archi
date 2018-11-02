@@ -2,7 +2,6 @@ package com.araguacaima.open_archi.persistence.diagrams.core.specification;
 
 import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.Item;
-import com.araguacaima.open_archi.persistence.diagrams.core.Taggable;
 import com.araguacaima.specification.AbstractSpecification;
 import org.apache.commons.lang3.StringUtils;
 

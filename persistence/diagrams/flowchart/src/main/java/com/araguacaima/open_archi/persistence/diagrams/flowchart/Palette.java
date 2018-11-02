@@ -2,11 +2,8 @@ package com.araguacaima.open_archi.persistence.diagrams.flowchart;
 
 import com.araguacaima.open_archi.persistence.diagrams.core.*;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 public class Palette extends AbstractPalette {
-    
+
     private static PaletteKind kind = PaletteKind.FLOWCHART;
 
     public Palette() {

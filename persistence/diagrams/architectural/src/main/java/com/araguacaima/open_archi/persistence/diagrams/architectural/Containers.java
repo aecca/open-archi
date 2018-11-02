@@ -1,8 +1,11 @@
 package com.araguacaima.open_archi.persistence.diagrams.architectural;
 
 import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
+import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -52,20 +55,24 @@ public class Containers extends GroupStaticElements {
     }
 
 
-    public void override(Containers source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
-        super.override(source, keepMeta, suffix, clonedFrom);
+    public Collection<BaseEntity> override(Containers source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
+        overriden.addAll(super.override(source, keepMeta, suffix, clonedFrom));
         this.setTechnology(source.getTechnology());
         this.setComponents(source.getComponents());
+        return overriden;
     }
 
-    public void copyNonEmpty(Containers source, boolean keepMeta) {
-        super.copyNonEmpty(source, keepMeta);
+    public Collection<BaseEntity> copyNonEmpty(Containers source, boolean keepMeta) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
+        overriden.addAll(super.copyNonEmpty(source, keepMeta));
         if (source.getTechnology() != null) {
             this.setTechnology(source.getTechnology());
         }
         if (source.getComponents() != null && !source.getComponents().isEmpty()) {
             this.setComponents(source.getComponents());
         }
+        return overriden;
     }
 
 }

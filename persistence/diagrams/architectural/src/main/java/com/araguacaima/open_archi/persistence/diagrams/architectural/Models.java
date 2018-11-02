@@ -2,10 +2,12 @@ package com.araguacaima.open_archi.persistence.diagrams.architectural;
 
 import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
-import com.araguacaima.open_archi.persistence.diagrams.core.Elements;
 import com.araguacaima.open_archi.persistence.diagrams.core.ModelElements;
+import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -104,59 +106,71 @@ public class Models extends ModelElements {
         this.relationships = relationships;
     }
 
-    public void override(Models source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
-        super.override(source, keepMeta, suffix, clonedFrom);
+    public Collection<BaseEntity> override(Models source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
+        overriden.addAll(super.override(source, keepMeta, suffix, clonedFrom));
         for (Relationships relationship : source.getRelationships()) {
             Relationships newRelationship = new Relationships();
-            newRelationship.override(relationship, keepMeta, suffix, clonedFrom);
+            overriden.addAll(newRelationship.override(relationship, keepMeta, suffix, clonedFrom));
             this.relationships.add(newRelationship);
+            overriden.add(newRelationship);
         }
         for (Consumers consumer : source.getConsumers()) {
             Consumers newConsumer = new Consumers();
-            newConsumer.override(consumer, keepMeta, suffix, clonedFrom);
+            overriden.addAll(newConsumer.override(consumer, keepMeta, suffix, clonedFrom));
             this.consumers.add(newConsumer);
+            overriden.add(newConsumer);
         }
         for (Systems system : source.getSystems()) {
             Systems newSystem = new Systems();
-            newSystem.override(system, keepMeta, suffix, clonedFrom);
+            overriden.addAll(newSystem.override(system, keepMeta, suffix, clonedFrom));
             this.systems.add(newSystem);
+            overriden.add(newSystem);
         }
         for (DeploymentNodes deploymentNode : source.getDeploymentNodes()) {
             DeploymentNodes newDeploymentNode = new DeploymentNodes();
-            newDeploymentNode.override(deploymentNode, keepMeta, suffix, clonedFrom);
+            overriden.addAll(newDeploymentNode.override(deploymentNode, keepMeta, suffix, clonedFrom));
             this.deploymentNodes.add(newDeploymentNode);
+            overriden.add(newDeploymentNode);
         }
+        return overriden;
     }
 
-    public void copyNonEmpty(Models source, boolean keepMeta) {
-        super.copyNonEmpty(source, keepMeta);
+    public Collection<BaseEntity> copyNonEmpty(Models source, boolean keepMeta) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
+        overriden.addAll(super.copyNonEmpty(source, keepMeta));
         if (source.getRelationships() != null && !source.getRelationships().isEmpty()) {
             for (Relationships relationship : source.getRelationships()) {
                 Relationships newRelationship = new Relationships();
-                newRelationship.copyNonEmpty(relationship, keepMeta);
+                overriden.addAll(newRelationship.copyNonEmpty(relationship, keepMeta));
                 this.relationships.add(newRelationship);
+                overriden.add(newRelationship);
             }
         }
         if (source.getConsumers() != null && !source.getConsumers().isEmpty()) {
             for (Consumers consumer : source.getConsumers()) {
                 Consumers newConsumer = new Consumers();
-                newConsumer.copyNonEmpty(consumer, keepMeta);
+                overriden.addAll(newConsumer.copyNonEmpty(consumer, keepMeta));
                 this.consumers.add(newConsumer);
+                overriden.add(newConsumer);
             }
         }
         if (source.getSystems() != null && !source.getSystems().isEmpty()) {
             for (Systems system : source.getSystems()) {
                 Systems newSystem = new Systems();
-                newSystem.copyNonEmpty(system, keepMeta);
+                overriden.addAll(newSystem.copyNonEmpty(system, keepMeta));
                 this.systems.add(newSystem);
+                overriden.add(newSystem);
             }
         }
         if (source.getDeploymentNodes() != null && !source.getDeploymentNodes().isEmpty()) {
             for (DeploymentNodes deploymentNode : source.getDeploymentNodes()) {
                 DeploymentNodes newDeploymentNode = new DeploymentNodes();
-                newDeploymentNode.copyNonEmpty(deploymentNode, keepMeta);
+                overriden.addAll(newDeploymentNode.copyNonEmpty(deploymentNode, keepMeta));
                 this.deploymentNodes.add(newDeploymentNode);
+                overriden.add(newDeploymentNode);
             }
         }
+        return overriden;
     }
 }

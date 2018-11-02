@@ -1,8 +1,12 @@
 package com.araguacaima.open_archi.persistence.diagrams.core;
 
+import com.araguacaima.open_archi.persistence.meta.BaseEntity;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.PersistenceUnit;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * A relationship between two elements.
@@ -65,7 +69,8 @@ public class Relationships extends Taggable {
         this.destinationPort = destinationPort;
     }
 
-    public void override(Relationships source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+    public Collection<BaseEntity> override(Relationships source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
         super.override(source, keepMeta, suffix);
         if (clonedFrom != null) {
             this.setClonedFrom(clonedFrom);
@@ -75,10 +80,12 @@ public class Relationships extends Taggable {
         this.description = source.getDescription();
         this.sourcePort = source.getSourcePort();
         this.destinationPort = source.getDestinationPort();
+        return overriden;
     }
 
-    public void copyNonEmpty(Relationships source, boolean keepMeta) {
-        super.copyNonEmpty(source, keepMeta);
+    public Collection<BaseEntity> copyNonEmpty(Relationships source, boolean keepMeta) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
+        overriden.addAll(super.copyNonEmpty(source, keepMeta));
         if (source.getSourceId() != null) {
             this.sourceId = source.getSourceId();
         }
@@ -94,6 +101,7 @@ public class Relationships extends Taggable {
         if (source.getDestinationPort() != null) {
             this.destinationPort = source.getDestinationPort();
         }
+        return overriden;
     }
 
     @Override

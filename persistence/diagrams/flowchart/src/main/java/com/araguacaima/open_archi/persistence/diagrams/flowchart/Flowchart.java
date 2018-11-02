@@ -3,8 +3,11 @@ package com.araguacaima.open_archi.persistence.diagrams.flowchart;
 import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 import com.araguacaima.open_archi.persistence.diagrams.core.Item;
+import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
 
 @Entity
 @PersistenceUnit(unitName = "open-archi")
@@ -23,12 +26,12 @@ public class Flowchart extends Item {
     }
 
 
-    public void override(Flowchart source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
-        super.override(source, keepMeta, suffix, clonedFrom);
+    public Collection<BaseEntity> override(Flowchart source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+        return super.override(source, keepMeta, suffix, clonedFrom);
     }
 
-    public void copyNonEmpty(Flowchart source, boolean keepMeta) {
-        super.copyNonEmpty(source, keepMeta);
+    public Collection<BaseEntity> copyNonEmpty(Flowchart source, boolean keepMeta) {
+        return super.copyNonEmpty(source, keepMeta);
     }
 
     @Override

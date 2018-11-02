@@ -1,8 +1,13 @@
 package com.araguacaima.open_archi.persistence.diagrams.bpm;
 
-import com.araguacaima.open_archi.persistence.diagrams.core.*;
+import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
+import com.araguacaima.open_archi.persistence.diagrams.core.DiagramableElement;
+import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
+import com.araguacaima.open_archi.persistence.diagrams.core.ModelElement;
+import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -43,24 +48,30 @@ public class Model extends ModelElement implements DiagramableElement<Model> {
     }
 
     @Override
-    public void override(Model source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
-        super.override(source, keepMeta, suffix, clonedFrom);
+    public Collection<BaseEntity> override(Model source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
+        overriden.addAll(super.override(source, keepMeta, suffix, clonedFrom));
         for (Pool consumer : source.getPools()) {
             Pool newPool = new Pool();
-            newPool.override(consumer, keepMeta, suffix, clonedFrom);
+            overriden.addAll(newPool.override(consumer, keepMeta, suffix, clonedFrom));
             this.pools.add(newPool);
+            overriden.add(newPool);
         }
+        return overriden;
     }
 
     @Override
-    public void copyNonEmpty(Model source, boolean keepMeta) {
-        super.copyNonEmpty(source, keepMeta);
+    public Collection<BaseEntity> copyNonEmpty(Model source, boolean keepMeta) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
+        overriden.addAll(super.copyNonEmpty(source, keepMeta));
         if (source.getPools() != null && !source.getPools().isEmpty()) {
             for (Pool consumer : source.getPools()) {
                 Pool newPool = new Pool();
-                newPool.copyNonEmpty(consumer, keepMeta);
+                overriden.addAll(newPool.copyNonEmpty(consumer, keepMeta));
                 this.pools.add(newPool);
+                overriden.add(newPool);
             }
         }
+        return overriden;
     }
 }

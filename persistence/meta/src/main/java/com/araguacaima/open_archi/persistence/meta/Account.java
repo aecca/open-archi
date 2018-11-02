@@ -21,7 +21,7 @@ import java.util.UUID;
 @DynamicUpdate
 @NamedQueries(value = {@NamedQuery(name = Account.FIND_BY_EMAIL,
         query = "select a from Account a where a.email = :"
-                + Account.PARAM_EMAIL),@NamedQuery(name = Account.FIND_BY_EMAIL_AND_ENABLED,
+                + Account.PARAM_EMAIL), @NamedQuery(name = Account.FIND_BY_EMAIL_AND_ENABLED,
         query = "select a from Account a where a.email = :"
                 + Account.PARAM_EMAIL + " and a.enabled = true"), @NamedQuery(name = Account.FIND_BY_LOGIN,
         query = "select a from Account a where a.login = :"
@@ -161,28 +161,28 @@ public class Account implements Serializable, SimpleOverridable<Account> {
         this.firstAccess = firstAccess;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getName() {
         return name;
     }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getLastname() {
         return lastname;
     }
 
-    public void setAvatar(Avatar avatar) {
-        this.avatar = avatar;
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 
     public Avatar getAvatar() {
         return avatar;
+    }
+
+    public void setAvatar(Avatar avatar) {
+        this.avatar = avatar;
     }
 
     public boolean isSuperuser() {

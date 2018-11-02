@@ -43,7 +43,7 @@
         <backport-util-concurrent-backport-util-concurrent>3.1</backport-util-concurrent-backport-util-concurrent>
         <com.araguacaima-commons-utils>1.0.1-SNAPSHOT</com.araguacaima-commons-utils>
         <com.araguacaima-composite-specification>1.0.1-SNAPSHOT</com.araguacaima-composite-specification>
-        <org.eclipse.jetty-jetty-util>9.3.6.v20151106</org.eclipse.jetty-jetty-util>
+        <org.eclipse.jetty-jetty-util>9.4.12.v20180830</org.eclipse.jetty-jetty-util>
         <com.fasterxml.jackson.core-jackson-annotations>2.9.2</com.fasterxml.jackson.core-jackson-annotations>
         <com.fasterxml.jackson.core-jackson-core>2.7.1</com.fasterxml.jackson.core-jackson-core>
         <com.fasterxml.jackson.core-jackson-databind>2.7.1-1</com.fasterxml.jackson.core-jackson-databind>
@@ -63,8 +63,8 @@
         <com.heroku.sdk-heroku-maven-plugin>0.4.4</com.heroku.sdk-heroku-maven-plugin>
         <com.mchange-c3p0>0.9.5.2</com.mchange-c3p0>
         <com.querydsl-querydsl-core>4.0.1</com.querydsl-querydsl-core>
-        <com.sparkjava-spark-core>2.5.5</com.sparkjava-spark-core>
-        <com.sparkjava-spark-template-jade>2.5.5</com.sparkjava-spark-template-jade>
+        <com.sparkjava-spark-core>2.8.0</com.sparkjava-spark-core>
+        <com.sparkjava-spark-template-jade>2.7.1</com.sparkjava-spark-template-jade>
         <com.thoughtworks.paranamer-paranamer>2.7</com.thoughtworks.paranamer-paranamer>
         <commons-io-commons-io>2.6</commons-io-commons-io>
         <cz.jirutka.rsql-rsql-parser>2.1.0</cz.jirutka.rsql-rsql-parser>

@@ -1,9 +1,11 @@
 package com.araguacaima.open_archi.persistence.diagrams.architectural;
 
 import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
+import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 
 import javax.persistence.Entity;
 import javax.persistence.PersistenceUnit;
+import java.util.Collection;
 
 /**
  * This is the superclass for model elements that describe the static structure
@@ -23,11 +25,11 @@ public abstract class LeafStaticElement extends StaticElement {
 
     }
 
-    public void override(LeafStaticElement source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
-        super.override(source, keepMeta, suffix, clonedFrom);
+    public Collection<BaseEntity> override(LeafStaticElement source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+        return super.override(source, keepMeta, suffix, clonedFrom);
     }
 
-    public void copyNonEmpty(LeafStaticElement source, boolean keepMeta) {
-        super.copyNonEmpty(source, keepMeta);
+    public Collection<BaseEntity> copyNonEmpty(LeafStaticElement source, boolean keepMeta) {
+        return super.copyNonEmpty(source, keepMeta);
     }
 }

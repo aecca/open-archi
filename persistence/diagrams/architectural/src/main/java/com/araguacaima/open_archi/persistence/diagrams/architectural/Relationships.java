@@ -2,8 +2,11 @@ package com.araguacaima.open_archi.persistence.diagrams.architectural;
 
 import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.RelationshipType;
+import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * A relationship between two architectural elements.
@@ -51,15 +54,18 @@ public class Relationships extends com.araguacaima.open_archi.persistence.diagra
         this.type = type;
     }
 
-    public void override(Relationship source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
-        super.override(source, keepMeta, suffix, clonedFrom);
+    public Collection<BaseEntity> override(Relationship source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
+        overriden.addAll(super.override(source, keepMeta, suffix, clonedFrom));
         this.technology = source.getTechnology();
         this.interactionStyle = source.getInteractionStyle();
         this.type = source.getType();
+        return overriden;
     }
 
-    public void copyNonEmpty(Relationship source, boolean keepMeta) {
-        super.copyNonEmpty(source, keepMeta);
+    public Collection<BaseEntity> copyNonEmpty(Relationship source, boolean keepMeta) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
+        overriden.addAll(super.copyNonEmpty(source, keepMeta));
         if (source.getTechnology() != null) {
             this.technology = source.getTechnology();
         }
@@ -69,6 +75,6 @@ public class Relationships extends com.araguacaima.open_archi.persistence.diagra
         if (source.getType() != null) {
             this.type = source.getType();
         }
-
+        return overriden;
     }
 }

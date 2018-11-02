@@ -1,8 +1,11 @@
 package com.araguacaima.open_archi.persistence.diagrams.core;
 
 import com.araguacaima.open_archi.persistence.diagrams.core.reliability.Constraint;
+import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Set;
 
 /**
@@ -107,16 +110,19 @@ public class Feature extends Item {
         this.kind = kind;
     }
 
-    public void override(Feature source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
-        super.override(source, keepMeta, suffix, clonedFrom);
+    public Collection<BaseEntity> override(Feature source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
+        overriden.addAll(super.override(source, keepMeta, suffix, clonedFrom));
         this.setRole(source.getRole());
         this.setUrl(source.getUrl());
         this.setVisibility(source.getVisibility());
         this.setIncomingConstraints(source.getIncomingConstraints());
         this.setOutgoingConstraints(source.getOutgoingConstraints());
+        return overriden;
     }
 
-    public void copyNonEmpty(Feature source, boolean keepMeta) {
+    public Collection<BaseEntity> copyNonEmpty(Feature source, boolean keepMeta) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
         super.copyNonEmpty(source, keepMeta);
         if (source.getRole() != null) {
             this.setRole(source.getRole());
@@ -133,6 +139,7 @@ public class Feature extends Item {
         if (source.getOutgoingConstraints() != null && !source.getOutgoingConstraints().isEmpty()) {
             this.setOutgoingConstraints(source.getOutgoingConstraints());
         }
+        return overriden;
     }
 
     @Override

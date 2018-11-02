@@ -8,10 +8,7 @@ import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
 import com.araguacaima.specification.AbstractSpecification;
 import org.apache.commons.collections4.CollectionUtils;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class CheckModelAlreadyExists extends AbstractSpecification {
 
@@ -35,7 +32,9 @@ public class CheckModelAlreadyExists extends AbstractSpecification {
                 String name = item.getName();
                 params.put("kind", kind);
                 params.put("name", name);
-                if (CollectionUtils.isNotEmpty(JPAEntityManagerUtils.executeQuery(Item.class, Item.GET_ITEMS_BY_NAME_AND_KIND, params))) {
+                List<Item> list = JPAEntityManagerUtils.executeQuery(Item.class, Item.GET_ITEMS_BY_NAME_AND_KIND, params);
+                if (CollectionUtils.isNotEmpty(list)) {
+                    map.put(Constants.EXISTENT_ENTITY, list.iterator().next());
                     return true;
                 } else {
                     map.put(Constants.SPECIFICATION_ERROR, "Name '" + name + "' and Kind '" + kind + "' pair does not exists");

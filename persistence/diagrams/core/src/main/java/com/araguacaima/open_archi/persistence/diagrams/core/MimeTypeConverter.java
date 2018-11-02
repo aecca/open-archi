@@ -1,7 +1,5 @@
 package com.araguacaima.open_archi.persistence.diagrams.core;
 
-import com.araguacaima.commons.utils.EnumsUtils;
-
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 

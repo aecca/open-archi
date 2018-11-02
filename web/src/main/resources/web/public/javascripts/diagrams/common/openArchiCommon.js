@@ -175,7 +175,7 @@ class OpenArchiWrapper {
         return brush;
     }
 
-    static fromStroke(stroke, data, model) {
+    static fromStroke(stroke_, data, model) {
         const stroke = data.shape.stroke;
         model.setDataProperty(data, "stroke", stroke ? stroke : data.stroke);
     }
@@ -249,12 +249,14 @@ class OpenArchiWrapper {
     }
 
     static fixCategory(elements) {
-        elements.forEach(function (element) {
-            element.category = OpenArchiWrapper.toCategory(element);
-        });
-        return elements.sort(function (a, b) {
-            return a.rank - b.rank;
-        });
+        if (elements !== undefined) {
+            elements.forEach(function (element) {
+                element.category = OpenArchiWrapper.toCategory(element);
+            });
+            return elements.sort(function (a, b) {
+                return a.rank - b.rank;
+            });
+        }
     }
 
     static toComplementColor(data, node) {

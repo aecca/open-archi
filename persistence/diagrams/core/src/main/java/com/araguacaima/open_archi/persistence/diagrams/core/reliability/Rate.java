@@ -14,13 +14,6 @@ import java.util.Set;
 @DynamicUpdate
 public class Rate extends BaseEntity implements MeasurableRange {
 
-    private static final Set<Measurable> RANGES = new HashSet<Measurable>() {{
-        add(DEFAULT_BIG);
-        add(DEFAULT_HUGE);
-        add(DEFAULT_MEDIUM);
-        add(DEFAULT_MINIMAL);
-        add(DEFAULT_SMALL);
-    }};
     public static Measurable DEFAULT_BIG = new Measurable(new Range(Requests.REQUESTS_PER_SECOND.name(), 251, 500));
     public static Measurable DEFAULT_HUGE = new Measurable(new Range(Requests.REQUESTS_PER_SECOND.name(),
             501,
@@ -30,7 +23,13 @@ public class Rate extends BaseEntity implements MeasurableRange {
             250));
     public static Measurable DEFAULT_MINIMAL = new Measurable(new Range(Requests.REQUESTS_PER_SECOND.name(), 0, 50));
     public static Measurable DEFAULT_SMALL = new Measurable(new Range(Requests.REQUESTS_PER_SECOND.name(), 51, 100));
-
+    private static final Set<Measurable> RANGES = new HashSet<Measurable>() {{
+        add(DEFAULT_BIG);
+        add(DEFAULT_HUGE);
+        add(DEFAULT_MEDIUM);
+        add(DEFAULT_MINIMAL);
+        add(DEFAULT_SMALL);
+    }};
     @Column
     @Enumerated(EnumType.STRING)
     private RequestTarget target;

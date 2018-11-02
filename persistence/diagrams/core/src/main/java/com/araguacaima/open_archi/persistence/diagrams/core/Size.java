@@ -51,7 +51,7 @@ public class Size extends BaseEntity implements Serializable, Cloneable {
      * Constructs and initializes a size at the specified
      * {@code (width,height)}.
      *
-     * @param width the width of the newly constructed <code>Size</code>
+     * @param width  the width of the newly constructed <code>Size</code>
      * @param height the height of the newly constructed <code>Size</code>
      */
     public Size(double width, double height) {

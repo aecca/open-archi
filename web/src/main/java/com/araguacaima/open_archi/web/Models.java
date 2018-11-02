@@ -1,6 +1,7 @@
 package com.araguacaima.open_archi.web;
 
 import com.araguacaima.open_archi.persistence.commons.IdName;
+import com.araguacaima.open_archi.persistence.commons.exceptions.EntityError;
 import com.araguacaima.open_archi.persistence.diagrams.core.*;
 import com.araguacaima.open_archi.persistence.meta.Account;
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
@@ -34,32 +35,22 @@ public class Models implements RouteGroup {
         });
         post(Commons.EMPTY_PATH, (request, response) -> {
             try {
-                Taggable model = null;
                 String body = request.body();
                 Map<String, Object> incomingModel = (Map<String, Object>) jsonUtils.fromJSON(body, Map.class);
                 Object kind = incomingModel.get("kind");
                 Object id = incomingModel.get("id");
-                for (Class<? extends Taggable> modelClass : modelsClasses) {
-                    Field field = reflectionUtils.getField(modelClass, "kind");
-                    if (field != null) {
-                        field.setAccessible(true);
-                        Object obj = modelClass.newInstance();
-                        Object thisKind = field.get(obj);
-                        thisKind = enumsUtils.getStringValue((Enum) thisKind);
-                        if (kind.equals(thisKind)) {
-                            model = jsonUtils.fromJSON(body, modelClass);
-                            break;
-                        }
-                    }
-                }
-                if (model == null) {
-                    throw new Exception("Invalid kind of model '" + kind + "'");
-                }
+                Taggable model = extractTaggable(body, kind);
                 final SparkWebContext ctx = new SparkWebContext(request, response);
                 Map<String, Object> map = new HashMap<>();
                 Account account = (Account) ctx.getSessionAttribute("account");
                 map.put("account", account);
-                model.validateCreation(map);
+                try {
+                    model.validateCreation(map);
+                } catch (EntityError e) {
+                    response.status(HTTP_CONFLICT);
+                    response.type(JSON_CONTENT_TYPE);
+                    return jsonUtils.toJSON(MessagesWrapper.fromSpecificationMapToMessages(map));
+                }
                 DBUtil.populate(model, id == null);
                 response.status(HTTP_CREATED);
                 response.type(JSON_CONTENT_TYPE);
@@ -92,11 +83,11 @@ public class Models implements RouteGroup {
         });
         put("/:uuid", (request, response) -> {
             try {
-                Taggable model = jsonUtils.fromJSON(request.body(), Taggable.class);
-                if (model == null) {
-                    throw new Exception("Invalid kind of model");
-                }
+                String body = request.body();
+                Map<String, Object> incomingModel = (Map<String, Object>) jsonUtils.fromJSON(body, Map.class);
+                Object kind = incomingModel.get("kind");
                 String id = request.params(":uuid");
+                Taggable model = extractTaggable(body, kind);
                 model.setId(id);
                 final SparkWebContext ctx = new SparkWebContext(request, response);
                 Map<String, Object> map = new HashMap<>();
@@ -314,5 +305,26 @@ public class Models implements RouteGroup {
                 return throwError(response, ex);
             }
         });
+    }
+
+    private Taggable extractTaggable(String body, Object kind) throws Exception {
+        Taggable model = null;
+        for (Class<? extends Taggable> modelClass : CollectionUtils.union(CollectionUtils.union(modelsClasses, innerGroupElementClasses), innerSingleElementClasses)) {
+            Field field = reflectionUtils.getField(modelClass, "kind");
+            if (field != null) {
+                field.setAccessible(true);
+                Object obj = modelClass.newInstance();
+                Object thisKind = field.get(obj);
+                thisKind = enumsUtils.getStringValue((Enum) thisKind);
+                if (kind.equals(thisKind)) {
+                    model = jsonUtils.fromJSON(body, modelClass);
+                    break;
+                }
+            }
+        }
+        if (model == null) {
+            throw new Exception("Invalid kind of model '" + kind + "'");
+        }
+        return model;
     }
 }

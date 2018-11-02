@@ -1,8 +1,11 @@
 package com.araguacaima.open_archi.persistence.diagrams.core;
 
+import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * A relationship between two elements.
@@ -83,8 +86,9 @@ public class Relationship extends Taggable {
         this.connector = connector;
     }
 
-    public void override(Relationship source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
-        super.override(source, keepMeta, suffix);
+    public Collection<BaseEntity> override(Relationship source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
+        overriden.addAll(super.override(source, keepMeta, suffix, clonedFrom));
         if (clonedFrom != null) {
             this.setClonedFrom(clonedFrom);
         }
@@ -104,10 +108,12 @@ public class Relationship extends Taggable {
         this.sourcePort = source.getSourcePort();
         this.destinationPort = source.getDestinationPort();
         this.connector = source.getConnector();
+        return overriden;
     }
 
-    public void copyNonEmpty(Relationship source, boolean keepMeta) {
-        super.copyNonEmpty(source, keepMeta);
+    public Collection<BaseEntity> copyNonEmpty(Relationship source, boolean keepMeta) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
+        overriden.addAll(super.copyNonEmpty(source, keepMeta));
         CompositeElement source_ = source.getSource();
         if (source_ != null) {
             CompositeElement compositeElement = new CompositeElement();
@@ -132,6 +138,7 @@ public class Relationship extends Taggable {
         if (source.getConnector() != null) {
             this.connector = source.getConnector();
         }
+        return overriden;
     }
 
     @Override

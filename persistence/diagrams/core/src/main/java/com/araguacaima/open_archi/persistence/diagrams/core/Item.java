@@ -1,13 +1,12 @@
 package com.araguacaima.open_archi.persistence.diagrams.core;
 
 
+import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * This is the superclass for all model elements.
@@ -260,41 +259,63 @@ public abstract class Item extends Taggable {
         this.relationships = relationships;
     }
 
-    public void override(Item source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+    public Collection<BaseEntity> override(Item source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
         super.override(source, keepMeta, suffix);
         if (clonedFrom != null) {
             this.setClonedFrom(clonedFrom);
         }
         this.name = StringUtils.isNotBlank(suffix) ? source.getName() + " " + suffix : source.getName();
         this.description = source.getDescription();
-        this.location = source.getLocation();
+        if (source.getLocation() != null) {
+            Point location = new Point();
+            location.override(source.getLocation(), keepMeta, suffix);
+            this.location = location;
+            overriden.add(location);
+        } else {
+            this.location = null;
+        }
         this.parent = source.getParent();
         this.children = source.getChildren();
         if (source.getShape() != null) {
             Shape shape = new Shape();
             shape.override(source.getShape(), keepMeta, suffix);
             this.shape = shape;
+            overriden.add(shape);
+        } else {
+            this.shape = null;
         }
-        this.image = source.getImage();
+        if (source.getImage() != null) {
+            Image image = new Image();
+            image.override(source.getImage(), keepMeta, suffix);
+            this.image = image;
+            overriden.add(image);
+        } else {
+            this.image = null;
+        }
         this.canBeConnectedFrom = source.getCanBeConnectedFrom();
         this.canBeConnectedTo = source.getCanBeConnectedTo();
         if (source.getMetaData() != null) {
             MetaData metaData = new MetaData();
             metaData.override(source.getMetaData(), keepMeta, suffix);
             this.metaData = source.getMetaData();
+            overriden.add(metaData);
         }
         Set<Relationship> relationships = source.getRelationships();
         if (relationships != null) {
             for (Relationship relationship : source.getRelationships()) {
                 Relationship newRelationship = new Relationship();
-                newRelationship.override(relationship, keepMeta, suffix, clonedFrom);
+                overriden.addAll(newRelationship.override(relationship, keepMeta, suffix, clonedFrom));
                 this.relationships.add(newRelationship);
+                overriden.add(newRelationship);
             }
         }
         this.prototype = source.isPrototype();
+        return overriden;
     }
 
-    public void copyNonEmpty(Item source, boolean keepMeta) {
+    public Collection<BaseEntity> copyNonEmpty(Item source, boolean keepMeta) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
         super.copyNonEmpty(source, keepMeta);
         if (source.getName() != null) {
             this.name = source.getName();
@@ -303,7 +324,10 @@ public abstract class Item extends Taggable {
             this.description = source.getDescription();
         }
         if (source.getLocation() != null) {
-            this.location = source.getLocation();
+            Point location = new Point();
+            location.copyNonEmpty(source.getLocation(), keepMeta);
+            this.location = location;
+            overriden.add(location);
         }
         if (source.getParent() != null) {
             this.parent = source.getParent();
@@ -318,9 +342,13 @@ public abstract class Item extends Taggable {
             }
             shape.copyNonEmpty(source.getShape(), keepMeta);
             this.setShape(shape);
+            overriden.add(shape);
         }
         if (source.getImage() != null) {
-            this.image = source.getImage();
+            Image image = new Image();
+            image.copyNonEmpty(source.getImage(), keepMeta);
+            this.image = image;
+            overriden.add(image);
         }
         if (source.getCanBeConnectedFrom() != null && !source.getCanBeConnectedFrom().isEmpty()) {
             this.canBeConnectedFrom = source.getCanBeConnectedFrom();
@@ -335,16 +363,19 @@ public abstract class Item extends Taggable {
             }
             metaData.copyNonEmpty(source.getMetaData(), keepMeta);
             this.setMetaData(metaData);
+            overriden.add(metaData);
         }
         this.prototype = source.isPrototype();
         Set<Relationship> relationships = source.getRelationships();
         if (relationships != null && !relationships.isEmpty()) {
             for (Relationship relationship : relationships) {
                 Relationship newRelationship = new Relationship();
-                newRelationship.copyNonEmpty(relationship, keepMeta);
+                overriden.addAll(newRelationship.copyNonEmpty(relationship, keepMeta));
                 this.relationships.add(newRelationship);
+                overriden.add(newRelationship);
             }
         }
+        return overriden;
     }
 
     public CompositeElement buildCompositeElement() {

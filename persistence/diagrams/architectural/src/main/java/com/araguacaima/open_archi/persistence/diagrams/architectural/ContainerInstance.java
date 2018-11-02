@@ -3,8 +3,11 @@ package com.araguacaima.open_archi.persistence.diagrams.architectural;
 import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.Element;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
+import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Represents a deployment instance of a {@link Container}, which can be added to a {@link DeploymentNode}.
@@ -50,21 +53,26 @@ public class ContainerInstance extends Element {
         this.kind = kind;
     }
 
-    public void override(ContainerInstance source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
-        super.override(source, keepMeta, suffix, clonedFrom);
+    public Collection<BaseEntity> override(ContainerInstances source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
+        overriden.addAll(super.override(source, keepMeta, suffix, clonedFrom));
         this.setContainerId(source.getContainerId());
         this.setInstanceId(source.getInstanceId());
+        return overriden;
     }
 
-    public void copyNonEmpty(ContainerInstance source, boolean keepMeta) {
-        super.copyNonEmpty(source, keepMeta);
+    public Collection<BaseEntity> copyNonEmpty(ContainerInstances source, boolean keepMeta) {
+        Collection<BaseEntity> overriden = new ArrayList<>();
+        overriden.addAll(super.copyNonEmpty(source, keepMeta));
         if (source.getContainerId() != null) {
             this.setContainerId(source.getContainerId());
         }
         if (source.getInstanceId() != 0) {
             this.setInstanceId(source.getInstanceId());
         }
+        return overriden;
     }
+
 
     @Override
     public boolean isIsGroup() {

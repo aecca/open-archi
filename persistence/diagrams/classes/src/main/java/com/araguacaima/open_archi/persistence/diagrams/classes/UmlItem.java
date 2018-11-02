@@ -3,9 +3,12 @@ package com.araguacaima.open_archi.persistence.diagrams.classes;
 import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 import com.araguacaima.open_archi.persistence.diagrams.core.Item;
+import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 
 import javax.persistence.Entity;
 import javax.persistence.PersistenceUnit;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * This is the superclass for all model elements.
@@ -18,12 +21,12 @@ public abstract class UmlItem extends Item {
         setKind(ElementKind.UML_CLASS);
     }
 
-    public void override(UmlItem source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
-        super.override(source, keepMeta, suffix, clonedFrom);
+    public Collection<BaseEntity> override(UmlItem source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+        return super.override(source, keepMeta, suffix, clonedFrom);
     }
 
-    public void copyNonEmpty(UmlItem source, boolean keepMeta) {
-        super.copyNonEmpty(source, keepMeta);
+    public Collection<BaseEntity> copyNonEmpty(UmlItem source, boolean keepMeta) {
+        return super.copyNonEmpty(source, keepMeta);
     }
 
     @Override
