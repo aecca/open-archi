@@ -45,7 +45,7 @@ class OpenArchiFromDiagram {
                         case "SYSTEM":
                         case "CONTAINER":
                         case "COMPONENT":
-                            model = OpenArchiFromDiagram.architectureModel(undefined, node, links, nodes);
+                            model = OpenArchiFromDiagram.architectureModel(model, node, links, nodes);
                             break;
                         default:
                             console.log("Still not implemented");
@@ -59,8 +59,8 @@ class OpenArchiFromDiagram {
     static common(node) {
         let object = {};
         object.id = node.id;
-        object.key = node.key.toString();
-        if (object.key === -1) {
+        object.key = node.key === undefined ? undefined : node.key.toString();
+        if (object.key === -1 || object.key === undefined) {
             object.key = object.id;
         }
         object.meta = node.meta;
@@ -79,7 +79,11 @@ class OpenArchiFromDiagram {
         let image = node.image;
         if (image) {
             let raw = image.raw;
-            raw = window.atob(raw.replace(/^data:image\/svg\+xml;base64,/, ""));
+            try {
+                raw = window.atob(raw.replace(/^data:image\/svg\+xml;base64,/, ""));
+            } catch (err) {
+                //Do nothing.
+            }
             object.image = {raw: raw, type: image.type};
         }
         return object;
@@ -114,78 +118,46 @@ class OpenArchiFromDiagram {
         return element;
     }
 
-    static processLayer(node, parent, links) {
-        let layer = OpenArchiFromDiagram.common(node);
-        //TODO Añadir campos propios del layer
-        //Los layer sólo se pueden agrupar en el modelo directamente, no en otros layers, systems, container, o components
-        if (!parent.layers) {
-            parent.layers = [];
+    static processInner(node, parent, links, child) {
+        if (parent !== undefined) {
+            let element = OpenArchiFromDiagram.processBasic(node, links);
+            if (!parent[child]) {
+                parent[child] = [];
+            }
+            parent[child].push(element);
         }
-        OpenArchiFromDiagram.addLinks(layer, links);
-        parent.layers.push(layer);
-        alreadyProcessedNodes.push(layer.key);
-    }
-
-    static processSystem(node, parent, links) {
-        let system = OpenArchiFromDiagram.common(node);
-        //TODO Añadir campos propios del system
-        //Los systems sólo se pueden agrupar en layers u otros systems
-        if (!parent.systems) {
-            parent.systems = [];
-        }
-        OpenArchiFromDiagram.addLinks(system, links);
-        parent.systems.push(system);
-        alreadyProcessedNodes.push(system.key);
-    }
-
-    static processContainer(node, parent, links) {
-        let container = OpenArchiFromDiagram.common(node);
-        //TODO Añadir campos propios del container
-        //Los containers sólo se pueden agrupar en layers u otros containers
-        if (!parent.containers) {
-            parent.containers = [];
-        }
-        OpenArchiFromDiagram.addLinks(container, links);
-        parent.containers.push(container);
-        alreadyProcessedNodes.push(container.key);
-    }
-
-    static processComponent(node, parent, links) {
-        let component = OpenArchiFromDiagram.common(node);
-        //TODO Añadir campos propios del component
-        //Los components sólo se pueden agrupar en layers u otros components
-        if (!parent.components) {
-            parent.components = [];
-        }
-        OpenArchiFromDiagram.addLinks(component, links);
-        parent.components.push(component);
-        alreadyProcessedNodes.push(component.key);
     }
 
     static architectureModel(model, node, links, nodes) {
         let parent;
+        let returnModel = false;
         if (node !== undefined) {
-            parent = findParent(node.group, nodes);
+            parent = findParent(node.group, model);
             if (parent === undefined) {
-                if (model !== undefined) {
-                    parent = model;
+                parent = findParent(node.group, nodes);
+                if (parent !== undefined) {
+                    parent = OpenArchiFromDiagram.processBasic(parent, links);
                 } else {
-                    model = OpenArchiFromDiagram.processBasic(node, links);
+                    return OpenArchiFromDiagram.common(model);
                 }
             } else {
-                parent = OpenArchiFromDiagram.common(parent);
+                returnModel = true;
             }
             if (node.kind === "LAYER") {
-                OpenArchiFromDiagram.processLayer(node, parent, links);
+                OpenArchiFromDiagram.processInner(node, parent, links, "layers");
             } else if (node.kind === "SYSTEM") {
-                OpenArchiFromDiagram.processSystem(node, parent, links);
+                OpenArchiFromDiagram.processInner(node, parent, links, "systems");
             } else if (node.kind === "CONTAINER") {
-                OpenArchiFromDiagram.processContainer(node, parent, links);
+                OpenArchiFromDiagram.processInner(node, parent, links, "containers");
             } else if (node.kind === "COMPONENT") {
-                OpenArchiFromDiagram.processComponent(node, parent, links);
+                OpenArchiFromDiagram.processInner(node, parent, links, "components");
             }
         }
-        return model;
+        if (returnModel) {
+            return model;
+        } else {
+            return parent;
+        }
     }
 
     static flowchartModel(model, node, links) {

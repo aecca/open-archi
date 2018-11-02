@@ -24,9 +24,6 @@ function initBasic(nodeDataArray, linkDataArray, paletteModel) {
     myPaletteBasic.nodeTemplateMap.add("PERSON", personTemplate);
     myPaletteBasic.nodeTemplateMap.add("CONSUMER", consumerTemplate);
     myPaletteBasic.nodeTemplateMap.add("", defaultTemplate);
-/*    myPaletteBasic.addDiagramListener("InitialLayoutCompleted", function (diagramEvent) {
-        resizePalete("paletteContainerBasic", diagramEvent.diagram);
-    });*/
 
     myPaletteBasic.model = new go.GraphLinksModel(paletteModel.basic);
 
@@ -54,9 +51,6 @@ function initBasic(nodeDataArray, linkDataArray, paletteModel) {
     myPaletteGeneral.nodeTemplateMap.add("PERSON", personTemplate);
     myPaletteGeneral.nodeTemplateMap.add("CONSUMER", consumerTemplate);
     myPaletteGeneral.nodeTemplateMap.add("", defaultTemplate);
-/*    myPaletteGeneral.addDiagramListener("InitialLayoutCompleted", function (diagramEvent) {
-        resizePalete("paletteContainerGeneral", diagramEvent.diagram);
-    });*/
 
     myPaletteGeneral.model = new go.GraphLinksModel(paletteModel.general);
 
@@ -355,6 +349,7 @@ function initBasic(nodeDataArray, linkDataArray, paletteModel) {
                 }
             }
         }
+        fixMeta();
     });
 }
 

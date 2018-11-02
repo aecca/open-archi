@@ -42,6 +42,9 @@ const architectureModelTemplate = gojs(go.Group, "Auto",
             object.fill = "white";
             showPorts(obj.part, false);
         },
+        mouseDrop: function (e, grp) {
+            fixMeta();
+        }
     },
     groupStyle(),
     new go.Binding("clonedFrom", "clonedFrom"),

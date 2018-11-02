@@ -5,6 +5,7 @@ import com.araguacaima.commons.utils.JsonUtils;
 import com.araguacaima.commons.utils.ReflectionUtils;
 import com.araguacaima.open_archi.controller.ModelsController;
 import com.araguacaima.open_archi.persistence.diagrams.architectural.GroupStaticElement;
+import com.araguacaima.open_archi.persistence.diagrams.architectural.LeafStaticElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.*;
 import com.araguacaima.open_archi.persistence.meta.Account;
 import com.araguacaima.open_archi.persistence.meta.Role;
@@ -125,7 +126,8 @@ public class Commons {
     public static CompositeElement<ElementKind> deeplyFulfilledFeature_1;
     public static CompositeElement<ElementKind> deeplyFulfilledFeature_2;
     public static Set<Class<? extends Taggable>> modelsClasses;
-    public static Set<Class<? extends Taggable>> innerElementClasses;
+    public static Set<Class<? extends Taggable>> innerGroupElementClasses;
+    public static Set<Class<? extends Taggable>> innerSingleElementClasses;
     public static Reflections diagramsReflections;
     private static Logger log = LoggerFactory.getLogger(Commons.class);
     public static Filter genericFilter = new SessionFilter();
@@ -242,9 +244,11 @@ public class Commons {
         String DIAGRAMS_PACKAGES = "com.araguacaima.open_archi.persistence.diagrams";
         diagramsReflections = new Reflections(DIAGRAMS_PACKAGES, Taggable.class.getClassLoader());
         modelsClasses = diagramsReflections.getSubTypesOf(Taggable.class);
-        innerElementClasses = diagramsReflections.getSubTypesOf(Taggable.class);
+        innerGroupElementClasses = diagramsReflections.getSubTypesOf(Taggable.class);
+        innerSingleElementClasses = diagramsReflections.getSubTypesOf(Taggable.class);
         CollectionUtils.filter(modelsClasses, clazz -> clazz.getSuperclass().equals(ModelElement.class) && !Modifier.isAbstract(clazz.getModifiers()));
-        CollectionUtils.filter(innerElementClasses, clazz -> clazz.getSuperclass().equals(GroupStaticElement.class) && !Modifier.isAbstract(clazz.getModifiers()));
+        CollectionUtils.filter(innerGroupElementClasses, clazz -> clazz.getSuperclass().equals(GroupStaticElement.class) && !Modifier.isAbstract(clazz.getModifiers()));
+        CollectionUtils.filter(innerSingleElementClasses, clazz -> clazz.getSuperclass().equals(LeafStaticElement.class) && !Modifier.isAbstract(clazz.getModifiers()));
 
         Set<Class<? extends DiagramableElement>> diagramTypes = diagramsReflections.getSubTypesOf(DiagramableElement.class);
         IterableUtils.forEach(diagramTypes, input -> {

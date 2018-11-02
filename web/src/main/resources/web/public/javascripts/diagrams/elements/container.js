@@ -47,6 +47,7 @@ const containerTemplate = gojs(go.Group, "Auto",
                     e.diagram.currentTool.doCancel();
                 }
             }
+            fixMeta();
         }
     },
     nodeStyle(),

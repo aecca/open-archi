@@ -201,7 +201,6 @@ function expand(data) {
     } else {
         model = data;
     }
-    meta.id = model.id;
     const newDiagram = OpenArchiToDiagram.process(model);
     const nodeDataArray = newDiagram.nodeDataArray;
     if (nodeDataArray !== undefined && nodeDataArray !== null) {
@@ -233,20 +232,32 @@ function expand(data) {
         myDiagram.commitTransaction("Expand element");
     }
     relayoutLanes();
+}
+
+function fixMeta() {
 
     const rootNodes = myDiagram.findTreeRoots();
 
     if (rootNodes !== undefined) {
-        let alreadyWritten = false;
+        let count = 0;
+        let rootNodeData = {};
         rootNodes.each(function (node) {
-            if (meta.name === undefined && !alreadyWritten) {
-                const data = node.data;
+            count++;
+            rootNodeData = node;
+        });
+        if (count === 1) {
+            const data = rootNodeData.data;
+            if (data !== undefined && meta.name === undefined) {
                 meta.name = data.name;
                 $("#diagram-name").val(data.name);
-                meta.kind = data.kind;
-                alreadyWritten = true;
             }
-        });
+            meta.kind = data.kind;
+            meta.id = data.id;
+        } else {
+            meta.id = undefined;
+            meta.name = undefined;
+            $("#diagram-name").val("");
+        }
     }
 }
 
