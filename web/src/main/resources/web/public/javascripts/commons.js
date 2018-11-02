@@ -17,6 +17,17 @@
             }
         });
 
+        Array.prototype.remove || (Array.prototype.remove = function (element) {
+            const index = this.indexOf(element);
+            if (index > -1) {
+                this.splice(index, 1);
+            }
+        });
+
+        Array.prototype.clone = function() {
+            return this.slice(0);
+        };
+
         const replaceAll = function (str, find, replace) {
             return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
         };

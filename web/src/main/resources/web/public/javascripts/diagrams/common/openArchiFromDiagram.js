@@ -1,3 +1,42 @@
+function storeNodes(node, nodes, result) {
+    if (node === undefined) {
+        return;
+    }
+    if (node.group === undefined) {
+        result.push(node);
+        nodes.remove(node);
+    } else {
+        let parent = findParent(node.group, result);
+        if (parent === undefined) {
+            nodes.forEach(function (node_) {
+                let parent = findParent(node.group, result);
+                if (parent === undefined) {
+                    parent = findParent(node.group, nodes);
+                    if (parent !== undefined) {
+                        storeNodes(parent, nodes, result);
+                    } else {
+                        result.push(node_);
+                        nodes.remove(node_);
+                    }
+                }
+            });
+        }
+        result.push(node);
+        nodes.remove(node);
+    }
+}
+
+function sortNodes(nodes, result) {
+    let nodesCloned = nodes.clone();
+    nodes.forEach(function (node_) {
+        let storedNode = findParent(node_.key, result);
+        if (storedNode === undefined) {
+            storeNodes(node_, nodesCloned, result);
+        }
+    });
+    return result;
+}
+
 class OpenArchiFromDiagram {
 
     static process(diagram) {
@@ -17,44 +56,49 @@ class OpenArchiFromDiagram {
         alreadyProcessedNodes = [];
         alreadyProcessedLinks = [];
         if (!commons.prototype.isEmpty(nodes)) {
-            nodes.forEach(function (node) {
-                if (!alreadyProcessedNodes.includes(node.key)) {
-                    switch (model.kind) {
-                        case "FLOWCHART_MODEL":
-                            model = OpenArchiFromDiagram.flowchartModel(model, node, links);
-                            break;
-                        case "SEQUENCE_MODEL":
-                            model = OpenArchiFromDiagram.sequenceModel(model, node, links);
-                            break;
-                        case "GANTT_MODEL":
-                            model = OpenArchiFromDiagram.ganttModel(model, node, links);
-                            break;
-                        case "ENTITY_RELATIONSHIP_MODEL":
-                            model = OpenArchiFromDiagram.entityRelationshipModel(model, node, links);
-                            break;
-                        case "UML_CLASS_MODEL":
-                            model = OpenArchiFromDiagram.umlModel(model, node, links);
-                            break;
-                        case "BPM_MODEL":
-                            model = OpenArchiFromDiagram.bpmModel(model, node, links);
-                            break;
-                        case "ARCHITECTURE_MODEL":
-                            model = OpenArchiFromDiagram.architectureModel(model, node, links, nodes);
-                            break;
-                        case "LAYER":
-                        case "SYSTEM":
-                        case "CONTAINER":
-                        case "COMPONENT":
-                            model = OpenArchiFromDiagram.architectureModel(model, node, links, nodes);
-                            break;
-                        default:
-                            console.log("Still not implemented");
+            let fixedNodes = [];
+            sortNodes(nodes, fixedNodes);
+            nodes = fixedNodes;
+            nodes.forEach(
+                function (node) {
+                    if (!alreadyProcessedNodes.includes(node.key)) {
+                        switch (model.kind) {
+                            case "FLOWCHART_MODEL":
+                                model = OpenArchiFromDiagram.flowchartModel(model, node, links);
+                                break;
+                            case "SEQUENCE_MODEL":
+                                model = OpenArchiFromDiagram.sequenceModel(model, node, links);
+                                break;
+                            case "GANTT_MODEL":
+                                model = OpenArchiFromDiagram.ganttModel(model, node, links);
+                                break;
+                            case "ENTITY_RELATIONSHIP_MODEL":
+                                model = OpenArchiFromDiagram.entityRelationshipModel(model, node, links);
+                                break;
+                            case "UML_CLASS_MODEL":
+                                model = OpenArchiFromDiagram.umlModel(model, node, links);
+                                break;
+                            case "BPM_MODEL":
+                                model = OpenArchiFromDiagram.bpmModel(model, node, links);
+                                break;
+                            case "ARCHITECTURE_MODEL":
+                                model = OpenArchiFromDiagram.architectureModel(model, node, links, nodes);
+                                break;
+                            case "LAYER":
+                            case "SYSTEM":
+                            case "CONTAINER":
+                            case "COMPONENT":
+                                model = OpenArchiFromDiagram.architectureModel(model, node, links, nodes);
+                                break;
+                            default:
+                                console.log("Still not implemented");
+                        }
                     }
                 }
-            })
+            )
         }
         return model;
-    };
+    }
 
     static common(node) {
         let object = {};
@@ -128,9 +172,17 @@ class OpenArchiFromDiagram {
         }
     }
 
+    static processLinkParent(node, parent, child) {
+        if (parent !== undefined) {
+            if (!parent[child]) {
+                parent[child] = [];
+            }
+            parent[child].push(node);
+        }
+    }
+
     static architectureModel(model, node, links, nodes) {
         let parent;
-        let returnModel = false;
         if (node !== undefined) {
             parent = findParent(node.group, model);
             if (parent === undefined) {
@@ -138,13 +190,11 @@ class OpenArchiFromDiagram {
                 if (parent !== undefined) {
                     parent = OpenArchiFromDiagram.processBasic(parent, links);
                 } else {
-                    if (model.id === node.id){
-                        return  OpenArchiFromDiagram.processBasic(node, links);
+                    if (model.id === node.id) {
+                        return OpenArchiFromDiagram.processBasic(node, links);
                     }
                     return OpenArchiFromDiagram.common(model);
                 }
-            } else {
-                returnModel = true;
             }
             if (node.kind === "LAYER") {
                 OpenArchiFromDiagram.processInner(node, parent, links, "layers");
@@ -155,12 +205,20 @@ class OpenArchiFromDiagram {
             } else if (node.kind === "COMPONENT") {
                 OpenArchiFromDiagram.processInner(node, parent, links, "components");
             }
+
+            if (parent.kind !== model.kind) {
+                if (parent.kind === "LAYER") {
+                    OpenArchiFromDiagram.processLinkParent(parent, model, "layers");
+                } else if (parent.kind === "SYSTEM") {
+                    OpenArchiFromDiagram.processInner(parent, model, "systems");
+                } else if (parent.kind === "CONTAINER") {
+                    OpenArchiFromDiagram.processInner(parent, model, "containers");
+                } else if (parent.kind === "COMPONENT") {
+                    OpenArchiFromDiagram.processInner(parent, model, "components");
+                }
+            }
         }
-        if (returnModel) {
-            return model;
-        } else {
-            return parent;
-        }
+        return model;
     }
 
     static flowchartModel(model, node, links) {

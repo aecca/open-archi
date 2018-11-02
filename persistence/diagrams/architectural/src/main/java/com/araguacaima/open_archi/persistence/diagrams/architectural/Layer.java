@@ -19,6 +19,12 @@ import java.util.Set;
                 query = "select l from Layer l"),
         @NamedQuery(name = Layer.GET_LAYER,
                 query = "select l from Layer l where l.id=:lid"),
+        @NamedQuery(name = Layer.GET_ALL_SYSTEMS_FROM_LAYER,
+                query = "select a.systems from Layer a where a.id=:id"),
+        @NamedQuery(name = Layer.GET_ALL_CONTAINERS_FROM_LAYER,
+                query = "select a.containers from Layer a where a.id=:id"),
+        @NamedQuery(name = Layer.GET_ALL_COMPONENTS_FROM_LAYER,
+                query = "select a.components from Layer a where a.id=:id"),
         @NamedQuery(name = Layer.GET_LAYERS_USAGE_BY_ELEMENT_ID_LIST,
                 query = "select l " +
                         "from Layer l " +
@@ -33,6 +39,9 @@ public class Layer extends GroupStaticElement implements DiagramableElement<Laye
     public static final String GET_ALL_LAYERS = "get.all.layers";
     public static final String GET_LAYER = "get.layer";
     public static final String GET_LAYERS_USAGE_BY_ELEMENT_ID_LIST = "get.layers.usage.by.element.id.list";
+    public static final String GET_ALL_SYSTEMS_FROM_LAYER = "get.all.systems.from.layer";
+    public static final String GET_ALL_CONTAINERS_FROM_LAYER = "get.all.containers.from.layer";
+    public static final String GET_ALL_COMPONENTS_FROM_LAYER = "get.all.components.from.layer";
 
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",

@@ -490,9 +490,6 @@ function nodeStyle() {
                 showPorts(obj.part, false);
                 e.handled = true;
             },
-            mouseDrop: function (e, grp) {
-                fixMeta();
-            },
             dragComputation: stayInGroup
         },
         new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),

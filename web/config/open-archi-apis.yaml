@@ -1347,6 +1347,384 @@ paths:
       - openarchi_auth:
         - write:model
         - read:models
+  "/diagrams/architectures/layers/{layer-id}":
+    get:
+      tags:
+      - Diagrams
+      summary: Finds a specific layer
+      description:
+      operationId: get-layer
+      produces:
+      - application/json
+      parameters:
+      - name: layer-id
+        in: path
+        description: ID of the layer to get
+        required: true
+        type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: "#/definitions/Layer"
+        '400':
+          description: Bad request
+      security:
+      - openarchi_auth:
+        - read:models
+    patch:
+      tags:
+      - Diagrams
+      summary: Partially update an existent layer
+      description: If the layer does not exists previously, an error will be raised. Only incoming attributes will be affected. All preexisting values for non-requested fields will keep its current stored values.
+      operationId: partially-update-model-layer
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: layer-id
+        in: path
+        description: ID of the layer to be partially updated
+        required: true
+        type: string
+      - name: body
+        in: body
+        description: Layer object that needs to be partially updated
+        required: true
+        schema:
+          $ref: "#/definitions/Layer_Create"
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Layer not found
+      security:
+      - openarchi_auth:
+        - write:model
+        - read:models
+    put:
+      tags:
+      - Diagrams
+      summary: Completelly update an existent layer
+      description: If the layer object does not exists previously, it won't be created, instead, an error will be raised. The existent container will be deleted completelly before updating, so the default values will be taken for any non-existent value in the request of this mmethod.
+      operationId: completelly-update-model-layer
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: model-id
+        in: path
+        description: ID of the model to which the container belongs
+        required: true
+        type: string
+      - name: layer-id
+        in: path
+        description: ID of the layer to replace
+        required: true
+        type: string
+      - name: body
+        in: body
+        description: Container object that needs to be replaced
+        required: true
+        schema:
+          $ref: "#/definitions/Layer_Create"
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Container not found
+        '405':
+          description: Invalid input
+      security:
+      - openarchi_auth:
+        - write:model
+        - read:models
+  "/diagrams/architectures/layers/{layer-id}/systems":
+    get:
+      tags:
+      - Diagrams
+      summary: Finds systems for the layer
+      description: This service supports query by using RSQL expressions
+      operationId: get-layer-systems
+      produces:
+      - application/json
+      parameters:
+      - name: layer-id
+        in: path
+        description: ID of the layer
+        required: true
+        type: string
+      - name: "query"
+        in: query
+        description: Filter systemss of a layer according to an RSQL expression
+        required: false
+        type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Systems"
+        '400':
+          description: Bad request
+        '404':
+          description: Service not found
+      security:
+      - openarchi_auth:
+        - read:models
+    post:
+      tags:
+      - Diagrams
+      summary: Add a new system to the specified layer
+      description: Only if the system object does not associeted exists previously with the layer, it will be created, otherwise an error will be raised.
+      operationId: add-system-layer
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: layer-id
+        in: path
+        description: ID of the layer
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: System that needs to be added
+        required: true
+        schema:
+          $ref: "#/definitions/System_Create"
+      responses:
+        '200':
+          description: Accepted
+        '201':
+          description: Created
+        '405':
+          description: Invalid input
+      security:
+      - openarchi_auth:
+        - write:model
+        - read:models
+  "/diagrams/architectures/layers/{layer-id}/systems/{system-id}":
+    delete:
+      tags:
+      - Models
+      summary: Remove a system from its layer by id
+      description: Remove a system from its layer by its identifier. This opertation can not be undone. Refered system reamins as an independent element, but only it won't be associated as a part of the systems of the layer
+      operationId: delete-system-of-layer-by-id
+      produces:
+      - application/json
+      parameters:
+      - name: layer-id
+        in: path
+        description: ID of the layer to with is desired to remove the system
+        required: true
+        type: string
+      - name: system-id
+        in: path
+        description: ID of system to be removed from the layer's systems list
+        required: true
+        type: string
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Layer or system not found
+  "/diagrams/architectures/layers/{layer-id}/containers":
+    get:
+      tags:
+      - Diagrams
+      summary: Finds containers for the layer
+      description: This service supports query by using RSQL expressions
+      operationId: get-layer-containers
+      produces:
+      - application/json
+      parameters:
+      - name: layer-id
+        in: path
+        description: ID of the layer
+        required: true
+        type: string
+      - name: "query"
+        in: query
+        description: Filter containerss of a layer according to an RSQL expression
+        required: false
+        type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Containers"
+        '400':
+          description: Bad request
+        '404':
+          description: Service not found
+      security:
+      - openarchi_auth:
+        - read:models
+    post:
+      tags:
+      - Diagrams
+      summary: Add a new container to the specified layer
+      description: Only if the container object does not associeted exists previously with the layer, it will be created, otherwise an error will be raised.
+      operationId: add-container-layer
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: layer-id
+        in: path
+        description: ID of the layer
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Container that needs to be added
+        required: true
+        schema:
+          $ref: "#/definitions/Container_Create"
+      responses:
+        '200':
+          description: Accepted
+        '201':
+          description: Created
+        '405':
+          description: Invalid input
+      security:
+      - openarchi_auth:
+        - write:model
+        - read:models
+  "/diagrams/architectures/layers/{layer-id}/containers/{container-id}":
+    delete:
+      tags:
+      - Models
+      summary: Remove a container from its layer by id
+      description: Remove a container from its layer by its identifier. This opertation can not be undone. Refered container reamins as an independent element, but only it won't be associated as a part of the containers of the layer
+      operationId: delete-container-of-layer-by-id
+      produces:
+      - application/json
+      parameters:
+      - name: layer-id
+        in: path
+        description: ID of the layer to with is desired to remove the container
+        required: true
+        type: string
+      - name: container-id
+        in: path
+        description: ID of container to be removed from the layer's containers list
+        required: true
+        type: string
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Layer or container not found
+  "/diagrams/architectures/layers/{layer-id}/components":
+    get:
+      tags:
+      - Diagrams
+      summary: Finds components for the layer
+      description: This service supports query by using RSQL expressions
+      operationId: get-layer-components
+      produces:
+      - application/json
+      parameters:
+      - name: layer-id
+        in: path
+        description: ID of the layer
+        required: true
+        type: string
+      - name: "query"
+        in: query
+        description: Filter componentss of a layer according to an RSQL expression
+        required: false
+        type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Components"
+        '400':
+          description: Bad request
+        '404':
+          description: Service not found
+      security:
+      - openarchi_auth:
+        - read:models
+    post:
+      tags:
+      - Diagrams
+      summary: Add a new component to the specified layer
+      description: Only if the component object does not associeted exists previously with the layer, it will be created, otherwise an error will be raised.
+      operationId: add-component-layer
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: layer-id
+        in: path
+        description: ID of the layer
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Component that needs to be added
+        required: true
+        schema:
+          $ref: "#/definitions/Component_Create"
+      responses:
+        '200':
+          description: Accepted
+        '201':
+          description: Created
+        '405':
+          description: Invalid input
+      security:
+      - openarchi_auth:
+        - write:model
+        - read:models
+  "/diagrams/architectures/layers/{layer-id}/components/{component-id}":
+    delete:
+      tags:
+      - Models
+      summary: Remove a component from its layer by id
+      description: Remove a component from its layer by its identifier. This opertation can not be undone. Refered component reamins as an independent element, but only it won't be associated as a part of the components of the layer
+      operationId: delete-component-of-layer-by-id
+      produces:
+      - application/json
+      parameters:
+      - name: layer-id
+        in: path
+        description: ID of the layer to with is desired to remove the component
+        required: true
+        type: string
+      - name: component-id
+        in: path
+        description: ID of component to be removed from the layer's components list
+        required: true
+        type: string
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Layer or component not found          
   "/diagrams/architectures/systems/{system-id}/containers":
     get:
       tags:

@@ -175,7 +175,7 @@ class OpenArchiWrapper {
         return brush;
     }
 
-    static fromStroke(stroke, data, model) {
+    static fromStroke(stroke_, data, model) {
         const stroke = data.shape.stroke;
         model.setDataProperty(data, "stroke", stroke ? stroke : data.stroke);
     }

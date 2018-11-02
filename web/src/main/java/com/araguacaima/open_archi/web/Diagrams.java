@@ -16,6 +16,7 @@ import javax.persistence.EntityNotFoundException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import static com.araguacaima.open_archi.web.common.Commons.*;
 import static com.araguacaima.open_archi.web.common.Security.setCORS;
@@ -24,7 +25,7 @@ import static spark.Spark.*;
 
 public class Diagrams implements RouteGroup {
 
-    public static final String PATH ="/diagrams";
+    public static final String PATH = "/diagrams";
 
     private Map<String, Object> map = new HashMap<>();
 
@@ -199,6 +200,275 @@ public class Diagrams implements RouteGroup {
             } catch (EntityNotFoundException ex) {
                 response.status(HTTP_NOT_FOUND);
                 return EMPTY_RESPONSE;
+            } catch (Throwable ex) {
+                return throwError(response, ex);
+            }
+        });
+        get("/architectures/:uuid/layers", (request, response) -> {
+            Map<String, Object> params = new HashMap<>();
+            params.put("id", request.params(":uuid"));
+            return getList(request, response, Model.GET_ALL_LAYERS_FROM_MODEL, params, Collection.class);
+        });
+        get("/architectures/layers", (request, response) -> getList(request, response, Layer.GET_ALL_LAYERS, null, null));
+        post("/architectures/layers", (request, response) -> {
+            try {
+                Layer layer = jsonUtils.fromJSON(request.body(), Layer.class);
+                if (layer == null) {
+                    throw new Exception("Invalid kind of layer");
+                }
+                final SparkWebContext ctx = new SparkWebContext(request, response);
+
+                Account account = (Account) ctx.getSessionAttribute("account");
+                map.put("account", account);
+                layer.validateCreation(map);
+                DBUtil.populate(layer);
+                response.status(HTTP_CREATED);
+                response.type(JSON_CONTENT_TYPE);
+                response.header("Location", request.pathInfo() + Commons.SEPARATOR_PATH + layer.getId());
+                return EMPTY_RESPONSE;
+            } catch (Throwable ex) {
+                return throwError(response, ex);
+            }
+        });
+        get("/architectures/layers/:luuid", (request, response) -> {
+            try {
+                String id = request.params(":luuid");
+                Layer layer = JPAEntityManagerUtils.find(Layer.class, id);
+                if (layer != null) {
+                    layer.validateRequest();
+                }
+                response.status(HTTP_OK);
+                response.type(JSON_CONTENT_TYPE);
+                return jsonUtils.toJSON(layer);
+            } catch (Exception ex) {
+                return throwError(response, ex);
+            }
+        });
+        patch("/architectures/layers/:luuid", (request, response) -> {
+            try {
+                Layer layer = jsonUtils.fromJSON(request.body(), Layer.class);
+                if (layer == null) {
+                    throw new Exception("Invalid kind of layer");
+                }
+                String id = request.params(":luuid");
+                layer.setId(id);
+                final SparkWebContext ctx = new SparkWebContext(request, response);
+
+                Account account = (Account) ctx.getSessionAttribute("account");
+                map.put("account", account);
+                layer.validateModification(map);
+                DBUtil.update(layer);
+                response.status(HTTP_OK);
+                return EMPTY_RESPONSE;
+            } catch (EntityNotFoundException ex) {
+                response.status(HTTP_NOT_FOUND);
+                return EMPTY_RESPONSE;
+            } catch (Throwable ex) {
+                return throwError(response, ex);
+            }
+        });
+        put("/architectures/layers/:luuid", (request, response) -> {
+            try {
+                Layer layer = jsonUtils.fromJSON(request.body(), Layer.class);
+                if (layer == null) {
+                    throw new Exception("Invalid kind of container");
+                }
+                String id = request.params(":luuid");
+                layer.setId(id);
+                final SparkWebContext ctx = new SparkWebContext(request, response);
+
+                Account account = (Account) ctx.getSessionAttribute("account");
+                map.put("account", account);
+                layer.validateReplacement(map);
+                DBUtil.replace(layer);
+                response.status(HTTP_OK);
+                return EMPTY_RESPONSE;
+            } catch (EntityNotFoundException ex) {
+                response.status(HTTP_NOT_FOUND);
+                return EMPTY_RESPONSE;
+            } catch (Throwable ex) {
+                return throwError(response, ex);
+            }
+        });
+        get("/architectures/layers/:luuid/systems", (request, response) -> {
+            Map<String, Object> params = new HashMap<>();
+            params.put("id", request.params(":luuid"));
+            return getList(request, response, Layer.GET_ALL_SYSTEMS_FROM_LAYER, params, Collection.class);
+        });
+        post("/architectures/layers/:luuid/systems", (request, response) -> {
+            try {
+                System system = jsonUtils.fromJSON(request.body(), System.class);
+                if (system == null) {
+                    throw new Exception("Invalid kind of system");
+                }
+                String id = request.params(":luuid");
+                String systemId = system.getId();
+                final SparkWebContext ctx = new SparkWebContext(request, response);
+
+                Account account = (Account) ctx.getSessionAttribute("account");
+                map.put("account", account);
+                system.validateCreation(map);
+                Layer layer = JPAEntityManagerUtils.find(Layer.class, id);
+                DBUtil.populate(system, systemId == null);
+                layer.getSystems().add(system);
+                DBUtil.update(layer);
+                response.status(HTTP_CREATED);
+                response.type(JSON_CONTENT_TYPE);
+                response.header("Location", request.pathInfo() + Commons.SEPARATOR_PATH + system.getId());
+                return EMPTY_RESPONSE;
+            } catch (Throwable ex) {
+                return throwError(response, ex);
+            }
+        });
+        delete("/architectures/layers/:luuid/systems/:suuid", (request, response) -> {
+            try {
+                String luuid = request.params(":luuid");
+                String suuid = request.params(":suuid");
+                Layer layer = JPAEntityManagerUtils.find(Layer.class, luuid);
+                if (layer == null) {
+                    throw new EntityNotFoundException("Layer with id of '" + luuid + "' does nos exists");
+                }
+                Set<System> systems = layer.getSystems();
+                System system = null;
+                for (System system_ : systems) {
+                    if (system_.getId().equals(suuid)) {
+                        system = system_;
+                    }
+                }
+                if (system == null) {
+                    throw new EntityNotFoundException("System with id of '" + suuid + "' is not found on Layer[" + luuid + "]");
+                }
+                systems.remove(system);
+                DBUtil.update(layer);
+                response.status(HTTP_OK);
+                return EMPTY_RESPONSE;
+            } catch (EntityNotFoundException ex) {
+                int status = HTTP_NOT_FOUND;
+                response.status(status);
+                response.type(JSON_CONTENT_TYPE);
+                return jsonUtils.toJSON(MessagesWrapper.fromExceptionToMessages(ex, status));
+            } catch (Throwable ex) {
+                return throwError(response, ex);
+            }
+        });
+        get("/architectures/layers/:suuid/containers", (request, response) -> {
+            Map<String, Object> params = new HashMap<>();
+            params.put("id", request.params(":suuid"));
+            return getList(request, response, Layer.GET_ALL_CONTAINERS_FROM_LAYER, params, Collection.class);
+        });
+        post("/architectures/layers/:suuid/containers", (request, response) -> {
+            try {
+                Container container = jsonUtils.fromJSON(request.body(), Container.class);
+                if (container == null) {
+                    throw new Exception("Invalid kind of container");
+                }
+                String id = request.params(":suuid");
+                String containerId = container.getId();
+                final SparkWebContext ctx = new SparkWebContext(request, response);
+
+                Account account = (Account) ctx.getSessionAttribute("account");
+                map.put("account", account);
+                container.validateCreation(map);
+                Layer layer = JPAEntityManagerUtils.find(Layer.class, id);
+                DBUtil.populate(container, containerId == null);
+                layer.getContainers().add(container);
+                DBUtil.update(layer);
+                response.status(HTTP_CREATED);
+                response.type(JSON_CONTENT_TYPE);
+                response.header("Location", request.pathInfo() + Commons.SEPARATOR_PATH + container.getId());
+                return EMPTY_RESPONSE;
+            } catch (Throwable ex) {
+                return throwError(response, ex);
+            }
+        });
+        delete("/architectures/layers/:luuid/containers/:suuid", (request, response) -> {
+            try {
+                String luuid = request.params(":luuid");
+                String suuid = request.params(":suuid");
+                Layer layer = JPAEntityManagerUtils.find(Layer.class, luuid);
+                if (layer == null) {
+                    throw new EntityNotFoundException("Layer with id of '" + luuid + "' does nos exists");
+                }
+                Set<Container> containers = layer.getContainers();
+                Container container = null;
+                for (Container container_ : containers) {
+                    if (container_.getId().equals(suuid)) {
+                        container = container_;
+                    }
+                }
+                if (container == null) {
+                    throw new EntityNotFoundException("Container with id of '" + suuid + "' is not found on Layer[" + luuid + "]");
+                }
+                containers.remove(container);
+                DBUtil.update(layer);
+                response.status(HTTP_OK);
+                return EMPTY_RESPONSE;
+            } catch (EntityNotFoundException ex) {
+                int status = HTTP_NOT_FOUND;
+                response.status(status);
+                response.type(JSON_CONTENT_TYPE);
+                return jsonUtils.toJSON(MessagesWrapper.fromExceptionToMessages(ex, status));
+            } catch (Throwable ex) {
+                return throwError(response, ex);
+            }
+        });
+        get("/architectures/layers/:suuid/components", (request, response) -> {
+            Map<String, Object> params = new HashMap<>();
+            params.put("id", request.params(":suuid"));
+            return getList(request, response, Layer.GET_ALL_COMPONENTS_FROM_LAYER, params, Collection.class);
+        });
+        post("/architectures/layers/:suuid/components", (request, response) -> {
+            try {
+                Component component = jsonUtils.fromJSON(request.body(), Component.class);
+                if (component == null) {
+                    throw new Exception("Invalid kind of component");
+                }
+                String id = request.params(":suuid");
+                String componentId = component.getId();
+                final SparkWebContext ctx = new SparkWebContext(request, response);
+
+                Account account = (Account) ctx.getSessionAttribute("account");
+                map.put("account", account);
+                component.validateCreation(map);
+                Layer layer = JPAEntityManagerUtils.find(Layer.class, id);
+                DBUtil.populate(component, componentId == null);
+                layer.getComponents().add(component);
+                DBUtil.update(layer);
+                response.status(HTTP_CREATED);
+                response.type(JSON_CONTENT_TYPE);
+                response.header("Location", request.pathInfo() + Commons.SEPARATOR_PATH + component.getId());
+                return EMPTY_RESPONSE;
+            } catch (Throwable ex) {
+                return throwError(response, ex);
+            }
+        });
+        delete("/architectures/layers/:luuid/components/:suuid", (request, response) -> {
+            try {
+                String luuid = request.params(":luuid");
+                String suuid = request.params(":suuid");
+                Layer layer = JPAEntityManagerUtils.find(Layer.class, luuid);
+                if (layer == null) {
+                    throw new EntityNotFoundException("Layer with id of '" + luuid + "' does nos exists");
+                }
+                Set<Component> components = layer.getComponents();
+                Component component = null;
+                for (Component component_ : components) {
+                    if (component_.getId().equals(suuid)) {
+                        component = component_;
+                    }
+                }
+                if (component == null) {
+                    throw new EntityNotFoundException("Component with id of '" + suuid + "' is not found on Layer[" + luuid + "]");
+                }
+                components.remove(component);
+                DBUtil.update(layer);
+                response.status(HTTP_OK);
+                return EMPTY_RESPONSE;
+            } catch (EntityNotFoundException ex) {
+                int status = HTTP_NOT_FOUND;
+                response.status(status);
+                response.type(JSON_CONTENT_TYPE);
+                return jsonUtils.toJSON(MessagesWrapper.fromExceptionToMessages(ex, status));
             } catch (Throwable ex) {
                 return throwError(response, ex);
             }

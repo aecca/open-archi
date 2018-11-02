@@ -26,6 +26,8 @@ import java.util.Set;
                 query = "select c from com.araguacaima.open_archi.persistence.diagrams.architectural.Model m JOIN m.consumers c where m.id=:id and c.id=:cid"),
         @NamedQuery(name = Model.GET_ALL_SYSTEMS_FROM_MODEL,
                 query = "select m.systems from com.araguacaima.open_archi.persistence.diagrams.architectural.Model m where m.id=:id"),
+        @NamedQuery(name = Model.GET_ALL_LAYERS_FROM_MODEL,
+                query = "select m.layers from com.araguacaima.open_archi.persistence.diagrams.architectural.Model m where m.id=:id"),
         @NamedQuery(name = Model.GET_SYSTEM,
                 query = "select s from com.araguacaima.open_archi.persistence.diagrams.architectural.Model m JOIN m.systems s where m.id=:id and s.id=:sid"),
         @NamedQuery(name = Model.GET_MODELS_USAGE_BY_ELEMENT_ID_LIST,
@@ -45,6 +47,7 @@ public class Model extends ModelElement implements DiagramableElement<Model> {
     public static final String GET_ALL_RELATIONSHIPS = "get.all.relationships";
     public static final String GET_ALL_CONSUMERS_FOR_MODEL = "get.all.consumers.for.model";
     public static final String GET_CONSUMER_FOR_MODEL = "get.consumer.for.model";
+    public static final String GET_ALL_LAYERS_FROM_MODEL = "get.all.layers.from.model";
     public static final String GET_ALL_SYSTEMS_FROM_MODEL = "get.all.systems.from.model";
     public static final String GET_SYSTEM = "get.system";
     public static final String GET_MODELS_USAGE_BY_ELEMENT_ID_LIST = "get.models.usage.by.element.id.list";

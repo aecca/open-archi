@@ -234,8 +234,8 @@ class OpenArchiToDiagram {
         let containers = container.containers;
         let hasContainers = containers !== undefined && !commons.prototype.isEmpty(containers);
         if (hasContainers) {
-            containers.forEach(function (container) {
-                OpenArchiToDiagram.processContainer(container, nodes, links, container.id)
+            containers.forEach(function (container_) {
+                OpenArchiToDiagram.processContainer(container_, nodes, links, container.id)
             });
         }
 
