@@ -17,6 +17,25 @@ function fixMetaData() {
     }
 }
 
+function retrievePalette() {
+    $.ajax({
+        url: "/api/palette/architectures",
+        type: 'GET',
+        crossDomain: true,
+        contentType: "application/json",
+        converters: {
+            "text json": function (response) {
+                return (response === "") ? null : JSON.parse(response);
+            }
+        }
+    }).done((data, textStatus, response) => {
+            if (response.status === 200) {
+                fillPalettes(data);
+            }
+        }
+    );
+}
+
 // Show the diagram's model in JSON format that the user may edit
 function save(model) {
     fixMetaData();
@@ -55,22 +74,7 @@ function save(model) {
         diagramInfo.modal('hide');
     }).done((data, textStatus, response) => {
             if (response.status === 201) {
-                $.ajax({
-                    url: "/api/palette/architectures",
-                    type: 'GET',
-                    crossDomain: true,
-                    contentType: "application/json",
-                    converters: {
-                        "text json": function (response) {
-                            return (response === "") ? null : JSON.parse(response);
-                        }
-                    }
-                }).done((data, textStatus, response) => {
-                        if (response.status === 200) {
-                            fillPalettes(data);
-                        }
-                    }
-                )
+                retrievePalette();
             } else {
                 $.ajax({
                     url: "/api/models",
@@ -85,10 +89,10 @@ function save(model) {
                     }
                 }).done((data, textStatus, response) => {
                         if (response.status === 200) {
-                            fillPalettes(data);
+                            retrievePalette();
                         } else {
                             if (response.status === 201) {
-                                fillPalettes(data);
+                                retrievePalette();
                             } else {
                                 alert("Not created!");
                             }
@@ -114,10 +118,10 @@ function save(model) {
                 }
             }).done((data, textStatus, response) => {
                     if (response.status === 200) {
-                        fillPalettes(data);
+                        retrievePalette();
                     } else {
                         if (response.status === 201) {
-                            fillPalettes(data);
+                            retrievePalette();
                         } else {
                             alert("Not created!");
                         }
@@ -204,20 +208,23 @@ function expand(data) {
     const newDiagram = OpenArchiToDiagram.process(model);
     const nodeDataArray = newDiagram.nodeDataArray;
     if (nodeDataArray !== undefined && nodeDataArray !== null) {
-        let id;
-        const clonedFrom = data.clonedFrom;
-        if (clonedFrom === undefined) {
-            id = data.id;
-        } else {
-            id = clonedFrom.id
-        }
-        const nodedata = findByField(myDiagram.model.nodeDataArray, "id", id);
-        if (nodedata !== undefined) {
-            myDiagram.startTransaction("Deleting new element");
-            myDiagram.model.removeNodeData(myDiagram.model.findNodeDataForKey(nodedata.key));
-            myDiagram.requestUpdate();
-            myDiagram.commitTransaction("Deleting new element");
-        }
+        //TODO Do not delete yet.
+        /*
+                let id;
+                const clonedFrom = data.clonedFrom;
+                if (clonedFrom === undefined) {
+                    id = data.id;
+                } else {
+                    id = clonedFrom.id
+                }
+                const nodedata = findByField(myDiagram.model.nodeDataArray, "id", id);
+                if (nodedata !== undefined) {
+                    myDiagram.startTransaction("Deleting new element");
+                    myDiagram.model.removeNodeData(myDiagram.model.findNodeDataForKey(nodedata.key));
+                    myDiagram.requestUpdate();
+                    myDiagram.commitTransaction("Deleting new element");
+                }
+        */
         myDiagram.startTransaction("Expand element");
         myDiagram.model.addNodeDataCollection(nodeDataArray);
         const linkDataArray = newDiagram.linkDataArray;
