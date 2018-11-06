@@ -72,6 +72,7 @@ public class OpenArchi {
         item.setKind(ElementKind.ARCHITECTURE_MODEL);
         item.setName(model.getName());
         Shape shape = model.getShape();
+        shape.setSize(new Size());
         item.setShape(shape);
         item.setPrototype(model.isPrototype());
         return item;
