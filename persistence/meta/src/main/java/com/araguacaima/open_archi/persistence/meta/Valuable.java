@@ -20,6 +20,9 @@ public interface Valuable extends Overridable {
     void validateReplacement(Map<String, Object> map) throws EntityError;
 
     @JsonIgnore
+    void validateAsociation(Map<String, Object> map) throws EntityError;
+
+    @JsonIgnore
     void validateRequest() throws EntityError;
 
     @JsonIgnore
@@ -30,4 +33,7 @@ public interface Valuable extends Overridable {
 
     @JsonIgnore
     void validateReplacement() throws EntityError;
+
+    @JsonIgnore
+    void validateAsociation() throws EntityError;
 }

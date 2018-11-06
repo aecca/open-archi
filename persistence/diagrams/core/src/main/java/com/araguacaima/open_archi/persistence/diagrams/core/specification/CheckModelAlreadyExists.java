@@ -32,9 +32,9 @@ public class CheckModelAlreadyExists extends AbstractSpecification {
                 String name = item.getName();
                 params.put("kind", kind);
                 params.put("name", name);
-                List<Item> list = JPAEntityManagerUtils.executeQuery(Item.class, Item.GET_ITEMS_BY_NAME_AND_KIND, params);
-                if (CollectionUtils.isNotEmpty(list)) {
-                    map.put(Constants.EXISTENT_ENTITY, list.iterator().next());
+                Item list = JPAEntityManagerUtils.findByQuery(Item.class, Item.GET_ITEMS_BY_NAME_AND_KIND, params);
+                if (list != null) {
+                    map.put(Constants.EXISTENT_ENTITY, list);
                     return true;
                 } else {
                     map.put(Constants.SPECIFICATION_ERROR, "Name '" + name + "' and Kind '" + kind + "' pair does not exists");

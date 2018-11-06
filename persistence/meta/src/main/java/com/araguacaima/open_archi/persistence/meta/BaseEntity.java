@@ -122,6 +122,12 @@ public abstract class BaseEntity implements Serializable, BasicEntity, Cloneable
 
     @Override
     @JsonIgnore
+    public void validateAsociation() throws EntityError {
+        validateAsociation(null);
+    }
+
+    @Override
+    @JsonIgnore
     public void validateRequest(Map<String, Object> map) throws EntityError {
         //Do nothing. All request are valid on this entity
     }
@@ -151,6 +157,15 @@ public abstract class BaseEntity implements Serializable, BasicEntity, Cloneable
         map.put(Constants.OPERATION_TYPE, OperationType.REPLACEMENT);
         map.put(Constants.INITIATOR, this);
         traverse(this, "validateReplacement", map);
+    }
+
+    @Override
+    @JsonIgnore
+    public void validateAsociation(Map<String, Object> map) throws EntityError {
+        if (map == null) map = new HashMap<>();
+        map.put(Constants.OPERATION_TYPE, OperationType.REPLACEMENT);
+        map.put(Constants.INITIATOR, this);
+        traverse(this, "validateAsociation", map);
     }
 
     @JsonIgnore

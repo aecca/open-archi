@@ -882,6 +882,177 @@ paths:
       - openarchi_auth:
         - write:model
         - read:models
+  "/diagrams/architectures/{model-id}/layers":
+    get:
+      tags:
+      - Diagrams
+      summary: Finds layers within the model
+      description: This service supports query by using RSQL expressions
+      operationId: get-layers
+      produces:
+      - application/json
+      parameters:
+      - name: model-id
+        in: path
+        description: ID of the model to update
+        required: true
+        type: string
+      - name: "query"
+        in: query
+        description: Filter layers according to an RSQL expression
+        required: false
+        type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Layers"
+        '400':
+          description: Bad request
+      security:
+      - openarchi_auth:
+        - read:models
+    post:
+      tags:
+      - Diagrams
+      summary: Associate a new or preexistent layer to the provided model
+      description: If the layer does not exists previously, it will be created, otherwise it willbe merged.
+      operationId: add-layer
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: model-id
+        in: path
+        description: ID of the model to update
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Layer that needs to be associated to the povided model
+        required: true
+        schema:
+          $ref: "#/definitions/Layer_Create"
+      responses:
+        '200':
+          description: Accepted
+        '201':
+          description: Created
+        '405':
+          description: Invalid input
+      security:
+      - openarchi_auth:
+        - write:model
+        - read:models
+  "/diagrams/architectures/{model-id}/layers/{layer-id}":
+    get:
+      tags:
+      - Diagrams
+      summary: Finds a specific layer within the provided model
+      description:
+      operationId: get-layer
+      produces:
+      - application/json
+      parameters:
+      - name: model-id
+        in: path
+        description: ID of the model to update
+        required: true
+        type: string
+      - name: layer-id
+        in: path
+        description: ID of the layer to get
+        required: true
+        type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: "#/definitions/Layer"
+        '400':
+          description: Bad request
+      security:
+      - openarchi_auth:
+        - read:models
+    patch:
+      tags:
+      - Diagrams
+      summary: Partially update an existent layer within the provided model
+      description: If the layer does not exists previously, an error will be raised. Only incoming attributes will be affected. All preexisting values for non-requested fields will keep its current stored values.
+      operationId: partially-update-model-layer
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: model-id
+        in: path
+        description: ID of the model to update
+        required: true
+        type: string
+      - name: layer-id
+        in: path
+        description: ID of the layer to be partially updated
+        required: true
+        type: string
+      - name: body
+        in: body
+        description: Layer object that needs to be partially updated
+        required: true
+        schema:
+          $ref: "#/definitions/Layer_Create"
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Layer not found
+      security:
+      - openarchi_auth:
+        - write:model
+        - read:models
+    put:
+      tags:
+      - Diagrams
+      summary: Completelly update an existent layer within the provided model
+      description: If the layer object does not exists previously, it won't be created, instead, an error will be raised. The existent container will be deleted completelly before updating, so the default values will be taken for any non-existent value in the request of this mmethod.
+      operationId: completelly-update-model-layer
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: model-id
+        in: path
+        description: ID of the model to which the container belongs
+        required: true
+        type: string
+      - name: layer-id
+        in: path
+        description: ID of the layer to replace
+        required: true
+        type: string
+      - name: body
+        in: body
+        description: Container object that needs to be replaced
+        required: true
+        schema:
+          $ref: "#/definitions/Layer_Create"
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Container not found
+        '405':
+          description: Invalid input
+      security:
+      - openarchi_auth:
+        - write:model
+        - read:models
   "/diagrams/architectures/{model-id}/relationships":
     get:
       tags:

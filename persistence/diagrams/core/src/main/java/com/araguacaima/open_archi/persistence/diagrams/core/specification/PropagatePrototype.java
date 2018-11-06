@@ -19,16 +19,25 @@ public class PropagatePrototype extends AbstractSpecification {
 
     public boolean isSatisfiedBy(Object object, Map map) {
         if (Item.class.isAssignableFrom(object.getClass())) {
-            Item initiator = (Item) map.get("Initiator");
+            Item initiator = (Item) map.get("Parent");
             Item item = (Item) object;
-            boolean prototype = item.isPrototype();
-            if (initiator == null) {
-                Boolean incomingPrototype = (Boolean) map.get("IsPrototype");
-                if (incomingPrototype != null) {
-                    prototype = incomingPrototype;
-                }
-            } else {
+            boolean prototype;
+            if (initiator != null) {
                 prototype = initiator.isPrototype();
+            }else {
+                initiator = (Item) map.get("Initiator");
+                prototype = item.isPrototype();
+                if (initiator == null) {
+                    Boolean incomingPrototype = (Boolean) map.get("IsPrototype");
+                    if (incomingPrototype != null) {
+                        initiator = (Item) map.get("Parent");
+                        if (initiator != null) {
+                            prototype = initiator.isPrototype();
+                        }
+                    }
+                } else {
+                    prototype = initiator.isPrototype();
+                }
             }
             item.setPrototype(prototype);
         }

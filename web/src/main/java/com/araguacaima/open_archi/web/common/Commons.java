@@ -11,6 +11,7 @@ import com.araguacaima.open_archi.persistence.meta.Account;
 import com.araguacaima.open_archi.persistence.meta.Role;
 import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
 import com.araguacaima.open_archi.web.BeanBuilder;
+import com.araguacaima.open_archi.web.MessagesWrapper;
 import com.araguacaima.open_archi.web.Server;
 import com.araguacaima.open_archi.web.SessionFilter;
 import com.araguacaima.open_archi.web.wrapper.AccountWrapper;
@@ -36,6 +37,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -48,6 +50,7 @@ import java.util.stream.Collectors;
 
 import static com.araguacaima.open_archi.web.Server.engine;
 import static java.net.HttpURLConnection.HTTP_BAD_REQUEST;
+import static java.net.HttpURLConnection.HTTP_NOT_FOUND;
 import static java.net.HttpURLConnection.HTTP_OK;
 import static org.pac4j.core.context.HttpConstants.HTML_CONTENT_TYPE;
 
@@ -394,7 +397,11 @@ public class Commons {
     public static String throwError(Response response, Throwable ex) {
         response.status(HTTP_BAD_REQUEST);
         response.type(JSON_CONTENT_TYPE);
-        return ex.getMessage();
+        try {
+            return jsonUtils.toJSON(MessagesWrapper.fromExceptionToMessages(ex, HTTP_BAD_REQUEST));
+        } catch (IOException e) {
+            return ex.getMessage();
+        }
     }
 
     public static String getContentType(Request request) {
@@ -667,4 +674,24 @@ public class Commons {
         }};
     }
 
+    public static <T> T extractTaggable(String body, Object kind) throws Exception {
+        T model = null;
+        for (Class<? extends Taggable> modelClass : CollectionUtils.union(CollectionUtils.union(modelsClasses, innerGroupElementClasses), innerSingleElementClasses)) {
+            Field field = reflectionUtils.getField(modelClass, "kind");
+            if (field != null) {
+                field.setAccessible(true);
+                Object obj = modelClass.newInstance();
+                Object thisKind = field.get(obj);
+                thisKind = enumsUtils.getStringValue((Enum) thisKind);
+                if (kind.equals(thisKind)) {
+                    model = jsonUtils.fromJSON(body, (Class<T>) modelClass);
+                    break;
+                }
+            }
+        }
+        if (model == null) {
+            throw new Exception("Invalid kind of model '" + kind + "'");
+        }
+        return model;
+    }
 }

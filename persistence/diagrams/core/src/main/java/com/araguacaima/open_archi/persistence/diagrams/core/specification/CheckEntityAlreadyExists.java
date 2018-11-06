@@ -11,8 +11,6 @@ import java.util.Map;
 
 public class CheckEntityAlreadyExists extends AbstractSpecification {
 
-    private static final String GENERAL_ERROR = "ModelAlreadyExistsError";
-
     public CheckEntityAlreadyExists() {
         this(false);
     }
@@ -28,11 +26,11 @@ public class CheckEntityAlreadyExists extends AbstractSpecification {
             BaseEntity entity = (BaseEntity) object;
             Object key = entity.getId();
             if (JPAEntityManagerUtils.find(clazz, key) != null) {
+                map.put(Constants.SPECIFICATION_MESSAGE, "Entity with key of '" + key + "' already exists");
                 return true;
             } else {
-                map.put(Constants.SPECIFICATION_ERROR, "Key '" + key + "' does not exists");
+                map.put(Constants.SPECIFICATION_MESSAGE, "Entity with key of '" + key + "' does not exists");
             }
-
         }
         return false;
     }

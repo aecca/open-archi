@@ -14,7 +14,6 @@ import spark.RouteGroup;
 import spark.route.HttpMethod;
 
 import javax.persistence.EntityNotFoundException;
-import java.lang.reflect.Field;
 import java.util.*;
 
 import static com.araguacaima.open_archi.web.common.Commons.*;
@@ -307,24 +306,4 @@ public class Models implements RouteGroup {
         });
     }
 
-    private Taggable extractTaggable(String body, Object kind) throws Exception {
-        Taggable model = null;
-        for (Class<? extends Taggable> modelClass : CollectionUtils.union(CollectionUtils.union(modelsClasses, innerGroupElementClasses), innerSingleElementClasses)) {
-            Field field = reflectionUtils.getField(modelClass, "kind");
-            if (field != null) {
-                field.setAccessible(true);
-                Object obj = modelClass.newInstance();
-                Object thisKind = field.get(obj);
-                thisKind = enumsUtils.getStringValue((Enum) thisKind);
-                if (kind.equals(thisKind)) {
-                    model = jsonUtils.fromJSON(body, modelClass);
-                    break;
-                }
-            }
-        }
-        if (model == null) {
-            throw new Exception("Invalid kind of model '" + kind + "'");
-        }
-        return model;
-    }
 }
