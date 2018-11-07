@@ -142,7 +142,8 @@ public class JPAEntityManagerUtils {
             }
         }
         try {
-            return (T) namedQuery.getSingleResult();
+            Object singleResult = namedQuery.getSingleResult();
+            return (T) singleResult;
         } catch (javax.persistence.NoResultException ignored) {
             return null;
         }

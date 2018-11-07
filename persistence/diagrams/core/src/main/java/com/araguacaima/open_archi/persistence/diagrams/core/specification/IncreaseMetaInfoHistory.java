@@ -15,6 +15,21 @@ public class IncreaseMetaInfoHistory extends AbstractSpecification {
     private static final Map<String, Object> versionParam = new HashMap<String, Object>() {{
         put("version", new Version());
     }};
+    private static final String GET_LAST_VERSION = "SELECT " +
+            "  v7.major, " +
+            "  v7.minor, " +
+            "  max(v7.build) build " +
+            "FROM (SELECT * " +
+            "      FROM (SELECT * " +
+            "            FROM meta.version v1 " +
+            "            WHERE v1.major IN (SELECT max(v2.major) " +
+            "                               FROM meta.version v2)) v3 " +
+            "      WHERE v3.minor IN (SELECT max(v6.minor) " +
+            "                         FROM (SELECT * " +
+            "                               FROM meta.version v4 " +
+            "                               WHERE v4.major IN (SELECT max(v5.major) " +
+            "                                                  FROM meta.version v5)) v6)) v7 " +
+            "GROUP BY v7.major, v7.minor ";
 
     public IncreaseMetaInfoHistory() {
         this(false);
@@ -39,7 +54,7 @@ public class IncreaseMetaInfoHistory extends AbstractSpecification {
                         meta = parent.getMeta();
                     }
                     if (meta == null) {
-                        Version version = JPAEntityManagerUtils.findByNativeQuery(Version.class, Version.GET_LAST_VERSION);
+                        Version version = JPAEntityManagerUtils.findByNativeQuery(Version.class, GET_LAST_VERSION);
                         if (version == null) {
                             version = new Version();
                         }
