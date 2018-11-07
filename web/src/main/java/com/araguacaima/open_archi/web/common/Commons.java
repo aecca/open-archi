@@ -49,9 +49,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.araguacaima.open_archi.web.Server.engine;
-import static java.net.HttpURLConnection.HTTP_BAD_REQUEST;
-import static java.net.HttpURLConnection.HTTP_NOT_FOUND;
-import static java.net.HttpURLConnection.HTTP_OK;
+import static java.net.HttpURLConnection.*;
 import static org.pac4j.core.context.HttpConstants.HTML_CONTENT_TYPE;
 
 public class Commons {
@@ -395,10 +393,10 @@ public class Commons {
     }
 
     public static String throwError(Response response, Throwable ex) {
-        response.status(HTTP_BAD_REQUEST);
+        response.status(HTTP_INTERNAL_ERROR);
         response.type(JSON_CONTENT_TYPE);
         try {
-            return jsonUtils.toJSON(MessagesWrapper.fromExceptionToMessages(ex, HTTP_BAD_REQUEST));
+            return jsonUtils.toJSON(MessagesWrapper.fromExceptionToMessages(ex, HTTP_INTERNAL_ERROR));
         } catch (IOException e) {
             return ex.getMessage();
         }

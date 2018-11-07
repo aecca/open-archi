@@ -43,7 +43,6 @@ public class IncreaseMetaInfoHistory extends AbstractSpecification {
         if (BaseEntity.class.isAssignableFrom(object.getClass())) {
             BaseEntity entity = (BaseEntity) object;
             MetaInfo meta = (MetaInfo) map.get("meta");
-            Date thisTime = Calendar.getInstance().getTime();
             if (meta == null) {
                 BaseEntity existentEntity = (BaseEntity) map.get(Constants.EXISTENT_ENTITY);
                 if (existentEntity != null) {
@@ -57,14 +56,17 @@ public class IncreaseMetaInfoHistory extends AbstractSpecification {
                         Version version = JPAEntityManagerUtils.findByNativeQuery(Version.class, GET_LAST_VERSION);
                         if (version == null) {
                             version = new Version();
+                        } else {
+                            version = version.nextBuild();
                         }
                         meta = new MetaInfo();
-                        meta.setCreated(thisTime);
                         meta.getActiveHistory().setVersion(version);
+                        return true;
                     }
                 }
             }
             if (meta != null) {
+                Date thisTime = Calendar.getInstance().getTime();
                 meta.addNewHistory(thisTime);
                 entity.setMeta(meta);
             }
