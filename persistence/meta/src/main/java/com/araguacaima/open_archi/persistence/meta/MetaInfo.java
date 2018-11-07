@@ -132,8 +132,9 @@ public class MetaInfo implements Serializable, Comparable<MetaInfo>, SimpleOverr
         if (history == null) {
             history = new History();
             history.setVersion(new Version());
+            history.setStatus(VersionStatus.ACTIVE);
+            this.history.add(history);
         }
-        this.history.add(history);
         return history;
     }
 

@@ -2,6 +2,7 @@ package com.araguacaima.open_archi.persistence.diagrams.core.specification;
 
 import com.araguacaima.open_archi.persistence.commons.Constants;
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
+import com.araguacaima.open_archi.persistence.meta.History;
 import com.araguacaima.open_archi.persistence.meta.MetaInfo;
 import com.araguacaima.open_archi.persistence.meta.Version;
 import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
@@ -42,7 +43,9 @@ public class IncreaseMetaInfoHistory extends AbstractSpecification {
     public boolean isSatisfiedBy(Object object, Map map) {
         if (BaseEntity.class.isAssignableFrom(object.getClass())) {
             BaseEntity entity = (BaseEntity) object;
+
             MetaInfo meta = (MetaInfo) map.get("meta");
+            Boolean historyAlreadyAdded = (Boolean) map.get("HistoryAlreadyAdded");
             if (meta == null) {
                 BaseEntity existentEntity = (BaseEntity) map.get(Constants.EXISTENT_ENTITY);
                 if (existentEntity != null) {
@@ -60,14 +63,19 @@ public class IncreaseMetaInfoHistory extends AbstractSpecification {
                             version = version.nextBuild();
                         }
                         meta = new MetaInfo();
-                        meta.getActiveHistory().setVersion(version);
+                        History activeHistory = meta.getActiveHistory();
+                        activeHistory.setVersion(version);
+                        map.put("HistoryAlreadyAdded", true);
                         return true;
                     }
                 }
             }
             if (meta != null) {
-                Date thisTime = Calendar.getInstance().getTime();
-                meta.addNewHistory(thisTime);
+                if (!historyAlreadyAdded) {
+                    Date thisTime = Calendar.getInstance().getTime();
+                    meta.addNewHistory(thisTime);
+                    map.put("HistoryAlreadyAdded", true);
+                }
                 entity.setMeta(meta);
             }
         }

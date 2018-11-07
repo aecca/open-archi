@@ -2,6 +2,7 @@ package com.araguacaima.open_archi.web;
 
 import com.araguacaima.open_archi.persistence.commons.IdName;
 import com.araguacaima.open_archi.persistence.commons.exceptions.EntityError;
+import com.araguacaima.open_archi.persistence.diagrams.architectural.Model;
 import com.araguacaima.open_archi.persistence.diagrams.core.*;
 import com.araguacaima.open_archi.persistence.meta.Account;
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
@@ -86,20 +87,38 @@ public class Models implements RouteGroup {
                 Map<String, Object> incomingModel = (Map<String, Object>) jsonUtils.fromJSON(body, Map.class);
                 Object kind = incomingModel.get("kind");
                 String id = request.params(":uuid");
-                Taggable model = extractTaggable(body, kind);
+                Model model = extractTaggable(body, kind);
                 model.setId(id);
-                final SparkWebContext ctx = new SparkWebContext(request, response);
+                Map<String, Object> params = new HashMap<>();
+                params.put("name", model.getName());
+                params.put("kind", model.getKind());
                 Map<String, Object> map = new HashMap<>();
+
+                final SparkWebContext ctx = new SparkWebContext(request, response);
                 Account account = (Account) ctx.getSessionAttribute("account");
                 map.put("account", account);
-                model.validateReplacement(map);
-                DBUtil.replace(model);
-                response.status(HTTP_OK);
-                return EMPTY_RESPONSE;
+
+
+                Item storedModel = JPAEntityManagerUtils.findByQuery(Item.class, Item.GET_ITEMS_BY_NAME_AND_KIND, params);
+                if (storedModel == null) {
+                    map.put("Parent", model);
+                    model.validateCreation(map);
+                    DBUtil.populate(model);
+                    response.status(HTTP_CREATED);
+                    return EMPTY_RESPONSE;
+                } else {
+                    storedModel.override(model, true, null, null);
+                    map.put("Parent", storedModel);
+                    storedModel.validateReplacement(map);
+                    DBUtil.replace(storedModel);
+                    response.status(HTTP_OK);
+                    return EMPTY_RESPONSE;
+                }
             } catch (EntityNotFoundException ex) {
                 response.status(HTTP_NOT_FOUND);
                 return EMPTY_RESPONSE;
             } catch (Throwable ex) {
+                ex.printStackTrace();
                 return throwError(response, ex);
             }
         });
