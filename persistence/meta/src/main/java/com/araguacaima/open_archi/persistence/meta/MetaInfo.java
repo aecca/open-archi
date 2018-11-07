@@ -11,10 +11,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Created by Alejandro on 19/12/2014.
@@ -70,6 +67,7 @@ public class MetaInfo implements Serializable, Comparable<MetaInfo>, SimpleOverr
 
     public MetaInfo() {
         this.id = UUID.randomUUID().toString();
+        this.created = Calendar.getInstance().getTime();
     }
 
     public String getId() {

@@ -59,6 +59,7 @@ public class IncreaseMetaInfoHistory extends AbstractSpecification {
                             version = new Version();
                         }
                         meta = new MetaInfo();
+                        meta.setCreated(thisTime);
                         meta.getActiveHistory().setVersion(version);
                     }
                 }
