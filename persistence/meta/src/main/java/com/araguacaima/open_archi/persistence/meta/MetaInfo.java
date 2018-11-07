@@ -32,12 +32,19 @@ import java.util.UUID;
                         "from MetaInfo m " +
                         "   inner join m.history h " +
                         "   inner join h.version v " +
+                        "where v = :version"),
+        @NamedQuery(name = MetaInfo.GET_LAST_META_INFO,
+                query = "select m " +
+                        "from MetaInfo m " +
+                        "   inner join m.history h " +
+                        "   inner join h.version v " +
                         "where v = :version")})
 public class MetaInfo implements Serializable, Comparable<MetaInfo>, SimpleOverridable<MetaInfo> {
 
     public static final String GET_ALL_META_INFO = "MetaInfo.getAllMetaInfo";
     public static final String COUNT_ALL_META_INFO = "MetaInfo.countAllMetaInfo";
     public static final String GET_META_INFO_BY_VERSION = "get.metainfo.by.version";
+    public static final String GET_LAST_META_INFO = "get.last.meta.info";
 
     @Id
     private String id;

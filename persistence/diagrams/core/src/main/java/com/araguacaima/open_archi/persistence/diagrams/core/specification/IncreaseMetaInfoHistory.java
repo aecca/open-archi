@@ -4,6 +4,7 @@ import com.araguacaima.open_archi.persistence.commons.Constants;
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 import com.araguacaima.open_archi.persistence.meta.MetaInfo;
 import com.araguacaima.open_archi.persistence.meta.Version;
+import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
 import com.araguacaima.specification.AbstractSpecification;
 
 import java.util.*;
@@ -32,6 +33,19 @@ public class IncreaseMetaInfoHistory extends AbstractSpecification {
                 BaseEntity existentEntity = (BaseEntity) map.get(Constants.EXISTENT_ENTITY);
                 if (existentEntity != null) {
                     meta = existentEntity.getMeta();
+                } else {
+                    BaseEntity parent = (BaseEntity) map.get("Parent");
+                    if (parent != null) {
+                        meta = parent.getMeta();
+                    }
+                    if (meta == null) {
+                        Version version = JPAEntityManagerUtils.findByNativeQuery(Version.class, Version.GET_LAST_VERSION);
+                        if (version == null) {
+                            version = new Version();
+                        }
+                        meta = new MetaInfo();
+                        meta.getActiveHistory().setVersion(version);
+                    }
                 }
             }
             if (meta != null) {

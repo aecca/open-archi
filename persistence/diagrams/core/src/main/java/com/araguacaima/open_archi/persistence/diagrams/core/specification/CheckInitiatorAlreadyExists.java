@@ -34,12 +34,11 @@ public class CheckInitiatorAlreadyExists extends AbstractSpecification {
                     String name = item.getName();
                     params.put("kind", kind);
                     params.put("name", name);
-                    List<Item> list = JPAEntityManagerUtils.executeQuery(Item.class, Item.GET_ITEMS_BY_NAME_AND_KIND, params);
-                    if (CollectionUtils.isNotEmpty(list)) {
-                        Item next = list.iterator().next();
-                        JPAEntityManagerUtils.detach(next);
-                        map.put(Constants.EXISTENT_ENTITY, next);
-                        map.put("meta", next.getMeta());
+                    Item storedItem = JPAEntityManagerUtils.findByQuery(Item.class, Item.GET_ITEMS_BY_NAME_AND_KIND, params);
+                    if (storedItem != null) {
+                        //JPAEntityManagerUtils.detach(next);
+                        map.put(Constants.EXISTENT_ENTITY, storedItem);
+                        map.put("meta", storedItem.getMeta());
                         return true;
                     } else {
                         map.put(Constants.SPECIFICATION_ERROR, "Name '" + name + "' and Kind '" + kind + "' pair does not exists");

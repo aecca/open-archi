@@ -130,6 +130,24 @@ public class JPAEntityManagerUtils {
     }
 
 
+    public static <T> T findByNativeQuery(Class<T> clazz, String query) {
+        return findByNativeQuery(clazz, query, null);
+    }
+
+    public static <T> T findByNativeQuery(Class<T> clazz, String query, Map<String, Object> params) {
+        Query namedQuery = entityManager.createNativeQuery(query, clazz);
+        if (params != null) {
+            for (Map.Entry<String, Object> param : params.entrySet()) {
+                namedQuery.setParameter(param.getKey(), param.getValue());
+            }
+        }
+        try {
+            return (T) namedQuery.getSingleResult();
+        } catch (javax.persistence.NoResultException ignored) {
+            return null;
+        }
+    }
+
     public static <T> T merge(T entity) {
         return merge(entity, getAutocommit());
     }
@@ -234,7 +252,7 @@ public class JPAEntityManagerUtils {
         try {
             Session session = entityManager.unwrap(Session.class);
             Object entity = find(clazz, key);
-            Query query = session.createQuery("delete " + clazz.getName() + " where id = :id");
+            Query query = session.createQuery("delete " + clazz.getName() + " c where c.id = :id");
             query.setParameter("id", key);
             query.executeUpdate();
             session.detach(entity);

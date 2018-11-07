@@ -18,12 +18,24 @@ import java.io.Serializable;
         name = Version.GET_ALL_VERSIONS,
         query = "select a from Version a order by a.id.major, a.id.minor, a.id.build"), @NamedQuery(
         name = Version.FIND_VERSION,
-        query = "select a from Version a where a.id.major = :major and a.id.minor = :minor and a.id.build = :build order by a.id.major, a.id.minor, a.id.build"), @NamedQuery(
+        query = "select a from Version a where a.id.major = :major and a.id.minor = :minor and a.id.build = :build order by a.id.major, a.id.minor, a.id.build")})
+@NamedNativeQueries(value = {@NamedNativeQuery(
         name = Version.GET_LAST_VERSION,
-        query = "SELECT v1 "
-                + "FROM Version v1 LEFT OUTER JOIN Version v2 ON ( "
-                + "  (v1.id.major = v2.id.major AND v1.id.minor < v2.id.minor) OR (v1.id.major = v2.id.major AND v1.id.minor = v2.id.minor AND v1.id.build < v2.id.build) "
-                + "  OR (v1.id.major < v2.id.major))")})
+        query = "SELECT\n" +
+                "  v7.major,\n" +
+                "  v7.minor,\n" +
+                "  max(v7.build) build\n" +
+                "FROM (SELECT *\n" +
+                "      FROM (SELECT *\n" +
+                "            FROM META.Version v1\n" +
+                "            WHERE v1.major IN (SELECT max(v2.major)\n" +
+                "                               FROM meta.version v2)) v3\n" +
+                "      WHERE v3.minor IN (SELECT max(v6.minor)\n" +
+                "                         FROM (SELECT *\n" +
+                "                               FROM META.Version v4\n" +
+                "                               WHERE v4.major IN (SELECT max(v5.major)\n" +
+                "                                                  FROM meta.version v5)) v6)) v7\n" +
+                "GROUP BY v7.major, v7.minor\n")})
 public class Version implements Serializable, Comparable<Version>, Cloneable, SimpleOverridable<Version> {
 
     public static final String GET_ALL_VERSIONS = "Version.getAllVersions";
