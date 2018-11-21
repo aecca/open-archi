@@ -4,6 +4,7 @@ import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 import com.araguacaima.open_archi.persistence.diagrams.core.Item;
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
+import com.araguacaima.orpheusdb.annotations.Versionable;
 
 import javax.persistence.*;
 import java.util.ArrayList;
