@@ -46,6 +46,12 @@
             <groupId>com.araguacaima</groupId>
             <artifactId>commons-utils</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>com.araguacaima</groupId>
+            <artifactId>orpheus-db</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>

@@ -43,6 +43,7 @@
         <backport-util-concurrent-backport-util-concurrent>3.1</backport-util-concurrent-backport-util-concurrent>
         <com.araguacaima-commons-utils>1.0.1-SNAPSHOT</com.araguacaima-commons-utils>
         <com.araguacaima-composite-specification>1.0.1-SNAPSHOT</com.araguacaima-composite-specification>
+        <com.araguacaima-orpheus-db>1.0.1-SNAPSHOT</com.araguacaima-orpheus-db>
         <org.eclipse.jetty-jetty-util>9.4.12.v20180830</org.eclipse.jetty-jetty-util>
         <com.fasterxml.jackson.core-jackson-annotations>2.9.2</com.fasterxml.jackson.core-jackson-annotations>
         <com.fasterxml.jackson.core-jackson-core>2.7.1</com.fasterxml.jackson.core-jackson-core>
@@ -360,6 +361,12 @@
                 <artifactId>composite-specification</artifactId>
                 <version>${com.araguacaima-composite-specification}</version>
                 <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.araguacaima</groupId>
+                <artifactId>orpheus-db</artifactId>
+                <version>${com.araguacaima-orpheus-db}</version>
             </dependency>
 
             <!-- https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-util -->

@@ -33,6 +33,9 @@
     <logger name="org.pac4j" level="${LOG_LEVEL}" additivity="false">
         <appender-ref ref="STDOUT"/>
     </logger>
+    <logger name="com.araguacaima.orpheusdb.utils.OrpheusDb" level="${LOG_LEVEL}" additivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
 
     <!-- By default, the level of the root level is set to DEBUG -->
     <root level="${LOG_LEVEL}">
