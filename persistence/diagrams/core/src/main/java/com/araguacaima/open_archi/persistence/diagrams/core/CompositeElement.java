@@ -2,6 +2,7 @@ package com.araguacaima.open_archi.persistence.diagrams.core;
 
 import com.araguacaima.open_archi.persistence.meta.MetaInfo;
 import com.araguacaima.open_archi.persistence.meta.Version;
+import com.araguacaima.orpheusdb.annotations.Versionable;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.Type;

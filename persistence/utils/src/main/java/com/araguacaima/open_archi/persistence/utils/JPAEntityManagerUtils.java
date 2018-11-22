@@ -1,6 +1,7 @@
 package com.araguacaima.open_archi.persistence.utils;
 
 import com.araguacaima.commons.utils.ReflectionUtils;
+import com.araguacaima.orpheusdb.utils.OrpheusDb;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.Session;
 import org.slf4j.Logger;
@@ -67,7 +68,9 @@ public class JPAEntityManagerUtils {
         map.put("hibernate.c3p0.timeout", "300");
         map.put("hibernate.c3p0.max_statements", "50");
         map.put("hibernate.c3p0.idle_test_period", "3000");
-        entityManagerFactory = Persistence.createEntityManagerFactory("open-archi", map);
+        map.put("orpheus.db.versionable.packages", "com.araguacaima.open_archi.persistence.diagrams.architectural");
+        //map.put("orpheus.db.versionable.classes", "{fill with comma separated fully qualified classes names}");
+        entityManagerFactory = OrpheusDb.createEntityManagerFactory("open-archi", map);
         entityManager = entityManagerFactory.createEntityManager();
         entityManager.unwrap(Session.class);
     }
