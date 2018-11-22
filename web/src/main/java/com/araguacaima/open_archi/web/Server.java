@@ -41,6 +41,33 @@ public class Server {
             properties.load(url.openStream());
             Map<String, String> map = MapUtils.fromProperties(properties);
             if (!map.isEmpty()) {
+                String jdbcDbUrl = map.get("JDBC_DATABASE_URL");
+                String jdbcDbUsername;
+                String jdbcDbPassword;
+                log.info("JDBC_DATABASE_URL=" + jdbcDbUrl);
+                jdbcDbUsername = map.get("JDBC_DATABASE_USERNAME");
+                log.info("JDBC_DATABASE_USERNAME=" + jdbcDbUsername);
+                jdbcDbPassword = map.get("JDBC_DATABASE_PASSWORD");
+                log.info("JDBC_DATABASE_PASSWORD=" + jdbcDbPassword);
+                map.put("hibernate.connection.url", jdbcDbUrl);
+                map.put("hibernate.connection.username", jdbcDbUsername);
+                map.put("hibernate.connection.password", jdbcDbPassword);
+                map.put("hibernate.archive.autodetection", "class");
+                map.put("hibernate.default_schema", "Diagrams");
+                map.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQL95Dialect");
+                map.put("hibernate.connection.driver_class", "org.postgresql.Driver");
+                map.put("hibernate.show_sql", log.isDebugEnabled() ? "true" : "false");
+                map.put("hibernate.flushMode", "FLUSH_AUTO");
+                map.put("hibernate.hbm2ddl.auto", "update");
+                map.put("packagesToScan", "com.araguacaima.open_archi.persistence");
+                map.put("hibernate.connection.provider_class", "org.hibernate.c3p0.internal.C3P0ConnectionProvider");
+                map.put("hibernate.c3p0.min_size", "8");
+                map.put("hibernate.c3p0.max_size", "30");
+                map.put("hibernate.c3p0.timeout", "300");
+                map.put("hibernate.c3p0.max_statements", "50");
+                map.put("hibernate.c3p0.idle_test_period", "3000");
+                map.put("orpheus.db.versionable.packages", "com.araguacaima.open_archi.persistence.diagrams.architectural");
+                //map.put("orpheus.db.versionable.classes", "{fill with comma separated fully qualified classes names}");
                 environment.putAll(map);
                 log.info("Properties taken from config file '" + url.getFile().replace("file:" + File.separator, "") + "'");
             } else {
