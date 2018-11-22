@@ -6,7 +6,7 @@ import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 import com.araguacaima.open_archi.persistence.diagrams.core.Item;
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 import com.araguacaima.open_archi.persistence.meta.BasicEntity;
-import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
+import com.araguacaima.orpheusdb.utils.JPAEntityManagerUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

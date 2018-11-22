@@ -4,7 +4,7 @@ import com.araguacaima.open_archi.persistence.commons.Constants;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 import com.araguacaima.open_archi.persistence.diagrams.core.Item;
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
-import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
+import com.araguacaima.orpheusdb.utils.JPAEntityManagerUtils;
 import com.araguacaima.specification.AbstractSpecification;
 import org.apache.commons.collections4.CollectionUtils;
 

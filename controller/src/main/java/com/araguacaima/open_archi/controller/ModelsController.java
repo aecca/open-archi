@@ -3,7 +3,7 @@ package com.araguacaima.open_archi.controller;
 import com.araguacaima.open_archi.persistence.diagrams.architectural.*;
 import com.araguacaima.open_archi.persistence.diagrams.architectural.System;
 import com.araguacaima.open_archi.persistence.diagrams.core.Item;
-import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
+import com.araguacaima.orpheusdb.utils.JPAEntityManagerUtils;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.*;

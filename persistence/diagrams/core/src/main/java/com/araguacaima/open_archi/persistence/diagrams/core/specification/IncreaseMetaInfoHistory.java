@@ -5,7 +5,7 @@ import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 import com.araguacaima.open_archi.persistence.meta.History;
 import com.araguacaima.open_archi.persistence.meta.MetaInfo;
 import com.araguacaima.open_archi.persistence.meta.Version;
-import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
+import com.araguacaima.orpheusdb.utils.JPAEntityManagerUtils;
 import com.araguacaima.specification.AbstractSpecification;
 
 import java.util.*;

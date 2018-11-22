@@ -3,7 +3,7 @@ package com.araguacaima.open_archi.web;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 import com.araguacaima.open_archi.persistence.diagrams.core.Item;
 import com.araguacaima.open_archi.persistence.diagrams.core.Taggable;
-import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
+import com.araguacaima.orpheusdb.utils.JPAEntityManagerUtils;
 import com.araguacaima.open_archi.web.common.Commons;
 import spark.RouteGroup;
 

@@ -1,7 +1,7 @@
 package com.araguacaima.open_archi.persistence.diagrams.core;
 
 import com.araguacaima.open_archi.persistence.commons.Utils;
-import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
+import com.araguacaima.orpheusdb.utils.JPAEntityManagerUtils;
 
 import java.util.HashMap;
 import java.util.Map;

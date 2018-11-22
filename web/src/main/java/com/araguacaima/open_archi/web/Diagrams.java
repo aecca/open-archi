@@ -7,7 +7,7 @@ import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 import com.araguacaima.open_archi.persistence.diagrams.core.Item;
 import com.araguacaima.open_archi.persistence.diagrams.core.Taggable;
 import com.araguacaima.open_archi.persistence.meta.Account;
-import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
+import com.araguacaima.orpheusdb.utils.JPAEntityManagerUtils;
 import com.araguacaima.open_archi.web.common.Commons;
 import org.pac4j.sparkjava.SparkWebContext;
 import spark.RouteGroup;

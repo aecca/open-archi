@@ -4,7 +4,6 @@ import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -15,16 +14,11 @@ import java.util.Collection;
  * See <a href="https://structurizr.com/help/model#Consumer">Model - Consumer</a>
  * on the Structurizr website for more information.
  */
-@Entity
-@PersistenceUnit(unitName = "open-archi")
+
 public class Consumers extends StaticElements {
 
-    @Column
-    @Enumerated(EnumType.STRING)
     private Scope scope = Scope.Unspecified;
 
-    @Column
-    @Enumerated(EnumType.STRING)
     private ElementKind kind = ElementKind.CONSUMER;
 
     public Consumers() {

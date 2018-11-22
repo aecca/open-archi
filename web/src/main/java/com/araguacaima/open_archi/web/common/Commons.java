@@ -9,7 +9,6 @@ import com.araguacaima.open_archi.persistence.diagrams.architectural.LeafStaticE
 import com.araguacaima.open_archi.persistence.diagrams.core.*;
 import com.araguacaima.open_archi.persistence.meta.Account;
 import com.araguacaima.open_archi.persistence.meta.Role;
-import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
 import com.araguacaima.open_archi.web.BeanBuilder;
 import com.araguacaima.open_archi.web.MessagesWrapper;
 import com.araguacaima.open_archi.web.Server;
@@ -18,6 +17,7 @@ import com.araguacaima.open_archi.web.wrapper.AccountWrapper;
 import com.araguacaima.open_archi.web.wrapper.JsonPathRsqlVisitor;
 import com.araguacaima.open_archi.web.wrapper.RolesWrapper;
 import com.araguacaima.open_archi.web.wrapper.RsqlJsonFilter;
+import com.araguacaima.orpheusdb.utils.JPAEntityManagerUtils;
 import org.apache.commons.beanutils.BeanMap;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.IterableUtils;

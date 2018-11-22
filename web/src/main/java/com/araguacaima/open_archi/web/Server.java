@@ -1,7 +1,7 @@
 package com.araguacaima.open_archi.web;
 
 import com.araguacaima.commons.utils.MapUtils;
-import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
+import com.araguacaima.orpheusdb.utils.JPAEntityManagerUtils;
 import com.araguacaima.open_archi.web.common.Commons;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;

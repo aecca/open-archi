@@ -3,7 +3,7 @@ package com.araguacaima.open_archi.web;
 import com.araguacaima.open_archi.persistence.commons.IdName;
 import com.araguacaima.open_archi.persistence.diagrams.architectural.Palette;
 import com.araguacaima.open_archi.persistence.diagrams.core.*;
-import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
+import com.araguacaima.orpheusdb.utils.JPAEntityManagerUtils;
 import com.araguacaima.open_archi.web.common.Commons;
 import org.apache.commons.lang3.StringUtils;
 import org.pac4j.core.config.Config;

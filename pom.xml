@@ -239,12 +239,7 @@
                 <version>${project.version}</version>
                 <scope>compile</scope>
             </dependency>
-            <dependency>
-                <groupId>com.araguacaima.open_archi</groupId>
-                <artifactId>persistence-utils</artifactId>
-                <version>${project.version}</version>
-                <scope>compile</scope>
-            </dependency>
+
             <dependency>
                 <groupId>com.araguacaima.open_archi</groupId>
                 <artifactId>persistence-commons</artifactId>
@@ -516,7 +511,7 @@
         <module>persistence/asm</module>
         <module>persistence/meta</module>
         <module>persistence/persons</module>
-        <module>persistence/utils</module>
+        <!--<module>persistence/utils</module>-->
 		<module>controller</module>
         <module>web</module>
         <module>test</module>

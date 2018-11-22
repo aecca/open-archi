@@ -3,7 +3,7 @@ package com.araguacaima.open_archi.persistence.models;
 import com.araguacaima.commons.utils.JsonUtils;
 import com.araguacaima.commons.utils.MapUtils;
 import com.araguacaima.open_archi.controller.ModelsController;
-import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
+import com.araguacaima.orpheusdb.utils.JPAEntityManagerUtils;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.collections4.CollectionUtils;

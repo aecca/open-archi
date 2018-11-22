@@ -1,7 +1,7 @@
 package com.araguacaima.open_archi.web.filter;
 
 import com.araguacaima.open_archi.persistence.meta.Account;
-import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
+import com.araguacaima.orpheusdb.utils.JPAEntityManagerUtils;
 import org.pac4j.core.config.Config;
 import org.pac4j.core.engine.DefaultSecurityLogic;
 import org.pac4j.core.engine.SecurityLogic;
