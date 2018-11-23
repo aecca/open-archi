@@ -7,7 +7,7 @@ import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 import com.araguacaima.open_archi.persistence.diagrams.core.Item;
 import com.araguacaima.open_archi.persistence.diagrams.core.Taggable;
 import com.araguacaima.open_archi.persistence.meta.Account;
-import com.araguacaima.orpheusdb.utils.JPAEntityManagerUtils;
+import com.araguacaima.orpheusdb.utils.OrpheusDbJPAEntityManagerUtils;
 import com.araguacaima.open_archi.web.common.Commons;
 import org.pac4j.sparkjava.SparkWebContext;
 import spark.RouteGroup;
@@ -222,7 +222,7 @@ public class Diagrams implements RouteGroup {
                     throw new Exception("Invalid kind of layer");
                 }
                 String modelId = request.params(":uuid");
-                Model model = JPAEntityManagerUtils.find(Model.class, modelId);
+                Model model = OrpheusDbJPAEntityManagerUtils.find(Model.class, modelId);
                 if (model == null) {
                     throw new EntityNotFoundException("There is no model with identifer of '" + modelId + "' to which associate the incoming layer");
                 } else {
@@ -239,7 +239,7 @@ public class Diagrams implements RouteGroup {
                 Map<String, Object> params = new HashMap<>();
                 params.put("name", layer.getName());
                 params.put("kind", layer.getKind());
-                Item storedLayer = JPAEntityManagerUtils.findByQuery(Item.class, Item.GET_ITEMS_BY_NAME_AND_KIND, params);
+                Item storedLayer = OrpheusDbJPAEntityManagerUtils.findByQuery(Item.class, Item.GET_ITEMS_BY_NAME_AND_KIND, params);
 
                 Set<Layer> modelLayers = model.getLayers();
                 if (storedLayer == null) {
@@ -247,7 +247,7 @@ public class Diagrams implements RouteGroup {
                     layer.validateCreation(map);
                     DBUtil.populate(layer);
                     modelLayers.add(layer);
-                    JPAEntityManagerUtils.merge(model);
+                    OrpheusDbJPAEntityManagerUtils.merge(model);
                 } else {
                     if (!Layer.class.isAssignableFrom(storedLayer.getClass())) {
                         throw new EntityError("Provided body does not corresponds with a layer");
@@ -298,7 +298,7 @@ public class Diagrams implements RouteGroup {
         get("/architectures/layers/:luuid", (request, response) -> {
             try {
                 String id = request.params(":luuid");
-                Layer layer = JPAEntityManagerUtils.find(Layer.class, id);
+                Layer layer = OrpheusDbJPAEntityManagerUtils.find(Layer.class, id);
                 if (layer != null) {
                     layer.validateRequest();
                 }
@@ -373,7 +373,7 @@ public class Diagrams implements RouteGroup {
                 Account account = (Account) ctx.getSessionAttribute("account");
                 map.put("account", account);
                 system.validateCreation(map);
-                Layer layer = JPAEntityManagerUtils.find(Layer.class, id);
+                Layer layer = OrpheusDbJPAEntityManagerUtils.find(Layer.class, id);
                 DBUtil.populate(system, systemId == null);
                 layer.getSystems().add(system);
                 DBUtil.update(layer);
@@ -389,7 +389,7 @@ public class Diagrams implements RouteGroup {
             try {
                 String luuid = request.params(":luuid");
                 String suuid = request.params(":suuid");
-                Layer layer = JPAEntityManagerUtils.find(Layer.class, luuid);
+                Layer layer = OrpheusDbJPAEntityManagerUtils.find(Layer.class, luuid);
                 if (layer == null) {
                     throw new EntityNotFoundException("Layer with id of '" + luuid + "' does nos exists");
                 }
@@ -434,7 +434,7 @@ public class Diagrams implements RouteGroup {
                 Account account = (Account) ctx.getSessionAttribute("account");
                 map.put("account", account);
                 container.validateCreation(map);
-                Layer layer = JPAEntityManagerUtils.find(Layer.class, id);
+                Layer layer = OrpheusDbJPAEntityManagerUtils.find(Layer.class, id);
                 DBUtil.populate(container, containerId == null);
                 layer.getContainers().add(container);
                 DBUtil.update(layer);
@@ -450,7 +450,7 @@ public class Diagrams implements RouteGroup {
             try {
                 String luuid = request.params(":luuid");
                 String cuuid = request.params(":cuuid");
-                Layer layer = JPAEntityManagerUtils.find(Layer.class, luuid);
+                Layer layer = OrpheusDbJPAEntityManagerUtils.find(Layer.class, luuid);
                 if (layer == null) {
                     throw new EntityNotFoundException("Layer with id of '" + luuid + "' does nos exists");
                 }
@@ -466,7 +466,7 @@ public class Diagrams implements RouteGroup {
                     throw new EntityNotFoundException("Container with id of '" + cuuid + "' is not found on Layer[" + luuid + "]");
                 }
                 containers.remove(container);
-                JPAEntityManagerUtils.merge(layer);
+                OrpheusDbJPAEntityManagerUtils.merge(layer);
                 response.status(HTTP_OK);
                 return EMPTY_RESPONSE;
             } catch (EntityNotFoundException ex) {
@@ -496,7 +496,7 @@ public class Diagrams implements RouteGroup {
                 Account account = (Account) ctx.getSessionAttribute("account");
                 map.put("account", account);
                 component.validateCreation(map);
-                Layer layer = JPAEntityManagerUtils.find(Layer.class, id);
+                Layer layer = OrpheusDbJPAEntityManagerUtils.find(Layer.class, id);
                 DBUtil.populate(component, componentId == null);
                 layer.getComponents().add(component);
                 DBUtil.update(layer);
@@ -512,7 +512,7 @@ public class Diagrams implements RouteGroup {
             try {
                 String luuid = request.params(":luuid");
                 String suuid = request.params(":suuid");
-                Layer layer = JPAEntityManagerUtils.find(Layer.class, luuid);
+                Layer layer = OrpheusDbJPAEntityManagerUtils.find(Layer.class, luuid);
                 if (layer == null) {
                     throw new EntityNotFoundException("Layer with id of '" + luuid + "' does nos exists");
                 }
@@ -568,7 +568,7 @@ public class Diagrams implements RouteGroup {
         get("/architectures/systems/:suuid", (request, response) -> {
             try {
                 String id = request.params(":suuid");
-                System system = JPAEntityManagerUtils.find(System.class, id);
+                System system = OrpheusDbJPAEntityManagerUtils.find(System.class, id);
                 if (system != null) {
                     system.validateRequest();
                 }
@@ -643,7 +643,7 @@ public class Diagrams implements RouteGroup {
                 Account account = (Account) ctx.getSessionAttribute("account");
                 map.put("account", account);
                 system.validateCreation(map);
-                System system_ = JPAEntityManagerUtils.find(System.class, id);
+                System system_ = OrpheusDbJPAEntityManagerUtils.find(System.class, id);
                 DBUtil.populate(system, systemId == null);
                 system_.getSystems().add(system);
                 DBUtil.update(system);
@@ -673,7 +673,7 @@ public class Diagrams implements RouteGroup {
                 Account account = (Account) ctx.getSessionAttribute("account");
                 map.put("account", account);
                 container.validateCreation(map);
-                System system = JPAEntityManagerUtils.find(System.class, id);
+                System system = OrpheusDbJPAEntityManagerUtils.find(System.class, id);
                 DBUtil.populate(container, containerId == null);
                 system.getContainers().add(container);
                 DBUtil.update(system);
@@ -703,7 +703,7 @@ public class Diagrams implements RouteGroup {
                 Account account = (Account) ctx.getSessionAttribute("account");
                 map.put("account", account);
                 component.validateCreation(map);
-                System system = JPAEntityManagerUtils.find(System.class, id);
+                System system = OrpheusDbJPAEntityManagerUtils.find(System.class, id);
                 DBUtil.populate(component, componentId == null);
                 system.getComponents().add(component);
                 DBUtil.update(system);
@@ -739,7 +739,7 @@ public class Diagrams implements RouteGroup {
         get("/architectures/containers/:cuuid", (request, response) -> {
             try {
                 String id = request.params(":cuuid");
-                Container container = JPAEntityManagerUtils.find(Container.class, id);
+                Container container = OrpheusDbJPAEntityManagerUtils.find(Container.class, id);
                 if (container != null) {
                     container.validateRequest();
                 }
@@ -814,7 +814,7 @@ public class Diagrams implements RouteGroup {
                 Account account = (Account) ctx.getSessionAttribute("account");
                 map.put("account", account);
                 component.validateCreation(map);
-                Container container = JPAEntityManagerUtils.find(Container.class, id);
+                Container container = OrpheusDbJPAEntityManagerUtils.find(Container.class, id);
                 DBUtil.populate(component, true);
                 container.getComponents().add(component);
                 DBUtil.update(container);
@@ -850,7 +850,7 @@ public class Diagrams implements RouteGroup {
         get("/architectures/components/:cuuid", (request, response) -> {
             try {
                 String id = request.params(":cuuid");
-                Component component = JPAEntityManagerUtils.find(Component.class, id);
+                Component component = OrpheusDbJPAEntityManagerUtils.find(Component.class, id);
                 if (component != null) {
                     component.validateRequest();
                 }
@@ -920,7 +920,7 @@ public class Diagrams implements RouteGroup {
                 Account account = (Account) ctx.getSessionAttribute("account");
                 map.put("account", account);
                 system.validateCreation(map);
-                Model model = JPAEntityManagerUtils.find(Model.class, id);
+                Model model = OrpheusDbJPAEntityManagerUtils.find(Model.class, id);
                 DBUtil.populate(system, systemId == null);
                 model.getSystems().add(system);
                 DBUtil.update(model);
@@ -1005,7 +1005,7 @@ public class Diagrams implements RouteGroup {
                 Account account = (Account) ctx.getSessionAttribute("account");
                 map.put("account", account);
                 container.validateCreation(map);
-                System system = JPAEntityManagerUtils.find(System.class, id);
+                System system = OrpheusDbJPAEntityManagerUtils.find(System.class, id);
                 DBUtil.populate(container, containerId == null);
                 system.getContainers().add(container);
                 DBUtil.update(system);

@@ -2,7 +2,7 @@ package com.araguacaima.open_archi.web;
 
 import com.araguacaima.open_archi.persistence.meta.Account;
 import com.araguacaima.open_archi.persistence.meta.Role;
-import com.araguacaima.orpheusdb.utils.JPAEntityManagerUtils;
+import com.araguacaima.orpheusdb.utils.OrpheusDbJPAEntityManagerUtils;
 import com.araguacaima.open_archi.web.common.Commons;
 import org.apache.commons.collections4.IterableUtils;
 import org.pac4j.core.profile.CommonProfile;
@@ -29,7 +29,7 @@ public class Admin implements RouteGroup {
         header.addAll(Commons.ALL_ROLES);
         get(Commons.EMPTY_PATH, buildRoute(new BeanBuilder()
                 .title("Open-Archi Admin")
-                .accounts(JPAEntityManagerUtils.executeQuery(Account.class, Account.GET_ALL_ACCOUNTS))
+                .accounts(OrpheusDbJPAEntityManagerUtils.executeQuery(Account.class, Account.GET_ALL_ACCOUNTS))
                 .roles(Commons.ALL_ROLES)
                 .header(header), Admin.PATH), engine);
         patch(Commons.EMPTY_PATH, (request, response) -> {
@@ -40,12 +40,12 @@ public class Admin implements RouteGroup {
                 String role = (String) requestInput.get("role");
                 Map<String, Object> params = new HashMap<>();
                 params.put(Account.PARAM_EMAIL, email);
-                Account account = JPAEntityManagerUtils.findByQuery(Account.class, Account.FIND_BY_EMAIL_AND_ENABLED, params);
+                Account account = OrpheusDbJPAEntityManagerUtils.findByQuery(Account.class, Account.FIND_BY_EMAIL_AND_ENABLED, params);
                 if (account != null) {
                     Set<Role> roles = account.getRoles();
                     Map<String, Object> roleParams = new HashMap<>();
                     roleParams.put(Role.PARAM_NAME, role);
-                    Role role_ = JPAEntityManagerUtils.findByQuery(Role.class, Role.FIND_BY_NAME, roleParams);
+                    Role role_ = OrpheusDbJPAEntityManagerUtils.findByQuery(Role.class, Role.FIND_BY_NAME, roleParams);
                     if (role_ == null) {
                         throw halt("Role does not exists");
                     } else {
@@ -67,7 +67,7 @@ public class Admin implements RouteGroup {
                             }
                         }
                     }
-                    JPAEntityManagerUtils.merge(account);
+                    OrpheusDbJPAEntityManagerUtils.merge(account);
                     response.status(HTTP_OK);
                     return EMPTY_RESPONSE;
                 } else {

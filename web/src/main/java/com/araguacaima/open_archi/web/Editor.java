@@ -3,7 +3,7 @@ package com.araguacaima.open_archi.web;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 import com.araguacaima.open_archi.persistence.diagrams.core.Item;
 import com.araguacaima.open_archi.persistence.diagrams.core.Taggable;
-import com.araguacaima.orpheusdb.utils.JPAEntityManagerUtils;
+import com.araguacaima.orpheusdb.utils.OrpheusDbJPAEntityManagerUtils;
 import com.araguacaima.open_archi.web.common.Commons;
 import spark.RouteGroup;
 
@@ -56,7 +56,7 @@ public class Editor implements RouteGroup {
         get("/:uuid", (req, res) -> {
             try {
                 String id = req.params(":uuid");
-                Taggable model = JPAEntityManagerUtils.find(Taggable.class, id);
+                Taggable model = OrpheusDbJPAEntityManagerUtils.find(Taggable.class, id);
                 if (model != null) {
                     model.validateRequest();
                     bean.model(model);

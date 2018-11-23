@@ -4,7 +4,7 @@ import com.araguacaima.open_archi.persistence.commons.Constants;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 import com.araguacaima.open_archi.persistence.diagrams.core.Item;
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
-import com.araguacaima.orpheusdb.utils.JPAEntityManagerUtils;
+import com.araguacaima.orpheusdb.utils.OrpheusDbJPAEntityManagerUtils;
 import com.araguacaima.specification.AbstractSpecification;
 import org.apache.commons.collections4.CollectionUtils;
 
@@ -34,9 +34,9 @@ public class CheckInitiatorAlreadyExists extends AbstractSpecification {
                     String name = item.getName();
                     params.put("kind", kind);
                     params.put("name", name);
-                    Item storedItem = JPAEntityManagerUtils.findByQuery(Item.class, Item.GET_ITEMS_BY_NAME_AND_KIND, params);
+                    Item storedItem = OrpheusDbJPAEntityManagerUtils.findByQuery(Item.class, Item.GET_ITEMS_BY_NAME_AND_KIND, params);
                     if (storedItem != null) {
-                        //JPAEntityManagerUtils.detach(next);
+                        //OrpheusDbJPAEntityManagerUtils.detach(next);
                         map.put(Constants.EXISTENT_ENTITY, storedItem);
                         map.put("meta", storedItem.getMeta());
                         return true;

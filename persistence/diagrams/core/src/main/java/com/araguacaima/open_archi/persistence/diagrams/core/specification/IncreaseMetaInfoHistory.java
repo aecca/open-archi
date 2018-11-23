@@ -5,7 +5,7 @@ import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 import com.araguacaima.open_archi.persistence.meta.History;
 import com.araguacaima.open_archi.persistence.meta.MetaInfo;
 import com.araguacaima.open_archi.persistence.meta.Version;
-import com.araguacaima.orpheusdb.utils.JPAEntityManagerUtils;
+import com.araguacaima.orpheusdb.utils.OrpheusDbJPAEntityManagerUtils;
 import com.araguacaima.specification.AbstractSpecification;
 
 import java.util.*;
@@ -56,7 +56,7 @@ public class IncreaseMetaInfoHistory extends AbstractSpecification {
                         meta = parent.getMeta();
                     }
                     if (meta == null) {
-                        Version version = JPAEntityManagerUtils.findByNativeQuery(Version.class, GET_LAST_VERSION);
+                        Version version = OrpheusDbJPAEntityManagerUtils.findByNativeQuery(Version.class, GET_LAST_VERSION);
                         if (version == null) {
                             version = new Version();
                         } else {

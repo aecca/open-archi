@@ -6,7 +6,7 @@ import com.araguacaima.open_archi.persistence.diagrams.architectural.Model;
 import com.araguacaima.open_archi.persistence.diagrams.core.*;
 import com.araguacaima.open_archi.persistence.meta.Account;
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
-import com.araguacaima.orpheusdb.utils.JPAEntityManagerUtils;
+import com.araguacaima.orpheusdb.utils.OrpheusDbJPAEntityManagerUtils;
 import com.araguacaima.open_archi.web.common.Commons;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.IterableUtils;
@@ -70,7 +70,7 @@ public class Models implements RouteGroup {
         get("/:uuid", (request, response) -> {
             try {
                 String id = request.params(":uuid");
-                Taggable model = JPAEntityManagerUtils.find(Taggable.class, id);
+                Taggable model = OrpheusDbJPAEntityManagerUtils.find(Taggable.class, id);
                 if (model != null) {
                     model.validateRequest();
                 }
@@ -99,7 +99,7 @@ public class Models implements RouteGroup {
                 map.put("account", account);
 
 
-                Item storedModel = JPAEntityManagerUtils.findByQuery(Item.class, Item.GET_ITEMS_BY_NAME_AND_KIND, params);
+                Item storedModel = OrpheusDbJPAEntityManagerUtils.findByQuery(Item.class, Item.GET_ITEMS_BY_NAME_AND_KIND, params);
                 if (storedModel == null) {
                     map.put("Parent", model);
                     model.validateCreation(map);
@@ -139,7 +139,7 @@ public class Models implements RouteGroup {
             try {
                 String id = request.params(":uuid");
                 String suffix = request.queryParams("suffix");
-                Taggable model = JPAEntityManagerUtils.find(Taggable.class, id);
+                Taggable model = OrpheusDbJPAEntityManagerUtils.find(Taggable.class, id);
                 if (model != null) {
                     model.validateRequest();
                 } else {
@@ -164,7 +164,7 @@ public class Models implements RouteGroup {
                 Map<String, Object> map = new HashMap<>();
                 map.put("type", model.getClass());
                 map.put("name", name);
-                List<IdName> modelNames = JPAEntityManagerUtils.executeQuery(IdName.class, Item.GET_MODEL_NAMES_BY_NAME_AND_TYPE, map);
+                List<IdName> modelNames = OrpheusDbJPAEntityManagerUtils.executeQuery(IdName.class, Item.GET_MODEL_NAMES_BY_NAME_AND_TYPE, map);
                 if (CollectionUtils.isNotEmpty(modelNames)) {
                     Collections.sort(modelNames);
                     IdName lastFoundName = IterableUtils.get(modelNames, modelNames.size() - 1);

@@ -17,7 +17,7 @@ import com.araguacaima.open_archi.web.wrapper.AccountWrapper;
 import com.araguacaima.open_archi.web.wrapper.JsonPathRsqlVisitor;
 import com.araguacaima.open_archi.web.wrapper.RolesWrapper;
 import com.araguacaima.open_archi.web.wrapper.RsqlJsonFilter;
-import com.araguacaima.orpheusdb.utils.JPAEntityManagerUtils;
+import com.araguacaima.orpheusdb.utils.OrpheusDbJPAEntityManagerUtils;
 import org.apache.commons.beanutils.BeanMap;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.IterableUtils;
@@ -274,7 +274,7 @@ public class Commons {
         deeplyFulfilledIdValueCollection.add(deeplyFulfilledIdValue_1);
         deeplyFulfilledIdValueCollection.add(deeplyFulfilledIdValue_2);
 
-        JPAEntityManagerUtils.getEntityManager();
+        OrpheusDbJPAEntityManagerUtils.getEntityManager();
     }
 
     public static String render(Map<String, Object> model, String templatePath) {
@@ -302,7 +302,7 @@ public class Commons {
                 String email = profile.getEmail();
                 Map<String, Object> params = new HashMap<>();
                 params.put(Account.PARAM_EMAIL, email);
-                account = JPAEntityManagerUtils.findByQuery(Account.class, Account.FIND_BY_EMAIL_AND_ENABLED, params);
+                account = OrpheusDbJPAEntityManagerUtils.findByQuery(Account.class, Account.FIND_BY_EMAIL_AND_ENABLED, params);
                 if (account != null) {
                     Set<Role> accountRoles = account.getRoles();
                     profile.addRoles(RolesWrapper.fromRoles(accountRoles));
@@ -332,12 +332,12 @@ public class Commons {
             String email = profile.getEmail();
             Map<String, Object> params = new HashMap<>();
             params.put(Account.PARAM_EMAIL, email);
-            account = JPAEntityManagerUtils.findByQuery(Account.class, Account.FIND_BY_EMAIL, params);
+            account = OrpheusDbJPAEntityManagerUtils.findByQuery(Account.class, Account.FIND_BY_EMAIL, params);
 
             if (account == null) {
                 account = AccountWrapper.toAccount(profile);
-                JPAEntityManagerUtils.persist(account.getAvatar());
-                JPAEntityManagerUtils.persist(account);
+                OrpheusDbJPAEntityManagerUtils.persist(account.getAvatar());
+                OrpheusDbJPAEntityManagerUtils.persist(account);
             }
             SessionFilter.SessionMap map = SessionFilter.map.get(email);
             if (map == null) {
@@ -354,10 +354,10 @@ public class Commons {
                     profileRoles.forEach(role -> {
                         Map<String, Object> roleParams = new HashMap<>();
                         roleParams.put(Role.PARAM_NAME, role);
-                        Role role_ = JPAEntityManagerUtils.findByQuery(Role.class, Role.FIND_BY_NAME, roleParams);
+                        Role role_ = OrpheusDbJPAEntityManagerUtils.findByQuery(Role.class, Role.FIND_BY_NAME, roleParams);
                         if (role_ == null) {
                             Role newRole = RolesWrapper.buildRole(role);
-                            JPAEntityManagerUtils.persist(newRole);
+                            OrpheusDbJPAEntityManagerUtils.persist(newRole);
                             roles.add(newRole);
                         }
                     });
@@ -367,7 +367,7 @@ public class Commons {
 
                 profile.addRoles(RolesWrapper.fromRoles(accountRoles));
 
-                JPAEntityManagerUtils.merge(account);
+                OrpheusDbJPAEntityManagerUtils.merge(account);
 
                 context.setSessionAttribute("account", account);
             }
@@ -378,10 +378,10 @@ public class Commons {
         Map<String, Object> roleParams = new HashMap<>();
         Role roleWriteCatalog = RolesWrapper.buildRole(roleName);
         roleParams.put(Role.PARAM_NAME, roleWriteCatalog.getName());
-        JPAEntityManagerUtils.begin();
-        Role role_ = JPAEntityManagerUtils.findByQuery(Role.class, Role.FIND_BY_NAME, roleParams);
+        OrpheusDbJPAEntityManagerUtils.begin();
+        Role role_ = OrpheusDbJPAEntityManagerUtils.findByQuery(Role.class, Role.FIND_BY_NAME, roleParams);
         if (role_ == null) {
-            JPAEntityManagerUtils.persist(roleWriteCatalog, false);
+            OrpheusDbJPAEntityManagerUtils.persist(roleWriteCatalog, false);
             roles.add(roleWriteCatalog);
         } else {
             Role innerRole = IterableUtils.find(accountRoles, role -> role.getName().equals(roleWriteCatalog.getName()));
@@ -389,7 +389,7 @@ public class Commons {
                 roles.add(role_);
             }
         }
-        JPAEntityManagerUtils.commit();
+        OrpheusDbJPAEntityManagerUtils.commit();
     }
 
     public static String throwError(Response response, Throwable ex) {
@@ -512,9 +512,9 @@ public class Commons {
 
         List models;
         try {
-            models = JPAEntityManagerUtils.executeQuery(type == null ? Taggable.class : type, query, params);
+            models = OrpheusDbJPAEntityManagerUtils.executeQuery(type == null ? Taggable.class : type, query, params);
         } catch (IllegalArgumentException ignored) {
-            models = JPAEntityManagerUtils.executeQuery(Object[].class, query, params);
+            models = OrpheusDbJPAEntityManagerUtils.executeQuery(Object[].class, query, params);
         }
         return getList(request, response, models, contentType);
 
@@ -562,7 +562,7 @@ public class Commons {
     public static String getElement(Request request, Response response, String query, Map<String, Object> params, Class<MetaData> type) throws IOException, URISyntaxException {
         response.status(HTTP_OK);
 
-        List<MetaData> element = JPAEntityManagerUtils.executeQuery(type, query, params);
+        List<MetaData> element = OrpheusDbJPAEntityManagerUtils.executeQuery(type, query, params);
         String jsonElement = jsonUtils.toJSON(element);
         String json = request.pathInfo().replaceFirst("/api/models", "");
         String contentType = getContentType(request);

@@ -1,7 +1,7 @@
 package com.araguacaima.open_archi.web.filter;
 
 import com.araguacaima.open_archi.persistence.meta.Account;
-import com.araguacaima.orpheusdb.utils.JPAEntityManagerUtils;
+import com.araguacaima.orpheusdb.utils.OrpheusDbJPAEntityManagerUtils;
 import org.pac4j.core.config.Config;
 import org.pac4j.core.engine.DefaultSecurityLogic;
 import org.pac4j.core.engine.SecurityLogic;
@@ -71,7 +71,7 @@ public class AdminAPIFilter implements Filter {
             String email = profile.getEmail();
             Map<String, Object> params = new HashMap<>();
             params.put(Account.PARAM_EMAIL, email);
-            account = JPAEntityManagerUtils.findByQuery(Account.class, Account.FIND_BY_EMAIL_AND_ENABLED, params);
+            account = OrpheusDbJPAEntityManagerUtils.findByQuery(Account.class, Account.FIND_BY_EMAIL_AND_ENABLED, params);
             if (account == null || !account.isSuperuser()) {
                 logger.debug("Halt the request processing. User is no superuser");
                 // stop the processing if no SECURITY_GRANTED_ACCESS has been received

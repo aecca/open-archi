@@ -1,7 +1,7 @@
 package com.araguacaima.open_archi.persistence.diagrams.core;
 
 import com.araguacaima.open_archi.persistence.commons.Utils;
-import com.araguacaima.orpheusdb.utils.JPAEntityManagerUtils;
+import com.araguacaima.orpheusdb.utils.OrpheusDbJPAEntityManagerUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +21,7 @@ public class ShapeFactory {
 
         Map<String, Object> params = new HashMap<>();
         params.put("type", kind);
-        ElementShape elementShape = JPAEntityManagerUtils.findByQuery(ElementShape.class, ElementShape.GET_ELEMENT_SHAPE_BY_TYPE, params);
+        ElementShape elementShape = OrpheusDbJPAEntityManagerUtils.findByQuery(ElementShape.class, ElementShape.GET_ELEMENT_SHAPE_BY_TYPE, params);
 
         if (elementShape == null) {
             return shape;

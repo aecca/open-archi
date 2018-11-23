@@ -2,7 +2,7 @@ package com.araguacaima.open_archi.web;
 
 import com.araguacaima.open_archi.persistence.commons.IdName;
 import com.araguacaima.open_archi.persistence.diagrams.core.*;
-import com.araguacaima.orpheusdb.utils.JPAEntityManagerUtils;
+import com.araguacaima.orpheusdb.utils.OrpheusDbJPAEntityManagerUtils;
 import com.araguacaima.open_archi.web.common.Commons;
 import spark.RouteGroup;
 import spark.route.HttpMethod;
@@ -27,7 +27,7 @@ public class Catalogs implements RouteGroup {
             Map<String, Object> params = new HashMap<>();
             ElementKind type = (ElementKind) enumsUtils.getEnum(ElementKind.class, request.params(":elementTypeId"));
             params.put("type", type);
-            ElementShape elementShape = JPAEntityManagerUtils.findByQuery(ElementShape.class, ElementShape.GET_ELEMENT_SHAPE_BY_TYPE, params);
+            ElementShape elementShape = OrpheusDbJPAEntityManagerUtils.findByQuery(ElementShape.class, ElementShape.GET_ELEMENT_SHAPE_BY_TYPE, params);
             return jsonUtils.toJSON(elementShape);
         });
         put("/element-types/:elementTypeId/shape", (request, response) -> {
@@ -39,7 +39,7 @@ public class Catalogs implements RouteGroup {
                 Map<String, Object> params = new HashMap<>();
                 ElementKind type = (ElementKind) enumsUtils.getEnum(ElementKind.class, request.params(":elementTypeId"));
                 params.put("type", type);
-                ElementShape elementShape1 = JPAEntityManagerUtils.findByQuery(ElementShape.class, ElementShape.GET_ELEMENT_SHAPE_BY_TYPE, params);
+                ElementShape elementShape1 = OrpheusDbJPAEntityManagerUtils.findByQuery(ElementShape.class, ElementShape.GET_ELEMENT_SHAPE_BY_TYPE, params);
                 if (elementShape1 == null) {
                     elementShape.setType(type);
                     DBUtil.populate(elementShape);

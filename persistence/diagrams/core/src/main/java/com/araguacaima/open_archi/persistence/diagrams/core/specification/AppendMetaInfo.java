@@ -1,7 +1,7 @@
 package com.araguacaima.open_archi.persistence.diagrams.core.specification;
 
 import com.araguacaima.open_archi.persistence.meta.*;
-import com.araguacaima.orpheusdb.utils.JPAEntityManagerUtils;
+import com.araguacaima.orpheusdb.utils.OrpheusDbJPAEntityManagerUtils;
 import com.araguacaima.specification.AbstractSpecification;
 
 import java.util.*;
@@ -28,7 +28,7 @@ public class AppendMetaInfo extends AbstractSpecification {
             Date thisTime = Calendar.getInstance().getTime();
             if (entity.getMeta() == null) {
                 if (map.get("meta") == null) {
-                    MetaInfo storedMetaInfo = JPAEntityManagerUtils.findByQuery(MetaInfo.class, MetaInfo.GET_META_INFO_BY_VERSION, versionParam);
+                    MetaInfo storedMetaInfo = OrpheusDbJPAEntityManagerUtils.findByQuery(MetaInfo.class, MetaInfo.GET_META_INFO_BY_VERSION, versionParam);
                     if (storedMetaInfo == null) {
                         meta = new MetaInfo();
                         meta.addNewHistory(thisTime);

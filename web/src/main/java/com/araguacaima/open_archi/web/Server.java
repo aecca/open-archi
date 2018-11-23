@@ -1,8 +1,7 @@
 package com.araguacaima.open_archi.web;
 
 import com.araguacaima.commons.utils.MapUtils;
-import com.araguacaima.orpheusdb.utils.JPAEntityManagerUtils;
-import com.araguacaima.open_archi.web.common.Commons;
+import com.araguacaima.orpheusdb.utils.OrpheusDbJPAEntityManagerUtils;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.neuland.jade4j.JadeConfiguration;
@@ -35,7 +34,7 @@ public class Server {
 
     static {
         environment = new HashMap<>(processBuilder.environment());
-        URL url = JPAEntityManagerUtils.class.getResource("/config/config.properties");
+        URL url = OrpheusDbJPAEntityManagerUtils.class.getResource("/config/config.properties");
         Properties properties = new Properties();
         try {
             properties.load(url.openStream());
@@ -76,7 +75,7 @@ public class Server {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        JPAEntityManagerUtils.init(environment);
+        OrpheusDbJPAEntityManagerUtils.init("open-archi", environment);
         config.setTemplateLoader(templateLoader);
         ObjectMapper mapper = jsonUtils.getMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);

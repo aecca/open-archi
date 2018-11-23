@@ -2,7 +2,7 @@ package com.araguacaima.open_archi.persistence.diagrams.core.specification;
 
 import com.araguacaima.open_archi.persistence.commons.Constants;
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
-import com.araguacaima.orpheusdb.utils.JPAEntityManagerUtils;
+import com.araguacaima.orpheusdb.utils.OrpheusDbJPAEntityManagerUtils;
 import com.araguacaima.specification.AbstractSpecification;
 
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ public class CheckEntityAlreadyExists extends AbstractSpecification {
         if (BaseEntity.class.isAssignableFrom(clazz)) {
             BaseEntity entity = (BaseEntity) object;
             Object key = entity.getId();
-            if (JPAEntityManagerUtils.find(clazz, key) != null) {
+            if (OrpheusDbJPAEntityManagerUtils.find(clazz, key) != null) {
                 map.put(Constants.SPECIFICATION_MESSAGE, "Entity with key of '" + key + "' already exists");
                 return true;
             } else {

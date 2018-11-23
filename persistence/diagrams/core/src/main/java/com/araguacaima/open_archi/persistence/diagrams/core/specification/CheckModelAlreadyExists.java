@@ -4,7 +4,7 @@ import com.araguacaima.open_archi.persistence.commons.Constants;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 import com.araguacaima.open_archi.persistence.diagrams.core.Item;
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
-import com.araguacaima.orpheusdb.utils.JPAEntityManagerUtils;
+import com.araguacaima.orpheusdb.utils.OrpheusDbJPAEntityManagerUtils;
 import com.araguacaima.specification.AbstractSpecification;
 import org.apache.commons.collections4.CollectionUtils;
 
@@ -32,7 +32,7 @@ public class CheckModelAlreadyExists extends AbstractSpecification {
                 String name = item.getName();
                 params.put("kind", kind);
                 params.put("name", name);
-                Item list = JPAEntityManagerUtils.findByQuery(Item.class, Item.GET_ITEMS_BY_NAME_AND_KIND, params);
+                Item list = OrpheusDbJPAEntityManagerUtils.findByQuery(Item.class, Item.GET_ITEMS_BY_NAME_AND_KIND, params);
                 if (list != null) {
                     map.put(Constants.EXISTENT_ENTITY, list);
                     return true;

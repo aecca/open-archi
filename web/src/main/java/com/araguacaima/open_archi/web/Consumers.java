@@ -3,7 +3,7 @@ package com.araguacaima.open_archi.web;
 import com.araguacaima.open_archi.persistence.diagrams.architectural.Consumer;
 import com.araguacaima.open_archi.persistence.diagrams.core.Item;
 import com.araguacaima.open_archi.persistence.meta.Account;
-import com.araguacaima.orpheusdb.utils.JPAEntityManagerUtils;
+import com.araguacaima.orpheusdb.utils.OrpheusDbJPAEntityManagerUtils;
 import com.araguacaima.open_archi.web.DBUtil;
 import com.araguacaima.open_archi.web.common.Commons;
 import org.pac4j.sparkjava.SparkWebContext;
@@ -47,7 +47,7 @@ public class Consumers implements RouteGroup {
         get("/:uuid", (request, response) -> {
             try {
                 String id = request.params(":uuid");
-                Consumer consumer = JPAEntityManagerUtils.find(Consumer.class, id);
+                Consumer consumer = OrpheusDbJPAEntityManagerUtils.find(Consumer.class, id);
                 if (consumer != null) {
                     consumer.validateRequest();
                 }
