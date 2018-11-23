@@ -18,17 +18,11 @@ import java.io.Serializable;
         name = Version.GET_ALL_VERSIONS,
         query = "select a from Version a order by a.id.major, a.id.minor, a.id.build"), @NamedQuery(
         name = Version.FIND_VERSION,
-        query = "select a from Version a where a.id.major = :major and a.id.minor = :minor and a.id.build = :build order by a.id.major, a.id.minor, a.id.build"), @NamedQuery(
-        name = Version.GET_LAST_VERSION,
-        query = "SELECT v1 "
-                + "FROM Version v1 LEFT OUTER JOIN Version v2 ON ( "
-                + "  (v1.id.major = v2.id.major AND v1.id.minor < v2.id.minor) OR (v1.id.major = v2.id.major AND v1.id.minor = v2.id.minor AND v1.id.build < v2.id.build) "
-                + "  OR (v1.id.major < v2.id.major))")})
+        query = "select a from Version a where a.id.major = :major and a.id.minor = :minor and a.id.build = :build order by a.id.major, a.id.minor, a.id.build")})
 public class Version implements Serializable, Comparable<Version>, Cloneable, SimpleOverridable<Version> {
 
     public static final String GET_ALL_VERSIONS = "Version.getAllVersions";
     public static final String COUNT_ALL_VERSIONS = "Version.countAllVersions";
-    public static final String GET_LAST_VERSION = "Version.getLastVersion";
     public static final String GET_DEFAULT_VERSION = "Version.getDefaultVersion";
     public static final String FIND_VERSION = "Version.findByMajorMinorAndBuild";
     public static final String FIND_BY_ID = "Version.findById";

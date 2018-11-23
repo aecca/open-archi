@@ -11,10 +11,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Created by Alejandro on 19/12/2014.
@@ -32,12 +29,19 @@ import java.util.UUID;
                         "from MetaInfo m " +
                         "   inner join m.history h " +
                         "   inner join h.version v " +
+                        "where v = :version"),
+        @NamedQuery(name = MetaInfo.GET_LAST_META_INFO,
+                query = "select m " +
+                        "from MetaInfo m " +
+                        "   inner join m.history h " +
+                        "   inner join h.version v " +
                         "where v = :version")})
 public class MetaInfo implements Serializable, Comparable<MetaInfo>, SimpleOverridable<MetaInfo> {
 
     public static final String GET_ALL_META_INFO = "MetaInfo.getAllMetaInfo";
     public static final String COUNT_ALL_META_INFO = "MetaInfo.countAllMetaInfo";
     public static final String GET_META_INFO_BY_VERSION = "get.metainfo.by.version";
+    public static final String GET_LAST_META_INFO = "get.last.meta.info";
 
     @Id
     private String id;
@@ -63,6 +67,7 @@ public class MetaInfo implements Serializable, Comparable<MetaInfo>, SimpleOverr
 
     public MetaInfo() {
         this.id = UUID.randomUUID().toString();
+        this.created = Calendar.getInstance().getTime();
     }
 
     public String getId() {
@@ -127,6 +132,8 @@ public class MetaInfo implements Serializable, Comparable<MetaInfo>, SimpleOverr
         if (history == null) {
             history = new History();
             history.setVersion(new Version());
+            history.setStatus(VersionStatus.ACTIVE);
+            this.history.add(history);
         }
         return history;
     }

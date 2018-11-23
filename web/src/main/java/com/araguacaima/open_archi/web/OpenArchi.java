@@ -3,7 +3,7 @@ package com.araguacaima.open_archi.web;
 import com.araguacaima.open_archi.persistence.commons.IdName;
 import com.araguacaima.open_archi.persistence.diagrams.architectural.Palette;
 import com.araguacaima.open_archi.persistence.diagrams.core.*;
-import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
+import com.araguacaima.orpheusdb.utils.OrpheusDbJPAEntityManagerUtils;
 import com.araguacaima.open_archi.web.common.Commons;
 import org.apache.commons.lang3.StringUtils;
 import org.pac4j.core.config.Config;
@@ -54,7 +54,7 @@ public class OpenArchi {
     static Palette getArchitecturePalette(String query) {
         Palette palette = new Palette();
         List<Item> models;
-        models = JPAEntityManagerUtils.executeQuery(Item.class, query);
+        models = OrpheusDbJPAEntityManagerUtils.executeQuery(Item.class, query);
         int rank = 3;
         if (models != null) {
             for (Item model : models) {
@@ -72,6 +72,7 @@ public class OpenArchi {
         item.setKind(ElementKind.ARCHITECTURE_MODEL);
         item.setName(model.getName());
         Shape shape = model.getShape();
+        shape.setSize(new Size());
         item.setShape(shape);
         item.setPrototype(model.isPrototype());
         return item;
@@ -79,7 +80,7 @@ public class OpenArchi {
 
 
     static List<ElementShape> getElementTypes() {
-        return JPAEntityManagerUtils.executeQuery(ElementShape.class, ElementShape.GET_ALL_ELEMENT_SHAPES);
+        return OrpheusDbJPAEntityManagerUtils.executeQuery(ElementShape.class, ElementShape.GET_ALL_ELEMENT_SHAPES);
     }
 
     public static Object getItemNames(Request request, Response response, String query) throws IOException, URISyntaxException {

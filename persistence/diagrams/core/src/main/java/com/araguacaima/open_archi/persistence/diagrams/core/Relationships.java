@@ -11,19 +11,13 @@ import java.util.Collection;
 /**
  * A relationship between two elements.
  */
-@Entity
-@PersistenceUnit(unitName = "open-archi")
+
 public class Relationships extends Taggable {
 
-    @Column
     private String description;
-    @Column
     private String sourceId;
-    @Column
     private String destinationId;
-    @Column
     private String sourcePort;
-    @Column
     private String destinationPort;
 
     public Relationships() {

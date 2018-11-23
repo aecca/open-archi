@@ -1,11 +1,8 @@
 package com.araguacaima.open_archi.persistence.diagrams.core;
 
-
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 import org.apache.commons.lang3.StringUtils;
-import org.hibernate.annotations.Cascade;
 
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -15,39 +12,13 @@ import java.util.Set;
  * This is the superclass for all model elements.
  */
 
-@Entity
-@PersistenceUnit(unitName = "open-archi")
-@NamedQueries({@NamedQuery(name = Items.GET_ALL_CHILDREN,
-        query = "select a.children from Item a where a.id=:id"),
-        @NamedQuery(name = Items.GET_META_DATA,
-                query = "select a.metaData from Item a where a.id=:id")})
 public abstract class Items extends Taggable {
 
-    public static final String GET_ALL_CHILDREN = "get.all.children_list";
-    public static final String GET_META_DATA = "get.meta.data_list";
-
     protected String name;
-    @Column
     protected String description;
-    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
-    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     protected Point location;
-
-    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
-    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     protected CompositeElement parent;
-
-    @ManyToMany(cascade = CascadeType.REMOVE)
-    @JoinTable(schema = "DIAGRAMS",
-            name = "Item_Children_Ids",
-            joinColumns = {@JoinColumn(name = "Item_Id",
-                    referencedColumnName = "Id")},
-            inverseJoinColumns = {@JoinColumn(name = "Child_Id",
-                    referencedColumnName = "Id")})
     protected Set<CompositeElement> children = new HashSet<>();
-
-    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
-    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     protected Shape shape;
 
     public Items() {

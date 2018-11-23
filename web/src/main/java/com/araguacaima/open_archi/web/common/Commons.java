@@ -9,14 +9,15 @@ import com.araguacaima.open_archi.persistence.diagrams.architectural.LeafStaticE
 import com.araguacaima.open_archi.persistence.diagrams.core.*;
 import com.araguacaima.open_archi.persistence.meta.Account;
 import com.araguacaima.open_archi.persistence.meta.Role;
-import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
 import com.araguacaima.open_archi.web.BeanBuilder;
+import com.araguacaima.open_archi.web.MessagesWrapper;
 import com.araguacaima.open_archi.web.Server;
 import com.araguacaima.open_archi.web.SessionFilter;
 import com.araguacaima.open_archi.web.wrapper.AccountWrapper;
 import com.araguacaima.open_archi.web.wrapper.JsonPathRsqlVisitor;
 import com.araguacaima.open_archi.web.wrapper.RolesWrapper;
 import com.araguacaima.open_archi.web.wrapper.RsqlJsonFilter;
+import com.araguacaima.orpheusdb.utils.OrpheusDbJPAEntityManagerUtils;
 import org.apache.commons.beanutils.BeanMap;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.IterableUtils;
@@ -36,6 +37,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -47,8 +49,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.araguacaima.open_archi.web.Server.engine;
-import static java.net.HttpURLConnection.HTTP_BAD_REQUEST;
-import static java.net.HttpURLConnection.HTTP_OK;
+import static java.net.HttpURLConnection.*;
 import static org.pac4j.core.context.HttpConstants.HTML_CONTENT_TYPE;
 
 public class Commons {
@@ -273,7 +274,6 @@ public class Commons {
         deeplyFulfilledIdValueCollection.add(deeplyFulfilledIdValue_1);
         deeplyFulfilledIdValueCollection.add(deeplyFulfilledIdValue_2);
 
-        JPAEntityManagerUtils.getEntityManager();
     }
 
     public static String render(Map<String, Object> model, String templatePath) {
@@ -301,7 +301,7 @@ public class Commons {
                 String email = profile.getEmail();
                 Map<String, Object> params = new HashMap<>();
                 params.put(Account.PARAM_EMAIL, email);
-                account = JPAEntityManagerUtils.findByQuery(Account.class, Account.FIND_BY_EMAIL_AND_ENABLED, params);
+                account = OrpheusDbJPAEntityManagerUtils.findByQuery(Account.class, Account.FIND_BY_EMAIL_AND_ENABLED, params);
                 if (account != null) {
                     Set<Role> accountRoles = account.getRoles();
                     profile.addRoles(RolesWrapper.fromRoles(accountRoles));
@@ -331,12 +331,12 @@ public class Commons {
             String email = profile.getEmail();
             Map<String, Object> params = new HashMap<>();
             params.put(Account.PARAM_EMAIL, email);
-            account = JPAEntityManagerUtils.findByQuery(Account.class, Account.FIND_BY_EMAIL, params);
+            account = OrpheusDbJPAEntityManagerUtils.findByQuery(Account.class, Account.FIND_BY_EMAIL, params);
 
             if (account == null) {
                 account = AccountWrapper.toAccount(profile);
-                JPAEntityManagerUtils.persist(account.getAvatar());
-                JPAEntityManagerUtils.persist(account);
+                OrpheusDbJPAEntityManagerUtils.persist(account.getAvatar());
+                OrpheusDbJPAEntityManagerUtils.persist(account);
             }
             SessionFilter.SessionMap map = SessionFilter.map.get(email);
             if (map == null) {
@@ -353,10 +353,10 @@ public class Commons {
                     profileRoles.forEach(role -> {
                         Map<String, Object> roleParams = new HashMap<>();
                         roleParams.put(Role.PARAM_NAME, role);
-                        Role role_ = JPAEntityManagerUtils.findByQuery(Role.class, Role.FIND_BY_NAME, roleParams);
+                        Role role_ = OrpheusDbJPAEntityManagerUtils.findByQuery(Role.class, Role.FIND_BY_NAME, roleParams);
                         if (role_ == null) {
                             Role newRole = RolesWrapper.buildRole(role);
-                            JPAEntityManagerUtils.persist(newRole);
+                            OrpheusDbJPAEntityManagerUtils.persist(newRole);
                             roles.add(newRole);
                         }
                     });
@@ -366,7 +366,7 @@ public class Commons {
 
                 profile.addRoles(RolesWrapper.fromRoles(accountRoles));
 
-                JPAEntityManagerUtils.merge(account);
+                OrpheusDbJPAEntityManagerUtils.merge(account);
 
                 context.setSessionAttribute("account", account);
             }
@@ -377,10 +377,10 @@ public class Commons {
         Map<String, Object> roleParams = new HashMap<>();
         Role roleWriteCatalog = RolesWrapper.buildRole(roleName);
         roleParams.put(Role.PARAM_NAME, roleWriteCatalog.getName());
-        JPAEntityManagerUtils.begin();
-        Role role_ = JPAEntityManagerUtils.findByQuery(Role.class, Role.FIND_BY_NAME, roleParams);
+        OrpheusDbJPAEntityManagerUtils.begin();
+        Role role_ = OrpheusDbJPAEntityManagerUtils.findByQuery(Role.class, Role.FIND_BY_NAME, roleParams);
         if (role_ == null) {
-            JPAEntityManagerUtils.persist(roleWriteCatalog, false);
+            OrpheusDbJPAEntityManagerUtils.persist(roleWriteCatalog, false);
             roles.add(roleWriteCatalog);
         } else {
             Role innerRole = IterableUtils.find(accountRoles, role -> role.getName().equals(roleWriteCatalog.getName()));
@@ -388,13 +388,17 @@ public class Commons {
                 roles.add(role_);
             }
         }
-        JPAEntityManagerUtils.commit();
+        OrpheusDbJPAEntityManagerUtils.commit();
     }
 
     public static String throwError(Response response, Throwable ex) {
-        response.status(HTTP_BAD_REQUEST);
+        response.status(HTTP_INTERNAL_ERROR);
         response.type(JSON_CONTENT_TYPE);
-        return ex.getMessage();
+        try {
+            return jsonUtils.toJSON(MessagesWrapper.fromExceptionToMessages(ex, HTTP_INTERNAL_ERROR));
+        } catch (IOException e) {
+            return ex.getMessage();
+        }
     }
 
     public static String getContentType(Request request) {
@@ -507,9 +511,9 @@ public class Commons {
 
         List models;
         try {
-            models = JPAEntityManagerUtils.executeQuery(type == null ? Taggable.class : type, query, params);
+            models = OrpheusDbJPAEntityManagerUtils.executeQuery(type == null ? Taggable.class : type, query, params);
         } catch (IllegalArgumentException ignored) {
-            models = JPAEntityManagerUtils.executeQuery(Object[].class, query, params);
+            models = OrpheusDbJPAEntityManagerUtils.executeQuery(Object[].class, query, params);
         }
         return getList(request, response, models, contentType);
 
@@ -557,7 +561,7 @@ public class Commons {
     public static String getElement(Request request, Response response, String query, Map<String, Object> params, Class<MetaData> type) throws IOException, URISyntaxException {
         response.status(HTTP_OK);
 
-        List<MetaData> element = JPAEntityManagerUtils.executeQuery(type, query, params);
+        List<MetaData> element = OrpheusDbJPAEntityManagerUtils.executeQuery(type, query, params);
         String jsonElement = jsonUtils.toJSON(element);
         String json = request.pathInfo().replaceFirst("/api/models", "");
         String contentType = getContentType(request);
@@ -667,4 +671,24 @@ public class Commons {
         }};
     }
 
+    public static <T> T extractTaggable(String body, Object kind) throws Exception {
+        T model = null;
+        for (Class<? extends Taggable> modelClass : CollectionUtils.union(CollectionUtils.union(modelsClasses, innerGroupElementClasses), innerSingleElementClasses)) {
+            Field field = reflectionUtils.getField(modelClass, "kind");
+            if (field != null) {
+                field.setAccessible(true);
+                Object obj = modelClass.newInstance();
+                Object thisKind = field.get(obj);
+                thisKind = enumsUtils.getStringValue((Enum) thisKind);
+                if (kind.equals(thisKind)) {
+                    model = jsonUtils.fromJSON(body, (Class<T>) modelClass);
+                    break;
+                }
+            }
+        }
+        if (model == null) {
+            throw new Exception("Invalid kind of model '" + kind + "'");
+        }
+        return model;
+    }
 }

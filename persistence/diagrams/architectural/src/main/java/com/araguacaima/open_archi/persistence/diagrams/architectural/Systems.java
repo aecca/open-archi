@@ -3,7 +3,6 @@ package com.araguacaima.open_archi.persistence.diagrams.architectural;
 import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashSet;
@@ -18,31 +17,10 @@ import java.util.Set;
  * See <a href="https://structurizr.com/help/model#System">Model - System System</a>
  * on the Structurizr website for more information.
  */
-@Entity
-@PersistenceUnit(unitName = "open-archi")
 public class Systems extends GroupStaticElements {
 
-    @Column
-    @Enumerated(EnumType.STRING)
     private Scope scope = Scope.Unspecified;
-
-    @ManyToMany(cascade = CascadeType.REMOVE)
-    @JoinTable(schema = "DIAGRAMS",
-            name = "System_Containers",
-            joinColumns = {@JoinColumn(name = "System_Id",
-                    referencedColumnName = "Id")},
-            inverseJoinColumns = {@JoinColumn(name = "Container_Id",
-                    referencedColumnName = "Id")})
     private Set<Containers> containers = new LinkedHashSet<>();
-
-
-    @ManyToMany(cascade = CascadeType.REMOVE)
-    @JoinTable(schema = "DIAGRAMS",
-            name = "System_Components",
-            joinColumns = {@JoinColumn(name = "System_Id",
-                    referencedColumnName = "Id")},
-            inverseJoinColumns = {@JoinColumn(name = "Component_Id",
-                    referencedColumnName = "Id")})
     private Set<Components> components = new LinkedHashSet<>();
 
     public Systems() {

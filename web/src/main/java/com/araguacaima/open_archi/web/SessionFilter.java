@@ -2,7 +2,7 @@ package com.araguacaima.open_archi.web;
 
 
 import com.araguacaima.open_archi.persistence.meta.Account;
-import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
+import com.araguacaima.orpheusdb.utils.OrpheusDbJPAEntityManagerUtils;
 import com.araguacaima.open_archi.web.common.Commons;
 import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.sparkjava.SparkWebContext;
@@ -33,7 +33,7 @@ public class SessionFilter implements Filter {
             if (account == null) {
                 Map<String, Object> param = new HashMap<>();
                 param.put(Account.PARAM_EMAIL, profile.getEmail());
-                account = JPAEntityManagerUtils.findByQuery(Account.class, Account.FIND_BY_EMAIL_AND_ENABLED, param);
+                account = OrpheusDbJPAEntityManagerUtils.findByQuery(Account.class, Account.FIND_BY_EMAIL_AND_ENABLED, param);
             }
             if (account != null) {
                 String email = account.getEmail();

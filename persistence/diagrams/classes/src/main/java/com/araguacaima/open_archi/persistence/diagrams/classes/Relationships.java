@@ -7,13 +7,9 @@ import javax.persistence.*;
 /**
  * A relationship between two classes.
  */
-@Entity
-@PersistenceUnit(unitName = "open-archi")
-@DiscriminatorValue("ClassesRelationships")
+
 public class Relationships extends com.araguacaima.open_archi.persistence.diagrams.core.Relationships {
 
-    @Column
-    @Enumerated(EnumType.STRING)
     private RelationshipType type;
 
     public Relationships() {

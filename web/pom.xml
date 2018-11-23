@@ -64,10 +64,7 @@
             <groupId>com.araguacaima.open_archi</groupId>
             <artifactId>persistence-uml-classes</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.araguacaima.open_archi</groupId>
-            <artifactId>persistence-utils</artifactId>
-        </dependency>
+
         <dependency>
             <groupId>com.araguacaima.open_archi</groupId>
             <artifactId>persistence-meta</artifactId>
@@ -88,6 +85,10 @@
             <artifactId>commons-utils</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.araguacaima</groupId>
+            <artifactId>orpheus-db</artifactId>
+        </dependency>
         <!-- Logging with SLF4J & LogBack -->
         <dependency>
             <groupId>org.slf4j</groupId>

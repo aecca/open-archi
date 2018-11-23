@@ -5,25 +5,17 @@ import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 import com.araguacaima.open_archi.persistence.diagrams.core.Elements;
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
 /**
  * Represents a deployment instance of a {@link Container}, which can be added to a {@link DeploymentNode}.
  */
-@Entity
-@PersistenceUnit(unitName = "open-archi")
+
 public class ContainerInstances extends Elements {
 
-    @Column
     private String containerId;
-
-    @Column
     private int instanceId;
-
-    @Column
-    @Enumerated(EnumType.STRING)
     private ElementKind kind = ElementKind.CONTAINER;
 
     public ContainerInstances() {

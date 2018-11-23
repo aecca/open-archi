@@ -7,8 +7,6 @@ import javax.persistence.PersistenceUnit;
  * This is the superclass for all model elements.
  */
 
-@Entity
-@PersistenceUnit(unitName = "open-archi")
 public abstract class ModelElements extends Elements {
 
     @Override

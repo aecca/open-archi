@@ -3,9 +3,6 @@ package com.araguacaima.open_archi.persistence.diagrams.architectural;
 import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.PersistenceUnit;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -18,14 +15,11 @@ import java.util.Collection;
  * as how those components are packaged (e.g. one component vs many components
  * per JAR file, DLL, shared library, etc) is a separate and orthogonal concern.
  */
-@Entity
-@PersistenceUnit(unitName = "open-archi")
+
 public class Components extends LeafStaticElements {
 
-    @Column
     private String technology;
 
-    @Column
     private long size;
 
     public Components() {

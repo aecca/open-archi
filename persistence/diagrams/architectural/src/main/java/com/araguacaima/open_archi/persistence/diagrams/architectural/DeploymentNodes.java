@@ -5,7 +5,6 @@ import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 import com.araguacaima.open_archi.persistence.diagrams.core.Elements;
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -24,18 +23,10 @@ import java.util.Collection;
  * <li>etc</li>
  * </ul>
  */
-@Entity
-@PersistenceUnit(unitName = "open-archi")
 public class DeploymentNodes extends Elements {
 
-    @Column
     private String technology;
-
-    @Column
     private int instances = 1;
-
-    @Column
-    @Enumerated(EnumType.STRING)
     private ElementKind kind = ElementKind.DEPLOYMENT;
 
     public String getTechnology() {

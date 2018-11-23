@@ -8,16 +8,9 @@ import javax.persistence.*;
  * A relationship between two entities.
  */
 
-@javax.persistence.Entity
-@PersistenceUnit(unitName = "open-archi")
-@DiscriminatorValue("ErRelationships")
 public class Relationships extends com.araguacaima.open_archi.persistence.diagrams.core.Relationships {
-    @Column
-    @Enumerated(EnumType.STRING)
     private RelationshipType type;
-    @Column
     private String sourceText;
-    @Column
     private String destinationText;
 
     public Relationships() {

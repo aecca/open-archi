@@ -1,9 +1,10 @@
 const architectureModelTemplate = gojs(go.Group, "Auto",
     { // use a simple layout that ignores links to stack the "lane" Groups on top of each other
-
-        resizable: false,
+        selectionObjectName: "SHAPE",  // selecting a lane causes the body of the lane to be highlit, not the label
+        resizable: true,
+        resizeObjectName: "SHAPE",  // the custom resizeAdornmentTemplate only permits two kinds of resizing
         movable: true, // allows users to re-order by dragging
-        copyable: false,  // can't copy lanes or pools
+        copyable: true,  // can't copy lanes or pools
         avoidable: false,  // don't impede AvoidsNodes routed Links
         minLocation: new go.Point(NaN, -Infinity),  // only allow vertical movement
         maxLocation: new go.Point(NaN, Infinity),
@@ -15,6 +16,80 @@ const architectureModelTemplate = gojs(go.Group, "Auto",
         computesBoundsIncludingLinks: false,  // to reduce occurrences of links going briefly outside the lane
         computesBoundsIncludingLocation: true,  // to support empty space at top-left corner of lane
         handlesDragDropForMembers: true,  // don't need to define handlers on member Nodes and Links
+        resizeAdornmentTemplate:
+            gojs(go.Adornment, "Spot",
+                gojs(go.Placeholder),
+                gojs(go.Shape,  // for changing the length of a lane
+                    {
+                        alignment: go.Spot.Right,
+                        desiredSize: new go.Size(7, 50),
+                        fill: "lightblue",
+                        stroke: "dodgerblue",
+                        cursor: "col-resize"
+                    },
+                    new go.Binding("visible", "", function (ad) {
+                        if (ad.adornedPart === null) return false;
+                        return ad.adornedPart.isSubGraphExpanded;
+                    }).ofObject()),
+                gojs(go.Shape,  // for changing the breadth of a lane
+                    {
+                        alignment: go.Spot.Bottom,
+                        desiredSize: new go.Size(50, 7),
+                        fill: "lightblue",
+                        stroke: "dodgerblue",
+                        cursor: "row-resize"
+                    },
+                    new go.Binding("visible", "", function (ad) {
+                        if (ad.adornedPart === null) return false;
+                        return ad.adornedPart.isSubGraphExpanded;
+                    }).ofObject())
+            ),
+        contextMenu: partContextMenu,
+        // the Node.location is at the center of each node
+        locationSpot: go.Spot.Center,
+        //isShadowed: true,
+        //shadowColor: "#888",
+        // handle mouse enter/leave events to show/hide the ports
+        mouseDrop: function (e, grp) {  // dropping a copy of some Nodes and Links onto this Group adds them to this Group
+            let ok = true;
+            e.targetDiagram.selection.each(selection => {
+                ok = ok && (selection.data.group === grp.key);
+            });
+            if (ok) {
+                grp.diagram.currentTool.doCancel();
+            } else {
+                ok = grp.addMembers(grp.diagram.selection, true);
+            }
+            if (ok) {
+                relayoutLanes();
+                updateCrossLaneLinks(grp);
+            } else {
+                grp.diagram.currentTool.doCancel();
+            }
+            fixMeta();
+        },
+        mouseDragEnter: function (e, group, prev) {
+            //TODO AMM: This highlaighing doesn't works
+            //highlight(group, true);
+            e.handled = true;
+        },
+        mouseDragLeave: function (e, group, next) {
+            //TODO AMM: This highlaighing doesn't works
+            //highlight(group, false);
+            let selection = e.diagram.selection;
+            if (selection.size === 0) return;
+            let ok = true;
+            selection.each(selection => {
+                ok = ok && (selection.data.group === group.key);
+            });
+            if (ok) {
+                if (!e.diagram.lastInput.shift) {
+                    e.diagram.currentTool.doCancel();
+                }
+            }
+            relayoutLanes();
+            e.handled = true;
+        },
         subGraphExpandedChanged: function (grp) {
             const shp = grp.resizeObject;
             if (grp.diagram.undoManager.isUndoingRedoing) return;
@@ -26,12 +101,6 @@ const architectureModelTemplate = gojs(go.Group, "Auto",
             }
             updateCrossLaneLinks(grp);
         },
-        contextMenu: partContextMenu,
-        // the Node.location is at the center of each node
-        locationSpot: go.Spot.Center,
-        //isShadowed: true,
-        //shadowColor: "#888",
-        // handle mouse enter/leave events to show/hide the ports
         mouseEnter: function (e, obj) {
             const object = obj.findObject("SHAPE");
             let background = obj.part.background;
@@ -39,15 +108,18 @@ const architectureModelTemplate = gojs(go.Group, "Auto",
                 background = background.color;
             }
             object.fill = go.Brush.lighten(background);
-            showPorts(obj.part, true);
+            object.stroke = "red";
+            e.handled = true;
         },
         mouseLeave: function (e, obj) {
             const object = obj.findObject("SHAPE");
             object.fill = "white";
-            showPorts(obj.part, false);
-        },
-        mouseDrop: function (e, grp) {
-            fixMeta();
+            let background = obj.part.background;
+            if (!commons.prototype.isString(background) && commons.prototype.isObject(background)) {
+                background = background.color;
+            }
+            object.stroke = background;
+            e.handled = true;
         }
     },
     groupStyle(),

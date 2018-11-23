@@ -5,7 +5,6 @@ import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 import com.araguacaima.open_archi.persistence.diagrams.core.ModelElements;
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashSet;
@@ -14,53 +13,13 @@ import java.util.Set;
 /**
  * A system architecture model.
  */
-@Entity
-@PersistenceUnit(unitName = "open-archi")
-@DiscriminatorValue(value = "ArchitectureModels")
-@NamedQueries({@NamedQuery(name = Models.GET_ALL_RELATIONSHIPS,
-        query = "select a.relationships from Models a where a.id=:id"),})
+
 public class Models extends ModelElements {
 
-    public static final String GET_ALL_RELATIONSHIPS = "get.all.relationships_list";
-
-    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
-    @JoinTable(schema = "DIAGRAMS",
-            name = "Architecture_Model_Relationships",
-            joinColumns = {@JoinColumn(name = "Architecture_Model_Id",
-                    referencedColumnName = "Id")},
-            inverseJoinColumns = {@JoinColumn(name = "Relationship_Id",
-                    referencedColumnName = "Id")})
     protected Set<Relationships> relationships = new LinkedHashSet<>();
-
-    @Column
-    @Enumerated(EnumType.STRING)
     private ElementKind kind = ElementKind.ARCHITECTURE_MODEL;
-
-    @ManyToMany(cascade = CascadeType.REMOVE)
-    @JoinTable(schema = "DIAGRAMS",
-            name = "Architecture_Model_People",
-            joinColumns = {@JoinColumn(name = "Architecture_Model_Consumer_Id",
-                    referencedColumnName = "Id")},
-            inverseJoinColumns = {@JoinColumn(name = "Consumer_Id",
-                    referencedColumnName = "Id")})
     private Set<Consumers> consumers = new LinkedHashSet<>();
-
-    @ManyToMany(cascade = CascadeType.REMOVE)
-    @JoinTable(schema = "DIAGRAMS",
-            name = "Architecture_Model_Systems",
-            joinColumns = {@JoinColumn(name = "Architecture_Model_Id",
-                    referencedColumnName = "Id")},
-            inverseJoinColumns = {@JoinColumn(name = "System_Id",
-                    referencedColumnName = "Id")})
     private Set<Systems> systems = new LinkedHashSet<>();
-
-    @ManyToMany(cascade = CascadeType.REMOVE)
-    @JoinTable(schema = "DIAGRAMS",
-            name = "Architecture_Model_DeploymentNodes",
-            joinColumns = {@JoinColumn(name = "Architecture_Model_Id",
-                    referencedColumnName = "Id")},
-            inverseJoinColumns = {@JoinColumn(name = "DeploymentNode_Id",
-                    referencedColumnName = "Id")})
     private Set<DeploymentNodes> deploymentNodes = new LinkedHashSet<>();
 
     public Models() {

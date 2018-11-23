@@ -1,7 +1,6 @@
 package com.araguacaima.open_archi.persistence.diagrams.core.specification;
 
-import com.araguacaima.open_archi.persistence.commons.Utils;
-import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
+import com.araguacaima.open_archi.persistence.diagrams.core.ShapeFactory;
 import com.araguacaima.open_archi.persistence.diagrams.core.Item;
 import com.araguacaima.open_archi.persistence.diagrams.core.Shape;
 import com.araguacaima.specification.AbstractSpecification;
@@ -25,12 +24,7 @@ public class AppendShape extends AbstractSpecification {
             Item item = (Item) object;
             Shape shape;
             if (item.getShape() == null) {
-                shape = new Shape();
-                shape.setType(ElementKind.DEFAULT);
-                shape.setFill(Utils.randomHexColor());
-                shape.setStroke("#333333");
-                shape.setInput(true);
-                shape.setOutput(true);
+                shape = ShapeFactory.getInstance(item.getKind());
                 item.setShape(shape);
             }
         }

@@ -6,7 +6,7 @@ import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 import com.araguacaima.open_archi.persistence.diagrams.core.Item;
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 import com.araguacaima.open_archi.persistence.meta.BasicEntity;
-import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
+import com.araguacaima.orpheusdb.utils.OrpheusDbJPAEntityManagerUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +34,7 @@ public class DBUtil {
         classes.add(com.araguacaima.open_archi.persistence.diagrams.gantt.Model.class);
         classes.add(com.araguacaima.open_archi.persistence.diagrams.sequence.Model.class);
         classes.add(com.araguacaima.open_archi.persistence.diagrams.classes.Model.class);
-        JPAEntityManagerUtils.begin();
+        OrpheusDbJPAEntityManagerUtils.begin();
     }
 
     public DBUtil() {
@@ -43,7 +43,7 @@ public class DBUtil {
     private static void processInnerIterable(Object result) {
         if (result != null) {
             if (!persistedObjects.contains(result)) {
-                Object entity = JPAEntityManagerUtils.merge(result);
+                Object entity = OrpheusDbJPAEntityManagerUtils.merge(result);
                 persistedObjects.add(entity);
             } else {
                 logProcessing(result);
@@ -54,7 +54,7 @@ public class DBUtil {
     private static void processInnerComplex(Object value, Class<?> type) {
         if (reflectionUtils.getFullyQualifiedJavaTypeOrNull(type) == null && !type.isEnum() && !Enum.class.isAssignableFrom(type)) {
             if (!persistedObjects.contains(value)) {
-                Object entity_ = JPAEntityManagerUtils.merge(value);
+                Object entity_ = OrpheusDbJPAEntityManagerUtils.merge(value);
                 persistedObjects.add(entity_);
             } else {
                 logProcessing(value);
@@ -95,44 +95,44 @@ public class DBUtil {
     }
 
     public static void update(BaseEntity entity) throws Throwable {
-        boolean autocommit = JPAEntityManagerUtils.getAutocommit();
-        JPAEntityManagerUtils.setAutocommit(false);
-        JPAEntityManagerUtils.begin();
+        boolean autocommit = OrpheusDbJPAEntityManagerUtils.getAutocommit();
+        OrpheusDbJPAEntityManagerUtils.setAutocommit(false);
+        OrpheusDbJPAEntityManagerUtils.begin();
         Class<?> clazz = entity.getClass();
-        Object persistedEntity = JPAEntityManagerUtils.find(clazz, entity.getId());
+        Object persistedEntity = OrpheusDbJPAEntityManagerUtils.find(clazz, entity.getId());
         try {
             if (persistedEntity == null) {
                 throw new EntityNotFoundException("Can not replace due object with id '" + entity.getId() + "' does not exists");
             }
             reflectionUtils.invokeMethod(persistedEntity, "copyNonEmpty", new Object[]{entity, true});
-            JPAEntityManagerUtils.update(persistedEntity);
+            OrpheusDbJPAEntityManagerUtils.update(persistedEntity);
         } catch (Throwable t) {
-            JPAEntityManagerUtils.rollback();
+            OrpheusDbJPAEntityManagerUtils.rollback();
             throw t;
         } finally {
-            JPAEntityManagerUtils.commit();
-            JPAEntityManagerUtils.setAutocommit(autocommit);
+            OrpheusDbJPAEntityManagerUtils.commit();
+            OrpheusDbJPAEntityManagerUtils.setAutocommit(autocommit);
         }
     }
 
     public static void persist(Object entity) {
-        boolean autocommit = JPAEntityManagerUtils.getAutocommit();
-        JPAEntityManagerUtils.setAutocommit(false);
-        JPAEntityManagerUtils.begin();
+        boolean autocommit = OrpheusDbJPAEntityManagerUtils.getAutocommit();
+        OrpheusDbJPAEntityManagerUtils.setAutocommit(false);
+        OrpheusDbJPAEntityManagerUtils.begin();
         try {
-            JPAEntityManagerUtils.persist(entity);
+            OrpheusDbJPAEntityManagerUtils.persist(entity);
         } catch (Throwable t) {
-            JPAEntityManagerUtils.rollback();
+            OrpheusDbJPAEntityManagerUtils.rollback();
             throw t;
         } finally {
-            JPAEntityManagerUtils.commit();
-            JPAEntityManagerUtils.setAutocommit(autocommit);
+            OrpheusDbJPAEntityManagerUtils.commit();
+            OrpheusDbJPAEntityManagerUtils.setAutocommit(autocommit);
         }
     }
 
     public static void delete(Class<?> clazz, String key) throws Throwable {
-        Object entity = JPAEntityManagerUtils.find(clazz, (Object) key);
-        JPAEntityManagerUtils.delete(entity);
+        Object entity = OrpheusDbJPAEntityManagerUtils.find(clazz, (Object) key);
+        OrpheusDbJPAEntityManagerUtils.delete(entity);
     }
 
     private static class Populate {
@@ -145,9 +145,9 @@ public class DBUtil {
         }
 
         public static void populate(BaseEntity entity, boolean flatten, boolean persists) throws Throwable {
-            boolean autocommit = JPAEntityManagerUtils.getAutocommit();
-            JPAEntityManagerUtils.setAutocommit(false);
-            JPAEntityManagerUtils.begin();
+            boolean autocommit = OrpheusDbJPAEntityManagerUtils.getAutocommit();
+            OrpheusDbJPAEntityManagerUtils.setAutocommit(false);
+            OrpheusDbJPAEntityManagerUtils.begin();
             if (flatten) {
                 flattenForPopulation(entity);
             }
@@ -155,13 +155,13 @@ public class DBUtil {
                 Class clazz = entity.getClass();
                 populate(entity, clazz);
                 if (persists) {
-                    JPAEntityManagerUtils.commit();
+                    OrpheusDbJPAEntityManagerUtils.commit();
                 }
             } catch (Throwable t) {
-                JPAEntityManagerUtils.rollback();
+                OrpheusDbJPAEntityManagerUtils.rollback();
                 throw t;
             } finally {
-                JPAEntityManagerUtils.setAutocommit(autocommit);
+                OrpheusDbJPAEntityManagerUtils.setAutocommit(autocommit);
                 persistedObjects.clear();
             }
         }
@@ -176,7 +176,7 @@ public class DBUtil {
                 }
             }, Utils::filterMethod);
             if (!persistedObjects.contains(entity)) {
-                JPAEntityManagerUtils.persist(entity);
+                OrpheusDbJPAEntityManagerUtils.persist(entity);
                 persistedObjects.add(entity);
             } else {
                 logProcessing(entity);
@@ -194,9 +194,9 @@ public class DBUtil {
             }, Utils::filterMethod);
             try {
                 if (!persistedObjects.contains(entity)) {
-                    JPAEntityManagerUtils.persist(entity);
+                    OrpheusDbJPAEntityManagerUtils.persist(entity);
                     persistedObjects.add(entity);
-                    JPAEntityManagerUtils.flush();
+                    OrpheusDbJPAEntityManagerUtils.flush();
                 } else {
                     logProcessing(entity);
                 }
@@ -219,9 +219,9 @@ public class DBUtil {
             }, Utils::filterMethod);
             try {
                 Object id = reflectionUtils.invokeGetter(entity, "id");
-                if (JPAEntityManagerUtils.find(entity.getClass(), id) == null) {
+                if (OrpheusDbJPAEntityManagerUtils.find(entity.getClass(), id) == null) {
                     if (!persistedObjects.contains(entity)) {
-                        JPAEntityManagerUtils.persist(entity);
+                        OrpheusDbJPAEntityManagerUtils.persist(entity);
                         persistedObjects.add(entity);
                     } else {
                         logProcessing(entity);
@@ -296,7 +296,7 @@ public class DBUtil {
                     Object value = innerFlatten(innerCollection);
                     valuesToRemove.add(innerCollection);
                     if (!persistedObjects.contains(value)) {
-                        Object entity = JPAEntityManagerUtils.merge(value);
+                        Object entity = OrpheusDbJPAEntityManagerUtils.merge(value);
                         persistedObjects.add(entity);
                     } else {
                         logProcessing(value);
@@ -304,7 +304,7 @@ public class DBUtil {
                     valuesToAdd.add(value);
                 }
                 ((Collection) object_).removeAll(valuesToRemove);
-                JPAEntityManagerUtils.flush();
+                OrpheusDbJPAEntityManagerUtils.flush();
                 ((Collection) object_).addAll(valuesToAdd);
                 return object_;
             } else if (ReflectionUtils.isMapImplementation(type)) {
@@ -316,7 +316,7 @@ public class DBUtil {
                 for (Map.Entry innerMapValues : set) {
                     Object value = innerFlatten(innerMapValues.getValue());
                     if (!persistedObjects.contains(value)) {
-                        Object entity = JPAEntityManagerUtils.merge(value);
+                        Object entity = OrpheusDbJPAEntityManagerUtils.merge(value);
                         persistedObjects.add(entity);
                     } else {
                         logProcessing(value);
@@ -394,9 +394,9 @@ public class DBUtil {
                     params.put("name", name);
                     ElementKind kind = (ElementKind) reflectionUtils.invokeGetter(entity, "kind");
                     params.put("kind", kind);
-                    Object entity_ = JPAEntityManagerUtils.findByQuery(Item.class, Item.GET_ITEM_ID_BY_NAME, params);
+                    Object entity_ = OrpheusDbJPAEntityManagerUtils.findByQuery(Item.class, Item.GET_ITEM_ID_BY_NAME, params);
                     if (entity_ == null) {
-                        entity_ = JPAEntityManagerUtils.find(entity);
+                        entity_ = OrpheusDbJPAEntityManagerUtils.find(entity);
                         if (entity_ != null) {
                             return entity_;
                         }
@@ -405,7 +405,7 @@ public class DBUtil {
                         return entity_;
                     }
                 } else {
-                    Object entity_ = JPAEntityManagerUtils.find(entity);
+                    Object entity_ = OrpheusDbJPAEntityManagerUtils.find(entity);
                     if (entity_ != null) {
                         Object[] args = new Object[]{entity, false, StringUtils.EMPTY};
                         reflectionUtils.invokeMethod(entity_, "override", args);
@@ -427,21 +427,21 @@ public class DBUtil {
         }
 
         public static void replace(BaseEntity entity, boolean persists) throws Throwable {
-            boolean autocommit = JPAEntityManagerUtils.getAutocommit();
-            JPAEntityManagerUtils.setAutocommit(false);
-            JPAEntityManagerUtils.begin();
+            boolean autocommit = OrpheusDbJPAEntityManagerUtils.getAutocommit();
+            OrpheusDbJPAEntityManagerUtils.setAutocommit(false);
+            OrpheusDbJPAEntityManagerUtils.begin();
 
             try {
                 Class clazz = entity.getClass();
                 replace(entity, clazz);
                 if (persists) {
-                    JPAEntityManagerUtils.commit();
+                    OrpheusDbJPAEntityManagerUtils.commit();
                 }
             } catch (Throwable t) {
-                JPAEntityManagerUtils.rollback();
+                OrpheusDbJPAEntityManagerUtils.rollback();
                 throw t;
             } finally {
-                JPAEntityManagerUtils.setAutocommit(autocommit);
+                OrpheusDbJPAEntityManagerUtils.setAutocommit(autocommit);
                 persistedObjects.clear();
             }
         }
@@ -456,7 +456,7 @@ public class DBUtil {
                 }
             }, Utils::filterMethod);
             if (!persistedObjects.contains(entity)) {
-                JPAEntityManagerUtils.merge(entity);
+                OrpheusDbJPAEntityManagerUtils.merge(entity);
                 persistedObjects.add(entity);
             } else {
                 logProcessing(entity);
@@ -474,7 +474,7 @@ public class DBUtil {
             }, Utils::filterMethod);
             try {
                 if (!persistedObjects.contains(entity)) {
-                    JPAEntityManagerUtils.merge(entity);
+                    OrpheusDbJPAEntityManagerUtils.merge(entity);
                     persistedObjects.add(entity);
                 } else {
                     logProcessing(entity);
@@ -498,9 +498,9 @@ public class DBUtil {
             }, Utils::filterMethod);
             try {
                 Object id = reflectionUtils.invokeGetter(entity, "id");
-                if (JPAEntityManagerUtils.find(entity.getClass(), id) == null) {
+                if (OrpheusDbJPAEntityManagerUtils.find(entity.getClass(), id) == null) {
                     if (!persistedObjects.contains(entity)) {
-                        JPAEntityManagerUtils.merge(entity);
+                        OrpheusDbJPAEntityManagerUtils.merge(entity);
                         persistedObjects.add(entity);
                     } else {
                         logProcessing(entity);
@@ -560,7 +560,7 @@ public class DBUtil {
                     Object value = innerFlatten(innerCollection);
                     valuesToRemove.add(innerCollection);
                     if (!persistedObjects.contains(value)) {
-                        Object entity = JPAEntityManagerUtils.merge(value);
+                        Object entity = OrpheusDbJPAEntityManagerUtils.merge(value);
                         persistedObjects.add(entity);
                     } else {
                         logProcessing(value);
@@ -568,7 +568,7 @@ public class DBUtil {
                     valuesToAdd.add(value);
                 }
                 ((Collection) object_).removeAll(valuesToRemove);
-                //JPAEntityManagerUtils.flush();
+                //OrpheusDbJPAEntityManagerUtils.flush();
                 ((Collection) object_).addAll(valuesToAdd);
                 return object_;
             } else if (ReflectionUtils.isMapImplementation(type)) {
@@ -580,7 +580,7 @@ public class DBUtil {
                 for (Map.Entry innerMapValues : set) {
                     Object value = innerFlatten(innerMapValues.getValue());
                     if (!persistedObjects.contains(value)) {
-                        Object entity = JPAEntityManagerUtils.merge(value);
+                        Object entity = OrpheusDbJPAEntityManagerUtils.merge(value);
                         persistedObjects.add(entity);
                     } else {
                         logProcessing(value);
@@ -658,9 +658,9 @@ public class DBUtil {
                     params.put("name", name);
                     ElementKind kind = (ElementKind) reflectionUtils.invokeGetter(entity, "kind");
                     params.put("kind", kind);
-                    Object entity_ = JPAEntityManagerUtils.findByQuery(Item.class, Item.GET_ITEM_ID_BY_NAME, params);
+                    Object entity_ = OrpheusDbJPAEntityManagerUtils.findByQuery(Item.class, Item.GET_ITEM_ID_BY_NAME, params);
                     if (entity_ == null) {
-                        entity_ = JPAEntityManagerUtils.find(entity);
+                        entity_ = OrpheusDbJPAEntityManagerUtils.find(entity);
                         if (entity_ != null) {
                             return entity_;
                         }
@@ -669,7 +669,7 @@ public class DBUtil {
                         return entity_;
                     }
                 } else {
-                    Object entity_ = JPAEntityManagerUtils.find(entity);
+                    Object entity_ = OrpheusDbJPAEntityManagerUtils.find(entity);
                     if (entity_ != null) {
                         Object[] args = new Object[]{entity, false, StringUtils.EMPTY};
                         reflectionUtils.invokeMethod(entity_, "override", args);

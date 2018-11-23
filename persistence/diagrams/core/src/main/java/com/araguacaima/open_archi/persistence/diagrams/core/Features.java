@@ -11,31 +11,23 @@ import java.util.Collection;
  * that is part of the implementation of a component.
  */
 
-@Entity
-@PersistenceUnit(unitName = "open-archi")
 public class Features extends Items {
 
     /**
      * the type of the feature ... Primary or Supporting
      */
-    @Column
-    @Enumerated(EnumType.STRING)
     private FeatureType type = FeatureType.Primary;
 
     /**
      * a URL; e.g. a reference to the feature in source code control
      */
-    @Column
     private String url;
 
     /**
      * the visibility of the feature; e.g. public, package, private
      */
-    @Column
     private String visibility;
 
-    @Column
-    @Enumerated(EnumType.STRING)
     private ElementKind kind = ElementKind.FEATURE;
 
     public Features() {

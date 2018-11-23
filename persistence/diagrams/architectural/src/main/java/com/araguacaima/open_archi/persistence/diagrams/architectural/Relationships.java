@@ -1,5 +1,7 @@
 package com.araguacaima.open_archi.persistence.diagrams.architectural;
 
+import com.araguacaima.open_archi.persistence.diagrams.architectural.InteractionStyle;
+import com.araguacaima.open_archi.persistence.diagrams.architectural.Relationship;
 import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.RelationshipType;
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
@@ -11,20 +13,11 @@ import java.util.Collection;
 /**
  * A relationship between two architectural elements.
  */
-@Entity
-@PersistenceUnit(unitName = "open-archi")
-@DiscriminatorValue("ArchitectureRelationships")
+
 public class Relationships extends com.araguacaima.open_archi.persistence.diagrams.core.Relationships {
 
-    @Column
     private String technology;
-
-    @Column
-    @Enumerated(EnumType.STRING)
     private InteractionStyle interactionStyle = InteractionStyle.SYNCHRONOUS;
-
-    @Column
-    @Enumerated(EnumType.STRING)
     private RelationshipType type;
 
     public Relationships() {

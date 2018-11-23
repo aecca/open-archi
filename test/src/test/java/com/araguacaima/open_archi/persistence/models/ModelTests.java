@@ -3,7 +3,7 @@ package com.araguacaima.open_archi.persistence.models;
 import com.araguacaima.commons.utils.JsonUtils;
 import com.araguacaima.commons.utils.MapUtils;
 import com.araguacaima.open_archi.controller.ModelsController;
-import com.araguacaima.open_archi.persistence.utils.JPAEntityManagerUtils;
+import com.araguacaima.orpheusdb.utils.OrpheusDbJPAEntityManagerUtils;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.collections4.CollectionUtils;
@@ -35,7 +35,7 @@ public class ModelTests {
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
         environment = processBuilder.environment();
-        URL url = JPAEntityManagerUtils.class.getResource("/config/config.properties");
+        URL url = OrpheusDbJPAEntityManagerUtils.class.getResource("/config/config.properties");
         Properties properties = new Properties();
         try {
             properties.load(url.openStream());
@@ -49,7 +49,7 @@ public class ModelTests {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        JPAEntityManagerUtils.init(environment);
+        OrpheusDbJPAEntityManagerUtils.init("open-archi", environment);
     }
 
     @Test

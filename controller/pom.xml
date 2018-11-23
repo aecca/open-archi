@@ -18,49 +18,52 @@
         <dependency>
             <groupId>com.araguacaima.open_archi</groupId>
             <artifactId>persistence-core</artifactId>
-
         </dependency>
+
         <dependency>
             <groupId>com.araguacaima.open_archi</groupId>
             <artifactId>persistence-architectural</artifactId>
-
         </dependency>
+
         <dependency>
             <groupId>com.araguacaima.open_archi</groupId>
             <artifactId>persistence-bpm</artifactId>
-
         </dependency>
+
         <dependency>
             <groupId>com.araguacaima.open_archi</groupId>
             <artifactId>persistence-uml-classes</artifactId>
-
         </dependency>
+
         <dependency>
             <groupId>com.araguacaima.open_archi</groupId>
             <artifactId>persistence-er</artifactId>
-
         </dependency>
+
         <dependency>
             <groupId>com.araguacaima.open_archi</groupId>
             <artifactId>persistence-flowchart</artifactId>
-
         </dependency>
+
         <dependency>
             <groupId>com.araguacaima.open_archi</groupId>
             <artifactId>persistence-sequence</artifactId>
-
         </dependency>
+
         <dependency>
             <groupId>com.araguacaima.open_archi</groupId>
             <artifactId>persistence-gantt</artifactId>
-
         </dependency>
 
         <!-- araguacaima libraries -->
         <dependency>
             <groupId>com.araguacaima</groupId>
             <artifactId>commons-utils</artifactId>
+        </dependency>
 
+        <dependency>
+            <groupId>com.araguacaima</groupId>
+            <artifactId>orpheus-db</artifactId>
         </dependency>
 
         <!-- SLF4J -->
