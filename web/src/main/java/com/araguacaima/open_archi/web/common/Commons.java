@@ -274,7 +274,6 @@ public class Commons {
         deeplyFulfilledIdValueCollection.add(deeplyFulfilledIdValue_1);
         deeplyFulfilledIdValueCollection.add(deeplyFulfilledIdValue_2);
 
-        OrpheusDbJPAEntityManagerUtils.getEntityManager();
     }
 
     public static String render(Map<String, Object> model, String templatePath) {
