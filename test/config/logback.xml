@@ -15,16 +15,13 @@
     <logger name="com.araguacaima.open_archi.web.DBUtil" level="${LOG_LEVEL}" additivity="false">
         <appender-ref ref="STDOUT"/>
     </logger>
-    <logger name="com.araguacaima.orpheusdb.utils.OrpheusDbJPAEntityManagerUtils" level="${LOG_LEVEL}" additivity="false">
-        <appender-ref ref="STDOUT"/>
-    </logger>
     <logger name="com.mchange.v2" level="ERROR" additivity="false">
         <appender-ref ref="STDOUT"/>
     </logger>
     <logger name="org.apache.catalina" level="${LOG_LEVEL}" additivity="false">
         <appender-ref ref="STDOUT"/>
     </logger>
-    <logger name="org.hibernate" level="WARN" additivity="false">
+    <logger name="org.hibernate" level="${LOG_LEVEL}" additivity="false">
         <appender-ref ref="STDOUT"/>
     </logger>
     <logger name="javax.persistence" level="${LOG_LEVEL}" additivity="false">
@@ -33,7 +30,12 @@
     <logger name="org.pac4j" level="${LOG_LEVEL}" additivity="false">
         <appender-ref ref="STDOUT"/>
     </logger>
-
+    <logger name="com.araguacaima.orpheusdb" level="${LOG_LEVEL}" additivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+    <logger name="com.araguacaima.orpheusdb.utils.OrpheusDbJPAEntityManagerUtils" level="DEBUG" additivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
     <!-- By default, the level of the root level is set to DEBUG -->
     <root level="${LOG_LEVEL}">
         <appender-ref ref="STDOUT"/>
