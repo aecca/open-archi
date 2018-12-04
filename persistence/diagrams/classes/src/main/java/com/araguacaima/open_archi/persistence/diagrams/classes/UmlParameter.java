@@ -7,8 +7,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.PersistenceUnit;
 import javax.persistence.Table;
-import java.util.ArrayList;
-import java.util.Collection;
 
 @Entity
 @PersistenceUnit(unitName = "open-archi")

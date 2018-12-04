@@ -6,9 +6,11 @@ import com.araguacaima.open_archi.persistence.diagrams.core.Item;
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 import com.araguacaima.orpheusdb.utils.OrpheusDbJPAEntityManagerUtils;
 import com.araguacaima.specification.AbstractSpecification;
-import org.apache.commons.collections4.CollectionUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CheckModelAlreadyExists extends AbstractSpecification {
 

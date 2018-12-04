@@ -2,8 +2,6 @@ package com.araguacaima.open_archi.persistence.diagrams.classes;
 
 import com.araguacaima.open_archi.persistence.diagrams.core.RelationshipType;
 
-import javax.persistence.*;
-
 /**
  * A relationship between two classes.
  */

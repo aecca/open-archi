@@ -1,11 +1,8 @@
 package com.araguacaima.open_archi.persistence.diagrams.flowchart;
 
 import com.araguacaima.open_archi.persistence.diagrams.core.RelationshipType;
-import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collection;
 
 /**
  * A relationship between two classes.

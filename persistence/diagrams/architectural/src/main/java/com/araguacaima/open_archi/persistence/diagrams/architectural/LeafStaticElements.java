@@ -22,7 +22,7 @@ public abstract class LeafStaticElements extends StaticElements {
     }
 
     public Collection<BaseEntity> override(LeafStaticElements source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
-       return super.override(source, keepMeta, suffix, clonedFrom);
+        return super.override(source, keepMeta, suffix, clonedFrom);
     }
 
     public Collection<BaseEntity> copyNonEmpty(LeafStaticElements source, boolean keepMeta) {

@@ -30,6 +30,17 @@ public class CompositeElement<T extends ElementKind> implements Comparable<Compo
     @OneToOne
     private Version version;
 
+    public static CompositeElement<ElementKind> fromItem(Item item) {
+        CompositeElement<ElementKind> compositeElement = new CompositeElement<>();
+        MetaInfo meta = item.getMeta();
+        if (meta != null) {
+            compositeElement.setVersion(meta.getActiveVersion());
+        }
+        compositeElement.setType(item.getKind());
+        compositeElement.setId(item.getId());
+        return compositeElement;
+    }
+
     public String getId() {
         return id;
     }
@@ -65,17 +76,6 @@ public class CompositeElement<T extends ElementKind> implements Comparable<Compo
 
     public void setVersion(Version version) {
         this.version = version;
-    }
-
-    public static CompositeElement<ElementKind> fromItem(Item item) {
-        CompositeElement<ElementKind> compositeElement = new CompositeElement<>();
-        MetaInfo meta = item.getMeta();
-        if (meta != null) {
-            compositeElement.setVersion(meta.getActiveVersion());
-        }
-        compositeElement.setType(item.getKind());
-        compositeElement.setId(item.getId());
-        return compositeElement;
     }
 
     public void override(CompositeElement compositeElement, boolean keepMeta, String suffix) {

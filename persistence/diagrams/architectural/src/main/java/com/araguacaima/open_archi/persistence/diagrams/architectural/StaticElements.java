@@ -31,6 +31,6 @@ public abstract class StaticElements extends Elements {
     }
 
     public Collection<BaseEntity> copyNonEmpty(StaticElements source, boolean keepMeta) {
-       return super.copyNonEmpty(source, keepMeta);
+        return super.copyNonEmpty(source, keepMeta);
     }
 }

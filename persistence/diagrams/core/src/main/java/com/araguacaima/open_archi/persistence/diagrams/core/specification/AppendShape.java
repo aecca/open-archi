@@ -1,8 +1,8 @@
 package com.araguacaima.open_archi.persistence.diagrams.core.specification;
 
-import com.araguacaima.open_archi.persistence.diagrams.core.ShapeFactory;
 import com.araguacaima.open_archi.persistence.diagrams.core.Item;
 import com.araguacaima.open_archi.persistence.diagrams.core.Shape;
+import com.araguacaima.open_archi.persistence.diagrams.core.ShapeFactory;
 import com.araguacaima.specification.AbstractSpecification;
 
 import java.util.ArrayList;

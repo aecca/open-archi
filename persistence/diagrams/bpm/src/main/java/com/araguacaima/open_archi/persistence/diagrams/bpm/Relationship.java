@@ -48,7 +48,7 @@ public class Relationship extends com.araguacaima.open_archi.persistence.diagram
         Collection<BaseEntity> overriden = new ArrayList<>();
         overriden.addAll(super.override(source, keepMeta, suffix, clonedFrom));
         this.type = source.getType();
-        return  overriden;
+        return overriden;
     }
 
     public Collection<BaseEntity> copyNonEmpty(Relationship source, boolean keepMeta) {

@@ -24,7 +24,7 @@ public class PropagatePrototype extends AbstractSpecification {
             boolean prototype;
             if (initiator != null) {
                 prototype = initiator.isPrototype();
-            }else {
+            } else {
                 initiator = (Item) map.get("Initiator");
                 prototype = item.isPrototype();
                 if (initiator == null) {

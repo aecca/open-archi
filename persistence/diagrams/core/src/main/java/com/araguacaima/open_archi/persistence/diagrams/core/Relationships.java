@@ -2,9 +2,6 @@ package com.araguacaima.open_archi.persistence.diagrams.core;
 
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.PersistenceUnit;
 import java.util.ArrayList;
 import java.util.Collection;
 

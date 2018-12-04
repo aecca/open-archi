@@ -4,7 +4,6 @@ import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.RelationshipType;
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
