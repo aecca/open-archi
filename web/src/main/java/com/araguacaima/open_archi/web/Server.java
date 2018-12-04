@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.neuland.jade4j.JadeConfiguration;
 import de.neuland.jade4j.template.TemplateLoader;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.template.jade.JadeTemplateEngine;
@@ -40,13 +41,11 @@ public class Server {
             properties.load(url.openStream());
             Map<String, String> map = MapUtils.fromProperties(properties);
             if (!map.isEmpty()) {
-                String jdbcDbUrl = map.get("JDBC_DATABASE_URL");
-                String jdbcDbUsername;
-                String jdbcDbPassword;
+                String jdbcDbUrl = StringUtils.defaultIfBlank(map.get("JDBC_DATABASE_URL"), environment.get("JDBC_DATABASE_URL"));
+                String jdbcDbUsername = StringUtils.defaultIfBlank(map.get("JDBC_DATABASE_USERNAME"), environment.get("JDBC_DATABASE_USERNAME"));
+                String jdbcDbPassword = StringUtils.defaultIfBlank(map.get("JDBC_DATABASE_PASSWORD"), environment.get("JDBC_DATABASE_PASSWORD"));
                 log.info("JDBC_DATABASE_URL=" + jdbcDbUrl);
-                jdbcDbUsername = map.get("JDBC_DATABASE_USERNAME");
                 log.trace("JDBC_DATABASE_USERNAME=" + jdbcDbUsername);
-                jdbcDbPassword = map.get("JDBC_DATABASE_PASSWORD");
                 log.trace("JDBC_DATABASE_PASSWORD=" + jdbcDbPassword);
                 map.put("hibernate.connection.url", jdbcDbUrl);
                 map.put("hibernate.connection.username", jdbcDbUsername);
