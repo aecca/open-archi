@@ -65,7 +65,7 @@ public class Server {
                 map.put("hibernate.c3p0.timeout", "300");
                 map.put("hibernate.c3p0.max_statements", "50");
                 map.put("hibernate.c3p0.idle_test_period", "3000");
-                map.put("orpheus.db.versionable.packages", "com.araguacaima.open_archi.persistence.diagrams.architectural");
+                //map.put("orpheus.db.versionable.packages", "com.araguacaima.open_archi.persistence.diagrams.architectural");
                 //map.put("orpheus.db.versionable.classes", "{fill with comma separated fully qualified classes names}");
                 environment.putAll(map);
                 log.info("Properties taken from config file '" + url.getFile().replace("file:" + File.separator, "") + "'");
