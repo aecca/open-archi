@@ -45,9 +45,9 @@ public class Server {
                 String jdbcDbPassword;
                 log.info("JDBC_DATABASE_URL=" + jdbcDbUrl);
                 jdbcDbUsername = map.get("JDBC_DATABASE_USERNAME");
-                log.info("JDBC_DATABASE_USERNAME=" + jdbcDbUsername);
+                log.debug("JDBC_DATABASE_USERNAME=" + jdbcDbUsername);
                 jdbcDbPassword = map.get("JDBC_DATABASE_PASSWORD");
-                log.info("JDBC_DATABASE_PASSWORD=" + jdbcDbPassword);
+                log.debug("JDBC_DATABASE_PASSWORD=" + jdbcDbPassword);
                 map.put("hibernate.connection.url", jdbcDbUrl);
                 map.put("hibernate.connection.username", jdbcDbUsername);
                 map.put("hibernate.connection.password", jdbcDbPassword);
