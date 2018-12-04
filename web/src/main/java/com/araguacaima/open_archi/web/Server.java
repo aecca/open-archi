@@ -45,9 +45,9 @@ public class Server {
                 String jdbcDbPassword;
                 log.info("JDBC_DATABASE_URL=" + jdbcDbUrl);
                 jdbcDbUsername = map.get("JDBC_DATABASE_USERNAME");
-                log.debug("JDBC_DATABASE_USERNAME=" + jdbcDbUsername);
+                log.trace("JDBC_DATABASE_USERNAME=" + jdbcDbUsername);
                 jdbcDbPassword = map.get("JDBC_DATABASE_PASSWORD");
-                log.debug("JDBC_DATABASE_PASSWORD=" + jdbcDbPassword);
+                log.trace("JDBC_DATABASE_PASSWORD=" + jdbcDbPassword);
                 map.put("hibernate.connection.url", jdbcDbUrl);
                 map.put("hibernate.connection.username", jdbcDbUsername);
                 map.put("hibernate.connection.password", jdbcDbPassword);
@@ -61,7 +61,7 @@ public class Server {
                 map.put("packagesToScan", "com.araguacaima.open_archi.persistence");
                 map.put("hibernate.connection.provider_class", "org.hibernate.c3p0.internal.C3P0ConnectionProvider");
                 map.put("hibernate.c3p0.min_size", "8");
-                map.put("hibernate.c3p0.max_size", "30");
+                map.put("hibernate.c3p0.max_size", "20");
                 map.put("hibernate.c3p0.timeout", "300");
                 map.put("hibernate.c3p0.max_statements", "50");
                 map.put("hibernate.c3p0.idle_test_period", "3000");
