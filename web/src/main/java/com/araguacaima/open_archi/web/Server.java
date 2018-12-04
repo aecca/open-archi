@@ -75,7 +75,7 @@ public class Server {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        OrpheusDbJPAEntityManagerUtils.init("open-archi", environment);
+        //OrpheusDbJPAEntityManagerUtils.init("open-archi", environment);
         config.setTemplateLoader(templateLoader);
         ObjectMapper mapper = jsonUtils.getMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
