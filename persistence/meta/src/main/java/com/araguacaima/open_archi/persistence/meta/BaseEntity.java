@@ -12,6 +12,8 @@ import com.araguacaima.specification.util.SpecificationMapBuilder;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
@@ -24,6 +26,8 @@ import java.util.*;
 @JsonIgnoreProperties(value = {"resourceBundle, reflectionUtils,specificationMapBuilder,serialVersionUID"})
 @Component
 public abstract class BaseEntity implements Serializable, BasicEntity, Cloneable {
+
+    private static Logger log = LoggerFactory.getLogger(BaseEntity.class);
 
     @Transient
     @JsonIgnore

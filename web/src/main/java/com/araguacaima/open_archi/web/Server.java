@@ -54,7 +54,7 @@ public class Server {
                 map.put("hibernate.default_schema", "Diagrams");
                 map.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQL95Dialect");
                 map.put("hibernate.connection.driver_class", "org.postgresql.Driver");
-                map.put("hibernate.show_sql", "false");
+                map.put("hibernate.show_sql", log.isDebugEnabled() ? "true" : "false");
                 map.put("hibernate.flushMode", "FLUSH_AUTO");
                 map.put("hibernate.hbm2ddl.auto", "update");
                 map.put("packagesToScan", "com.araguacaima.open_archi.persistence");
@@ -74,7 +74,7 @@ public class Server {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        log.info("Properties: " + environment);
+        log.debug("Properties: " + environment);
         OrpheusDbJPAEntityManagerUtils.init("open-archi", environment);
         config.setTemplateLoader(templateLoader);
         ObjectMapper mapper = jsonUtils.getMapper();

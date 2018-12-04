@@ -124,8 +124,6 @@ public class Commons {
     public static com.araguacaima.open_archi.persistence.diagrams.architectural.Relationship deeplyFulfilledArchitectureRelationship_1;
     public static com.araguacaima.open_archi.persistence.diagrams.architectural.Relationship deeplyFulfilledArchitectureRelationship_2;
     public static CompositeElement<ElementKind> deeplyFulfilledFeature;
-    public static CompositeElement<ElementKind> deeplyFulfilledFeature_1;
-    public static CompositeElement<ElementKind> deeplyFulfilledFeature_2;
     public static Set<Class<? extends Taggable>> modelsClasses;
     public static Set<Class<? extends Taggable>> innerGroupElementClasses;
     public static Set<Class<? extends Taggable>> innerSingleElementClasses;
@@ -576,7 +574,7 @@ public class Commons {
         }
     }
 
-    public static Object filter(String query, Object json, String filter) throws IOException, URISyntaxException {
+    public static Object filter(String query, Collection json, String filter) throws IOException, URISyntaxException {
         if (query == null) {
             return RsqlJsonFilter.rsql(JsonPathRsqlVisitor.GET_ALL_RESULTS, json, filter);
         } else {

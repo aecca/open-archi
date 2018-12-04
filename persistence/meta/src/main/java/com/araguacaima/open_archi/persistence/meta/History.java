@@ -96,7 +96,7 @@ public class History implements Serializable, Comparable<History>, SimpleOverrid
     public int compareTo(History o) {
         int compare = this.version.compareTo(o.getVersion());
         if (compare == 0) {
-            if (this.modified == null) {
+            if (this.modified == null || o.getModified() == null) {
                 return 0;
             }
             return this.modified.compareTo(o.getModified());
