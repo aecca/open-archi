@@ -16,7 +16,7 @@ function fulfill(item, isGroup, group, rank) {
 function fillShape(model, node) {
     if (node) {
         let shape = {
-            type: node.category,
+            type: node.category !== undefined ? node.category : node.kind,
             fill: node.fill,
             stroke: node.stroke,
             input: node.input,

@@ -188,16 +188,21 @@ class OpenArchiFromDiagram {
     static architectureModel(model, node, links, nodes) {
         let parent;
         if (node !== undefined) {
-            parent = findParent(node.group, model);
-            if (parent === undefined) {
-                parent = findParent(node.group, nodes);
-                if (parent !== undefined) {
-                    parent = OpenArchiFromDiagram.processBasic(parent, links);
-                } else {
-                    if (model.id !== undefined && model.id === node.id) {
-                        return OpenArchiFromDiagram.processBasic(node, links);
+            if (model.selfCreated) {
+                parent = model;
+            } else {
+                parent = findParent(node.group, model);
+                if (parent === undefined) {
+                    parent = findParent(node.group, nodes);
+                    if (parent !== undefined) {
+                        parent = OpenArchiFromDiagram.processBasic(parent, links);
+                    } else {
+                        if (model.id !== undefined && model.id === node.id) {
+                            return OpenArchiFromDiagram.processBasic(node, links);
+                        }
+                        parent = OpenArchiFromDiagram.processBasic(model, links);
+                        parent.selfCreated = true;
                     }
-                    parent = OpenArchiFromDiagram.processBasic(model, links);
                 }
             }
             if (node.kind === "LAYER") {
@@ -220,6 +225,10 @@ class OpenArchiFromDiagram {
                 } else if (parent.kind === "COMPONENT") {
                     OpenArchiFromDiagram.processInner(parent, model, "components");
                 }
+            }
+
+            if (parent.selfCreated) {
+                return parent;
             }
         }
         return model;
