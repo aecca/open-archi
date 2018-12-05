@@ -1,6 +1,7 @@
 package com.araguacaima.open_archi.persistence.diagrams.classes;
 
 import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
+import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 
 import javax.persistence.*;
@@ -29,6 +30,11 @@ public class UmlClass extends UmlItem {
             inverseJoinColumns = {@JoinColumn(name = "Method_Id",
                     referencedColumnName = "Id")})
     private Map<String, UmlMethod> methods = new HashMap<>();
+
+    public UmlClass() {
+        setKind(ElementKind.UML_CLASS);
+    }
+
 
     public Map<String, UmlField> getFields() {
         return fields;

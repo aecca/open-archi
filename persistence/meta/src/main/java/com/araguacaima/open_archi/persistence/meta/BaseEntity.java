@@ -27,8 +27,6 @@ import java.util.*;
 @Component
 public abstract class BaseEntity implements Serializable, BasicEntity, Cloneable {
 
-    private static Logger log = LoggerFactory.getLogger(BaseEntity.class);
-
     @Transient
     @JsonIgnore
     protected static final ResourceBundle resourceBundle = ResourceBundle.getBundle(Constants.BUNDLE_NAME);
@@ -48,8 +46,9 @@ public abstract class BaseEntity implements Serializable, BasicEntity, Cloneable
     @Column(name = "Id")
     protected String id;
 
-    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private MetaInfo meta;
+    //@OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @Transient
+    private MetaInfo meta = new MetaInfo();
 
     public BaseEntity() {
         this.id = generateId();

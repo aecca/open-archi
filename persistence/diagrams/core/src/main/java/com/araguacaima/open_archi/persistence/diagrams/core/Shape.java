@@ -15,16 +15,23 @@ public class Shape extends BaseEntity {
     @Column
     @Enumerated(EnumType.STRING)
     private ElementKind type;
-    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
+
+    //@OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @Transient
     private Size size = new Size();
+
     @Column
-    private String fill = "#ffffff";
+    private String fill;
+
     @Column
-    private String stroke = "#333333";
+    private String stroke;
+
     @Column
     private boolean input = true;
+
     @Column
     private boolean output = true;
+
     @Column
     private String figure;
 

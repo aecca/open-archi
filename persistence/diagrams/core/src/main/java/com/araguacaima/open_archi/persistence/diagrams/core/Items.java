@@ -19,7 +19,7 @@ public abstract class Items extends Taggable {
     protected Point location;
     protected CompositeElement parent;
     protected Set<CompositeElement> children = new HashSet<>();
-    protected Shape shape;
+    protected Shape shape = new Shape();
 
     public Items() {
     }

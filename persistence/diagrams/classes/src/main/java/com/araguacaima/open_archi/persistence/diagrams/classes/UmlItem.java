@@ -17,7 +17,7 @@ import java.util.Collection;
 public abstract class UmlItem extends Item {
 
     public UmlItem() {
-        setKind(ElementKind.UML_CLASS);
+
     }
 
     public Collection<BaseEntity> override(UmlItem source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {

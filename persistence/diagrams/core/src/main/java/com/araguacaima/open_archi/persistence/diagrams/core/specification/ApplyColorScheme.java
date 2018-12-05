@@ -24,7 +24,7 @@ public class ApplyColorScheme extends AbstractSpecification {
             Item item = (Item) object;
             if (item.getShape() != null) {
                 Shape shape = item.getShape();
-                if (shape != null && StringUtils.isNotBlank(shape.getFill())) {
+                if (shape != null && StringUtils.isBlank(shape.getFill())) {
                     switch (item.getKind()) {
                         case ARCHITECTURE_MODEL:
                             shape.setFill("White");
@@ -85,6 +85,9 @@ public class ApplyColorScheme extends AbstractSpecification {
                             break;
                         case SYSTEM:
                             shape.setFill("#01203A");
+                            break;
+                        case LAYER:
+                            shape.setFill("#LimeGreen");
                             break;
                         default:
                             shape.setFill("blue");

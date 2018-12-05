@@ -93,7 +93,8 @@ public abstract class Item extends Taggable {
     @Column
     protected String description;
 
-    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
+    //@OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @Transient
     protected Point location;
 
     @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
@@ -111,7 +112,6 @@ public abstract class Item extends Taggable {
     @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     protected Shape shape;
-
 
     @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
@@ -153,6 +153,7 @@ public abstract class Item extends Taggable {
     private Set<Relationship> relationships = new LinkedHashSet<>();
 
     public Item() {
+
     }
 
     public String getName() {

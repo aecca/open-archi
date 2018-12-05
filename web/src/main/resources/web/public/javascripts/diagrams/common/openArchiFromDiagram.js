@@ -112,7 +112,7 @@ class OpenArchiFromDiagram {
         object.name = node.name;
         object.kind = node.kind;
         object.description = node.description;
-        object.prototype = node.prototype;
+        object.prototype = meta.isPrototyper;
         object.location = {};
         let loc = node.loc;
         if (loc) {
