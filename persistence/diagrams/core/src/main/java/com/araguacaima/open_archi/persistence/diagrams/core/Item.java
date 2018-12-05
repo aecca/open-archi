@@ -25,7 +25,7 @@ import java.util.*;
                         "from com.araguacaima.open_archi.persistence.diagrams.core.Item a where a.id=:id"),
         @NamedQuery(name = Item.GET_ALL_PROTOTYPES,
                 query = "select a " +
-                        "from com.araguacaima.open_archi.persistence.diagrams.core.Item a where a.prototype=true"),
+                        "from com.araguacaima.open_archi.persistence.diagrams.core.Item a where a.prototype=true order by a.kind, a.shape.type, a.name"),
         @NamedQuery(name = Item.GET_ALL_PROTOTYPE_NAMES,
                 query = "select new com.araguacaima.open_archi.persistence.commons.IdName(a.id, a.name, TYPE(a), a.kind) " +
                         "from com.araguacaima.open_archi.persistence.diagrams.core.Item a where a.prototype=true"),
