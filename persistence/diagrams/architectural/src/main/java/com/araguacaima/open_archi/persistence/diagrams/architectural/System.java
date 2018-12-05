@@ -128,19 +128,28 @@ public class System extends GroupStaticElement implements DiagramableElement<Sys
         for (Container container : source.getContainers()) {
             Container newContainer = new Container();
             overriden.addAll(newContainer.override(container, keepMeta, suffix, clonedFrom));
-            this.containers.add(newContainer);
+            if(!this.containers.add(newContainer)) {
+                this.containers.remove(newContainer);
+                this.containers.add(newContainer);
+            }
             overriden.add(newContainer);
         }
         for (System system : source.getSystems()) {
             System newSystem = new System();
             overriden.addAll(newSystem.override(system, keepMeta, suffix, clonedFrom));
-            this.systems.add(newSystem);
+            if(!this.systems.add(newSystem)) {
+                this.systems.remove(newSystem);
+                this.systems.add(newSystem);
+            }
             overriden.add(newSystem);
         }
         for (Component component : source.getComponents()) {
             Component newComponent = new Component();
             overriden.addAll(newComponent.override(component, keepMeta, suffix, clonedFrom));
-            this.components.add(newComponent);
+            if(!this.components.add(newComponent)) {
+                this.components.remove(newComponent);
+                this.components.add(newComponent);
+            }
             overriden.add(newComponent);
         }
         return overriden;
@@ -157,7 +166,10 @@ public class System extends GroupStaticElement implements DiagramableElement<Sys
             for (Container container : source.getContainers()) {
                 Container newContainer = new Container();
                 overriden.addAll(newContainer.copyNonEmpty(container, keepMeta));
-                this.containers.add(newContainer);
+                if(!this.containers.add(newContainer)) {
+                    this.containers.remove(newContainer);
+                    this.containers.add(newContainer);
+                }
                 overriden.add(newContainer);
             }
         }
@@ -165,7 +177,10 @@ public class System extends GroupStaticElement implements DiagramableElement<Sys
             for (System system : source.getSystems()) {
                 System newSystem = new System();
                 overriden.addAll(newSystem.copyNonEmpty(system, keepMeta));
-                this.systems.add(newSystem);
+                if(!this.systems.add(newSystem)) {
+                    this.systems.remove(newSystem);
+                    this.systems.add(newSystem);
+                }
                 overriden.add(newSystem);
             }
         }
@@ -173,7 +188,10 @@ public class System extends GroupStaticElement implements DiagramableElement<Sys
             for (Component component : source.getComponents()) {
                 Component newComponent = new Component();
                 overriden.addAll(newComponent.copyNonEmpty(component, keepMeta));
-                this.components.add(newComponent);
+                if(!this.components.add(newComponent)) {
+                    this.components.remove(newComponent);
+                    this.components.add(newComponent);
+                }
                 overriden.add(newComponent);
             }
         }

@@ -91,7 +91,10 @@ public class DeploymentNode extends Element implements DiagramableElement<Deploy
         for (ContainerInstance container : source.getContainerInstances()) {
             ContainerInstance newContainerInstance = new ContainerInstance();
             overriden.addAll(newContainerInstance.override(container, keepMeta, suffix, clonedFrom));
-            this.containerInstances.add(newContainerInstance);
+            if(!this.containerInstances.add(newContainerInstance)) {
+                this.containerInstances.remove(newContainerInstance);
+                this.containerInstances.add(newContainerInstance);
+            }
             overriden.add(newContainerInstance);
         }
         return overriden;
@@ -111,7 +114,10 @@ public class DeploymentNode extends Element implements DiagramableElement<Deploy
             for (ContainerInstance container : source.getContainerInstances()) {
                 ContainerInstance newContainerInstance = new ContainerInstance();
                 overriden.addAll(newContainerInstance.copyNonEmpty(container, keepMeta));
-                this.containerInstances.add(newContainerInstance);
+                if(!this.containerInstances.add(newContainerInstance)) {
+                    this.containerInstances.remove(newContainerInstance);
+                    this.containerInstances.add(newContainerInstance);
+                }
                 overriden.add(newContainerInstance);
             }
         }

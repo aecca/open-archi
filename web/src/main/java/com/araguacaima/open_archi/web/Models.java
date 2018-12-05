@@ -98,7 +98,6 @@ public class Models implements RouteGroup {
                 Account account = (Account) ctx.getSessionAttribute("account");
                 map.put("account", account);
 
-
                 Item storedModel = OrpheusDbJPAEntityManagerUtils.findByQuery(Item.class, Item.GET_ITEMS_BY_NAME_AND_KIND, params);
                 if (storedModel == null) {
                     map.put("Parent", model);
@@ -107,7 +106,7 @@ public class Models implements RouteGroup {
                     response.status(HTTP_CREATED);
                     return EMPTY_RESPONSE;
                 } else {
-                    storedModel.override(model, true, null, null);
+                    ((Model)storedModel).override(model, true, null, null);
                     map.put("Parent", storedModel);
                     storedModel.validateReplacement(map);
                     DBUtil.replace(storedModel);

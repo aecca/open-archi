@@ -40,7 +40,10 @@ public class Pool extends Item {
         for (Lane consumer : source.getLanes()) {
             Lane newLane = new Lane();
             overriden.addAll(newLane.override(consumer, keepMeta, suffix, clonedFrom));
-            this.lanes.add(newLane);
+            if(!this.lanes.add(newLane)) {
+                this.lanes.remove(newLane);
+                this.lanes.add(newLane);
+            }
             overriden.add(newLane);
         }
         return overriden;
@@ -53,7 +56,10 @@ public class Pool extends Item {
             for (Lane consumer : source.getLanes()) {
                 Lane newLane = new Lane();
                 overriden.addAll(newLane.copyNonEmpty(consumer, keepMeta));
-                this.lanes.add(newLane);
+                if(!this.lanes.add(newLane)) {
+                    this.lanes.remove(newLane);
+                    this.lanes.add(newLane);
+                }
                 overriden.add(newLane);
             }
         }

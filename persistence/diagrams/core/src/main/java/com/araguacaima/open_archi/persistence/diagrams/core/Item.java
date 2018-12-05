@@ -307,7 +307,10 @@ public abstract class Item extends Taggable {
             for (Relationship relationship : source.getRelationships()) {
                 Relationship newRelationship = new Relationship();
                 overriden.addAll(newRelationship.override(relationship, keepMeta, suffix, clonedFrom));
-                this.relationships.add(newRelationship);
+                if(!this.relationships.add(newRelationship)) {
+                    this.relationships.remove(newRelationship);
+                    this.relationships.add(newRelationship);
+                }
                 overriden.add(newRelationship);
             }
         }
@@ -372,7 +375,10 @@ public abstract class Item extends Taggable {
             for (Relationship relationship : relationships) {
                 Relationship newRelationship = new Relationship();
                 overriden.addAll(newRelationship.copyNonEmpty(relationship, keepMeta));
-                this.relationships.add(newRelationship);
+                if(!this.relationships.add(newRelationship)) {
+                    this.relationships.remove(newRelationship);
+                    this.relationships.add(newRelationship);
+                }
                 overriden.add(newRelationship);
             }
         }

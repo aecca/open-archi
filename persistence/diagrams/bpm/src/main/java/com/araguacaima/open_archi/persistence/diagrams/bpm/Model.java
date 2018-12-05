@@ -54,7 +54,10 @@ public class Model extends ModelElement implements DiagramableElement<Model> {
         for (Pool consumer : source.getPools()) {
             Pool newPool = new Pool();
             overriden.addAll(newPool.override(consumer, keepMeta, suffix, clonedFrom));
-            this.pools.add(newPool);
+            if(!this.pools.add(newPool)) {
+                this.pools.remove(newPool);
+                this.pools.add(newPool);
+            }
             overriden.add(newPool);
         }
         return overriden;
@@ -68,7 +71,10 @@ public class Model extends ModelElement implements DiagramableElement<Model> {
             for (Pool consumer : source.getPools()) {
                 Pool newPool = new Pool();
                 overriden.addAll(newPool.copyNonEmpty(consumer, keepMeta));
-                this.pools.add(newPool);
+                if(!this.pools.add(newPool)) {
+                    this.pools.remove(newPool);
+                    this.pools.add(newPool);
+                }
                 overriden.add(newPool);
             }
         }

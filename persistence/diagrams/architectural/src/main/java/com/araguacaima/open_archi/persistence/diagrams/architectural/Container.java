@@ -92,13 +92,19 @@ public class Container extends GroupStaticElement implements DiagramableElement<
         for (Component component : source.getComponents()) {
             Component newComponent = new Component();
             overriden.addAll(newComponent.override(component, keepMeta, suffix, clonedFrom));
-            this.components.add(newComponent);
+            if(!this.components.add(newComponent)) {
+                this.components.remove(newComponent);
+                this.components.add(newComponent);
+            }
             overriden.add(newComponent);
         }
         for (Container container : source.getContainers()) {
             Container newContainer = new Container();
             overriden.addAll(newContainer.override(container, keepMeta, suffix, clonedFrom));
-            this.containers.add(newContainer);
+            if(!this.containers.add(newContainer)) {
+                this.containers.remove(newContainer);
+                this.containers.add(newContainer);
+            }
             overriden.add(newContainer);
         }
         return overriden;
@@ -115,7 +121,10 @@ public class Container extends GroupStaticElement implements DiagramableElement<
             for (Component component : source.getComponents()) {
                 Component newComponent = new Component();
                 overriden.addAll(newComponent.copyNonEmpty(component, keepMeta));
-                this.components.add(newComponent);
+                if(!this.components.add(newComponent)) {
+                    this.components.remove(newComponent);
+                    this.components.add(newComponent);
+                }
                 overriden.add(newComponent);
             }
         }
@@ -123,7 +132,10 @@ public class Container extends GroupStaticElement implements DiagramableElement<
             for (Container container : source.getContainers()) {
                 Container newContainer = new Container();
                 overriden.addAll(newContainer.copyNonEmpty(container, keepMeta));
-                this.containers.add(newContainer);
+                if(!this.containers.add(newContainer)) {
+                    this.containers.remove(newContainer);
+                    this.containers.add(newContainer);
+                }
                 overriden.add(newContainer);
             }
         }

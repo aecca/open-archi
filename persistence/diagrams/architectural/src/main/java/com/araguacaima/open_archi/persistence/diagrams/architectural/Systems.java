@@ -57,14 +57,20 @@ public class Systems extends GroupStaticElements {
         for (Containers container : source.getContainers()) {
             Containers newContainer = new Containers();
             overriden.addAll(newContainer.override(container, keepMeta, suffix, clonedFrom));
-            this.containers.add(newContainer);
+            if(!this.containers.add(newContainer)) {
+                this.containers.remove(newContainer);
+                this.containers.add(newContainer);
+            }
             overriden.add(newContainer);
         }
 
         for (Components component : source.getComponents()) {
             Components newComponent = new Components();
             overriden.addAll(newComponent.override(component, keepMeta, suffix, clonedFrom));
-            this.components.add(newComponent);
+            if(!this.components.add(newComponent)) {
+                this.components.remove(newComponent);
+                this.components.add(newComponent);
+            }
             overriden.add(newComponent);
         }
         return overriden;
@@ -80,7 +86,10 @@ public class Systems extends GroupStaticElements {
             for (Containers container : source.getContainers()) {
                 Containers newContainer = new Containers();
                 overriden.addAll(newContainer.copyNonEmpty(container, keepMeta));
-                this.containers.add(newContainer);
+                if(!this.containers.add(newContainer)) {
+                    this.containers.remove(newContainer);
+                    this.containers.add(newContainer);
+                }
                 overriden.add(newContainer);
             }
         }
@@ -88,7 +97,10 @@ public class Systems extends GroupStaticElements {
             for (Components component : source.getComponents()) {
                 Components newComponent = new Components();
                 overriden.addAll(newComponent.copyNonEmpty(component, keepMeta));
-                this.components.add(newComponent);
+                if(!this.components.add(newComponent)) {
+                    this.components.remove(newComponent);
+                    this.components.add(newComponent);
+                }
                 overriden.add(newComponent);
             }
         }

@@ -46,7 +46,10 @@ public class Entity extends Element {
         for (Attribute att : source.getAttributes()) {
             Attribute newAttribute = new Attribute();
             overriden.addAll(newAttribute.override(att, keepMeta, suffix, clonedFrom));
-            this.attributes.add(newAttribute);
+            if(!this.attributes.add(newAttribute)) {
+                this.attributes.remove(newAttribute);
+                this.attributes.add(newAttribute);
+            }
             overriden.add(newAttribute);
         }
         return overriden;
@@ -59,7 +62,10 @@ public class Entity extends Element {
             for (Attribute att : source.getAttributes()) {
                 Attribute newAttribute = new Attribute();
                 overriden.addAll(newAttribute.copyNonEmpty(att, keepMeta));
-                this.attributes.add(newAttribute);
+                if(!this.attributes.add(newAttribute)) {
+                    this.attributes.remove(newAttribute);
+                    this.attributes.add(newAttribute);
+                }
                 overriden.add(newAttribute);
             }
         }

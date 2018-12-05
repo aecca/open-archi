@@ -49,10 +49,13 @@ public abstract class Elements extends Items {
         }
         this.url = source.getUrl();
         for (Features feature : source.getFeatures()) {
-            Features newFeatures = new Features();
-            overriden.addAll(newFeatures.override(feature, keepMeta, suffix, clonedFrom));
-            this.features.add(newFeatures);
-            overriden.add(newFeatures);
+            Features newFeature = new Features();
+            overriden.addAll(newFeature.override(feature, keepMeta, suffix, clonedFrom));
+            if(!this.features.add(newFeature)) {
+                this.features.remove(newFeature);
+                this.features.add(newFeature);
+            }
+            overriden.add(newFeature);
         }
         return overriden;
     }
@@ -65,10 +68,13 @@ public abstract class Elements extends Items {
         }
         if (source.getFeatures() != null && !source.getFeatures().isEmpty()) {
             for (Features feature : source.getFeatures()) {
-                Features newFeatures = new Features();
-                overriden.addAll(newFeatures.copyNonEmpty(feature, keepMeta));
-                this.features.add(newFeatures);
-                overriden.add(newFeatures);
+                Features newFeature = new Features();
+                overriden.addAll(newFeature.copyNonEmpty(feature, keepMeta));
+                if(!this.features.add(newFeature)) {
+                    this.features.remove(newFeature);
+                    this.features.add(newFeature);
+                }
+                overriden.add(newFeature);
             }
         }
         return overriden;
