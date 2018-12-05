@@ -474,7 +474,20 @@ public class DBUtil {
             }, Utils::filterMethod);
             try {
                 if (!persistedObjects.contains(entity)) {
-                    OrpheusDbJPAEntityManagerUtils.merge(entity);
+                    Object existentEntity = OrpheusDbJPAEntityManagerUtils.find(entity);
+                    if (existentEntity != null) {
+                        reflectionUtils.invokeMethod(existentEntity, "override", new Object[]{entity, true, null, null});
+                        OrpheusDbJPAEntityManagerUtils.merge(existentEntity);
+                    } else {
+                        existentEntity = OrpheusDbJPAEntityManagerUtils.findByQuery(Item.class, Item.GET_ITEMS_BY_NAME_AND_KIND);
+                        if (existentEntity != null) {
+                            reflectionUtils.invokeMethod(existentEntity, "override", new Object[]{entity, true, null, null});
+                            OrpheusDbJPAEntityManagerUtils.merge(existentEntity);
+                        } else {
+
+                            OrpheusDbJPAEntityManagerUtils.merge(entity);
+                        }
+                    }
                     persistedObjects.add(entity);
                 } else {
                     logProcessing(entity);

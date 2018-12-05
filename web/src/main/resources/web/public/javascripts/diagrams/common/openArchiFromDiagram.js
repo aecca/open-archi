@@ -117,12 +117,6 @@ class OpenArchiFromDiagram {
         object.kind = node.kind;
         object.description = node.description;
         object.prototype = meta.isPrototyper;
-        object.location = {};
-        let loc = node.loc;
-        if (loc) {
-            object.location.x = loc.split(" ")[0];
-            object.location.y = loc.split(" ")[1];
-        }
         object = fillShape(object, node);
         let image = node.image;
         if (image) {

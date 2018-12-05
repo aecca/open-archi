@@ -122,14 +122,9 @@ class OpenArchiToDiagram {
         object.kind = model.kind;
         object.description = model.description;
         object.prototype = model.prototype;
-        let loc = model.location;
-        if (loc) {
-            object.loc = loc.x + " " + loc.y;
-        }
         let shape = model.shape;
         if (shape) {
             object.category = shape.type;
-            object.size = shape.size.width + " " + shape.size.height;
             object.shape = shape;
             object.figure = shape.figure;
             object.fill = shape.fill;

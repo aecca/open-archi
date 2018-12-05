@@ -8,7 +8,6 @@ ElementShapeWrapper {
         shape.setId(elementShape.getId());
         shape.setMeta(elementShape.getMeta());
         shape.setType(elementShape.getType());
-        shape.setSize(elementShape.getSize());
         shape.setFill(elementShape.getFill());
         shape.setStroke(elementShape.getStroke());
         shape.setInput(elementShape.isInput());
@@ -23,7 +22,6 @@ ElementShapeWrapper {
         elementShape.setId(shape.getId());
         elementShape.setMeta(shape.getMeta());
         elementShape.setType(shape.getType());
-        elementShape.setSize(shape.getSize());
         elementShape.setFill(shape.getFill());
         elementShape.setStroke(shape.getStroke());
         elementShape.setInput(shape.isInput());

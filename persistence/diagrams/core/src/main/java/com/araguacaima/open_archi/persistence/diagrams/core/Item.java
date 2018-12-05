@@ -93,10 +93,6 @@ public abstract class Item extends Taggable {
     @Column
     protected String description;
 
-    //@OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
-    @Transient
-    protected Point location;
-
     @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     protected CompositeElement parent;
 
@@ -180,14 +176,6 @@ public abstract class Item extends Taggable {
         this.description = description;
     }
 
-    public Point getLocation() {
-        return location;
-    }
-
-    public void setLocation(Point location) {
-        this.location = location;
-    }
-
     public CompositeElement getParent() {
         return parent;
     }
@@ -268,14 +256,6 @@ public abstract class Item extends Taggable {
         }
         this.name = StringUtils.isNotBlank(suffix) ? source.getName() + " " + suffix : source.getName();
         this.description = source.getDescription();
-        if (source.getLocation() != null) {
-            Point location = new Point();
-            location.override(source.getLocation(), keepMeta, suffix);
-            this.location = location;
-            overriden.add(location);
-        } else {
-            this.location = null;
-        }
         this.parent = source.getParent();
         this.children = source.getChildren();
         if (source.getShape() != null) {
@@ -326,12 +306,6 @@ public abstract class Item extends Taggable {
         }
         if (source.getDescription() != null) {
             this.description = source.getDescription();
-        }
-        if (source.getLocation() != null) {
-            Point location = new Point();
-            location.copyNonEmpty(source.getLocation(), keepMeta);
-            this.location = location;
-            overriden.add(location);
         }
         if (source.getParent() != null) {
             this.parent = source.getParent();

@@ -16,10 +16,6 @@ public class Shape extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private ElementKind type;
 
-    //@OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
-    @Transient
-    private Size size = new Size();
-
     @Column
     private String fill;
 
@@ -48,14 +44,6 @@ public class Shape extends BaseEntity {
 
     public void setType(ElementKind type) {
         this.type = type;
-    }
-
-    public Size getSize() {
-        return size;
-    }
-
-    public void setSize(Size size) {
-        this.size = size;
     }
 
     public String getFill() {
@@ -105,11 +93,6 @@ public class Shape extends BaseEntity {
         this.setOutput(source.isOutput());
         this.setInput(source.isInput());
         this.setStroke(source.getStroke());
-        if (source.getSize() != null) {
-            Size size = new Size();
-            size.override(source.getSize(), keepMeta, suffix);
-            this.setSize(size);
-        }
         this.setFigure(source.getFigure());
     }
 
@@ -125,14 +108,6 @@ public class Shape extends BaseEntity {
         this.setInput(source.isInput());
         if (source.getStroke() != null) {
             this.setStroke(source.getStroke());
-        }
-        if (source.getSize() != null) {
-            Size size = this.size;
-            if (size == null) {
-                size = new Size();
-            }
-            size.copyNonEmpty(source.getSize(), keepMeta);
-            this.setSize(size);
         }
         if (StringUtils.isNotBlank(source.getFigure())) {
             this.setFigure(source.getFigure());

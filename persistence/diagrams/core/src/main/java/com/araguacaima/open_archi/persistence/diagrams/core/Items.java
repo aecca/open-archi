@@ -80,7 +80,6 @@ public abstract class Items extends Taggable {
         }
         this.name = StringUtils.isNotBlank(suffix) ? source.getName() + " " + suffix : source.getName();
         this.description = source.getDescription();
-        this.location = source.getLocation();
         this.parent = source.getParent();
         this.children = source.getChildren();
         if (source.getShape() != null) {
@@ -112,9 +111,6 @@ public abstract class Items extends Taggable {
         }
         if (source.getDescription() != null) {
             this.description = source.getDescription();
-        }
-        if (source.getLocation() != null) {
-            this.location = source.getLocation();
         }
         if (source.getParent() != null) {
             this.parent = source.getParent();

@@ -15,24 +15,13 @@ function fulfill(item, isGroup, group, rank) {
 
 function fillShape(model, node) {
     if (node) {
-        let shape = {
+        model.shape = {
             type: node.category !== undefined ? node.category : node.kind,
             fill: node.fill,
             stroke: node.stroke,
             input: node.input,
             output: node.output
         };
-        if (node.size) {
-            shape.minSize = {
-                width: node.size.width,
-                height: node.size.height
-            };
-        } else {
-            if (node.minSize) {
-                shape.minSize = node.minSize;
-            }
-        }
-        model.shape = shape;
     }
     return model;
 }
