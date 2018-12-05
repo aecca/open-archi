@@ -61,6 +61,10 @@ class OpenArchiFromDiagram {
             nodes = fixedNodes;
             nodes.forEach(
                 function (node) {
+                    if (nodes.length < 2) {
+                        model.kind = node.kind;
+                        model.name = node.name;
+                    }
                     if (!alreadyProcessedNodes.includes(node.key)) {
                         switch (model.kind) {
                             case "FLOWCHART_MODEL":
@@ -190,10 +194,10 @@ class OpenArchiFromDiagram {
                 if (parent !== undefined) {
                     parent = OpenArchiFromDiagram.processBasic(parent, links);
                 } else {
-                    if (model.id === node.id) {
+                    if (model.id !== undefined && model.id === node.id) {
                         return OpenArchiFromDiagram.processBasic(node, links);
                     }
-                    return OpenArchiFromDiagram.common(model);
+                    parent = OpenArchiFromDiagram.processBasic(model, links);
                 }
             }
             if (node.kind === "LAYER") {

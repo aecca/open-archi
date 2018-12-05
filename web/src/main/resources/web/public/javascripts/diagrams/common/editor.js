@@ -471,7 +471,17 @@ function validateModel() {
 }
 
 function confirmAndSave() {
-    $('#diagram-info').modal('show');
+    const model = myDiagram.model;
+    if (model !== undefined) {
+        const nodeDataArray = model.nodeDataArray;
+        if (nodeDataArray !== undefined) {
+            if (nodeDataArray.length > 1) {
+                $('#diagram-info').modal('show');
+            } else {
+                save();
+            }
+        }
+    }
 }
 
 function getCurrentViewMode() {

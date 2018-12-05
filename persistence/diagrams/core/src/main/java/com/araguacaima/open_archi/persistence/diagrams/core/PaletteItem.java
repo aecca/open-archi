@@ -73,7 +73,9 @@ public class PaletteItem extends PaletteInfo implements Comparable<PaletteItem> 
             return -1001;
         }
         ElementKind shapeType = o.getShape().getType();
-        if (shapeType.equals(ElementKind.DEFAULT)) {
+        if (shapeType == null) {
+            return 0;
+        } else if (shapeType.equals(ElementKind.DEFAULT)) {
             return -1000;
         } else if (shapeType.equals(ElementKind.CONSUMER)) {
             return -999;
