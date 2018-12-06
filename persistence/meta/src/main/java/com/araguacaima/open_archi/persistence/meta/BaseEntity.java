@@ -241,7 +241,9 @@ public abstract class BaseEntity implements Serializable, BasicEntity, Cloneable
         }
         if (StringUtils.isNotBlank(source.getId())) {
             this.key = source.getId();
+            this.id = source.getId();
         }
+        this.key = source.getKey();
     }
 
     @JsonIgnore

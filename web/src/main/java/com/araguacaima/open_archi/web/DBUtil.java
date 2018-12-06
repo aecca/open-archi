@@ -474,26 +474,7 @@ public class DBUtil {
             }, Utils::filterMethod);
             try {
                 if (!persistedObjects.contains(entity)) {
-//                    Object existentEntity = OrpheusDbJPAEntityManagerUtils.find(entity);
-//                    if (existentEntity != null) {
-//                        reflectionUtils.invokeMethod(existentEntity, "override", new Object[]{entity, true, null, null});
-//                        OrpheusDbJPAEntityManagerUtils.merge(existentEntity);
-//                    } else {
-//                        Map<String, Object> map = new HashMap<>();
-//                        if (Item.class.isAssignableFrom(entity.getClass())) {
-//                            map.put("kind", ((Item) entity).getKind());
-//                            map.put("name", ((Item) entity).getName());
-//                            existentEntity = OrpheusDbJPAEntityManagerUtils.findByQuery(Item.class, Item.GET_ITEMS_BY_NAME_AND_KIND, map);
-//                            if (existentEntity != null) {
-//                                reflectionUtils.invokeMethod(existentEntity, "override", new Object[]{entity, true, null, null});
-//                                OrpheusDbJPAEntityManagerUtils.merge(existentEntity);
-//                            } else {
-//                                OrpheusDbJPAEntityManagerUtils.merge(entity);
-//                            }
-//                        } else {
                     OrpheusDbJPAEntityManagerUtils.merge(entity);
-//                        }
-//                    }
                     persistedObjects.add(entity);
                 } else {
                     logProcessing(entity);
@@ -587,7 +568,7 @@ public class DBUtil {
                     valuesToAdd.add(value);
                 }
                 ((Collection) object_).removeAll(valuesToRemove);
-                //OrpheusDbJPAEntityManagerUtils.flush();
+                OrpheusDbJPAEntityManagerUtils.flush();
                 ((Collection) object_).addAll(valuesToAdd);
                 return object_;
             } else if (ReflectionUtils.isMapImplementation(type)) {
