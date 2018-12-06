@@ -3,6 +3,8 @@ package com.araguacaima.open_archi.persistence.diagrams.classes;
 import com.araguacaima.open_archi.persistence.diagrams.core.*;
 import com.araguacaima.open_archi.persistence.diagrams.core.Relationship;
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -15,6 +17,7 @@ import java.util.Set;
 @DiscriminatorValue(value = "ClassesModel")
 public class Model extends ModelElement implements DiagramableElement<Model> {
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinTable(schema = "DIAGRAMS",
             name = "Classes_Model_Relationships",
@@ -23,6 +26,7 @@ public class Model extends ModelElement implements DiagramableElement<Model> {
             inverseJoinColumns = {@JoinColumn(name = "Relationship_Id",
                     referencedColumnName = "Id")})
     private Set<Relationship> relationships = new LinkedHashSet<>();
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
             name = "Model_Classes",

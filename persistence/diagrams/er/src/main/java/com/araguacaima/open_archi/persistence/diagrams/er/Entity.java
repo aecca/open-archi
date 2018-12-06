@@ -4,6 +4,8 @@ import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.Element;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -15,6 +17,7 @@ public class Entity extends Element {
     @Column
     @Enumerated(EnumType.STRING)
     private ElementKind kind = ElementKind.ENTITY_RELATIONSHIP_MODEL;
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
             name = "Entity_Attributes",
@@ -46,7 +49,7 @@ public class Entity extends Element {
         for (Attribute att : source.getAttributes()) {
             Attribute newAttribute = new Attribute();
             overriden.addAll(newAttribute.override(att, keepMeta, suffix, clonedFrom));
-            if(!this.attributes.add(newAttribute)) {
+            if (!this.attributes.add(newAttribute)) {
                 this.attributes.remove(newAttribute);
                 this.attributes.add(newAttribute);
             }
@@ -62,7 +65,7 @@ public class Entity extends Element {
             for (Attribute att : source.getAttributes()) {
                 Attribute newAttribute = new Attribute();
                 overriden.addAll(newAttribute.copyNonEmpty(att, keepMeta));
-                if(!this.attributes.add(newAttribute)) {
+                if (!this.attributes.add(newAttribute)) {
                     this.attributes.remove(newAttribute);
                     this.attributes.add(newAttribute);
                 }

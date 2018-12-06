@@ -6,8 +6,8 @@ import com.araguacaima.open_archi.persistence.diagrams.architectural.Model;
 import com.araguacaima.open_archi.persistence.diagrams.core.*;
 import com.araguacaima.open_archi.persistence.meta.Account;
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
-import com.araguacaima.orpheusdb.utils.OrpheusDbJPAEntityManagerUtils;
 import com.araguacaima.open_archi.web.common.Commons;
+import com.araguacaima.orpheusdb.utils.OrpheusDbJPAEntityManagerUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.IterableUtils;
 import org.pac4j.sparkjava.SparkWebContext;
@@ -106,10 +106,12 @@ public class Models implements RouteGroup {
                     response.status(HTTP_CREATED);
                     return EMPTY_RESPONSE;
                 } else {
-                    ((Model)storedModel).override(model, true, null, null);
-                    map.put("Parent", storedModel);
-                    storedModel.validateReplacement(map);
-                    DBUtil.replace(storedModel);
+                    OrpheusDbJPAEntityManagerUtils.detach(storedModel);
+                    Model storedModel_ = (Model) storedModel;
+                    storedModel_.override(model, true, null, null);
+                    map.put("Parent", storedModel_);
+                    storedModel_.validateReplacement(map);
+                    DBUtil.replace(storedModel_);
                     response.status(HTTP_OK);
                     return EMPTY_RESPONSE;
                 }

@@ -3,6 +3,8 @@ package com.araguacaima.open_archi.persistence.diagrams.classes;
 import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -14,6 +16,7 @@ import java.util.Map;
 @PersistenceUnit(unitName = "open-archi")
 public class UmlClass extends UmlItem {
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
             name = "UmlClass_Fields",
@@ -22,6 +25,7 @@ public class UmlClass extends UmlItem {
             inverseJoinColumns = {@JoinColumn(name = "Field_Id",
                     referencedColumnName = "Id")})
     private Map<String, UmlField> fields = new HashMap<>();
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
             name = "UmlClass_Methods",

@@ -5,6 +5,8 @@ import com.araguacaima.open_archi.persistence.meta.View;
 import com.araguacaima.open_archi.persistence.persons.Responsible;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -15,6 +17,7 @@ import java.util.Collection;
 @DynamicUpdate
 public class MetaData extends BaseEntity {
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany(cascade = CascadeType.REMOVE)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     @JoinTable(schema = "DIAGRAMS",
@@ -25,6 +28,7 @@ public class MetaData extends BaseEntity {
                     referencedColumnName = "Id")})
     private Collection<Responsible> responsibles;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany(cascade = CascadeType.REMOVE)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     @JoinTable(schema = "DIAGRAMS",
@@ -35,6 +39,7 @@ public class MetaData extends BaseEntity {
                     referencedColumnName = "Id")})
     private Collection<Responsible> collaborators;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany(cascade = CascadeType.REMOVE)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     @JoinTable(schema = "DIAGRAMS",
@@ -45,6 +50,7 @@ public class MetaData extends BaseEntity {
                     referencedColumnName = "Id")})
     private Collection<Taggable> relatedWith;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany(cascade = CascadeType.REMOVE)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     @JoinTable(schema = "DIAGRAMS",
@@ -55,6 +61,7 @@ public class MetaData extends BaseEntity {
                     referencedColumnName = "Id")})
     private Collection<Taggable> usedIn;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany(cascade = CascadeType.REMOVE)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     @JoinTable(schema = "DIAGRAMS",

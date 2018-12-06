@@ -2,6 +2,8 @@ package com.araguacaima.open_archi.persistence.diagrams.classes;
 
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -15,6 +17,7 @@ public class UmlMethod extends BaseEntity {
     private String name;
     @Column
     private String type;
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
             name = "UmlMethod_Parameters",

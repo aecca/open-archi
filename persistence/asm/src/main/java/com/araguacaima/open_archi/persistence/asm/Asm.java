@@ -4,11 +4,12 @@ import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 import com.araguacaima.open_archi.persistence.persons.Responsible;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.Collection;
 import java.util.Date;
 import java.util.Set;
 
@@ -42,6 +43,7 @@ public class Asm extends BaseEntity {
     @NotNull
     @Size(min = 1)
     private Date issueDate;
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinTable(schema = "SM",
             name = "Asm_LinksOfInterests",
@@ -49,13 +51,14 @@ public class Asm extends BaseEntity {
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Link_Id",
                     referencedColumnName = "Id")})
-    private Collection<Link> linksOfInterests;
+    private Set<Link> linksOfInterests;
     @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private ProjectMetaData projectMetaData;
     @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private ProposedSolution proposedSolution;
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinTable(schema = "SM",
             name = "Asm_Responsibles",
@@ -63,7 +66,8 @@ public class Asm extends BaseEntity {
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Responsible_Id",
                     referencedColumnName = "Id")})
-    private Collection<Responsible> responsibles;
+    private Set<Responsible> responsibles;
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinTable(schema = "SM",
             name = "Asm_Statuses",
@@ -72,6 +76,7 @@ public class Asm extends BaseEntity {
             inverseJoinColumns = {@JoinColumn(name = "Status_Id",
                     referencedColumnName = "Id")})
     private Set<Status> status;
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinTable(schema = "SM",
             name = "Asm_VersionControls",
@@ -79,7 +84,7 @@ public class Asm extends BaseEntity {
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "VersionControl_Id",
                     referencedColumnName = "Id")})
-    private Collection<VersionControl> versionControl;
+    private Set<VersionControl> versionControl;
 
     public Byte[] getAttachments() {
         return attachments;
@@ -129,11 +134,11 @@ public class Asm extends BaseEntity {
         this.issueDate = issueDate;
     }
 
-    public Collection<Link> getLinksOfInterests() {
+    public Set<Link> getLinksOfInterests() {
         return linksOfInterests;
     }
 
-    public void setLinksOfInterests(Collection<Link> linksOfInterest) {
+    public void setLinksOfInterests(Set<Link> linksOfInterest) {
         this.linksOfInterests = linksOfInterest;
     }
 
@@ -153,11 +158,11 @@ public class Asm extends BaseEntity {
         this.proposedSolution = proposedSolution;
     }
 
-    public Collection<Responsible> getResponsibles() {
+    public Set<Responsible> getResponsibles() {
         return responsibles;
     }
 
-    public void setResponsibles(Collection<Responsible> responsibles) {
+    public void setResponsibles(Set<Responsible> responsibles) {
         this.responsibles = responsibles;
     }
 
@@ -169,11 +174,11 @@ public class Asm extends BaseEntity {
         this.status = status;
     }
 
-    public Collection<VersionControl> getVersionControl() {
+    public Set<VersionControl> getVersionControl() {
         return versionControl;
     }
 
-    public void setVersionControl(Collection<VersionControl> versionControl) {
+    public void setVersionControl(Set<VersionControl> versionControl) {
         this.versionControl = versionControl;
     }
 }

@@ -4,9 +4,12 @@ import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 import com.araguacaima.open_archi.persistence.persons.Person;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.Set;
 
 @Entity
 @PersistenceUnit(unitName = "open-archi")
@@ -22,6 +25,7 @@ public class ProjectMetaData extends BaseEntity {
     private String documentation;
     @Column
     private String functionalInitiativeDescription;
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinTable(schema = "ASM",
             name = "ProjectMetaData_GlobalSolutionArchitects",
@@ -29,9 +33,10 @@ public class ProjectMetaData extends BaseEntity {
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Person_Id",
                     referencedColumnName = "Id")})
-    private Collection<Person> globalSolutionArchitects;
+    private Set<Person> globalSolutionArchitects;
     @Column
     private String initiativeName;
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinTable(schema = "ASM",
             name = "ProjectMetaData_LocalSolutionArchitects",
@@ -39,7 +44,7 @@ public class ProjectMetaData extends BaseEntity {
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Person_Id",
                     referencedColumnName = "Id")})
-    private Collection<Person> localSolutionArchitects;
+    private Set<Person> localSolutionArchitects;
     @Column
     @Enumerated(EnumType.STRING)
     private Methodology methodology;
@@ -92,7 +97,7 @@ public class ProjectMetaData extends BaseEntity {
         return globalSolutionArchitects;
     }
 
-    public void setGlobalSolutionArchitects(Collection<Person> globalSolutionArchitects) {
+    public void setGlobalSolutionArchitects(Set<Person> globalSolutionArchitects) {
         this.globalSolutionArchitects = globalSolutionArchitects;
     }
 
@@ -108,7 +113,7 @@ public class ProjectMetaData extends BaseEntity {
         return localSolutionArchitects;
     }
 
-    public void setLocalSolutionArchitects(Collection<Person> solutionArchitects) {
+    public void setLocalSolutionArchitects(Set<Person> solutionArchitects) {
         this.localSolutionArchitects = solutionArchitects;
     }
 

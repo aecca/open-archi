@@ -5,6 +5,8 @@ import com.araguacaima.open_archi.persistence.diagrams.core.DiagramableElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 import com.araguacaima.open_archi.persistence.diagrams.core.Item;
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -38,6 +40,7 @@ public class Container extends GroupStaticElement implements DiagramableElement<
     @Column
     private String technology;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
             name = "Container_Components",
@@ -47,6 +50,7 @@ public class Container extends GroupStaticElement implements DiagramableElement<
                     referencedColumnName = "Id")})
     private Set<Component> components = new LinkedHashSet<>();
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
             name = "Container_Containers",
@@ -92,7 +96,7 @@ public class Container extends GroupStaticElement implements DiagramableElement<
         for (Component component : source.getComponents()) {
             Component newComponent = new Component();
             overriden.addAll(newComponent.override(component, keepMeta, suffix, clonedFrom));
-            if(!this.components.add(newComponent)) {
+            if (!this.components.add(newComponent)) {
                 this.components.remove(newComponent);
                 this.components.add(newComponent);
             }
@@ -101,7 +105,7 @@ public class Container extends GroupStaticElement implements DiagramableElement<
         for (Container container : source.getContainers()) {
             Container newContainer = new Container();
             overriden.addAll(newContainer.override(container, keepMeta, suffix, clonedFrom));
-            if(!this.containers.add(newContainer)) {
+            if (!this.containers.add(newContainer)) {
                 this.containers.remove(newContainer);
                 this.containers.add(newContainer);
             }
@@ -121,7 +125,7 @@ public class Container extends GroupStaticElement implements DiagramableElement<
             for (Component component : source.getComponents()) {
                 Component newComponent = new Component();
                 overriden.addAll(newComponent.copyNonEmpty(component, keepMeta));
-                if(!this.components.add(newComponent)) {
+                if (!this.components.add(newComponent)) {
                     this.components.remove(newComponent);
                     this.components.add(newComponent);
                 }
@@ -132,7 +136,7 @@ public class Container extends GroupStaticElement implements DiagramableElement<
             for (Container container : source.getContainers()) {
                 Container newContainer = new Container();
                 overriden.addAll(newContainer.copyNonEmpty(container, keepMeta));
-                if(!this.containers.add(newContainer)) {
+                if (!this.containers.add(newContainer)) {
                     this.containers.remove(newContainer);
                     this.containers.add(newContainer);
                 }

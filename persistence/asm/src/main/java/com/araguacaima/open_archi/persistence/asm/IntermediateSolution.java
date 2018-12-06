@@ -3,9 +3,12 @@ package com.araguacaima.open_archi.persistence.asm;
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.Set;
 
 @Entity
 @PersistenceUnit(unitName = "open-archi")
@@ -16,6 +19,7 @@ public class IntermediateSolution extends BaseEntity {
     @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private Markdown description;
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinTable(schema = "ASM",
             name = "IntermediateSolution_Functional_Diagrams",
@@ -23,7 +27,8 @@ public class IntermediateSolution extends BaseEntity {
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Diagram_Id",
                     referencedColumnName = "Id")})
-    private Collection<Diagram> functionals;
+    private Set<Diagram> functionals;
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinTable(schema = "ASM",
             name = "IntermediateSolution_TechnicalDebts",
@@ -31,7 +36,7 @@ public class IntermediateSolution extends BaseEntity {
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "TechnicalDebt_Id",
                     referencedColumnName = "Id")})
-    private Collection<TechnicalDebt> technicalDebts;
+    private Set<TechnicalDebt> technicalDebts;
     @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private TechnicalSolution technicals;
@@ -51,7 +56,7 @@ public class IntermediateSolution extends BaseEntity {
         return functionals;
     }
 
-    public void setFunctionals(Collection<Diagram> functionalSolutions) {
+    public void setFunctionals(Set<Diagram> functionalSolutions) {
         this.functionals = functionalSolutions;
     }
 
@@ -59,7 +64,7 @@ public class IntermediateSolution extends BaseEntity {
         return technicalDebts;
     }
 
-    public void setTechnicalDebts(Collection<TechnicalDebt> technicalDebts) {
+    public void setTechnicalDebts(Set<TechnicalDebt> technicalDebts) {
         this.technicalDebts = technicalDebts;
     }
 

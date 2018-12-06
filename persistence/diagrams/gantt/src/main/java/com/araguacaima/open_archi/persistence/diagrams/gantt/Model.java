@@ -5,6 +5,8 @@ import com.araguacaima.open_archi.persistence.diagrams.core.DiagramableElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 import com.araguacaima.open_archi.persistence.diagrams.core.ModelElement;
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -17,6 +19,7 @@ import java.util.Set;
 @DiscriminatorValue(value = "GanttModel")
 public class Model extends ModelElement implements DiagramableElement<Model> {
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinTable(schema = "DIAGRAMS",
             name = "Gantt_Model_Relationships",
@@ -26,6 +29,7 @@ public class Model extends ModelElement implements DiagramableElement<Model> {
                     referencedColumnName = "Id")})
     private Set<Relationship> relationships = new LinkedHashSet<>();
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
             name = "Gantt_Model_Gantts",

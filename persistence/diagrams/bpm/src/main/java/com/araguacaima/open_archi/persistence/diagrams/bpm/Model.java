@@ -5,6 +5,8 @@ import com.araguacaima.open_archi.persistence.diagrams.core.DiagramableElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 import com.araguacaima.open_archi.persistence.diagrams.core.ModelElement;
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -17,6 +19,7 @@ import java.util.Set;
 @DiscriminatorValue(value = "BpmModel")
 public class Model extends ModelElement implements DiagramableElement<Model> {
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinTable(schema = "DIAGRAMS",
             name = "Bpm_Model_Relationships",
@@ -26,6 +29,7 @@ public class Model extends ModelElement implements DiagramableElement<Model> {
                     referencedColumnName = "Id")})
     private Set<Relationship> relationships = new LinkedHashSet<>();
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
             name = "Model_Pools",
@@ -54,7 +58,7 @@ public class Model extends ModelElement implements DiagramableElement<Model> {
         for (Pool consumer : source.getPools()) {
             Pool newPool = new Pool();
             overriden.addAll(newPool.override(consumer, keepMeta, suffix, clonedFrom));
-            if(!this.pools.add(newPool)) {
+            if (!this.pools.add(newPool)) {
                 this.pools.remove(newPool);
                 this.pools.add(newPool);
             }
@@ -71,7 +75,7 @@ public class Model extends ModelElement implements DiagramableElement<Model> {
             for (Pool consumer : source.getPools()) {
                 Pool newPool = new Pool();
                 overriden.addAll(newPool.copyNonEmpty(consumer, keepMeta));
-                if(!this.pools.add(newPool)) {
+                if (!this.pools.add(newPool)) {
                     this.pools.remove(newPool);
                     this.pools.add(newPool);
                 }

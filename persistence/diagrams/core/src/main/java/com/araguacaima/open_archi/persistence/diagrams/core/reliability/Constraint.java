@@ -3,6 +3,8 @@ package com.araguacaima.open_archi.persistence.diagrams.core.reliability;
 import com.araguacaima.open_archi.persistence.commons.exceptions.EntityError;
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -14,6 +16,7 @@ import java.util.Set;
 @DynamicUpdate
 public class Constraint extends BaseEntity {
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
             name = "Constraint_Activities",
@@ -23,6 +26,7 @@ public class Constraint extends BaseEntity {
                     referencedColumnName = "Id")})
     private Set<Activity> activities;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
             name = "Constraint_BatchProcessing",
@@ -32,6 +36,7 @@ public class Constraint extends BaseEntity {
                     referencedColumnName = "Id")})
     private Set<BatchProcessing> batchProcessing;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
             name = "Constraint_BulkProcessing",
@@ -41,6 +46,7 @@ public class Constraint extends BaseEntity {
                     referencedColumnName = "Id")})
     private Set<BulkProcessing> bulkProcessing;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
             name = "Constraint_Concurrency",
@@ -50,6 +56,7 @@ public class Constraint extends BaseEntity {
                     referencedColumnName = "Id")})
     private Set<Concurrency> concurrencies;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
             name = "Constraint_Database",
@@ -59,6 +66,7 @@ public class Constraint extends BaseEntity {
                     referencedColumnName = "Id")})
     private Set<Database> dataBase;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
             name = "Constraint_FileTransfer",
@@ -68,6 +76,7 @@ public class Constraint extends BaseEntity {
                     referencedColumnName = "Id")})
     private Set<FileTransfer> fileTransfers;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
             name = "Constraint_Rate",

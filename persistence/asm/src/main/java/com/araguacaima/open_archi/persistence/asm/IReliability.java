@@ -1,6 +1,6 @@
 package com.araguacaima.open_archi.persistence.asm;
 
-import java.util.Collection;
+import java.util.Set;
 
 public interface IReliability {
     Boolean getContemplated();
@@ -11,9 +11,9 @@ public interface IReliability {
 
     void setDescription(Markdown description);
 
-    Collection<Documentation> getDocumentationList();
+    Set<Documentation> getDocumentationList();
 
-    void setDocumentationList(Collection<Documentation> documentationList);
+    void setDocumentationList(Set<Documentation> documentationList);
 
     Boolean getStandardSolution();
 

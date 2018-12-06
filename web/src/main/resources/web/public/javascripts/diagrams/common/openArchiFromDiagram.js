@@ -108,7 +108,7 @@ class OpenArchiFromDiagram {
         let object = {};
         object.id = node.id;
         object.key = node.key === undefined ? undefined : node.key.toString();
-        if (object.key === -1 || object.key === undefined) {
+        if (object.key < 0 || object.key === undefined) {
             object.key = object.id;
         }
         object.meta = node.meta;

@@ -4,6 +4,8 @@ package com.araguacaima.open_archi.persistence.diagrams.core;
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.*;
@@ -96,6 +98,7 @@ public abstract class Item extends Taggable {
     @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     protected CompositeElement parent;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
             name = "Item_Children_Ids",
@@ -113,6 +116,7 @@ public abstract class Item extends Taggable {
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     protected Image image;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
             name = "Item_Can_Be_Connected_From_Ids",
@@ -122,6 +126,7 @@ public abstract class Item extends Taggable {
                     referencedColumnName = "Id")})
     protected Set<ConnectTrigger> canBeConnectedFrom;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
             name = "Item_Can_Be_Connected_To_Ids",
@@ -138,6 +143,7 @@ public abstract class Item extends Taggable {
     @Column
     protected boolean prototype;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinTable(schema = "DIAGRAMS",
             name = "Item_Relationships",
@@ -287,7 +293,7 @@ public abstract class Item extends Taggable {
             for (Relationship relationship : source.getRelationships()) {
                 Relationship newRelationship = new Relationship();
                 overriden.addAll(newRelationship.override(relationship, keepMeta, suffix, clonedFrom));
-                if(!this.relationships.add(newRelationship)) {
+                if (!this.relationships.add(newRelationship)) {
                     this.relationships.remove(newRelationship);
                     this.relationships.add(newRelationship);
                 }
@@ -349,7 +355,7 @@ public abstract class Item extends Taggable {
             for (Relationship relationship : relationships) {
                 Relationship newRelationship = new Relationship();
                 overriden.addAll(newRelationship.copyNonEmpty(relationship, keepMeta));
-                if(!this.relationships.add(newRelationship)) {
+                if (!this.relationships.add(newRelationship)) {
                     this.relationships.remove(newRelationship);
                     this.relationships.add(newRelationship);
                 }

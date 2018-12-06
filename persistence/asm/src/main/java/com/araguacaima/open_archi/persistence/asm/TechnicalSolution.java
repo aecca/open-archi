@@ -3,6 +3,8 @@ package com.araguacaima.open_archi.persistence.asm;
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.Map;
@@ -16,6 +18,7 @@ public class TechnicalSolution extends BaseEntity {
     @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private ArchitectSolutionModel architectSolutionModel;
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @CollectionTable(name = "TechnicalSolution_Impacts",
             schema = "ASM")

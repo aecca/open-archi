@@ -2,6 +2,8 @@ package com.araguacaima.open_archi.persistence.diagrams.core;
 
 import com.araguacaima.open_archi.persistence.diagrams.core.reliability.Constraint;
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -36,6 +38,7 @@ public class Feature extends Item {
     @Column
     private String visibility;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
             name = "Feature_Incoming_Constraint",
@@ -46,6 +49,7 @@ public class Feature extends Item {
     private Set<Constraint> incomingConstraints;
 
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
             name = "Feature_Outgoing_Constraint",

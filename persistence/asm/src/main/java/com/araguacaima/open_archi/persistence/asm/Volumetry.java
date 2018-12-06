@@ -3,6 +3,8 @@ package com.araguacaima.open_archi.persistence.asm;
 import com.araguacaima.open_archi.persistence.commons.exceptions.EntityError;
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -13,6 +15,7 @@ import java.util.Set;
 @DynamicUpdate
 public class Volumetry extends BaseEntity {
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinTable(schema = "ASM",
             name = "Volumetry_Activities",
@@ -21,6 +24,7 @@ public class Volumetry extends BaseEntity {
             inverseJoinColumns = {@JoinColumn(name = "Activities_Id",
                     referencedColumnName = "Id")})
     private Set<Activity> activities;
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinTable(schema = "ASM",
             name = "Volumetry_BatchProcessing",
@@ -29,6 +33,7 @@ public class Volumetry extends BaseEntity {
             inverseJoinColumns = {@JoinColumn(name = "BatchProcessing_Id",
                     referencedColumnName = "Id")})
     private Set<BatchProcessing> batchProcessing;
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinTable(schema = "ASM",
             name = "Volumetry_BulkProcessing",
@@ -37,6 +42,7 @@ public class Volumetry extends BaseEntity {
             inverseJoinColumns = {@JoinColumn(name = "BulkProcessing_Id",
                     referencedColumnName = "Id")})
     private Set<BulkProcessing> bulkProcessing;
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinTable(schema = "ASM",
             name = "Volumetry_Concurrency",
@@ -45,6 +51,7 @@ public class Volumetry extends BaseEntity {
             inverseJoinColumns = {@JoinColumn(name = "Concurrency_Id",
                     referencedColumnName = "Id")})
     private Set<Concurrency> concurrencies;
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinTable(schema = "ASM",
             name = "Volumetry_Database",
@@ -53,6 +60,7 @@ public class Volumetry extends BaseEntity {
             inverseJoinColumns = {@JoinColumn(name = "Database_Id",
                     referencedColumnName = "Id")})
     private Set<Database> dataBase;
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinTable(schema = "ASM",
             name = "Volumetry_FileTransfer",
@@ -61,6 +69,7 @@ public class Volumetry extends BaseEntity {
             inverseJoinColumns = {@JoinColumn(name = "FileTransfer_Id",
                     referencedColumnName = "Id")})
     private Set<FileTransfer> fileTransfers;
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinTable(schema = "ASM",
             name = "Volumetry_Rate",

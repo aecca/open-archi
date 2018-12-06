@@ -5,6 +5,8 @@ import com.araguacaima.open_archi.persistence.diagrams.core.DiagramableElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.Element;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -41,6 +43,7 @@ public class DeploymentNode extends Element implements DiagramableElement<Deploy
     @Enumerated(EnumType.STRING)
     private ElementKind kind = ElementKind.DEPLOYMENT;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
             name = "DeploymentNode_ContainerInstances",
@@ -91,7 +94,7 @@ public class DeploymentNode extends Element implements DiagramableElement<Deploy
         for (ContainerInstance container : source.getContainerInstances()) {
             ContainerInstance newContainerInstance = new ContainerInstance();
             overriden.addAll(newContainerInstance.override(container, keepMeta, suffix, clonedFrom));
-            if(!this.containerInstances.add(newContainerInstance)) {
+            if (!this.containerInstances.add(newContainerInstance)) {
                 this.containerInstances.remove(newContainerInstance);
                 this.containerInstances.add(newContainerInstance);
             }
@@ -114,7 +117,7 @@ public class DeploymentNode extends Element implements DiagramableElement<Deploy
             for (ContainerInstance container : source.getContainerInstances()) {
                 ContainerInstance newContainerInstance = new ContainerInstance();
                 overriden.addAll(newContainerInstance.copyNonEmpty(container, keepMeta));
-                if(!this.containerInstances.add(newContainerInstance)) {
+                if (!this.containerInstances.add(newContainerInstance)) {
                     this.containerInstances.remove(newContainerInstance);
                     this.containerInstances.add(newContainerInstance);
                 }

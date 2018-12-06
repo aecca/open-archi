@@ -3,9 +3,12 @@ package com.araguacaima.open_archi.persistence.asm;
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.Set;
 
 @Entity
 @PersistenceUnit(unitName = "open-archi")
@@ -13,6 +16,7 @@ import java.util.Collection;
 @DynamicUpdate
 public class StatusLifeCycle extends BaseEntity {
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinTable(schema = "ASM",
             name = "StatusLifeCycle_Ancestors",
@@ -20,10 +24,11 @@ public class StatusLifeCycle extends BaseEntity {
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Ancestor_Id",
                     referencedColumnName = "Id")})
-    private Collection<Status> ancestors;
+    private Set<Status> ancestors;
     @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private Status current;
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinTable(schema = "ASM",
             name = "StatusLifeCycle_Descendants",
@@ -31,13 +36,13 @@ public class StatusLifeCycle extends BaseEntity {
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Descendant_Id",
                     referencedColumnName = "Id")})
-    private Collection<Status> descendants;
+    private Set<Status> descendants;
 
     public Collection<Status> getAncestors() {
         return ancestors;
     }
 
-    public void setAncestors(Collection<Status> ancestors) {
+    public void setAncestors(Set<Status> ancestors) {
         this.ancestors = ancestors;
     }
 
@@ -53,7 +58,7 @@ public class StatusLifeCycle extends BaseEntity {
         return descendants;
     }
 
-    public void setDescendants(Collection<Status> descendants) {
+    public void setDescendants(Set<Status> descendants) {
         this.descendants = descendants;
     }
 }

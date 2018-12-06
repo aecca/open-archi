@@ -4,6 +4,8 @@ import com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 import com.araguacaima.open_archi.persistence.diagrams.core.Item;
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -13,6 +15,7 @@ import java.util.Collection;
 @PersistenceUnit(unitName = "open-archi")
 public class Pool extends Item {
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
             name = "Pool_Lanes",
@@ -40,7 +43,7 @@ public class Pool extends Item {
         for (Lane consumer : source.getLanes()) {
             Lane newLane = new Lane();
             overriden.addAll(newLane.override(consumer, keepMeta, suffix, clonedFrom));
-            if(!this.lanes.add(newLane)) {
+            if (!this.lanes.add(newLane)) {
                 this.lanes.remove(newLane);
                 this.lanes.add(newLane);
             }
@@ -56,7 +59,7 @@ public class Pool extends Item {
             for (Lane consumer : source.getLanes()) {
                 Lane newLane = new Lane();
                 overriden.addAll(newLane.copyNonEmpty(consumer, keepMeta));
-                if(!this.lanes.add(newLane)) {
+                if (!this.lanes.add(newLane)) {
                     this.lanes.remove(newLane);
                     this.lanes.add(newLane);
                 }

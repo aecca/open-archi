@@ -51,7 +51,7 @@ public abstract class Elements extends Items {
         for (Features feature : source.getFeatures()) {
             Features newFeature = new Features();
             overriden.addAll(newFeature.override(feature, keepMeta, suffix, clonedFrom));
-            if(!this.features.add(newFeature)) {
+            if (!this.features.add(newFeature)) {
                 this.features.remove(newFeature);
                 this.features.add(newFeature);
             }
@@ -70,7 +70,7 @@ public abstract class Elements extends Items {
             for (Features feature : source.getFeatures()) {
                 Features newFeature = new Features();
                 overriden.addAll(newFeature.copyNonEmpty(feature, keepMeta));
-                if(!this.features.add(newFeature)) {
+                if (!this.features.add(newFeature)) {
                     this.features.remove(newFeature);
                     this.features.add(newFeature);
                 }

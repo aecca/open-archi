@@ -2,9 +2,11 @@ package com.araguacaima.open_archi.persistence.asm;
 
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
-import java.util.Collection;
+import java.util.Set;
 
 @Entity
 @PersistenceUnit(unitName = "open-archi")
@@ -16,8 +18,9 @@ public abstract class AbstractReliability extends BaseEntity implements IReliabi
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private Markdown description;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private Collection<Documentation> documentationList;
+    private Set<Documentation> documentationList;
 
     @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
@@ -47,12 +50,12 @@ public abstract class AbstractReliability extends BaseEntity implements IReliabi
     }
 
     @Override
-    public Collection<Documentation> getDocumentationList() {
+    public Set<Documentation> getDocumentationList() {
         return documentationList;
     }
 
     @Override
-    public void setDocumentationList(Collection<Documentation> documentationList) {
+    public void setDocumentationList(Set<Documentation> documentationList) {
         this.documentationList = documentationList;
     }
 

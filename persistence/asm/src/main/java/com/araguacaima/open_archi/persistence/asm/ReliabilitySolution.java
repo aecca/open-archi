@@ -3,6 +3,8 @@ package com.araguacaima.open_archi.persistence.asm;
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -17,6 +19,7 @@ public class ReliabilitySolution extends BaseEntity {
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private Markdown description;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true, targetEntity = AbstractReliability.class)
     @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private Set<IReliability> elements;

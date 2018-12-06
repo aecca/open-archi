@@ -1,6 +1,8 @@
 package com.araguacaima.open_archi.persistence.diagrams.core;
 
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.*;
@@ -26,6 +28,7 @@ public abstract class Element extends Item {
     @CollectionTable(schema = "DIAGRAMS", name = "Element_Properties", joinColumns = @JoinColumn(name = "Property_Id"))
     protected Map<String, String> properties = new HashMap<>();
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
             name = "Element_FeatureIds",
@@ -75,7 +78,7 @@ public abstract class Element extends Item {
         for (Feature feature : source.getFeatures()) {
             Feature newFeature = new Feature();
             overriden.addAll(newFeature.override(feature, keepMeta, suffix, clonedFrom));
-            if(!this.features.add(newFeature)) {
+            if (!this.features.add(newFeature)) {
                 this.features.remove(newFeature);
                 this.features.add(newFeature);
             }
@@ -97,7 +100,7 @@ public abstract class Element extends Item {
             for (Feature feature : source.getFeatures()) {
                 Feature newFeature = new Feature();
                 overriden.addAll(newFeature.copyNonEmpty(feature, keepMeta));
-                if(!this.features.add(newFeature)) {
+                if (!this.features.add(newFeature)) {
                     this.features.remove(newFeature);
                     this.features.add(newFeature);
                 }

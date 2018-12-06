@@ -4,10 +4,12 @@ import com.araguacaima.open_archi.persistence.meta.BaseEntity;
 import com.araguacaima.open_archi.persistence.persons.Responsible;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.Map;
+import java.util.Set;
 
 @Entity
 @PersistenceUnit(unitName = "open-archi")
@@ -18,6 +20,7 @@ public class TechnicalDebt extends BaseEntity {
     @Column
     @Enumerated(EnumType.STRING)
     private Complexity complexity;
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @CollectionTable(name = "TechnicalDebt_Descriptions",
             schema = "ASM")
@@ -28,6 +31,7 @@ public class TechnicalDebt extends BaseEntity {
     private Effort estimatedEffort;
     @ManyToOne
     private IntermediateSolution intermediateSolution;
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinTable(schema = "ASM",
             name = "TechnicalDebt_Responsibles",
@@ -35,7 +39,7 @@ public class TechnicalDebt extends BaseEntity {
                     referencedColumnName = "Id")},
             inverseJoinColumns = {@JoinColumn(name = "Responsible_Id",
                     referencedColumnName = "Id")})
-    private Collection<Responsible> responsibles;
+    private Set<Responsible> responsibles;
     @Column
     @Enumerated(EnumType.STRING)
     private TechnicalDebtScope scope;
@@ -72,11 +76,11 @@ public class TechnicalDebt extends BaseEntity {
         this.intermediateSolution = intermediateSolution;
     }
 
-    public Collection<Responsible> getResponsibles() {
+    public Set<Responsible> getResponsibles() {
         return responsibles;
     }
 
-    public void setResponsibles(Collection<Responsible> responsibles) {
+    public void setResponsibles(Set<Responsible> responsibles) {
         this.responsibles = responsibles;
     }
 

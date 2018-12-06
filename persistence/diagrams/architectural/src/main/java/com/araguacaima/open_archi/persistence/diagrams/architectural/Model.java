@@ -2,6 +2,8 @@ package com.araguacaima.open_archi.persistence.diagrams.architectural;
 
 import com.araguacaima.open_archi.persistence.diagrams.core.*;
 import com.araguacaima.open_archi.persistence.meta.BaseEntity;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -52,6 +54,7 @@ public class Model extends ModelElement implements DiagramableElement<Model> {
     public static final String GET_SYSTEM = "get.system";
     public static final String GET_MODELS_USAGE_BY_ELEMENT_ID_LIST = "get.models.usage.by.element.id.list";
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
             name = "Architecture_Model_Consumers",
@@ -61,6 +64,7 @@ public class Model extends ModelElement implements DiagramableElement<Model> {
                     referencedColumnName = "Id")})
     private Set<Consumer> consumers = new LinkedHashSet<>();
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
             name = "Architecture_Model_Layers",
@@ -70,6 +74,7 @@ public class Model extends ModelElement implements DiagramableElement<Model> {
                     referencedColumnName = "Id")})
     private Set<Layer> layers = new LinkedHashSet<>();
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
             name = "Architecture_Model_Systems",
@@ -80,6 +85,7 @@ public class Model extends ModelElement implements DiagramableElement<Model> {
     private Set<System> systems = new LinkedHashSet<>();
 
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
             name = "Architecture_Model_Containers",
@@ -90,6 +96,7 @@ public class Model extends ModelElement implements DiagramableElement<Model> {
     private Set<Container> containers = new LinkedHashSet<>();
 
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
             name = "Architecture_Model_Components",
@@ -99,6 +106,7 @@ public class Model extends ModelElement implements DiagramableElement<Model> {
                     referencedColumnName = "Id")})
     private Set<Component> components = new LinkedHashSet<>();
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(schema = "DIAGRAMS",
             name = "Architecture_Model_DeploymentNodes",
@@ -167,7 +175,7 @@ public class Model extends ModelElement implements DiagramableElement<Model> {
         for (Consumer consumer : source.getConsumers()) {
             Consumer newConsumer = new Consumer();
             overriden.addAll(newConsumer.override(consumer, keepMeta, suffix, clonedFrom));
-            if(!this.consumers.add(newConsumer)) {
+            if (!this.consumers.add(newConsumer)) {
                 this.consumers.remove(newConsumer);
                 this.consumers.add(newConsumer);
             }
@@ -176,7 +184,7 @@ public class Model extends ModelElement implements DiagramableElement<Model> {
         for (Layer layer : source.getLayers()) {
             Layer newLayer = new Layer();
             overriden.addAll(newLayer.override(layer, keepMeta, suffix, clonedFrom));
-            if(!this.layers.add(newLayer)) {
+            if (!this.layers.add(newLayer)) {
                 this.layers.remove(newLayer);
                 this.layers.add(newLayer);
             }
@@ -185,7 +193,7 @@ public class Model extends ModelElement implements DiagramableElement<Model> {
         for (System system : source.getSystems()) {
             System newSystem = new System();
             overriden.addAll(newSystem.override(system, keepMeta, suffix, clonedFrom));
-            if(!this.systems.add(newSystem)) {
+            if (!this.systems.add(newSystem)) {
                 this.systems.remove(newSystem);
                 this.systems.add(newSystem);
             }
@@ -194,7 +202,7 @@ public class Model extends ModelElement implements DiagramableElement<Model> {
         for (Container container : source.getContainers()) {
             Container newContainer = new Container();
             overriden.addAll(newContainer.override(container, keepMeta, suffix, clonedFrom));
-            if(!this.containers.add(newContainer)) {
+            if (!this.containers.add(newContainer)) {
                 this.containers.remove(newContainer);
                 this.containers.add(newContainer);
             }
@@ -203,7 +211,7 @@ public class Model extends ModelElement implements DiagramableElement<Model> {
         for (Component component : source.getComponents()) {
             Component newComponent = new Component();
             overriden.addAll(newComponent.override(component, keepMeta, suffix, clonedFrom));
-            if(!this.components.add(newComponent)) {
+            if (!this.components.add(newComponent)) {
                 this.components.remove(newComponent);
                 this.components.add(newComponent);
             }
@@ -212,7 +220,7 @@ public class Model extends ModelElement implements DiagramableElement<Model> {
         for (DeploymentNode deploymentNode : source.getDeploymentNodes()) {
             DeploymentNode newDeploymentNode = new DeploymentNode();
             overriden.addAll(newDeploymentNode.override(deploymentNode, keepMeta, suffix, clonedFrom));
-            if(!this.deploymentNodes.add(newDeploymentNode)) {
+            if (!this.deploymentNodes.add(newDeploymentNode)) {
                 this.deploymentNodes.remove(newDeploymentNode);
                 this.deploymentNodes.add(newDeploymentNode);
             }
@@ -229,7 +237,7 @@ public class Model extends ModelElement implements DiagramableElement<Model> {
             for (Consumer consumer : source.getConsumers()) {
                 Consumer newConsumer = new Consumer();
                 overriden.addAll(newConsumer.copyNonEmpty(consumer, keepMeta));
-                if(!this.consumers.add(newConsumer)) {
+                if (!this.consumers.add(newConsumer)) {
                     this.consumers.remove(newConsumer);
                     this.consumers.add(newConsumer);
                 }
@@ -240,7 +248,7 @@ public class Model extends ModelElement implements DiagramableElement<Model> {
             for (Layer system : source.getLayers()) {
                 Layer newLayer = new Layer();
                 overriden.addAll(newLayer.copyNonEmpty(system, keepMeta));
-                if(!this.layers.add(newLayer)) {
+                if (!this.layers.add(newLayer)) {
                     this.layers.remove(newLayer);
                     this.layers.add(newLayer);
                 }
@@ -251,7 +259,7 @@ public class Model extends ModelElement implements DiagramableElement<Model> {
             for (System system : source.getSystems()) {
                 System newSystem = new System();
                 overriden.addAll(newSystem.copyNonEmpty(system, keepMeta));
-                if(!this.systems.add(newSystem)) {
+                if (!this.systems.add(newSystem)) {
                     this.systems.remove(newSystem);
                     this.systems.add(newSystem);
                 }
@@ -262,7 +270,7 @@ public class Model extends ModelElement implements DiagramableElement<Model> {
             for (Container system : source.getContainers()) {
                 Container newContainer = new Container();
                 overriden.addAll(newContainer.copyNonEmpty(system, keepMeta));
-                if(!this.containers.add(newContainer)) {
+                if (!this.containers.add(newContainer)) {
                     this.containers.remove(newContainer);
                     this.containers.add(newContainer);
                 }
@@ -273,7 +281,7 @@ public class Model extends ModelElement implements DiagramableElement<Model> {
             for (Component system : source.getComponents()) {
                 Component newComponent = new Component();
                 overriden.addAll(newComponent.copyNonEmpty(system, keepMeta));
-                if(!this.components.add(newComponent)) {
+                if (!this.components.add(newComponent)) {
                     this.components.remove(newComponent);
                     this.components.add(newComponent);
                 }
@@ -284,7 +292,7 @@ public class Model extends ModelElement implements DiagramableElement<Model> {
             for (DeploymentNode deploymentNode : source.getDeploymentNodes()) {
                 DeploymentNode newDeploymentNode = new DeploymentNode();
                 overriden.addAll(newDeploymentNode.copyNonEmpty(deploymentNode, keepMeta));
-                if(!this.deploymentNodes.add(newDeploymentNode)) {
+                if (!this.deploymentNodes.add(newDeploymentNode)) {
                     this.deploymentNodes.remove(newDeploymentNode);
                     this.deploymentNodes.add(newDeploymentNode);
                 }

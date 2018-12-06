@@ -115,7 +115,7 @@ public class DBUtil {
         }
     }
 
-    public static void persist(Object entity) {
+    public static void persist(com.araguacaima.open_archi.persistence.diagrams.core.CompositeElement entity) {
         boolean autocommit = OrpheusDbJPAEntityManagerUtils.getAutocommit();
         OrpheusDbJPAEntityManagerUtils.setAutocommit(false);
         OrpheusDbJPAEntityManagerUtils.begin();
@@ -131,7 +131,7 @@ public class DBUtil {
     }
 
     public static void delete(Class<?> clazz, String key) throws Throwable {
-        Object entity = OrpheusDbJPAEntityManagerUtils.find(clazz, (Object) key);
+        Object entity = OrpheusDbJPAEntityManagerUtils.find(clazz, (String) key);
         OrpheusDbJPAEntityManagerUtils.delete(entity);
     }
 
@@ -474,20 +474,26 @@ public class DBUtil {
             }, Utils::filterMethod);
             try {
                 if (!persistedObjects.contains(entity)) {
-                    Object existentEntity = OrpheusDbJPAEntityManagerUtils.find(entity);
-                    if (existentEntity != null) {
-                        reflectionUtils.invokeMethod(existentEntity, "override", new Object[]{entity, true, null, null});
-                        OrpheusDbJPAEntityManagerUtils.merge(existentEntity);
-                    } else {
-                        existentEntity = OrpheusDbJPAEntityManagerUtils.findByQuery(Item.class, Item.GET_ITEMS_BY_NAME_AND_KIND);
-                        if (existentEntity != null) {
-                            reflectionUtils.invokeMethod(existentEntity, "override", new Object[]{entity, true, null, null});
-                            OrpheusDbJPAEntityManagerUtils.merge(existentEntity);
-                        } else {
-
-                            OrpheusDbJPAEntityManagerUtils.merge(entity);
-                        }
-                    }
+//                    Object existentEntity = OrpheusDbJPAEntityManagerUtils.find(entity);
+//                    if (existentEntity != null) {
+//                        reflectionUtils.invokeMethod(existentEntity, "override", new Object[]{entity, true, null, null});
+//                        OrpheusDbJPAEntityManagerUtils.merge(existentEntity);
+//                    } else {
+//                        Map<String, Object> map = new HashMap<>();
+//                        if (Item.class.isAssignableFrom(entity.getClass())) {
+//                            map.put("kind", ((Item) entity).getKind());
+//                            map.put("name", ((Item) entity).getName());
+//                            existentEntity = OrpheusDbJPAEntityManagerUtils.findByQuery(Item.class, Item.GET_ITEMS_BY_NAME_AND_KIND, map);
+//                            if (existentEntity != null) {
+//                                reflectionUtils.invokeMethod(existentEntity, "override", new Object[]{entity, true, null, null});
+//                                OrpheusDbJPAEntityManagerUtils.merge(existentEntity);
+//                            } else {
+//                                OrpheusDbJPAEntityManagerUtils.merge(entity);
+//                            }
+//                        } else {
+                    OrpheusDbJPAEntityManagerUtils.merge(entity);
+//                        }
+//                    }
                     persistedObjects.add(entity);
                 } else {
                     logProcessing(entity);
@@ -696,6 +702,4 @@ public class DBUtil {
         }
 
     }
-
-
 }
