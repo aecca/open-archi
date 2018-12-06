@@ -1,10 +1,11 @@
 package com.araguacaima.open_archi.web;
 
+import com.araguacaima.commons.utils.EnumsUtils;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 import com.araguacaima.open_archi.persistence.diagrams.core.Item;
 import com.araguacaima.open_archi.persistence.diagrams.core.Taggable;
-import com.araguacaima.orpheusdb.utils.OrpheusDbJPAEntityManagerUtils;
 import com.araguacaima.open_archi.web.common.Commons;
+import com.araguacaima.orpheusdb.utils.OrpheusDbJPAEntityManagerUtils;
 import spark.RouteGroup;
 
 import java.util.HashMap;
@@ -19,6 +20,7 @@ import static spark.Spark.get;
 public class Prototyper implements RouteGroup {
 
     public static final String PATH = "/prototyper";
+    private static final EnumsUtils enumsUtils = new EnumsUtils();
 
     @Override
     public void addRoutes() {
@@ -51,6 +53,17 @@ public class Prototyper implements RouteGroup {
                 bean.fullView(null);
             }
             bean.prototyper(true);
+            String kind = req.queryParams("kind");
+            String name = req.queryParams("name");
+            Map<String, Object> map = new HashMap<>();
+            Enum anEnum = (Enum) enumsUtils.getEnum(ElementKind.class, kind);
+            map.put("kind", anEnum);
+            map.put("name", name);
+            Taggable model = OrpheusDbJPAEntityManagerUtils.findByQuery(Item.class, Item.GET_PROTOTYPES_BY_NAME_AND_KIND, map);
+            if (model != null) {
+                model.validateRequest();
+                bean.model(model);
+            }
             return buildModelAndView(req, res, bean, Editor.PATH);
         }, engine);
         get("/:uuid", (req, res) -> {

@@ -53,6 +53,8 @@ import java.util.*;
                         "from com.araguacaima.open_archi.persistence.diagrams.core.Item a where a.name like concat(:name,'%') and TYPE(a)=:type "),
         @NamedQuery(name = Item.GET_ALL_CONSUMERS,
                 query = "select a from com.araguacaima.open_archi.persistence.diagrams.core.Item a where a.kind='CONSUMER'"),
+        @NamedQuery(name = Item.GET_PROTOTYPES_BY_NAME_AND_KIND,
+                query = "select a from com.araguacaima.open_archi.persistence.diagrams.core.Item a where a.kind=:kind and a.name=:name and a.prototype=true"),
         @NamedQuery(name = Item.GET_ITEMS_BY_NAME_AND_KIND,
                 query = "select a from com.araguacaima.open_archi.persistence.diagrams.core.Item a where a.kind=:kind and a.name=:name"),
         @NamedQuery(name = Item.GET_ITEMS_BY_NAME,
@@ -82,6 +84,7 @@ public abstract class Item extends Taggable {
     public static final String GET_ALL_PROTOTYPE_NAMES_BY_TYPE = "get.all.prototype.names.by.type";
     public static final String GET_ALL_NON_CLONED_PROTOTYPE_NAMES_BY_TYPE = "get.all.non.cloned.prototype.names.by.type";
     public static final String GET_ITEMS_BY_NAME_AND_KIND = "get.items.by.name.and.kind";
+    public static final String GET_PROTOTYPES_BY_NAME_AND_KIND = "get.prototypes.by.name.and.kind";
     public static final String GET_ITEMS_BY_NAME = "get.items.by.name";
     public static final String ELEMENTS_USAGE_PARAM = "elementIds";
 

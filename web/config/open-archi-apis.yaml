@@ -9,8 +9,11 @@ info:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
 host: ${DEPLOYED_SERVER}
-basePath: /api
 tags:
+- name: Prototyper
+  description: Visual prototyper functionalities
+- name: Editor
+  description: Visual editor functionalities
 - name: Models
   description: Set of functionalities related to model agnostically to its type
 - name: Diagrams
@@ -25,7 +28,54 @@ schemes:
 - http
 - https
 paths:
-  "/models":
+  "/prototyper":
+    get:
+      tags:
+      - Prototyper
+      summary: Shows a prototyper according to the kind or name of the model
+      description: Shows a prototyper according to the kind or name of the model. If no model match with the requested criteria, am empty prototyper is returned. No error is raised
+      operationId: get-prototyper
+      produces:
+      - text/html
+      parameters:
+      - name: "kind"
+        in: query
+        description: Load prototyper according to kind of the model
+        required: true
+        type: string
+      - name: "name"
+        in: query
+        description: Load prototyper according to model name. This attribute is case-sensitive
+        required: true
+        type: string
+      responses:
+        '200':
+          description: OK
+      security:
+      - openarchi_auth:
+        - read:models
+  "/prorotyper/{model-id}":
+    get:
+      tags:
+      - Prototyper
+      summary: Shows a prototyper for a specific model by its ID
+      description: Shows a prototyper for a specific model by its ID. If no model match with the requested ID, am empty prototyper is returned. No error is raised
+      operationId: get-prototyper-by-model-id
+      produces:
+      - text/html
+      parameters:
+      - name: model-id
+        in: path
+        description: ID of the model to show in the prototyper
+        required: true
+        type: string
+      responses:
+        '200':
+          description: OK
+      security:
+      - openarchi_auth:
+        - read:models
+  "/api/models":
 #    options:
 #      tags:
 #      - Models
@@ -113,7 +163,7 @@ paths:
       - openarchi_auth:
         - write:model
         - read:models
-  "/models/batch":
+  "/api/models/batch":
 #    options:
 #      tags:
 #      - Models
@@ -171,7 +221,7 @@ paths:
 #          description: OK
 #          schema:
 #            $ref: "#/definitions/Options_Get"
-  "/models/{model-id}":
+  "/api/models/{model-id}":
     get:
       tags:
       - Models
@@ -267,7 +317,7 @@ paths:
 #            allOf:
 #            - $ref: "#/definitions/Options_Get_Collection"
 #            - $ref: "#/definitions/Options_Put"
-  "/models/{model-id}/clone":
+  "/api/models/{model-id}/clone":
     get:
       tags:
       - Models
@@ -296,7 +346,7 @@ paths:
           description: Invalid ID supplied
         '404':
           description: Model not found
-  "/models/{model-id}/status/{statud-id}":
+  "/api/models/{model-id}/status/{statud-id}":
     put:
       tags:
       - Models
@@ -333,7 +383,7 @@ paths:
       - openarchi_auth:
         - write:model
         - read:models
-  "/models/{model-id}/image":
+  "/api/models/{model-id}/image":
     get:
       tags:
       - Models
@@ -393,7 +443,7 @@ paths:
       - openarchi_auth:
         - write:model
         - read:models
-  "/models/{model-id}/children":
+  "/api/models/{model-id}/children":
     get:
       tags:
       - Models
@@ -473,7 +523,7 @@ paths:
 #            allOf:
 #            - $ref: "#/definitions/Options_Get"
 #            - $ref: "#/definitions/Options_Post"
-  "/models/{model-id}/parent":
+  "/api/models/{model-id}/parent":
     get:
       tags:
       - Models
@@ -546,7 +596,7 @@ paths:
 #            allOf:
 #            - $ref: "#/definitions/Options_Get"
 #            - $ref: "#/definitions/Options_Post"
-  "/models/{model-id}/meta-data":
+  "/api/models/{model-id}/meta-data":
     get:
       tags:
       - Models
@@ -619,7 +669,7 @@ paths:
 #            allOf:
 #            - $ref: "#/definitions/Options_Get_Collection"
 #            - $ref: "#/definitions/Options_Put"
-  "/models/{model-id}/features":
+  "/api/models/{model-id}/features":
     get:
       tags:
       - Models
@@ -679,7 +729,7 @@ paths:
       - openarchi_auth:
         - write:model
         - read:models
-  "/models/{model-id}/meta":
+  "/api/models/{model-id}/meta":
      get:
        tags:
        - Models
@@ -704,7 +754,7 @@ paths:
        security:
        - openarchi_auth:
          - read:models
-  "/models/{model-id}/meta/history":
+  "/api/models/{model-id}/meta/history":
      get:
        tags:
        - Models
@@ -764,7 +814,7 @@ paths:
        - openarchi_auth:
          - write:model
          - read:models
-  "/diagrams/architectures":
+  "/api/diagrams/architectures":
 #    options:
 #      tags:
 #      - Diagrams
@@ -848,7 +898,7 @@ paths:
 #            allOf:
 #            - $ref: "#/definitions/Options_Get_Collection"
 #            - $ref: "#/definitions/Options_Put"
-  "/diagrams/architectures/{model-id}":
+  "/api/diagrams/architectures/{model-id}":
     patch:
       tags:
       - Diagrams
@@ -882,7 +932,7 @@ paths:
       - openarchi_auth:
         - write:model
         - read:models
-  "/diagrams/architectures/{model-id}/layers":
+  "/api/diagrams/architectures/{model-id}/layers":
     get:
       tags:
       - Diagrams
@@ -947,7 +997,7 @@ paths:
       - openarchi_auth:
         - write:model
         - read:models
-  "/diagrams/architectures/{model-id}/layers/{layer-id}":
+  "/api/diagrams/architectures/{model-id}/layers/{layer-id}":
     get:
       tags:
       - Diagrams
@@ -1053,7 +1103,7 @@ paths:
       - openarchi_auth:
         - write:model
         - read:models
-  "/diagrams/architectures/{model-id}/relationships":
+  "/api/diagrams/architectures/{model-id}/relationships":
     get:
       tags:
       - Diagrams
@@ -1128,7 +1178,7 @@ paths:
 #            allOf:
 #            - $ref: "#/definitions/Options_Get_Collection"
 #            - $ref: "#/definitions/Options_Put"
-  "/diagrams/architectures/{model-id}/consumers":
+  "/api/diagrams/architectures/{model-id}/consumers":
     get:
       tags:
       - Diagrams
@@ -1193,7 +1243,7 @@ paths:
       - openarchi_auth:
         - write:model
         - read:models
-  "/diagrams/architectures/{model-id}/consumers/{consumer-id}":
+  "/api/diagrams/architectures/{model-id}/consumers/{consumer-id}":
     get:
       tags:
       - Diagrams
@@ -1303,7 +1353,7 @@ paths:
       - openarchi_auth:
         - write:model
         - read:models
-  "/diagrams/architectures/systems":
+  "/api/diagrams/architectures/systems":
     get:
       tags:
       - Diagrams
@@ -1358,7 +1408,7 @@ paths:
       - openarchi_auth:
         - write:model
         - read:models
-  "/diagrams/architectures/systems/{system-id}":
+  "/api/diagrams/architectures/systems/{system-id}":
     get:
       tags:
       - Diagrams
@@ -1454,7 +1504,7 @@ paths:
       - openarchi_auth:
         - write:model
         - read:models
-  "/diagrams/architectures/systems/{system-id}/systems":
+  "/api/diagrams/architectures/systems/{system-id}/systems":
     get:
       tags:
       - Diagrams
@@ -1521,7 +1571,7 @@ paths:
       - openarchi_auth:
         - write:model
         - read:models
-  "/diagrams/architectures/layers/{layer-id}":
+  "/api/diagrams/architectures/layers/{layer-id}":
     get:
       tags:
       - Diagrams
@@ -1617,7 +1667,7 @@ paths:
       - openarchi_auth:
         - write:model
         - read:models
-  "/diagrams/architectures/layers/{layer-id}/systems":
+  "/api/diagrams/architectures/layers/{layer-id}/systems":
     get:
       tags:
       - Diagrams
@@ -1684,7 +1734,7 @@ paths:
       - openarchi_auth:
         - write:model
         - read:models
-  "/diagrams/architectures/layers/{layer-id}/systems/{system-id}":
+  "/api/diagrams/architectures/layers/{layer-id}/systems/{system-id}":
     delete:
       tags:
       - Diagrams
@@ -1714,7 +1764,7 @@ paths:
       security:
       - openarchi_auth:
         - delete:model
-  "/diagrams/architectures/layers/{layer-id}/containers":
+  "/api/diagrams/architectures/layers/{layer-id}/containers":
     get:
       tags:
       - Diagrams
@@ -1781,7 +1831,7 @@ paths:
       - openarchi_auth:
         - write:model
         - read:models
-  "/diagrams/architectures/layers/{layer-id}/containers/{container-id}":
+  "/api/diagrams/architectures/layers/{layer-id}/containers/{container-id}":
     delete:
       tags:
       - Diagrams
@@ -1811,7 +1861,7 @@ paths:
       security:
       - openarchi_auth:
         - delete:model
-  "/diagrams/architectures/layers/{layer-id}/components":
+  "/api/diagrams/architectures/layers/{layer-id}/components":
     get:
       tags:
       - Diagrams
@@ -1878,7 +1928,7 @@ paths:
       - openarchi_auth:
         - write:model
         - read:models
-  "/diagrams/architectures/layers/{layer-id}/components/{component-id}":
+  "/api/diagrams/architectures/layers/{layer-id}/components/{component-id}":
     delete:
       tags:
       - Diagrams
@@ -1908,7 +1958,7 @@ paths:
       security:
       - openarchi_auth:
         - delete:model
-  "/diagrams/architectures/systems/{system-id}/containers":
+  "/api/diagrams/architectures/systems/{system-id}/containers":
     get:
       tags:
       - Diagrams
@@ -1975,7 +2025,7 @@ paths:
       - openarchi_auth:
         - write:model
         - read:models        
-  "/diagrams/architectures/systems/{system-id}/components":
+  "/api/diagrams/architectures/systems/{system-id}/components":
     get:
       tags:
       - Diagrams
@@ -2042,7 +2092,7 @@ paths:
       - openarchi_auth:
         - write:model
         - read:models
-  "/diagrams/architectures/containers":
+  "/api/diagrams/architectures/containers":
     get:
       tags:
       - Diagrams
@@ -2097,7 +2147,7 @@ paths:
       - openarchi_auth:
         - write:model
         - read:models
-  "/diagrams/architectures/containers/{container-id}":
+  "/api/diagrams/architectures/containers/{container-id}":
     get:
       tags:
       - Diagrams
@@ -2192,7 +2242,7 @@ paths:
       - openarchi_auth:
         - write:model
         - read:models
-  "/diagrams/architectures/containers/{container-id}/components":
+  "/api/diagrams/architectures/containers/{container-id}/components":
     get:
       tags:
       - Diagrams
@@ -2259,7 +2309,7 @@ paths:
       - openarchi_auth:
         - write:model
         - read:models  
-  "/diagrams/architectures/components":
+  "/api/diagrams/architectures/components":
     get:
       tags:
       - Diagrams
@@ -2314,7 +2364,7 @@ paths:
       - openarchi_auth:
         - write:model
         - read:models
-  "/diagrams/architectures/components/{component-id}":
+  "/api/diagrams/architectures/components/{component-id}":
     get:
       tags:
       - Diagrams
@@ -2410,7 +2460,7 @@ paths:
         - write:model
         - read:models
 
-  "/diagrams/architectures/{model-id}/systems":
+  "/api/diagrams/architectures/{model-id}/systems":
     get:
       tags:
       - Diagrams
@@ -2475,7 +2525,7 @@ paths:
       - openarchi_auth:
         - write:model
         - read:models
-  "/diagrams/architectures/{model-id}/systems/{system-id}":
+  "/api/diagrams/architectures/{model-id}/systems/{system-id}":
     get:
       tags:
       - Diagrams
@@ -2585,7 +2635,7 @@ paths:
       - openarchi_auth:
         - write:model
         - read:models
-  "/diagrams/architectures/{model-id}/systems/{system-id}/containers":
+  "/api/diagrams/architectures/{model-id}/systems/{system-id}/containers":
     get:
       tags:
       - Diagrams
@@ -2660,7 +2710,7 @@ paths:
       - openarchi_auth:
         - write:model
         - read:models
-  "/diagrams/architectures/{model-id}/systems/{system-id}/containers/{container-id}":
+  "/api/diagrams/architectures/{model-id}/systems/{system-id}/containers/{container-id}":
     get:
       tags:
       - Diagrams
@@ -2785,7 +2835,7 @@ paths:
       - openarchi_auth:
         - write:model
         - read:models
-  "/diagrams/bpms":
+  "/api/diagrams/bpms":
 #    options:
 #      tags:
 #      - Diagrams
@@ -2854,7 +2904,7 @@ paths:
       - openarchi_auth:
         - write:model
         - read:models
-  "/diagrams/flowcharts":
+  "/api/diagrams/flowcharts":
 #    options:
 #      tags:
 #      - Diagrams
@@ -2923,7 +2973,7 @@ paths:
       - openarchi_auth:
         - write:model
         - read:models
-  "/diagrams/gantts":
+  "/api/diagrams/gantts":
 #    options:
 #      tags:
 #      - Diagrams
@@ -2992,7 +3042,7 @@ paths:
       - openarchi_auth:
         - write:model
         - read:models
-  "/diagrams/sequences":
+  "/api/diagrams/sequences":
 #    options:
 #      tags:
 #      - Diagrams
@@ -3075,7 +3125,7 @@ paths:
 #            allOf:
 #            - $ref: "#/definitions/Options_Get_Collection"
 #            - $ref: "#/definitions/Options_Put"
-  "/consumers":
+  "/api/consumers":
     get:
       tags:
       - Consumers
@@ -3130,7 +3180,7 @@ paths:
       - openarchi_auth:
         - write:model
         - read:models
-  "/consumers/{consumer-id}":
+  "/api/consumers/{consumer-id}":
     get:
       tags:
       - Consumers
@@ -3222,7 +3272,7 @@ paths:
       - openarchi_auth:
         - write:model
         - read:models
-  "/catalogs/diagram-types":
+  "/api/catalogs/diagram-types":
 #    options:
 #      tags:
 #      - Catalogs
@@ -3283,7 +3333,7 @@ paths:
       - openarchi_auth:
         - write:catalogs
         - read:catalogs
-  "/catalogs/element-types/{element-type-id}/shape":
+  "/api/catalogs/element-types/{element-type-id}/shape":
     get:
       tags:
       - Catalogs
@@ -3392,7 +3442,7 @@ paths:
       security:
       - openarchi_auth:
         - write:catalog
-  "/catalogs/prototype-names":
+  "/api/catalogs/prototype-names":
 #    options:
 #      tags:
 #      - Catalogs
@@ -3427,7 +3477,7 @@ paths:
       security:
       - openarchi_auth:
         - read:catalogs
-  "/catalogs/diagram-names":
+  "/api/catalogs/diagram-names":
 #    options:
 #      tags:
 #      - Catalogs
@@ -3462,7 +3512,7 @@ paths:
       security:
       - openarchi_auth:
         - read:catalogs
-  "/catalogs/consumer-names":
+  "/api/catalogs/consumer-names":
 #    options:
 #      tags:
 #      - Catalogs
@@ -3497,7 +3547,7 @@ paths:
       security:
       - openarchi_auth:
         - read:catalogs
-  "/catalogs/element-roles":
+  "/api/catalogs/element-roles":
     get:
       tags:
       - Catalogs
@@ -3543,7 +3593,7 @@ paths:
       security:
       - openarchi_auth:
         - write:catalog
-  "/palette/architectures":
+  "/api/palette/architectures":
     get:
       tags:
       - Palettes
@@ -3588,7 +3638,7 @@ paths:
       - openarchi_auth:
         - write:palette
         - read:palettes
-  "/palette/bpms":
+  "/api/palette/bpms":
     get:
       tags:
       - Palettes
@@ -3633,7 +3683,7 @@ paths:
       - openarchi_auth:
         - write:palette
         - read:palettes
-  "/palette/flowcharts":
+  "/api/palette/flowcharts":
     get:
       tags:
       - Palettes
@@ -3678,7 +3728,7 @@ paths:
       - openarchi_auth:
         - write:palette
         - read:palettes
-  "/palette/gantts":
+  "/api/palette/gantts":
     get:
       tags:
       - Palettes
@@ -3723,7 +3773,7 @@ paths:
       - openarchi_auth:
         - write:palette
         - read:palettes
-  "/palette/sequences":
+  "/api/palette/sequences":
     get:
       tags:
       - Palettes
