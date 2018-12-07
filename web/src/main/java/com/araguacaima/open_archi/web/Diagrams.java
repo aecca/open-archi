@@ -32,11 +32,6 @@ public class Diagrams implements RouteGroup {
 
     @Override
     public void addRoutes() {
-        /*        options(Commons.DEFAULT_PATH + "*", (request, response) -> {
-            setCORS(request, response);
-            Map<HttpMethod, Map<Commons.InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledParentModelCollection, deeplyFulfilledParentModel, HttpMethod.get, HttpMethod.post);
-            return getOptions(request, response, output);
-        });*/
         get("/architectures", (request, response) -> {
             Map<String, Object> params = new HashMap<>();
             params.put("modelType", Model.class);

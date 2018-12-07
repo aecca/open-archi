@@ -23,11 +23,6 @@ public class Consumers implements RouteGroup {
 
     @Override
     public void addRoutes() {
-        /*        options(Commons.DEFAULT_PATH + "*", (request, response) -> {
-            setCORS(request, response);
-            Map<HttpMethod, Map<Commons.InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledParentModelCollection, deeplyFulfilledParentModel, HttpMethod.get, HttpMethod.post);
-            return getOptions(request, response, output);
-        });*/
         get(Commons.EMPTY_PATH, (request, response) -> getList(request, response, Item.GET_ALL_CONSUMERS, null, null));
         post(Commons.EMPTY_PATH, (request, response) -> {
             try {

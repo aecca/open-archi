@@ -20,11 +20,6 @@ public class Palettes implements RouteGroup {
 
     @Override
     public void addRoutes() {
-        /*        options(Commons.DEFAULT_PATH + "*", (request, response) -> {
-            setCORS(request, response);
-            Map<HttpMethod, Map<Commons.InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledParentModelCollection, deeplyFulfilledParentModel, HttpMethod.get, HttpMethod.post);
-            return getOptions(request, response, output);
-        });*/
         get("/architectures", (request, response) -> {
             try {
                 Palette palette = OpenArchi.getArchitecturePalette(Item.GET_ALL_PROTOTYPES);

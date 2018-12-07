@@ -12,7 +12,7 @@ import com.araguacaima.open_archi.persistence.meta.Role;
 import com.araguacaima.open_archi.web.BeanBuilder;
 import com.araguacaima.open_archi.web.MessagesWrapper;
 import com.araguacaima.open_archi.web.Server;
-import com.araguacaima.open_archi.web.SessionFilter;
+import com.araguacaima.open_archi.web.filter.SessionFilter;
 import com.araguacaima.open_archi.web.wrapper.AccountWrapper;
 import com.araguacaima.open_archi.web.wrapper.JsonPathRsqlVisitor;
 import com.araguacaima.open_archi.web.wrapper.RolesWrapper;

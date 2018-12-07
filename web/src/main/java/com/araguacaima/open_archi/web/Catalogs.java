@@ -25,11 +25,6 @@ public class Catalogs implements RouteGroup {
 
     @Override
     public void addRoutes() {
-/*        options(Commons.DEFAULT_PATH + "*", (request, response) -> {
-            setCORS(request, response);
-            Map<HttpMethod, Map<Commons.InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledParentModelCollection, deeplyFulfilledParentModel, HttpMethod.get, HttpMethod.post);
-            return getOptions(request, response, output);
-        });*/
         get("/element-types", (request, response) -> getList(request, response, ElementShape.GET_ALL_ELEMENT_SHAPES, null, null));
         get("/element-types/:elementTypeId/shape", (request, response) -> {
             Map<String, Object> params = new HashMap<>();

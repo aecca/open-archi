@@ -21,48 +21,41 @@ public class Samples implements RouteGroup {
 
     public static Collection<ExampleData> getExamples() {
         Collection<ExampleData> result = new ArrayList<>();
-        result.add(new ExampleData("/diagrams/checkBoxes.html", "Features (checkbox)"));
-        result.add(new ExampleData("/diagrams/columnResizing.html", "Ajuste de tamaños"));
-        result.add(new ExampleData("/diagrams/comments.html", "Comentarios"));
-        result.add(new ExampleData("/diagrams/dragCreating.html", "Creación Ágil"));
-        result.add(new ExampleData("/diagrams/draggableLink.html", "Constraints"));
-        result.add(new ExampleData("/diagrams/entityRelationship.html", "Entidad Relación"));
-        result.add(new ExampleData("/diagrams/flowchart.html", "Flujo de Secuencia"));
-        result.add(new ExampleData("/diagrams/gantt.html", "Diagramas Gantt"));
-        result.add(new ExampleData("/diagrams/grouping.html", "Expansión"));
-        result.add(new ExampleData("/diagrams/regrouping.html", "Re-agrupación"));
-        result.add(new ExampleData("/diagrams/guidedDragging.html", "Guías visuales"));
-        result.add(new ExampleData("/diagrams/icons.html", "Iconos SVG"));
-        result.add(new ExampleData("/diagrams/kanban.html", "Tablero Kanban"));
-        result.add(new ExampleData("/diagrams/logicCircuit.html", "Flujo y Secuencia 1"));
-        result.add(new ExampleData("/diagrams/mindMap.html", "Mapas Estratégicos"));
-        result.add(new ExampleData("/diagrams/navigation.html", "Seguimiento de Flujos"));
-        result.add(new ExampleData("/diagrams/orgChartStatic.html", "Zooming"));
-        result.add(new ExampleData("/diagrams/records.html", "Mapeo de Features"));
-        result.add(new ExampleData("/diagrams/sequenceDiagram.html", "UML de Secuencia"));
-        result.add(new ExampleData("/diagrams/shopFloorMonitor.html", "Flujo y Secuencia 2"));
-        result.add(new ExampleData("/diagrams/swimBands.html", "Release Planning"));
-        result.add(new ExampleData("/diagrams/swimLanes.html", "Diagrama de Procesos"));
-        result.add(new ExampleData("/diagrams/umlClass.html", "UML de Clases"));
-        result.add(new ExampleData("/diagrams/updateDemo.html", "Actualización Realtime"));
+        result.add(new ExampleData(Server.basePath + "/diagrams/checkBoxes.html", "Features (checkbox)"));
+        result.add(new ExampleData(Server.basePath + "/diagrams/columnResizing.html", "Adjusting sizes"));
+        result.add(new ExampleData(Server.basePath + "/diagrams/comments.html", "Comments"));
+        result.add(new ExampleData(Server.basePath + "/diagrams/dragCreating.html", "Agile origination"));
+        result.add(new ExampleData(Server.basePath + "/diagrams/draggableLink.html", "Constraints"));
+        result.add(new ExampleData(Server.basePath + "/diagrams/entityRelationship.html", "Entity Relationship"));
+        result.add(new ExampleData(Server.basePath + "/diagrams/flowchart.html", "Workflow"));
+        result.add(new ExampleData(Server.basePath + "/diagrams/gantt.html", "Gantt Diagram"));
+        result.add(new ExampleData(Server.basePath + "/diagrams/grouping.html", "Expander"));
+        result.add(new ExampleData(Server.basePath + "/diagrams/regrouping.html", "Re-grouping"));
+        result.add(new ExampleData(Server.basePath + "/diagrams/guidedDragging.html", "Visual Guides"));
+        result.add(new ExampleData(Server.basePath + "/diagrams/icons.html", "SVG Icons"));
+        result.add(new ExampleData(Server.basePath + "/diagrams/kanban.html", "Kanban Board"));
+        result.add(new ExampleData(Server.basePath + "/diagrams/logicCircuit.html", "Flow and Sequence 1"));
+        result.add(new ExampleData(Server.basePath + "/diagrams/mindMap.html", "Strategic Maps"));
+        result.add(new ExampleData(Server.basePath + "/diagrams/navigation.html", "Following the Flow"));
+        result.add(new ExampleData(Server.basePath + "/diagrams/orgChartStatic.html", "Zooming"));
+        result.add(new ExampleData(Server.basePath + "/diagrams/records.html", "Features Mapping"));
+        result.add(new ExampleData(Server.basePath + "/diagrams/sequenceDiagram.html", "UML - Sequence"));
+        result.add(new ExampleData(Server.basePath + "/diagrams/shopFloorMonitor.html", "Flow and Sequence 2"));
+        result.add(new ExampleData(Server.basePath + "/diagrams/swimBands.html", "Release Planning"));
+        result.add(new ExampleData(Server.basePath + "/diagrams/swimLanes.html", "Process Diagram"));
+        result.add(new ExampleData(Server.basePath + "/diagrams/umlClass.html", "UML - Classes"));
+        result.add(new ExampleData(Server.basePath + "/diagrams/updateDemo.html", "Realtime Update"));
         return result;
     }
 
     @Override
     public void addRoutes() {
-        final List nodeDataArray = Commons.getDefaultNodeDataArray();
-        final List linkDataArray = Commons.getDefaultLinkDataArray();
-
         List<String> steps = new ArrayList<>();
-        steps.add("Con doble-click en cualquier área vacía del canvas se crea un nuevo componente (siempre será una cajita)");
-        steps.add("Con doble-click en cualquier componente (cajita) se editará su nombre");
-        steps.add("Al hacer click en el borde de un componente se puede crear conectores (flechas) hacia cualquier componente");
         BeanBuilder bean = new BeanBuilder()
                 .model(new Object())
                 .source("basic")
-                .mainTitle("Propuesta para diagrama básico de componentes - Primer nivel")
-                .caption("¡Leyendo ya desde Open Archi!")
-                .fullDescription("Sencillo, pero fácil de adaptar para construir modelos de solución a alto nivel. Intuitivo y fácil de usar.")
+                .mainTitle("Basic editor")
+                .caption("Reading from OpenArchi!")
                 .steps(steps);
         get("/basic", buildRoute(bean, "editor"), engine);
     }

@@ -1,7 +1,8 @@
-package com.araguacaima.open_archi.web;
+package com.araguacaima.open_archi.web.filter;
 
 
 import com.araguacaima.open_archi.persistence.meta.Account;
+import com.araguacaima.open_archi.web.OpenArchi;
 import com.araguacaima.orpheusdb.utils.OrpheusDbJPAEntityManagerUtils;
 import com.araguacaima.open_archi.web.common.Commons;
 import org.pac4j.core.profile.CommonProfile;

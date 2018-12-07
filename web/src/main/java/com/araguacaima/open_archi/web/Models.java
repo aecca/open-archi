@@ -28,11 +28,6 @@ public class Models implements RouteGroup {
 
     @Override
     public void addRoutes() {
-        /*        options(Commons.DEFAULT_PATH + "*", (request, response) -> {
-            setCORS(request, response);
-            Map<HttpMethod, Map<Commons.InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledParentModelCollection, deeplyFulfilledParentModel, HttpMethod.get, HttpMethod.post);
-            return getOptions(request, response, output);
-        });*/
         post(Commons.EMPTY_PATH, (request, response) -> {
             try {
                 String body = request.body();

@@ -35,6 +35,7 @@ public class Server {
     private static Logger log = LoggerFactory.getLogger(Server.class);
     private static Map<String, String> environment;
     public static String deployedServer;
+    public static String basePath;
     private static ProcessBuilder processBuilder = new ProcessBuilder();
 
     static {
@@ -88,7 +89,7 @@ public class Server {
 
         assignedPort = getAssignedPort();
         deployedServer = environment.get("DEPLOYED_SERVER");
-        String basePath = "http://" + (deployedServer.contains(":") ? deployedServer : deployedServer + (assignedPort == 80 ? "" : ":" + assignedPort));
+        basePath = "http://" + (deployedServer.contains(":") ? deployedServer : deployedServer + (assignedPort == 80 ? "" : ":" + assignedPort));
         config.setBasePath(basePath);
         config.getSharedVariables().put("basePath", basePath);
         config.setPrettyPrint(true);
