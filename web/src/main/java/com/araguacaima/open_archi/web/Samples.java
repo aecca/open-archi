@@ -5,14 +5,19 @@ import com.araguacaima.open_archi.web.ExampleData;
 import com.araguacaima.open_archi.web.common.Commons;
 import spark.Redirect;
 import spark.RouteGroup;
+import spark.route.HttpMethod;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import static com.araguacaima.open_archi.web.Server.engine;
-import static com.araguacaima.open_archi.web.common.Commons.buildRoute;
+import static com.araguacaima.open_archi.web.common.Commons.*;
+import static com.araguacaima.open_archi.web.common.Commons.getOptions;
+import static com.araguacaima.open_archi.web.common.Security.setCORS;
 import static spark.Spark.get;
+import static spark.Spark.options;
 import static spark.Spark.redirect;
 
 public class Samples implements RouteGroup {
@@ -50,6 +55,11 @@ public class Samples implements RouteGroup {
 
     @Override
     public void addRoutes() {
+        options(Commons.DEFAULT_PATH + "*", (request, response) -> {
+            setCORS(request, response);
+            Map<HttpMethod, Map<Commons.InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledParentModelCollection, deeplyFulfilledParentModel, HttpMethod.get, HttpMethod.post);
+            return getOptions(request, response, output);
+        });
         List<String> steps = new ArrayList<>();
         BeanBuilder bean = new BeanBuilder()
                 .model(new Object())

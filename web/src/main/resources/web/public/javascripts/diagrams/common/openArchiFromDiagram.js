@@ -247,4 +247,49 @@ class OpenArchiFromDiagram {
     }
 
 
+    static toEndpoint(model) {
+        switch (model.kind) {
+            case "PERSON":
+                return "/api/persons";
+                break;
+            case "ARCHITECTURE_MODEL":
+                return "/api/models";
+                break;
+            case "FLOWCHART_MODEL":
+                return "/api/flowchart-models";
+                break;
+            case "SEQUENCE_MODEL":
+                return "/api/sequence-models";
+                break;
+            case "GANTT_MODEL":
+                return "/api/gantt-models";
+                break;
+            case "ENTITY_RELATIONSHIP_MODEL":
+                return "/api/entity-relationship-models";
+                break;
+            case "UML_CLASS_MODEL":
+                return "/api/class-models";
+                break;
+            case "BPM_MODEL":
+                return "/api/architectures/bpms";
+                break;
+            case "COMPONENT":
+                return "/api/architectures/components";
+                break;
+            case "CONSUMER":
+                return "/api/architectures/consumers";
+                break;
+            case "CONTAINER":
+                return "/api/architectures/conatiners";
+                break;
+            case "SYSTEM":
+                return "/api/architectures/systems";
+                break;
+            case "LAYER":
+                return "/api/architectures/layers";
+                break;
+            default:
+                break;
+        }
+    }
 }

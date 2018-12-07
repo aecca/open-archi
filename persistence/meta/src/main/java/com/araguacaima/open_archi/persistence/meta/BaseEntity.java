@@ -223,6 +223,7 @@ public abstract class BaseEntity implements Serializable, BasicEntity, Cloneable
     }
 
     @JsonIgnore
+    @Override
     public void override(BaseEntity source, boolean keepMeta, String suffix) {
         if (source.getMeta() != null) {
             if (keepMeta) {

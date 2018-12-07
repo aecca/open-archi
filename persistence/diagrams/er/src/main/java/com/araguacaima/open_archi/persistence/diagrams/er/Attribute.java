@@ -47,7 +47,6 @@ public class Attribute extends BaseEntity {
         this.type = type;
     }
 
-
     public Collection<BaseEntity> override(Attribute source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
         Collection<BaseEntity> overriden = new ArrayList<>();
         super.override(source, keepMeta, suffix);

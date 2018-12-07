@@ -12,7 +12,6 @@ import java.util.Collection;
 @PersistenceUnit(unitName = "open-archi")
 public class Activity extends Item {
 
-    //TODO Completar
     public Collection<BaseEntity> override(Activity source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
         return super.override(source, keepMeta, suffix, clonedFrom);
     }

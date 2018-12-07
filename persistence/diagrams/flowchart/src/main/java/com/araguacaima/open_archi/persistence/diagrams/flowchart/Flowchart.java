@@ -24,7 +24,6 @@ public class Flowchart extends Item {
         this.kind = kind;
     }
 
-
     public Collection<BaseEntity> override(Flowchart source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
         return super.override(source, keepMeta, suffix, clonedFrom);
     }

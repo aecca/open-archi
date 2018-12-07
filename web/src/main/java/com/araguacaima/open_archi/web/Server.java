@@ -112,6 +112,7 @@ public class Server {
             response.header("Access-Control-Allow-Origin", "*");
             response.header("Access-Control-Request-Method", "*");
             response.header("Access-Control-Allow-Headers", "*");
+            setCORS(request, response);
             //log.info("Request for (relative): " + request.uri());
         });
         options(Commons.DEFAULT_PATH + "*", (request, response) -> {

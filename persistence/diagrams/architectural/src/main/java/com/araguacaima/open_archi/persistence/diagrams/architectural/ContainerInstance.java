@@ -53,7 +53,7 @@ public class ContainerInstance extends Element {
         this.kind = kind;
     }
 
-    public Collection<BaseEntity> override(ContainerInstances source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+    public Collection<BaseEntity> override(ContainerInstance source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
         Collection<BaseEntity> overriden = new ArrayList<>();
         overriden.addAll(super.override(source, keepMeta, suffix, clonedFrom));
         this.setContainerId(source.getContainerId());
@@ -61,7 +61,7 @@ public class ContainerInstance extends Element {
         return overriden;
     }
 
-    public Collection<BaseEntity> copyNonEmpty(ContainerInstances source, boolean keepMeta) {
+    public Collection<BaseEntity> copyNonEmpty(ContainerInstance source, boolean keepMeta) {
         Collection<BaseEntity> overriden = new ArrayList<>();
         overriden.addAll(super.copyNonEmpty(source, keepMeta));
         if (source.getContainerId() != null) {

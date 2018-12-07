@@ -97,7 +97,7 @@ public class Models implements RouteGroup {
                     return EMPTY_RESPONSE;
                 } else {
                     OrpheusDbJPAEntityManagerUtils.detach(storedModel);
-                    Model storedModel_ = (Model) storedModel;
+                    Model storedModel_ = Model.class.cast(storedModel);
                     storedModel_.override(model, true, null, null);
                     map.put("Parent", storedModel_);
                     storedModel_.validateReplacement(map);

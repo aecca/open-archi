@@ -35,15 +35,14 @@ public class Consumer extends LeafStaticElement {
         this.scope = scope;
     }
 
-
-    public Collection<BaseEntity> override(Consumers source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
+    public Collection<BaseEntity> override(Consumer source, boolean keepMeta, String suffix, CompositeElement clonedFrom) {
         Collection<BaseEntity> overriden = new ArrayList<>();
         overriden.addAll(super.override(source, keepMeta, suffix, clonedFrom));
         this.setScope(source.getScope());
         return overriden;
     }
 
-    public Collection<BaseEntity> copyNonEmpty(Consumers source, boolean keepMeta) {
+    public Collection<BaseEntity> copyNonEmpty(Consumer source, boolean keepMeta) {
         Collection<BaseEntity> overriden = new ArrayList<>();
         overriden.addAll(super.copyNonEmpty(source, keepMeta));
         if (source.getScope() != null) {

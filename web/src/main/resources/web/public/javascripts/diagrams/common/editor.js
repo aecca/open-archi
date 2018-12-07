@@ -58,8 +58,9 @@ function save(model) {
     resizeDataModelDiv();
     myDiagram.isModified = false;
     myDiagram.model.modelData.position = go.Point.stringify(myDiagram.position);
+    const endpoint = OpenArchiFromDiagram.toEndpoint(value_);
     $.ajax({
-        url: basePath + "/api/models",
+        url: basePath + endpoint,
         data: JSON.stringify(value_),
         type: 'POST',
         crossDomain: true,
@@ -76,8 +77,10 @@ function save(model) {
             if (response.status === 201) {
                 retrievePalette();
             } else {
+                const id = value_.id;
+                delete value_.id;
                 $.ajax({
-                    url: basePath + "/api/models",
+                    url: basePath + endpoint + "/" + id,
                     data: JSON.stringify(value_),
                     type: 'PUT',
                     crossDomain: true,
@@ -106,7 +109,7 @@ function save(model) {
             const id = value_.id;
             delete value_.id;
             $.ajax({
-                url: basePath + "/api/models/" + id,
+                url: basePath + endpoint + "/" + id,
                 data: JSON.stringify(value_),
                 type: 'PUT',
                 crossDomain: true,
@@ -364,6 +367,7 @@ function openContent(url, targetDiv) {
 function getPageContent(url, targetDiv) {
     $.ajax({
         url: url,
+        crossDomain: true,
         beforeSend: function (xhr) {
             xhr.overrideMimeType("text/html; charset=utf-8");
         }
@@ -376,6 +380,8 @@ function getPageContent(url, targetDiv) {
         }
         target.html(data);
         target.show();
+    }).fail(function (data) {
+        alert(data);
     });
 }
 
