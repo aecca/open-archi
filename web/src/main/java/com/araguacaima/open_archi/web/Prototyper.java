@@ -1,11 +1,14 @@
 package com.araguacaima.open_archi.web;
 
 import com.araguacaima.commons.utils.EnumsUtils;
+import com.araguacaima.commons.utils.StringUtils;
 import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 import com.araguacaima.open_archi.persistence.diagrams.core.Item;
 import com.araguacaima.open_archi.persistence.diagrams.core.Taggable;
 import com.araguacaima.open_archi.web.common.Commons;
 import com.araguacaima.orpheusdb.utils.OrpheusDbJPAEntityManagerUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import spark.RouteGroup;
 
 import java.util.HashMap;
@@ -21,6 +24,7 @@ public class Prototyper implements RouteGroup {
 
     public static final String PATH = "/prototyper";
     private static final EnumsUtils enumsUtils = new EnumsUtils();
+    private static final Logger log = LoggerFactory.getLogger(Prototyper.class);
 
     @Override
     public void addRoutes() {
@@ -55,14 +59,22 @@ public class Prototyper implements RouteGroup {
             bean.prototyper(true);
             String kind = req.queryParams("kind");
             String name = req.queryParams("name");
-            Map<String, Object> map = new HashMap<>();
-            Enum anEnum = (Enum) enumsUtils.getEnum(ElementKind.class, kind);
-            map.put("kind", anEnum);
-            map.put("name", name);
-            Taggable model = OrpheusDbJPAEntityManagerUtils.findByQuery(Item.class, Item.GET_PROTOTYPES_BY_NAME_AND_KIND, map);
-            if (model != null) {
-                model.validateRequest();
-                bean.model(model);
+            if (StringUtils.isNotBlank(kind) && StringUtils.isNotBlank(name)) {
+                try {
+                    Map<String, Object> map = new HashMap<>();
+                    Enum anEnum = (Enum) enumsUtils.getEnum(ElementKind.class, kind);
+                    map.put("kind", anEnum);
+                    map.put("name", name);
+                    Taggable model = OrpheusDbJPAEntityManagerUtils.findByQuery(Item.class, Item.GET_PROTOTYPES_BY_NAME_AND_KIND, map);
+                    if (model != null) {
+                        model.validateRequest();
+                        bean.model(model);
+                    }
+                } catch (Throwable t) {
+                    log.warn(t.getMessage());
+                }
+            } else {
+                log.debug("Loading empty prototyper due name and kind query parameters are both empty");
             }
             return buildModelAndView(req, res, bean, Editor.PATH);
         }, engine);
