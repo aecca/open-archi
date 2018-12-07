@@ -89,7 +89,7 @@ public class Server {
 
         assignedPort = getAssignedPort();
         deployedServer = environment.get("DEPLOYED_SERVER");
-        basePath = "http://" + (deployedServer.contains(":") ? deployedServer : deployedServer + (assignedPort == 80 ? "" : ":" + assignedPort));
+        basePath = environment.get("BASE_PATH");
         config.setBasePath(basePath);
         config.getSharedVariables().put("basePath", basePath);
         config.setPrettyPrint(true);
