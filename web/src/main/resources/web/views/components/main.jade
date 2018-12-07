@@ -54,10 +54,10 @@ html(lang="en")
         title= title
         block styles
             link(rel="stylesheet", href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css")
-            link(rel="icon", href="/favicon.ico")
+            link(rel="icon", href=basePath + "/favicon.ico")
     body(data-spy="scroll", data-target=".scrollspy")
         block body
 
         block scripts
-            script(src="/javascripts/jquery-3.3.1.min.js")
+            script(src=basePath + "/javascripts/jquery-3.3.1.min.js")
             script(src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js")

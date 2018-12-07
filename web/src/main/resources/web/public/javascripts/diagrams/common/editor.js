@@ -19,7 +19,7 @@ function fixMetaData() {
 
 function retrievePalette() {
     $.ajax({
-        url: "/api/palette/architectures",
+        url: basePath + "/api/palette/architectures",
         type: 'GET',
         crossDomain: true,
         contentType: "application/json",
@@ -59,7 +59,7 @@ function save(model) {
     myDiagram.isModified = false;
     myDiagram.model.modelData.position = go.Point.stringify(myDiagram.position);
     $.ajax({
-        url: "/api/models",
+        url: basePath + "/api/models",
         data: JSON.stringify(value_),
         type: 'POST',
         crossDomain: true,
@@ -77,7 +77,7 @@ function save(model) {
                 retrievePalette();
             } else {
                 $.ajax({
-                    url: "/api/models",
+                    url: basePath + "/api/models",
                     data: JSON.stringify(value_),
                     type: 'PUT',
                     crossDomain: true,
@@ -106,7 +106,7 @@ function save(model) {
             const id = value_.id;
             delete value_.id;
             $.ajax({
-                url: "/api/models/" + id,
+                url: basePath + "/api/models/" + id,
                 data: JSON.stringify(value_),
                 type: 'PUT',
                 crossDomain: true,
@@ -146,7 +146,7 @@ function load(model) {
 
 function placeNewNode(elementType, data, name) {
     $.ajax({
-        url: "/api/catalogs/element-types/" + elementType.type + "/shape",
+        url: basePath + "/api/catalogs/element-types/" + elementType.type + "/shape",
         type: 'GET',
         crossDomain: true,
         contentType: "application/json",
@@ -627,7 +627,7 @@ function init() {
     $("#diagramId").autocomplete({
         minLength: 3,
         source: function (request, response) {
-            $.get("/api/models", {query: "name=='*" + request.term + "*'"})
+            $.get(basePath + "/api/models", {query: "name=='*" + request.term + "*'"})
                 .done(function (data) {
                     const models = [{id: "-1", value: "Select one..."}];
                     dataArray = data;

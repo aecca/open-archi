@@ -4,10 +4,10 @@ mixin tab-list(tabs,active)
 		each item,index in tabs
 			if (index === active)
 				li.active
-					a(href="#tab#{item}",role="tab",data-toggle="tab")= item
+					a(href=basePath + "?#tab#{item}",role="tab",data-toggle="tab")= item
 			else
 				li
-					a(href="#tab#{item}",role="tab",data-toggle="tab")= item
+					a(href=basePath + "?#tab#{item}",role="tab",data-toggle="tab")= item
 	.tab-content
 		block
 		

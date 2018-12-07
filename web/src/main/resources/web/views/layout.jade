@@ -2,17 +2,22 @@ extends components/main
 
 append styles
     // Custom styles for this template
-    link(rel='stylesheet', type='text/css', href='/stylesheets/jquery.json-view.min.css')
+    link(rel='stylesheet', type='text/css', href=basePath + '/stylesheets/jquery.json-view.min.css')
     link(rel='stylesheet', type='text/css', href='https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700')
-    link(rel='stylesheet', type='text/css', href='/stylesheets/navbar-fixed-top.css')
-    link(rel='stylesheet', type='text/css', href='/stylesheets/justified-nav.css')
-    link(rel='stylesheet', type='text/css', href='/stylesheets/tiny.css')
+    link(rel='stylesheet', type='text/css', href=basePath + '/stylesheets/navbar-fixed-top.css')
+    link(rel='stylesheet', type='text/css', href=basePath + '/stylesheets/justified-nav.css')
+    link(rel='stylesheet', type='text/css', href=basePath + '/stylesheets/tiny.css')
+    style.
+        .ui-autocomplete-loading {
+            background: white url('!{basePath}/stylesheets/images/ui-anim_basic_16x16.gif') right center no-repeat;
+        }
 
 append scripts
-    script(src='/javascripts/commons.js')
-    script(src='/javascripts/jquery.json-view.min.js')
-    script(src='/javascripts/w3color.js')
-
+    script(src=basePath + '/javascripts/commons.js')
+    script(src=basePath + '/javascripts/jquery.json-view.min.js')
+    script(src=basePath + '/javascripts/w3color.js')
+    script.
+        let basePath = '!{basePath}'
 mixin navbar-open-archi(name, text, id, style, href, image, textColor)
     - if (!style) var style = "default";
     - if (!href) var href = "#";
@@ -25,7 +30,7 @@ mixin navbar-open-archi(name, text, id, style, href, image, textColor)
                     span.icon-bar
                     span.icon-bar
                 div(style="display: flex;")
-                    a(href=href)
+                    a(href=basePath + href)
                         img(alt=name, src=image)&attributes(attributes)
                     if text
                         span
@@ -41,13 +46,13 @@ mixin navbar-open-archi(name, text, id, style, href, image, textColor)
 
 block body
     // Fixed navbar
-    +navbar-open-archi("menu", null, "navbar", null, "/", "/images/open-archi.png", "#1E97C2")(width="90px", height="50px")
+    +navbar-open-archi("menu", null, "navbar", null, "/", basePath + "/images/open-archi.png", "#1E97C2")(width="90px", height="50px")
         if authorized
             +nav_item("#")= login
             +nav_item("#")(style='padding-top: 8px; padding-bottom: 0')
                 +img-thumbnail(avatar, 'Profile avatar', 'padding: 0; margin: 0')(width="35px", height="35px")
             li
-                a.btn.btn-danger(href='/logout', style='padding: 5px; color: white; margin-top: 8px; font-weight: bold;') Logout
+                a.btn.btn-danger(href=basePath + '/logout', style='padding: 5px; color: white; margin-top: 8px; font-weight: bold;') Logout
     block content
 
 block footer

@@ -8,16 +8,16 @@ mixin list-group-links(items,active)
 	.list-group
 	each item, index in items
 		if(index === active)
-			a.list-group-item.active(href="#{item.url}") #{item.text}
+			a.list-group-item.active(href=basePath + "?#{item.url}") #{item.text}
 		else
-			a.list-group-item(href="#{item.url}") #{item.text}
+			a.list-group-item(href=basePath + "?#{item.url}") #{item.text}
 
 mixin list-group-item(url,active)
 	if(active)
-		a.list-group-item.active(href="#{url}")
+		a.list-group-item.active(href=basePath + "?#{url}")
 			block
 	else
-		a.list-group-item(href="#{url}")
+		a.list-group-item(href=basePath + "?#{url}")
 			block
 
 mixin list-group-custom()

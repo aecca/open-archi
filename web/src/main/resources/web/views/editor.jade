@@ -4,36 +4,36 @@ block meta
     meta(name="description", content="OpenArchi Editor")
 
 append styles
-    link(rel='stylesheet', type='text/css', href='/stylesheets/jquery-ui.css')
-    link(rel='stylesheet', type='text/css', href='/stylesheets/autocomplete.css')
-    link(rel='stylesheet', type='text/css', href='/stylesheets/menu.css')
-    link(rel='stylesheet', type='text/css', href='/stylesheets/dataInspector.css')
-    link(rel='stylesheet', type='text/css', href='/stylesheets/palette.css')
-    link(rel='stylesheet', type='text/css', href='/stylesheets/bootstrap-slider.css')
-    link(rel='stylesheet', type='text/css', href='/stylesheets/jquery.mCustomScrollbar.min.css')
-    link(rel='stylesheet', type='text/css', href='/stylesheets/presenter.css')
+    link(rel='stylesheet', type='text/css', href=basePath + '/stylesheets/jquery-ui.css')
+    link(rel='stylesheet', type='text/css', href=basePath + '/stylesheets/autocomplete.css')
+    link(rel='stylesheet', type='text/css', href=basePath + '/stylesheets/menu.css')
+    link(rel='stylesheet', type='text/css', href=basePath + '/stylesheets/dataInspector.css')
+    link(rel='stylesheet', type='text/css', href=basePath + '/stylesheets/palette.css')
+    link(rel='stylesheet', type='text/css', href=basePath + '/stylesheets/bootstrap-slider.css')
+    link(rel='stylesheet', type='text/css', href=basePath + '/stylesheets/jquery.mCustomScrollbar.min.css')
+    link(rel='stylesheet', type='text/css', href=basePath + '/stylesheets/presenter.css')
 
 append scripts
-    script(type='text/javascript', src='/javascripts/jquery-ui.js')
+    script(type='text/javascript', src=basePath + '/javascripts/jquery-ui.js')
     script.
         $.fn.slider = null;
-    script(src='/javascripts/go.js')
-    script(type='text/javascript', src='/javascripts/underscore.js')
-    script(type='text/javascript', src='/javascripts/diagrams/common/openArchiCommon.js')
-    script(type='text/javascript', src='/javascripts/diagrams/common/openArchiToDiagram.js')
-    script(type='text/javascript', src='/javascripts/diagrams/common/openArchiFromDiagram.js')
-    script(type='text/javascript', src='/javascripts/diagrams/common/dataInspector.js')
-    script(type='text/javascript', src='/javascripts/bootstrap-slider.js')
-    script(type='text/javascript', src='/javascripts/diagrams/common/editor.js')
-    script(type='text/javascript', src='/javascripts/diagrams/common/elements.js')
-    script(type='text/javascript', src='/javascripts/diagrams/elements/architectureModel.js')
-    script(type='text/javascript', src='/javascripts/diagrams/elements/component.js')
-    script(type='text/javascript', src='/javascripts/diagrams/elements/container.js')
-    script(type='text/javascript', src='/javascripts/diagrams/elements/layer.js')
-    script(type='text/javascript', src='/javascripts/diagrams/elements/system.js')
-    script(type='text/javascript', src='/javascripts/diagrams/common/basic.js')
-    script(type='text/javascript', src='/javascripts/diagrams/common/palette.js')
-    script(type='text/javascript', src='/javascripts/jquery.mCustomScrollbar.concat.min.js')
+    script(src=basePath + '/javascripts/go.js')
+    script(type='text/javascript', src=basePath + '/javascripts/underscore.js')
+    script(type='text/javascript', src=basePath + '/javascripts/diagrams/common/openArchiCommon.js')
+    script(type='text/javascript', src=basePath + '/javascripts/diagrams/common/openArchiToDiagram.js')
+    script(type='text/javascript', src=basePath + '/javascripts/diagrams/common/openArchiFromDiagram.js')
+    script(type='text/javascript', src=basePath + '/javascripts/diagrams/common/dataInspector.js')
+    script(type='text/javascript', src=basePath + '/javascripts/bootstrap-slider.js')
+    script(type='text/javascript', src=basePath + '/javascripts/diagrams/common/editor.js')
+    script(type='text/javascript', src=basePath + '/javascripts/diagrams/common/elements.js')
+    script(type='text/javascript', src=basePath + '/javascripts/diagrams/elements/architectureModel.js')
+    script(type='text/javascript', src=basePath + '/javascripts/diagrams/elements/component.js')
+    script(type='text/javascript', src=basePath + '/javascripts/diagrams/elements/container.js')
+    script(type='text/javascript', src=basePath + '/javascripts/diagrams/elements/layer.js')
+    script(type='text/javascript', src=basePath + '/javascripts/diagrams/elements/system.js')
+    script(type='text/javascript', src=basePath + '/javascripts/diagrams/common/basic.js')
+    script(type='text/javascript', src=basePath + '/javascripts/diagrams/common/palette.js')
+    script(type='text/javascript', src=basePath + '/javascripts/jquery.mCustomScrollbar.concat.min.js')
     script.
         meta.isPrototyper = !{prototyper};
 
@@ -73,7 +73,7 @@ append scripts
         var diagramTypes = !{diagramTypes_};
         var elementTypes = !{elementTypes_};
         var fullView = '!{fullView}';
-    script(type='text/javascript', src='/javascripts/diagrams/presenter.js')
+    script(type='text/javascript', src=basePath + '/javascripts/diagrams/presenter.js')
 block extra-menu-elements
     +nav_item_dropdown("#", null, "diagramTypesDropdown")(label="Diagram Type")
     +nav_item_dropdown("#")(label="Menu")
@@ -154,11 +154,11 @@ block content
         nav#sidebar.active
             ul.list-unstyled.components
                 li.active
-                    a(href="#basicPaletteSubMenu", data-toggle="collapse", aria-expanded="true", style="font-weight: bold;") Basic
+                    a(href=basePath + "?#basicPaletteSubMenu", data-toggle="collapse", aria-expanded="true", style="font-weight: bold;") Basic
                     ul#basicPaletteSubMenu.collapse.in.list-unstyled
                         #paletteDivBasic(style="height: 160px")
                 li.active
-                    a(href="#generalPaletteSubMenu", data-toggle="collapse", aria-expanded="true", style="font-weight: bold;") Extended
+                    a(href=basePath + "?#generalPaletteSubMenu", data-toggle="collapse", aria-expanded="true", style="font-weight: bold;") Extended
                     ul#generalPaletteSubMenu.collapse.in.list-unstyled
                         #paletteDivGeneral(style="height: 280px")
         #content

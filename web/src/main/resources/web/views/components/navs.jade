@@ -4,10 +4,10 @@ mixin nav(type,items,active)
 	each item,index in items
 		if(index === active)
 			li.active(role="presentation")
-				a(href="#{item.href}")= item.text
+				a(href=basePath + "?#{item.href}")= item.text
 		else
 			li(role="presentation")
-				a(href="#{item.href}")= item.text
+				a(href=basePath + "?#{item.href}")= item.text
 					
 					
 mixin nav-tabs(items,active)

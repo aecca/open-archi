@@ -2,9 +2,14 @@ package com.araguacaima.open_archi.web;
 
 import com.araguacaima.open_archi.persistence.diagrams.architectural.Palette;
 import com.araguacaima.open_archi.persistence.diagrams.core.Item;
+import com.araguacaima.open_archi.web.common.Commons;
 import spark.RouteGroup;
+import spark.route.HttpMethod;
+
+import java.util.Map;
 
 import static com.araguacaima.open_archi.web.common.Commons.*;
+import static com.araguacaima.open_archi.web.common.Security.setCORS;
 import static java.net.HttpURLConnection.HTTP_NOT_IMPLEMENTED;
 import static java.net.HttpURLConnection.HTTP_OK;
 import static spark.Spark.*;
@@ -15,6 +20,11 @@ public class Palettes implements RouteGroup {
 
     @Override
     public void addRoutes() {
+        /*        options(Commons.DEFAULT_PATH + "*", (request, response) -> {
+            setCORS(request, response);
+            Map<HttpMethod, Map<Commons.InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledParentModelCollection, deeplyFulfilledParentModel, HttpMethod.get, HttpMethod.post);
+            return getOptions(request, response, output);
+        });*/
         get("/architectures", (request, response) -> {
             try {
                 Palette palette = OpenArchi.getArchitecturePalette(Item.GET_ALL_PROTOTYPES);

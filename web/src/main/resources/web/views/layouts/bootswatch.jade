@@ -3,7 +3,7 @@ append styles
 	// Bootstrap theme
 	+bootswatch("cerulean")
 	// Custom styles for this template
-	link(href='/stylesheets/theme.css', rel='stylesheet')
+	link(href=basePath + '/stylesheets/theme.css', rel='stylesheet')
 block body
 	// Fixed navbar
 	nav.navbar.navbar-default.navbar-fixed-top
@@ -20,9 +20,9 @@ block body
 					li.active
 						a(href='#') Home
 					li
-						a(href='#about') About
+						a(href=basePath + '?#about') About
 					li
-						a(href='#contact') Contact
+						a(href=basePath + '?#contact') Contact
 					li.dropdown
 						a.dropdown-toggle(href='#', data-toggle='dropdown', role='button', aria-expanded='false')
 							| Dropdown 
@@ -95,7 +95,7 @@ block body
 				+table-condensed(["#","First Name","Last Name","Username"],[["1","Mark","Otto","@mdo"],["2","Jacob","Thornton","@fat"],["3","Larry","the Bird","@twitter"]])
 		.page-header
 			h1 Thumbnails
-		img.img-thumbnail(src='../images/thumb.jpg', alt='A generic square placeholder image with a white border around it, making it resemble a photograph taken with an old instant camera')
+		img.img-thumbnail(src=basePath + '/images/thumb.jpg', alt='A generic square placeholder image with a white border around it, making it resemble a photograph taken with an old instant camera')
 		.page-header
 			h1 Labels
 		h1
@@ -212,9 +212,9 @@ block body
 						li.active
 							a(href='#') Home
 						li
-							a(href='#about') About
+							a(href=basePath + '?#about') About
 						li
-							a(href='#contact') Contact
+							a(href=basePath + '?#contact') Contact
 						li.dropdown
 							a.dropdown-toggle(href='#', data-toggle='dropdown', role='button', aria-expanded='false')
 								| Dropdown 
@@ -247,9 +247,9 @@ block body
 						li.active
 							a(href='#') Home
 						li
-							a(href='#about') About
+							a(href=basePath + '?#about') About
 						li
-							a(href='#contact') Contact
+							a(href=basePath + '?#contact') Contact
 						li.dropdown
 							a.dropdown-toggle(href='#', data-toggle='dropdown', role='button', aria-expanded='false')
 								| Dropdown 

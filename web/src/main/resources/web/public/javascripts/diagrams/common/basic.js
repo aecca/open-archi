@@ -335,7 +335,7 @@ function initBasic(nodeDataArray, linkDataArray, paletteModel) {
             if (currentViewMode === "Full") {
                 if (data.id) {
                     let param = {};
-                    let uri = "/api/models/" + data.id;
+                    let uri = basePath + "/api/models/" + data.id;
 
                     if (!meta.isPrototyper) {
                         param = {suffix: "cloned"};

@@ -1,7 +1,7 @@
 extends ../_bootstrap
 append styles
 	// Custom styles for this template
-	link(href='/stylesheets/navbar-static-top.css', rel='stylesheet')
+	link(href=basePath + '/stylesheets/navbar-static-top.css', rel='stylesheet')
 block body
 	// Static navbar
 	+navbar-static("Project name","navbar")
@@ -23,5 +23,5 @@ block body
 				| This example is a quick exercise to illustrate how the default, static and fixed to top navbar work. It includes the responsive CSS and HTML, so it also adapts to your viewport and device.
 			p To see the difference between static and fixed top navbars, just scroll.
 			p
-				a.btn.btn-lg.btn-primary(href='../../components/#navbar', role='button') View navbar docs »
+				a.btn.btn-lg.btn-primary(href=basePath + '/components/#navbar', role='button') View navbar docs »
 	

@@ -6,6 +6,7 @@ import com.araguacaima.open_archi.persistence.diagrams.core.Taggable;
 import com.araguacaima.orpheusdb.utils.OrpheusDbJPAEntityManagerUtils;
 import com.araguacaima.open_archi.web.common.Commons;
 import spark.RouteGroup;
+import spark.route.HttpMethod;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,7 +16,9 @@ import java.util.Map;
 import static com.araguacaima.open_archi.web.Server.engine;
 import static com.araguacaima.open_archi.web.common.Commons.*;
 import static com.araguacaima.open_archi.web.Samples.getExamples;
+import static com.araguacaima.open_archi.web.common.Security.setCORS;
 import static spark.Spark.get;
+import static spark.Spark.options;
 
 public class Editor implements RouteGroup {
 
@@ -25,6 +28,11 @@ public class Editor implements RouteGroup {
     public void addRoutes() {
         //before(Commons.EMPTY_PATH, Commons.genericFilter);
         //before("/*", OpenArchi.strongSecurityFilter);
+        /*        options(Commons.DEFAULT_PATH + "*", (request, response) -> {
+            setCORS(request, response);
+            Map<HttpMethod, Map<Commons.InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledParentModelCollection, deeplyFulfilledParentModel, HttpMethod.get, HttpMethod.post);
+            return getOptions(request, response, output);
+        });*/
         BeanBuilder bean = new BeanBuilder();
         Map<String, Object> diagramTypesMap = new HashMap<>();
         for (String diagramType : deeplyFulfilledDiagramTypesCollection) {
@@ -51,6 +59,17 @@ public class Editor implements RouteGroup {
                 bean.fullView(null);
             }
             bean.prototyper(false);
+            String kind = req.queryParams("kind");
+            String name = req.queryParams("name");
+            Map<String, Object> map = new HashMap<>();
+            Enum anEnum = (Enum) enumsUtils.getEnum(ElementKind.class, kind);
+            map.put("kind", anEnum);
+            map.put("name", name);
+            Taggable model = OrpheusDbJPAEntityManagerUtils.findByQuery(Item.class, Item.GET_MODELS_BY_NAME_AND_KIND, map);
+            if (model != null) {
+                model.validateRequest();
+                bean.model(model);
+            }
             return buildModelAndView(req, res, bean, PATH);
         }, engine);
         get("/:uuid", (req, res) -> {

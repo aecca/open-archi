@@ -7,8 +7,8 @@ import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
 import com.araguacaima.open_archi.persistence.diagrams.core.Item;
 import com.araguacaima.open_archi.persistence.diagrams.core.Taggable;
 import com.araguacaima.open_archi.persistence.meta.Account;
-import com.araguacaima.orpheusdb.utils.OrpheusDbJPAEntityManagerUtils;
 import com.araguacaima.open_archi.web.common.Commons;
+import com.araguacaima.orpheusdb.utils.OrpheusDbJPAEntityManagerUtils;
 import org.pac4j.sparkjava.SparkWebContext;
 import spark.RouteGroup;
 import spark.route.HttpMethod;
@@ -32,11 +32,11 @@ public class Diagrams implements RouteGroup {
 
     @Override
     public void addRoutes() {
-        options("/architectures", (request, response) -> {
+        /*        options(Commons.DEFAULT_PATH + "*", (request, response) -> {
             setCORS(request, response);
-            Map<HttpMethod, Map<Commons.InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledArchitectureModelCollection, deeplyFulfilledArchitectureModel, HttpMethod.get, HttpMethod.post);
+            Map<HttpMethod, Map<Commons.InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledParentModelCollection, deeplyFulfilledParentModel, HttpMethod.get, HttpMethod.post);
             return getOptions(request, response, output);
-        });
+        });*/
         get("/architectures", (request, response) -> {
             Map<String, Object> params = new HashMap<>();
             params.put("modelType", Model.class);
@@ -90,11 +90,6 @@ public class Diagrams implements RouteGroup {
                 return throwError(response, ex);
             }
         });
-        options("/architectures/:uuid/relationships", (request, response) -> {
-            setCORS(request, response);
-            Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledArchitectureRelationshipCollection, deeplyFulfilledArchitectureRelationship, HttpMethod.get, HttpMethod.put);
-            return getOptions(request, response, output);
-        });
         get("/architectures/:uuid/relationships", (request, response) -> {
             Map<String, Object> params = new HashMap<>();
             params.put("id", request.params(":uuid"));
@@ -119,11 +114,6 @@ public class Diagrams implements RouteGroup {
             } catch (Throwable ex) {
                 return throwError(response, ex);
             }
-        });
-        options("/architectures/:uuid/consumers", (request, response) -> {
-            setCORS(request, response);
-            Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledParentModelCollection, deeplyFulfilledParentModel, HttpMethod.get, HttpMethod.put);
-            return getOptions(request, response, output);
         });
         get("/architectures/:uuid/consumers", (request, response) -> {
             Map<String, Object> params = new HashMap<>();
@@ -1106,11 +1096,6 @@ public class Diagrams implements RouteGroup {
                 return throwError(response, ex);
             }
         });
-        options("/ers", (request, response) -> {
-            setCORS(request, response);
-            Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledERModelCollection, deeplyFulfilledERModel, HttpMethod.get, HttpMethod.post);
-            return getOptions(request, response, output);
-        });
         get("/ers", (request, response) -> {
             Map<String, Object> params = new HashMap<>();
             params.put("modelType", com.araguacaima.open_archi.persistence.diagrams.er.Model.class);
@@ -1139,11 +1124,6 @@ public class Diagrams implements RouteGroup {
             } catch (Throwable ex) {
                 return throwError(response, ex);
             }
-        });
-        options("/flowcharts", (request, response) -> {
-            setCORS(request, response);
-            Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledFlowchartModelCollection, deeplyFulfilledFlowchartModel, HttpMethod.get, HttpMethod.post);
-            return getOptions(request, response, output);
         });
         get("/flowcharts", (request, response) -> {
             Map<String, Object> params = new HashMap<>();
@@ -1174,11 +1154,6 @@ public class Diagrams implements RouteGroup {
                 return throwError(response, ex);
             }
         });
-        options("/gantts", (request, response) -> {
-            setCORS(request, response);
-            Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledGanttModelCollection, deeplyFulfilledGanttModel, HttpMethod.get, HttpMethod.post);
-            return getOptions(request, response, output);
-        });
         get("/gantts", (request, response) -> {
             Map<String, Object> params = new HashMap<>();
             params.put("modelType", com.araguacaima.open_archi.persistence.diagrams.gantt.Model.class);
@@ -1208,11 +1183,6 @@ public class Diagrams implements RouteGroup {
                 return throwError(response, ex);
             }
         });
-        options("/sequences", (request, response) -> {
-            setCORS(request, response);
-            Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledSequenceModelCollection, deeplyFulfilledSequenceModel, HttpMethod.get, HttpMethod.post);
-            return getOptions(request, response, output);
-        });
         get("/sequences", (request, response) -> {
             Map<String, Object> params = new HashMap<>();
             params.put("modelType", com.araguacaima.open_archi.persistence.diagrams.sequence.Model.class);
@@ -1241,11 +1211,6 @@ public class Diagrams implements RouteGroup {
             } catch (Throwable ex) {
                 return throwError(response, ex);
             }
-        });
-        options("/classes", (request, response) -> {
-            setCORS(request, response);
-            Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledClassesModelCollection, deeplyFulfilledClassesModel, HttpMethod.get, HttpMethod.post);
-            return getOptions(request, response, output);
         });
         get("/classes", (request, response) -> {
             Map<String, Object> params = new HashMap<>();

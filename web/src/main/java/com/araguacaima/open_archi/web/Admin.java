@@ -25,6 +25,11 @@ public class Admin implements RouteGroup {
     public void addRoutes() {
         //before(Commons.EMPTY_PATH, Commons.genericFilter, OpenArchi.adminApiFilter);
         //before("/*", OpenArchi.adminApiFilter);
+        /*        options(Commons.DEFAULT_PATH + "*", (request, response) -> {
+            setCORS(request, response);
+            Map<HttpMethod, Map<Commons.InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledParentModelCollection, deeplyFulfilledParentModel, HttpMethod.get, HttpMethod.post);
+            return getOptions(request, response, output);
+        });*/
         ArrayList<String> header = new ArrayList<>(Arrays.asList("Enabled", "Login", "Email"));
         header.addAll(Commons.ALL_ROLES);
         get(Commons.EMPTY_PATH, buildRoute(new BeanBuilder()

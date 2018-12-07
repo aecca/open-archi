@@ -2,7 +2,7 @@
 //- anchor buttons
 mixin a-btn(url,style)
     - if (!style) var type = "default" else type = style
-    a&attributes(attributes).btn(class="btn-" + type, href=url, role="button")
+    a&attributes(attributes).btn(class="btn-" + type, href=basePath + url, role="button")
         block
 
 mixin a-btn-primary(url)

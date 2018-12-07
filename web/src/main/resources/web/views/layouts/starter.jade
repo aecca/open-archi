@@ -1,7 +1,7 @@
 extends ../_bootstrap
 append styles
 	// Custom styles for this template
-	link(href='/stylesheets/starter-template.css', rel='stylesheet')
+	link(href=basePath + '/stylesheets/starter-template.css', rel='stylesheet')
 block body
 	+navbar-fixed("Project name","navbar","inverse")
 		+nav_item("#","active") Home

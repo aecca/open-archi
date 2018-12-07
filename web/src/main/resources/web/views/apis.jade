@@ -4,7 +4,7 @@ block meta
     meta(name="description", content="OpenArchi Apis")
 
 append styles
-    link(rel='stylesheet', type='text/css', href='/stylesheets/swagger-ui.css')
+    link(rel='stylesheet', type='text/css', href=basePath + '/stylesheets/swagger-ui.css')
 
 block content
     .container
@@ -28,8 +28,8 @@ block content
                     path(d='M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z')
         div#swagger-ui
 block scripts
-    script(src='/javascripts/swagger-ui-bundle.js')
-    script(src='/javascripts/swagger-ui-standalone-preset.js')
+    script(src=basePath + '/javascripts/swagger-ui-bundle.js')
+    script(src=basePath + '/javascripts/swagger-ui-standalone-preset.js')
     script.
         window.onload = function () {
             window.ui = SwaggerUIBundle({

@@ -1,6 +1,7 @@
 package com.araguacaima.open_archi.web;
 
 import com.araguacaima.commons.utils.MapUtils;
+import com.araguacaima.open_archi.web.common.Commons;
 import com.araguacaima.orpheusdb.utils.OrpheusDbJPAEntityManagerUtils;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -9,6 +10,7 @@ import de.neuland.jade4j.template.TemplateLoader;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import spark.route.HttpMethod;
 import spark.template.jade.JadeTemplateEngine;
 
 import java.io.File;
@@ -19,8 +21,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-import static com.araguacaima.open_archi.web.common.Commons.exceptionHandler;
-import static com.araguacaima.open_archi.web.common.Commons.jsonUtils;
+import static com.araguacaima.open_archi.web.common.Commons.*;
+import static com.araguacaima.open_archi.web.common.Commons.deeplyFulfilledParentModel;
+import static com.araguacaima.open_archi.web.common.Commons.getOptions;
+import static com.araguacaima.open_archi.web.common.Security.setCORS;
 import static spark.Spark.*;
 
 public class Server {
@@ -84,6 +88,10 @@ public class Server {
 
         assignedPort = getAssignedPort();
         deployedServer = environment.get("DEPLOYED_SERVER");
+        String basePath = "http://" + (deployedServer.contains(":") ? deployedServer : deployedServer + (assignedPort == 80 ? "" : ":" + assignedPort));
+        config.setBasePath(basePath);
+        config.getSharedVariables().put("basePath", basePath);
+        config.setPrettyPrint(true);
     }
 
     private static int getAssignedPort() {
@@ -104,6 +112,11 @@ public class Server {
             response.header("Access-Control-Request-Method", "*");
             response.header("Access-Control-Allow-Headers", "*");
             //log.info("Request for (relative): " + request.uri());
+        });
+        options(Commons.DEFAULT_PATH + "*", (request, response) -> {
+            setCORS(request, response);
+            Map<HttpMethod, Map<Commons.InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledParentModelCollection, deeplyFulfilledParentModel, HttpMethod.get, HttpMethod.post);
+            return getOptions(request, response, output);
         });
         path(OpenArchi.PATH, OpenArchi.root);
     }

@@ -1,9 +1,12 @@
 package com.araguacaima.open_archi.web;
 
 import com.araguacaima.open_archi.persistence.commons.IdName;
-import com.araguacaima.open_archi.persistence.diagrams.core.*;
-import com.araguacaima.orpheusdb.utils.OrpheusDbJPAEntityManagerUtils;
+import com.araguacaima.open_archi.persistence.diagrams.core.ElementKind;
+import com.araguacaima.open_archi.persistence.diagrams.core.ElementRole;
+import com.araguacaima.open_archi.persistence.diagrams.core.ElementShape;
+import com.araguacaima.open_archi.persistence.diagrams.core.Item;
 import com.araguacaima.open_archi.web.common.Commons;
+import com.araguacaima.orpheusdb.utils.OrpheusDbJPAEntityManagerUtils;
 import spark.RouteGroup;
 import spark.route.HttpMethod;
 
@@ -18,10 +21,15 @@ import static spark.Spark.*;
 
 public class Catalogs implements RouteGroup {
 
-    public static final String PATH ="/catalogs";
+    public static final String PATH = "/catalogs";
 
     @Override
     public void addRoutes() {
+/*        options(Commons.DEFAULT_PATH + "*", (request, response) -> {
+            setCORS(request, response);
+            Map<HttpMethod, Map<Commons.InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledParentModelCollection, deeplyFulfilledParentModel, HttpMethod.get, HttpMethod.post);
+            return getOptions(request, response, output);
+        });*/
         get("/element-types", (request, response) -> getList(request, response, ElementShape.GET_ALL_ELEMENT_SHAPES, null, null));
         get("/element-types/:elementTypeId/shape", (request, response) -> {
             Map<String, Object> params = new HashMap<>();
@@ -54,44 +62,24 @@ public class Catalogs implements RouteGroup {
                 return throwError(response, ex);
             }
         });
-        options("/diagram-types", (request, response) -> {
-            setCORS(request, response);
-            Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledDiagramTypesCollection, deeplyFulfilledDiagramType, HttpMethod.get, HttpMethod.post);
-            return getOptions(request, response, output);
-        });
         post("/diagram-types", (request, response) -> {
             response.status(HTTP_NOT_IMPLEMENTED);
             response.type(JSON_CONTENT_TYPE);
             return EMPTY_RESPONSE;
         });
         get("/diagram-types", (request, response) -> getList(request, response, deeplyFulfilledDiagramTypesCollection));
-        options("/diagram-names", (request, response) -> {
-            setCORS(request, response);
-            Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledIdValueCollection, deeplyFulfilledIdValue, HttpMethod.get, HttpMethod.post);
-            return getOptions(request, response, output);
-        });
         post("/diagram-names", (request, response) -> {
             response.status(HTTP_NOT_IMPLEMENTED);
             response.type(JSON_CONTENT_TYPE);
             return EMPTY_RESPONSE;
         });
         get("/diagram-names", (request, response) -> OpenArchi.getItemNames(request, response, Item.GET_ALL_DIAGRAM_NAMES));
-        options("/prototype-names", (request, response) -> {
-            setCORS(request, response);
-            Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledIdValueCollection, deeplyFulfilledIdValue, HttpMethod.get, HttpMethod.post);
-            return getOptions(request, response, output);
-        });
         post("/prototype-names", (request, response) -> {
             response.status(HTTP_NOT_IMPLEMENTED);
             response.type(JSON_CONTENT_TYPE);
             return EMPTY_RESPONSE;
         });
         get("/prototype-names", (request, response) -> OpenArchi.getItemNames(request, response, Item.GET_ALL_PROTOTYPE_NAMES));
-        options("/consumer-names", (request, response) -> {
-            setCORS(request, response);
-            Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledIdValueCollection, deeplyFulfilledIdValue, HttpMethod.get, HttpMethod.post);
-            return getOptions(request, response, output);
-        });
         post("/consumer-names", (request, response) -> {
             response.status(HTTP_NOT_IMPLEMENTED);
             response.type(JSON_CONTENT_TYPE);

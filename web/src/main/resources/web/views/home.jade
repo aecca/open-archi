@@ -14,7 +14,7 @@ block content
                         i.fab.fa-github
                         strong &nbsp;Clone
     .container
-        video(controls)source(src="/videos/OpenArchi - Intro.webm", type="video/webm")
+        video(controls)source(src=basePath + "/videos/OpenArchi - Intro.webm", type="video/webm")
     .container
         hr
         .well
@@ -39,19 +39,19 @@ block content
             +accordion-item-success("ToC","toc")
                 .container
                     .row
-                        a(href="#nutshell") OpenArchi in a Nutshell
+                        a(href=basePath + "?#nutshell") OpenArchi in a Nutshell
                     .row
-                        a(href="#tools") Tools
+                        a(href=basePath + "?#tools") Tools
                     .row
-                        a(href="#features") Features
+                        a(href=basePath + "?#features") Features
                     .row
-                        a(href="#inspiration") Inspiration
+                        a(href=basePath + "?#inspiration") Inspiration
                     .row
-                        a(href="#spec") Technical Specification
+                        a(href=basePath + "?#spec") Technical Specification
                     .row
-                        a(href="#roadmap") Roadmap
+                        a(href=basePath + "?#roadmap") Roadmap
                     .row
-                        a(href="#detailed") Detailed Specification
+                        a(href=basePath + "?#detailed") Detailed Specification
     .container#nutshell
         h2 OpenArchi in a Nutshell
         .row
@@ -65,15 +65,15 @@ block content
                 p
                     | Api for open-archi model management
                 p
-                    a.btn.btn-primary(href='/api', role='button') Go to Api »
+                    a.btn.btn-primary(href=basePath + '/api', role='button') Go to Api »
             .col-lg-6
                 h2 Editor
                 p
                     | A graphical editor to compose and reuse architecture diagrams
                 //p
-                //    a.btn.btn-primary(href='/editor', role='button') Go to editor »
+                //    a.btn.btn-primary(href=basePath + '/editor', role='button') Go to editor »
                 p
-                    a.btn.btn-primary(href='/prototyper', role='button') Go to prototyper »
+                    a.btn.btn-primary(href=basePath + '/prototyper', role='button') Go to prototyper »
     .container#features
         h2 Features
         .row
@@ -292,4 +292,4 @@ block content
         p
             | Wanna see what's under the hood?. Of course, as you can imagine, there is more info about the whole solution. Click below if you want to know more
         p
-            a.btn.btn-primary(href='/details', role='button') View details »
+            a.btn.btn-primary(href=basePath + '/details', role='button') View details »

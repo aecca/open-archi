@@ -1,7 +1,7 @@
 extends ../_bootstrap
 append styles
 	// Custom styles for this template
-	link(href='/css/sticky-footer-navbar.css', rel='stylesheet')
+	link(href=basePath + '/css/sticky-footer-navbar.css', rel='stylesheet')
 block body
 	// Fixed navbar
 	nav.navbar.navbar-default.navbar-fixed-top
@@ -18,9 +18,9 @@ block body
 					li.active
 						a(href='#') Home
 					li
-						a(href='#about') About
+						a(href=basePath + '?#about') About
 					li
-						a(href='#contact') Contact
+						a(href=basePath + '?#contact') Contact
 					li.dropdown
 						a.dropdown-toggle(href='#', data-toggle='dropdown', role='button', aria-expanded='false')
 							| Dropdown 
@@ -50,7 +50,7 @@ block body
 			| .
 		p
 			| Back to 
-			a(href='../sticky-footer') the default sticky footer
+			a(href=basePath + '/sticky-footer') the default sticky footer
 			|  minus the navbar.
 	footer.footer
 		.container

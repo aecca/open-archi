@@ -117,75 +117,6 @@
             schema[pList[len - 1]] = value.trim();
         };
 
-        const put = function (url, data, contentType) {
-            new Promise(function (resolve, reject) {
-                $.ajax({
-                    url: url,
-                    data: JSON.stringify(data),
-                    type: 'PUT',
-                    dataType: "json",
-                    crossDomain: true,
-                    contentType: contentType,
-                    xhr: function () {
-                        return window.XMLHttpRequest === null || new window.XMLHttpRequest().addEventListener === null
-                            ? new window.ActiveXObject("Microsoft.XMLHTTP")
-                            : $.ajaxSettings.xhr();
-                    }
-                }).done(function (data) {
-                        resolve(data);
-                    }
-                ).fail(function (data) {
-                        reject(data);
-                    }
-                )
-            });
-        };
-        const patch = function (url, data, contentType) {
-            new Promise(function (resolve, reject) {
-                $.ajax({
-                    url: url,
-                    data: JSON.stringify(data),
-                    type: 'PATCH',
-                    dataType: "json",
-                    crossDomain: true,
-                    contentType: contentType,
-                    xhr: function () {
-                        return window.XMLHttpRequest === null || new window.XMLHttpRequest().addEventListener === null
-                            ? new window.ActiveXObject("Microsoft.XMLHTTP")
-                            : $.ajaxSettings.xhr();
-                    }
-                }).done(function (data) {
-                        resolve(data);
-                    }
-                ).fail(function (data) {
-                        reject(data);
-                    }
-                )
-            });
-        };
-        const post = function (url, data, contentType) {
-            new Promise(function (resolve, reject) {
-                $.ajax({
-                    url: url,
-                    data: JSON.stringify(data),
-                    type: 'POST',
-                    dataType: "json",
-                    crossDomain: true,
-                    contentType: contentType,
-                    xhr: function () {
-                        return window.XMLHttpRequest === null || new window.XMLHttpRequest().addEventListener === null
-                            ? new window.ActiveXObject("Microsoft.XMLHTTP")
-                            : $.ajaxSettings.xhr();
-                    }
-                }).done(function (data) {
-                        resolve(data);
-                    }
-                ).fail(function (data) {
-                        reject(data);
-                    }
-                )
-            });
-        };
         commons.prototype = {
             isArray: isArray,
             isObject: isObject,
@@ -196,10 +127,7 @@
             isScalar: isScalar,
             isString: isString,
             getObjectLength: getObjectLength,
-            findValues: findValues,
-            patch: patch,
-            put: put,
-            post: post
+            findValues: findValues
         };
 
         function traverseArray(arr, prefix) {

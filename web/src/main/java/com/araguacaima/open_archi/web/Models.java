@@ -28,11 +28,11 @@ public class Models implements RouteGroup {
 
     @Override
     public void addRoutes() {
-        options(Commons.DEFAULT_PATH, (request, response) -> {
+        /*        options(Commons.DEFAULT_PATH + "*", (request, response) -> {
             setCORS(request, response);
             Map<HttpMethod, Map<Commons.InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledParentModelCollection, deeplyFulfilledParentModel, HttpMethod.get, HttpMethod.post);
             return getOptions(request, response, output);
-        });
+        });*/
         post(Commons.EMPTY_PATH, (request, response) -> {
             try {
                 String body = request.body();
@@ -62,11 +62,6 @@ public class Models implements RouteGroup {
             }
         });
         get(Commons.EMPTY_PATH, (request, response) -> getList(request, response, Item.GET_ALL_MODELS, null, null));
-        options("/:uuid", (request, response) -> {
-            setCORS(request, response);
-            Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledParentModel, null, HttpMethod.get, null);
-            return getOptions(request, response, output);
-        });
         get("/:uuid", (request, response) -> {
             try {
                 String id = request.params(":uuid");
@@ -229,11 +224,6 @@ public class Models implements RouteGroup {
             response.type(JSON_CONTENT_TYPE);
             return EMPTY_RESPONSE;
         });
-        options("/:uuid/children", (request, response) -> {
-            setCORS(request, response);
-            Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledParentModelCollection, deeplyFulfilledParentModel, HttpMethod.get, HttpMethod.put);
-            return getOptions(request, response, output);
-        });
         get("/:uuid/children", (request, response) -> {
             Map<String, Object> params = new HashMap<>();
             params.put("id", request.params(":uuid"));
@@ -243,11 +233,6 @@ public class Models implements RouteGroup {
             response.status(HTTP_NOT_IMPLEMENTED);
             response.type(JSON_CONTENT_TYPE);
             return EMPTY_RESPONSE;
-        });
-        options("/:uuid/parent", (request, response) -> {
-            setCORS(request, response);
-            Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledParentModel, deeplyFulfilledParentModel, HttpMethod.get, HttpMethod.post);
-            return getOptions(request, response, output);
         });
         get("/:uuid/parent", (request, response) -> {
             response.status(HTTP_NOT_IMPLEMENTED);
@@ -269,11 +254,6 @@ public class Models implements RouteGroup {
             } catch (Throwable ex) {
                 return throwError(response, ex);
             }
-        });
-        options("/:uuid/meta-data", (request, response) -> {
-            setCORS(request, response);
-            Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(null, deeplyFulfilledMetaData, HttpMethod.get, HttpMethod.post);
-            return getOptions(request, response, output);
         });
         get("/:uuid/meta-data", (request, response) -> {
             Map<String, Object> params = new HashMap<>();
@@ -298,11 +278,6 @@ public class Models implements RouteGroup {
             } catch (Throwable ex) {
                 return throwError(response, ex);
             }
-        });
-        options("/:uuid/features", (request, response) -> {
-            setCORS(request, response);
-            Map<HttpMethod, Map<InputOutput, Object>> output = setOptionsOutputStructure(deeplyFulfilledFeaturesCollection, deeplyFulfilledFeature, HttpMethod.get, HttpMethod.put);
-            return getOptions(request, response, output);
         });
         get("/:uuid/features", (request, response) -> {
             Map<String, Object> params = new HashMap<>();

@@ -1,7 +1,7 @@
 extends ../_bootstrap
 append styles
 	// Custom styles for this template
-	link(href='/stylesheets/sticky-footer.css', rel='stylesheet')
+	link(href=basePath + '/stylesheets/sticky-footer.css', rel='stylesheet')
 
 block body
 	// Begin page content
@@ -12,7 +12,7 @@ block body
 			| Pin a fixed-height footer to the bottom of the viewport in desktop browsers with this custom HTML and CSS.
 		p
 			| Use 
-			a(href='../sticky-footer-navbar') the sticky footer with a fixed navbar
+			a(href=basePath + '/sticky-footer-navbar') the sticky footer with a fixed navbar
 			|  if need be, too.
 	footer.footer
 		.container

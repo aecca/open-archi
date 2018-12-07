@@ -54,7 +54,7 @@ paths:
       security:
       - openarchi_auth:
         - read:models
-  "/prorotyper/{model-id}":
+  "/prototyper/{model-id}":
     get:
       tags:
       - Prototyper
@@ -75,6 +75,53 @@ paths:
       security:
       - openarchi_auth:
         - read:models
+  "/editor":
+    get:
+      tags:
+      - Editor
+      summary: Shows an editor according to the kind or name of the model
+      description: Shows an editor according to the kind or name of the model. If no model match with the requested criteria, am empty editor is returned. No error is raised
+      operationId: get-editor
+      produces:
+      - text/html
+      parameters:
+      - name: "kind"
+        in: query
+        description: Load editor according to kind of the model
+        required: true
+        type: string
+      - name: "name"
+        in: query
+        description: Load editor according to model name. This attribute is case-sensitive
+        required: true
+        type: string
+      responses:
+        '200':
+          description: OK
+      security:
+      - openarchi_auth:
+        - read:models
+  "/editor/{model-id}":
+    get:
+      tags:
+      - Editor
+      summary: Shows a editor for a specific model by its ID
+      description: Shows a editor for a specific model by its ID. If no model match with the requested ID, am empty editor is returned. No error is raised
+      operationId: get-editor-by-model-id
+      produces:
+      - text/html
+      parameters:
+      - name: model-id
+        in: path
+        description: ID of the model to show in the editor
+        required: true
+        type: string
+      responses:
+        '200':
+          description: OK
+      security:
+      - openarchi_auth:
+        - read:models        
   "/api/models":
 #    options:
 #      tags:

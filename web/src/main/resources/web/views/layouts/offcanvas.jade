@@ -1,7 +1,7 @@
 extends ../_bootstrap
 append styles
 	// Custom styles for this template
-	link(href='/css/offcanvas.css', rel='stylesheet')
+	link(href=basePath + '/css/offcanvas.css', rel='stylesheet')
 block body
 	nav.navbar.navbar-fixed-top.navbar-inverse
 		.container
@@ -17,9 +17,9 @@ block body
 					li.active
 						a(href='#') Home
 					li
-						a(href='#about') About
+						a(href=basePath + '?#about') About
 					li
-						a(href='#contact') Contact
+						a(href=basePath + '?#contact') Contact
 	.container
 		.row.row-offcanvas.row-offcanvas-right
 			.col-xs-12.col-sm-9

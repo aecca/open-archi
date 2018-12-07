@@ -55,7 +55,7 @@ const partContextMenu =
             function (e, obj) {
                 const model = e.diagram.model;
                 const node = obj.part.data;
-                $.get("/api/catalogs/element-roles")
+                $.get(basePath + "/api/catalogs/element-roles")
                     .done(function (data) {
                         let modal = $('#element-role-data');
                         let elementRoleItems = [];
@@ -87,7 +87,7 @@ const partContextMenu =
             function (e, obj) {
                 const model = e.diagram.model;
                 const node = obj.part.data;
-                $.get("/api/catalogs/element-roles")
+                $.get(basePath + "/api/catalogs/element-roles")
                     .done(function (data) {
                         let modal = $('#element-role-data');
                         let elementRoleItems = [];
@@ -235,7 +235,7 @@ const partContextMenu =
             function (e, obj) {
                 const model = e.diagram.model;
                 const node = obj.part.data;
-                $.get("/api/catalogs/element-types")
+                $.get(basePath + "/api/catalogs/element-types")
                     .done(function (data) {
                         let modal = $('#element-types-data');
                         let elementTypeItems = [];
@@ -276,14 +276,14 @@ const partContextMenuPalette =
                 const model = e.diagram.model;
                 const node = obj.part.data;
                 $.ajax({
-                    url: "/api/models/" + node.id,
+                    url: basePath + "/api/models/" + node.id,
                     type: 'DELETE',
                     crossDomain: true,
                     contentType: "application/json"
                 }).done((data, textStatus, response) => {
                     if (response.status === 200) {
                         $.ajax({
-                            url: "/api/palette/architectures",
+                            url: basePath + "/api/palette/architectures",
                             type: 'GET',
                             crossDomain: true,
                             contentType: "application/json",
