@@ -23,6 +23,7 @@ public class Root implements RouteGroup {
     @Override
     public void addRoutes() {
         get(StringUtils.EMPTY, buildRoute(new BeanBuilder().title(OPEN_ARCHI), "/home"), engine);
+        get("/desktop", buildRoute(new BeanBuilder().title(OPEN_ARCHI), "/desktop"), engine);
 /*        before("/login/google", OpenArchi.scopesFilter);
         get("/login/google", Authentication.authGoogle, engine);
         get("/login", Authentication.login, engine);
