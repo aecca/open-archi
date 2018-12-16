@@ -115,8 +115,8 @@
     padding: 1px;
     border-top: 1px rgba(255, 255, 204, 0.1) solid;
     border-right: 1px rgba(255, 255, 204, 0.1) solid;
-    top: auto;
-    bottom: 100%;
+    top: 100%;
+    bottom: auto;
     background-color: #004d6f;
     color: #ffffff;
     display: none;
@@ -126,7 +126,7 @@
     margin: 0;
     list-style: none inside none;
     z-index: 1000;
-    box-shadow: 2px -2px 5px 0 rgba(0, 0, 0, 0.75);
+    box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, 0.75);
 }
 
 .start-menu-inner {

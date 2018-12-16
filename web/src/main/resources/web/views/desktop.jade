@@ -19,20 +19,18 @@ head
     meta(property="og:image:height", content="504")
     meta(name="author", content="Sergey Pimenov")
     meta(name="description", content="The most popular HTML, CSS, and JS library in Metro style.")
-    meta(name="keywords", content="HTML, CSS, JS, Metro, CSS3, Javascript, HTML5, UI, Library, Web, Development, Framework")
+    meta(name="keywords", content="Metro4, Metro 4, CSS3, Javascript, HTML5, UI, Library, Web, Development, Framework")
 
     link(rel='stylesheet', type='text/css', href=basePath + '/stylesheets/desktop.css')
     link(rel='stylesheet', type='text/css', href=basePath + '/stylesheets/metro-all.css?ver=@@b-version')
-
-    title Desktop demo - Metro 4 :: Popular HTML, CSS and JS library
-
+    title= title
 body
     div.desktop
-        div.window-area.bg-dark
         div.task-bar
             div.task-bar-section
                 button.task-bar-item#start-menu-toggle
-                    span.mif-windows
+                    +img-responsive-rounded("/images/open-archi-icon.png", null, style="display: inherit;")(width="15px", height="15px")
+                    //span.mif-windows
                 div.start-menu(data-role="dropdown", data-toggle-element="#start-menu-toggle")
                     div.start-menu-inner.h-100
                         div.explorer
@@ -44,7 +42,7 @@ body
                                 li
                                     a(onclick="createWindowModal()") Modal window
             div.task-bar-section.tasks
-
+        div.window-area.bg-dark
     script(src=basePath + "/javascripts/jquery-3.3.1.min.js")
     script(src=basePath + "/javascripts/metro.js")
     script(src=basePath + "/javascripts/desktop.js")
