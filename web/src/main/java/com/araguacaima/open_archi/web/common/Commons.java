@@ -73,6 +73,7 @@ public class Commons {
     public static final String EMPTY_RESPONSE = StringUtils.EMPTY;
     public static final JsonUtils jsonUtils = new JsonUtils();
     public static final String OPEN_ARCHI = "Open-Archi";
+    public static final String OPEN_ARCHI_DESKTOP = "Open-Archi-Desktop";
     public static final EnumsUtils enumsUtils = new EnumsUtils();
     public static final String DEFAULT_PATH = "/";
     public static final String EMPTY_PATH = "";
@@ -588,6 +589,11 @@ public class Commons {
         }
     }
 
+
+    public static TemplateViewRoute buildRoute(String path) {
+        return (request, response) -> buildModelAndView(request, response, null, path);
+    }
+
     public static TemplateViewRoute buildRoute(Object bean, String path) {
         return (request, response) -> buildModelAndView(request, response, bean, path);
     }
@@ -598,14 +604,16 @@ public class Commons {
 
     public static ModelAndView buildModelAndView(Request request, Response response, Object bean, String path) {
         Map<Object, Object> map = new HashMap<>();
-        if (Map.class.isAssignableFrom(bean.getClass())) {
-            map.putAll((Map<Object, Object>) bean);
-        } else {
-            if (BeanBuilder.class.isAssignableFrom(bean.getClass())) {
-                ((BeanBuilder) bean).fixAccountInfo(request, response);
+        if (bean != null) {
+            if (Map.class.isAssignableFrom(bean.getClass())) {
+                map.putAll((Map<Object, Object>) bean);
+            } else {
+                if (BeanBuilder.class.isAssignableFrom(bean.getClass())) {
+                    ((BeanBuilder) bean).fixAccountInfo(request, response);
+                }
+                map.putAll(new BeanMap(bean));
+                map.remove("class");
             }
-            map.putAll(new BeanMap(bean));
-            map.remove("class");
         }
         final Map<String, Object> newMap = new HashMap<>();
         map.forEach((o, o2) -> {

@@ -121,6 +121,7 @@ public class Server {
             return getOptions(request, response, output);
         });
         path(OpenArchi.PATH, OpenArchi.root);
+        path(Desktop.PATH, new Desktop());
     }
 }
 
