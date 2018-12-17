@@ -23,7 +23,8 @@
     display: flex;
     flex-flow: row nowrap;
     height: 42px;
-    background-color: #053046;
+    /*background-color: #053046;*/
+    background-color: #e88610;
 }
 
 .task-bar .task-bar-section {

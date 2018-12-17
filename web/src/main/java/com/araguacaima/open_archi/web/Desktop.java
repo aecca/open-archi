@@ -14,8 +14,6 @@ public class Desktop implements RouteGroup {
     @Override
     public void addRoutes() {
         get("/home", buildRoute(new BeanBuilder().title(OPEN_ARCHI_DESKTOP), "/desktop/home"), engine);
-        get("/apis", buildRoute("/desktop/apis"), engine);
-
     }
 
 }

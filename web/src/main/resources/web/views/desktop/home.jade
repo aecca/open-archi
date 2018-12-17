@@ -1,32 +1,36 @@
 //- Including Image mixins
-include components/images
+include ../components/images
 
 doctype html
 html(lang="en")
 head
+    script.
+        let basePath = '!{basePath}'
+    meta(name = "description", content = "OpenArchi Desktop")
     meta(charset="UTF-8")
     meta(name="viewport", content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no")
-    meta(name="twitter:site", content="@metroui")
-    meta(name="twitter:creator", content="@pimenov_sergey")
+    meta(name="twitter:site", content="@araguacaima")
+    meta(name="twitter:creator", content="@araguacaima")
     meta(name="twitter:card", content="summary")
-    meta(name="twitter:title", content="Metro 4 Components Library")
-    meta(name="twitter:description", content="Metro 4 is an open source toolkit for developing with HTML, CSS, and JS. Quickly prototype your ideas or build your entire app with responsive grid system, extensive prebuilt components, and powerful plugins built on jQuery.")
-    meta(name="twitter:image", content="https://metroui.org.ua/images/m4-logo-social.png")
-    meta(property="og:url", content="https://metroui.org.ua/v4/index.html")
+    meta(name="twitter:title", content="OpenArchi Apis")
+    meta(name="twitter:description", content="OpenArchi Apis")
+    meta(name="twitter:image", content="http://www.open-archi.com/images/open-archi.png")
+    meta(property="og:url", content="http://www.open-archi.com")
     meta(property="og:title", content="Metro 4 Components Library")
-    meta(property="og:description", content="Metro 4 is an open source toolkit for developing with HTML, CSS, and JS. Quickly prototype your ideas or build your entire app with responsive grid system, extensive prebuilt components, and powerful plugins built on jQuery.")
+    meta(property="og:description", content="OpenArchi Desktop")
     meta(property="og:type", content="website")
-    meta(property="og:image", content="https://metroui.org.ua/images/m4-logo-social.png")
-    meta(property="og:image:secure_url", content="https://metroui.org.ua/images/m4-logo-social.png")
+    meta(property="og:image", content="http://www.open-archi.com/images/open-archi.png")
+    meta(property="og:image:secure_url", content="https://www.open-archi.com/images/open-archi.png")
     meta(property="og:image:type", content="image/png")
     meta(property="og:image:width", content="968")
     meta(property="og:image:height", content="504")
-    meta(name="author", content="Sergey Pimenov")
-    meta(name="description", content="The most popular HTML, CSS, and JS library in Metro style.")
-    meta(name="keywords", content="Metro4, Metro 4, CSS3, Javascript, HTML5, UI, Library, Web, Development, Framework")
+    meta(name="author", content="Alejandro Méndez")
+    meta(name="description", content="OpenArchi Desktop")
+    meta(name="keywords", content="OpenArchi, Api, Desktop, Metro4, Metro 4, CSS3, Javascript, HTML5, UI, Library, Web, Development, Framework")
 
     link(rel='stylesheet', type='text/css', href=basePath + '/stylesheets/desktop.css')
     link(rel='stylesheet', type='text/css', href=basePath + '/stylesheets/metro-all.css?ver=@@b-version')
+    link(rel='stylesheet', type='text/css', href=basePath + '/stylesheets/swagger-ui.css')
     title= title
 body
     div.desktop
@@ -46,9 +50,11 @@ body
                                 li
                                     a(onclick="createWindowModal()") Modal window
                                 li
-                                    a(onclick="createWindow('apis')") See APIs definition
+                                    a(onclick="createApiWindow()") See APIs definition
             div.task-bar-section.tasks
         div.window-area.bg-dark
     script(src=basePath + "/javascripts/jquery-3.3.1.min.js")
     script(src=basePath + "/javascripts/metro.js")
     script(src=basePath + "/javascripts/desktop.js")
+    script(src=basePath + '/javascripts/swagger-ui-bundle.js')
+    script(src=basePath + '/javascripts/swagger-ui-standalone-preset.js')

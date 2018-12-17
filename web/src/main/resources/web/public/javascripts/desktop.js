@@ -81,6 +81,41 @@ const w_titles = [
     'rocket', 'apps', 'cog', 'anchor'
 ];
 
+function createApiWindow() {
+    const index = Metro.utils.random(0, 3);
+    const content = "<div class='container'><div id='swagger-ui'></div>";
+    Desktop.createWindow({
+        width: "100%",
+        height: "auto",
+        icon: "<img src=\"" + basePath + "/images/api-icon-white.png\" style=\"display: inherit;\" class=\"img-responsive img-rounded\">",
+        title: "OpenArchi Api",
+        content: "<div class='p-2'>" + content + "</div>"
+    });
+    window.ui = SwaggerUIBundle({
+        url: "/open-archi-apis.yaml",
+        logo: "/images/open-archi.png",
+        dom_id: '#swagger-ui',
+        deepLinking: true,
+        presets: [
+            SwaggerUIBundle.presets.apis,
+            SwaggerUIStandalonePreset
+        ],
+        plugins: [
+            SwaggerUIBundle.plugins.DownloadUrl
+        ],
+        layout: "StandaloneLayout",
+        requestInterceptor: function (req) {
+            req.headers["Access-Control-Allow-Origin"] = "*";
+            req.headers["Access-Control-Request-Method"] = "*";
+            req.headers["Access-Control-Allow-Headers"] = "*";
+            return req;
+        },
+        responseInterceptor: function (res) {
+            return res;
+        }
+    });
+}
+
 function createWindow(content) {
     const index = Metro.utils.random(0, 3);
     if (content !== undefined) {
@@ -102,7 +137,7 @@ function createWindow(content) {
             width: 300,
             icon: "<span class='mif-" + w_icons[index] + "'></span>",
             title: w_titles[index],
-            content: "<div class='p-2'>content_</div>"
+            content: "<div class='p-2'>Empty</div>"
         });
     }
 }
