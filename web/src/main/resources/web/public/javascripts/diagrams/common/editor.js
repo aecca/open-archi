@@ -589,13 +589,13 @@ function findValuesHelper(obj, key, list) {
     return list;
 }
 
-function init() {
+function init(divIdSuffix) {
     relocateDataModelDiv();
     relocatePaletteDiv();
 
     switch (source) {
         case "basic":
-            initBasic(nodeDataArray, linkDataArray, paletteModel);
+            initBasic(nodeDataArray, linkDataArray, paletteModel, divIdSuffix);
             myPaletteBasic.requestUpdate();
             myPaletteGeneral.requestUpdate();
             myDiagram.requestUpdate();

@@ -1,4 +1,3 @@
-//- Including Image mixins
 include ../components/main
 
 doctype html
@@ -54,7 +53,7 @@ body
         div.task-bar
             div.task-bar-section
                 button.task-bar-item#start-menu-toggle
-                    +img-responsive-rounded("/images/open-archi-26.png", null, style="display: inherit;")
+                    +img-responsive("/images/open-archi-26.png", null, style="display: inherit;")
                     //span.mif-windows
                 div.start-menu(data-role="dropdown", data-toggle-element="#start-menu-toggle")
                     div.start-menu-inner.h-100
@@ -68,15 +67,15 @@ body
                                     a(onclick="createWindowModal()") Modal window
                                 li
                                     a(onclick="createApiWindow()")
-                                        +img-responsive-rounded("/images/open-archi-api-logo.png", null, style="display: inherit;")
+                                        +img-responsive("/images/open-archi-api-logo.png", null, style="display: inherit;")
                                         | APIs definition
                                 li
                                     a(onclick="createPrototyperWindow()")
-                                        +img-responsive-rounded("/images/open-archi-prototyper-logo.png", null, style="display: inherit;")
+                                        +img-responsive("/images/open-archi-prototyper-logo.png", null, style="display: inherit;")
                                         | Prototyper
                                 li
                                     a(onclick="createEditorWindow()")
-                                        +img-responsive-rounded("/images/open-archi-editor-logo.png", null, style="display: inherit;")
+                                        +img-responsive("/images/open-archi-editor-logo.png", null, style="display: inherit;")
                                         | Editor
             div.task-bar-section.tasks
         div.window-area
@@ -146,6 +145,7 @@ body
         var diagramTypes = !{diagramTypes_};
         var elementTypes = !{elementTypes_};
         var fullView = '!{fullView}';
+        let isDesktop = true;
     script(type='text/javascript', src=basePath + '/javascripts/diagrams/presenter.js')
     block content
         +modal-force("Prototype info", "diagram-info")(save="save")

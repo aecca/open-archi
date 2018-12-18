@@ -1,0 +1,51 @@
+<div class="wrapper">
+    <nav class="active" id="sidebar">
+        <ul class="list-unstyled components">
+            <li class="active"><a href="undefined?#basicPaletteSubMenu" data-toggle="collapse" aria-expanded="true"
+                                  style="font-weight: bold">Basic</a>
+                <ul class="collapse in list-unstyled" id="basicPaletteSubMenu">
+                    <div id="paletteDivBasic" style="height: 160px"></div>
+                </ul>
+            </li>
+            <li class="active"><a href="undefined?#generalPaletteSubMenu" data-toggle="collapse" aria-expanded="true"
+                                  style="font-weight: bold">Extended</a>
+                <ul class="collapse in list-unstyled" id="generalPaletteSubMenu">
+                    <div id="paletteDivGeneral" style="height: 280px"></div>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+    <div id="content">
+        <!-- Page Content Holder-->
+        <div id="diagramDiv">
+            <div class="container" id="diagramsCanvas" style="justify-content: space-between; z-order: -1001"></div>
+        </div>
+        <div id="myExamples"></div>
+        <div class="draggable" id="infoDraggable"
+             style="display: none; vertical-align: top; top: 20px; left: 380px; position: relative">
+            <div class="handle" id="infoDraggableHandle">Info</div>
+            <div>
+                <div id="myInfo"></div>
+            </div>
+        </div>
+        <div class="draggable" id="controlsDraggable"
+             style="display: none; vertical-align: top; top: 20px; left: 380px; position: relative; width: 380px; padding-bottom: 10px">
+            <div class="handle" id="controlsDraggableHandle">Controls</div>
+            <div>
+                <div id="myControls" style="margin-top: 10px">
+                    <div class="col-sm-4"><b>View Mode:</b></div>
+                    <div class="col-sm-4 text-right">
+                        <input id="viewMode" type="text"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br/>
+        <div class="container-fluid draggable" id="dataModelDraggable"
+             style="height: 100px; width: 400px; display: none">
+            <div class="handle" id="dataModelDraggableHandle">Model</div>
+            <div id="dataModelContainer"><span id="modelToSaveOrLoad" style="display: block"></span></div>
+        </div>
+    </div>
+    <a class="btn" id="sidebarCollapse" href="#"><i class="glyphicon glyphicon-menu-right"></i></a>
+</div>

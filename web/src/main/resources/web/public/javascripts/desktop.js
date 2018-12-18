@@ -57,15 +57,17 @@ const Desktop = {
         const type = o.type;
         const items = $(".task-bar-item");
         let alreadyCreated = false;
-        $.each(items, function () {
-            const item = $(this);
-            if (item.data("type") === type) {
-                item.focus();
-                alreadyCreated = true;
+        if (type !== undefined) {
+            $.each(items, function () {
+                const item = $(this);
+                if (item.data("type") === type) {
+                    item.focus();
+                    alreadyCreated = true;
+                }
+            });
+            if (alreadyCreated) {
+                return;
             }
-        });
-        if (alreadyCreated) {
-            return false;
         }
         o.onDragStart = function (pos, el) {
             win = $(el);
@@ -81,7 +83,8 @@ const Desktop = {
         o.onWindowDestroy = function (win) {
             that.removeFromTaskBar(win);
         };
-        const w = $("<div>").appendTo($(this.options.windowArea));
+        const div = o.suffix ? $("<div>", {id: "window-" + o.suffix}) : $("<div>");
+        const w = div.appendTo($(this.options.windowArea));
         const wnd = w.window(o).data("window");
 
         win = wnd.win;
@@ -100,7 +103,7 @@ const Desktop = {
         this.wins[id] = wnd;
         this.addToTaskBar(wnd);
         w.remove();
-        return true;
+        return id;
     }
 };
 
@@ -145,16 +148,66 @@ function createApiWindow() {
 
 // noinspection JSUnusedGlobalSymbols
 function createPrototyperWindow() {
-    const content = "<div class='container'><div id='swagger-ui'></div>";
-    Desktop.createWindow({
+    const generatedId = (Math.random() + ' ').substring(2, 10) + (Math.random() + ' ').substring(2, 10);
+    let content = "<div class=\"wrapper\">\n" +
+        "    <nav class=\"active\" id=\"sidebar" + "-" + generatedId + "\">\n" +
+        "        <ul class=\"list-unstyled components\">\n" +
+        "            <li class=\"active\"><a href=\"" + basePath + "?#basicPaletteSubMenu" + "-" + generatedId + "\" data-toggle=\"collapse\" aria-expanded=\"true\"\n" +
+        "                                  style=\"font-weight: bold\">Basic</a>\n" +
+        "                <ul class=\"collapse in list-unstyled\" id=\"basicPaletteSubMenu" + "-" + generatedId + "\">\n" +
+        "                    <div id=\"paletteDivBasic" + "-" + generatedId + "\" style=\"height: 160px\"></div>\n" +
+        "                </ul>\n" +
+        "            </li>\n" +
+        "            <li class=\"active\"><a href=\"" + basePath + "?#generalPaletteSubMenu" + "-" + generatedId + "\" data-toggle=\"collapse\" aria-expanded=\"true\"\n" +
+        "                                  style=\"font-weight: bold\">Extended</a>\n" +
+        "                <ul class=\"collapse in list-unstyled\" id=\"generalPaletteSubMenu" + "-" + generatedId + "\">\n" +
+        "                    <div id=\"paletteDivGeneral" + "-" + generatedId + "\" style=\"height: 280px\"></div>\n" +
+        "                </ul>\n" +
+        "            </li>\n" +
+        "        </ul>\n" +
+        "    </nav>\n" +
+        "    <div id=\"content" + "-" + generatedId + "\">\n" +
+        "        <!-- Page Content Holder-->\n" +
+        "        <div id=\"diagramDiv" + "-" + generatedId + "\">\n" +
+        "            <div class=\"container\" id=\"diagramsCanvas" + "-" + generatedId + "\" style=\"justify-content: space-between; z-order: -1001\"></div>\n" +
+        "        </div>\n" +
+        "        <div class=\"draggable\" id=\"infoDraggable" + "-" + generatedId + "\"\n" +
+        "             style=\"display: none; vertical-align: top; top: 20px; left: 380px; position: relative\">\n" +
+        "            <div class=\"handle\" id=\"infoDraggableHandle" + "-" + generatedId + "\">Info</div>\n" +
+        "            <div>\n" +
+        "                <div id=\"myInfo" + "-" + generatedId + "\"></div>\n" +
+        "            </div>\n" +
+        "        </div>\n" +
+        "        <div class=\"draggable\" id=\"controlsDraggable" + "-" + generatedId + "\"\n" +
+        "             style=\"display: none; vertical-align: top; top: 20px; left: 380px; position: relative; width: 380px; padding-bottom: 10px\">\n" +
+        "            <div class=\"handle\" id=\"controlsDraggableHandle" + "-" + generatedId + "\">Controls</div>\n" +
+        "            <div>\n" +
+        "                <div id=\"myControls" + "-" + generatedId + "\" style=\"margin-top: 10px\">\n" +
+        "                    <div class=\"col-sm-4\"><b>View Mode:</b></div>\n" +
+        "                    <div class=\"col-sm-4 text-right\">\n" +
+        "                        <input id=\"viewMode" + "-" + generatedId + "\" type=\"text\"/>\n" +
+        "                    </div>\n" +
+        "                </div>\n" +
+        "            </div>\n" +
+        "        </div>\n" +
+        "        <br/>\n" +
+        "        <div class=\"container-fluid draggable\" id=\"dataModelDraggable" + "-" + generatedId + "\"\n" +
+        "             style=\"height: 100px; width: 400px; display: none\">\n" +
+        "            <div class=\"handle\" id=\"dataModelDraggableHandle" + "-" + generatedId + "\">Model</div>\n" +
+        "            <div id=\"dataModelContainer" + "-" + generatedId + "\"><span id=\"modelToSaveOrLoad" + "-" + generatedId + "\" style=\"display: block\"></span></div>\n" +
+        "        </div>\n" +
+        "    </div>\n" +
+        "    <a class=\"btn\" id=\"sidebarCollapse" + "-" + generatedId + "\" href=\"#\"><i class=\"glyphicon glyphicon-menu-right\"></i></a>\n" +
+        "</div>";
+    const id = Desktop.createWindow({
+        id: "window-" + generatedId,
         width: "100%",
         height: "auto",
-        type: "prototyper",
         icon: "<img src=\"" + basePath + "/images/open-archi-prototyper-logo.png\" style=\"display: inherit;\" class=\"img-responsive img-rounded\">",
         title: "OpenArchi Prototyper",
-        content: "<div class='p-2'>Example</div>"
+        content: "<div class='p-2'>" + content + "</div>"
     });
-
+    setup(generatedId);
 }
 
 

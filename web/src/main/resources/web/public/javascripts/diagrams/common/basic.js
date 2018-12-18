@@ -1,5 +1,6 @@
-function initBasic(nodeDataArray, linkDataArray, paletteModel) {
+function initBasic(nodeDataArray, linkDataArray, paletteModel, divIdSuffix) {
 
+    const suffix = divIdSuffix!==undefined ? "-" + divIdSuffix : "";
     //Basic elements palette
     if (myPaletteBasic !== undefined) {
         myPaletteBasic.clear();
@@ -8,7 +9,7 @@ function initBasic(nodeDataArray, linkDataArray, paletteModel) {
     // initialize the Palette that is on the left side of the page
     // noinspection JSUndeclaredVariable
     myPaletteBasic =
-        gojs(go.Palette, "paletteDivBasic",  // must name or refer to the DIV HTML element
+        gojs(go.Palette, "paletteDivBasic" + suffix,  // must name or refer to the DIV HTML element
             {
                 scrollsPageOnFocus: false,
                 layout: gojs(PoolLayout, {
@@ -35,7 +36,7 @@ function initBasic(nodeDataArray, linkDataArray, paletteModel) {
     // initialize the Palette that is on the left side of the page
     // noinspection JSUndeclaredVariable
     myPaletteGeneral =
-        gojs(go.Palette, "paletteDivGeneral",  // must name or refer to the DIV HTML element
+        gojs(go.Palette, "paletteDivGeneral" + suffix,  // must name or refer to the DIV HTML element
             {
                 scrollsPageOnFocus: false,
                 layout: gojs(PoolLayout, {
@@ -59,7 +60,7 @@ function initBasic(nodeDataArray, linkDataArray, paletteModel) {
         myDiagram.div = null;
     }
     myDiagram =
-        gojs(go.Diagram, "diagramDiv",  // create a Diagram for the DIV HTML element
+        gojs(go.Diagram, "diagramDiv" + suffix,  // create a Diagram for the DIV HTML element
             {
                 // position the graph in the middle of the diagram
                 initialContentAlignment: go.Spot.Center,

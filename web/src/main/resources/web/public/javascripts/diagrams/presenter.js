@@ -1,7 +1,8 @@
 let myDiagram;
 let myPaletteBasic;
 let myPaletteGeneral;
-$().ready(function () {
+
+function setup(divIdSuffix) {
     if (fullView) {
         $("#infoDraggable").show();
         $("#controlsDraggable").show();
@@ -71,7 +72,13 @@ $().ready(function () {
         $(this).find('i').toggleClass('glyphicon-menu-left').toggleClass('glyphicon-menu-right');
     });
 
-    init();
+    init(divIdSuffix);
+}
+
+$().ready(function () {
+    if (!isDesktop) {
+        setup();
+    }
 });
 
 $.fn.extend({
