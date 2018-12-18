@@ -1,4 +1,4 @@
-var Desktop = {
+const Desktop = {
     options: {
         windowArea: ".window-area",
         windowAreaClass: "",
@@ -14,9 +14,9 @@ var Desktop = {
     },
 
     addToTaskBar: function (wnd) {
-        var icon = wnd.getIcon();
-        var wID = wnd.win.attr("id");
-        var item = $("<span>").addClass("task-bar-item started").html(icon);
+        const icon = wnd.getIcon();
+        const wID = wnd.win.attr("id");
+        const item = $("<span>").addClass("task-bar-item started").html(icon);
 
         item.data("wID", wID);
 
@@ -25,11 +25,11 @@ var Desktop = {
 
     removeFromTaskBar: function (wnd) {
         console.log(wnd);
-        var wID = wnd.attr("id");
-        var items = $(".task-bar-item");
-        var that = this;
+        const wID = wnd.attr("id");
+        const items = $(".task-bar-item");
+        const that = this;
         $.each(items, function () {
-            var item = $(this);
+            const item = $(this);
             if (item.data("wID") === wID) {
                 delete that.wins[wID];
                 item.remove();
@@ -38,7 +38,7 @@ var Desktop = {
     },
 
     createWindow: function (o) {
-        var that = this;
+        const that = this;
         o.onDragStart = function (pos, el) {
             win = $(el);
             $(".window").css("z-index", 1);
@@ -53,11 +53,11 @@ var Desktop = {
         o.onWindowDestroy = function (win) {
             that.removeFromTaskBar(win);
         };
-        var w = $("<div>").appendTo($(this.options.windowArea));
-        var wnd = w.window(o).data("window");
+        const w = $("<div>").appendTo($(this.options.windowArea));
+        const wnd = w.window(o).data("window");
 
         var win = wnd.win;
-        var shift = Metro.utils.objectLength(this.wins) * 16;
+        const shift = Metro.utils.objectLength(this.wins) * 16;
 
         if (wnd.options.place === "auto" && wnd.options.top === "auto" && wnd.options.left === "auto") {
             win.css({
@@ -73,21 +73,12 @@ var Desktop = {
 
 Desktop.setup();
 
-
-const w_icons = [
-    'rocket', 'apps', 'cog', 'anchor'
-];
-const w_titles = [
-    'rocket', 'apps', 'cog', 'anchor'
-];
-
 function createApiWindow() {
-    const index = Metro.utils.random(0, 3);
     const content = "<div class='container'><div id='swagger-ui'></div>";
     Desktop.createWindow({
         width: "100%",
         height: "auto",
-        icon: "<img src=\"" + basePath + "/images/api-icon-white.png\" style=\"display: inherit;\" class=\"img-responsive img-rounded\">",
+        icon: "<img src=\"" + basePath + "/images/open-archi-api-logo.png\" style=\"display: inherit;\" class=\"img-responsive img-rounded\">",
         title: "OpenArchi Api",
         content: "<div class='p-2'>" + content + "</div>"
     });
@@ -116,38 +107,48 @@ function createApiWindow() {
     });
 }
 
-function createWindow(content) {
+function createPrototyperWindow() {
     const index = Metro.utils.random(0, 3);
-    if (content !== undefined) {
-        $.ajax({
-            url: basePath + "/desktop/" + content,
-            type: 'GET',
-            crossDomain: true,
-            contentType: "text/html"
-        }).done((data, textStatus, response) => {
-            Desktop.createWindow({
-                width: 300,
-                icon: "<span class='mif-" + w_icons[index] + "'></span>",
-                title: w_titles[index],
-                content: "<div class='p-2'>" + data + "</div>"
-            });
-        });
-    } else {
-        Desktop.createWindow({
-            width: 300,
-            icon: "<span class='mif-" + w_icons[index] + "'></span>",
-            title: w_titles[index],
-            content: "<div class='p-2'>Empty</div>"
-        });
-    }
+    const content = "<div class='container'><div id='swagger-ui'></div>";
+    Desktop.createWindow({
+        width: "100%",
+        height: "auto",
+        icon: "<img src=\"" + basePath + "/images/open-archi-prototyper-logo.png\" style=\"display: inherit;\" class=\"img-responsive img-rounded\">",
+        title: "OpenArchi Prototyper",
+        content: "<div class='p-2'>" + content + "</div>"
+    });
+    window.ui = SwaggerUIBundle({
+        url: "/open-archi-apis.yaml",
+        logo: "/images/open-archi.png",
+        dom_id: '#swagger-ui',
+        deepLinking: true,
+        presets: [
+            SwaggerUIBundle.presets.apis,
+            SwaggerUIStandalonePreset
+        ],
+        plugins: [
+            SwaggerUIBundle.plugins.DownloadUrl
+        ],
+        layout: "StandaloneLayout",
+        requestInterceptor: function (req) {
+            req.headers["Access-Control-Allow-Origin"] = "*";
+            req.headers["Access-Control-Request-Method"] = "*";
+            req.headers["Access-Control-Allow-Headers"] = "*";
+            return req;
+        },
+        responseInterceptor: function (res) {
+            return res;
+        }
+    });
 }
+
 
 function createWindowModal() {
     Desktop.createWindow({
         width: 300,
         icon: "<span class='mif-cogs'></span>",
         title: "Modal window",
-        content: "<div class='p-2'>This is desktop demo created with Metro 4 Components Library</div>",
+        content: "<div class='p-2'>Example</div>",
         overlay: true,
         //overlayColor: "transparent",
         modal: true,
