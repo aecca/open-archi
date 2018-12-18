@@ -152,31 +152,9 @@ function createPrototyperWindow() {
         type: "prototyper",
         icon: "<img src=\"" + basePath + "/images/open-archi-prototyper-logo.png\" style=\"display: inherit;\" class=\"img-responsive img-rounded\">",
         title: "OpenArchi Prototyper",
-        content: "<div class='p-2'>" + content + "</div>"
+        content: "<div class='p-2'>Example</div>"
     });
-    window.ui = SwaggerUIBundle({
-        url: "/open-archi-apis.yaml",
-        logo: "/images/open-archi.png",
-        dom_id: '#swagger-ui',
-        deepLinking: true,
-        presets: [
-            SwaggerUIBundle.presets.apis,
-            SwaggerUIStandalonePreset
-        ],
-        plugins: [
-            SwaggerUIBundle.plugins.DownloadUrl
-        ],
-        layout: "StandaloneLayout",
-        requestInterceptor: function (req) {
-            req.headers["Access-Control-Allow-Origin"] = "*";
-            req.headers["Access-Control-Request-Method"] = "*";
-            req.headers["Access-Control-Allow-Headers"] = "*";
-            return req;
-        },
-        responseInterceptor: function (res) {
-            return res;
-        }
-    });
+
 }
 
 
