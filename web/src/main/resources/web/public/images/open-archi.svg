@@ -37,10 +37,10 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.52149125"
-     inkscape:cx="617.41419"
+     inkscape:cx="128.43187"
      inkscape:cy="367.42746"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer3"
+     inkscape:current-layer="layer8"
      showgrid="false"
      fit-margin-top="0"
      fit-margin-left="0"
@@ -72,7 +72,7 @@
      inkscape:groupmode="layer"
      id="layer2"
      inkscape:label="Layer 2"
-     style="display:inline"
+     style="display:none"
      transform="translate(-253.50183,-11.725022)">
     <path
        sodipodi:type="star"
@@ -107,7 +107,8 @@
        id="path1324-2"
        inkscape:connector-curvature="0"
        inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96" />
+       inkscape:export-ydpi="96"
+       inkscape:export-filename="C:\Users\Admin\Desktop\open-archi-26.png" />
   </g>
   <g
      inkscape:label="Layer 1"
@@ -143,14 +144,16 @@
        id="path1324"
        inkscape:connector-curvature="0"
        inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96" />
+       inkscape:export-ydpi="96"
+       inkscape:export-filename="C:\Users\Admin\Desktop\open-archi-26.png" />
     <path
        style="display:inline;fill:none;stroke:#999999;stroke-width:0.14601655;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        d="m 232.99951,80.300773 -21.69383,37.517557 h 43.38765 z"
        id="path1322"
        inkscape:connector-curvature="0"
        inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96" />
+       inkscape:export-ydpi="96"
+       inkscape:export-filename="C:\Users\Admin\Desktop\open-archi-26.png" />
   </g>
   <g
      inkscape:groupmode="layer"
@@ -165,7 +168,8 @@
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccccc"
        inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96" />
+       inkscape:export-ydpi="96"
+       inkscape:export-filename="C:\Users\Admin\Desktop\open-archi-26.png" />
     <path
        style="fill:#69bde4;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="M 34.321775,67.421395 52.290309,52.328972 75.73355,52.313463 57.798565,67.407777 Z"
@@ -173,7 +177,8 @@
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccccc"
        inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96" />
+       inkscape:export-ydpi="96"
+       inkscape:export-filename="C:\Users\Admin\Desktop\open-archi-26.png" />
     <path
        style="fill:#3aa8dc;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="M 23.939311,8.9515241 27.983264,32.066358 16.238012,52.355144 12.175596,29.268383 Z"
@@ -181,56 +186,64 @@
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccccc"
        inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96" />
+       inkscape:export-ydpi="96"
+       inkscape:export-filename="C:\Users\Admin\Desktop\open-archi-26.png" />
     <path
        style="fill:#97abdf;fill-opacity:1;stroke:#97abdf;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="M 23.927745,9.0062841 45.982429,0.99129053 38.38227,14.155147 Z"
        id="path1397"
        inkscape:connector-curvature="0"
        inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96" />
+       inkscape:export-ydpi="96"
+       inkscape:export-filename="C:\Users\Admin\Desktop\open-archi-26.png" />
     <path
        style="fill:#97abdf;fill-opacity:1;stroke:#97abdf;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="M 79.77216,29.300971 75.686009,52.408386 68.08585,39.244525 Z"
        id="path1397-2"
        inkscape:connector-curvature="0"
        inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96" />
+       inkscape:export-ydpi="96"
+       inkscape:export-filename="C:\Users\Admin\Desktop\open-archi-26.png" />
     <path
        style="fill:#3aa8dc;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="M 34.321775,67.421395 16.353242,52.32897 H 31.55356 Z"
        id="path1397-4"
        inkscape:connector-curvature="0"
        inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96" />
+       inkscape:export-ydpi="96"
+       inkscape:export-filename="C:\Users\Admin\Desktop\open-archi-26.png" />
     <path
        style="fill:none;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="M 23.927745,9.0062841 38.38227,14.155147 27.983264,32.066358 Z"
        id="path1420"
        inkscape:connector-curvature="0"
        inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96" />
+       inkscape:export-ydpi="96"
+       inkscape:export-filename="C:\Users\Admin\Desktop\open-archi-26.png" />
     <path
        style="fill:#97d1ec;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="M 23.939311,8.9515241 38.38227,14.155147 27.983264,32.066358 Z"
        id="path1422"
        inkscape:connector-curvature="0"
        inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96" />
+       inkscape:export-ydpi="96"
+       inkscape:export-filename="C:\Users\Admin\Desktop\open-archi-26.png" />
     <path
        style="fill:#97d1ec;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 34.294251,67.388561 -2.715009,-15.109789 20.711067,0.0502 z"
        id="path1422-7"
        inkscape:connector-curvature="0"
        inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96" />
+       inkscape:export-ydpi="96"
+       inkscape:export-filename="C:\Users\Admin\Desktop\open-archi-26.png" />
     <path
        style="fill:#97d1ec;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="M 79.8138,29.338368 68.08585,39.244525 57.773789,21.283116 Z"
        id="path1422-4"
        inkscape:connector-curvature="0"
        inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96" />
+       inkscape:export-ydpi="96"
+       inkscape:export-filename="C:\Users\Admin\Desktop\open-archi-26.png" />
     <path
        style="fill:#54afd7;fill-opacity:1;stroke:#54afd7;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="M 45.982426,0.99128953 57.773789,21.283116 52.701928,19.366122 45.79818,7.7537486 Z"
@@ -238,7 +251,8 @@
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccccc"
        inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96" />
+       inkscape:export-ydpi="96"
+       inkscape:export-filename="C:\Users\Admin\Desktop\open-archi-26.png" />
     <path
        style="fill:#acd6e9;fill-opacity:1;stroke:#acd6e9;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="M 52.765348,19.683221 65.385902,41.182562 68.02243,39.117685 57.773789,21.283116 c 0.06342,0.25368 -5.008441,-1.599895 -5.008441,-1.599895 z"
@@ -246,7 +260,8 @@
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccccc"
        inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96" />
+       inkscape:export-ydpi="96"
+       inkscape:export-filename="C:\Users\Admin\Desktop\open-archi-26.png" />
     <path
        style="fill:#99a7ca;fill-opacity:1;stroke:#99a7ca;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 68.08585,39.244525 7.600159,13.163859 -11.86801,-0.143979 -4.044754,-7.022933 7.718753,0.02977 -2.232936,-3.771544 z"
@@ -254,14 +269,16 @@
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccccccc"
        inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96" />
+       inkscape:export-ydpi="96"
+       inkscape:export-filename="C:\Users\Admin\Desktop\open-archi-26.png" />
     <path
        style="fill:#92c6de;fill-opacity:1;stroke:#92c6de;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 31.579243,52.278773 3.54253,-0.01138 4.072435,-6.98735 -8.879499,-0.1021 z"
        id="path1533"
        inkscape:connector-curvature="0"
        inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96" />
+       inkscape:export-ydpi="96"
+       inkscape:export-filename="C:\Users\Admin\Desktop\open-archi-26.png" />
     <path
        style="display:inline;fill:#58b0d9;fill-opacity:1;stroke:#58b0d9;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 27.98325,32.066353 -11.74525,20.28879 15.31555,-0.0262 -1.23885,-7.15099 -6.21036,0.0932 4.7517,-8.27435 z"
@@ -269,14 +286,16 @@
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccccccc"
        inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96" />
+       inkscape:export-ydpi="96"
+       inkscape:export-filename="C:\Users\Admin\Desktop\open-archi-26.png" />
     <path
        style="display:inline;fill:#83c0dc;fill-opacity:1;stroke:#83c0dc;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 27.98325,32.066353 0.87279,4.93045 12.49372,-21.752975 -2.9675,-1.088682 z"
        id="path1523"
        inkscape:connector-curvature="0"
        inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96" />
+       inkscape:export-ydpi="96"
+       inkscape:export-filename="C:\Users\Admin\Desktop\open-archi-26.png" />
     <path
        style="display:inline;fill:#98a5c6;fill-opacity:1;stroke:#98a5c6;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 38.38226,14.155146 2.9675,1.088682 7.66695,-13.2488951 -2.99265,-0.9662473 z"
@@ -284,20 +303,22 @@
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccccc"
        inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96" />
+       inkscape:export-ydpi="96"
+       inkscape:export-filename="C:\Users\Admin\Desktop\open-archi-26.png" />
   </g>
   <g
      inkscape:groupmode="layer"
      id="layer8"
      inkscape:label="Layer 5"
-     style="display:inline"
+     style="display:none"
      transform="translate(-1.3931252,2.2694683)">
     <g
        id="g1136"
        transform="translate(-123.2035,-53.914004)"
        style="display:inline;stroke:#ffffff;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96">
+       inkscape:export-ydpi="96"
+       inkscape:export-filename="C:\Users\Admin\Desktop\open-archi-prototyper.png">
       <path
          sodipodi:type="star"
          style="fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#ffffff;stroke-width:1.41634977;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
@@ -329,7 +350,8 @@
        transform="matrix(1.1460039,0,0,1.1460039,-7.9605304,-10.375942)"
        style="display:inline;stroke:none"
        inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96">
+       inkscape:export-ydpi="96"
+       inkscape:export-filename="C:\Users\Admin\Desktop\open-archi-26.png">
       <path
          inkscape:connector-curvature="0"
          id="path1469"
@@ -342,7 +364,7 @@
      id="layer10"
      inkscape:label="Layer 7"
      transform="translate(-1.3931252,2.2694683)"
-     style="display:inline">
+     style="display:none">
     <g
        style="display:inline"
        id="g1848"
@@ -447,7 +469,7 @@
        transform="matrix(11.068573,0,0,11.068573,449.13322,-414.54681)">
       <path
          style="display:inline;fill:none;stroke:#18184d;stroke-width:1.47602165;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:15.69999981;stroke-dasharray:none;stroke-opacity:1;paint-order:fill markers stroke"
-         d="m -51.798204,32.361462 v 5.022634 l 1.47991,1.479883 h 5.69539 l 1.25568,-1.255657 v -5.336551 l -1.3678,-1.367771 h -5.76266 z"
+         d="m -51.798204,29.110518 v 5.022634 l 1.47991,1.479883 h 5.69539 l 1.25568,-1.255657 v -5.336551 l -1.3678,-1.367771 h -5.76266 z"
          id="path1640-0"
          inkscape:connector-curvature="0"
          inkscape:export-filename="C:\Users\Admin\Desktop\open-archi-20.png"
@@ -456,7 +478,7 @@
       <g
          id="g1871-8"
          style="display:inline"
-         transform="translate(4.3911012,-46.242243)">
+         transform="translate(4.3911012,-49.493187)">
         <path
            inkscape:connector-curvature="0"
            id="path1640-5-0-7"

@@ -37,7 +37,7 @@ body
         div.task-bar
             div.task-bar-section
                 button.task-bar-item#start-menu-toggle
-                    +img-responsive-rounded("/images/open-archi-12.png", null, style="display: inherit;")
+                    +img-responsive-rounded("/images/open-archi-26.png", null, style="display: inherit;")
                     //span.mif-windows
                 div.start-menu(data-role="dropdown", data-toggle-element="#start-menu-toggle")
                     div.start-menu-inner.h-100
@@ -51,13 +51,11 @@ body
                                     a(onclick="createWindowModal()") Modal window
                                 li
                                     a(onclick="createApiWindow()")
-                                        +img-responsive-rounded("open-archi-api-logo", null, style="display: inherit;")
-                                        | &nbsp;
+                                        +img-responsive-rounded("/open-archi-api-logo", null, style="display: inherit;")
                                         | APIs definition
                                 li
                                     a(onclick="createPrototyperWindow()")
-                                        +img-responsive-rounded("open-archi-prototyper-logo", null, style="display: inherit;")
-                                        | &nbsp;
+                                        +img-responsive-rounded("/open-archi-prototyper-logo", null, style="display: inherit;")
                                         | Prototyper
             div.task-bar-section.tasks
         div.window-area
