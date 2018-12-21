@@ -73,6 +73,7 @@ append scripts
         var diagramTypes = !{diagramTypes_};
         var elementTypes = !{elementTypes_};
         var fullView = '!{fullView}';
+        var isDesktop = false;
     script(type='text/javascript', src=basePath + '/javascripts/diagrams/presenter.js')
 block extra-menu-elements
     +nav_item_dropdown("#", null, "diagramTypesDropdown")(label="Diagram Type")
@@ -154,11 +155,11 @@ block content
         nav#sidebar.active
             ul.list-unstyled.components
                 li.active
-                    a(href=basePath + "?#basicPaletteSubMenu", data-toggle="collapse", aria-expanded="true", style="font-weight: bold;") Basic
+                    a(href="?#basicPaletteSubMenu", data-toggle="collapse", aria-expanded="true", style="font-weight: bold;") Basic
                     ul#basicPaletteSubMenu.collapse.in.list-unstyled
                         #paletteDivBasic(style="height: 160px")
                 li.active
-                    a(href=basePath + "?#generalPaletteSubMenu", data-toggle="collapse", aria-expanded="true", style="font-weight: bold;") Extended
+                    a(href="?#generalPaletteSubMenu", data-toggle="collapse", aria-expanded="true", style="font-weight: bold;") Extended
                     ul#generalPaletteSubMenu.collapse.in.list-unstyled
                         #paletteDivGeneral(style="height: 280px")
         #content

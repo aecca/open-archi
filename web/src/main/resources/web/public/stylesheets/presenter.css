@@ -111,18 +111,8 @@ with allowances for the title (top) and the resize handle (bottom)
     background: #eeeeee;
 }
 
-a[data-toggle="collapse"] {
+#sidebar a[data-toggle="collapse"] {
     position: relative;
-}
-
-a[aria-expanded="false"]::before, a[aria-expanded="true"]::before {
-    content: '\e259';
-    display: contents;
-    font-family: 'Glyphicons Halflings';
-}
-
-a[aria-expanded="true"]::before {
-    content: '\e260';
 }
 
 ul ul a {

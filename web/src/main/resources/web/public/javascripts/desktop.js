@@ -116,7 +116,7 @@ function createApiWindow() {
             width: "100%",
             height: "auto",
             type: "api",
-            icon: "<img src=\"" + basePath + "/images/open-archi-api-logo.png\" style=\"display: inherit;\" class=\"img-responsive img-rounded\">",
+            icon: "<img src=\"" + basePath + "/images/open-archi-api-logo.png\" style=\"display: inherit;\" class=\"img-responsive\">",
             title: "OpenArchi Api",
             content: "<div class='p-2'>" + content + "</div>"
         })) {
@@ -149,23 +149,22 @@ function createApiWindow() {
 // noinspection JSUnusedGlobalSymbols
 function createPrototyperWindow() {
     const generatedId = (Math.random() + ' ').substring(2, 10) + (Math.random() + ' ').substring(2, 10);
-    let content = "<div class=\"wrapper\">\n" +
+    let content =
+        "<div class=\"wrapper\">\n" +
         "    <nav class=\"active\" id=\"sidebar" + "-" + generatedId + "\">\n" +
-        "        <ul class=\"list-unstyled components\">\n" +
-        "            <li class=\"active\"><a href=\"" + basePath + "?#basicPaletteSubMenu" + "-" + generatedId + "\" data-toggle=\"collapse\" aria-expanded=\"true\"\n" +
-        "                                  style=\"font-weight: bold\">Basic</a>\n" +
-        "                <ul class=\"collapse in list-unstyled\" id=\"basicPaletteSubMenu" + "-" + generatedId + "\">\n" +
-        "                    <div id=\"paletteDivBasic" + "-" + generatedId + "\" style=\"height: 160px\"></div>\n" +
-        "                </ul>\n" +
-        "            </li>\n" +
-        "            <li class=\"active\"><a href=\"" + basePath + "?#generalPaletteSubMenu" + "-" + generatedId + "\" data-toggle=\"collapse\" aria-expanded=\"true\"\n" +
-        "                                  style=\"font-weight: bold\">Extended</a>\n" +
-        "                <ul class=\"collapse in list-unstyled\" id=\"generalPaletteSubMenu" + "-" + generatedId + "\">\n" +
-        "                    <div id=\"paletteDivGeneral" + "-" + generatedId + "\" style=\"height: 280px\"></div>\n" +
-        "                </ul>\n" +
-        "            </li>\n" +
-        "        </ul>\n" +
-        "    </nav>\n" +
+        "      <ul class=\"list-unstyled components\">\n" +
+        "        <li class=\"active\"><a href=\"?#basicPaletteSubMenu" + "-" + generatedId + "\" data-toggle=\"collapse\" aria-expanded=\"true\" style=\"font-weight: bold\">Basic</a>\n" +
+//        "          <ul class=\"collapse in list-unstyled\" id=\"basicPaletteSubMenu" + "-" + generatedId + "\">\n" +
+        "            <div id=\"paletteDivBasic" + "-" + generatedId + "\" style=\"height: 160px; width: 164px\"></div>\n" +
+//        "          </ul>\n" +
+        "        </li>\n" +
+        "        <li class=\"active\"><a href=\"?#generalPaletteSubMenu" + "-" + generatedId + "\" data-toggle=\"collapse\" aria-expanded=\"true\" style=\"font-weight: bold\">Extended</a>\n" +
+//        "          <ul class=\"collapse in list-unstyled\" id=\"generalPaletteSubMenu" + "-" + generatedId + "\">\n" +
+        "            <div id=\"paletteDivGeneral" + "-" + generatedId + "\" style=\"height: 280px; width: 164px\"></div>\n" +
+//        "          </ul>\n" +
+        "        </li>\n" +
+        "      </ul>\n" +
+        "    </nav>" +
         "    <div id=\"content" + "-" + generatedId + "\">\n" +
         "        <!-- Page Content Holder-->\n" +
         "        <div id=\"diagramDiv" + "-" + generatedId + "\">\n" +
@@ -197,17 +196,16 @@ function createPrototyperWindow() {
         "            <div id=\"dataModelContainer" + "-" + generatedId + "\"><span id=\"modelToSaveOrLoad" + "-" + generatedId + "\" style=\"display: block\"></span></div>\n" +
         "        </div>\n" +
         "    </div>\n" +
-        "    <a class=\"btn\" id=\"sidebarCollapse" + "-" + generatedId + "\" href=\"#\"><i class=\"glyphicon glyphicon-menu-right\"></i></a>\n" +
         "</div>";
     const id = Desktop.createWindow({
         id: "window-" + generatedId,
         width: "100%",
-        height: "auto",
-        icon: "<img src=\"" + basePath + "/images/open-archi-prototyper-logo.png\" style=\"display: inherit;\" class=\"img-responsive img-rounded\">",
+        height: "100%",
+        icon: "<img src=\"" + basePath + "/images/open-archi-prototyper-logo.png\" style=\"display: inherit;\" class=\"img-responsive\">",
         title: "OpenArchi Prototyper",
         content: "<div class='p-2'>" + content + "</div>"
     });
-    setup(generatedId);
+    setup(generatedId, true);
 }
 
 

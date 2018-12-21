@@ -2,15 +2,16 @@ let myDiagram;
 let myPaletteBasic;
 let myPaletteGeneral;
 
-function setup(divIdSuffix) {
+function setup(divIdSuffix, isPrototyper) {
+    const suffix = divIdSuffix !== undefined ? "-" + divIdSuffix : "";
     if (fullView) {
-        $("#infoDraggable").show();
-        $("#controlsDraggable").show();
-        $("#dataModelDraggable").show();
+        $("#infoDraggable" + suffix).show();
+        $("#controlsDraggable" + suffix).show();
+        $("#dataModelDraggable" + suffix).show();
     } else {
-        $("#infoDraggable").hide();
-        $("#controlsDraggable").hide();
-        $("#dataModelDraggable").hide();
+        $("#infoDraggable" + suffix).hide();
+        $("#controlsDraggable" + suffix).hide();
+        $("#dataModelDraggable" + suffix).hide();
     }
     const items = [];
     let i = 0;
@@ -18,14 +19,14 @@ function setup(divIdSuffix) {
     for (const type in diagramTypes) {
         const active = diagramTypes[type];
         if (active) {
-            items.push('<li role="presentation"><a role="menuitem" tabindex="' + i + '" href="/editor?type=' + type + '" class="active">' + type + '</a></li>');
+            items.push('<li role="presentation"><a role="menuitem" tabindex="' + i + '" href="/' + (isPrototyper ? 'prototyper' : 'editor') + '?type=' + type + '" class="active">' + type + '</a></li>');
             activeText = type;
         } else {
-            items.push('<li role="presentation"><a role="menuitem" tabindex="' + i + '" href="/editor?type=' + type + '">' + type + '</a></li>');
+            items.push('<li role="presentation"><a role="menuitem" tabindex="' + i + '" href="/' + (isPrototyper ? 'prototyper' : 'editor') + '?type=' + type + '">' + type + '</a></li>');
         }
         i++;
     }
-    const $diagramTypesDropdown = $("#diagramTypesDropdown");
+    const $diagramTypesDropdown = $("#diagramTypesDropdown" + suffix);
     $diagramTypesDropdown.append(items.join(''));
     $diagramTypesDropdown.on('click', 'a', function () {
         const text = $(this).html();
@@ -37,15 +38,15 @@ function setup(divIdSuffix) {
     elementTypes.forEach(function (elementType, i) {
         elementTypeItems.push('<li role="presentation" data-isGroup="' + elementType.group + '"><a role="menuitem" tabindex="' + i + '" href="#">' + elementType.type + '</a></li>');
     });
-    const elementTypesDropdown = $("#elementTypesDropdown");
+    const elementTypesDropdown = $("#elementTypesDropdown" + suffix);
     elementTypesDropdown.append(elementTypeItems.join(''));
     elementTypesDropdown.on('click', 'a', function () {
         const text = $(this).html();
         $(this).closest('.dropdown').find('.dropdown-toggle').html(text);
     });
-    if ($("#viewMode").length > 0) {
-        viewMode = new Slider("#viewMode", {
-            id: "viewMode",
+    if ($("#viewMode" + suffix).length > 0) {
+        viewMode = new Slider("#viewMode" + suffix, {
+            id: "viewMode" + suffix,
             ticks: [1, 2, 3],
             ticks_labels: ['Compact', 'Moderated', 'Full'],
             tooltip: "hide",
@@ -56,13 +57,13 @@ function setup(divIdSuffix) {
         });
         viewMode.on('slideStop', reexpand);
     }
-    const $element1 = $("#element-image");
+    const $element1 = $("#element-image" + suffix);
     $element1.on("change", handleImageSelect);
-    const $element2 = $("#element-image-2");
+    const $element2 = $("#element-image-2" + suffix);
     $element2.on("change", handleImageSelect);
 
-    const $sidebar = $('#sidebar');
-    $('#sidebarCollapse').on('click', function () {
+    const $sidebar = $('#sidebar' + suffix);
+    $('#sidebarCollapse' + suffix).on('click', function () {
         if (!$sidebar.hasClass('active')) {
             $sidebar.addClass('active');
             $('a[aria-expanded=true]').attr('aria-expanded', 'false');
@@ -76,7 +77,7 @@ function setup(divIdSuffix) {
 }
 
 $().ready(function () {
-    if (!isDesktop) {
+    if (isDesktop === undefined || !isDesktop) {
         setup();
     }
 });
@@ -86,11 +87,11 @@ $.fn.extend({
         let openedClass = 'glyphicon-minus-sign';
         let closedClass = 'glyphicon-plus-sign';
 
-        if (typeof o !== 'undefined'){
-            if (typeof o.openedClass !== 'undefined'){
+        if (typeof o !== 'undefined') {
+            if (typeof o.openedClass !== 'undefined') {
                 openedClass = o.openedClass;
             }
-            if (typeof o.closedClass !== 'undefined'){
+            if (typeof o.closedClass !== 'undefined') {
                 closedClass = o.closedClass;
             }
         }
@@ -112,7 +113,7 @@ $.fn.extend({
             branch.children().children().toggle();
         });
         //fire event from the dynamically added icon
-        tree.find('.branch .indicator').each(function(){
+        tree.find('.branch .indicator').each(function () {
             $(this).on('click', function () {
                 $(this).closest('li').click();
             });

@@ -590,8 +590,10 @@ function findValuesHelper(obj, key, list) {
 }
 
 function init(divIdSuffix) {
-    relocateDataModelDiv();
-    relocatePaletteDiv();
+    const suffix = divIdSuffix !== undefined ? "-" + divIdSuffix : "";
+
+    /*    relocateDataModelDiv();
+        relocatePaletteDiv();*/
 
     switch (source) {
         case "basic":
@@ -601,7 +603,7 @@ function init(divIdSuffix) {
             myDiagram.requestUpdate();
             // when the document is modified, add a "*" to the title and enable the "Save" button
             myDiagram.addDiagramListener("Modified", function (e) {
-                let button = $("#SaveButton");
+                let button = $("#SaveButton" + suffix);
                 button.attr('disabled', !myDiagram.isModified);
                 let idx = document.title.indexOf("*");
                 if (myDiagram.isModified) {
@@ -611,10 +613,10 @@ function init(divIdSuffix) {
                 }
             });
 
-            $("#infoDraggable").draggable({handle: "#infoDraggableHandle"});
-            $("#controlsDraggable").draggable({handle: "#controlsDraggableHandle"});
+            $("#infoDraggable" + suffix).draggable({handle: "#infoDraggableHandle" + suffix});
+            $("#controlsDraggable" + suffix).draggable({handle: "#controlsDraggableHandle" + suffix});
 
-            new Inspector('myInfo', myDiagram,
+            new Inspector('myInfo' + suffix, myDiagram,
                 {
                     properties: {
                         // key would be automatically added for nodes, but we want to declare it read-only also:
@@ -652,7 +654,7 @@ function init(divIdSuffix) {
             const model = dataArray.find(function (model) {
                 return model.id === id;
             });
-            const modelToSaveOrLoad = $("#modelToSaveOrLoad");
+            const modelToSaveOrLoad = $("#modelToSaveOrLoad" + suffix);
             modelToSaveOrLoad.empty();
             modelToSaveOrLoad.jsonView(model);
             resizeDataModelDiv();
@@ -666,8 +668,8 @@ function init(divIdSuffix) {
         $(this).select();
     });
 
-    const $dataModelDraggable = $("#dataModelDraggable");
-    $dataModelDraggable.draggable({handle: "#dataModelDraggableHandle"}).resizable({
+    const $dataModelDraggable = $("#dataModelDraggable" + suffix);
+    $dataModelDraggable.draggable({handle: "#dataModelDraggableHandle" + suffix}).resizable({
         stop: function (event, ui) {
             // var $modelToSaveOrLoad = $("#modelToSaveOrLoad");
             // $modelToSaveOrLoad.width(ui.size.width - 16);
@@ -690,7 +692,7 @@ function init(divIdSuffix) {
         resizeDiagramDiv();
     });
 
-    let modalModelValidation = $('#model-validation');
+    let modalModelValidation = $('#model-validation' + suffix);
     modalModelValidation.modal({
         backdrop: 'static',
         keyboard: false,
