@@ -31,7 +31,7 @@ with allowances for the title (top) and the resize handle (bottom)
 /* ---------------------------------------------------
     SIDEBAR STYLE
 ----------------------------------------------------- */
-#sidebar {
+[id^=sidebar] {
     width: 164px;
     position: fixed;
     top: 56px;
@@ -45,7 +45,7 @@ with allowances for the title (top) and the resize handle (bottom)
     /*overflow-y: scroll;*/
 }
 
-#sidebar.active {
+[id^=sidebar].active {
     left: 0;
 }
 
@@ -78,40 +78,40 @@ with allowances for the title (top) and the resize handle (bottom)
     display: none;
 }
 
-#sidebar .sidebar-header {
+[id^=sidebar] .sidebar-header {
     padding: 3px;
     background: buttonface;
     color: black;
     text-align: center;
 }
 
-#sidebar ul.components {
+[id^=sidebar] ul.components {
     padding: 0;
     /*border-bottom: 1px solid grey;*/
 }
 
-#sidebar ul p {
+[id^=sidebar] ul p {
     color: #fff;
     padding: 10px;
 }
 
-#sidebar ul li a {
+[id^=sidebar] ul li a {
     padding: 10px;
     font-size: 1.1em;
     display: block;
 }
 
-#sidebar ul li a:hover {
+[id^=sidebar] ul li a:hover {
     color: black;
     background: #eeeeee;
 }
 
-#sidebar ul li.active > a, a[aria-expanded="true"] {
+[id^=sidebar] ul li.active > a, a[aria-expanded="true"] {
     color: black;
     background: #eeeeee;
 }
 
-#sidebar a[data-toggle="collapse"] {
+[id^=sidebar] a[data-toggle="collapse"] {
     position: relative;
 }
 
@@ -145,8 +145,9 @@ a.article, a.article:hover {
 /* ---------------------------------------------------
     CONTENT STYLE
 ----------------------------------------------------- */
-#content {
+[id^=content] {
     width: 100%;
+    height: 100%;
     padding: 20px;
     min-height: 100vh;
     transition: all 0.3s;
@@ -155,7 +156,7 @@ a.article, a.article:hover {
     right: 0;
 }
 
-#sidebarCollapse {
+[id^=sidebar]Collapse {
     border-radius: 20%;
     position: fixed;
     top: 0.7em;

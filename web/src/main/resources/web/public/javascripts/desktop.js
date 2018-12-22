@@ -151,21 +151,21 @@ function createPrototyperWindow() {
     const generatedId = (Math.random() + ' ').substring(2, 10) + (Math.random() + ' ').substring(2, 10);
     let content =
         "<div class=\"wrapper\">\n" +
-        "    <nav class=\"active\" id=\"sidebar\" style=\"position: initial;\">\n" +
+        "    <nav class=\"active\" id=\"sidebar" + "-" + generatedId + "\" style=\"position: initial;\">\n" +
         "      <ul class=\"list-unstyled components\" style=\"margin-left: 0\">\n" +
-//        "        <li class=\"active\"><a href=\"?#basicPaletteSubMenu" + "-" + generatedId + "\" data-toggle=\"collapse\" aria-expanded=\"true\" style=\"font-weight: bold\">Basic</a>\n" +
-//        "          <ul class=\"collapse in list-unstyled\" id=\"basicPaletteSubMenu" + "-" + generatedId + "\">\n" +
+        //        "        <li class=\"active\"><a href=\"?#basicPaletteSubMenu" + "-" + generatedId + "\" data-toggle=\"collapse\" aria-expanded=\"true\" style=\"font-weight: bold\">Basic</a>\n" +
+        //        "          <ul class=\"collapse in list-unstyled\" id=\"basicPaletteSubMenu" + "-" + generatedId + "\">\n" +
         "            <div id=\"paletteDivBasic" + "-" + generatedId + "\" style=\"height: 160px; width: 164px; overflow-y: 'hidden'; overflow-x: 'hidden';\"></div>\n" +
-//        "          </ul>\n" +
-//        "        </li>\n" +
-//        "        <li class=\"active\"><a href=\"?#generalPaletteSubMenu" + "-" + generatedId + "\" data-toggle=\"collapse\" aria-expanded=\"true\" style=\"font-weight: bold\">Extended</a>\n" +
-//        "          <ul class=\"collapse in list-unstyled\" id=\"generalPaletteSubMenu" + "-" + generatedId + "\">\n" +
+        //        "          </ul>\n" +
+        //        "        </li>\n" +
+        //        "        <li class=\"active\"><a href=\"?#generalPaletteSubMenu" + "-" + generatedId + "\" data-toggle=\"collapse\" aria-expanded=\"true\" style=\"font-weight: bold\">Extended</a>\n" +
+        //        "          <ul class=\"collapse in list-unstyled\" id=\"generalPaletteSubMenu" + "-" + generatedId + "\">\n" +
         "            <div id=\"paletteDivGeneral" + "-" + generatedId + "\" style=\"height: 280px; width: 164px; overflow-y: 'hidden';\"></div>\n" +
-//        "          </ul>\n" +
-//        "        </li>\n" +
+        //        "          </ul>\n" +
+        //        "        </li>\n" +
         "      </ul>\n" +
         "    </nav>" +
-        "    <div id=\"content\">\n" +
+        "    <div id=\"content" + "-" + generatedId + "\">\n" +
         "        <!-- Page Content Holder-->\n" +
         "        <div id=\"diagramDiv" + "-" + generatedId + "\" style=\"width: 100%; height: 100%;\">\n" +
         "            <div class=\"container\" id=\"diagramsCanvas" + "-" + generatedId + "\" style=\"justify-content: space-between; z-order: -1001\"></div>\n" +
